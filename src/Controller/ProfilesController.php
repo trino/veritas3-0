@@ -135,6 +135,13 @@
                         $this->DeleteProduct($DocID);
                         echo "<FONT COLOR=RED>" . $DocID . " was deleted</FONT>";
                         break;
+                    case "createdocument":
+                        if($this->AddProduct($DocID,$_POST["Name"] )) {
+                            echo "<FONT COLOR='green'>" . $_POST["Name"] . " was created</FONT>";
+                        } else {
+                            echo "<FONT COLOR='red'>" . $DocID . " is already in use</FONT>";
+                        }
+                        break;
                 }
                 $this->layout = 'ajax';
                 $this->render(false);
@@ -201,8 +208,15 @@
         }
         function DeleteProduct($Number){
             TableRegistry::get("order_products")->deleteAll(array('number' => $Number), false);
+            TableRegistry::get("order_provinces")->deleteAll(array('ProductID' => $Number), false);
         }
-
+        function AddProduct($Number, $Name){
+            $table = TableRegistry::get("order_products");
+            $item = $table->find()->where(['number' => $Number])->first();
+            if($item){return false;}
+            $table->query()->insert(['number', "title", "enable"])->values(['number' => $Number, 'title' => $Name, "enable" => 0])->execute();
+            return true;
+        }
 
 
 

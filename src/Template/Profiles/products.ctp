@@ -22,6 +22,32 @@
 <script>
     var OldIndex =-1;
 
+    function addproduct(){
+        var Number =  $('#newnum').val();
+        var Name =  $('#newname').val();
+        if(isNaN(Number)) {
+            Toast("'" + Number + "' is not a number", true);
+        } else if (Name.length ==0) {
+            Toast("No name was specified", true);
+        } else {
+            $.ajax({
+                url: "<?php echo $this->request->webroot;?>profiles/products",
+                type: "post",
+                dataType: "HTML",
+                data: "Type=createdocument&DocID=" + Number + "&Name=" + Name,
+                success: function (msg) {
+                    Toast(msg, true);
+                    if(msg.indexOf("green") >-1){
+                        $('#myTable > tbody:last').append('<TR ID="PTR' + Number + '" onclick="selectproduct(' + Number + ');"><TD><INPUT TYPE="RADIO" ID="rad' + Number + '">' + Number + '</LABEL></TD><TD><DIV ID="pn' + Number + '">' + Name + "</div></TD></TR>");
+
+                        $('#newnum').val("");
+                        $('#newname').val("");
+                    }
+                }
+            })
+        }
+    }
+
     function setprov(DocID, Province){
         element = document.getElementById(DocID + "." + Province);
         $.ajax({
@@ -38,7 +64,7 @@
     function Toast(Text, FadeOut){
         $('.toast').html(Text);
         $('.toast').show();
-        if (FadeOut) {$('.toast').fadeOut(2000);}
+        if (FadeOut) {$('.toast').fadeOut(5000);}
     }
 
     function selectproduct(Index){
@@ -112,21 +138,21 @@
 $provincelist = array("AB" => "Alberta", "BC" => "British Columbia", "MB" => "Manitoba", "NB" => "New Brunswick", "NL" => "Newfoundland and Labrador", "NT" => "Northwest Territories", "NS" => "Nova Scotia", "NU" => "Nunavut", "ON" => "Ontario", "PE" => "Prince Edward Island", "QC" => "Quebec", "SK" => "Saskatchewan", "YT" => "Yukon Territories");
 
 echo "<table class='table table-condensed  table-striped table-bordered table-hover dataTable no-footer'  ID='myTable'>";
-echo "<THEAD><TH>ID</TH><TH>Product</TH></THEAD>";
-$index=1;
+echo "<THEAD><TH>ID</TH><TH>Product</TH></THEAD><TBODY>";
 foreach($products as $product){
     echo '<TR ID="PTR' . $product->number . '" onclick="selectproduct(' . $product->number . ');"><TD><INPUT TYPE="RADIO" ID="rad' . $product->number . '">' . $product->number . '</LABEL></TD><TD><DIV ID="pn' . $product->number . '">' . $product->title . "</div></TD></TR>";
-    $index+=1;
 }
-?>
+?></TBODY><TFOOT>
     <TR><TH COLSPAN="2">Actions:</TH></TR><TR class="actions" style="display: none;"><TD COLSPAN="2">
                     <a class="btn btn-xs btn-info" id="delete" onclick="editproduct();">Rename</a>
                     <a class="btn btn-xs btn-danger" id="delete" onclick="deleteproduct();">Delete</a>
                 </TD></TR>
-
+    <TR><TH COLSPAN="2">Add Product:</TH></TR>
+        <TR><TD><input type="text" id="newnum" style="width: 50px"></TD><TD><input type="text" id="newname" style="width: 80%">
+                <a class="btn btn-xs btn-info" id="add" onclick="addproduct();" style="float: right;">Add</a></TD></TR>
                 </table>
             </TD>
             <TD><DIV CLASS="tablespot"></DIV></TD>
-        </TR></TABLE>
+        </TR></TFOOT></TABLE>
     </div>
 </div>
