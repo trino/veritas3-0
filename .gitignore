@@ -41,3 +41,6 @@ $RECYCLE.BIN/
 Network Trash Folder
 Temporary Items
 .apdisk
+src/Controller/logs/debug.log
+src/Controller/logs/debug.log
+src/Controller/logs/cli-error.log

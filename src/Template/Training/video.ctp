@@ -3,7 +3,7 @@
     <ul class="page-breadcrumb">
         <li>
             <i class="fa fa-home"></i>
-            <a href="/veritas3">Dashboard</a>
+            <a href="<?= $this->request->webroot  ?>">Dashboard</a>
             <i class="fa fa-angle-right"></i>
         </li>
         <LI>

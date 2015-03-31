@@ -235,7 +235,7 @@
     </div>
     <?php
 
-        if ($settings->profile_create == '1') echo "<div class='col-xs-3 ' style='margin-left: -20px;'>or&nbsp;&nbsp;<a href='http://localhost/veritas3/profiles/add' class='btn grey-steel '>Add Driver</a></div>";?>
+        if ($settings->profile_create == '1') echo "<div class='col-xs-3 ' style='margin-left: -20px;'>or&nbsp;&nbsp;<a href='" . $this->request->webroot . "profiles/add' class='btn grey-steel '>Add Driver</a></div>";?>
 
     </div>
     <?php

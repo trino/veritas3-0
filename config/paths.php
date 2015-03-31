@@ -82,7 +82,7 @@ define('CORE_PATH', CAKE_CORE_INCLUDE_PATH . DS);
 define('CAKE', CORE_PATH . 'src' . DS);
 
 if($_SERVER['SERVER_NAME']=='localhost'){
-    define('WEB_ROOT', "http://localhost/veritas3/");
+    define('WEB_ROOT', "http://localhost/veritas3-0/");
 
 }
 else{
@@ -91,7 +91,7 @@ else{
 }
 define('W_ROOT',strtolower(substr($_SERVER["SERVER_PROTOCOL"],0,strpos( $_SERVER["SERVER_PROTOCOL"],'/'))).'://'.$_SERVER['HTTP_HOST'] );
 if($_SERVER['SERVER_NAME']=='localhost')
-define('LOGIN', W_ROOT."/veritas3/");
+define('LOGIN', W_ROOT."/veritas3-0/");
 else
 define('LOGIN', W_ROOT.'/');
 
