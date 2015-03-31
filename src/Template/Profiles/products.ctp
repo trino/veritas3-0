@@ -1,3 +1,4 @@
+<?php if ($_SERVER['SERVER_NAME'] == 'localhost') { echo "<span style ='color:red;'>products.ctp #INC not assigned</span>";} ?>
 <style>
     th.rotate {
         height: 140px;
@@ -20,6 +21,7 @@
 </style>
 <script>
     var OldIndex =-1;
+
     function setprov(DocID, Province){
         element = document.getElementById(DocID + "." + Province);
         $.ajax({
@@ -44,7 +46,7 @@
         Toast("<FONT COLOR='BLACK'>You have selected " + Index + "</FONT>", true);
         $("#rad" + Index).prop("checked", true);
         OldIndex=Index;
-
+        $('.actions').show();
         $.ajax({
             url: "<?php echo $this->request->webroot;?>profiles/products",
             type: "post",
@@ -56,8 +58,52 @@
         })
     }
 
+    function selectedname(){
+        return $('#pn' + OldIndex).text();
+    }
+    function deleteproduct(){
+        if (confirm("Are you sure you want to delete '" + selectedname() + "'?")){
+            $.ajax({
+                url: "<?php echo $this->request->webroot;?>profiles/products",
+                type: "post",
+                dataType: "HTML",
+                data: "Type=deletedocument&DocID=" + OldIndex,
+                success: function (msg) {
+                    Toast("'" + selectedname() + "' was deleted", true);
+                    document.getElementById("PTR" + OldIndex).remove();
+                    OldIndex=-1;
+                    OldRow=-1;
+                    $('.actions').hide();
+                    $('.tablespot').html("");
+                }
+            })
+        }
+    }
+    function editproduct(){
+        var person = prompt("Please enter a new name for: '" + selectedname() + "'", selectedname());
+        if(person !== null && person.length>0) {
+            $.ajax({
+                url: "<?php echo $this->request->webroot;?>profiles/products",
+                type: "post",
+                dataType: "HTML",
+                data: "Type=rename&DocID=" + OldIndex + "&newname=" + person,
+                success: function (msg) {
+                    Toast("'" + selectedname() + "' was renamed to '" + person + "' - " + msg, true);
+                    $('#pn' + OldIndex).text(person);
+                }
+            })
+        }
+    }
 
 </script>
+
+<div class="portlet box green-haze">
+    <div class="portlet-title">
+        <div class="caption">
+            <i class="fa fa-briefcase"></i>Products
+        </div>
+    </div>
+    <div class="portlet-body">
 
 <TABLE WIDTH="100%" HEIGHT="100%"><TR><TD COLSPAN="2"><TABLE WIDTH="100%" HEIGHT="100%"><TR><TD><FONT COLOR="white">[</FONT></TD><TD width="99%"><div class="toast" style="color: rgb(255,0,0);"></div></TD></TR></TABLE>
 </TD></TR>
@@ -67,10 +113,20 @@ $provincelist = array("AB" => "Alberta", "BC" => "British Columbia", "MB" => "Ma
 
 echo "<table class='table table-condensed  table-striped table-bordered table-hover dataTable no-footer'  ID='myTable'>";
 echo "<THEAD><TH>ID</TH><TH>Product</TH></THEAD>";
+$index=1;
 foreach($products as $product){
-    echo '<TR onclick="selectproduct(' . $product->number . ');"><TD><INPUT TYPE="RADIO" ID="rad' . $product->number . '">' . $product->number . '</TD><TD>' . $product->title . "</TD></TR>";
+    echo '<TR ID="PTR' . $product->number . '" onclick="selectproduct(' . $product->number . ');"><TD><INPUT TYPE="RADIO" ID="rad' . $product->number . '">' . $product->number . '</LABEL></TD><TD><DIV ID="pn' . $product->number . '">' . $product->title . "</div></TD></TR>";
+    $index+=1;
 }
-echo "</table></TD><TD>";
-    echo '<DIV CLASS="tablespot"></DIV>';
-echo "</TD></TR></TABLE>";
 ?>
+    <TR><TH COLSPAN="2">Actions:</TH></TR><TR class="actions" style="display: none;"><TD COLSPAN="2">
+                    <a class="btn btn-xs btn-info" id="delete" onclick="editproduct();">Rename</a>
+                    <a class="btn btn-xs btn-danger" id="delete" onclick="deleteproduct();">Delete</a>
+                </TD></TR>
+
+                </table>
+            </TD>
+            <TD><DIV CLASS="tablespot"></DIV></TD>
+        </TR></TABLE>
+    </div>
+</div>

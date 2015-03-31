@@ -116,36 +116,40 @@ th.rotate > div > span {
                 </thead>
                 <tbody class="allp">
                 <?php
-                    $row=1;
-                    foreach ($products as $product) {
-                        $ID = $product->number;
-                        ?>
-                        <tr>
-                            <!--td><?php echo $ID;?></td-->
-                            <TD><?=  $ID ?></TD>
-                            <td style="white-space: nowrap;" class="title_<?php echo $ID . '">' . $product->title;?> </td>
+                $row=1;
+                foreach ($products as $product) {
+                    $ID = $product->number;
+                    ?>
+                    <tr>
+                        <!--td><?php echo $ID;?></td-->
+                        <TD><?=  $ID ?></TD>
+                        <td style="white-space: nowrap;" class="title_<?php echo $ID . '">' . $product->title;?> </td>
                               <td><input type="checkbox" <?php if ($product->enable == '1') {
-                                    echo "checked='checked'";
-                                }?> class="enable" id="chk_<?php echo $ID;?>"/></td>
-                                <?php
-                                    PrintProvinces($ID, $provincelist, $provinces, $subdocuments);
-                                    echo '<td style="white-space: nowrap;">';
-                                    if ($product->id >= 9) { ?>
-                                        <a href="javascript:;" class="btn btn-xs btn-info editpro" id="edit_<?php echo $product->id;?>">Edit</a>
-                                        <a class="btn btn-xs btn-danger" id="delete_<?php echo $product->id;?>" onclick="deleteproduct(<?= $row . ", " . $product->id . ", '" . $product->title ?>');">Delete</a>
-                                    <?php } ?>
-                            </td>
-                        </tr>
+                            echo "checked='checked'";
+                        }?> class="enable" id="chk_<?php echo $ID;?>"/></td>
+                        <?php
+                        PrintProvinces($ID, $provincelist, $provinces, $subdocuments);
+                        echo '<td style="white-space: nowrap;">';
+                        if ($product->id >= 9) { ?>
+                            <a href="javascript:;" class="btn btn-xs btn-info editpro" id="edit_<?php echo $product->id;?>">Edit</a>
+                            <a class="btn btn-xs btn-danger" id="delete_<?php echo $product->id;?>" onclick="deleteproduct(<?= $row . ", " . $product->id . ", '" . $product->title ?>');">Delete</a>
+                        <?php } ?>
+                        </td>
+                    </tr>
                     <?php
-                        $row+=1;
-                    }
+                    $row+=1;
+                }
                 ?>
                 </tbody>
             </table>
-
         </div>
     </div>
 </div>
+
+
+
+
+
 
 <script>
     function Toast(Text){

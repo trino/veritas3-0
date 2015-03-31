@@ -127,6 +127,14 @@
                     case "selectdocument"://Product, DocID, Province, Value
                         echo $this->setproductprovince($_POST["Product"], $DocID,$_POST["Province"],$Value);
                         break;
+                    case "rename":
+                        $this->RenameProduct($DocID, $_POST["newname"]);
+                        echo $DocID . " was renamed to '" . $_POST["newname"] . "'";
+                        break;
+                    case "deletedocument":
+                        $this->DeleteProduct($DocID);
+                        echo "<FONT COLOR=RED>" . $DocID . " was deleted</FONT>";
+                        break;
                 }
                 $this->layout = 'ajax';
                 $this->render(false);
@@ -188,8 +196,12 @@
             return implode(" ", $Words2);
         }
 
-
-
+        function RenameProduct($Number, $NewName){
+            TableRegistry::get("order_products")->query()->update()->set(['title' => $NewName])->where(['number' => $Number])->execute();
+        }
+        function DeleteProduct($Number){
+            TableRegistry::get("order_products")->deleteAll(array('number' => $Number), false);
+        }
 
 
 
@@ -1889,7 +1901,7 @@
                 $this->DeleteTables(array("clients", "clientssubdocument", "client_divison", "client_sub_order"));//deletes clients
                 //deletes documents
                 $this->DeleteTables(array("audits", "consent_form", "consent_form_criminal", "documents", "driver_application", "road_test", "survey", "driver_application_accident", "driver_application_licenses"));
-                $this->DeleteTables(array("abstract_forms", "bc_forms", "quebec_forms", "education_verification", "employment_verification", "feedbacks", "orders", "pre_screening", "generic_forms"));
+                $this->DeleteTables(array("abstract_forms", "bc_forms", "quebec_forms", "education_verification", "employment_verification", "feedbacks", "orders", "pre_screening", "generic_forms"));//order_provinces
                 //do not delete settings, contents, logos, subdocuments, order_products, color_class, client_types, profile_types, training_quiz, training_list,
 
                 $this->DeleteDir(getcwd() . "/canvas", ".png");//deletes all signatures

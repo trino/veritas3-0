@@ -144,7 +144,7 @@
                         <?php include('subpages/profile/client_setting.php'); ?>
                     </div>
                     <div class="tab-pane" id="tab_1_10">
-                        <?php include('subpages/profile/products.php'); ?>
+                        <?php include('products.ctp'); //subpages/profile/products.php'); ?>
                     </div>
                     <div class="tab-pane" id="tab_1_14">
                         <div class="tabbable tabbable-custom">
