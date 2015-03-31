@@ -62,6 +62,8 @@
     }
 
     function Toast(Text, FadeOut){
+        $('.toast').stop();
+        if (FadeOut) {$('.toast').fadeIn(1);}
         $('.toast').html(Text);
         $('.toast').show();
         if (FadeOut) {$('.toast').fadeOut(5000);}
