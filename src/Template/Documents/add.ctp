@@ -183,7 +183,7 @@ if (isset($this->request->params['pass'][1])) {
                                 echo '<div class="row">
                             <div class="col-md-12">
                             <div class="portlet box '.$colr.'">
-                            
+
                                     <div class="portlet-title">
                                         <div class="caption">
                                             Driver Pre-Screen Questions
@@ -221,7 +221,7 @@ if (isset($this->request->params['pass'][1])) {
                                 echo '<div class="row">
                             <div class="col-md-12">
                             <div class="portlet box '.$colr.'">
-                            
+
                                     <div class="portlet-title">
                                         <div class="caption">
                                             Road Test
@@ -254,7 +254,7 @@ if (isset($this->request->params['pass'][1])) {
                                 echo '<div class="row">
                             <div class="col-md-12">
                             <div class="portlet box '.$colr.'">
-                            
+
                                     <div class="portlet-title">
                                         <div class="caption">
                                             Consent Form
@@ -287,7 +287,7 @@ if (isset($this->request->params['pass'][1])) {
                                 echo '<div class="row">
                             <div class="col-md-12">
                             <div class="portlet box '.$colr.'">
-                            
+
                                     <div class="portlet-title">
                                         <div class="caption">
                                             Survey
@@ -320,7 +320,7 @@ if (isset($this->request->params['pass'][1])) {
                                 echo '<div class="row">
                             <div class="col-md-12">
                             <div class="portlet box '.$colr.'">
-                            
+
                                     <div class="portlet-title">
                                         <div class="caption">
                                             Feedbacks
@@ -353,7 +353,7 @@ if (isset($this->request->params['pass'][1])) {
                                 echo '<div class="row">
                             <div class="col-md-12">
                             <div class="portlet box '.$colr.'">
-                            
+
                                     <div class="portlet-title">
                                         <div class="caption">
                                             Attachments
@@ -386,7 +386,7 @@ if (isset($this->request->params['pass'][1])) {
                                 echo '<div class="row">
                             <div class="col-md-12">
                             <div class="portlet box '.$colr.'">
-                            
+
                                     <div class="portlet-title">
                                         <div class="caption">
                                             Audits
@@ -420,7 +420,7 @@ if (isset($this->request->params['pass'][1])) {
                                 echo '<div class="row">
                             <div class="col-md-12">
                             <div class="portlet box '.$colr.'">
-                            
+
                                     <div class="portlet-title">
                                         <div class="caption">
                                             Employment Verification
@@ -454,7 +454,7 @@ if (isset($this->request->params['pass'][1])) {
                                 echo '<div class="row">
                             <div class="col-md-12">
                             <div class="portlet box '.$colr.'">
-                            
+
                                     <div class="portlet-title">
                                         <div class="caption">
                                             Education Verification
@@ -466,10 +466,10 @@ if (isset($this->request->params['pass'][1])) {
 
                                                     }
                                         else {
-                                            
+
                                         }
                         ?>
-                        <?php include('subpages/documents/education_verification_form.php'); 
+                        <?php include('subpages/documents/education_verification_form.php');
                         if($controller == 'documents' )
                         {
                         echo '</div></div></div></div></div></div>' ;
@@ -489,11 +489,11 @@ if (isset($this->request->params['pass'][1])) {
                             $colr = $this->requestAction('/documents/getColorId/'.$dx->id);
                             if(!$colr)
                             $colr = $class[9];
-                            
+
                              echo '<div class="row">
                             <div class="col-md-12">
                             <div class="portlet box '.$colr.'">
-                            
+
                                     <div class="portlet-title">
                                         <div class="caption">
                                            '.$dx->title.'
@@ -504,20 +504,20 @@ if (isset($this->request->params['pass'][1])) {
                                                     <div class="tab-content">';
                                                     }
                                         else {
-                                            
+
                                         }
                         ?>
-                        <?php if($dx->form && file_exists('subpages/documents/'.$dx->form))include('subpages/documents/'.$dx->form); 
+                        <?php if($dx->form && file_exists('subpages/documents/'.$dx->form))include('subpages/documents/'.$dx->form);
                         if($controller == 'documents' )
                         {
                         echo '</div></div></div></div></div></div>' ;
                         }
                          ?>
                         </div>
-                    <?php    
+                    <?php
                         }
                     }
-                    ?>                    
+                    ?>
 
                     </div>
                 </div>
@@ -655,7 +655,7 @@ if (isset($this->request->params['pass'][1])) {
         {
             $('.subform'+k+' .document_type').remove();
             $('.subform'+k+' .sub_docs_id').remove();
-            
+
         }
          <?php foreach($doc as $dx)
                 {
@@ -672,7 +672,7 @@ if (isset($this->request->params['pass'][1])) {
         <?php       }
                 }
         ?>
-        
+
         if (s_arr[1] == 1) {
             $('#form_tab1').prepend('<input type="hidden" class="document_type" name="document_type" value="Pre-Screening"/>' +
             '<input type="hidden" name="sub_doc_id" value="1" class="sub_docs_id" id="af" />');
@@ -717,18 +717,18 @@ if (isset($this->request->params['pass'][1])) {
              $('.addattachment8').load('<?php echo $this->request->webroot;?>documents/attach_doc/<?php echo $did."/".$view;?>', function(){
                 initiate_ajax_upload1('addMore1', 'doc');
              });
-             
+
         }
         if (s_arr[1] == 9) {
             $('#form_tab9').prepend('<input class="document_type" type="hidden" name="document_type" value="Employment Verification" />' +
             '<input type="hidden" class="sub_docs_id" name="sub_doc_id" value="9"  />');
-             
-             
+
+
         }
         if (s_arr[1] == 10) {
             $('#form_tab10').prepend('<input class="document_type" type="hidden" name="document_type" value="Education Verification" />' +
             '<input type="hidden" class="sub_docs_id" name="sub_doc_id" value="10"  />');
-             
+
         }
         if (s_arr[1] == 11) {
             $('#form_tab11').prepend('<input class="document_type" type="hidden" name="document_type" value="Basic Pre-Screen Questions" />' +
@@ -736,12 +736,12 @@ if (isset($this->request->params['pass'][1])) {
             $('.addattachment11').load('<?php echo $this->request->webroot;?>documents/attach_doc/<?php echo $did."/".$view;?>', function(){
                 initiate_ajax_upload1('addMore1', 'doc');
              });
-             
-        }
-        
-        
 
-        
+        }
+
+
+
+
         //alert(s_arr[1]);
         //alert(s_arr[1]);
 
@@ -1791,14 +1791,14 @@ if (isset($this->request->params['pass'][1])) {
                             data: param,
                             type: 'POST',
                             success: function (res) {
-                                
+
                                     if(draft==0)
                                         window.location = '<?php echo $this->request->webroot?>documents/index?flash';
                                     else
                                         window.location = '<?php echo $this->request->webroot?>documents/index?flash';
-                                        }                                        
+                                        }
 
-                                                            
+
                         });
 
                     }
@@ -1811,11 +1811,11 @@ if (isset($this->request->params['pass'][1])) {
                         if(type == "<?php echo addslashes($dx->title);?>")
                         {
                             var act = $('#form_tab<?php echo $dx->id;?>').attr('action');
-    
+
                             $('#form_tab<?php echo $dx->id;?>').attr('action', function (i, val) {
                                 return val + '?draft=' + draft;
                             });
-    
+
                             $('#form_tab<?php echo $dx->id;?>').submit();
                         }
 
@@ -2060,7 +2060,7 @@ if (isset($this->request->params['pass'][1])) {
     $(function () {
 
 
-        
+
         $('.img_delete').live('click', function () {
             var file = $(this).attr('title');
             if (file == file.replace("&", " ")) {
