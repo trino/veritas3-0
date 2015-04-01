@@ -1149,7 +1149,7 @@
         function isproductprovinceenabled2($Items, $ProductID, $DocumentID, $Province){//new fast method
             foreach($Items as $Item){
                 if ($Item->ProductID == $ProductID){
-                    if ($Item->FormID == $DocumentID || $Item->FormID == 0){
+                    if ($Item->FormID == $DocumentID){
                         if ($Item->Province == $Province){
                             return true;
                         }
@@ -1166,7 +1166,7 @@
 
             $return = array();
             foreach($subdocuments as $document){
-                $query=$Table->find('all')->where(array("OR" => ['FormID' => $document->id, 'FormID' => 0]));
+                $query=$Table->find('all')->where(['FormID' => $document->id]);
                 $insert = array();
                 $value=false;
                 foreach($forms as $form){
