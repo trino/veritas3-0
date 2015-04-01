@@ -81,12 +81,14 @@
                 $morecount = 0;
                 if($did)
                 {
-                    
-                        $mee_more = $this->requestAction('/documents/getMeeAtt/'.$mee_att['attach_doc']->id);
+                        if(isset($mee_att['attach_doc']->id) && $mee_att['attach_doc']->id){
+                            //echo $mee_att['attach_doc']->id;
+                        $mee_more = $meedocs->find()->where(['mee_id'=>$mee_att['attach_doc']->id]);
+                        if($mee_more)
                         foreach($mee_more as $mm)
                         {
                             $morecount++;
-                        }
+                        }}
                     
                 }
                 if(!$morecount)

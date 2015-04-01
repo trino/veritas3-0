@@ -178,6 +178,8 @@
         public function view($cid = 0, $did = 0)
         {
             $this->set('doc_comp',$this->Document);
+            $meedocs = TableRegistry::get('mee_attachments_more');
+            $this->set('meedocs',$meedocs);
             if (!$this->request->session()->read('Profile.id')) {
                 $this->redirect('/login');
             }
@@ -458,6 +460,8 @@
             $this->set('did', $did);
             $this->set('sid', '');
             $clients = TableRegistry::get('Clients');
+            $meedocs = TableRegistry::get('mee_attachments_more');
+            $this->set('meedocs',$meedocs);
             $c = $clients->find()->all();
             $this->set('clients', $c);
             if ($did) {
@@ -2216,12 +2220,13 @@
            $this->Document->mee_attach($cid,$order_id); 
            die();
         }
-        public function getMeeAtt($id)
+        /*public function getMeeAtt($id)
         {
-            $docs = TableRegistry::get('mee_attachments_more');
+            $meedocs = TableRegistry::get('mee_attachments_more');
             $query = $docs->find()->where(['mee_id'=>$id]);
             $this->response->body($query);
             return $this->response;
-        }
+            die();
+        }*/
 
     }
