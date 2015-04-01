@@ -187,16 +187,21 @@
                 echo '<th width="1%" TITLE="' . $fullname . '">' . $acronym . '</th>';
             }
             echo '</TR></thead>';
+            $this->generateRowHTML(0, "All documents",  $Product, $provincelist);
             foreach($subdocuments as $doc){
-                echo '<TR><TD>' . $doc->id . '</TD><TD>' . $this->ucfirst2($doc->title) . '</TD>';
-                foreach($provincelist as $acronym => $fullname){
-                    if($this->isproductprovinceenabled($Product, $doc->id, $acronym)){ $checked = " CHECKED";} else {$checked="";}//$ProductID, $DocumentID, $Province
-                    echo '<TD TITLE="' . $fullname . '"><INPUT TYPE="CHECKBOX" ONCLICK="setprov(' . $doc->id . ", '" . $acronym . "'" . ');" ID="' . $doc->id . "." . $acronym . '"' . $checked . '></TD>';
-                }
-                echo '</TR>';
+                $this->generateRowHTML($doc->id, $doc->title, $Product, $provincelist);
             }
             echo '</TABLE>';
         }
+        function generateRowHTML($ID, $Title, $Product, $provincelist){
+            echo '<TR><TD>' .$ID . '</TD><TD>' . $this->ucfirst2($Title) . '</TD>';
+            foreach($provincelist as $acronym => $fullname){
+                if($this->isproductprovinceenabled($Product, $ID, $acronym)){ $checked = " CHECKED";} else {$checked="";}//$ProductID, $DocumentID, $Province
+                echo '<TD TITLE="' . $fullname . '"><INPUT TYPE="CHECKBOX" ONCLICK="setprov(' . $ID . ", '" . $acronym . "'" . ');" ID="' . $ID . "." . $acronym . '"' . $checked . '></TD>';
+            }
+            echo "</TR>";
+        }
+
         function enumProvinces(){
             return array("ALL" => "All Provinces", "AB" => "Alberta", "BC" => "British Columbia", "MB" => "Manitoba", "NB" => "New Brunswick", "NL" => "Newfoundland and Labrador", "NT" => "Northwest Territories", "NS" => "Nova Scotia", "NU" => "Nunavut", "ON" => "Ontario", "PE" => "Prince Edward Island", "QC" => "Quebec", "SK" => "Saskatchewan", "YT" => "Yukon Territories");
         }
