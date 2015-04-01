@@ -280,7 +280,7 @@
                 $this->set('sub4', $sub4);
             }
 
-            $this->set('provinces',  $this->LoadSubDocs());
+            $this->set('provinces',  $this->LoadSubDocs($_GET["forms"]));
         }
 
         public function savedoc($cid = 0, $did = 0)
@@ -1126,7 +1126,33 @@
             if($client_docs) {return true;}
             return false;
         }
-        public function LoadSubDocs(){
+
+
+        function isproductprovinceenabled($ProductID, $DocumentID, $Province){
+            if($Province != "ALL"){  if ($this->isproductprovinceenabled($ProductID, $DocumentID, "ALL")) { return true;}}
+            $item = TableRegistry::get('order_provinces')->find()->where(['ProductID' => $ProductID, 'FormID' => $DocumentID, "Province" => $Province])->first();
+            if($item) {return true;} else {return false;}
+        }
+        public function LoadSubDocs($Forms){
+            $subdocuments = TableRegistry::get('subdocuments')->find('all');//id title
+            $provinces = array("AB", "BC", "MB", "NB", "NL","NT","NS","NU","ON","PE","QC","SK","YT");//"ALL",
+            $forms = explode(",", $Forms);
+
+            $return = array();
+            foreach($subdocuments as $document){
+                $insert = array();
+                foreach($provinces as $province){
+                    foreach($forms as $form){
+                        if ($this->isproductprovinceenabled($form, $document->id, $province)) {
+                            $insert[$province] = true;
+                            break;
+                        }
+                    }
+                }
+                $return[strtolower(trim($document->title))] = $insert;
+            }
+            $this->set('thedocuments',  $return);
+            /* old code
             $provinces =  TableRegistry::get('doc_provinces')->find('all');//gets me ID#s and which provinces are enabled
             //$provincelist = array("AB","BC","MB","NB","NFL","NWT","NS","NUN","ONT","PEI","QC","SK","YT");
             $subdocuments = TableRegistry::get('subdocuments')->find('all');//subdocument type list (id, title, display, form, table_name, orders, color_id)
@@ -1143,7 +1169,10 @@
             }
             $this->set('subdocuments',  $subdocuments);
             return $provinces2;
+            */
         }
+
+
         function getProNum()
         {
             $products =  TableRegistry::get('order_products');

@@ -113,92 +113,124 @@
             $this->set('logos', $this->paginate($this->Logos->find()->where(['secondary' => '0'])));
             $this->set('logos1', $this->paginate($this->Logos->find()->where(['secondary' => '1'])));
             $this->set('logos2', $this->paginate($this->Logos->find()->where(['secondary' => '2'])));
-
-            $this->set('provinces',  $this->LoadSubDocs());
         }
 
 
         public function products(){
-            $this->set('products', TableRegistry::get('order_products')->find()->all());
-            
-        }
-
-
-        function getdocID($ID){
-            return TableRegistry::get('order_products')->find()->where(['id' => $ID])->first()->number;
-        }
-
-        public function LoadSubDocs(){
-            $provinces =  TableRegistry::get('doc_provinces')->find('all');//gets me ID#s and which provinces are enabled
-            //$provincelist = array("AB","BC","MB","NB","NFL","NWT","NS","NUN","ONT","PEI","QC","SK","YT");
-            $subdocuments = TableRegistry::get('subdocuments')->find('all');//subdocument type list (id, title, display, form, table_name, orders, color_id)
-            $table2 = TableRegistry::get('doc_provincedocs');//subdocument type and province (if found, it is enabled)
-
-            $provinces2 = array();//needs to make a copy...
-            foreach($provinces as $province){
-                $province->subdocuments = array();
-                foreach($subdocuments as $document){
-                    $newdocid = $document->id;
-                    //$province->Number = $this->getdocID($newdocid);
-                    $quiz = $table2->find()->where(['ID' => $province->ID, "DocID" =>$newdocid])->first();
-                    if ($quiz) { $province->subdocuments[$newdocid] = $document->title; }
+            if (isset($_POST["Type"])) {
+                if (isset($_POST['Value'])) { if (strtolower($_POST['Value']) == "true") { $Value = 1; } else { $Value = 0;}}
+                $DocID = $_POST['DocID'];
+                switch($_POST["Type"]){
+                    case "selectproduct":
+                        $this->generateproductHTML($DocID);
+                        break;
+                    case "selectdocument"://Product, DocID, Province, Value
+                        echo $this->setproductprovince($_POST["Product"], $DocID,$_POST["Province"],$Value);
+                        break;
+                    case "rename":
+                        $this->RenameProduct($DocID, $_POST["newname"]);
+                        echo $DocID . " was renamed to '" . $_POST["newname"] . "'";
+                        break;
+                    case "deletedocument":
+                        $this->DeleteProduct($DocID);
+                        echo "<FONT COLOR=RED>" . $DocID . " was deleted</FONT>";
+                        break;
+                    case "createdocument":
+                        if($this->AddProduct($DocID,$_POST["Name"] )) {
+                            echo "<FONT COLOR='green'>" . $_POST["Name"] . " was created</FONT>";
+                        } else {
+                            echo "<FONT COLOR='red'>" . $DocID . " is already in use</FONT>";
+                        }
+                        break;
                 }
-                $provinces2[] = $province;
-            }
-            $this->set('subdocuments',  $subdocuments);
-            return $provinces2;
-        }
-
-        public function province(){
-            if (isset($_POST['Value'])) { if (strtolower($_POST['Value']) == "true") { $Value = 1; } else { $Value = 0;}}
-            $DocID = $_POST['DocID'];
-
-            switch ($_POST["Type"]) {
-                case "Province":
-                    $table = TableRegistry::get("doc_provinces");
-                    $Province = $_POST['Province'];
-                    $quiz = $table->find()->where(['ID' => $DocID])->first();
-                    if ($quiz) {//item exists, update it
-                        $table->query()->update()->set([$Province => $Value])->where(['ID' => $DocID])->execute();
-                    } else {//item doesn't exist, insert it
-                        $table->query()->insert(['ID', $Province])->values(['ID' => $DocID, $Province => $Value])->execute();
-                    }
-                    echo "Success! " . $DocID . "." . $Province . " was set to " . $Value;
-                    break;
-
-                case "Document":
-                    $table = TableRegistry::get("doc_provinces");
-                    $quiz = $table->find()->where(['ID' => $DocID])->first();
-                    if (!$quiz) {$table->query()->insert(['ID'])->values(['ID' => $DocID])->execute();}
-                    $table = TableRegistry::get("doc_provincedocs");
-                    if ($Value == 1) {
-                        $table->query()->insert(['ID', "DocID"])->values(['ID' => $DocID, "DocID" => $_POST["SubDoc"]])->execute();
-                        echo $_POST["SubDoc"] . " was enabled for " . $DocID;
-                    } else {
-                        $table->deleteAll(array('ID' => $DocID, 'DocID' => $_POST["SubDoc"]), false);
-                        echo $_POST["SubDoc"] . " was disabled for " . $DocID;
-                    }
-                    break;
-
-                case "Delete":
-                    if ($this->Delete_order_products($DocID)) {
-                        echo "Deleted document type: '" . $DocID . "'";
-                    } else {
-                        echo "Unable to delete DocIDs below 9";
-                    }
-                    break;
-            }
-            die();
-        }
-
-        public function Delete_order_products($DocID){
-            if ($DocID >= 9){
-                TableRegistry::get("order_products")->deleteAll(array('id' => $DocID), false);
-                TableRegistry::get("doc_provinces")->deleteAll(array('ID' => $DocID), false);
-                TableRegistry::get("doc_provincedocs")->deleteAll(array('DocID' => $DocID), false);
-                return true;
+                $this->layout = 'ajax';
+                $this->render(false);
+            } else {
+                $this->set('products', TableRegistry::get('order_products')->find()->all());
             }
         }
+
+        function isproductprovinceenabled($ProductID, $DocumentID, $Province){
+            $item = TableRegistry::get('order_provinces')->find()->where(['ProductID' => $ProductID, 'FormID' => $DocumentID, "Province" => $Province])->first();
+            if($item) {return true;} else {return false;}
+        }
+        function setproductprovince($ProductID, $DocumentID, $Province, $Value){
+            $table = TableRegistry::get('order_provinces');//ProductID, Province, FormID
+            if ($Value == 1) {
+                $color="green";
+                $item = $table->find()->where(['ProductID' => $ProductID, 'FormID' => $DocumentID, "Province" => $Province])->first();
+                $message = " was already enabled for ";
+                if(!$item){
+                    $table->query()->insert(['ProductID', "FormID", "Province"])->values(['ProductID' => $ProductID, 'FormID' => $DocumentID, "Province" => $Province])->execute();
+                    $message= " was enabled for ";
+                }
+            } else {
+                $color="red";
+                $table->deleteAll(array('ProductID' => $ProductID, 'FormID' => $DocumentID, "Province" => $Province), false);
+                $message= " was disabled for ";
+            }
+            return "<FONT COLOR='" . $color . "'>" . $DocumentID . $message . $ProductID . "." . $Province . "</FONT>";
+        }
+        function generateproductHTML($Product){
+            //TableRegistry::get('order_provinces')->find()->where(['ProductID' => $Product])->all();
+            $provincelist = $this->enumProvinces();
+            $subdocuments = TableRegistry::get('subdocuments')->find('all');//subdocument type list (id, title, display, form, table_name, orders, color_id)
+            echo '<TABLE CLASS="table table-condensed  table-striped table-bordered table-hover dataTable no-footer">';
+            echo '<thead><TR><TH WIDTH="1%">ID</TH><TH>Document</TH>';
+            foreach($provincelist as $acronym => $fullname){
+                echo '<th width="1%" TITLE="' . $fullname . '">' . $acronym . '</th>';
+            }
+            echo '</TR></thead>';
+            foreach($subdocuments as $doc){
+                echo '<TR><TD>' . $doc->id . '</TD><TD>' . $this->ucfirst2($doc->title) . '</TD>';
+                foreach($provincelist as $acronym => $fullname){
+                    if($this->isproductprovinceenabled($Product, $doc->id, $acronym)){ $checked = " CHECKED";} else {$checked="";}//$ProductID, $DocumentID, $Province
+                    echo '<TD TITLE="' . $fullname . '"><INPUT TYPE="CHECKBOX" ONCLICK="setprov(' . $doc->id . ", '" . $acronym . "'" . ');" ID="' . $doc->id . "." . $acronym . '"' . $checked . '></TD>';
+                }
+                echo '</TR>';
+            }
+            echo '</TABLE>';
+        }
+        function enumProvinces(){
+            return array("ALL" => "All Provinces", "AB" => "Alberta", "BC" => "British Columbia", "MB" => "Manitoba", "NB" => "New Brunswick", "NL" => "Newfoundland and Labrador", "NT" => "Northwest Territories", "NS" => "Nova Scotia", "NU" => "Nunavut", "ON" => "Ontario", "PE" => "Prince Edward Island", "QC" => "Quebec", "SK" => "Saskatchewan", "YT" => "Yukon Territories");
+        }
+        function ucfirst2($Text){
+            $Words = explode(" ", $Text);
+            $Words2=array();//php forces me to make a copy
+            foreach($Words as $Word){
+                $Words2[] = ucfirst($Word);
+            }
+            return implode(" ", $Words2);
+        }
+
+        function RenameProduct($Number, $NewName){
+            TableRegistry::get("order_products")->query()->update()->set(['title' => $NewName])->where(['number' => $Number])->execute();
+        }
+        function DeleteProduct($Number){
+            TableRegistry::get("order_products")->deleteAll(array('number' => $Number), false);
+            TableRegistry::get("order_provinces")->deleteAll(array('ProductID' => $Number), false);
+        }
+        function AddProduct($Number, $Name){
+            $table = TableRegistry::get("order_products");
+            $item = $table->find()->where(['number' => $Number])->first();
+            if($item){return false;}
+            $table->query()->insert(['number', "title", "enable"])->values(['number' => $Number, 'title' => $Name, "enable" => 0])->execute();
+            return true;
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
         public function index()
         {
@@ -1883,7 +1915,7 @@
                 $this->DeleteTables(array("clients", "clientssubdocument", "client_divison", "client_sub_order"));//deletes clients
                 //deletes documents
                 $this->DeleteTables(array("audits", "consent_form", "consent_form_criminal", "documents", "driver_application", "road_test", "survey", "driver_application_accident", "driver_application_licenses"));
-                $this->DeleteTables(array("abstract_forms", "bc_forms", "quebec_forms", "education_verification", "employment_verification", "feedbacks", "orders", "pre_screening", "generic_forms"));
+                $this->DeleteTables(array("abstract_forms", "bc_forms", "quebec_forms", "education_verification", "employment_verification", "feedbacks", "orders", "pre_screening", "generic_forms"));//order_provinces
                 //do not delete settings, contents, logos, subdocuments, order_products, color_class, client_types, profile_types, training_quiz, training_list,
 
                 $this->DeleteDir(getcwd() . "/canvas", ".png");//deletes all signatures

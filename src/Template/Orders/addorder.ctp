@@ -103,6 +103,11 @@ function provinces($name){
         return false;
     }
 
+    function displayform2($DriverProvince, $thedocuments, $name){
+        if(isset($_GET['order_type']) && urldecode($_GET['order_type'])=='Order MEE'){ return true;}//uncomment
+        $name=trim(strtolower($name));
+        return isset($thedocuments[$name][$DriverProvince]);
+    }
 
         function displayform($DriverProvince, $Provinces, $forms, $name,$_this){
             if(isset($_GET['order_type']) && urldecode($_GET['order_type'])=='Order MEE'){ return true;}//uncomment
@@ -225,7 +230,7 @@ function provinces($name){
 
                                             //debug($sd);
 
-                                            if (displayform($DriverProvince, $provinces, $forms, $d->title,$_this)){
+                                            if (displayform2($DriverProvince,$thedocuments,$d->title)){//(displayform($DriverProvince, $provinces, $forms, $d->title,$_this)){
                                                 $index+=1;
                                                 $act = 0;
                                                 if ($d->table_name == $table) {
@@ -414,7 +419,7 @@ function provinces($name){
                             $d = $this->requestAction('/clients/getFirstSub/'.$sd->sub_id);
 
                            // debug($d);
-                            if (displayform($DriverProvince, $provinces, $forms, $d->title,$_this)){
+                        if (displayform2($DriverProvince,$thedocuments,$d->title)){//if (displayform($DriverProvince, $provinces, $forms, $d->title,$_this)){
 
 
                             $prosubdoc = $this->requestAction('/settings/all_settings/0/0/profile/' . $this->Session->read('Profile.id') . '/' . $d->id);
