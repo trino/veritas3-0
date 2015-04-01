@@ -2216,5 +2216,12 @@
            $this->Document->mee_attach($cid,$order_id); 
            die();
         }
+        public function getMeeAtt($id)
+        {
+            $docs = TableRegistry::get('mee_attachments_more');
+            $query = $docs->find()->where(['mee_id'=>$id]);
+            $this->response->body($query);
+            return $this->response;
+        }
 
     }

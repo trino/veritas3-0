@@ -1344,7 +1344,11 @@ function provinces($name){
         $('.cont').each(function () {
             $(this).attr('id', 'nextview');
             $(this).addClass('nextview');
-        })
+        });
+        $('.dl').each(function () {
+            $(this).show();
+            //$(this).addClass('nextview');
+        });
         $('.cont').removeClass('cont');
         $('.uploaded a').show();
 

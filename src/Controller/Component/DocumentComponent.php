@@ -1138,7 +1138,20 @@ class DocumentComponent extends Component
 
             $save = $roadTest->newEntity($mee);
             if ($roadTest->save($save)) {
-                //echo $save->id;
+                if(isset($_POST['mee_attachments']))
+                {
+                    $att_mee = TableRegistry::get('mee_attachments_more');
+                    foreach($_POST['mee_attachments'] as $me_a)
+                    {
+                        if($me_a){
+                        
+                        $save_mee['mee_id'] = $save->id;
+                        $save_mee['attachments'] = $me_a;
+                        $saving = $att_mee->newEntity($save_mee);
+                        $att_mee->save($saving);
+                        }
+                    }
+                }
             }
             die;
         }
