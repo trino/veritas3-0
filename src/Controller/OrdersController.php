@@ -100,6 +100,11 @@
                 //$pre_at = TableRegistry::get('driver_application_accident');
                 $pre_at['attach_doc'] = $pre->find()->where(['order_id' => $did, 'sub_id' => 1])->all();
                 $this->set('pre_at', $pre_at);
+                
+                $mee_att = TableRegistry::get('mee_attachments');
+                //$pre_at = TableRegistry::get('driver_application_accident');
+                $mee_a['attach_doc'] = $mee_att->find()->where(['order_id' => $did, 'sub_id' => 15])->first();
+                $this->set('mee_att', $mee_a);
 
                 $da = TableRegistry::get('driver_application');
                 $da_detail = $da->find()->where(['order_id' => $did])->first();
@@ -232,6 +237,11 @@
                 //$pre_at = TableRegistry::get('driver_application_accident');
                 $pre_at['attach_doc'] = $pre->find()->where(['order_id' => $did, 'sub_id' => 1])->all();
                 $this->set('pre_at', $pre_at);
+                
+                $mee_att = TableRegistry::get('mee_attachments');
+                //$pre_at = TableRegistry::get('driver_application_accident');
+                $mee_a['attach_doc'] = $mee_att->find()->where(['order_id' => $did, 'sub_id' => 15])->first();
+                $this->set('mee_att', $mee_a);
 
                 $da = TableRegistry::get('driver_application');
                 $da_detail = $da->find()->where(['order_id' => $did])->first();

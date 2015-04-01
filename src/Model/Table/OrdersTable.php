@@ -56,7 +56,7 @@ public function initialize(array $config)
             'foreignKey' => 'client_id',]);
        
         $this->hasMany('DriverApplication', [
-            'className' => 'PreScreening',
+            'className' => 'DriverApplication',
             'dependent' => true,
             
         ]);

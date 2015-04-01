@@ -1658,7 +1658,7 @@ if (isset($this->request->params['pass'][1])) {
                 success: function (res) {
                     //alert(res);
                     $('#did').val(res);
-
+                    //alert(type);return false;
                     if (type == "Pre-Screening") {
                         var forms = $(".tab-pane.active").prev('.tab-pane').find(':input'),
                             url = '<?php echo $this->request->webroot;?>documents/savePrescreening/?document=' + type + '&draft=' + draft+'<?php if(isset($_GET['order_id'])){?>&order_id=<?php echo $_GET['order_id'];}?>',
@@ -1779,6 +1779,30 @@ if (isset($this->request->params['pass'][1])) {
                         $('#form_tab11').submit();
 
                     }
+                    else
+                    if (type == "MEE Attachments") {
+                        //alert('test');return;
+                         var order_id = $('#did').val(),
+                            cid = '<?php echo $cid;?>',
+                            url = '<?php echo $this->request->webroot;?>documents/mee_attach/' + order_id + '/' + cid + '/?document=' + type + '&draft=' + draft+'<?php if(isset($_GET['order_id'])){?>&order_id=<?php echo $_GET['order_id'];}?>';
+                        var param = $('#form_tab15').serialize();
+                        $.ajax({
+                            url: url,
+                            data: param,
+                            type: 'POST',
+                            success: function (res) {
+                                
+                                    if(draft==0)
+                                        window.location = '<?php echo $this->request->webroot?>documents/index?flash';
+                                    else
+                                        window.location = '<?php echo $this->request->webroot?>documents/index?flash';
+                                        }                                        
+
+                                                            
+                        });
+
+                    }
+                    else{
         <?php foreach($doc as $dx)
                 {
                     if($dx->id >11)
@@ -1799,7 +1823,7 @@ if (isset($this->request->params['pass'][1])) {
                 }
         ?>
 
-                }
+                }}
             });
         });
         $('#addfiles').click(function () {

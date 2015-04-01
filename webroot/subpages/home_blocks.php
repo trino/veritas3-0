@@ -85,7 +85,7 @@
 									  ?>
     							</div>
     						</div>
-                            <?php if($this->request['controller']!="Documents"){?>
+                            <?php if(strtolower($this->request->params['controller'])!="documents"){?>
     						<a class="more" href="<?php echo $this->request->webroot;?>documents/index?type=<?php echo urlencode($d->title);?>">
     						View more <i class="m-icon-swapright m-icon-white"></i>
     						</a>

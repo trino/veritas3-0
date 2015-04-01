@@ -186,7 +186,7 @@ class DocumentComponent extends Component
                 //$arr['conf_recruiter_name'] = $_POST['conf_recruiter_name'];
                 //$arr['conf_driver_name'] = $_POST['conf_driver_name'];
                 //$arr['conf_date'] = $_POST['conf_date'];
-                if ((!$did || $did == '0') && $arr['sub_doc_id'] < 7) {
+                if ((!$did || $did == '0') && ($arr['sub_doc_id'] < 7 || $arr['sub_doc_id'] == 15)) {
                     $arr['user_id'] = $controller->request->session()->read('Profile.id');
                     $doc = $docs->newEntity($arr);
 
@@ -1084,7 +1084,64 @@ class DocumentComponent extends Component
 
             die;
         }
-        
+        public function mee_attach($cid = 0, $document_id = 0)
+        {
+            // echo "<pre>";print_r($_POST);die;
+            $controller = $this->_registry->getController();
+            $roadTest = TableRegistry::get('mee_attachments');
+            
+            $arr['client_id'] = $cid;
+            $arr['user_id'] = $controller->request->session()->read('Profile.id');
+            
+            if (!isset($_GET['document']) || isset($_GET['order_id'])) {
+                if(!isset($_GET['order_id']))
+                $arr['order_id'] = $document_id;
+                else
+                $arr['order_id'] = $_GET['order_id'];
+                $arr['document_id'] = 0;
+                
+                
+                if (isset($_POST['uploaded_for']))
+                    $uploaded_for = $_POST['uploaded_for'];
+                else
+                    $uploaded_for = '';
+                $for_doc = array('document_type'=>'MEE Attachments','sub_doc_id'=>15,'order_id'=>$arr['order_id'],'user_id'=>$arr['user_id'],'uploaded_for'=>$uploaded_for);
+                $this->saveDocForOrder($for_doc);
+                
+                
+            } else {
+                $arr['document_id'] = $document_id;
+                $arr['order_id'] = 0;
+            }
+            
+            $del = $roadTest->query();
+            if (!isset($_GET['document']) || isset($_GET['order_id'])){
+                if(isset($_GET['order_id']))
+                $document_id = $_GET['order_id'];
+                $del->delete()->where(['order_id' => $document_id])->execute();
+                }
+            else{
+                $del->delete()->where(['document_id' => $document_id])->execute();}
+
+            
+            $mee['order_id'] = $arr['order_id'];
+            $mee['document_id'] = $arr['document_id'];
+            $mee['certification'] = $_POST['certification'];
+            $mee['cvor'] = $_POST['cvor'];
+            $mee['driver_record_abstract'] = $_POST['driver_record_abstract'];
+            $mee['id_piece1'] = $_POST['id_piece1'];
+            $mee['id_piece2'] = $_POST['id_piece2'];
+            $mee['resume'] = $_POST['resume'];
+            $mee['client_id'] = $cid;
+            $mee['user_id'] = $arr['user_id'];
+            
+
+            $save = $roadTest->newEntity($mee);
+            if ($roadTest->save($save)) {
+                //echo $save->id;
+            }
+            die;
+        }
         public function getDocument($type = "")
         {
             $doc = TableRegistry::get('Subdocuments');
