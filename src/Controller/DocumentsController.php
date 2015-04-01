@@ -302,7 +302,7 @@
                 if(!isset($_GET['order_id']))
                 $mee_a['attach_doc'] = $mee_att->find()->where(['document_id' => $did])->first();
                 else
-                $mee_a['attach_doc'] = $mee_att->find()->where(['order_id' => $_GET['order_id'], 'sub_id' => 15])->first();
+                $mee_a['attach_doc'] = $mee_att->find()->where(['order_id' => $_GET['order_id']])->first();
                 $this->set('mee_att', $mee_a);
 
                 $da = TableRegistry::get('driver_application');
@@ -688,7 +688,7 @@
                 if(!isset($_GET['order_id']))
                 $mee_a['attach_doc'] = $mee_att->find()->where(['document_id' => $did])->first();
                 else
-                $mee_a['attach_doc'] = $mee_att->find()->where(['order_id' => $_GET['order_id'], 'sub_id' => 15])->first();
+                $mee_a['attach_doc'] = $mee_att->find()->where(['order_id' => $_GET['order_id']])->first();
                 $this->set('mee_att', $mee_a);
 
                 $da = TableRegistry::get('driver_application');

@@ -103,7 +103,7 @@
                 
                 $mee_att = TableRegistry::get('mee_attachments');
                 //$pre_at = TableRegistry::get('driver_application_accident');
-                $mee_a['attach_doc'] = $mee_att->find()->where(['order_id' => $did, 'sub_id' => 15])->first();
+                $mee_a['attach_doc'] = $mee_att->find()->where(['order_id' => $did])->first();
                 $this->set('mee_att', $mee_a);
 
                 $da = TableRegistry::get('driver_application');
@@ -240,7 +240,7 @@
                 
                 $mee_att = TableRegistry::get('mee_attachments');
                 //$pre_at = TableRegistry::get('driver_application_accident');
-                $mee_a['attach_doc'] = $mee_att->find()->where(['order_id' => $did, 'sub_id' => 15])->first();
+                $mee_a['attach_doc'] = $mee_att->find()->where(['order_id' => $did])->first();
                 $this->set('mee_att', $mee_a);
 
                 $da = TableRegistry::get('driver_application');
