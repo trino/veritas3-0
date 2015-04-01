@@ -79,3 +79,8 @@ webroot/img/certificates/certificate58-3.pdf
 webroot/img/certificates/certificate58-1.pdf
 
 *.log
+config/app.php
+config/app.php
+tmp/cache/models/myapp_cake_model_debug_kit_panels
+tmp/cache/models/myapp_cake_model_debug_kit_requests
+*.sqlite
