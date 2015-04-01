@@ -275,19 +275,20 @@ jQuery(document).ready(function() {
 </script>
 									<div class="chat-form"> <form action="<?php echo $this->request->webroot; ?>documents/analytics" method="get">
 										<div class="row">
-											<div class="col-md-5">
+											<div class="col-md-11" align="right">
 												<div class="input-group input-large date-picker input-daterange" data-date="10/11/2012" data-date-format="mm/dd/yyyy">
 													<span class="input-group-addon"> Start </span>
 													<input type="text" class="form-control" name="from" value="<?php echo $enddate; ?>">
 													<span class="input-group-addon"> to </span>
 													<input type="text" class="form-control" name="to" title="Leave blank to end at today" value="<?php echo get2("to", date("Y-m-d")); ?>">
+
 												</div>
 											</div>
-											<div class="col-md-4" style="position: relative;  top: 50%;  transform: translateY(+20%);">
-												<!--input type="checkbox" name="drafts" value="1" <?php if($isdraft){ echo "checked";}?> ><label class="control-label" for="drafts">Drafts</label-->
-											</div>
-											<div class="col-md-3" align="right" style="padding-left:0">
-												<button type="submit" class="btn btn-primary">Search</button>
+											<!--div class="col-md-4" style="position: relative;  top: 50%;  transform: translateY(+20%);">
+												<input type="checkbox" name="drafts" value="1" <?php if($isdraft){ echo "checked";}?> ><label class="control-label" for="drafts">Drafts</label>
+											</div-->
+											<div class="col-md-1" align="right" style="padding-left:0">
+                                                <button type="submit" class="btn btn-primary">Search</button>
 											</div>
 										</div>
 									</form></div>
