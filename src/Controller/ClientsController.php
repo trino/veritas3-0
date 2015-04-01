@@ -341,8 +341,8 @@
         public function saveClients($id = 0)
         {
             $sub_sup = TableRegistry::get('subdocuments');
-            $sub_sup_count = $sub_sup->find()->count();
-            $counter = $sub_sup_count;
+            $sub_sup_count = $sub_sup->find()->all();
+            //$counter = $sub_sup_count;
             $settings = $this->Settings->get_settings();
 
             $rec = '';
@@ -407,8 +407,8 @@
                         if ($clients->save($client)) {
                             $arr_s['client_id'] = $client->id;
 
-                            for ($i = 1; $i <= $counter; $i++) {
-                                $arr_s['sub_id'] = $i;
+                            foreach($sub_sup_count as $ssc){
+                                $arr_s['sub_id'] = $ssc->id;
                                 $sub_c = TableRegistry::get('client_sub_order');
                                 $sc = $sub_c->newEntity($arr_s);
                                 $sub_c->save($sc);

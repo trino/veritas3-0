@@ -297,6 +297,13 @@
                 else
                 $pre_at['attach_doc'] = $pre->find()->where(['order_id' => $_GET['order_id'],'sub_id'=>1])->all();
                 $this->set('pre_at', $pre_at);
+                
+                $mee_att = TableRegistry::get('mee_attachments');
+                if(!isset($_GET['order_id']))
+                $mee_a['attach_doc'] = $mee_att->find()->where(['document_id' => $did])->first();
+                else
+                $mee_a['attach_doc'] = $mee_att->find()->where(['order_id' => $_GET['order_id']])->first();
+                $this->set('mee_att', $mee_a);
 
                 $da = TableRegistry::get('driver_application');
                 if(!isset($_GET['order_id']))
@@ -676,6 +683,13 @@
                 else
                 $pre_at['attach_doc'] = $pre->find()->where(['order_id' => $_GET['order_id'],'sub_id'=>1])->all();
                 $this->set('pre_at', $pre_at);
+                
+                $mee_att = TableRegistry::get('mee_attachments');
+                if(!isset($_GET['order_id']))
+                $mee_a['attach_doc'] = $mee_att->find()->where(['document_id' => $did])->first();
+                else
+                $mee_a['attach_doc'] = $mee_att->find()->where(['order_id' => $_GET['order_id']])->first();
+                $this->set('mee_att', $mee_a);
 
                 $da = TableRegistry::get('driver_application');
                 if(!isset($_GET['order_id']))
@@ -2196,6 +2210,11 @@
             $query = $docs->find();
             $client_docs = $query->select()->where(['order_id' => $orderid,'document_id'=>$documentid, 'attachment LIKE' => "%.%"])->first();
             if($client_docs) {return true;}
+        }
+        public function mee_attach($order_id,$cid)
+        {
+           $this->Document->mee_attach($cid,$order_id); 
+           die();
         }
 
     }
