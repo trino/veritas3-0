@@ -1545,7 +1545,7 @@ function provinces($name){
                     else if (type == "MEE Attachments") {
                          var order_id = $('#did').val(),
                             cid = '<?php echo $cid;?>',
-                            url = '<?php echo $this->request->webroot;?>documents/mee_attach/' + cid + '/' + order_id+ '?draft=' + draft;
+                            url = '<?php echo $this->request->webroot;?>documents/mee_attach/' + order_id + '/' + cid+ '?draft=' + draft;
                         var param = $('#form_tab15').serialize()+'&order_id='+order_id;
                         $.ajax({
                             url: url,
