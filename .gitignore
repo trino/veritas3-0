@@ -75,3 +75,4 @@ webroot/canvas/*.png
 *.pdf
 myapp_cake_*
 tmp/cache/**
+tmp/debug_kit.sqlite
