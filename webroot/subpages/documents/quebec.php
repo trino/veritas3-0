@@ -1,5 +1,5 @@
 <?php
- if($_SERVER['SERVER_NAME'] =='localhost'){ echo "<span style ='color:red;'>subpages/documents/quebec.php #INC166</span>"; }
+ if($_SERVER['SERVER_NAME'] =='localhost'){ echo "<span style ='color:red;'>subpages/documents/quebec.php #INC166<BR> dx is not defined!!!</span>"; }
 ?>
 <form id="form_tab<?php echo $dx->id;?>" enctype="multipart/form-data" action="<?php echo $this->request->webroot;?>documents/quebec/<?php echo $cid .'/' .$did;?>" method="post">
     

@@ -69,6 +69,19 @@
         if (FadeOut) {$('.toast').fadeOut(5000);}
     }
 
+    function clearproduct(Index){
+        $.ajax({
+            url: "<?php echo $this->request->webroot;?>profiles/products",
+            type: "post",
+            dataType: "HTML",
+            data: "Type=cleardocument&DocID=" + OldIndex,
+            success: function (msg) {
+                $('.tablespot').html(msg);
+                Toast("<FONT COLOR='red'>" + OldIndex + " was cleared</FONT>", true);
+            }
+        })
+    }
+
     function selectproduct(Index){
         if(OldIndex>-1){$("#rad" + OldIndex).prop("checked", false);}
         Toast("<FONT COLOR='BLACK'>You have selected " + Index + "</FONT>", true);
@@ -147,6 +160,7 @@ foreach($products as $product){
 ?></TBODY><TFOOT>
     <TR><TH COLSPAN="2">Actions:</TH></TR><TR class="actions" style="display: none;"><TD COLSPAN="2">
                     <a class="btn btn-xs btn-info" id="delete" onclick="editproduct();">Rename</a>
+                    <a class="btn btn-xs btn-primary" id="delete" onclick="clearproduct();">Clear</a>
                     <a class="btn btn-xs btn-danger" id="delete" onclick="deleteproduct();">Delete</a>
                 </TD></TR>
     <TR><TH COLSPAN="2">Add Product:</TH></TR>

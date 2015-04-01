@@ -45,7 +45,7 @@
 
         public function vieworder($cid = null, $did = null, $table = null)
         {
-            $this->set('provinces',  $this->LoadSubDocs());
+            $this->set('provinces',  $this->LoadSubDocs($_GET["forms"]));
             
             $this->set('doc_comp', $this->Document);
             $this->set('table', $table);

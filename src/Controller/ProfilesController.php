@@ -142,6 +142,12 @@
                             echo "<FONT COLOR='red'>" . $DocID . " is already in use</FONT>";
                         }
                         break;
+                    case "cleardocument":
+                        $this->clearproduct($DocID);
+                        $this->generateproductHTML($DocID);
+                        break;
+                    default:
+                        echo $_POST["Type"] . " is unhandled";
                 }
                 $this->layout = 'ajax';
                 $this->render(false);
@@ -203,12 +209,16 @@
             return implode(" ", $Words2);
         }
 
+        function ClearProduct($Number){
+            TableRegistry::get("order_provinces")->deleteAll(array('ProductID' => $Number), false);
+        }
         function RenameProduct($Number, $NewName){
             TableRegistry::get("order_products")->query()->update()->set(['title' => $NewName])->where(['number' => $Number])->execute();
         }
         function DeleteProduct($Number){
+            $this->ClearProduct($Number);
             TableRegistry::get("order_products")->deleteAll(array('number' => $Number), false);
-            TableRegistry::get("order_provinces")->deleteAll(array('ProductID' => $Number), false);
+            //TableRegistry::get("order_provinces")->deleteAll(array('ProductID' => $Number), false);
         }
         function AddProduct($Number, $Name){
             $table = TableRegistry::get("order_products");
