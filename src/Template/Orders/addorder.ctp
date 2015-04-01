@@ -107,6 +107,7 @@ function provinces($name){
     function displayform2($DriverProvince, $thedocuments, $name){
         if(isset($_GET['order_type']) && urldecode($_GET['order_type'])=='Order MEE'){ return true;}//uncomment
         $name=trim(strtolower($name));
+        //echo "<BR>" . $DriverProvince . " " . $name . " <BR>"; print_r($thedocuments[$name]);
         return isset($thedocuments[$name][$DriverProvince]);
     }
 
