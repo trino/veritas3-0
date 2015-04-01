@@ -261,14 +261,23 @@ var FormWizard = function () {
                     // $('.cont').attr('id','');
                 }
                 else{
+                    $('.skip').html('Save as draft');
+                    
+                    //$('.skip').removeClass('button-next');
                     //$('.skip').removeClass('save_as_draft');
-                    $('.cont').html('Save & Continue <i class="m-icon-swapright m-icon-white"></i>');
-                    $('.cont').attr('id','draft');
+                    $('.cont').not('.skip').each(function(){
+                       if($(this).attr('id')!='submit_dra')
+                       {
+                        $(this).html('Save & Continue <i class="m-icon-swapright m-icon-white"></i>');
+                        $(this).attr('id','draft');
+                       } 
+                    });
+                    
                     $('.nextview').removeAttr('style');
-                    $('.skip').html('Skip <i class="m-icon-swapdown m-icon-white"></i>');
+                    //$('.skip').html('Skip <i class="m-icon-swapdown m-icon-white"></i>');
                     $('.skip').removeAttr('disabled');
                     $('.cont').removeAttr('onclick');
-                    $('.skip').addClass('button-next');
+                    //$('.skip').addClass('button-next');
 
                 }
                 if(current==total)
@@ -300,6 +309,10 @@ var FormWizard = function () {
 
 
 
+                }
+                else
+                {
+                  $('.skip').attr('id','submit_dra');  
                 }
 
                 if (current >= total) {

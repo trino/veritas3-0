@@ -329,10 +329,14 @@ function provinces($name){
                                        onclick="$('#skip').val('0');">
                                         <i class="m-icon-swapleft"></i> Back </a>
 
-                                    <a href="javascript:;" class="btn red button-next skip"
+                                    <a href="javascript:;" class="btn red button-next skip cont"
                                        onclick="$('#skip').val('1');">
                                         Skip <i class="m-icon-swapdown m-icon-white"></i>
                                     </a>
+                                    <!--<a href="javascript:;" class="btn red skip" id="submit_dra"
+                                       onclick="$('#skip').val('1');" style="display: inline-block;">
+                                        Save as draft <i class="m-icon-swapdown m-icon-white"></i>
+                                    </a>-->
                                     <input type="hidden" id="skip" value="0"/>
                                     <a href="javascript:;" class="btn blue button-next cont"
                                        onclick="$('#skip').val('0');">
@@ -465,9 +469,13 @@ function provinces($name){
                             <a href="javascript:;" class="btn default button-previous" onclick="$('#skip').val('0');">
                                 <i class="m-icon-swapleft"></i> Back </a>
 
-                            <a href="javascript:;" class="btn red button-next skip" onclick="$('#skip').val('1');">
+                            <a href="javascript:;" class="btn red button-next skip cont" onclick="$('#skip').val('1');">
                                 Skip <i class="m-icon-swapdown m-icon-white"></i>
                             </a>
+                            <!--<a href="javascript:;" class="btn red skip" id="submit_dra"
+                                       onclick="$('#skip').val('1');" style="display: inline-block;">
+                                        Save as draft <i class="m-icon-swapdown m-icon-white"></i>
+                                    </a>-->
 
                             <a href="javascript:;" class="btn blue button-next cont" onclick="$('#skip').val('0');">
                                 Save & Continue <i class="m-icon-swapright m-icon-white"></i>
@@ -1248,6 +1256,7 @@ function provinces($name){
         {
             $('.skip').hide();
         }
+        
 
         <?php if(isset($_GET['driver']) && is_numeric($_GET['driver'])){?>
 
@@ -1393,13 +1402,23 @@ function provinces($name){
         });
 
         var draft = 0;
+        var saving_draft = 0;
         $(document.body).on('click', '.cont', function () {
+            
+            //$('.submit_dra').attr('style','display:inline-block');
 
             if ($(this).attr('id') == 'draft') {
                 draft = 1;
             }
-            else
+            else{
+                if($(this).attr('id') == 'submit_dra'){
+                draft = 1;
+                saving_draft = 1;
+                $('#loading5').show();
+                }
+                else
                 draft = 0;
+                }
             if(draft==1)
             {
                 $('.blockmsg').html('<h4 class="block">Your Order Has Been Saved As Draft!</h4>'+
@@ -1560,7 +1579,10 @@ function provinces($name){
 
                     }
 
-
+                        if(saving_draft==1)
+                        {
+                            window.location = base_url+'orders/orderslist?flash';
+                        }
                     }
                 });
             }
@@ -1583,7 +1605,7 @@ function provinces($name){
         });
 
         $('#submit_dra').live('click', function () {
-            //alert($(this).text());
+            alert($(this).text());
 
 
                 $('.blockmsg').html('<h4 class="block">Your Order Has Been Saved As Draft!</h4>'+
