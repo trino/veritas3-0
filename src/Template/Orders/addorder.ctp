@@ -90,12 +90,8 @@ function provinces($name){
         }
         $_this = $this;
 
-    $DriverProvince = mapprovince($p->driver_province);
-    function mapprovince($province){
-        $provincelist = array("NL" => "NFL", "NT" => "NWT","NU" => "NUN","ON" => "ONT", "PE" => "PEI");
-        if (isset($provincelist[$province])){ return $provincelist[$province]; }
-        return $province;
-    }
+    $DriverProvince = $p->driver_province;
+    echo "<SCRIPT>var DriverProvince = '" . $DriverProvince . "';</SCRIPT>";
 
     function FindIterator($ObjectArray, $FieldName, $FieldValue){
         foreach($ObjectArray as $Object){

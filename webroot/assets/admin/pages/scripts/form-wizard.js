@@ -12,6 +12,10 @@ function webroot(){
     return txt.substr(0,position) + "/";
 }
 
+function GetParam(Name){
+    return (location.search.split(Name + '=')[1]||'').split('&')[0]
+}
+
 var base_url = webroot();
 
 var table=0;
@@ -359,9 +363,29 @@ var FormWizard = function () {
                     
                     success.hide();
                     error.hide();
-                                          
-                    if($('.tabber.active').attr('id') == 'tab3')
-                    {
+
+                    //required form elements
+                    if($('.tabber.active').attr('id') == 'tab16'){//Mee attachments
+                        var Forms =  GetParam("forms").split(",");
+                        var MissingData = ""; //use DriverProvince
+                        //for(var i = 0; i < Forms.length; i++){//loop through product numbers
+                        //    MissingData = MissingData + " " + Forms[i];
+
+                        //}
+                        for(var i =1; i<=6; i++){
+                            if( $('.mee_att_' + i).length ){
+                                if ($('.mee_att_' + i).val().length ==0){
+                                    MissingData = "Missing a required attachment";
+                                }
+                            }
+                        }
+                        if(MissingData.length>0) {
+                            alert(MissingData);
+                            return false;
+                        }
+                    }
+
+                    if($('.tabber.active').attr('id') == 'tab3'){//Challenger Driver Application
                         
                         if(!$('#confirm_check').is(':checked') && $('.button-next').attr('id')!='nextview')
                         {

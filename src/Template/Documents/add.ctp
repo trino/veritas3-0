@@ -1537,19 +1537,15 @@ if (isset($this->request->params['pass'][1])) {
         }
         ?>
             //alert(type);return false;
-            if(type=='Driver Application')
-            {
-                if(!$('#confirm_check').is(':checked'))
-                {
-
-                    alert('Please confirm that you have read the conditions.');
-                    $('#confirm_check').focus();
-                    $('html,body').animate({
-                            scrollTop: $('#confirm_check').offset().top},
-                        'slow');
-                    return false;
-                    // }
-                }
+            switch(type) {
+                case 'Driver Application':
+                    if(!$('#confirm_check').is(':checked')) {
+                        alert('Please testconfirm that you have read the conditions.');
+                        $('#confirm_check').focus();
+                        $('html,body').animate({scrollTop: $('#confirm_check').offset().top}, 'slow');
+                        return false;
+                    }
+                    break;
             }
             $(this).attr('disabled','disabled');
             if($('.subform4 #subtab_2_1').attr('class')=='tab-pane active' && $('.subform4').attr('style')!='display: none;'){

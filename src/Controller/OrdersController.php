@@ -1166,9 +1166,8 @@
 
             $return = array();
             foreach($subdocuments as $document){
-                //$query=$Table->find('all')->where(array("OR" => ['FormID' => $document->id]));//,
-                $query = $Table->find('all', array('conditions' => array("OR" => array( array('FormID' => $document->id),array('FormID' => 0)          ))));
-
+                //$query=$Table->find('all')->where(array("OR" => ['FormID' => $document->id]));//1 query per document type
+                $query = $Table->find('all', array('conditions' => array("OR" => array( array('FormID' => $document->id),array('FormID' => 0)))));//cache values
                 $insert = array();
                 $value=false;
                 foreach($forms as $form){
