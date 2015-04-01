@@ -387,6 +387,7 @@
                     <input type="hidden" name="count_more_edu" id="count_more_edu" value="1">
                     <a href="javascript:void(0);" class="btn green add_more_edu">Add More</a>
                 </div>
+                <div class="allattach">
                 <?php
                     if (!isset($sub4['att']))
                         $sub4['att'] = array();
@@ -477,7 +478,7 @@
                 </div>
 
                 <div class="clearfix"></div>
-
+                </div>
             </form>
             <script>
                 $(function () {

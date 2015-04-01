@@ -558,6 +558,7 @@
                 }
                 */
             ?>
+            <div class="allattach">
             <?php
                 if (!isset($sub2['con_at'])) {
                     $sub2['con_at'] = array();
@@ -639,6 +640,7 @@
             </div>
 
             <div class="clearfix"></div>
+            </div>
         </div>
 </form>
 

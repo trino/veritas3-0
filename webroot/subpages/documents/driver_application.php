@@ -782,6 +782,7 @@ if( isset($sub)){ listfiles($sub['da_at'], "attachments/", "", false,3); }
 										<input type="text" class="form-control" placeholder="Applicant Signature" name="applicant_signature"/>
                                         </div>
                        </div-->
+                       <div class="allattach">
                        <?php
                                         if(!isset($sub['da_at']))//THIS SHOULD BE USING FILELIST.PHP!!!!!!!!!!!!
                                         {
@@ -845,6 +846,7 @@ if( isset($sub)){ listfiles($sub['da_at'], "attachments/", "", false,3); }
                        
                     
                     <div class="clearfix"></div>
+                    </div>
 
 </form>
             
