@@ -30,7 +30,7 @@ public function initialize(array $config)
         $this->hasMany('PreScreening', [
             'className' => 'PreScreening',
             'dependent' => true,
-            
+
         ]);
         $this->hasMany('Survey', [
             'className' => 'Survey',
