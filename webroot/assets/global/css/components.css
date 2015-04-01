@@ -4097,7 +4097,7 @@ Dashboard stats
   padding-left: 30px;
 }
 .dashboard-stat .details .number {
-  padding-top: 25px;
+  /*padding-top: 25px;*/
   text-align: right;
   font-size: 34px;
   line-height: 36px;
