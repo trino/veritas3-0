@@ -120,7 +120,7 @@
         }
     }
 
-    function printform($counting, $settings, $client, $dr_cl, $driver, $intable = false)
+    function printform($counting, $settings, $client, $dr_cl, $driver, $intable = false,$_this)
     {//pass the variables exactly as given, then specifiy if it's in a table or not
         echo '<input type="hidden" name="document_type" value="add_driver"/>';
         echo '<div class="form-group clientsel">';
@@ -235,7 +235,7 @@
     </div>
     <?php
 
-        if ($settings->profile_create == '1') echo "<div class='col-xs-3 ' style='margin-left: -20px;'>or&nbsp;&nbsp;<a href='" . $this->request->webroot . "profiles/add' class='btn grey-steel '>Add Driver</a></div>";?>
+        if ($settings->profile_create == '1') echo "<div class='col-xs-3 ' style='margin-left: -20px;'>or&nbsp;&nbsp;<a href='" . $_this->request->webroot . "profiles/add' class='btn grey-steel '>Add Driver</a></div>";?>
 
     </div>
     <?php
@@ -256,7 +256,7 @@
             ?>
 
             <?php if (!$intable) {
-                printform($counting, $settings, $client, $dr_cl, $driver);
+                printform($counting, $settings, $client, $dr_cl, $driver,$_this);
             } ?>
 
             <div class="">
@@ -295,7 +295,7 @@
                     </div>
 
                     <?php if ($intable) {
-                        printform($counting, $settings, $client, $dr_cl, $driver, true);
+                        printform($counting, $settings, $client, $dr_cl, $driver, true,$_this);
                     } ?>
 
                     <ul class="pricing-red-content list-unstyled">
@@ -348,7 +348,7 @@
                     </div>
 
                     <?php if ($intable) {
-                        printform($counting, $settings, $client, $dr_cl, $driver, true);
+                        printform($counting, $settings, $client, $dr_cl, $driver, true,$_this);
                     } ?>
 
                     <ul class="pricing-content list-unstyled" id="cartlist">
@@ -401,7 +401,7 @@
                     </div>
 
                     <?php if ($intable) {
-                        printform($counting, $settings, $client, $dr_cl, $driver, true);
+                        printform($counting, $settings, $client, $dr_cl, $driver, true,$_this);
                     } ?>
 
                     <ul class="pricing-blue-content list-unstyled" id="qualist">
