@@ -78,3 +78,4 @@ webroot/img/certificates/certificate58-3.pdf
 *.pdf
 webroot/img/certificates/certificate58-1.pdf
 
+*.log
