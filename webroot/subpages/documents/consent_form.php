@@ -119,7 +119,8 @@
                 <ul>
                     <li>Driver Record/ Abstract - Please specify Province or State (Region where Driver's License Issued)</li>
                     <li>Insurance History - Please specify Province or State (Region where Driver's License Issued)</li>
-                    <li>Employment Verifications</li>
+                    <li>CVOR</li>
+                    <li>Education Verification</li>
                     <li>TransClick (Aptitude Test)</li>
                     <li>Check DL</li>
                     <li>Employment Verification (Drug test information and Claims History)</li>
