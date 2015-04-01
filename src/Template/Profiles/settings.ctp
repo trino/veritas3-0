@@ -252,7 +252,7 @@
                                                 foreach($color as $c)
                                                 {
                                                     ?>
-                                                    <option value="<?php echo $c->id; ?>" <?php if(isset($sub['color_id']) && $sub['color_id'] == $c->id){?> selected="selected"<?php } ?> ><?php echo $c->color; ?></option>
+                                                    <option value="<?php echo $c->id; ?>" <?php if(isset($sub['color_id']) && $sub['color_id'] == $c->id){?> selected="selected"<?php } ?> style="background: <?php echo $c->rgb; ?>;" ><?php echo $c->color; ?></option>
                                                     <?php
                                                 }
                                              }
