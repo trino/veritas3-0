@@ -616,7 +616,7 @@
                 <textarea class="form-control" name="recruiter_comment_recommendation"></textarea>
             </div>
         </div>
-
+        <div class="allattach">
         <?php
 
         if(!isset($pre_at['attach_doc']))
@@ -698,6 +698,8 @@
             </div>
         </div>
         <div class="clearfix"></div>
+        </div>
+        
         <?php //include('canvas/example.php');?>
         <?php //include('canvas/example2.php');?>
         <div class="clearfix"></div>

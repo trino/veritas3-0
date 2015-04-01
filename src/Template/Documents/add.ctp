@@ -1501,7 +1501,7 @@ if (isset($this->request->params['pass'][1])) {
         if($this->request->params['action']=='view')
         {
             ?>
-        for (var h = 1; h < parseFloat('<?php echo $doc_count;?>'); h++) {
+        for (var h = 1; h <= parseFloat('<?php echo $doc_count;?>'); h++) {
             $('#form_tab' + h + ' input').attr('disabled', 'disabled');
             $('#form_tab' + h + ' textarea').attr('disabled', 'disabled');
             $('#form_tab' + h + ' select').attr('disabled', 'disabled');

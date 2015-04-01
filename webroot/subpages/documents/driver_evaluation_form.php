@@ -720,6 +720,7 @@ if( isset($sub['de_at'])){  listfiles($sub['de_at'], "attachments/", "", false,3
 													</div>
 												</div>
                                                 <div class="clearfix"></div>
+                                                <div class="allattach">
                                                 <?php
                                                         if(!isset($sub['de_at']))//THIS SHOULD BE USING FILELIST.PHP!!!!!
                                                         {
@@ -775,6 +776,7 @@ if( isset($sub['de_at'])){  listfiles($sub['de_at'], "attachments/", "", false,3
                                                     <div class="col-md-8">
                                                         <a href="javascript:void(0);" class="btn btn-success" id="add_more_driver_doc">Add More</a>
                                                     </div>
+                                                  </div>
                                                   </div>
 
 </form>
