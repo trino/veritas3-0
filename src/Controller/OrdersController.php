@@ -1128,22 +1128,49 @@
         }
 
 
-        function isproductprovinceenabled($ProductID, $DocumentID, $Province){
-            if($Province != "ALL"){  if ($this->isproductprovinceenabled($ProductID, $DocumentID, "ALL")) { return true;}}
-            $item = TableRegistry::get('order_provinces')->find()->where(['ProductID' => $ProductID, 'FormID' => $DocumentID, "Province" => $Province])->first();
+        function isproductprovinceenabled($Table, $ProductID, $DocumentID, $Province){//old slow method
+            //if($Province != "ALL"){  if ($this->isproductprovinceenabled($ProductID, $DocumentID, "ALL")) { return true;}} //doubles the load time, so it was removed
+            $item = $Table->find()->where(['ProductID' => $ProductID, 'FormID' => $DocumentID, "Province" => $Province])->first();
             if($item) {return true;} else {return false;}
         }
+        function isproductprovinceenabled2($Items, $ProductID, $DocumentID, $Province){//new fast method
+            foreach($Items as $Item){
+                if ($Item->ProductID == $ProductID){
+                    if ($Item->FormID == $DocumentID){
+                        if ($Item->Province == $Province){
+                            return true;
+                        }
+                    }
+                }
+            }
+            return false;
+        }
         public function LoadSubDocs($Forms){
+            $Table = TableRegistry::get('order_provinces');
             $subdocuments = TableRegistry::get('subdocuments')->find('all');//id title
             $provinces = array("AB", "BC", "MB", "NB", "NL","NT","NS","NU","ON","PE","QC","SK","YT");//"ALL",
             $forms = explode(",", $Forms);
 
             $return = array();
+            $alls = array();
+            $return['starttime'] = time();
             foreach($subdocuments as $document){
+                $query=$Table->find('all')->where(['FormID' => $document->id]);
                 $insert = array();
+                foreach($forms as $form){
+                    if ($this->isproductprovinceenabled2($query, $form,  $document->id, "ALL")){//($this->isproductprovinceenabled($Table, $form,  $document->id, "ALL")){
+                        $alls[$form] = true;
+                    }
+                }
                 foreach($provinces as $province){
                     foreach($forms as $form){
-                        if ($this->isproductprovinceenabled($form, $document->id, $province)) {
+                        $value=false;
+                        if (isset($alls[$form])){
+                            $value=true;
+                        } else if ($this->isproductprovinceenabled2($query, $form,  $document->id, $province)){//$this->isproductprovinceenabled($Table, $form, $document->id, $province)) {
+                            $value=true;
+                        }
+                        if($value){
                             $insert[$province] = true;
                             break;
                         }
@@ -1151,25 +1178,9 @@
                 }
                 $return[strtolower(trim($document->title))] = $insert;
             }
+            $return['endtime'] = time();
+            $return['delay'] = $return['endtime'] - $return['starttime'];
             $this->set('thedocuments',  $return);
-            /* old code
-            $provinces =  TableRegistry::get('doc_provinces')->find('all');//gets me ID#s and which provinces are enabled
-            //$provincelist = array("AB","BC","MB","NB","NFL","NWT","NS","NUN","ONT","PEI","QC","SK","YT");
-            $subdocuments = TableRegistry::get('subdocuments')->find('all');//subdocument type list (id, title, display, form, table_name, orders, color_id)
-            $table2 = TableRegistry::get('doc_provincedocs');//subdocument type and province (if found, it is enabled)
-
-            $provinces2 = array();//needs to make a copy...
-            foreach($provinces as $province){
-                $province->subdocuments = array();
-                foreach($subdocuments as $document){
-                    $quiz = $table2->find()->where(['ID' => $province->ID, "DocID" => $document->id])->first();
-                    if ($quiz) { $province->subdocuments[$document->id] = strtolower(trim($document->title)); }
-                }
-                $provinces2[] = $province;
-            }
-            $this->set('subdocuments',  $subdocuments);
-            return $provinces2;
-            */
         }
 
 
