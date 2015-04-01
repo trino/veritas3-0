@@ -25,7 +25,7 @@ public function initialize(array $config)
         */
         $this->belongsTo('Profiles', [
             'foreignKey' => 'uploaded_for',
-            'className' =>'Uploadedfor'
+            'className' =>'Profiles'
             ]);
         $this->hasMany('PreScreening', [
             'className' => 'PreScreening',
