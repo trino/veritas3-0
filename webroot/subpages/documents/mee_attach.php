@@ -1,5 +1,5 @@
 <?php
- if($_SERVER['SERVER_NAME'] =='localhost'){  echo "<span style ='color:red;'>subpages/documents/mee_attachments.php #INC203</span>";}
+ if($_SERVER['SERVER_NAME'] =='localhost'){  echo "<span style ='color:red;'>subpages/documents/mee_attach.php #INC203</span>";}
  ?>
 <form id="form_tab15">
 <input type="hidden" class="document_type" name="document_type" value="MEE Attachments"/>
@@ -32,6 +32,8 @@
                 <label class="control-label col-md-4">Upload 2 pieces of ID : </label>  
                 <div class="col-md-8">              
                     <span><a href="javascript:void(0)" class="btn btn-primary" id="mee_att_1">Browse</a>&nbsp;<span class="uploaded"><?php if(isset($mee_att['attach_doc']) && $mee_att['attach_doc']->id_piece1){?><a class="dl" href="<?php echo $this->request->webroot;?>documents/download/<?php echo $mee_att['attach_doc']->id_piece1;?>"><?php echo $mee_att['attach_doc']->id_piece1;?></a><?php }?></span></span> <span><a href="javascript:void(0)" class="btn btn-primary" id="mee_att_2">Browse</a>&nbsp;<span class="uploaded"><?php if(isset($mee_att['attach_doc']) && $mee_att['attach_doc']->id_piece1){?><a class="dl" href="<?php echo $this->request->webroot;?>documents/download/<?php echo $mee_att['attach_doc']->id_piece2;?>"><?php echo $mee_att['attach_doc']->id_piece2;?></a><?php }?></span></span>
+
+                    <input type="text" name="id_piece4" required>
                     <input type="hidden" name="id_piece1" class="mee_att_1" value="<?php if(isset($mee_att['attach_doc']) && $mee_att['attach_doc']->id_piece1){ echo $mee_att['attach_doc']->id_piece1; }?>" />
                     <input type="hidden" name="id_piece2" class="mee_att_2" value="<?php if(isset($mee_att['attach_doc']) && $mee_att['attach_doc']->id_piece2){ echo $mee_att['attach_doc']->id_piece2; }?>" />
                 </div>

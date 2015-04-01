@@ -1924,7 +1924,7 @@
                 $this->DeleteUser(-1);//deletes all users
                 $this->DeleteTables(array("clients", "clientssubdocument", "client_divison", "client_sub_order"));//deletes clients
                 //deletes documents
-                $this->DeleteTables(array("audits", "consent_form", "consent_form_criminal", "documents", "driver_application", "road_test", "survey", "driver_application_accident", "driver_application_licenses"));
+                $this->DeleteTables(array("audits", "consent_form", "consent_form_criminal", "documents", "driver_application", "road_test", "survey", "driver_application_accident", "driver_application_licenses", "clientssubdocument", "mee_attachments"));
                 $this->DeleteTables(array("abstract_forms", "bc_forms", "quebec_forms", "education_verification", "employment_verification", "feedbacks", "orders", "pre_screening", "generic_forms"));//order_provinces
                 //do not delete settings, contents, logos, subdocuments, order_products, color_class, client_types, profile_types, training_quiz, training_list,
 

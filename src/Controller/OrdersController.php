@@ -1165,34 +1165,30 @@
             $forms = explode(",", $Forms);
 
             $return = array();
-            $alls = array();
-            $return['starttime'] = time();
             foreach($subdocuments as $document){
                 $query=$Table->find('all')->where(['FormID' => $document->id]);
                 $insert = array();
+                $value=false;
                 foreach($forms as $form){
                     if ($this->isproductprovinceenabled2($query, $form,  $document->id, "ALL")){//($this->isproductprovinceenabled($Table, $form,  $document->id, "ALL")){
-                        $alls[$form] = true;
+                        $value=true;
+                        foreach ($provinces as $province) {
+                            $insert[$province] = true;
+                        }
                     }
                 }
-                foreach($provinces as $province){
-                    foreach($forms as $form){
-                        $value=false;
-                        if (isset($alls[$form])){
-                            $value=true;
-                        } else if ($this->isproductprovinceenabled2($query, $form,  $document->id, $province)){//$this->isproductprovinceenabled($Table, $form, $document->id, $province)) {
-                            $value=true;
-                        }
-                        if($value){
-                            $insert[$province] = true;
-                            break;
+                if(!$value) {
+                    foreach ($provinces as $province) {
+                        foreach ($forms as $form) {
+                            if ($this->isproductprovinceenabled2($query, $form, $document->id, $province)) {
+                                $insert[$province] = true;
+                                break;
+                            }
                         }
                     }
                 }
                 $return[strtolower(trim($document->title))] = $insert;
             }
-            $return['endtime'] = time();
-            $return['delay'] = $return['endtime'] - $return['starttime'];
             $this->set('thedocuments',  $return);
         }
 
