@@ -184,7 +184,7 @@
 
             }
             $p = $forms_arr;
-          //  var_dump($p);
+          // var_dump($p);
             if ($order->draft == 0) {
                 $k++;
 
@@ -303,7 +303,7 @@
 
 
                 <?php
-                if (false) {
+                
                     foreach ($p as $pp) {
 
                         $title_pr = $this->requestAction('/orders/getProductTitle/' . $pp);
@@ -335,7 +335,7 @@
                         </tr>
                     <?php
                     }
-                }
+                
                 ?>
 
                 <?php
