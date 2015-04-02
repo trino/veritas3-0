@@ -30,13 +30,9 @@ if ($this->request->session()->read('timediff') && isset($event)) {
     $offset=$this->request->session()->read('timediff');//$_SESSION['timediff'];
     $event->date = offsettime($event->date, $offset);
 }
+ $disabled = "";
+if(isset($isdisabled)) {$disabled = "disabled='disabled'";}
 
-if(isset($isdisabled))
-{
-   $disabled = "disabled='disabled'"; 
-}
-else
-    $disabled = "";
 ?>
 <h3 class="page-title">
 			Schedules (Reminders)</small>
@@ -116,6 +112,9 @@ else
 			
 			<?php if(!isset($isdisabled)){?>
 			<div class="form-actions right todo-form-actions">
+                <?php if (isset($event)){
+                    echo '<a href="../delete/' . $event->id . '" class="btn btn-danger delUrl" onclick="return confirm(' . "'Are you sure you want to delete this event?');" . '">Delete</a>';
+                } ?>
 				<button class="btn btn-sm green-haze" type="submit" name="submit">Save Changes</button>
 			</div>
             <?php }?>

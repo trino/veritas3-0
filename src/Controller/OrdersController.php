@@ -45,7 +45,7 @@
 
         public function vieworder($cid = null, $did = null, $table = null)
         {
-            $this->set('provinces',  $this->LoadSubDocs($_GET["forms"]));
+            $this->LoadSubDocs($_GET["forms"]);
             $meedocs = TableRegistry::get('mee_attachments_more');
             $this->set('meedocs',$meedocs);
             $this->set('doc_comp', $this->Document);
@@ -293,7 +293,7 @@
                 $this->set('sub4', $sub4);
             }
 
-            $this->set('provinces',  $this->LoadSubDocs($_GET["forms"]));
+            $this->LoadSubDocs($_GET["forms"]);
         }
 
         public function savedoc($cid = 0, $did = 0)
@@ -1175,7 +1175,7 @@
             foreach($Items as $Item){
                 if ($Item->ProductID == $ProductID){
                     if ($Item->FormID == $DocumentID || $Item->FormID == 0){
-                        if ($Item->Province == $Province){
+                        if ($Item->Province == $Province || $Item->Province == "ALL"){
                             return true;
                         }
                     }
@@ -1194,7 +1194,7 @@
                 //$query=$Table->find('all')->where(array("OR" => ['FormID' => $document->id]));//1 query per document type
                 $query = $Table->find('all', array('conditions' => array("OR" => array( array('FormID' => $document->id),array('FormID' => 0)))));//cache values
                 $insert = array();
-                $value=false;
+                /*$value=false;
                 foreach($forms as $form){
                     if ($this->isproductprovinceenabled2($query, $form,  $document->id, "ALL")){//($this->isproductprovinceenabled($Table, $form,  $document->id, "ALL")){
                         $value=true;
@@ -1203,7 +1203,7 @@
                         }
                     }
                 }
-                if(!$value) {
+                if(!$value) {*/
                     foreach ($provinces as $province) {
                         foreach ($forms as $form) {
                             if ($this->isproductprovinceenabled2($query, $form, $document->id, $province)) {
@@ -1212,10 +1212,11 @@
                             }
                         }
                     }
-                }
+                //}
                 $return[strtolower(trim($document->title))] = $insert;
             }
             $this->set('thedocuments',  $return);
+            return $return;
         }
 
 

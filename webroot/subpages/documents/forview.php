@@ -220,12 +220,12 @@
                                             - <?php echo $order->created; ?>
                                         </div>
 
-                                            <a style="float:right;"
+                                            <a style="float:right; display:none;"
                                        href="<?php echo $this->request->webroot; ?>orders/vieworder/<?php echo $order->client_id; ?>/<?php echo $order->id; ?>?order_type=<?php echo $order->order_type;
                 if ($order->forms) {
                     echo '?forms=' . $order->forms;
                 } ?>"
-                                       class="btn btn-primary small">View Ord2er</a>
+                                       class="btn btn-primary small">View Order</a>
 
 
 
