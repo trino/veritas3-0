@@ -19,9 +19,9 @@
                 if ($DriverProvince == "BC") {$attachment["British Columbia"] = "14.BC.pdf";}
             }
 
-            function printrequired($forms, $AttachmentName, $DriversProvince, $attachment=0){
+            function printrequired($forms, $AttachmentName, $DriversProvince, $attachment=0, $message = "Required"){
                 if (isrequired($forms, $AttachmentName, $DriversProvince, $attachment)){
-                    return '<FONT COLOR="RED">* Required</FONT>';
+                    return '<FONT COLOR="RED">* ' . $message . '</FONT>';
                 }
             }
             function printdivrequired($forms, $AttachmentName, $DriversProvince, $attachment=0){
@@ -70,15 +70,6 @@
                 ?>
 
     <?php
-        if (count($attachment)>0){
-            echo '<div class="form-group row"><div class="col-md-12"><label class="control-label col-md-4">Please download, fill out, and upload (as Additional) these forms : </label><div class="col-md-8">';
-            foreach($attachment as $name => $file){//C:\wamp\www\veritas3-0\webroot\ http://localhost/veritas3-0/webroot/img/certificates/certificate71-1.pdf
-                echo '<A DOWNLOAD="' . $name . '.pdf" HREF="' . $this->request->webroot . 'webroot/img/pdfs/' . $file . '"><i class="fa fa-floppy-o"></i> ' . $name . ' </A> ';
-            }
-            echo "</DIV></DIV></DIV>";
-        }
-
-
    if (printdivrequired($forms, "id_piece", $DriverProvince)){ ?>
             <div class="col-md-12">
                 <label class="control-label col-md-4">Upload 2 pieces of ID : </label>  
@@ -86,7 +77,7 @@
                     <span><a href="javascript:void(0)" class="btn btn-primary" id="mee_att_1">Browse</a>&nbsp;<span class="uploaded"><?php if(isset($mee_att['attach_doc']) && $mee_att['attach_doc']->id_piece1){?><a class="dl" href="<?php echo $this->request->webroot;?>documents/download/<?php echo $mee_att['attach_doc']->id_piece1;?>"><?php echo $mee_att['attach_doc']->id_piece1;?></a><?php }?></span></span> <span><a href="javascript:void(0)" class="btn btn-primary" id="mee_att_2">Browse</a>&nbsp;<span class="uploaded"><?php if(isset($mee_att['attach_doc']) && $mee_att['attach_doc']->id_piece1){?><a class="dl" href="<?php echo $this->request->webroot;?>documents/download/<?php echo $mee_att['attach_doc']->id_piece2;?>"><?php echo $mee_att['attach_doc']->id_piece2;?></a><?php }?></span></span>
                     <input type="hidden" name="id_piece1" class="mee_att_1" value="<?php if(isset($mee_att['attach_doc']) && $mee_att['attach_doc']->id_piece1){ echo $mee_att['attach_doc']->id_piece1; }?>" />
                     <input type="hidden" name="id_piece2" class="mee_att_2" value="<?php if(isset($mee_att['attach_doc']) && $mee_att['attach_doc']->id_piece2){ echo $mee_att['attach_doc']->id_piece2; }?>" />
-                    <?= printrequired($forms, "id_piece", $DriverProvince); ?>
+                    <?= printrequired($forms, "id_piece", $DriverProvince, 0, "At least 1 is required"); ?>
                 </div>
             </div>
         </div>
@@ -174,9 +165,18 @@
         </script>
     <?php }
 
-    if  (printdivrequired($forms, "attachments", $DriverProvince, count($attachment))){?>
+    if  (printdivrequired($forms, "attachments", $DriverProvince, count($attachment))){
+            echo '</DIV><HR><div class="form-group row"><div class="col-md-12">';
+            echo '<label class="control-label col-md-4">Please download, fill out, and upload these forms : </label><div class="col-md-8">';
+            foreach($attachment as $name => $file){//C:\wamp\www\veritas3-0\webroot\ http://localhost/veritas3-0/webroot/img/certificates/certificate71-1.pdf
+                echo '<A class="btn btn-info" DOWNLOAD="' . $name . '.pdf" HREF="' . $this->request->webroot . 'webroot/img/pdfs/' . $file . '">';
+                echo '<i class="fa fa-floppy-o"></i> ' . $name . ' </A> ';
+            }
+            echo "<FONT COLOR='red'> * Required</FONT></DIV></DIV></DIV><DIV>";
+        ?>
+        <div class="form-group row">
             <div class="col-md-12">
-                <label class="control-label col-md-4">Upload Additional : </label>
+                <label class="control-label col-md-4">Upload Forms : </label>
                 <div class="col-md-8 mee_more">
                 <?php
                 $morecount = 0;
@@ -223,6 +223,7 @@
                 <p>&nbsp;</p>
                 <div class="col-md-4">&nbsp;</div><div class="col-md-8"><a href="javascript:void(0);" id="mee_att_more" class="btn btn-success">Add More</a></div>
             </div>
+        </div>
         </div>
         <script>
         $(function(){
