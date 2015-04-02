@@ -396,7 +396,9 @@
                     <div class="row">
                     <div class="col-md-12">
                         <div class="col-md-6" align="left">
-                        <a href="javascript:void(0);" class="bulk_order btn btn-primary">Bulk Orders</a>
+                        <?php if($sidebar->bulk=='1'){?>
+                            <a href="javascript:void(0);" class="bulk_order btn btn-primary">Bulk Orders</a>
+                        <?php }?>
                         </div>
                         <div class="col-md-6" align="right">
                             <div id="sample_2_paginate" class="dataTables_paginate paging_simple_numbers" align="right"
@@ -445,7 +447,7 @@
 
 
            });
-           window.location = '<?php echo $this->request->webroot;?>orders/productSelection?driver=0&ordertype=CART&profiles='+tempstr;
+           window.location = '<?php echo $this->request->webroot;?>orders/productSelection?driver=0&ordertype=QUA&profiles='+tempstr;
         });
         <?php if(isset($_GET['division'])&& $_GET['division']!=""){
                  //var_dump($_GET);

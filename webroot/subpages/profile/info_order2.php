@@ -187,7 +187,7 @@
 <?php if ($intable) {
         echo '<div class="row" style="margin-top: 15px;margin-bottom: 15px;">';
     } ?>
-
+<?php if(!isset($_GET['profiles'])){?>
 <div class="form-group ">
 
     <?php
@@ -234,7 +234,7 @@
     }?>"/>
     </div>
     <?php
-
+        
         if ($settings->profile_create == '1') echo "<div class='col-xs-3 ' style='margin-left: -20px;'>or&nbsp;&nbsp;<a href='" . $_this->request->webroot . "profiles/add' class='btn grey-steel '>Add Driver</a></div>";?>
 
     </div>
@@ -242,6 +242,7 @@
         if ($intable) {
             echo "</div>";
         }
+    }
     } ?>
 
 <div class=" portlet-body">
@@ -599,6 +600,7 @@
             else
                 var division = '0';
             if ($('.selecting_client').val()) {
+                <?php if(!isset($_GET['profiles'])){?>
                 if ($('.selecting_driver').val() == '') {
                     alert('Please select driver.');
                     $('#s2id_selecting_driver .select2-choice').attr('style', 'border:1px solid red;');
@@ -619,6 +621,24 @@
                     });
                     window.location = '<?php echo $this->request->webroot; ?>orders/addorder/' + $('.selecting_client').val() + '/?driver=' + $('.selecting_driver').val() + '&division=' + division + '&order_type=Requalification&forms=' + tempstr;
                 }
+                <?php
+                }
+                else
+                {?>
+                    var tempstr = '';
+                    $('#qualist input[type="checkbox"]').each(function () {
+
+                        if ($(this).is(':checked')) {
+                            if (tempstr == '') {
+                                tempstr = $(this).val();
+                            }
+                            else
+                                tempstr = tempstr + ',' + $(this).val();
+                        }
+                    });
+                    window.location = '<?php echo $this->request->webroot; ?>orders/addorder/' + $('.selecting_client').val() + '/?driver=<?php echo $_GET['profiles'];?>&division=' + division + '&order_type=Requalification&forms=' + tempstr;
+                <?php
+                }?>
             }
             else {
                 $('#s2id_selecting_client .select2-choice').attr('style', 'border:1px solid red;');
