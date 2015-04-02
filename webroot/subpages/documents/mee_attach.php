@@ -16,7 +16,7 @@
             }
             if (in_array("14", $forms)){
                 if ($DriverProvince == "SK") {$attachment["Saskatchewan"] = "14.SK.pdf";}
-                if ($DriverProvince == "QC") {$attachment["British Columbia"] = "14.BC.pdf";}
+                if ($DriverProvince == "BC") {$attachment["British Columbia"] = "14.BC.pdf";}
             }
 
             function printrequired($forms, $AttachmentName, $DriversProvince, $attachment=0){
