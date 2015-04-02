@@ -25,7 +25,7 @@
             }
 
             function printrequired($action, $forms, $AttachmentName, $DriversProvince, $attachment=0, $message = "Required"){
-                if ($action != "View" && isrequired($forms, $AttachmentName, $DriversProvince, $attachment)){
+                if ($action != "View" && $action != "Vieworder" && isrequired($forms, $AttachmentName, $DriversProvince, $attachment)){
                     return '<FONT COLOR="RED">* ' . $message . '</FONT>';
                 }
             }
@@ -171,7 +171,7 @@
     <?php }
 
     if  (printdivrequired($forms, "attachments", $DriverProvince, count($attachment))){
-        if ($action != "View") {
+        if ($action != "View" && $action != "Vieworder") {
             echo '</DIV><HR><div class="form-group row"><div class="col-md-12">';
             echo '<label class="control-label col-md-4">Please download, fill out, and upload these forms : </label><div class="col-md-8">';
             foreach ($attachment as $name => $file) {//C:\wamp\www\veritas3-0\webroot\ http://localhost/veritas3-0/webroot/img/certificates/certificate71-1.pdf
