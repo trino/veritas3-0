@@ -246,7 +246,7 @@ var FormWizard = function () {
                     
                     $('.cont').html('Submit Order');
                     $('.cont').attr('onclick','return false;');
-                    $('.skip').html('Saved as draft');
+                    $('.skip').html('Save as draft');
                     
                     $('.skip').removeClass('button-next');
                     $('.nextview').each(function(){
@@ -265,7 +265,7 @@ var FormWizard = function () {
                     // $('.cont').attr('id','');
                 }
                 else{
-                    $('.skip').html('Saved as draft');
+                    $('.skip').html('Save as draft');
                     
                     //$('.skip').removeClass('button-next');
                     //$('.skip').removeClass('save_as_draft');
@@ -365,7 +365,7 @@ var FormWizard = function () {
                     error.hide();
 
                     //required form elements
-                    if($('.tabber.active').attr('id') == 'tab16'){//Mee attachments
+                    if($('.tabber.active').attr('id') == 'tab16' && $('.button-next').attr('id') =='nextview' ){//Mee attachments
                         var Forms =  GetParam("forms").split(",");
                         var MissingData = ""; //use DriverProvince
                         //for(var i = 0; i < Forms.length; i++){//loop through product numbers
@@ -373,9 +373,11 @@ var FormWizard = function () {
 
                         //}
                         for(var i =1; i<=6; i++){
-                            if( $('.mee_att_' + i).length ){
-                                if ($('.mee_att_' + i).val().length ==0){
-                                    MissingData = "Missing a required attachment";
+                            if (i != 2) {//skip second piece ID
+                                if ($('.mee_att_' + i).length) {
+                                    if ($('.mee_att_' + i).val().length == 0) {
+                                        MissingData = "Missing a required attachment";
+                                    }
                                 }
                             }
                         }
