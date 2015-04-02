@@ -56,6 +56,9 @@
             dataType: "HTML",
             data: "Type=selectdocument&DocID=" + DocID + "&Province=" + Province + "&Product=" + OldIndex + "&Value=" + element.checked,
             success: function (msg) {
+                if(element.checked){ word="enabled"; } else { word = "disabled";}
+                if(Province == "ALL") {Province = "all provinces"; }
+                msg = "You have " + word + " '" + documentname(DocID) + "' in " + Province + " for '" + selectedname() + "'";
                 Toast(msg, true);
             }
         })
@@ -77,19 +80,20 @@
             data: "Type=cleardocument&DocID=" + OldIndex,
             success: function (msg) {
                 $('.tablespot').html(msg);
-                Toast("<FONT COLOR='red'>" + OldIndex + " was cleared</FONT>", true);
+                Toast("<FONT COLOR='red'>'" + selectedname() + "' was cleared</FONT>", true);
             }
         })
     }
 
     function selectproduct(Index){
         if(OldIndex>-1){$("#rad" + OldIndex).prop("checked", false);}
-        Toast("<FONT COLOR='BLACK'>You have selected " + Index + "</FONT>", true);
         $("#rad" + Index).prop("checked", true);
         OldIndex=Index;
+        Toast("<FONT COLOR='BLACK'>You have selected '" + selectedname() + "'</FONT>", true);
+        $('.tablespot').html('<DIV ALIGN="CENTER"><IMG SRC="<?= $this->request->webroot;?>webroot/assets/global/img/loading-spinner-blue.gif"><BR>Loading...</DIV>');
         $('.actions').show();
         $.ajax({
-            url: "<?php echo $this->request->webroot;?>profiles/products",
+            url: "<?= $this->request->webroot;?>profiles/products",
             type: "post",
             dataType: "HTML",
             data: "Type=selectproduct&DocID=" + Index,
@@ -100,8 +104,12 @@
     }
 
     function selectedname(){
-        return $('#pn' + OldIndex).text();
+        return $('#pn' + OldIndex).text() ;
     }
+    function documentname(DocID){
+        return $('#dn' + DocID).text() ;
+    }
+
     function deleteproduct(){
         if (confirm("Are you sure you want to delete '" + selectedname() + "'?")){
             $.ajax({
@@ -129,7 +137,7 @@
                 dataType: "HTML",
                 data: "Type=rename&DocID=" + OldIndex + "&newname=" + person,
                 success: function (msg) {
-                    Toast("'" + selectedname() + "' was renamed to '" + person + "' - " + msg, true);
+                    Toast("'" + selectedname() + "' was renamed to '" + person + "'", true);
                     $('#pn' + OldIndex).text(person);
                 }
             })

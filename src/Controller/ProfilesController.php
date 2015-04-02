@@ -195,7 +195,7 @@
             echo '</TABLE>';
         }
         function generateRowHTML($ID, $Title, $Product, $provincelist){
-            echo '<TR><TD>' .$ID . '</TD><TD>' . $this->ucfirst2($Title) . '</TD>';
+            echo '<TR><TD>' .$ID . '</TD><TD><DIV ID="dn' . $ID . '">' . $this->ucfirst2($Title) . '</DIV></TD>';
             foreach($provincelist as $acronym => $fullname){
                 if($this->isproductprovinceenabled($Product, $ID, $acronym)){ $checked = " CHECKED";} else {$checked="";}//$ProductID, $DocumentID, $Province
                 echo '<TD TITLE="' . $fullname . '"><INPUT TYPE="CHECKBOX" ONCLICK="setprov(' . $ID . ", '" . $acronym . "'" . ');" ID="' . $ID . "." . $acronym . '"' . $checked . '></TD>';

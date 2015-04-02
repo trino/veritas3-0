@@ -192,6 +192,12 @@
                 $docs = TableRegistry::get('documents');
                 $document = $docs->find()->where(['id' => $did])->first();
                 $this->set('mod', $document);
+
+                $order = TableRegistry::get('orders')->find()->where(['id' => $document->order_id])->first();
+                $this->set('forms', explode(",", $order->forms));
+                $profile = TableRegistry::get('profiles')->find()->where(['id' => $document->user_id])->first();
+                $this->set('DriverProvince', $profile->driver_province);
+
                 $att = TableRegistry::get('attach_docs');
                 $query = $att->find();
                 $attachments = $query->select()->where(['doc_id'=>$did])->all();
@@ -412,18 +418,15 @@
         /**
          * saving driver application data
          */
-        public function savedDriverApp($document_id = 0, $cid = 0)
-        {
+        public function savedDriverApp($document_id = 0, $cid = 0){
             $this->Document->savedDriverApp($document_id,$cid);
-
             die;
         }
 
         /**
          * saving driver application data
          */
-        public function savedDriverEvaluation($document_id = 0, $cid = 0)
-        {
+        public function savedDriverEvaluation($document_id = 0, $cid = 0){
            $this->Document->savedDriverEvaluation($document_id,$cid); 
            die();
         }
@@ -431,20 +434,17 @@
         /**
          * saving driver application data
          */
-        public function savedMeeOrder($document_id = 0, $cid = 0)
-        {
+        public function savedMeeOrder($document_id = 0, $cid = 0){
             $this->Document->savedMeeOrder($document_id,$cid); 
            die();
         }
 
-        function saveEmployment($document_id = 0, $cid = 0)
-        {
+        function saveEmployment($document_id = 0, $cid = 0){
             $this->Document->saveEmployment($document_id,$cid); 
            die();
         }
 
-        function saveEducation($document_id = 0, $cid = 0)
-        {
+        function saveEducation($document_id = 0, $cid = 0){
             $this->Document->saveEducation($document_id,$cid); 
            die();
         }
@@ -453,8 +453,7 @@
        
         
 
-        function add($cid = 0, $did = 0, $type = NULL)
-        {
+        function add($cid = 0, $did = 0, $type = NULL){
             $this->set('doc_comp',$this->Document);
             $this->set('cid', $cid);
             $this->set('did', $did);

@@ -1219,7 +1219,6 @@
             return $return;
         }
 
-
         function getProNum()
         {
             $products =  TableRegistry::get('order_products');
@@ -1238,7 +1237,6 @@
             $this->response->body($prod);
             return $this->response;
             die;
-            
         }
     }
 

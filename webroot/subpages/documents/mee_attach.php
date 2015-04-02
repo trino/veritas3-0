@@ -9,7 +9,12 @@
 
         
             <?php
-            $forms = explode(",", $_GET["forms"]);
+            $action = ucfirst($param);
+
+            if (isset($_GET["forms"])){
+                $forms = explode(",", $_GET["forms"]);
+            }
+
             $attachment = array();//Files are in: C:\wamp\www\veritas3-0\webroot\img\pdfs
             if (in_array("1", $forms)){//                  Name         Filename
                 if ($DriverProvince == "QC") { $attachment["Quebec"] = "1.QC.pdf";}
@@ -19,9 +24,9 @@
                 if ($DriverProvince == "BC") {$attachment["British Columbia"] = "14.BC.pdf";}
             }
 
-            function printrequired($forms, $AttachmentName, $DriversProvince, $attachment=0, $message = "Required"){
-                if (isrequired($forms, $AttachmentName, $DriversProvince, $attachment)){
-                    return '<FONT COLOR="RED">* ' . $message . '</FONT>';
+            function printrequired($action, $forms, $AttachmentName, $DriversProvince, $attachment=0, $message = "Required"){
+                if ($action != "View" && isrequired($forms, $AttachmentName, $DriversProvince, $attachment)){
+                    return '<FONT COLOR="RED">* ' . $message . $action . '</FONT>';
                 }
             }
             function printdivrequired($forms, $AttachmentName, $DriversProvince, $attachment=0){
@@ -77,7 +82,7 @@
                     <span><a href="javascript:void(0)" class="btn btn-primary" id="mee_att_1">Browse</a>&nbsp;<span class="uploaded"><?php if(isset($mee_att['attach_doc']) && $mee_att['attach_doc']->id_piece1){?><a class="dl" href="<?php echo $this->request->webroot;?>documents/download/<?php echo $mee_att['attach_doc']->id_piece1;?>"><?php echo $mee_att['attach_doc']->id_piece1;?></a><?php }?></span></span> <span><a href="javascript:void(0)" class="btn btn-primary" id="mee_att_2">Browse</a>&nbsp;<span class="uploaded"><?php if(isset($mee_att['attach_doc']) && $mee_att['attach_doc']->id_piece1){?><a class="dl" href="<?php echo $this->request->webroot;?>documents/download/<?php echo $mee_att['attach_doc']->id_piece2;?>"><?php echo $mee_att['attach_doc']->id_piece2;?></a><?php }?></span></span>
                     <input type="hidden" name="id_piece1" class="mee_att_1" value="<?php if(isset($mee_att['attach_doc']) && $mee_att['attach_doc']->id_piece1){ echo $mee_att['attach_doc']->id_piece1; }?>" />
                     <input type="hidden" name="id_piece2" class="mee_att_2" value="<?php if(isset($mee_att['attach_doc']) && $mee_att['attach_doc']->id_piece2){ echo $mee_att['attach_doc']->id_piece2; }?>" />
-                    <?= printrequired($forms, "id_piece", $DriverProvince, 0, "At least 1 is required"); ?>
+                    <?= printrequired($action, $forms, "id_piece", $DriverProvince, 0, "At least 1 is required"); ?>
                 </div>
             </div>
         </div>
@@ -99,7 +104,7 @@
                     <input type="hidden" name="driver_record_abstract" class="mee_att_3" value="<?php if (isset($mee_att['attach_doc']) && $mee_att['attach_doc']->driver_record_abstract) {
         echo $mee_att['attach_doc']->driver_record_abstract;
     }?>" />
-                    <?= printrequired($forms, "driver_record_abstract", $DriverProvince); ?>
+                    <?= printrequired($action, $forms, "driver_record_abstract", $DriverProvince); ?>
                 </div>
             </div>
         </div>
@@ -117,7 +122,7 @@
                 <div class="col-md-8">
                     <span><a href="javascript:void(0)" class="btn btn-primary" id="mee_att_4">Browse</a>&nbsp;<span class="uploaded"><?php if(isset($mee_att['attach_doc']) && $mee_att['attach_doc']->cvor){?><a class="dl" href="<?php echo $this->request->webroot;?>documents/download/<?php echo $mee_att['attach_doc']->cvor;?>"><?php echo $mee_att['attach_doc']->cvor;?></a><?php }?></span></span>
                     <input type="hidden" name="cvor" class="mee_att_4" value="<?php if(isset($mee_att['attach_doc']) && $mee_att['attach_doc']->cvor){ echo $mee_att['attach_doc']->cvor; }?>" />
-                    <?= printrequired($forms, "cvor", $DriverProvince); ?>
+                    <?= printrequired($action, $forms, "cvor", $DriverProvince); ?>
                 </div>
             </div>
         </div>
@@ -135,7 +140,7 @@
                 <div class="col-md-8">
                     <span><a href="javascript:void(0)" class="btn btn-primary" id="mee_att_5">Browse</a>&nbsp;<span class="uploaded"><?php if(isset($mee_att['attach_doc']) && $mee_att['attach_doc']->resume){?><a class="dl" href="<?php echo $this->request->webroot;?>documents/download/<?php echo $mee_att['attach_doc']->resume;?>"><?php echo $mee_att['attach_doc']->resume;?></a><?php }?></span></span>
                     <input type="hidden" name="resume" class="mee_att_5" value="<?php if(isset($mee_att['attach_doc']) && $mee_att['attach_doc']->resume){ echo $mee_att['attach_doc']->resume; }?>" />
-                    <?= printrequired($forms, "resume", $DriverProvince); ?>
+                    <?= printrequired($action, $forms, "resume", $DriverProvince); ?>
                 </div>
             </div>
         </div>
@@ -153,7 +158,7 @@
                 <div class="col-md-8">
                     <span><a href="javascript:void(0)" class="btn btn-primary" id="mee_att_6">Browse</a>&nbsp;<span class="uploaded"><?php if(isset($mee_att['attach_doc']) && $mee_att['attach_doc']->certification){?><a class="dl" href="<?php echo $this->request->webroot;?>documents/download/<?php echo $mee_att['attach_doc']->certification;?>"><?php echo $mee_att['attach_doc']->certification;?></a><?php }?></span></span>
                     <input type="hidden" name="certification" class="mee_att_6" value="<?php if(isset($mee_att['attach_doc']) && $mee_att['attach_doc']->certification){ echo $mee_att['attach_doc']->certification; }?>" />
-                    <?= printrequired($forms, "certification", $DriverProvince); ?>
+                    <?= printrequired($action, $forms, "certification", $DriverProvince); ?>
                 </div>
             </div>
         </div>
@@ -166,13 +171,16 @@
     <?php }
 
     if  (printdivrequired($forms, "attachments", $DriverProvince, count($attachment))){
+        if ($action != "View") {
             echo '</DIV><HR><div class="form-group row"><div class="col-md-12">';
             echo '<label class="control-label col-md-4">Please download, fill out, and upload these forms : </label><div class="col-md-8">';
-            foreach($attachment as $name => $file){//C:\wamp\www\veritas3-0\webroot\ http://localhost/veritas3-0/webroot/img/certificates/certificate71-1.pdf
+            foreach ($attachment as $name => $file) {//C:\wamp\www\veritas3-0\webroot\ http://localhost/veritas3-0/webroot/img/certificates/certificate71-1.pdf
                 echo '<A class="btn btn-info" DOWNLOAD="' . $name . '.pdf" HREF="' . $this->request->webroot . 'webroot/img/pdfs/' . $file . '">';
                 echo '<i class="fa fa-floppy-o"></i> ' . $name . ' </A> ';
             }
-            echo "<FONT COLOR='red'> * Required</FONT></DIV></DIV></DIV><DIV>";
+            echo "<FONT COLOR='red'> * Required</FONT>";
+            echo "</DIV></DIV></DIV><DIV>";
+        }
         ?>
         <div class="form-group row">
             <div class="col-md-12">
@@ -200,7 +208,7 @@
                     <span><a style="margin-bottom:5px;" href="javascript:void(0)" class="btn btn-primary additional" id="mee_att_7">Browse</a>&nbsp;<span class="uploaded"></span></span>
                             <input type="hidden" name="mee_attachments[]" class="mee_att_7" />
                  <?php
-                    echo  printrequired($forms, "attachments", $DriverProvince, count($attachment)) . "<br />";
+                    echo  printrequired($action, $forms, "attachments", $DriverProvince, count($attachment)) . "<br />";
                 }
                 else
                 {
@@ -212,7 +220,7 @@
                             <div>
                             <span><a style="margin-bottom:5px;" href="javascript:void(0)" class="btn btn-primary additional" id="mee_att_<?php echo $id_count;?>">Browse</a>&nbsp;<a style="margin-bottom:5px;" class="btn btn-danger" href="javascript:void(0);" onclick="$(this).parent().parent().remove();">Remove</a> <span class="uploaded"><?php if(isset($mm->attachments) && $mm->attachments){?><a class="dl" href="<?php echo $this->request->webroot;?>documents/download/<?php echo $mm->attachments;?>"><?php echo $mm->attachments;?></a><?php }?></span></span>
                             <input type="hidden" name="mee_attachments[]" class="mee_att_<?php echo $id_count;?>" value="<?php if(isset($mm->attachments) && $mm->attachments){ echo $mm->attachments; }?>" />
-                                <?= printrequired($forms, "attachments", $DriverProvince, count($attachment)) . "<br />"; ?>
+                                <?= printrequired($action, $forms, "attachments", $DriverProvince, count($attachment)) . "<br />"; ?>
                             </div>
                          <?php
                         }

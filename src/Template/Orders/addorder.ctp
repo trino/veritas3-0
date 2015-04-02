@@ -3,10 +3,9 @@
 <style>.allattach{display:none;}</style>
 <?php
 $param = $this->request->params['action'];
-if($this->request->params['action'] == 'vieworder')
-$view = 'view';
-else
 $view = 'nope';
+if($this->request->params['action'] == 'vieworder'){$view = 'view';}
+
 $action = ucfirst($param);
 if ($action == "Vieworder") { $action = "View";}
 if ($action == "Addorder") {
@@ -16,8 +15,7 @@ if ($action == "Addorder") {
 
     $doc_ext = array('pdf', 'doc', 'docx', 'txt', 'csv', 'xls', 'xlsx');
     $img_ext = array('jpg', 'jpeg', 'png', 'bmp', 'gif');
-    if($did)
-    {
+    if($did) {
        $_GET['driver'] = $ooo->uploaded_for;
     }
 
@@ -39,15 +37,13 @@ function provinces($name){
     echo '<OPTION value="YT">Yukon</OPTION>';
     echo '</SELECT>';
 }
+
+    $is_disabled = '';
+    if (isset($disabled)){ $is_disabled = 'disabled="disabled"';}
+    $settings = $this->requestAction('settings/get_settings');
 ?>
 <input type="hidden" id="tablename" value="<?php echo $table; ?>"/>
-<?php
-    if (isset($disabled))
-        $is_disabled = 'disabled="disabled"';
-    else
-        $is_disabled = '';
-?>
-<?php $settings = $this->requestAction('settings/get_settings'); ?>
+
 <h3 class="page-title">
     <?php echo $action;?> Order
 </h3>
@@ -70,9 +66,9 @@ function provinces($name){
         $forms=array();
         if (isset($_GET["forms"])){
             $forms = explode(",", $_GET["forms"]);
+        } else {
+            $forms = $this->requestAction('/orders/getProNum');
         }
-        else
-        $forms = $this->requestAction('/orders/getProNum');
 
         //returns: boolean, if this form should be displayed
         //parameters:
