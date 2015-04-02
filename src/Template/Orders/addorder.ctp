@@ -1,6 +1,17 @@
 <script src="<?php echo $this->request->webroot; ?>js/jquery.easyui.min.js" type="text/javascript"></script>
 <script src="<?php echo $this->request->webroot; ?>js/ajaxupload.js" type="text/javascript"></script>
 <style>.allattach{display:none;}</style>
+
+<script>
+    document.onmousedown  = myClickListener;
+    var eventIsFiredFromElement = "";
+    function myClickListener(e){
+        eventIsFiredFromElement = e.target.innerHTML;
+// alerts [object]
+//... now you can get/set any property on object eventIsFiredFromElement.name or eventIsFiredFromElement.tagName :))
+    }
+</script>
+
 <?php
 $param = $this->request->params['action'];
 $view = 'nope';

@@ -349,24 +349,24 @@ var FormWizard = function () {
                     
                 },
                 onNext: function (tab, navigation, index) {
-                    
-                    if($('.tabber.active').attr('class').replace('confirmation')!=$('.tabber.active').attr('class'))
-                    {
+
+                    if ($('.tabber.active').attr('class').replace('confirmation') != $('.tabber.active').attr('class')) {
                         //alert($('.tabber.active .touched_edit').val());
-                        if($('.tabber.active .touched').val()!='1' && $('.tabber.active .touched_edit').val()!='1')
-                        {
+                        if ($('.tabber.active .touched').val() != '1' && $('.tabber.active .touched_edit').val() != '1') {
                             alert('Please provide your signature to confirm.');
                             return false;
                         }
                     }
                     //alert(tab);
-                    
+
                     success.hide();
                     error.hide();
 
                     //required form elements
-                    var saving_draft=false;
-                    if (typeof Title !== 'undefined') {saving_draft=Title.indexOf("draft") > -1;}
+                    var saving_draft = false;
+                    if (typeof Title === 'undefined'){} else {//chrome
+                        saving_draft=Title.indexOf("draft") > -1;
+                    }
 
                     if($('.tabber.active').attr('id') == 'tab16' && !saving_draft ){//Mee attachments, not saving as draft
                         var Forms =  GetParam("forms").split(",");
