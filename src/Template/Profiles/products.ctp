@@ -168,7 +168,12 @@ foreach($products as $product){
                 <a class="btn btn-xs btn-info" id="add" onclick="addproduct();" style="float: right; height: 24px; width: 15%;">Add</a></TD></TR>
                 </table>
             </TD>
-            <TD><DIV CLASS="tablespot"></DIV></TD>
+            <TD valign="top"><DIV CLASS="tablespot">
+                <H2>Instructions:</H2>
+                    Select a product on the left, then choose which documents are displayed based on the province the driver's license was issued in.<BR>
+                    By enabling "ALL" for a province, the form will be shown for all provinces<BR>
+                    Instead of enabling all documents one at a time, you can enable the "All Documents" row
+            </DIV></TD>
         </TR></TFOOT></TABLE>
     </div>
 </div>
