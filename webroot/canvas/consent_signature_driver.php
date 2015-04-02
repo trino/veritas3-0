@@ -28,7 +28,7 @@
 		</style>
 	
 		
-        <div class="col-sm-6" id="sig1">
+        <div class="col-sm-12" id="sig1">
             <input type="hidden" name="criminal_signature_applicant" id="criminal_signature_applicant" />
             <input type="hidden" class="touched" value="0" />
             <input type="hidden" class="touched_edit1" value="<?php if(isset($consent_detail) && $consent_detail->criminal_signature_applicant){?>1<?php }else{?>0<?php }?>" />
@@ -43,6 +43,7 @@
                 <br />
     		</div>
         </div>
+        
         <div class="col-sm-6">
                 <?php if(isset($consent_detail) && $consent_detail->criminal_signature_applicant){?><img src="<?php echo $this->request->webroot.'canvas/'.$consent_detail->criminal_signature_applicant;?>" style="max-width: 100%;" /><?php }
                 else

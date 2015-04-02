@@ -27,7 +27,7 @@
 </style>
 
 
-<div class="col-sm-6" id="sig4">
+<div class="col-sm-12" id="sig4">
     <input type="hidden" name="signature_company_witness2" id="signature_company_witness2"/>
     <input type="hidden" class="touched" value="0"/>
     <input type="hidden" class="touched_edit4"
@@ -43,6 +43,7 @@
         <br/>
     </div>
 </div>
+
 <div class="col-sm-6">
     <?php if (isset($consent_detail) && $consent_detail->signature_company_witness2) { ?><img
         src="<?php echo $this->request->webroot . 'canvas/' . $consent_detail->signature_company_witness2; ?>"
