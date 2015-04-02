@@ -75,7 +75,8 @@
                 ?>
 
     <?php
-   if (printdivrequired($forms, "id_piece", $DriverProvince)){ ?>
+   if (true){ //(printdivrequired($forms, "id_piece", $DriverProvince)){ ?>
+       <div class="form-group row">
             <div class="col-md-12">
                 <label class="control-label col-md-4">Upload 2 pieces of ID : </label>  
                 <div class="col-md-8">              
