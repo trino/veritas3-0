@@ -72,7 +72,7 @@ webroot/canvas/*.png
 *.xml
 .idea/misc.xml
 *.xml
-*.pdf
+
 myapp_cake_*
 tmp/cache/**
 tmp/debug_kit.sqlite

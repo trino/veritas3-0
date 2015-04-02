@@ -165,7 +165,7 @@ foreach($products as $product){
                 </TD></TR>
     <TR><TH COLSPAN="2">Add Product:</TH></TR>
         <TR><TD><input type="text" id="newnum" style="width: 50px"></TD><TD><input type="text" id="newname" style="width: 80%">
-                <a class="btn btn-xs btn-info" id="add" onclick="addproduct();" style="float: right;">Add</a></TD></TR>
+                <a class="btn btn-xs btn-info" id="add" onclick="addproduct();" style="float: right; height: 24px; width: 15%;">Add</a></TD></TR>
                 </table>
             </TD>
             <TD><DIV CLASS="tablespot"></DIV></TD>
