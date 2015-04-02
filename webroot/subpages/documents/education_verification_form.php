@@ -1,6 +1,6 @@
 <?php
-    if ($this->request->session()->read('debug'))
-        echo "<span style ='color:red;'>subpages/documents/education_verification_form.php #INC142</span>";
+    //if ($this->request->session()->read('debug'))
+      //  echo "<span style ='color:red;'>subpages/documents/education_verification_form.php #INC142</span>";
 ?>
 <div id="form_tab10">
     <input class="document_type" type="hidden" name="document_type" value="Education Verification"/>

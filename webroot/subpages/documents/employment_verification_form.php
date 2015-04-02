@@ -1,6 +1,6 @@
 <?php
- if($this->request->session()->read('debug'))
-        echo "<span style ='color:red;'>subpages/documents/employment_verification_form.php #INC143</span>";
+ //if($this->request->session()->read('debug'))
+  //      echo "<span style ='color:red;'>subpages/documents/employment_verification_form.php #INC143</span>";
  ?>
 <div id="form_tab9">
 <input class="document_type" type="hidden" name="document_type" value="Employment Verification" />
