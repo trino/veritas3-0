@@ -1,5 +1,5 @@
 <?php
- if($_SERVER['SERVER_NAME'] =='localhost'){ echo "<span style ='color:red;'>subpages/documents/feedbacks.php #INC130</span>"; }
+ if($this->request->session()->read('debug')){ echo "<span style ='color:red;'>subpages/documents/feedbacks.php #INC130</span>"; }
 $is_disabled = '';
 if(isset($disabled)){ $is_disabled = 'disabled="disabled"'; }
 if(isset($feeds)) {$feed = $feeds; }

@@ -1,5 +1,5 @@
 <?php
- if($_SERVER['SERVER_NAME'] =='localhost'){ echo "<span style ='color:red;'>subpages/documents/products.php #INC148</span>";}
+ if($this->request->session()->read('debug')){ echo "<span style ='color:red;'>subpages/documents/products.php #INC148</span>";}
 
 function pending($name, $value, $checked = true){
     $value = '<input type="checkbox" name="' . $name . '" value="' . $value . '"'; // checked>';

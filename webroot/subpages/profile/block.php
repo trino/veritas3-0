@@ -1,5 +1,5 @@
 <?php
- if($_SERVER['SERVER_NAME'] =='localhost')
+ if($this->request->session()->read('debug'))
         echo "<span style ='color:red;'>block.php #INC116</span>";
 $uid = ($this->request['action'] == 'add') ? "0" : $this->request['pass'][0];
 $sidebar = $this->requestAction("settings/all_settings/" . $uid . "/sidebar");

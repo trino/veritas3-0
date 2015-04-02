@@ -1,5 +1,5 @@
 <?php
- if($_SERVER['SERVER_NAME'] =='localhost')
+ if($this->request->session()->read('debug'))
         echo "<span style ='color:red;'>ctypes.php #INC119</span>";
  ?>
 <div class="portlet box green-haze">

@@ -1,5 +1,5 @@
 <?php
- if($_SERVER['SERVER_NAME'] =='localhost'){ echo "<span style ='color:red;'>subpages/documents/attachments.php #INC131</span>";}
+ if($this->request->session()->read('debug')){ echo "<span style ='color:red;'>subpages/documents/attachments.php #INC131</span>";}
  ?>
 <?php
 $is_disabled = '';//there is no place for attachments

@@ -1,5 +1,5 @@
 <?php
- if($_SERVER['SERVER_NAME'] =='localhost')
+ if($this->request->session()->read('debug'))
         echo "<span style ='color:red;'>subpages/documents/document_tab3.php #INC139</span>";
  ?>
 <div id="form_tab4">

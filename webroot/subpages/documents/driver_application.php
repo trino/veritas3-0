@@ -1,5 +1,5 @@
 <?php
- if($_SERVER['SERVER_NAME'] =='localhost')
+ if($this->request->session()->read('debug'))
         echo "<span style ='color:red;'>subpages/documents/driver_application.php #INC140</span>";
  ?>
 <form id="form_tab2">

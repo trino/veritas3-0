@@ -1,5 +1,5 @@
 <?php
- if($_SERVER['SERVER_NAME'] =='localhost'){ echo "<span style ='color:red;'>subpages/documents/accident_record.php #INC136</span>"; }
+ if($this->request->session()->read('debug')){ echo "<span style ='color:red;'>subpages/documents/accident_record.php #INC136</span>"; }
  ?>
 <div>
 <div class="form-group col-md-12">

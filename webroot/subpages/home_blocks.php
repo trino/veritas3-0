@@ -1,5 +1,5 @@
 <?php //echo die('here');
-     if($_SERVER['SERVER_NAME'] =='localhost')
+     if($this->request->session()->read('debug'))
         echo "<span style ='color:red;'>home_blocks.php #INC111</span>";
 ?>
 <div class="row home_blocks">

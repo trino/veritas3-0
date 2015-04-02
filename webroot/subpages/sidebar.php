@@ -17,7 +17,7 @@ $profileID = $this->Session->read('Profile.id');
  
     <div class="page-sidebar navbar-collapse collapse">
      <?php
- if($_SERVER['SERVER_NAME'] =='localhost')
+ if($this->request->session()->read('debug'))
         echo "<span style ='color:red;'>sidebar.php #INC162</span>";
  ?>
         <ul id="mainbar" class="<?php echo $settings->sidebar; ?>" data-keep-expanded="false" data-auto-scroll="true"

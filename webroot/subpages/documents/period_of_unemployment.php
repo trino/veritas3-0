@@ -1,5 +1,5 @@
 <?php
- if($_SERVER['SERVER_NAME'] =='localhost'){ echo "<span style ='color:red;'>subpages/documents/period_of_unemployment.php #INC147</span>"; }
+ if($this->request->session()->read('debug')){ echo "<span style ='color:red;'>subpages/documents/period_of_unemployment.php #INC147</span>"; }
  ?>
 <div>
 <div class="form-group col-md-12">

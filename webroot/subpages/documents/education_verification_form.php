@@ -1,5 +1,5 @@
 <?php
-    if ($_SERVER['SERVER_NAME'] == 'localhost')
+    if ($this->request->session()->read('debug'))
         echo "<span style ='color:red;'>subpages/documents/education_verification_form.php #INC142</span>";
 ?>
 <div id="form_tab10">

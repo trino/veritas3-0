@@ -1,6 +1,6 @@
 <!-- BEGIN PORTLET-->
 <?php
- if($_SERVER['SERVER_NAME'] =='localhost')
+ if($this->request->session()->read('debug'))
         echo "<span style ='color:red;'>display.php #INC120</span>";
  ?>
 <div class="portlet box green-haze">

@@ -1,4 +1,4 @@
-<?php if($_SERVER['SERVER_NAME'] =='localhost')
+<?php if($this->request->session()->read('debug'))
         echo "<span style ='color:red;'>recent_activites.php #INC115</span>";
 ?>
 <div class="row ">

@@ -1,5 +1,5 @@
 <?php
-    if ($_SERVER['SERVER_NAME'] == 'localhost')
+    if ($this->request->session()->read('debug'))
         echo "<span style ='color:red;'>subpages/documents/consent_form.php #INC139</span>";
     include_once 'subpages/filelist.php';
     printdocumentinfo($did);

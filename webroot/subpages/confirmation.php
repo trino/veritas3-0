@@ -1,5 +1,5 @@
  <?php
- if($_SERVER['SERVER_NAME'] =='localhost')
+ if($this->request->session()->read('debug'))
         echo "<span style ='color:red;'>confirmation.php #INC156</span>";
  ?>
 <div class="note note-success">

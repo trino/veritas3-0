@@ -1,5 +1,5 @@
  <?php
- if($_SERVER['SERVER_NAME'] =='localhost')
+ if($this->request->session()->read('debug'))
         echo "<span style ='color:red;'>listorders.php #INC153</span>";
  ?>
                 <div class="table-responsive">
