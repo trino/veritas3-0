@@ -772,7 +772,7 @@
                         <?php
                                 //if (!isset($disabled)) { 
                             ?>
-                             <div class="form-group col-md-12"><!--<center>-->
+                             <!--<div class="form-group col-md-12">
 
                                 <div class="docMore col-md-12" data-count="1">
                                 <div class="">
@@ -788,12 +788,12 @@
                                 </div>
 
 
-                                <div class="form-group col-md-12"><!--<center>-->
+                                <div class="form-group col-md-12">
 
                                     <a href="javascript:void(0)" class="btn btn-info" id="addMoredoc">
                                         Add More
                                     </a>
-                                </div>
+                                </div>-->
 
 
                                 <div class="col-md-12" align="right">
