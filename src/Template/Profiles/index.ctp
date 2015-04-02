@@ -274,10 +274,10 @@
                                         </td>
                                         <td class="actions  util-btn-margin-bottom-5">
                                         <?php
-                                        if($profile->profile_type == 5 || $profile->profile_type == 7 || $profile->profile_type == 8)
+                                        if($sidebar->bulk=='1' && ($profile->profile_type == 5 || $profile->profile_type == 7 || $profile->profile_type == 8))
                                         {
                                         ?>
-                                        <!--<input type="checkbox" class="form-control" value="<?php echo $profile->id; ?>" id="checkbox_id_<?php echo $profile->id; ?>" />-->
+                                            <input type="checkbox" class="form-control bulk_user" value="<?php echo $profile->id; ?>" id="checkbox_id_<?php echo $profile->id; ?>" />
                                         <?php
                                         }
                                         ?>
@@ -396,7 +396,7 @@
                     <div class="row">
                     <div class="col-md-12">
                         <div class="col-md-6" align="left">
-                        <!--<a href="javascript:void(0);" class="bulk_order btn btn-primary">Bulk Orders</a>-->
+                        <a href="javascript:void(0);" class="bulk_order btn btn-primary">Bulk Orders</a>
                         </div>
                         <div class="col-md-6" align="right">
                             <div id="sample_2_paginate" class="dataTables_paginate paging_simple_numbers" align="right"

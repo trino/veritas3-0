@@ -91,7 +91,7 @@ else{
 }
 define('W_ROOT',strtolower(substr($_SERVER["SERVER_PROTOCOL"],0,strpos( $_SERVER["SERVER_PROTOCOL"],'/'))).'://'.$_SERVER['HTTP_HOST'] );
 if($_SERVER['SERVER_NAME']=='localhost')
-define('LOGIN', W_ROOT."/veritas3-0/");
+define('LOGIN', W_ROOT."/veritas3/");
 else
 define('LOGIN', W_ROOT.'/');
 

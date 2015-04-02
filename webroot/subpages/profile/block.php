@@ -713,7 +713,7 @@ if ($activetab == "permissions") {
                                     No </label>
                             </td>
                         </tr>
-                        <!--<tr>
+                        <tr>
                             <td class="vtop">Bulk Order</td>
                             <td>
                                 <label class="uniform-inline">
@@ -727,7 +727,7 @@ if ($activetab == "permissions") {
                                                                       value="0" <?php if (isset($sidebar) && $sidebar->bulk == 0) echo "checked"; ?>/>
                                     No </label>
                             </td>
-                        </tr>-->
+                        </tr>
                         <tr>
                             <td class="vtop">
                                 <?php echo ucfirst($settings->document); ?>
@@ -1321,7 +1321,7 @@ if ($activetab == "permissions") {
                                 No </label>
                         </td>
                     </tr>
-                     <!--<tr>
+                     <tr>
                         <td>
                             Bulk Order
                         </td>
@@ -1337,7 +1337,7 @@ if ($activetab == "permissions") {
                                                                   value="0" <?php if (isset($block) && $block->bulk == 0) echo "checked"; ?>/>
                                 No </label>
                         </td>
-                    </tr>-->
+                    </tr>
                     <!--tr>
                                                 <td>
                                                     Master <?= $settings->client; ?>
