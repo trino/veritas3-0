@@ -342,7 +342,11 @@
             /*old code*/
 
             //debug($query);die();
-            $this->set('profiles', $this->appendattachments($this->paginate($query)));
+            if (isset($_GET["all"])){
+                $this->set('profiles',  $this->appendattachments($query));
+            } else {
+                $this->set('profiles', $this->appendattachments($this->paginate($query)));
+            }
         }
 
         /*

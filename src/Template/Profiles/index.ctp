@@ -396,11 +396,12 @@
                     <div class="row">
                     <div class="col-md-12">
                         <div class="col-md-6" align="left">
-                        <?php if($sidebar->bulk=='1'){?>
+                        <?php if($sidebar->bulk=='1' && isset($_GET["all"]) ){?>
                             <a href="javascript:void(0);" class="bulk_order btn btn-primary">Bulk Orders</a>
                         <?php }?>
                         </div>
                         <div class="col-md-6" align="right">
+                            <?php if (!isset($_GET["all"])) { ?>
                             <div id="sample_2_paginate" class="dataTables_paginate paging_simple_numbers" align="right"
                                  style="margin-top:-10px;">
                                 <ul class="pagination sorting">
@@ -409,6 +410,7 @@
                                     <?= $this->Paginator->next(__('next') . ' >'); ?>
                                 </ul>
                             </div>
+                            <?php } ?>
                         </div>
                         </div>
                     </div>
