@@ -856,7 +856,7 @@ if( isset($sub)){ listfiles($sub['da_at'], "attachments/", "", false,3); }
  
  jQuery(function(){
     <?php
-        if($this->request->params['action']=='addorder' || $this->request->params['action']=='add')
+        if(($this->request->params['action']=='addorder' || $this->request->params['action']=='add') && !count($sub['da_at']))
         {
             ?>
             fileUpload('driveApp1');
