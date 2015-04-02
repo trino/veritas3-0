@@ -487,8 +487,6 @@ function provinces($name){
 </div>
 </div>
 <script>
-
-
     client_id = '<?=$cid?>',
         doc_id = '<?=$did?>';
     if (doc_id)
@@ -1279,8 +1277,8 @@ function provinces($name){
                 $('.cont').removeAttr('disabled');
                 $(this).removeAttr('style');
             }
-
         });
+
         $('.email1').live('blur', function () {
             //alert($('.email1').val());
             if ($(this).val() != '' && ($(this).val().replace('@', '') == $(this).val() || $(this).val().replace('.', '') == $(this).val() || $(this).val().length < 5)) {
@@ -1288,9 +1286,8 @@ function provinces($name){
                 $('.cont').removeAttr('disabled');
                 $(this).removeAttr('style');
             }
-
-
         });
+
         $('.required').live('keyup', function () {
             //alert('test');
             //alert($('.email1').val());
@@ -1298,9 +1295,8 @@ function provinces($name){
                 $(this).removeAttr('style');
                 //$('.cont').attr('disabled','');
             }
-
-
         });
+
         $('#driverEm').live('keyup', function () {
             //alert('test');
             //alert($('.email1').val());
@@ -1308,9 +1304,8 @@ function provinces($name){
                 $(this).removeAttr('style');
                 //$('.cont').attr('disabled','');
             }
-
-
         });
+
         $('.required').live('change', function () {
             //alert('test');
             //alert($('.email1').val());
@@ -1318,9 +1313,8 @@ function provinces($name){
                 $(this).removeAttr('style');
                 //$('.cont').attr('disabled','');
             }
-
-
         });
+
         $('.required').live('blur', function () {
             //alert($('.email1').val());
             if ($(this).val().length == 0) {
@@ -1328,15 +1322,12 @@ function provinces($name){
                 //$('.cont').removeAttr('disabled');
                 $(this).attr('style', 'border-color:red');
             }
-
-
         });
 
 
         <?php
-        if($this->request['action']=='vieworder')
-        {
-            ?>
+            if($this->request['action']=='vieworder'){
+        ?>
         $('.tab-content input').attr('disabled', 'disabled');
         $('.tab-content select').attr('disabled', 'disabled');
         $('.tab-content textarea').attr('disabled', 'disabled');
@@ -1357,12 +1348,8 @@ function provinces($name){
         $('.uploaded a').show();
 
         <?php
-    }
-
-    ?>
-
-
-
+            }
+        ?>
 
         $(document.body).on('click', '.consents a', function () {
             //alert($(this).attr('href').replace('#',''));
@@ -1377,9 +1364,9 @@ function provinces($name){
         });
 
         $(document.body).on('click', '.button-next', function () {
-
             var ba = $('#bottomact').offset();
             //alert(ba.top);
+            
             $('input[type="file"]').each(function () {
                 $(this).parent().attr('style', 'display: block; position: absolute; overflow: hidden; margin: 0px; padding: 0px; opacity: 0; direction: ltr; z-index: 2147483583; left: 551.5px; top: ' + ba.top + 'px; width: 77px; height: 34px; visibility: hidden;');
                 //  css = css.
@@ -1397,21 +1384,20 @@ function provinces($name){
 
         var draft = 0;
         var saving_draft = 0;
+        
         $(document.body).on('click', '.cont', function () {
-            
             //$('.submit_dra').attr('style','display:inline-block');
-
             if ($(this).attr('id') == 'draft') {
                 draft = 1;
             }
             else{
                 if($(this).attr('id') == 'submit_dra'){
-                draft = 1;
-                saving_draft = 1;
-                $('#loading5').show();
-                }
-                else
-                draft = 0;
+                    
+                    draft = 1;
+                    saving_draft = 1;
+                    $('#loading5').show();
+                } else {
+                    draft = 0;
                 }
             if(draft==1)
             {
@@ -1583,6 +1569,7 @@ function provinces($name){
         });
 
         $('#submit_ord').live('click', function () {
+            
             setTimeout(function(){ 
                 $.ajax({
                 url: '<?php echo $this->request->webroot;?>orders/webservice/<?php echo $_GET['order_type'];?>/<?php echo $_GET['forms']; ?>/' + $('#did').val() +'/' + $('#uploaded_for').val(),
@@ -1600,8 +1587,7 @@ function provinces($name){
 
         $('#submit_dra').live('click', function () {
             alert($(this).text());
-
-
+            
                 $('.blockmsg').html('<h4 class="block">Your Order Has Been Saved As Draft!</h4>'+
     '<p>You can edit your order anytime.</p>')
 

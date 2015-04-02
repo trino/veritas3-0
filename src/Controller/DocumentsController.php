@@ -182,27 +182,25 @@
             $this->set('meedocs',$meedocs);
             if (!$this->request->session()->read('Profile.id')) {
                 $this->redirect('/login');
-            }
-            else
-            {
-            $this->set('cid', $cid);
-            $this->set('did', $did);
-            $this->set('sid', '');
-            if ($did) {
-                $docs = TableRegistry::get('documents');
-                $document = $docs->find()->where(['id' => $did])->first();
-                $this->set('mod', $document);
+            } else {
+                $this->set('cid', $cid);
+                $this->set('did', $did);
+                $this->set('sid', '');
+                if ($did) {
+                    $docs = TableRegistry::get('documents');
+                    $document = $docs->find()->where(['id' => $did])->first();
+                    $this->set('mod', $document);
 
-                $order = TableRegistry::get('orders')->find()->where(['id' => $document->order_id])->first();
-                $this->set('forms', explode(",", $order->forms));
-                $profile = TableRegistry::get('profiles')->find()->where(['id' => $document->user_id])->first();
-                $this->set('DriverProvince', $profile->driver_province);
+                    $order = TableRegistry::get('orders')->find()->where(['id' => $document->order_id])->first();
+                    $this->set('forms', explode(",", $order->forms));
+                    $profile = TableRegistry::get('profiles')->find()->where(['id' => $document->user_id])->first();
+                    $this->set('DriverProvince', $profile->driver_province);
 
-                $att = TableRegistry::get('attach_docs');
-                $query = $att->find();
-                $attachments = $query->select()->where(['doc_id'=>$did])->all();
-                $this->set('attachments',$attachments);
-            }
+                    $att = TableRegistry::get('attach_docs');
+                    $query = $att->find();
+                    $attachments = $query->select()->where(['doc_id'=>$did])->all();
+                    $this->set('attachments',$attachments);
+                }
             $doc = $this->Document->getDocumentcount();
 
                 //debug($doc);
