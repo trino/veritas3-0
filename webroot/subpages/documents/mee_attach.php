@@ -26,7 +26,7 @@
 
             function printrequired($action, $forms, $AttachmentName, $DriversProvince, $attachment=0, $message = "Required"){
                 if ($action != "View" && isrequired($forms, $AttachmentName, $DriversProvince, $attachment)){
-                    return '<FONT COLOR="RED">* ' . $message . '</FONT>';
+                    return '<FONT COLOR="RED">* ' . $message . $action . '</FONT>';
                 }
             }
             function printdivrequired($forms, $AttachmentName, $DriversProvince, $attachment=0){
