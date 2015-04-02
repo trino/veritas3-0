@@ -364,11 +364,12 @@ var FormWizard = function () {
 
                     //required form elements
                     var saving_draft = false;
-                    if (typeof Title === 'undefined'){} else {//chrome
-                        saving_draft=Title.indexOf("draft") > -1;
+                    if (typeof Title === 'undefined'){/*add code to addorder.ctp myClickListener(); */} else {
+                        saving_draft=Title.indexOf("draft") > -1;//chrome and firefox tested
                     }
+                    var viewing = $('.button-next').attr('id') =='nextview';
 
-                    if($('.tabber.active').attr('id') == 'tab16' && !saving_draft ){//Mee attachments, not saving as draft
+                    if($('.tabber.active').attr('id') == 'tab16' && !saving_draft && !viewing){//Mee attachments, not saving as draft
                         var Forms =  GetParam("forms").split(",");
                         var MissingData = ""; //use DriverProvince
                         //for(var i = 0; i < Forms.length; i++){//loop through product numbers

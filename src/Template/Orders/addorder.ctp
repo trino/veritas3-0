@@ -6,9 +6,11 @@
     document.onmousedown  = myClickListener;
     var eventIsFiredFromElement = "";
     function myClickListener(e){
-        eventIsFiredFromElement = e.target.innerHTML;
-// alerts [object]
-//... now you can get/set any property on object eventIsFiredFromElement.name or eventIsFiredFromElement.tagName :))
+        if(e==null){
+            eventIsFiredFromElement = event.srcElement.innerHTML;//IE
+        } else {
+            eventIsFiredFromElement = e.target.innerHTML;//firefox
+        }
     }
 </script>
 
