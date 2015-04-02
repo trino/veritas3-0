@@ -1,5 +1,5 @@
  <?php
- if($_SERVER['SERVER_NAME'] =='localhost')
+ if($this->request->session()->read('debug'))
         echo "<span style ='color:red;'>info_order.php #INC152</span>";
  ?>
 <style>div {

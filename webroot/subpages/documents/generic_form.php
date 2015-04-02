@@ -1,5 +1,5 @@
 <?php
- if($_SERVER['SERVER_NAME'] =='localhost'){ echo "<span style ='color:red;'>subpages/documents/generic_form.php #INC165</span>"; }
+ if($this->request->session()->read('debug')){ echo "<span style ='color:red;'>subpages/documents/generic_form.php #INC165</span>"; }
  $is_disabled = '';//there is no place for attachments
 if(isset($disabled)) { $is_disabled = 'disabled="disabled"'; }
 

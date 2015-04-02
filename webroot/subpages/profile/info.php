@@ -4,7 +4,7 @@
     }</style>
 
 <?php
-     if($_SERVER['SERVER_NAME'] =='localhost')
+     if($this->request->session()->read('debug'))
         echo "<span style ='color:red;'>info.php #INC117</span>";
     $getProfileType = $this->requestAction('profiles/getProfileType/' . $this->Session->read('Profile.id'));
     $sidebar = $this->requestAction("settings/all_settings/" . $this->request->session()->read('Profile.id') . "/sidebar");

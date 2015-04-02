@@ -1,5 +1,5 @@
  <?php
- if($_SERVER['SERVER_NAME'] =='localhost')
+ if($this->request->session()->read('debug'))
         echo "<span style ='color:red;'>avatar.php #INC150</span>";
  ?>
                                 <form role="form" action="" method="post">

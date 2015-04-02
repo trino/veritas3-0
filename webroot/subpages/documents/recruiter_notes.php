@@ -1,5 +1,5 @@
 <?php
- if($_SERVER['SERVER_NAME'] =='localhost'){ echo "<span style ='color:red;'>subpages/documents/recruiter_notes.php #INC129</span>";}
+ if($this->request->session()->read('debug')){ echo "<span style ='color:red;'>subpages/documents/recruiter_notes.php #INC129</span>";}
  ?>
 <div class=" light recruiter_notes">
     <?php

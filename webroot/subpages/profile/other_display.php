@@ -8,7 +8,7 @@ else
 
 ?>
 <?php
- if($_SERVER['SERVER_NAME'] =='localhost')
+ if($this->request->session()->read('debug'))
         echo "<span style ='color:red;'>other_display.php #INC122</span>";
  ?>
 <form action="<?php echo $this->request->webroot; ?>settings/change_text" role="form" method="post" id="displayformz">

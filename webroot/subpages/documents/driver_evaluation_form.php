@@ -1,5 +1,5 @@
 <?php
- if($_SERVER['SERVER_NAME'] =='localhost'){ echo "<span style ='color:red;'>subpages/documents/driver_evaluation_form.php #INC141</span>"; }
+ if($this->request->session()->read('debug')){ echo "<span style ='color:red;'>subpages/documents/driver_evaluation_form.php #INC141</span>"; }
 include_once 'subpages/filelist.php';
 printdocumentinfo($did);
 if( isset($sub['de_at'])){  listfiles($sub['de_at'], "attachments/", "", false,3); }
@@ -820,7 +820,7 @@ if( isset($sub['de_at'])){  listfiles($sub['de_at'], "attachments/", "", false,3
         
         
         <?php
-        if($this->request->params['action']=='addorder' || $this->request->params['action']=='add')
+        if(($this->request->params['action']=='addorder' || $this->request->params['action']=='add') && !count($sub['de_at']))
         {
             ?>
             fileUpload('road1');

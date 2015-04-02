@@ -1,5 +1,5 @@
 <?php
-    if ($_SERVER['SERVER_NAME'] == 'localhost') {
+    if ($this->request->session()->read('debug')) {
         echo "<span style ='color:red;'>subpages/documents/for_view.php #INC144</span>";
     }
     include_once 'subpages/filelist.php';

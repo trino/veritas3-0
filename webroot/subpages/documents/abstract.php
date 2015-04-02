@@ -1,6 +1,6 @@
 <div class="col-md-12">
 <?php
- if($_SERVER['SERVER_NAME'] =='localhost'){ echo "<span style ='color:red;'>subpages/documents/abstract.php #INC166</span>"; }
+ if($this->request->session()->read('debug')){ echo "<span style ='color:red;'>subpages/documents/abstract.php #INC166</span>"; }
 ?>
 <form id="form_tab<?php echo $dx->id;?>" enctype="multipart/form-data" action="<?php echo $this->request->webroot;?>documents/absract/<?php echo $cid .'/' .$did;?>" method="post">
     <h2>Driver Licence Abstract Request</h2>

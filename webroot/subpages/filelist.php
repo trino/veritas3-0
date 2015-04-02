@@ -1,6 +1,6 @@
 <?php
 use Cake\ORM\TableRegistry;
-if($_SERVER['SERVER_NAME'] =='localhost'){ echo "<BR><span style ='color:red;'>filelist.php #INC158</span>";}
+if($this->request->session()->read('debug')){ echo "<BR><span style ='color:red;'>filelist.php #INC158</span>";}
 $GLOBALS['webroot'] = $webroot= $this->request->webroot;
 
 //other values PATHINFO_DIRNAME (/mnt/files) | PATHINFO_BASENAME (??????.mp3) | PATHINFO_FILENAME (??????)

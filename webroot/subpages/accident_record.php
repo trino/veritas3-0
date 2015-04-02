@@ -1,5 +1,5 @@
  <?php
- if($_SERVER['SERVER_NAME'] =='localhost')
+ if($this->request->session()->read('debug'))
         echo "<span style ='color:red;'>accident_report.php #INC154</span>";
  ?>
 <div>

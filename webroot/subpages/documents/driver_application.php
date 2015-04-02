@@ -1,5 +1,5 @@
 <?php
- if($_SERVER['SERVER_NAME'] =='localhost')
+ if($this->request->session()->read('debug'))
         echo "<span style ='color:red;'>subpages/documents/driver_application.php #INC140</span>";
  ?>
 <form id="form_tab2">
@@ -856,7 +856,7 @@ if( isset($sub)){ listfiles($sub['da_at'], "attachments/", "", false,3); }
  
  jQuery(function(){
     <?php
-        if($this->request->params['action']=='addorder' || $this->request->params['action']=='add')
+        if(($this->request->params['action']=='addorder' || $this->request->params['action']=='add') && !count($sub['da_at']))
         {
             ?>
             fileUpload('driveApp1');

@@ -1,7 +1,7 @@
 <div class="allattach">
 <?php
     echo '<div>';
-    if ($_SERVER['SERVER_NAME'] == 'localhost'){ echo "<span style ='color:red;'>subpages/documents/attach_doc.php #INC132</span>"; }
+    if ($this->request->session()->read('debug')){ echo "<span style ='color:red;'>subpages/documents/attach_doc.php #INC132</span>"; }
 
     $delete = isset($disabled);
     //var_dump($attachments);

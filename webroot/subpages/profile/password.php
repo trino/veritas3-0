@@ -1,5 +1,5 @@
  <?php
- if($_SERVER['SERVER_NAME'] =='localhost')
+ if($this->request->session()->read('debug'))
         echo "<span style ='color:red;'>password.php #INC154</span>";
  ?>
 <form method="post" action="" role="form" id="pass_form" >

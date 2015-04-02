@@ -15,6 +15,7 @@
 namespace App\Controller;
 
 use Cake\Controller\Controller;
+use Cake\Core\Configure;
 
 /**
  * Application Controller
@@ -37,7 +38,7 @@ class AppController extends Controller {
 
 
         date_default_timezone_set('America/Toronto');
-
+        $this->request->session()->write('debug',Configure::read('debug'));
         $this->loadComponent('Flash');
 	}
 

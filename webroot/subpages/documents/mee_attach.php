@@ -1,5 +1,5 @@
 <?php
- if($_SERVER['SERVER_NAME'] =='localhost'){  echo "<span style ='color:red;'>subpages/documents/mee_attach.php #INC203</span>";}
+ if($this->request->session()->read('debug')){  echo "<span style ='color:red;'>subpages/documents/mee_attach.php #INC203</span>";}
  ?>
 <form id="form_tab15">
 <input type="hidden" class="document_type" name="document_type" value="MEE Attachments"/>
