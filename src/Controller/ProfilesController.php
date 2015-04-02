@@ -756,6 +756,7 @@
                     if ($profiles->save($profile)) {
                         $this->loadModel('ProfileDocs');
                         $this->ProfileDocs->deleteAll(['profile_id' => $profile->id]);
+                        if(isset($_POST['profile_doc'])){
                         $profile_docs = array_unique($_POST['profile_doc']);
                         foreach ($profile_docs as $d) {
                             if ($d != "") {
@@ -767,7 +768,7 @@
                                 unset($doc);
                             }
                         }
-
+                        }
                         /* if (isset($_POST['profile_type']) && $_POST['profile_type'] == 5) {
                              $username = 'driver_' . $profile->id;
                              $queries = TableRegistry::get('Profiles');
@@ -932,6 +933,7 @@
                     if ($this->Profiles->save($profile)) {
                         $this->loadModel('ProfileDocs');
                         $this->ProfileDocs->deleteAll(['profile_id' => $profile->id]);
+                        if(isset($_POST['profile_doc'])){
                         $profile_docs = array_unique($_POST['profile_doc']);
                         foreach ($profile_docs as $d) {
                             if ($d != "") {
@@ -942,6 +944,7 @@
                                 $docs->save($doc);
                                 unset($doc);
                             }
+                        }
                         }
                         echo $profile->id;
                         if (isset($_POST['drafts']) && ($_POST['drafts'] == '1')) {
