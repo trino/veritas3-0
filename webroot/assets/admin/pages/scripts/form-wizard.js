@@ -246,7 +246,7 @@ var FormWizard = function () {
                     
                     $('.cont').html('Submit Order');
                     $('.cont').attr('onclick','return false;');
-                    $('.skip').html('Save as draft');
+                    $('.skip').html('Saved as draft');
                     
                     $('.skip').removeClass('button-next');
                     $('.nextview').each(function(){
@@ -265,7 +265,7 @@ var FormWizard = function () {
                     // $('.cont').attr('id','');
                 }
                 else{
-                    $('.skip').html('Save as draft');
+                    $('.skip').html('Saved as draft');
                     
                     //$('.skip').removeClass('button-next');
                     //$('.skip').removeClass('save_as_draft');
