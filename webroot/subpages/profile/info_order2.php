@@ -85,7 +85,7 @@
                     }
                     ?>
                     <a href="javascript:void(0);" class="btn btn-danger btn-lg placenow"
-                       onclick="if(!check_div())return false;">Continue
+                       onclick="if(!check_div())return false;var div = $('#divisionsel').val();if(!isNaN(parseFloat(div)) && isFinite(div)){var division = div;}else var division = '0';if($('.selecting_client').val()){if($('.selecting_driver').val()==''){alert('Please select driver');$('#s2id_selecting_driver .select2-choice').attr('style','border:1px solid red;');$('html,body').animate({scrollTop: $('#s2id_selecting_driver .select2-choice').offset().top},'slow');return false;}else window.location='<?php echo $webroot; ?>orders/addorder/'+$('.selecting_client').val()+'/?driver='+$('.selecting_driver').val()+'&division='+division+'&forms=<?php echo $_this->requestAction('orders/getProNum');?>&order_type=<?php echo urlencode($o_type); ?>';}else{$('#s2id_selecting_client .select2-choice').attr('style','border:1px solid red;');$('html,body').animate({scrollTop: $('#s2id_selecting_client .select2-choice').offset().top},'slow');}">Continue
                         <i class="m-icon-swapright m-icon-white"></i></a>
 
                 <?php
