@@ -365,7 +365,9 @@ var FormWizard = function () {
                     error.hide();
 
                     //required form elements
-                    var saving_draft=Title.indexOf("draft") > -1;
+                    var saving_draft=false;
+                    if (typeof Title !== 'undefined') {saving_draft=Title.indexOf("draft") > -1;}
+
                     if($('.tabber.active').attr('id') == 'tab16' && !saving_draft ){//Mee attachments, not saving as draft
                         var Forms =  GetParam("forms").split(",");
                         var MissingData = ""; //use DriverProvince
