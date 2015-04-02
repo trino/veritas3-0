@@ -141,7 +141,7 @@ if ($activetab == "permissions") {
                                         {
                                         ++$cnt;
                                         ?>
-                                        <td class="titleptype_<?php echo $product->id;?>">
+                                        <td style="width:25%;" class="titleptype_<?php echo $product->id;?>">
                                             <input name="ptypes[]" type="checkbox" <?php  if(in_array($product->id,$pt)){echo "checked='checked'";}?> class="cenable" id="cchk_<?php echo $product->id;?>" value="<?php echo $product->id;?>" /><label for="cchk_<?php echo $product->id;?>"><?php echo $product->title;?></label>
                                         </td>
                                         <?php if ($cnt % 4 == 0)
@@ -230,7 +230,7 @@ if ($activetab == "permissions") {
                                             foreach ($client_types as $product) {
                                                 ++$cnt;
                                                 ?>
-                                                <td width="33%" class="titlectype_<?php echo $product->id;?>">
+                                                <td style="width:25%;" class="titlectype_<?php echo $product->id;?>">
                                                 <input name="ctypes[]"
                                                    type="checkbox" <?php if (in_array($product->id, $ct)) {
                                                         echo "checked='checked'";
@@ -305,7 +305,7 @@ if ($activetab == "permissions") {
                                     <label class="uniform-inline">
                                         <input <?php echo $is_disabled ?> type="checkbox" name="side[email_orders]"
                                                                           value="1" <?php if (isset($sidebar) && $sidebar->email_orders == 1) echo "checked"; ?> />
-                                        Recieve Email
+                                        Recieve Email2
                                     </label>
                                     <!--label class="uniform-inline">
 
