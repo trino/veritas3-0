@@ -372,11 +372,14 @@ var FormWizard = function () {
                     if($('.tabber.active').attr('id') == 'tab16' && !saving_draft && !viewing){//Mee attachments, not saving as draft
                         var Forms =  GetParam("forms").split(",");
                         var MissingData = ""; //use DriverProvince
-                        //for(var i = 0; i < Forms.length; i++){//loop through product numbers
-                        //    MissingData = MissingData + " " + Forms[i];
-
-                        //}
-                        for(var i =1; i<=6; i++){
+                        for(var i = 0; i < Forms.length; i++){//loop through product numbers
+                            if(Forms[i] == 1603) {//Premium National Criminal Record Check
+                                if ($('.mee_att_1').val().length == 0) {//first piece of ID
+                                    MissingData = "Missing the required piece of ID";
+                                }
+                            }
+                        }
+                        /* for(var i =1; i<=6; i++){
                             if (i != 2) {//skip second piece ID
                                 if ($('.mee_att_' + i).length) {
                                     if ($('.mee_att_' + i).val().length == 0) {
@@ -384,7 +387,7 @@ var FormWizard = function () {
                                     }
                                 }
                             }
-                        }
+                        } */
                         if(MissingData.length>0) {
                             alert(MissingData);
                             return false;

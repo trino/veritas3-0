@@ -30,7 +30,7 @@
                 }
             }
             function printdivrequired($forms, $AttachmentName, $DriversProvince, $attachment=0){
-                    if (isrequired($forms, $AttachmentName, $DriversProvince, $attachment)) {
+                    if (true){ //isrequired($forms, $AttachmentName, $DriversProvince, $attachment)) {
                         echo '<div class="form-group row">';
                         return true;
                     } else {
@@ -41,7 +41,7 @@
             function isrequired($forms, $AttachmentName, $DriversProvince, $attachments=0){
                 //Attachment names are id_piece, driver_record_abstract, cvor, resume, certification, attachments
                 if ($AttachmentName=="attachments" && $attachments>0) {return true; }
-                $required = array("id_piece" => 1603, "driver_record_abstract" => 1, "cvor" => 14, "resume"=> 1627, "certification" => 1650);
+                $required = array("id_piece" => 1603);//, "driver_record_abstract" => 1, "cvor" => 14, "resume"=> 1627, "certification" => 1650);
                 if (isset($required[$AttachmentName])) {
                     $requirements = $required[$AttachmentName];
                     if (is_array($requirements)){
@@ -75,8 +75,7 @@
                 ?>
 
     <?php
-   if (true){ //(printdivrequired($forms, "id_piece", $DriverProvince)){ ?>
-       <div class="form-group row">
+   if (printdivrequired($forms, "id_piece", $DriverProvince)){ ?>
             <div class="col-md-12">
                 <label class="control-label col-md-4">Upload 2 pieces of ID : </label>  
                 <div class="col-md-8">              
@@ -173,14 +172,18 @@
 
     if  (printdivrequired($forms, "attachments", $DriverProvince, count($attachment))){
         if ($action != "View" && $action != "Vieworder") {
-            echo '</DIV><HR><div class="form-group row"><div class="col-md-12">';
-            echo '<label class="control-label col-md-4">Please download, fill out, and upload these forms : </label><div class="col-md-8">';
-            foreach ($attachment as $name => $file) {//C:\wamp\www\veritas3-0\webroot\ http://localhost/veritas3-0/webroot/img/certificates/certificate71-1.pdf
-                echo '<A class="btn btn-info" DOWNLOAD="' . $name . '.pdf" HREF="' . $this->request->webroot . 'webroot/img/pdfs/' . $file . '">';
-                echo '<i class="fa fa-floppy-o"></i> ' . $name . ' </A> ';
+            echo '</DIV><HR>';
+            if(count($attachment)>0) {
+                echo '<div class="form-group row"><div class="col-md-12">';
+                echo '<label class="control-label col-md-4">Please download, fill out, and upload these forms : </label><div class="col-md-8">';
+                foreach ($attachment as $name => $file) {//C:\wamp\www\veritas3-0\webroot\ http://localhost/veritas3-0/webroot/img/certificates/certificate71-1.pdf
+                    echo '<A class="btn btn-info" DOWNLOAD="' . $name . '.pdf" HREF="' . $this->request->webroot . 'webroot/img/pdfs/' . $file . '">';
+                    echo '<i class="fa fa-floppy-o"></i> ' . $name . ' </A> ';
+                }
+                echo "</DIV></DIV></DIV>";
             }
-            echo "<FONT COLOR='red'> * Required</FONT>";
-            echo "</DIV></DIV></DIV><DIV>";
+            //echo "<FONT COLOR='red'> * Required</FONT>";
+            echo "<DIV>";
         }
         ?>
         <div class="form-group row">
@@ -209,7 +212,7 @@
                     <span><a style="margin-bottom:5px;" href="javascript:void(0)" class="btn btn-primary additional" id="mee_att_7">Browse</a>&nbsp;<span class="uploaded"></span></span>
                             <input type="hidden" name="mee_attachments[]" class="mee_att_7" />
                  <?php
-                    echo  printrequired($action, $forms, "attachments", $DriverProvince, count($attachment)) . "<br />";
+                   //echo  printrequired($action, $forms, "attachments", $DriverProvince, count($attachment)) . "<br />";
                 }
                 else
                 {
@@ -221,7 +224,7 @@
                             <div>
                             <span><a style="margin-bottom:5px;" href="javascript:void(0)" class="btn btn-primary additional" id="mee_att_<?php echo $id_count;?>">Browse</a>&nbsp;<a style="margin-bottom:5px;" class="btn btn-danger" href="javascript:void(0);" onclick="$(this).parent().parent().remove();">Remove</a> <span class="uploaded"><?php if(isset($mm->attachments) && $mm->attachments){?><a class="dl" href="<?php echo $this->request->webroot;?>documents/download/<?php echo $mm->attachments;?>"><?php echo $mm->attachments;?></a><?php }?></span></span>
                             <input type="hidden" name="mee_attachments[]" class="mee_att_<?php echo $id_count;?>" value="<?php if(isset($mm->attachments) && $mm->attachments){ echo $mm->attachments; }?>" />
-                                <?= printrequired($action, $forms, "attachments", $DriverProvince, count($attachment)) . "<br />"; ?>
+                                <?php //echo printrequired($action, $forms, "attachments", $DriverProvince, count($attachment)) . "<br />"; ?>
                             </div>
                          <?php
                         }
