@@ -242,8 +242,6 @@ var FormWizard = function () {
                 
                 if(current == (total-1))
                 {
-
-                    
                     $('.cont').html('Submit Order');
                     $('.cont').attr('onclick','return false;');
                     $('.skip').html('Save as draft');
@@ -266,7 +264,6 @@ var FormWizard = function () {
                 }
                 else{
                     $('.skip').html('Save as draft');
-                    
                     //$('.skip').removeClass('button-next');
                     //$('.skip').removeClass('save_as_draft');
                     $('.cont').not('.skip').each(function(){
@@ -365,25 +362,28 @@ var FormWizard = function () {
                     error.hide();
 
                     //required form elements
-                    if($('.tabber.active').attr('id') == 'tab16' && $('.button-next').attr('id') =='nextview' ){//Mee attachments, not saving as draft
-                        var Forms =  GetParam("forms").split(",");
-                        var MissingData = ""; //use DriverProvince
-                        //for(var i = 0; i < Forms.length; i++){//loop through product numbers
-                        //    MissingData = MissingData + " " + Forms[i];
+                    var saving_draft=Title.indexOf("draft") > -1;
+                    if (!saving_draft) {//if not saving as draft
+                        if($('.tabber.active').attr('id') == 'tab16'){//Mee attachments
+                            var Forms =  GetParam("forms").split(",");
+                            var MissingData = ""; //use DriverProvince
+                            //for(var i = 0; i < Forms.length; i++){//loop through product numbers
+                            //    MissingData = MissingData + " " + Forms[i];
 
-                        //}
-                        for(var i =1; i<=6; i++){
-                            if (i != 2) {//skip second piece ID
-                                if ($('.mee_att_' + i).length) {
-                                    if ($('.mee_att_' + i).val().length == 0) {
-                                        MissingData = "Missing a required attachment";
+                            //}
+                            for(var i =1; i<=6; i++){
+                                if (i != 2) {//skip second piece ID
+                                    if ($('.mee_att_' + i).length) {
+                                        if ($('.mee_att_' + i).val().length == 0) {
+                                            MissingData = "Missing a required attachment";
+                                        }
                                     }
                                 }
                             }
-                        }
-                        if(MissingData.length>0) {
-                            alert(MissingData);
-                            return false;
+                            if(MissingData.length>0) {
+                                alert("Error: " + MissingData);
+                                return false;
+                            }
                         }
                     }
 
