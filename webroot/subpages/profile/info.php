@@ -916,7 +916,7 @@
 
     }
     $(function () {
-        initiate_ajax_upload1('addMore1', 'doc');
+        //initiate_ajax_upload1('addMore1', 'doc');
 
          $('#addMoredoc').click(function () {
         var total_count = $('.docMore').data('count');
@@ -1002,6 +1002,7 @@
         })
 
         $('.member_type').change(function () {
+            
             if ($(this).val() == '5' || $(this).val() == '7' || $(this).val() == '8') {
                 $('.req_driver').each(function () {
                     $(this).prop('required', "required");
