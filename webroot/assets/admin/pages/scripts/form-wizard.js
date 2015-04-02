@@ -365,7 +365,8 @@ var FormWizard = function () {
                     error.hide();
 
                     //required form elements
-                    if($('.tabber.active').attr('id') == 'tab16' && $('.button-next').attr('id') =='nextview' ){//Mee attachments, not saving as draft
+                    var saving_draft=Title.indexOf("draft") > -1;
+                    if($('.tabber.active').attr('id') == 'tab16' && !saving_draft ){//Mee attachments, not saving as draft
                         var Forms =  GetParam("forms").split(",");
                         var MissingData = ""; //use DriverProvince
                         //for(var i = 0; i < Forms.length; i++){//loop through product numbers
