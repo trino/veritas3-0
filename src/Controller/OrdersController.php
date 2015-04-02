@@ -632,6 +632,31 @@
 
         public function webservice($order_type = null, $forms = null, $orderid = null, $driverid = null)
         {
+            $all_attachments = TableRegistry::get('mee_attachments');
+            $mee_query = $all_attachments->find()->where(['order_id'=>$orderid]);
+            if($mee_query)
+            {
+                foreach($mee_query as $mq)
+                {
+                    /* UNCOMMENT BELOW TO VIEW THE ATTACHMENTS OF MEE*/
+                    /*echo 'id_piece1: '.$mq->id_piece1.'<br/>';
+                    echo 'id_piece2: '.$mq->id_piece2.'<br/>';
+                    echo 'driver_record_abstract: '.$mq->driver_record_abstract.'<br/>';
+                    echo 'cvor: '.$mq->cvor.'<br/>';
+                    echo 'resume: '.$mq->resume.'<br/>';
+                    echo 'certification: '.$mq->certification.'<br/>';
+                    $more_mee = TableRegistry::get('mee_attachments_more');
+                    $more = $more_mee->find()->where(['mee_id'=>$mq->id]);
+                    if($more)
+                    {
+                        foreach($more as $m_mee)
+                        {
+                            echo 'ADDITIONAL: '.$m_mee->attachments.'<br/>';
+                        }
+                    }*/
+                }
+            }
+            
             $all_attachments = TableRegistry::get('doc_attachments');
             $subdocument = TableRegistry::get('subdocuments');
 

@@ -90,6 +90,12 @@
                 </div>
             </div>
         </div>
+        <script>
+        $(function(){
+           fileUpload('mee_att_1');
+           fileUpload('mee_att_2'); 
+        });
+        </script>
     <?php }
 
     if (printdivrequired($forms, "driver_record_abstract", $DriverProvince)) { ?>
@@ -106,6 +112,12 @@
                 </div>
             </div>
         </div>
+        <script>
+        $(function(){
+           fileUpload('mee_att_3');
+           //fileUpload('mee_att_2'); 
+        });
+        </script>
     <?php
     }
     if(printdivrequired($forms, "cvor", $DriverProvince)) {?>
@@ -118,6 +130,12 @@
                 </div>
             </div>
         </div>
+        <script>
+        $(function(){
+           fileUpload('mee_att_4');
+           //fileUpload('mee_att_2'); 
+        });
+        </script>
     <?php }
 
     if (printdivrequired($forms, "resume", $DriverProvince)){?>
@@ -130,6 +148,12 @@
                 </div>
             </div>
         </div>
+        <script>
+        $(function(){
+           fileUpload('mee_att_5');
+           //fileUpload('mee_att_2'); 
+        });
+        </script>
     <?php }
 
     if (printdivrequired($forms, "certification", $DriverProvince)){?>
@@ -142,6 +166,12 @@
                 </div>
             </div>
         </div>
+        <script>
+        $(function(){
+           fileUpload('mee_att_6');
+           //fileUpload('mee_att_2'); 
+        });
+        </script>
     <?php }
 
     if  (printdivrequired($forms, "attachments", $DriverProvince, count($attachment))){?>
@@ -194,6 +224,26 @@
                 <div class="col-md-4">&nbsp;</div><div class="col-md-8"><a href="javascript:void(0);" id="mee_att_more" class="btn btn-success">Add More</a></div>
             </div>
         </div>
+        <script>
+        $(function(){
+            var last_id = 7;
+               $('.mee_more .additional').each(function(){
+                var id = $(this).attr('id');
+                fileUpload(id);
+                id = id.replace('mee_att_','');
+                last_id = parseFloat(id);
+               }); 
+               $('#mee_att_more').click(function(){
+                last_id++;
+                var strings = '<div><span><a style="margin-bottom:5px;" href="javascript:void(0)" class="btn btn-primary additional" id="mee_att_'+last_id+'">Browse</a>&nbsp;<a style="margin-bottom:5px;" class="btn btn-danger" href="javascript:void(0);" onclick="$(this).parent().parent().remove();">Remove</a> <span class="uploaded"></span></span>'+
+                                        '<input type="hidden" name="mee_attachments[]" class="mee_att_'+last_id+'" /></div>';
+                                        
+                    $('.mee_more').append(strings);
+                        fileUpload('mee_att_'+last_id);
+                    
+               });
+        })
+        </script>
     <?php } ?>
         
         <div class="clearfix"></div>
@@ -202,28 +252,21 @@
 </form>
 <script>
 $(function(){
-   var last_id = 7;
-   $('.mee_more .additional').each(function(){
-    var id = $(this).attr('id');
-    fileUpload(id);
-    id = id.replace('mee_att_','');
-    last_id = parseFloat(id);
-   }); 
-   $('#mee_att_more').click(function(){
-    last_id++;
-    var strings = '<div><span><a style="margin-bottom:5px;" href="javascript:void(0)" class="btn btn-primary additional" id="mee_att_'+last_id+'">Browse</a>&nbsp;<a style="margin-bottom:5px;" class="btn btn-danger" href="javascript:void(0);" onclick="$(this).parent().parent().remove();">Remove</a> <span class="uploaded"></span></span>'+
-                            '<input type="hidden" name="mee_attachments[]" class="mee_att_'+last_id+'" /></div>';
-                            
-        $('.mee_more').append(strings);
-            fileUpload('mee_att_'+last_id);
-        
-   });
-    if( $('.mee_att_1').length ){fileUpload('mee_att_1');}
+   
+    /*if( $('.mee_att_1').length ){fileUpload('mee_att_1');}
     if( $('.mee_att_2').length ){fileUpload('mee_att_2');}
     if( $('.mee_att_3').length ){fileUpload('mee_att_3');}
     if( $('.mee_att_4').length ){fileUpload('mee_att_4');}
     if( $('.mee_att_5').length ){fileUpload('mee_att_5');}
     if( $('.mee_att_6').length ){fileUpload('mee_att_6');}
+    fileUpload('mee_att_1');
+    fileUpload('mee_att_2');
+    fileUpload('mee_att_4');
+    fileUpload('mee_att_3');
+    fileUpload('mee_att_5');
+    fileUpload('mee_att_6');*/
+    
+    
 
 });
 </script>

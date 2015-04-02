@@ -421,6 +421,7 @@ function provinces($name){
                             $d = $this->requestAction('/clients/getFirstSub/'.$sd->sub_id);
 
                            // debug($d);
+                           
                         if (displayform2($DriverProvince,$thedocuments,$d->title)){//if (displayform($DriverProvince, $provinces, $forms, $d->title,$_this)){
 
 
@@ -1915,26 +1916,32 @@ function provinces($name){
 
 
         $('.addattachment5').load('<?php echo $this->request->webroot;?>documents/attach_doc/<?php echo $did."/".$view.'/attachfive_1/5';?>', function(){
+                if($('#attachfive_1').length)
                 initiate_ajax_upload1('attachfive_1', 'doc');
              });
              
              $('.addattachment6').load('<?php echo $this->request->webroot;?>documents/attach_doc/<?php echo $did."/".$view.'/attachsix_1/6';?>', function(){
+                if($('#attachsix_1').length)
                 initiate_ajax_upload1('attachsix_1', 'doc');
              });
              
              $('.addattachment7').load('<?php echo $this->request->webroot;?>documents/attach_doc/<?php echo $did."/".$view.'/attachseven_1/7';?>', function(){
+                if($('#attachseven_1').length)
                 initiate_ajax_upload1('attachseven_1', 'doc');
              });
              
              $('.addattachment8').load('<?php echo $this->request->webroot;?>documents/attach_doc/<?php echo $did."/".$view.'/attacheight_1/8';?>', function(){
+                if($('#attacheight_1').length)
                 initiate_ajax_upload1('attacheight_1', 'doc');
              });
              
              $('.addattachment12').load('<?php echo $this->request->webroot;?>documents/attach_doc/<?php echo $did."/".$view.'/attachtwelve_1/12';?>', function(){
+                if($('#attachtwelve_1').length)
                 initiate_ajax_upload1('attachtwelve_1', 'doc');
              });
              
              $('.addattachment11').load('<?php echo $this->request->webroot;?>documents/attach_doc/<?php echo $did."/".$view.'/attacheleven_1/11';?>', function(){
+                if($('#attacheleven_1').length)
                 initiate_ajax_upload1('attacheleven_1', 'doc');
              });
              
@@ -2012,6 +2019,7 @@ function provinces($name){
         });
     }
     function fileUpload(ID) {
+       // alert(ID);
         // e.preventDefault();
 
         var $type = $(".tabber.active").find("input[name='document_type']").val(),

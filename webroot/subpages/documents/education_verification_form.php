@@ -483,7 +483,7 @@
             <script>
                 $(function () {
                     <?php
-                       if($this->request->params['action']=='addorder' || $this->request->params['action']=='add')
+                       if(($this->request->params['action']=='addorder' || $this->request->params['action']=='add')&& !count($sub4['att']))
                        {
                            ?>
                     fileUpload('edu1');

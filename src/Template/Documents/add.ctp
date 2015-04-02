@@ -1,3 +1,4 @@
+<style>.allattach{display:none;}</style>
 <script src="<?php echo $this->request->webroot; ?>js/jquery.easyui.min.js" type="text/javascript"></script>
 <?php
 $param = $this->request->params['action'];
@@ -533,9 +534,9 @@ if (isset($this->request->params['pass'][1])) {
                             {
                                 ?>
 
-                                <!--a href="javascript:;" id="draft" class="btn blue cont">
+                                <a href="javascript:;" id="draft" class="btn blue cont">
                                     Save As Draft <i class="m-icon-swapright m-icon-white"></i>
-                                </a-->
+                                </a>
                             <?php
                             }
                             ?>
