@@ -820,7 +820,7 @@ if( isset($sub['de_at'])){  listfiles($sub['de_at'], "attachments/", "", false,3
         
         
         <?php
-        if($this->request->params['action']=='addorder' || $this->request->params['action']=='add')
+        if(($this->request->params['action']=='addorder' || $this->request->params['action']=='add') && !count($sub['de_at']))
         {
             ?>
             fileUpload('road1');

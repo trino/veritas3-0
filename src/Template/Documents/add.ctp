@@ -1656,6 +1656,7 @@ if (isset($this->request->params['pass'][1])) {
                     //alert(res);
                     $('#did').val(res);
                     //alert(type);return false;
+                    //alert(type);return false;
                     if (type == "Pre-Screening") {
                         var forms = $(".tab-pane.active").prev('.tab-pane').find(':input'),
                             url = '<?php echo $this->request->webroot;?>documents/savePrescreening/?document=' + type + '&draft=' + draft+'<?php if(isset($_GET['order_id'])){?>&order_id=<?php echo $_GET['order_id'];}?>',
