@@ -58,7 +58,7 @@
                 <input type="text" class="form-control required" name="driver_license_number"/>
             </div>
 
-            <div class="col-md-4"><label class="control-label">Driver’s License was issued in :</label>
+            <div class="col-md-4"><label class="control-label">Driver's License was issued in :</label>
                 <?php provinces("driver_license_issued"); ?>
             </div>
 
@@ -68,8 +68,8 @@
             </div>
         </div>
 
-        <div class="form-group row">
-            <label class="control-label col-md-6">Current Address : </label>
+        <div class="form-group row  col-md-12">
+            <label class="control-label">Current Address : </label>
         </div>
         <div class="form-group row">
             <div class="col-md-3">
@@ -90,8 +90,8 @@
             </div>
         </div>
 
-        <div class="form-group row">
-            <label class="control-label col-md-9">Previous Address (if you have not lived at Current Address for more
+        <div class="form-group row col-md-12">
+            <label class="control-label">Previous Address (if you have not lived at Current Address for more
                 than 5 years): </label>
         </div>
         <div class="form-group row">

@@ -763,8 +763,8 @@
                                 }
                                 $delete = isset($disabled);
                                 if (isset($client_docs)) {
-                                    include_once 'subpages/filelist.php';
-                                    listfiles($client_docs, "img/jobs/",'profile_doc',$delete);
+                                 //   include_once 'subpages/filelist.php';
+                                 //   listfiles($client_docs, "img/jobs/",'profile_doc',$delete);
                                 }
                             ?>
 

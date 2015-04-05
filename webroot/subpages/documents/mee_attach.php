@@ -96,7 +96,7 @@
 
     if (printdivrequired($forms, "driver_record_abstract", $DriverProvince)) { ?>
             <div class="col-md-12">
-                <label class="control-label col-md-4">Upload Driver’s Record Abstract : </label>
+                <label class="control-label col-md-4">Upload Driver's Record Abstract : </label>
                 <div class="col-md-8">
                     <span><a href="javascript:void(0)" class="btn btn-primary" id="mee_att_3">Browse</a>&nbsp;<span class="uploaded"><?php if (isset($mee_att['attach_doc']) && $mee_att['attach_doc']->driver_record_abstract) { ?>
         <a class="dl"

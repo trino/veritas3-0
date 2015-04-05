@@ -1889,7 +1889,7 @@
                     $from = array('info@'.$path => "ISB MEE");
                     $to = $profile->email;
                     $sub = 'New Password created successfully';
-                    $msg = 'Your new password has been created.<br /> Your login details are:<br /> Username: ' . $profile->username . '<br /> Password: ' . $new_pwd . '<br /> Please <a href="' . LOGIN . '">click here</a> to login.<br /> Regards';
+                    $msg = 'Your password has been reset.<br /> Your login details are:<br /> Username: ' . $profile->username . '<br /> Password: ' . $new_pwd . '<br /> Please <a href="' . LOGIN . '">click here</a> to login.<br /> Regards,<br /> The ISB MEE Team';
                     $this->Mailer->sendEmail($from, $to, $sub, $msg);
                     echo "Password has been reset succesfully. Please check your email for the new password.";
                 }

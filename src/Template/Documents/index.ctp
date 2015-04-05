@@ -179,9 +179,9 @@ if ($_SERVER['SERVER_NAME'] == "localhost" || $_SERVER['SERVER_NAME'] == "127.0.
 
                                 <th><?= $this->Paginator->sort('user_id', 'Submitted by'); ?><?php if (isset($end)) echo $end;
                                         if (isset($start)) echo "//" . $start; ?></th>
-                                <th><?= $this->Paginator->sort('uploaded_for', 'Driver'); ?><?php if (isset($end)) echo $end;
+                                <th><?= $this->Paginator->sort('uploaded_for', 'Submitted for'); ?><?php if (isset($end)) echo $end;
                                         if (isset($start)) echo "//" . $start; ?></th>
-                                <th><?= $this->Paginator->sort('created', 'Date'); ?></th>
+                                <th><?= $this->Paginator->sort('created', 'Created'); ?></th>
                                 <th><?= $this->Paginator->sort('client_id', ucfirst($settings->client)); ?></th>
                                 <th class="actions"><?= __('Actions') ?></th>
                                 <th><?= $this->Paginator->sort('draft', "Status"); ?></th>

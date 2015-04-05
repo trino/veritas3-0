@@ -100,7 +100,7 @@
                                 ?>
                             </select>
                             <select class="form-control input-inline" name="uploaded_for" style="">
-                                <option value="">Uploaded For</option>
+                                <option value="">Submitted for</option>
                                 <?php
                                     foreach ($users as $u) {
                                         //if($u->profile_type == '5' || $u->profile_type == '7' || $u->profile_type == '8'){
@@ -170,8 +170,8 @@
                             <tr class="sorting">
                                 <th><?= $this->Paginator->sort('id'); ?></th>
                                 <th><?= $this->Paginator->sort('orders.order_type', "Order Type"); ?></th>
-                                <th><?= $this->Paginator->sort('user_id', 'Recruiter'); ?></th>
-                                <th><?= $this->Paginator->sort('uploaded_for', 'Driver'); ?></th>
+                                <th><?= $this->Paginator->sort('user_id', 'Submitted by'); ?></th>
+                                <th><?= $this->Paginator->sort('uploaded_for', 'Submitted for'); ?></th>
                                 <th><?= $this->Paginator->sort('client_id', ucfirst($settings->client)); ?></th>
                                 <th>Division</th>
                                 <th><?= $this->Paginator->sort('created', 'Created'); ?></th>
