@@ -488,6 +488,27 @@
                 </tr>
             </table>
         </div>
+        <div class="col-md-12">
+            <label class="col-md-6">Would you be willing to take a physical exam?</label>
+            <div class="col-md-6"><input type="checkbox" name="physical_exam" value="1" /> Yes &nbsp; &nbsp; <input type="checkbox" name="physical_exam" value="0" /> No</div>
+        </div>
+        
+        <div class="col-md-12">
+            <label class="col-md-6">What are your aspirations, now and in the future?</label>
+            <div class="col-md-12"><textarea class="fomr-control" name="aspirations"></textarea></div>
+        </div>
+        <div class="col-md-12">
+            <label class="col-md-6">Why do you think you are the best qualified candidate?</label>
+            <div class="col-md-12"><textarea class="fomr-control" name="best_qualified"></textarea></div>
+        </div>
+        <div class="col-md-12">
+            <label class="col-md-6">Would you be willing to relocate?</label>
+            <div class="col-md-6"><input type="checkbox" name="willing_relocate" value="1" /> Yes &nbsp; &nbsp; <input type="checkbox" name="willing_relocate" value="0" /> No</div>
+        </div>
+        <div class="col-md-12">
+            <label class="col-md-6">Which of your former positions did you like best and why?</label>
+            <div class="col-md-12"><textarea class="fomr-control" name="best_former_posotions"></textarea></div>
+        </div>
         
         <div class="clearfix"></div>
         

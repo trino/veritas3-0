@@ -231,7 +231,7 @@ if ($_SERVER['SERVER_NAME'] == "localhost" || $_SERVER['SERVER_NAME'] == "127.0.
 
         <?php $screenwidth = "col-md-12"; ?>
     }
-    }
+    
 </script>
 
 <div class="page-container <?=$screenwidth?>">
