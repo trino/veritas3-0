@@ -234,6 +234,7 @@ function provinces($name){
 
                                             $index+=1;
                                             $d = $this->requestAction('/clients/getFirstSub/'.$sd->sub_id);
+                                            
 
                                             //debug($sd);
 
@@ -428,7 +429,7 @@ function provinces($name){
                                                 }
                         foreach ($subdoccli2 as $sd) {
                             $d = $this->requestAction('/clients/getFirstSub/'.$sd->sub_id);
-
+                            $dx = $this->requestAction('/orders/getSubDetail/'.$sd->sub_id);
                            // debug($d);
                            
                         if (displayform2($DriverProvince,$thedocuments,$d->title)){//if (displayform($DriverProvince, $provinces, $forms, $d->title,$_this)){
@@ -1438,6 +1439,7 @@ function provinces($name){
             }
 
             var type = $(".tabber.active").prev('.tabber').find("input[name='document_type']").val();
+            alert(type);
             if (type == 'add_driver') {
                 saveDriver('<?php echo $cid;?>');
             }
@@ -1590,7 +1592,9 @@ function provinces($name){
                             {
                                 if($dx->id >15)
                                 {
+                                    
                                 ?>
+                                    alert(type);
                                     if(type == "<?php echo addslashes($dx->title);?>")
                                     {
                                        
@@ -1705,7 +1709,12 @@ function provinces($name){
             save_signature('4');
             save_signature('5');
             save_signature('6');
-            save_signature('6');
+           
+        }
+        else
+        if($(".tabber.active").prev('.tabber').attr('id') == 'tab19')
+        {
+             save_signature('8');
         }
         /*if($(".tab-pane.active").prev('.tab-pane').find("input[name='document_type']").val()=='Driver Application')
          {    if(!$('#confirm_check').is(':checked'))
@@ -1719,9 +1728,9 @@ function provinces($name){
 
     function save_signature(numb) {
         //alert('rest');return;
-        //alert(numb);
+        alert(numb);
         $("#test" + numb).data("jqScribble").save(function (imageData) {
-            if ((numb == '1' && $('#recruiter_signature').parent().find('.touched').val() == 1) || (numb == '3' && $('#criminal_signature_applicant').parent().find('.touched').val() == 1) || (numb == '4' && $('#signature_company_witness').parent().find('.touched').val() == 1) || (numb == '5' && $('#signature_company_witness2').parent().find('.touched').val() == 1) || (numb == '6' && $('#signature_company_witness2').parent().find('.touched').val() == 1)) {
+            if ((numb == '8' && $('#gfs_signature').parent().find('.touched').val() == 1) || (numb == '1' && $('#recruiter_signature').parent().find('.touched').val() == 1) || (numb == '3' && $('#criminal_signature_applicant').parent().find('.touched').val() == 1) || (numb == '4' && $('#signature_company_witness').parent().find('.touched').val() == 1) || (numb == '5' && $('#signature_company_witness2').parent().find('.touched').val() == 1) || (numb == '6' && $('#signature_company_witness2').parent().find('.touched').val() == 1)) {
                 $.post('<?php echo $this->request->webroot; ?>canvas/image_save.php', {imagedata: imageData}, function (response) {
                     if (numb == '1') {
 
@@ -1738,6 +1747,9 @@ function provinces($name){
                     }
                     if (numb == '6') {
                         $('#signature_company_witness2').val(response);
+                    }
+                    if (numb == '8') {
+                        $('#gfs_signature').val(response);
                     }
                 });
             }

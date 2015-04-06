@@ -242,7 +242,11 @@
                 $past_employment_survey = TableRegistry::get('past_employment_survey');
                 $past_employment_survey = $past_employment_survey->find()->where(['order_id' => $did])->first();
                 $this->set('past_employment_survey', $past_employment_survey);
-
+                
+                $application_for_employment_gfs = TableRegistry::get('application_for_employment_gfs');
+                $application_for_employment_gfs = $application_for_employment_gfs->find()->where(['order_id' => $did])->first();
+                $this->set('application_for_employment_gfs', $application_for_employment_gfs);
+                
                 $survey = TableRegistry::get('Survey');
                 //$pre_at = TableRegistry::get('driver_application_accident');
                 $sur = $survey->find()->where(['order_id' => $did])->first();
@@ -1272,6 +1276,15 @@
             $this->response->body($prod);
             return $this->response;
             die;
+        }
+        function getSubDetail($id)
+        {
+            $products =  TableRegistry::get('subdocuments');
+            $pro = $products->find()->where(['id'=>$id])->first();
+            $this->response->body($pro);
+            return $this->response;
+            die;
+            
         }
     }
 

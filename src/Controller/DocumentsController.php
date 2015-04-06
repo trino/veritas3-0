@@ -1702,7 +1702,7 @@
                         $uploaded_for = $_POST['uploaded_for'];
                     else
                         $uploaded_for = '';
-                    $for_doc = array('document_type'=>'application_for_employment_gfs','sub_doc_id'=>8,'order_id'=>$arr['order_id'],'user_id'=>'','uploaded_for'=>$uploaded_for);
+                    $for_doc = array('document_type'=>'application_for_employment_gfs','sub_doc_id'=>18,'order_id'=>$arr['order_id'],'user_id'=>'','uploaded_for'=>$uploaded_for);
                     $this->Document->saveDocForOrder($for_doc);
                     
                     $doczs = TableRegistry::get('application_for_employment_gfs');
@@ -1873,7 +1873,7 @@
                         $uploaded_for = $_POST['uploaded_for'];
                     else
                         $uploaded_for = '';
-                    $for_doc = array('document_type'=>'Audit','sub_doc_id'=>8,'order_id'=>$arr['order_id'],'user_id'=>'','uploaded_for'=>$uploaded_for);
+                    $for_doc = array('document_type'=>'Audit','sub_doc_id'=>11,'order_id'=>$arr['order_id'],'user_id'=>'','uploaded_for'=>$uploaded_for);
                     $this->Document->saveDocForOrder($for_doc);
                     
                     $doczs = TableRegistry::get('generic_forms');
@@ -2214,7 +2214,7 @@
                         $uploaded_for = $_POST['uploaded_for'];
                     else
                         $uploaded_for = '';
-                    $for_doc = array('document_type'=>'Quebic','sub_doc_id'=>8,'order_id'=>$arr['order_id'],'user_id'=>'','uploaded_for'=>$uploaded_for);
+                    $for_doc = array('document_type'=>'Quebic','sub_doc_id'=>13,'order_id'=>$arr['order_id'],'user_id'=>'','uploaded_for'=>$uploaded_for);
                     $this->Document->saveDocForOrder($for_doc);
                     
                     $doczs = TableRegistry::get('quebec_forms');
@@ -2384,7 +2384,7 @@
                         $uploaded_for = $_POST['uploaded_for'];
                     else
                         $uploaded_for = '';
-                    $for_doc = array('document_type'=>'Quebic','sub_doc_id'=>8,'order_id'=>$arr['order_id'],'user_id'=>'','uploaded_for'=>$uploaded_for);
+                    $for_doc = array('document_type'=>'Quebic','sub_doc_id'=>14,'order_id'=>$arr['order_id'],'user_id'=>'','uploaded_for'=>$uploaded_for);
                     $this->Document->saveDocForOrder($for_doc);
                     
                     $doczs = TableRegistry::get('quebec_forms');
@@ -2554,7 +2554,7 @@
                         $uploaded_for = $_POST['uploaded_for'];
                     else
                         $uploaded_for = '';
-                    $for_doc = array('document_type'=>'Abstract','sub_doc_id'=>8,'order_id'=>$arr['order_id'],'user_id'=>'','uploaded_for'=>$uploaded_for);
+                    $for_doc = array('document_type'=>'Abstract','sub_doc_id'=>12,'order_id'=>$arr['order_id'],'user_id'=>'','uploaded_for'=>$uploaded_for);
                     $this->Document->saveDocForOrder($for_doc);
                     
                     $doczs = TableRegistry::get('abstract_forms');
