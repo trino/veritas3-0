@@ -549,7 +549,7 @@
             <h3>APPLICANT’S CERTIFICATION AND AGREEMENT</h3>   
             <strong>PLEASE READ EACH SECTION CAREFULLY AND CHECK THE BOX:</strong> 
             <p>&nbsp;</p>  
-            <p><input type="checkbox" name="checkbox1" /> &nbsp; 1. AUTHORIZATION FOR EMPLOYMENT/EDUCATIONAL INFORMATION. I authorize the references listed in this
+            <p><input type="checkbox" name="checkbox1" value="1" /> &nbsp; 1. AUTHORIZATION FOR EMPLOYMENT/EDUCATIONAL INFORMATION. I authorize the references listed in this
     
                 Application for Employment, and any prior employer, educational institution, or any other persons or organizations to give Gordon Food Service
                 
@@ -558,14 +558,14 @@
                 
                 hereby waive written notice that employment information is being provided by any person or organization.
             </p> 
-            <p><input type="checkbox" name="checkbox2" /> &nbsp; 2. TERMINATION OF EMPLOYMENT. If I am hired, in consideration of my employment, I agree to abide by the rules and policies of
+            <p><input type="checkbox" name="checkbox2" value="2" /> &nbsp; 2. TERMINATION OF EMPLOYMENT. If I am hired, in consideration of my employment, I agree to abide by the rules and policies of
 
                 Gordon Food Service, including any changes made from time to time, and agree that my employment and compensation can be terminated with or
                 
                 without cause, at any time with the provision of the appropriate statutory notice or pay in lieu of notice.
             </p>  
             <p>
-                <input type="checkbox" name="checkbox3" /> &nbsp; 3. RELEASE OF MEDICAL INFORMATION. I authorize every medical doctor, physician or other healthcare provider to provide any
+                <input type="checkbox" name="checkbox3" value="3" /> &nbsp; 3. RELEASE OF MEDICAL INFORMATION. I authorize every medical doctor, physician or other healthcare provider to provide any
 
                 and all information, including but not limited to, all medical reports, laboratory reports, X-rays or clinical abstracts relating to my previous health
                 
@@ -577,7 +577,7 @@
                 until a job offer has been made
             </p>
             <p>
-                <input type="checkbox" name="checkbox4" /> &nbsp; 4. PHYSICAL EXAM AND DRUG AND ALCOHOL TESTING. I agree to take a physical exam and authorize Gordon Food Service
+                <input type="checkbox" name="checkbox4" value="4" /> &nbsp; 4. PHYSICAL EXAM AND DRUG AND ALCOHOL TESTING. I agree to take a physical exam and authorize Gordon Food Service
 
 or its designated agent(s) to withdraw specimen(s) of my blood, urine or hair for chemical analysis. One purpose of this analysis is to determine or
 
@@ -585,17 +585,17 @@ exclude the presence of alcohol, drugs or other substances. I authorize the rele
 sions concerning my employment will be made as a result of these tests.
             </p>
             <p>
-                <input type="checkbox" name="checkbox5" /> &nbsp; 5. CONSIDERATION FOR EMPLOYMENT. I understand that my application will be considered pursuant
+                <input type="checkbox" name="checkbox5" value="5" /> &nbsp; 5. CONSIDERATION FOR EMPLOYMENT. I understand that my application will be considered pursuant
 
 normal procedures for a period of thirty (30) days. If I am still interested in employment thereafter, I must reapply.
             </p>
             <p>
-                <input type="checkbox" name="checkbox6" /> &nbsp; 6. DRIVING RECORDS CHECK. If applying for a position that requires driving a company vehicle, I authorize Gordon Food Service,
+                <input type="checkbox" name="checkbox6" value="6" /> &nbsp; 6. DRIVING RECORDS CHECK. If applying for a position that requires driving a company vehicle, I authorize Gordon Food Service,
 
 Inc. and its agents the authority to make investigations and inquiries of my driving record following a conditional offer of employment.
             </p>
             <p>
-                <input type="checkbox" name="checkbox7" /> &nbsp; 7. CERTIFICATION OF TRUTHFULNESS. I certify that all statements on this Application for Employment are completed by me and
+                <input type="checkbox" name="checkbox7" value="7" /> &nbsp; 7. CERTIFICATION OF TRUTHFULNESS. I certify that all statements on this Application for Employment are completed by me and
 
 to the best of my knowledge are true, complete, without evasion, and further understand and agree that such statements may be investigated and if
 
@@ -609,7 +609,7 @@ through 7 inclusive, and acknowledge that with my signature below.
         
         <div class="col-md-6">
             <label class="col-md-6">Dated</label>
-            <input type="text" name="dated" class="form-control date-picker" />
+            <input type="text" name="dated" class="form-control date-picker" value="" />
         </div>
         <div class="col-md-6">
             <label class="col-md-12">Signature</label>
