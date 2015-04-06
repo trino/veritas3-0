@@ -447,14 +447,18 @@
                                         get_color($order->ebs_1627);
                                     }
                                 }
+
+
+                                echo $duplicate_log;
                             ?>
                         </td>
 
                         <td class="actions">
                             <?php
                                 if ($duplicate_log == "Duplicate Order") {
-                                    ?>
-                                    get_color("Duplicate Order");
+                                  //  get_color("Duplicate Order");
+?>
+                                    <span class="label label-danger">Duplicate Order  </span>
                                 <?php
                                 } elseif (return_link($pp, $order->id) == false) { ?>
                                     <span class="label label-info">Pending </span>
