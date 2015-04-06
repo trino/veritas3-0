@@ -1585,6 +1585,37 @@ function provinces($name){
                         });
 
                     }
+                    else{
+                    <?php foreach($doc as $dx)
+                            {
+                                if($dx->id >15)
+                                {
+                                ?>
+                                    if(type == "<?php echo addslashes($dx->title);?>")
+                                    {
+                                       
+            
+                                        $('#form_tab<?php echo $dx->id;?>').attr('action', function (i, val) {
+                                            return val + '?order_id='+order_id+'&draft=' + draft;
+                                        });
+                                         var act = $('#form_tab<?php echo $dx->id;?>').attr('action');                                        
+                                        alert(act);
+                                        var order_id = $('#did').val(),
+                                            cid = '<?php echo $cid;?>',
+                                            url = act,
+                                        var param = $('#form_tab<?php echo $dx->id;?>').serialize()+'&order_id='+order_id;
+                                        $.ajax({
+                                            url: url,
+                                            data: param,
+                                            type: 'POST'
+                                        });
+                                    }
+            
+                    <?php       }
+                            }
+                    ?>
+            
+                    }
 
                         if(saving_draft==1)
                         {

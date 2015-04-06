@@ -1,4 +1,4 @@
-<form id="form_tab16">
+<form id="form_tab16" action="<?php echo $this->request->webroot;?>documents/application_employment/<?php echo $cid .'/' .$did;?>" method="post">
         <input type="hidden" class="document_type" name="document_type" value="Past Employment Survey"/>
         <input type="hidden" name="sub_doc_id" value="16" class="sub_docs_id" id="af" />
         <div class="clearfix"></div>
@@ -13,22 +13,22 @@
             <div class="col-md-6">
                     <label class="control-label col-md-3">Name : </label>  
                     <div class="col-md-3">              
-                        <input class="form-control" name="" placeholder="Last" />
+                        <input class="form-control" name="lname" placeholder="Last" />
                     </div> 
                     <div class="col-md-3">              
-                        <input class="form-control" name="" placeholder="Middle" />
+                        <input class="form-control" name="mname" placeholder="Middle" />
                     </div> 
                     <div class="col-md-3">              
-                        <input class="form-control" name="" placeholder="First" />
+                        <input class="form-control" name="fname" placeholder="First" />
                     </div>
             </div>
             <div class="col-md-6">
                     <label class="control-label col-md-4">Telephone : </label>  
                     <div class="col-md-3">              
-                        <input class="form-control" name="" placeholder="Area Code" />
+                        <input class="form-control" name="code" placeholder="Area Code" />
                     </div>  
                     <div class="col-md-5">              
-                        <input class="form-control" name="" />
+                        <input class="form-control" name="phone" />
                     </div>
             </div> 
         </div>
@@ -37,7 +37,7 @@
             <div class="col-md-12">
                     <label class="control-label col-md-4">Current Address : </label>  
                     <div class="col-md-8">              
-                        <input class="form-control" name=""/>
+                        <input class="form-control" name="address"/>
                     </div>  
             </div>
             
@@ -46,16 +46,16 @@
                     <label class="control-label col-md-4">Have you ever applied for work with us before? </label>  
                     <div class="col-md-2 radio-list yesNoCheck">
                         <label class="radio-inline">              
-                        <input type="radio" class="form-control" name="workedbefore" id="yesCheck"/> <span>Yes</span>
+                        <input type="radio" class="form-control" name="workedbefore" id="yesCheck" value="1"/> <span>Yes</span>
                         </label>
                         <label class="radio-inline">
-                        <input type="radio" class="form-control" name="workedbefore" id="noCheck"/> <span>No</span>
+                        <input type="radio" class="form-control" name="workedbefore" id="noCheck" value="0"/> <span>No</span>
                         </label>
                     </div>
                     <div id="yesDiv" style="display: none;">
                         <label class="control-label col-md-2">If yes, when? </label> 
                         <div class="col-md-4">              
-                            <textarea class="form-control" name=""></textarea>
+                            <textarea class="form-control" name="worked"></textarea>
                         </div>
                     </div> 
             </div>
@@ -63,14 +63,14 @@
             <div class="col-md-12">
                     <label class="control-label col-md-4">List anyone you know who woks for us: </label>  
                     <div class="col-md-8">
-                        <input class="form-control" name=""/> 
+                        <input class="form-control" name="for_us"/> 
                     </div>
             </div>
             <p>&nbsp;</p>
             <div class="col-md-12">
                     <label class="control-label col-md-4">Did anyone refer you? </label>  
                     <div class="col-md-8">
-                        <input class="form-control" name=""/> 
+                        <input class="form-control" name="refer"/> 
                     </div>
             </div>
             <p>&nbsp;</p>
@@ -78,10 +78,10 @@
                     <label class="control-label col-md-8">Are you 18 years of age or older? </label>  
                     <div class="col-md-4 radio-list">
                         <label class="radio-inline">              
-                        <input type="radio" class="form-control" name="age"/>Yes
+                        <input type="radio" class="form-control" name="age" value="1"/>Yes
                         </label>
                         <label class="radio-inline">
-                        <input type="radio" class="form-control" name="age"/> No
+                        <input type="radio" class="form-control" name="age" value="0"/> No
                         </label>
                     </div>
             </div>
@@ -89,10 +89,10 @@
                     <label class="control-label col-md-8">Are you legally eligible to work in Canada? </label>  
                     <div class="col-md-4 radio-list">
                         <label class="radio-inline">              
-                        <input type="radio" class="form-control" name="legal"/>Yes
+                        <input type="radio" class="form-control" name="legal" value="1"/>Yes
                         </label>
                         <label class="radio-inline">
-                        <input type="radio" class="form-control" name="legal"/> No
+                        <input type="radio" class="form-control" name="legal" value="0"/> No
                         </label>
                     </div>
             </div>
@@ -118,31 +118,31 @@
                 <tbody>
                     <tr>
                         <th>Grammar</th>
-                        <td><input class="form-control"/></td>
-                        <td><input class="form-control"/></td>
-                        <td><input class="form-control"/></td>
-                        <td><input class="form-control"/></td>
+                        <td><input class="form-control" name="g_years"/></td>
+                        <td><input class="form-control" name="g_city"/></td>
+                        <td><input class="form-control" name="g_course"/></td>
+                        <td><input class="form-control" name="g_grad"/></td>
                     </tr>
                     <tr>
                         <th>High</th>
-                        <td><input class="form-control"/></td>
-                        <td><input class="form-control"/></td>
-                        <td><input class="form-control"/></td>
-                        <td><input class="form-control"/></td>
+                        <td><input class="form-control" name="h_years"/></td>
+                        <td><input class="form-control" name="h_city"/></td>
+                        <td><input class="form-control" name="h_course"/></td>
+                        <td><input class="form-control" name="h_grad"/></td>
                     </tr>
                     <tr>
                         <th>College</th>
-                        <td><input class="form-control"/></td>
-                        <td><input class="form-control"/></td>
-                        <td><input class="form-control"/></td>
-                        <td><input class="form-control"/></td>
+                        <td><input class="form-control" name="c_years"/></td>
+                        <td><input class="form-control" name="c_city"/></td>
+                        <td><input class="form-control" name="c_course"/></td>
+                        <td><input class="form-control" name="c_grad"/></td>
                     </tr>
                     <tr>
                         <th>Other</th>
-                        <td><input class="form-control"/></td>
-                        <td><input class="form-control"/></td>
-                        <td><input class="form-control"/></td>
-                        <td><input class="form-control"/></td>
+                        <td><input class="form-control" name="o_years"/></td>
+                        <td><input class="form-control" name="o_city"/></td>
+                        <td><input class="form-control" name="o_course"/></td>
+                        <td><input class="form-control" name="o_grad"/></td>
                     </tr>
                 </tbody>
             </table>
@@ -152,7 +152,7 @@
             <div class="col-md-12">
                     <label class="control-label col-md-10">Do you have any skills, qualifications or experiences which you feel would specially fit you for working with us? </label>  
                     <div class="col-md-2">
-                        <textarea class="form-control" name=""></textarea> 
+                        <textarea class="form-control" name="skills"></textarea> 
                     </div>
             </div>
             <p>&nbsp;</p>
@@ -163,30 +163,30 @@
                     <div class="col-md-12">
                         <label class="control-label col-md-1">1. </label>
                         <div class="col-md-3">
-                            <input class="form-control" /> 
+                            <input class="form-control" name="applied" /> 
                         </div>
                         <label class="control-label col-md-3">Rate of pay expected $ </label>
                         <div class="col-md-2">
-                            <input class="form-control" /> 
+                            <input class="form-control" name="rate" /> 
                         </div>
                         <label class="control-label col-md-1">per </label>
                         <div class="col-md-2">
-                            <input class="form-control" /> 
+                            <input class="form-control" name="per" /> 
                         </div>
                     </div>
                     <p>&nbsp;</p>
                     <div class="col-md-12">
                         <label class="control-label col-md-1">2. </label>
                         <div class="col-md-3">
-                            <input class="form-control" /> 
+                            <input class="form-control" name="applied1" /> 
                         </div>
                         <label class="control-label col-md-3">Rate of pay expected $ </label>
                         <div class="col-md-2">
-                            <input class="form-control" /> 
+                            <input class="form-control" name="rate1" /> 
                         </div>
                         <label class="control-label col-md-1">per </label>
                         <div class="col-md-2">
-                            <input class="form-control" /> 
+                            <input class="form-control" name="per1" /> 
                         </div>
                     </div>
             </div>
@@ -195,10 +195,10 @@
                     <label class="control-label col-md-5">Do you want to work: </label>  
                     <div class="col-md-7 radio-list">
                         <label class="radio-inline">              
-                        <input type="radio" class="form-control" name="legal" id="partTime"/> Part Time
+                        <input type="radio" class="form-control" name="legal1" id="partTime" value="1"/> Part Time
                         </label>
                         <label class="radio-inline">
-                        <input type="radio" class="form-control" name="legal" id="fullTime"/> Full Time ?
+                        <input type="radio" class="form-control" name="legal1" id="fullTime" value="0"/> Full Time ?
                         </label>
                     </div>
             </div>
@@ -207,7 +207,7 @@
             <div class="col-md-12">
                 <label class="control-label col-md-5">If applying only for part-time, which days and hours?</label> 
                 <div class="col-md-7">              
-                    <textarea class="form-control" name=""></textarea>
+                    <textarea class="form-control" name="part"></textarea>
                 </div>
             </div>
             </div>
@@ -216,10 +216,10 @@
                     <label class="control-label col-md-5">Are you able to do the job(s) for which you are applying? </label>  
                     <div class="col-md-7 radio-list">
                         <label class="radio-inline">              
-                        <input type="radio" class="form-control" name="legal" id="ableToWork"/> Yes
+                        <input type="radio" class="form-control" name="legal2" id="ableToWork" value="1"/> Yes
                         </label>
                         <label class="radio-inline">
-                        <input type="radio" class="form-control" name="legal" id="notAbleToWork"/> No
+                        <input type="radio" class="form-control" name="legal2" id="notAbleToWork" value="2"/> No
                         </label>
                     </div> 
             </div>
@@ -228,7 +228,7 @@
             <div class="col-md-12">
                 <label class="control-label col-md-5">If no, please explain: </label> 
                 <div class="col-md-7">              
-                    <textarea class="form-control" name=""></textarea>
+                    <textarea class="form-control" name="no_explain"></textarea>
                 </div>
             </div>
              </div> 
@@ -237,7 +237,7 @@
             <div class="col-md-12">
                 <label class="control-label col-md-5">If hired, when can you start?</label> 
                 <div class="col-md-7">              
-                    <input class="form-control" name=""/>
+                    <input class="form-control" name="start"/>
                 </div>
             </div> 
             <div class="clearfix"></div>
@@ -262,21 +262,21 @@
                 <tbody>
                     <tr>
                         <th>Last Collision</th>
-                        <td><input class="form-control"/></td>
-                        <td><input class="form-control"/></td>
-                        <td><input class="form-control"/></td>
+                        <td><input class="form-control" name="l_date"/></td>
+                        <td><input class="form-control" name="l_nature"/></td>
+                        <td><input class="form-control" name="l_type"/></td>
                     </tr>
                     <tr>
                         <th>Next Previous</th>
-                        <td><input class="form-control"/></td>
-                        <td><input class="form-control"/></td>
-                        <td><input class="form-control"/></td>
+                         <td><input class="form-control" name="p_date"/></td>
+                        <td><input class="form-control" name="p_nature"/></td>
+                        <td><input class="form-control" name="p_type"/></td>
                     </tr>
                     <tr>
                         <th>Next Previous</th>
-                        <td><input class="form-control"/></td>
-                        <td><input class="form-control"/></td>
-                        <td><input class="form-control"/></td>
+                         <td><input class="form-control" name="n_date"/></td>
+                        <td><input class="form-control" name="n_nature"/></td>
+                        <td><input class="form-control" name="n_type"/></td>
                     </tr>
                 </tbody>
             </table>
@@ -301,16 +301,16 @@
                 
                 <tbody>
                     <tr>
-                        <td><input class="form-control"/></td>
-                        <td><input class="form-control"/></td>
+                        <td><input class="form-control" name="class1"/></td>
+                        <td><input class="form-control" name="expires1"/></td>
                     </tr>
                     <tr>
-                        <td><input class="form-control"/></td>
-                        <td><input class="form-control"/></td>
+                        <td><input class="form-control" name="class2"/></td>
+                        <td><input class="form-control" name="expires2"/></td>
                     </tr>
                     <tr>
-                        <td><input class="form-control"/></td>
-                        <td><input class="form-control"/></td>
+                        <td><input class="form-control" name="class3"/></td>
+                        <td><input class="form-control" name="expires3"/></td>
                     </tr>
                 </tbody>
             </table>
@@ -328,19 +328,19 @@
                 <tbody>
                     <tr>
                         <th>Straight Truck</th>
-                        <td><input class="form-control"/></td>
+                        <td><input class="form-control" name="starigt_miles"/></td>
                     </tr>
                     <tr>
                         <th>Tractor and Semi-Trailer</th>
-                        <td><input class="form-control"/></td>
+                        <td><input class="form-control" name="semi_miles"/></td>
                     </tr>
                     <tr>
                         <th>Tractor and Two-Trailer</th>
-                        <td><input class="form-control"/></td>
+                        <td><input class="form-control" name="two_miles"/></td>
                     </tr>
                     <tr>
                         <th>Other</th>
-                        <td><input class="form-control"/></td>
+                        <td><input class="form-control" name="other_miles"/></td>
                     </tr>
                 </tbody>
             </table>
