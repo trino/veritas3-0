@@ -109,11 +109,7 @@
                 case 'DUPLICATE ORDER':
                     echo $return_color = '<span  class="label label-sm label-warning" style="float:right;padding:4px;">' . $result_string . '</span>';
                     break;
-                case '':
-                    // echo $return_color = '<span  class="label label-sm label-success" style="float:right;padding:4px;">' . $result_string . '</span>';
-                    break;
-                default:
-                    echo $return_color = '<span  class="label label-sm label-warning" style="float:right;padding:4px;">NO COMMENT</span>';
+
             }
         }
 
@@ -198,10 +194,10 @@
 
                 $settings = $this->requestAction('settings/get_settings');
                 $uploaded_by = $doc_comp->getUser($order->user_id);
-                ?>
-                <?php
 
-                if ($order->bright_planet_html_binary) {
+
+
+                if ($order->bright_planet_html_binary && $order->bright_planet_html_binary != "done") {
                     create_files_from_binary($order->id, 'bright_planet_html', $order->bright_planet_html_binary);
 
                     foreach ($p as $pp) {
@@ -229,57 +225,48 @@
                         }
 
                     }
-                    $this->requestAction('orders/save_bright_planet_grade/' . $order->id . '/bright_planet_html_binary/' . null);
+                    $this->requestAction('orders/save_bright_planet_grade/' . $order->id . '/bright_planet_html_binary/done');
                 }
-                if ($order->ebs_1603_binary) {
+                if ($order->ebs_1603_binary && $order->ebs_1603_binary !="done") {
                     create_files_from_binary($order->id, '1603', $order->ebs_1603_binary);
-                    $this->requestAction('orders/save_bright_planet_grade/' . $order->id . '/ebs_1603_binary/' . null);
+                    $this->requestAction('orders/save_bright_planet_grade/' . $order->id . '/ebs_1603_binary/done');
 
                 }
-                if ($order->ins_1_binary) {
+                if ($order->ins_1_binary && $order->ins_1_binary != "done") {
                     create_files_from_binary($order->id, '1', $order->ins_1_binary);
-                    $this->requestAction('orders/save_bright_planet_grade/' . $order->id . '/ins_1_binary/' . null);
+                    $this->requestAction('orders/save_bright_planet_grade/' . $order->id . '/ins_1_binary/done');
 
                 }
-                if ($order->ins_14_binary) {
+                if ($order->ins_14_binary && $order->ins_14_binary != "done") {
                     create_files_from_binary($order->id, '14', $order->ins_14_binary);
-                    $this->requestAction('orders/save_bright_planet_grade/' . $order->id . '/ins_14_binary/' . null);
+                    $this->requestAction('orders/save_bright_planet_grade/' . $order->id . '/ins_14_binary/done');
 
                 }
-                if ($order->ins_77_binary) {
+                if ($order->ins_77_binary && $order->ins_77_binary != "done") {
                     create_files_from_binary($order->id, '77', $order->ins_77_binary);
-                    $this->requestAction('orders/save_bright_planet_grade/' . $order->id . '/ins_77_binary/' . null);
+                    $this->requestAction('orders/save_bright_planet_grade/' . $order->id . '/ins_77_binary/done');
 
                 }
-                if ($order->ins_78_binary) {
+                if ($order->ins_78_binary && $order->ins_78_binary !="done") {
                     create_files_from_binary($order->id, '78', $order->ins_78_binary);
-                    $this->requestAction('orders/save_bright_planet_grade/' . $order->id . '/ins_78_binary/' . null);
+                    $this->requestAction('orders/save_bright_planet_grade/' . $order->id . '/ins_78_binary/done');
 
                 }
-                if ($order->ebs_1650_binary) {
+                if ($order->ebs_1650_binary && $order->ebs_1650_binary !="done") {
                     create_files_from_binary($order->id, '1650', $order->ebs_1650_binary);
-                    $this->requestAction('orders/save_bright_planet_grade/' . $order->id . '/ebs_1650_binary/' . null);
+                    $this->requestAction('orders/save_bright_planet_grade/' . $order->id . '/ebs_1650_binary/done');
 
                 }
-                if ($order->ebs_1627_binary) {
+                if ($order->ebs_1627_binary && $order->ebs_1627_binary !="done") {
                     create_files_from_binary($order->id, '1627', $order->ebs_1627_binary);
-                    $this->requestAction('orders/save_bright_planet_grade/' . $order->id . '/ebs_1627_binary/' . null);
+                    $this->requestAction('orders/save_bright_planet_grade/' . $order->id . '/ebs_1627_binary/done');
 
                 }
-                if ($order->ins_72_binary) {
+                if ($order->ins_72_binary && $order->ins_72_binary !="done") {
                     create_files_from_binary($order->id, '72', $order->ins_72_binary);
-                    $this->requestAction('orders/save_bright_planet_grade/' . $order->id . '/ins_72_binary/' . null);
+                    $this->requestAction('orders/save_bright_planet_grade/' . $order->id . '/ins_72_binary/done');
                 }
                 ?>
-
-
-
-
-
-
-
-
-
 
                 <!-- BEGIN PROFILE CONTENT -->
                 <div class="">
@@ -411,7 +398,7 @@
 
                                 } elseif ($pp == 14) {
 
-                                    if ($order->ins_1 == "Duplicate Order") {
+                                    if ($order->ins_14 == "Duplicate Order") {
                                         $duplicate_log = "Duplicate Order";
                                     } else {
                                         get_color($order->ins_14);
@@ -449,7 +436,7 @@
                                 }
 
 
-                                echo $duplicate_log;
+                              //  echo $duplicate_log;
                             ?>
                         </td>
 

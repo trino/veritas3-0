@@ -22,12 +22,12 @@
         $user_id234 = '22552';
     }
 */  
-  echo $_SERVER['SERVER_NAME'];
+    echo $_SERVER['SERVER_NAME'];
 
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     $upload_additional_id = '';
 
-    $startorder1 = false;
+    $startorder1 = true;
     $upload_additional = true; //additional are all attachments in all forms
 
     $uploadbinaryconsent_1603 = true;
