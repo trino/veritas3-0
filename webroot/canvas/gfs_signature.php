@@ -27,28 +27,28 @@
 			}
 		</style>
 	
-		
-        <div class="col-sm-12" id="sig0">
+		<?php //var_dump($application_for_employment_gfs);?>
+        <div class="col-sm-12" id="sig8">
             <input type="hidden" name="gfs_signature" id="gfs_signature" />
             <input type="hidden" class="touched" value="0" />
-            <input type="hidden" class="touched_edit0" value="<?php if(isset($application_gfs) && $application_gfs->gfs_signature){?>1<?php }else{?>0<?php }?>" />
+            <input type="hidden" class="touched_edit8" value="<?php if(isset($application_for_employment_gfs) && $application_for_employment_gfs->gfs_signature){?>1<?php }else{?>0<?php }?>" />
             
             <?php if($this->request->params['action']!= 'vieworder' && $this->request->params['action']!= 'view'){?>
-    		<canvas id="test0" style="border: 1px solid silver;border-radius: 5px;"></canvas>
+    		<canvas id="test8" style="border: 1px solid silver;border-radius: 5px;"></canvas>
             <?php }?>
     		<div class="links" style="margin-top: 5px;">
     			<strong style="display: none;">OPTIONS:</strong>
     			<a href="#" onclick='addImage();' style="display: none;">Add Image</a>
-    			<a href="javascript:void(0)" onclick='$("#test0").data("jqScribble").clear();'>Clear</a> 			
+    			<a href="javascript:void(0)" onclick='$("#test8").data("jqScribble").clear();'>Clear</a> 			
                 <br />
     		</div>
         </div>
         
         <div class="col-sm-6">
-                <?php if(isset($application_gfs) && $application_gfs->gfs_signature){?><img src="<?php echo $this->request->webroot.'canvas/'.$application_gfs->gfs_signature;?>" style="max-width: 100%;" /><?php }
+                <?php if(isset($application_for_employment_gfs) && $application_for_employment_gfs->gfs_signature){?><img src="<?php echo $this->request->webroot.'canvas/'.$application_for_employment_gfs->gfs_signature;?>" style="max-width: 100%;" /><?php }
                 else
                 {
-                    if(isset($application_gfs))
+                    if(isset($application_for_employment_gfs))
                     {
                         ?>
                         <p>&nbsp;</p><strong>No signature supplied</strong>

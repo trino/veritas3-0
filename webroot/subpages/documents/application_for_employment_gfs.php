@@ -502,11 +502,11 @@
         
         <div class="col-md-12">
             <label class="col-md-6">What are your aspirations, now and in the future?</label>
-            <div class="col-md-12"><textarea class="fomr-control" name="aspirations"><?php if(isset($application_for_employment_gfs))echo $application_for_employment_gfs->aspirations;?></textarea></div>
+            <div class="col-md-12"><textarea class="form-control" name="aspirations"><?php if(isset($application_for_employment_gfs))echo $application_for_employment_gfs->aspirations;?></textarea></div>
         </div>
         <div class="col-md-12">
             <label class="col-md-6">Why do you think you are the best qualified candidate?</label>
-            <div class="col-md-12"><textarea class="fomr-control" name="best_qualified"><?php if(isset($application_for_employment_gfs))echo $application_for_employment_gfs->best_qualified;?></textarea></div>
+            <div class="col-md-12"><textarea class="form-control" name="best_qualified"><?php if(isset($application_for_employment_gfs))echo $application_for_employment_gfs->best_qualified;?></textarea></div>
         </div>
         <div class="col-md-12">
             <label class="col-md-6">Would you be willing to relocate?</label>
@@ -514,7 +514,7 @@
         </div>
         <div class="col-md-12">
             <label class="col-md-6">Which of your former positions did you like best and why?</label>
-            <div class="col-md-12"><textarea class="fomr-control" name="best_former_posotions"><?php if(isset($application_for_employment_gfs))echo $application_for_employment_gfs->best_former_posotions;?></textarea></div>
+            <div class="col-md-12"><textarea class="form-control" name="best_former_posotions"><?php if(isset($application_for_employment_gfs))echo $application_for_employment_gfs->best_former_posotions;?></textarea></div>
         </div>
         <p>&nbsp;</p>
         <div class="col-md-12">
@@ -668,18 +668,18 @@ through 7 inclusive, and acknowledge that with my signature below.
                 <div class="col-md-12"><textarea name="if_rejected" class="form-control"><?php if(isset($application_for_employment_gfs))echo $application_for_employment_gfs->if_rejected;?></textarea></div>            
             </div>       
         </div>
-        <div class="clearfix"></div>
         
+        <div class="clearfix"></div>
+        <p>&nbsp;</p>
     
 
 </form>
 <script>
-$(function () {
-        <?php if($this->request->params['action'] != 'vieworder'  && $this->request->params['action']!= 'view'){?>
-        $("#test0").jqScribble();
-        <?php }?>
-    });
+
 $(function(){
+    <?php if($this->request->params['action'] != 'vieworder'  && $this->request->params['action']!= 'view'){?>
+        $("#test8").jqScribble();
+        <?php }?>
             $('#yesCheck').click(function(){
               $("#yesDiv").show();  
             });
