@@ -1439,7 +1439,7 @@ function provinces($name){
             }
 
             var type = $(".tabber.active").prev('.tabber').find("input[name='document_type']").val();
-            alert(type);
+            //alert(type);
             if (type == 'add_driver') {
                 saveDriver('<?php echo $cid;?>');
             }
@@ -1594,7 +1594,7 @@ function provinces($name){
                                 {
                                     
                                 ?>
-                                    alert(type);
+                                    //alert(type);
                                     if(type == "<?php echo addslashes($dx->title);?>")
                                     {
                                        
