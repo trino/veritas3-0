@@ -75,7 +75,7 @@
 
     <?php if ($sidebar->profile_create == 1) { ?>
         <a href="<?php echo WEB_ROOT; ?>profiles/add" class="floatright btn btn-primary btnspc">
-            Add <?php echo ucfirst($settings->profile); ?></a>
+            Create <?php echo ucfirst($settings->profile); ?></a>
     <?php } ?>
 
 </div>
