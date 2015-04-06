@@ -508,13 +508,169 @@
             <label class="col-md-6">Which of your former positions did you like best and why?</label>
             <div class="col-md-12"><textarea class="fomr-control" name="best_former_posotions"><?php if(isset($application_for_employment_gfs))echo $application_for_employment_gfs->lanme;?>;?></textarea></div>
         </div>
+        <p>&nbsp;</p>
+        <div class="col-md-12">
+             <h3>OTHER INFORMATION</h3>
+             <p>
+             You may attach a separate sheet of paper to list any other information necessary to answer fully the above, or add any additional information about
+
+                yourself that you wish to be considered.
+             </p>
+             <textarea name="other_information" class="form-control" placeholder="OTHER INFORMATION"><?php if(isset($application_for_employment_gfs))echo $application_for_employment_gfs->lanme;?></textarea>
+        </div>
+        <p>&nbsp;</p>
+        <div class="col-md-12">
+             <h3>BUSINESS REFERENCES</h3>
+             <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Address and Telephone No.</th>
+                        <th>Occupation</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><input name="business_communication_name1" class="form-control" value="<?php if(isset($application_for_employment_gfs))echo $application_for_employment_gfs->lanme;?>" /></td>                    
+                        <td><input name="business_communication_address1" class="form-control" value="<?php if(isset($application_for_employment_gfs))echo $application_for_employment_gfs->lanme;?>" /></td>
+                        <td><input name="business_communication_occupation1" class="form-control" value="<?php if(isset($application_for_employment_gfs))echo $application_for_employment_gfs->lanme;?>" /></td>
+                    </tr>
+                    <tr>
+                        <td><input name="business_communication_name2" class="form-control" value="<?php if(isset($application_for_employment_gfs))echo $application_for_employment_gfs->lanme;?>" /></td>                    
+                        <td><input name="business_communication_address2" class="form-control" value="<?php if(isset($application_for_employment_gfs))echo $application_for_employment_gfs->lanme;?>" /></td>
+                        <td><input name="business_communication_occupation2" class="form-control" value="<?php if(isset($application_for_employment_gfs))echo $application_for_employment_gfs->lanme;?>" /></td>
+                    </tr>
+                </tbody>
+             </table>
+        </div>
         
+        <p>&nbsp;</p>
+        <div class="col-md-12">
+            <h3>APPLICANT’S CERTIFICATION AND AGREEMENT</h3>   
+            <strong>PLEASE READ EACH SECTION CAREFULLY AND CHECK THE BOX:</strong> 
+            <p>&nbsp;</p>  
+            <p><input type="checkbox" name="checkbox1" /> &nbsp; 1. AUTHORIZATION FOR EMPLOYMENT/EDUCATIONAL INFORMATION. I authorize the references listed in this
+    
+                Application for Employment, and any prior employer, educational institution, or any other persons or organizations to give Gordon Food Service
+                
+                any and all information concerning my previous employment/educational accomplishments, disciplinary information or any other pertinent informa-
+                tion they may have, personal or otherwise, and release all parties from all liability for any damage that may result from furnishing same to you. I
+                
+                hereby waive written notice that employment information is being provided by any person or organization.
+            </p> 
+            <p><input type="checkbox" name="checkbox2" /> &nbsp; 2. TERMINATION OF EMPLOYMENT. If I am hired, in consideration of my employment, I agree to abide by the rules and policies of
+
+                Gordon Food Service, including any changes made from time to time, and agree that my employment and compensation can be terminated with or
+                
+                without cause, at any time with the provision of the appropriate statutory notice or pay in lieu of notice.
+            </p>  
+            <p>
+                <input type="checkbox" name="checkbox3" /> &nbsp; 3. RELEASE OF MEDICAL INFORMATION. I authorize every medical doctor, physician or other healthcare provider to provide any
+
+                and all information, including but not limited to, all medical reports, laboratory reports, X-rays or clinical abstracts relating to my previous health
+                
+                history or employment in connection with any examination, consultation, tests or evaluation. I hereby release every medical doctor, healthcare per-
+                sonnel and every other person, firm, officer, corporation, association, organization or institution which shall comply with the authorization or
+                
+                request made in this respect from any and all liability. I understand
+                
+                until a job offer has been made
+            </p>
+            <p>
+                <input type="checkbox" name="checkbox4" /> &nbsp; 4. PHYSICAL EXAM AND DRUG AND ALCOHOL TESTING. I agree to take a physical exam and authorize Gordon Food Service
+
+or its designated agent(s) to withdraw specimen(s) of my blood, urine or hair for chemical analysis. One purpose of this analysis is to determine or
+
+exclude the presence of alcohol, drugs or other substances. I authorize the release of the test results to Gordon Food Service. I understand that deci-
+sions concerning my employment will be made as a result of these tests.
+            </p>
+            <p>
+                <input type="checkbox" name="checkbox5" /> &nbsp; 5. CONSIDERATION FOR EMPLOYMENT. I understand that my application will be considered pursuant
+
+normal procedures for a period of thirty (30) days. If I am still interested in employment thereafter, I must reapply.
+            </p>
+            <p>
+                <input type="checkbox" name="checkbox6" /> &nbsp; 6. DRIVING RECORDS CHECK. If applying for a position that requires driving a company vehicle, I authorize Gordon Food Service,
+
+Inc. and its agents the authority to make investigations and inquiries of my driving record following a conditional offer of employment.
+            </p>
+            <p>
+                <input type="checkbox" name="checkbox7" /> &nbsp; 7. CERTIFICATION OF TRUTHFULNESS. I certify that all statements on this Application for Employment are completed by me and
+
+to the best of my knowledge are true, complete, without evasion, and further understand and agree that such statements may be investigated and if
+
+found to be false will be sufficient reason for not being employed, or if employed may result in my dismissal. I have read and understood items one
+
+through 7 inclusive, and acknowledge that with my signature below.
+            </p>
+        </div>
+        <div class="clearfix"></div>
+        <p>&nbsp;</p>
+        
+        <div class="col-md-6">
+            <label class="col-md-6">Dated</label>
+            <input type="text" name="dated" class="form-control date-picker" />
+        </div>
+        <div class="col-md-6">
+            <label class="col-md-12">Signature</label>
+            <?php include('canvas/gfs_signature.php');?>
+            
+        </div>
+        
+        <p>&nbsp;</p>
+        
+        <div class="col-md-12" style="">
+            <h3 style="color: #FFF;background: #5B5A5A;padding:5px;">Process Record - For Use by Gordon Food Service Representatives ONLY!</h3>
+        </div>
+        <div class="col-md-12">
+            <div class="col-md-4">
+                <label class="col-md-6">Applicant Hired</label>
+                <div class="col-md-6"><input type="text" name="applicant_hired" class="form-control" /></div>            
+            </div>
+            <div class="col-md-4">
+                <label class="col-md-6">Date Employed</label>
+                <div class="col-md-6"><input type="text" name="date_employed" class="form-control date-picker" /></div>            
+            </div>
+            <div class="col-md-4">
+                <label class="col-md-6">Starting Salary/Wage</label>
+                <div class="col-md-6"><input type="text" name="starting_salary" class="form-control" /></div>            
+            </div>
+        </div>
+        <p>&nbsp;</p>
+        <div class="col-md-12">
+            <div class="col-md-8">
+                <label class="col-md-3">Position</label>
+                <div class="col-md-9"><input type="text" name="position_company" class="form-control" /></div>            
+            </div>
+            <div class="col-md-4">
+                <label class="col-md-6">Branch</label>
+                <div class="col-md-6"><input type="text" name="branch_company" class="form-control" /></div>            
+            </div>
+            
+        </div>
+        <p>&nbsp;</p>
+        <div class="col-md-12">
+            <div class="col-md-12">
+                <label class="col-md-12">Comments</label>
+                <div class="col-md-12"><textarea name="comments_company" class="form-control"></textarea></div>            
+            </div>
+            <p>&nbsp;</p>
+             <div class="col-md-12">
+                <label class="col-md-12">If rejected, give reasons:</label>
+                <div class="col-md-12"><textarea name="if_rejected" class="form-control"></textarea></div>            
+            </div>       
+        </div>
         <div class="clearfix"></div>
         
     
 
 </form>
 <script>
+$(function () {
+        <?php if($this->request->params['action'] != 'vieworder'  && $this->request->params['action']!= 'view'){?>
+        $("#test0").jqScribble();
+        <?php }?>
+    });
 $(function(){
             $('#yesCheck').click(function(){
               $("#yesDiv").show();  
