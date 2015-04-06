@@ -65,6 +65,11 @@
             return (get_string_between(base64_decode($bright_planet_html_binary), $document_type, '</tr>'));
         }
 
+        function get_mee_results_binary2($bright_planet_html_binary, $document_type)
+        {
+            return (get_string_between(base64_decode($bright_planet_html_binary), $document_type, '</tr>'));
+        }
+
         function get_color($result_string)
         {
 
@@ -99,6 +104,9 @@
                     echo $return_color = '<span  class="label label-sm label-warning" style="float:right;padding:4px;">' . $result_string . '</span>';
                     break;
                 case 'REQUIRES ATTENTION':
+                    echo $return_color = '<span  class="label label-sm label-warning" style="float:right;padding:4px;">' . $result_string . '</span>';
+                    break;
+                case 'DUPLICATE ORDER':
                     echo $return_color = '<span  class="label label-sm label-warning" style="float:right;padding:4px;">' . $result_string . '</span>';
                     break;
                 case '':
@@ -193,42 +201,86 @@
                 ?>
                 <?php
 
-              if($order->bright_planet_html_binary){
-                  create_files_from_binary($order->id, 'bright_planet_html', $order->bright_planet_html_binary);
-              }
-                   if ($order->ebs_1603_binary) {
+                if ($order->bright_planet_html_binary) {
+                    create_files_from_binary($order->id, 'bright_planet_html', $order->bright_planet_html_binary);
+
+                    foreach ($p as $pp) {
+                        if ($pp == 1) {
+                            $sendit = strip_tags(trim(get_mee_results_binary($order->bright_planet_html_binary, "Driver's Record Abstract")));
+                            $this->requestAction('orders/save_bright_planet_grade/' . $order->id . '/ins_1/' . $sendit);
+                        } elseif ($pp == 77) {
+                            $sendit = strip_tags(trim(get_mee_results_binary($order->bright_planet_html_binary, "Pre-employment Screening Program Report")));
+                            $this->requestAction('orders/save_bright_planet_grade/' . $order->id . '/ins_77/' . $sendit);
+                        } elseif ($pp == 14) {
+                            $sendit = strip_tags(trim(get_mee_results_binary($order->bright_planet_html_binary, "CVOR")));
+                            $this->requestAction('orders/save_bright_planet_grade/' . $order->id . '/ins_14/' . $sendit);
+                        } elseif ($pp == 1603) {
+                            $sendit = strip_tags(trim(get_mee_results_binary($order->bright_planet_html_binary, "Premium National Criminal Record Check")));
+                            $this->requestAction('orders/save_bright_planet_grade/' . $order->id . '/ebs_1603/' . $sendit);
+                        } elseif ($pp == 1650) {
+                            $sendit = strip_tags(trim(get_mee_results_binary($order->bright_planet_html_binary, "Certifications")));
+                            $this->requestAction('orders/save_bright_planet_grade/' . $order->id . '/ebs_1650/' . $sendit);
+                        } elseif ($pp == 78) {
+                            $sendit = strip_tags(trim(get_mee_results_binary($order->bright_planet_html_binary, "TransClick")));
+                            $this->requestAction('orders/save_bright_planet_grade/' . $order->id . '/ins_78/' . $sendit);
+                        } elseif ($pp == 1627) {
+                            $sendit = strip_tags(trim(get_mee_results_binary($order->bright_planet_html_binary, "Letter Of Experience")));
+                            $this->requestAction('orders/save_bright_planet_grade/' . $order->id . '/ebs_1627/' . $sendit);
+                        }
+
+                    }
+                    $this->requestAction('orders/save_bright_planet_grade/' . $order->id . '/bright_planet_html_binary/' . null);
+                }
+                if ($order->ebs_1603_binary) {
                     create_files_from_binary($order->id, '1603', $order->ebs_1603_binary);
+                    $this->requestAction('orders/save_bright_planet_grade/' . $order->id . '/ebs_1603_binary/' . null);
+
                 }
                 if ($order->ins_1_binary) {
-
                     create_files_from_binary($order->id, '1', $order->ins_1_binary);
+                    $this->requestAction('orders/save_bright_planet_grade/' . $order->id . '/ins_1_binary/' . null);
+
                 }
                 if ($order->ins_14_binary) {
-
                     create_files_from_binary($order->id, '14', $order->ins_14_binary);
+                    $this->requestAction('orders/save_bright_planet_grade/' . $order->id . '/ins_14_binary/' . null);
+
                 }
                 if ($order->ins_77_binary) {
-
                     create_files_from_binary($order->id, '77', $order->ins_77_binary);
+                    $this->requestAction('orders/save_bright_planet_grade/' . $order->id . '/ins_77_binary/' . null);
+
                 }
                 if ($order->ins_78_binary) {
-
                     create_files_from_binary($order->id, '78', $order->ins_78_binary);
+                    $this->requestAction('orders/save_bright_planet_grade/' . $order->id . '/ins_78_binary/' . null);
+
                 }
                 if ($order->ebs_1650_binary) {
-
                     create_files_from_binary($order->id, '1650', $order->ebs_1650_binary);
+                    $this->requestAction('orders/save_bright_planet_grade/' . $order->id . '/ebs_1650_binary/' . null);
+
                 }
                 if ($order->ebs_1627_binary) {
-
                     create_files_from_binary($order->id, '1627', $order->ebs_1627_binary);
+                    $this->requestAction('orders/save_bright_planet_grade/' . $order->id . '/ebs_1627_binary/' . null);
+
                 }
                 if ($order->ins_72_binary) {
-
                     create_files_from_binary($order->id, '72', $order->ins_72_binary);
+                    $this->requestAction('orders/save_bright_planet_grade/' . $order->id . '/ins_72_binary/' . null);
                 }
-
                 ?>
+
+
+
+
+
+
+
+
+
+
                 <!-- BEGIN PROFILE CONTENT -->
                 <div class="">
                     <div class="row">
@@ -335,55 +387,77 @@
                         </td>
 
 
-                        <td><?php
+                        <td>
 
-                                /*
-                                echo '<br>1' . $productdetailsebs1603;         // 1603 Premium check
-                                echo '<br>2' . $productdetails1;               // 1    MVR Driver's Record Abstract
-                                echo '<br>3' . $productdetails14;              // 14   CVOR
-                                echo '<br>4' . $productdetails77;              // 77   Pre-employment Screening Program Report
-                                echo '<br>5' . $productdetails78;              // 78   Transclick
-                                echo '<br>6' . $productdetailsebs1650;         // 1650 Certification (Education)
-                                echo '<br>7' . $productdetailsebs1627;         // 1627 LOE (Employment)
-                                echo '<br>8' . $productdetails_CheckDL_72;     // 72   checkdl
-                                */
-
+                            <?php
                                 echo $title_pr->title; ?>
                             <?php
-                                get_color(strip_tags(get_mee_results_binary($order->bright_planet_html_binary, $title_pr->title)));
 
+                                $duplicate_log = "";
+
+                                if ($pp == 1) {
+                                    if ($order->ins_1 == "Duplicate Order") {
+                                        $duplicate_log = "Duplicate Order";
+                                    } else {
+                                        get_color($order->ins_1);
+                                    }
+                                } elseif ($pp == 77) {
+
+                                    if ($order->ins_77 == "Duplicate Order") {
+                                        $duplicate_log = "Duplicate Order";
+                                    } else {
+                                        get_color($order->ins_77);
+                                    }
+
+                                } elseif ($pp == 14) {
+
+                                    if ($order->ins_1 == "Duplicate Order") {
+                                        $duplicate_log = "Duplicate Order";
+                                    } else {
+                                        get_color($order->ins_14);
+                                    }
+
+                                } elseif ($pp == 1603) {
+                                    if ($order->ebs_1603 == "Duplicate Order") {
+                                        $duplicate_log = "Duplicate Order";
+                                    } else {
+                                        get_color($order->ebs_1603);
+                                    }
+
+                                } elseif ($pp == 1650) {
+                                    if ($order->ebs_1650 == "Duplicate Order") {
+                                        $duplicate_log = "Duplicate Order";
+                                    } else {
+                                        get_color($order->ebs_1650);
+                                    }
+
+                                } elseif ($pp == 78) {
+                                    if ($order->ins_78 == "Duplicate Order") {
+
+                                        $duplicate_log = "Duplicate Order";
+                                    } else {
+                                        get_color($order->ins_78);
+                                    }
+
+                                } elseif ($pp == 1627) {
+
+                                    if ($order->ebs_1627 == "Duplicate Order") {
+                                        $duplicate_log = "Duplicate Order";
+                                    } else {
+                                        get_color($order->ebs_1627);
+                                    }
+                                }
                             ?>
                         </td>
 
                         <td class="actions">
                             <?php
-
-                                if ($order->ins_1 == "Duplicate Order" && $pp == 1) {
-                                    echo "<span class='label  label-danger'>Duplicate Order </span>";
-                                } else if ($order->ins_14 == "Duplicate Order" && $pp == 14) {
-                                    echo "<span class='label  label-info'>Duplicate Order </span>";
-
-                                } else if ($order->ins_77 == "Duplicate Order" && $pp == 77) {
-                                    echo "<span class='label  label-danger'>Duplicate Order </span>";
-
-                                } else if ($order->ins_78 == "Duplicate Order" && $pp == 78) {
-                                    echo "<span class='label  label-danger'>Duplicate Order </span>";
-
-                                } else if ($order->ebs_1603 == "Duplicate Order" && $pp == 1603) {
-                                    echo "<span class='label  label-danger'>Duplicate Order </span>";
-
-                                } else if ($order->ebs_1627 == "Duplicate Order" && $pp == 1627) {
-                                    echo "<span class='label  label-danger'>Duplicate Order </span>";
-
-                                } else if ($order->ebs_1650 == "Duplicate Order" && $pp == 1650) {
-                                    echo "<span class='label  label-danger'>Duplicate Order </span>";
-
-                                } else if ($order->ins_72 == "Duplicate Order" && $pp == 72) {
-                                    echo "<span class='label  label-danger'>Duplicate Order </span>";
-
-                                } else if (return_link($pp, $order->id) == false) { ?>
-                                    <span
-                                        class="label label label-info">Pending </span>
+                                if ($duplicate_log == "Duplicate Order") {
+                                    ?>
+                                    get_color("Duplicate Order");
+                                <?php
+                                } elseif (return_link($pp, $order->id) == false) { ?>
+                                    <span class="label label-info">Pending </span>
                                 <? } else { ?>
                                     <a target="_blank"
                                        href="<? echo $this->request->webroot . return_link($pp, $order->id); ?>"
@@ -392,7 +466,9 @@
 
                         </td>
                     </tr>
-                <?php
+                    <?php
+                    $duplicate_log = "";
+
                 }
                 ?>
 
@@ -419,9 +495,7 @@
                     foreach ($doc as $d) {
                         $title = ucfirst($d->title);
                         $sub_doc_id = $d->id;
-                        //echo "_";
                         $o_id = $order->id;
-                        //echo "_";continue;
                         $c_id = $order->client_id;
                         $d_id = $this->requestAction("/orders/getdocid/" . $sub_doc_id . "/" . $o_id);
                         if ($d_id) {
@@ -529,8 +603,6 @@
 
         <?
         }
-
-
         ?>
         <!-- END PROFILE CONTENT -->
     <?php

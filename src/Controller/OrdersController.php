@@ -611,15 +611,6 @@
                 default:
                     $nothing = '111';
             }
-
-            /*
-                       echo $pdi;
-                       echo $orderid;
-                       echo "<br><br>";
-
-                       var_dump($arr);
-
-                        */
                        $query2 = $query2->query();
                        $query2->update()
                            ->set($arr)
@@ -1067,6 +1058,28 @@
 
             die();
         }
+
+
+        public function save_bright_planet_grade($orderid = null, $product_id = null, $grade = null)
+        {
+
+            $querys = TableRegistry::get('orders');
+
+            $arr[$product_id] = $grade;
+
+            $query2 = $querys->query();
+            $query2->update()
+                ->set($arr)
+                ->where(['id' => $orderid])
+                ->execute();
+            $this->response->body($query2);
+            return $this->response;
+
+
+        }
+
+
+
 
         public function getOrderData($cid = 0, $order_id = 0)
         {
