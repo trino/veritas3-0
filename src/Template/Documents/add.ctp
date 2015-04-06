@@ -1801,27 +1801,28 @@ if (isset($this->request->params['pass'][1])) {
 
                     }
                     else{
-        <?php foreach($doc as $dx)
-                {
-                    if($dx->id >11)
-                    {
+                    <?php foreach($doc as $dx)
+                            {
+                                if($dx->id >11)
+                                {
+                                ?>
+                                    if(type == "<?php echo addslashes($dx->title);?>")
+                                    {
+                                        var act = $('#form_tab<?php echo $dx->id;?>').attr('action');
+            
+                                        $('#form_tab<?php echo $dx->id;?>').attr('action', function (i, val) {
+                                            return val + '?draft=' + draft;
+                                        });
+            
+                                        $('#form_tab<?php echo $dx->id;?>').submit();
+                                    }
+            
+                    <?php       }
+                            }
                     ?>
-                        if(type == "<?php echo addslashes($dx->title);?>")
-                        {
-                            var act = $('#form_tab<?php echo $dx->id;?>').attr('action');
-
-                            $('#form_tab<?php echo $dx->id;?>').attr('action', function (i, val) {
-                                return val + '?draft=' + draft;
-                            });
-
-                            $('#form_tab<?php echo $dx->id;?>').submit();
-                        }
-
-        <?php       }
+            
+                    }
                 }
-        ?>
-
-                }}
             });
         });
         $('#addfiles').click(function () {
