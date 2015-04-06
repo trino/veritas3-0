@@ -1,5 +1,5 @@
 <?php
- if($this->request->session()->read('debug')){  echo "<span style ='color:red;'>subpages/documents/mee_attach.php #INC204</span>";}
+ if($this->request->session()->read('debug')){  echo "<span style ='color:red;'>subpages/documents/pre_employment_road_tesdt.php #INC205</span>";}
  ?>
 <form id="form_tab17" action="<?php echo $this->request->webroot;?>documents/pre_employment_road_test/<?php echo $cid .'/' .$did;?>" method="post">
         <input type="hidden" class="document_type" name="document_type" value="Pre Employment Road Test"/>
@@ -145,5 +145,14 @@
 
 </form>
 <script>
-
+$(function(){
+<?php
+        if(isset($disabled))
+        {
+    ?>
+           $('#form_tab17 input').attr('disabled','disabled');
+           $('#form_tab17 textarea').attr('disabled','disabled');            
+    <?php }
+    ?>
+    });
 </script>

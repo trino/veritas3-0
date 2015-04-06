@@ -176,7 +176,8 @@
         if(isset($disabled))
         {
     ?>
-           $('#form_tab11 input').attr('disabled','disabled');         
+           $('#form_tab16 input').attr('disabled','disabled');
+           $('#form_tab16 textarea').attr('disabled','disabled');             
     <?php }
     ?>
 
