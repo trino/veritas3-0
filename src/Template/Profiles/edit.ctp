@@ -238,7 +238,7 @@
 
 
         if ($sidebar->profile_edit == '1' && $param == 'view') {
-            
+
         $checker = $this->requestAction('settings/check_edit_permission/' . $this->request->session()->read('Profile.id') . '/' . $profile->id);
 
             if ($checker == 1) {
@@ -467,22 +467,22 @@
                                                 <li<?php activetab($activetab, "notes"); ?>>
                                                     <a href="#tab_1_9" data-toggle="tab">Notes</a>
                                                 </li>
-                                                
+
 
                                             <?php }
                                             $checker = $this->requestAction('/settings/check_edit_permission/' . $this->request->session()->read('Profile.id') . '/' . $profile->id."/".$profile->created_by);
                                             if($this->request->session()->read('Profile.super') == '1' || ($sidebar->profile_create == '1' && $sidebar->profile_edit=='1')){
-                                            //if ($this->request->session()->read('Profile.admin') || ($this->request->session()->read('Profile.id') != $id && $this->request->session()->read('Profile.profile_type') == '2')) { 
+                                            //if ($this->request->session()->read('Profile.admin') || ($this->request->session()->read('Profile.id') != $id && $this->request->session()->read('Profile.profile_type') == '2')) {
                                                 ?>
                                                 <li <?php activetab($activetab, "permissions"); ?>>
                                                     <a href="#tab_1_7" data-toggle="tab">Permissions</a>
                                                 </li>
 
                                             <?php } ?>
-                                                
-                                               
-                                            
-                                        <?php    
+
+
+
+                                        <?php
                                         }
                                     ?>
                                 </ul>
@@ -540,8 +540,8 @@
                                          id="tab_1_7">
                                         <?php include('subpages/profile/block.php');//permissions ?>
                                     </div>
-                                  
-                                    
+
+
                                 </div>
                             </div>
                         </div>

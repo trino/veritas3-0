@@ -332,14 +332,7 @@ echo $this->Html->link(__('Edit'), ['controller' => 'orders', 'action' => 'addor
 }*/
 
                                                     }
-                                                    if (isset($super) || (isset($_GET['draft']) && $this->request->session()->read('Profile.id') == $order->user_id)) {
-                                                        ?><a
-                                                        href="<?php echo $this->request->webroot; ?>orders/deleteorder/<?php echo $order->id; ?><?php if (isset($_GET['draft'])) echo "?draft"; ?>"
-                                                        class="<?= btnclass("DELETE") ?>"
-                                                        onclick="return confirm('Are you sure you want to delete order <?= $order->id ?>?');">
-                                                            Delete</a>
-                                                    <?php
-                                                    }
+
                                                 //}
                                             ?>
 
@@ -352,9 +345,22 @@ echo $this->Html->link(__('Edit'), ['controller' => 'orders', 'action' => 'addor
                                             <?php if (!isset($_GET['draft']) && is_object($order->profile) && ($order->draft == 0)) {
                                                 ?>
                                                 <a href="<?php echo $this->request->webroot; ?>profiles/view/<?php echo $order->profile->id ?>?getprofilescore=1"
-                                                   class="<?= btnclass("btn-success", "green-haze") ?>">Score Card</a>
+                                                   class="<?= btnclass("btn-info", "blue-soft") ?>">Score Card</a>
                                             <?php
-                                            } ?>
+                                            }
+
+
+                                                if (isset($super) || (isset($_GET['draft']) && $this->request->session()->read('Profile.id') == $order->user_id)) {
+                                                    ?><a
+                                                    href="<?php echo $this->request->webroot; ?>orders/deleteorder/<?php echo $order->id; ?><?php if (isset($_GET['draft'])) echo "?draft"; ?>"
+                                                    class="<?= btnclass("DELETE") ?>"
+                                                    onclick="return confirm('Are you sure you want to delete order <?= $order->id ?>?');">
+                                                        Delete</a>
+                                                <?php
+                                                }
+
+
+                                            ?>
                                             <?php //if (!isset($_GET['draft'])) echo $this->Html->link(__('Score Card'), ['controller' => 'orders', 'action' => 'viewReport', $order->client_id, $order->id], ['class' => 'btn btn-success']);
                                             ?>
                                         </td>

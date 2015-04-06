@@ -169,7 +169,7 @@
         foreach ($orders as $order) {
             $forms = $order->forms;
 
-          //  var_dump($forms);
+            //  var_dump($forms);
             if (!$forms) {
                 $forms_arr[0] = 1;
                 $forms_arr[1] = 2;
@@ -184,7 +184,7 @@
 
             }
             $p = $forms_arr;
-          // var_dump($p);
+            // var_dump($p);
             if ($order->draft == 0) {
                 $k++;
 
@@ -193,14 +193,40 @@
                 ?>
                 <?php
 
-                create_files_from_binary($order->id, '1603', $order->ebs_1603_binary);
-                create_files_from_binary($order->id, '1', $order->ins_1_binary);
-                create_files_from_binary($order->id, '14', $order->ins_14_binary);
-                create_files_from_binary($order->id, '77', $order->ins_77_binary);
-                create_files_from_binary($order->id, '78', $order->ins_78_binary);
-                create_files_from_binary($order->id, '1650', $order->ebs_1650_binary);
-                create_files_from_binary($order->id, '1627', $order->ebs_1627_binary);
-                create_files_from_binary($order->id, '72', $order->ins_72_binary);
+              if($order->bright_planet_html_binary){
+                  create_files_from_binary($order->id, 'bright_planet_html', $order->bright_planet_html_binary);
+              }
+                   if ($order->ebs_1603_binary) {
+                    create_files_from_binary($order->id, '1603', $order->ebs_1603_binary);
+                }
+                if ($order->ins_1_binary) {
+
+                    create_files_from_binary($order->id, '1', $order->ins_1_binary);
+                }
+                if ($order->ins_14_binary) {
+
+                    create_files_from_binary($order->id, '14', $order->ins_14_binary);
+                }
+                if ($order->ins_77_binary) {
+
+                    create_files_from_binary($order->id, '77', $order->ins_77_binary);
+                }
+                if ($order->ins_78_binary) {
+
+                    create_files_from_binary($order->id, '78', $order->ins_78_binary);
+                }
+                if ($order->ebs_1650_binary) {
+
+                    create_files_from_binary($order->id, '1650', $order->ebs_1650_binary);
+                }
+                if ($order->ebs_1627_binary) {
+
+                    create_files_from_binary($order->id, '1627', $order->ebs_1627_binary);
+                }
+                if ($order->ins_72_binary) {
+
+                    create_files_from_binary($order->id, '72', $order->ins_72_binary);
+                }
 
                 ?>
                 <!-- BEGIN PROFILE CONTENT -->
@@ -225,11 +251,7 @@
                 if ($order->forms) {
                     echo '?forms=' . $order->forms;
                 } ?>"
-                                       class="btn btn-primary small">View Order</a>
-
-
-
-
+                                       class="btn  small">View Order</a>
                                     </div>
                                     <div class="portlet-body">
                                         <div oldclass="table-scrollable">
@@ -300,295 +322,79 @@
                                                 <table class="table" style="margin-bottom: 0px;">
                                                     <tbody>
 
-
-
                 <?php
-                
-                    foreach ($p as $pp) {
 
-                        $title_pr = $this->requestAction('/orders/getProductTitle/' . $pp);
-                        ?>
-                        <tr class="even" role="row">
-                            <td>
-                                <span class="icon-notebook"></span>
-                            </td>
-                            <td><?php echo $title_pr->title; ?>
-                                <?php
+                //   DEBUG($order);
+                foreach ($p as $pp) {
 
-                                    //echo $order->bright_planet_html_binary;
-                                    get_color(strip_tags(get_mee_results_binary($order->bright_planet_html_binary, $title_pr->title)));
-                                ?>
-                            </td>
-
-                            <td class="actions">
-                                <?php
-                                    //    $createfile = APP . "../webroot/orders/order_" . $order->id . '/1603.pdf';
-                                    if (return_link('1603', $order->id) == false) { ?>
-                                        <span
-                                            class="label label label-info">Pending </span>
-                                    <? } else { ?>
-                                        <a target="_blank"
-                                           href="<? echo $this->request->webroot . return_link('1603', $order->id); ?>"
-                                           class="btn btn-primary dl">Download</a>
-                                    <? } ?>
-                            </td>
-                        </tr>
-                    <?php
-                    }
-                
-                ?>
-
-                <?php
-                if (in_array('1', $p)){
+                    $title_pr = $this->requestAction('/orders/getProductTitle/' . $pp);
                     ?>
-
                     <tr class="even" role="row">
                         <td>
                             <span class="icon-notebook"></span>
                         </td>
-                        <td>Premium National Criminal Record Check
+
+
+                        <td><?php
+
+                                /*
+                                echo '<br>1' . $productdetailsebs1603;         // 1603 Premium check
+                                echo '<br>2' . $productdetails1;               // 1    MVR Driver's Record Abstract
+                                echo '<br>3' . $productdetails14;              // 14   CVOR
+                                echo '<br>4' . $productdetails77;              // 77   Pre-employment Screening Program Report
+                                echo '<br>5' . $productdetails78;              // 78   Transclick
+                                echo '<br>6' . $productdetailsebs1650;         // 1650 Certification (Education)
+                                echo '<br>7' . $productdetailsebs1627;         // 1627 LOE (Employment)
+                                echo '<br>8' . $productdetails_CheckDL_72;     // 72   checkdl
+                                */
+
+                                echo $title_pr->title; ?>
                             <?php
-                                get_color(strip_tags(get_mee_results_binary($order->bright_planet_html_binary, "Premium National Criminal Record Check")));
+                                get_color(strip_tags(get_mee_results_binary($order->bright_planet_html_binary, $title_pr->title)));
+
                             ?>
                         </td>
 
                         <td class="actions">
                             <?php
-                                $createfile = APP . "../webroot/orders/order_" . $order->id . '/1603.pdf';
-                                if (return_link('1603', $order->id) == false) { ?>
+
+                                if ($order->ins_1 == "Duplicate Order" && $pp == 1) {
+                                    echo "<span class='label  label-danger'>Duplicate Order </span>";
+                                } else if ($order->ins_14 == "Duplicate Order" && $pp == 14) {
+                                    echo "<span class='label  label-info'>Duplicate Order </span>";
+
+                                } else if ($order->ins_77 == "Duplicate Order" && $pp == 77) {
+                                    echo "<span class='label  label-danger'>Duplicate Order </span>";
+
+                                } else if ($order->ins_78 == "Duplicate Order" && $pp == 78) {
+                                    echo "<span class='label  label-danger'>Duplicate Order </span>";
+
+                                } else if ($order->ebs_1603 == "Duplicate Order" && $pp == 1603) {
+                                    echo "<span class='label  label-danger'>Duplicate Order </span>";
+
+                                } else if ($order->ebs_1627 == "Duplicate Order" && $pp == 1627) {
+                                    echo "<span class='label  label-danger'>Duplicate Order </span>";
+
+                                } else if ($order->ebs_1650 == "Duplicate Order" && $pp == 1650) {
+                                    echo "<span class='label  label-danger'>Duplicate Order </span>";
+
+                                } else if ($order->ins_72 == "Duplicate Order" && $pp == 72) {
+                                    echo "<span class='label  label-danger'>Duplicate Order </span>";
+
+                                } else if (return_link($pp, $order->id) == false) { ?>
                                     <span
                                         class="label label label-info">Pending </span>
                                 <? } else { ?>
                                     <a target="_blank"
-                                       href="<? echo $this->request->webroot . return_link('1603', $order->id); ?>"
+                                       href="<? echo $this->request->webroot . return_link($pp, $order->id); ?>"
                                        class="btn btn-primary dl">Download</a>
                                 <? } ?>
-                        </td>
-                    </tr>
-                <?php
-                }
-                ?>
-                <?php
-                if (in_array('2', $p)){
-                    ?>
-                    <tr class="even" role="row">
-                        <td>
-                            <span class="icon-notebook"></span>
-
-                        </td>
-                        <td>Driver's Record Abstract
-                            <?php
-                                get_color(strip_tags(get_mee_results_binary($order->bright_planet_html_binary, "Driver's Record Abstract")));
-                            ?>
-                        </td>
-
-                        <td class="actions">
-                            <?php
-                                if (return_link('1', $order->id) == false) { ?>
-                                    <span
-                                        class="label label label-info">Pending </span>
-                                <? } else { ?>
-                                    <a target="_blank"
-                                       href="<? echo $this->request->webroot . return_link('1', $order->id); ?>"
-                                       class="btn btn-primary">Download</a>
-                                <? } ?>
 
                         </td>
                     </tr>
                 <?php
                 }
                 ?>
-                <?php
-                if (in_array('3', $p)){
-                    ?>
-                    <tr class="even" role="row">
-                        <td>
-                            <span class="icon-notebook"></span>
-
-                        </td>
-                        <td>CVOR
-                            <?php get_color(strip_tags(get_mee_results_binary($order->bright_planet_html_binary, "CVOR"))); ?>
-                        </td>
-
-                        <td class="actions">
-                            <?php
-                                if (return_link('14', $order->id) == false) { ?>
-                                    <span
-                                        class="label label label-info">Pending </span>
-                                <? } else { ?>
-                                    <a target="_blank"
-                                       href="<? echo $this->request->webroot . return_link('14', $order->id); ?>"
-                                       class="btn btn-primary">Download</a>
-                                <? } ?>
-                        </td>
-                    </tr>
-                <?php
-                }
-                ?>
-                <?php
-                if (in_array('4', $p)){
-                    ?>
-                    <tr class="odd" role="row">
-
-                        <td>
-                            <span class="icon-notebook"></span>
-
-                        </td>
-                        <td>Pre-employment Screening Program Report
-
-                            <?php
-                                get_color(strip_tags(get_mee_results_binary($order->bright_planet_html_binary, "Pre-employment Screening Program Report")));
-                            ?>
-
-                        </td>
-
-                        <td class="actions">
-                            <?php
-                                if (return_link('77', $order->id) == false) { ?>
-                                    <span
-                                        class="label label label-info">Pending </span>
-                                <? } else { ?>
-                                    <a target="_blank"
-                                       href="<? echo $this->request->webroot . return_link('77', $order->id); ?>"
-                                       class="btn btn-primary">Download</a>
-                                <? } ?>
-
-                        </td>
-                    </tr>
-                <?php
-                }
-                ?>
-                <?php
-                if (in_array('5', $p)){
-                    ?>
-                    <tr class="even" role="row">
-
-                        <td>
-                            <span class="icon-notebook"></span>
-
-                        </td>
-                        <td>Transclick
-
-                            <?php
-                                get_color(strip_tags(get_mee_results_binary($order->bright_planet_html_binary, "TransClick")));
-                            ?>
-                        </td>
-
-                        <td class="actions">
-                            <?php
-                                if (return_link('78', $order->id) == false) { ?>
-                                    <span
-                                        class="label label label-info">Pending </span>
-                                <? } else { ?>
-                                    <a target="_blank"
-                                       href="<? echo $this->request->webroot . return_link('78', $order->id); ?>"
-                                       class="btn btn-primary">Download</a>
-                                <? } ?>
-
-                        </td>
-                    </tr>
-                <?php
-                }
-                ?>
-                <?php
-                if (in_array('6', $p)){
-                    ?>
-                    <tr class="odd" role="row">
-                        <td>
-                            <span class="icon-notebook"></span>
-
-                        </td>
-                        <td>Certifications
-                            <?php
-                                get_color(strip_tags(get_mee_results_binary($order->bright_planet_html_binary, "Certifications")));
-                            ?>
-                        </td>
-
-                        <td class="actions">
-                            <?php
-                                if (return_link('1650', $order->id) == false) { ?>
-                                    <span
-                                        class="label label label-info">Pending </span>
-                                <? } else { ?>
-                                    <a target="_blank"
-                                       href="<? echo $this->request->webroot . return_link('1650', $order->id); ?>"
-                                       class="btn btn-primary">Download</a>
-                                <? } ?>
-                        </td>
-                    </tr>
-                <?php
-                }
-                ?>
-                <?php
-                if (in_array('7', $p)){
-                    ?>
-                    <tr class="odd" role="row">
-
-                        <td>
-                            <span class="icon-notebook"></span>
-
-                        </td>
-                        <td>Letter of Experience
-
-                            <?php
-                                get_color(strip_tags(get_mee_results_binary($order->bright_planet_html_binary, "Letter Of Experience")));
-                            ?>
-                        </td>
-                        <td class="actions">
-                            <?php
-                                if (return_link('1627', $order->id) == false) { ?>
-                                    <span
-                                        class="label label label-info">Pending </span>
-                                <? } else { ?>
-                                    <a target="_blank"
-                                       href="<? echo $this->request->webroot . return_link('1627', $order->id); ?>"
-                                       class="btn btn-primary">Download</a>
-                                <? } ?>
-                        </td>
-                    </tr>
-                <?php
-                }
-                ?>
-
-
-
-                <?php
-                if (in_array('8', $p)){
-
-
-                    if ($p[7] && $order->order_type != "Order MEE" ) {
-                        ?>
-                        <tr class="odd" role="row">
-
-                            <td>
-                                <span class="icon-notebook"></span>
-
-                            </td>
-                            <td>Check DL
-
-                                <?php
-                                    get_color(strip_tags(get_mee_results_binary($order->bright_planet_html_binary, "Check DL")));
-                                ?>
-                            </td>
-                            <td class="actions">
-                                <?php
-                                    if (return_link('72', $order->id) == false) { ?>
-                                        <span
-                                            class="label label label-info">Pending </span>
-                                    <? } else { ?>
-                                        <a target="_blank"
-                                           href="<? echo $this->request->webroot . return_link('72', $order->id); ?>"
-                                           class="btn btn-primary">Download</a>
-                                    <? } ?>
-                            </td>
-                        </tr>
-                    <?php
-                    }
-                } ?>
-
-
-
-
 
                                                     <TR>
                                                         <TD colspan="3">

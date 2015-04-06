@@ -57,7 +57,7 @@
 <div class="row col-md-6">
 
     <div class="form-group">
-        <label class="control-label col-md-12">Recruiter Name : </label>
+        <label class="control-label col-md-12">Recruiter Name: </label>
 
         <div class="col-md-12">
             <input disabled="disabled" type="text" class="form-control" name="conf_recruiter_name"
@@ -66,7 +66,7 @@
         </div>
 
 
-        <label class="control-label col-md-12" style="margin-top: 5px;">Driver Name : </label>
+        <label class="control-label col-md-12" style="margin-top: 5px;">Driver Name: </label>
 
         <div class="col-md-12">
             <input type="text" class="form-control" name="conf_driver_name" id="conf_driver_name"
@@ -74,7 +74,7 @@
         </div>
 
 
-        <label class="control-label col-md-12" style="margin-top: 5px;">Date : </label>
+        <label class="control-label col-md-12" style="margin-top: 5px;">Date: </label>
 
         <div class="col-md-12">
             <input disabled="disabled" type="text" class="form-control date-picker" name="conf_date" id="conf_date"
@@ -85,7 +85,7 @@
     </div>
     <p>&nbsp;</p>
 
-    <div class="col-md-12"><label>Products Selected :</label>
+    <div class="col-md-12"><label>Products Ordered:</label>
 
         <div class="clearfix"></div>
 

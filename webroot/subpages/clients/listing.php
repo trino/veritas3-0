@@ -41,8 +41,8 @@
                         <table class="table table-hover  table-striped table-bordered table-hover dataTable no-footer">
                             <thead>
                             <tr class="sorting">
-                                <th><?= $this->Paginator->sort('id', 'Id', ['escape' => false]) ?></th>
-                                <th>Logo</th>
+                                <th width="50px"><?= $this->Paginator->sort('id', 'Id', ['escape' => false]) ?></th>
+                                <th width="220px">Logo</th>
                                 <th><?= $this->Paginator->sort('company_name', ucfirst($settings->client), ['escape' => false]) ?></th>
 
                                 <th class="actions"><?= __('Actions') ?></th>
@@ -135,7 +135,7 @@
                                                     <?php
                                                         if ($sidebar->client_list == '1' && !isset($_GET["draft"])) {
                                                             ?>
-                                                            <a class="<?= btnclass("VIEW") ?>"
+                                                            <a class="<?= btnclass("btn-info", "blue-soft") ?>"
                                                                href="<?php echo $this->request->webroot; ?>clients/edit/<?php echo $clients->id; ?>?view">View</a>
 
 
@@ -143,18 +143,24 @@
                                                         <?php
                                                         }
                                                         if ($sidebar->client_edit == '1') {
-                                                            echo $this->Html->link(__('Edit'), ['controller' => 'clients', 'action' => 'edit', $clients->id], ['class' => btnclass("EDIT")]);
+                                                            echo $this->Html->link(__('Edit'), ['controller' => 'clients', 'action' => 'edit', $clients->id], ['class' => btnclass("btn-info", "blue-soft")]);
                                                         }
+
+
+                                                        if ($sidebar->document_create == '1' && !isset($_GET["draft"]) && false) {
+
+                                                            echo $this->Html->link(__('Create ' . ucfirst($settings->document)), ['controller' => 'documents', 'action' => 'add', $clients->id], ['class' => btnclass("btn-info", "blue-soft")]);
+                                                        }
+
+
+
                                                         if ($sidebar->client_delete == '1') { ?>
                                                             <a href="<?php echo $this->request->webroot; ?>clients/delete/<?php echo $clients->id; ?><?php echo (isset($_GET['draft'])) ? "?draft" : ""; ?>"
                                                                onclick="return confirm('Are you sure you want to delete <?= h($clients->company_name) ?>?');"
                                                                class="<?= btnclass("DELETE") ?>">Delete</a>
 
                                                         <?php }
-                                                        if ($sidebar->document_create == '1' && !isset($_GET["draft"])) {
 
-                                                            echo $this->Html->link(__('Create ' . ucfirst($settings->document)), ['controller' => 'documents', 'action' => 'add', $clients->id], ['class' => btnclass("btn-success", "green-haze")]);
-                                                        }
 
                                                         if ($sidebar->orders_create == '1' && !isset($_GET["draft"]) && false) {
                                                             ?>
@@ -162,20 +168,20 @@
                                                             <?php if ($sidebar->orders_mee == '1') { ?>
                                                                 <a href="<?php
                                                                     echo $this->request->webroot; ?>orders/productSelection?client=<?php echo $clients->id; ?>&ordertype=MEE"
-                                                                   class="<?= btnclass("red-flamingo") ?>">Order MEE</a>
+                                                                   class="<?= btnclass("btn-info", "blue-soft") ?>">Order MEE</a>
                                                             <?php }
                                                             if ($sidebar->orders_products == '1') {
                                                                 ?>
                                                                 <a href="<?php
                                                                     echo $this->request->webroot; ?>orders/productSelection?client=<?php echo $clients->id; ?>&ordertype=CART"
-                                                                   class="<?= btnclass("btn-success", "green-haze") ?>">Order
+                                                                   class="<?= btnclass("btn-info", "blue-soft") ?>">Order
                                                                     Products</a>
                                                             <?php }
                                                             if ($sidebar->order_requalify == '1') {
                                                                 ?>
                                                                 <a href="<?php
                                                                     echo $this->request->webroot; ?>orders/productSelection?client=<?php echo $clients->id; ?>&ordertype=QUA"
-                                                                   class="<?= btnclass("btn-warning", "yellow") ?>">Re-Qualify</a>
+                                                                   class="<?= btnclass("btn-info", "blue-soft") ?>">Re-Qualify</a>
                                                             <?php }
                                                         }
 

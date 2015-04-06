@@ -1818,12 +1818,13 @@
 
         function cron()
         {
+
+            //////////////////////////////////send out emails
             $path = $this->Document->getUrl();
 
             $q = TableRegistry::get('events');
             $que = $q->find();
             //$query = $que->select()->where(['(date LIKE "%' . $date . '%" OR date LIKE "%' . $date2 . '%")', 'sent' => 0])->limit(200);
-
             $datetime = date('Y-m-d H:i:s');
             echo "Checking for events before " . $datetime;
             $query = $que->select()->where(['(date <= "' . $datetime . '")', 'sent' => 0])->limit(200);
@@ -1843,6 +1844,8 @@
                 }
                 $q->query()->update()->set(['sent' => 1, 'email_self' => 0])->where(['id' => $todo->id])->execute();
             }
+            //////////////////////////////////send out emails
+
 
             die();
         }

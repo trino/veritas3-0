@@ -220,7 +220,21 @@ if ($_SERVER['SERVER_NAME'] == "localhost" || $_SERVER['SERVER_NAME'] == "127.0.
 </div>
 <!-- BEGIN CONTAINER -->
  <?php if($settings->box =='1'){?><div class="container"><?php }?>
-<div class="page-container">
+
+
+
+<script>
+    var screenWidth = window.screen.width,
+    screenHeight = window.screen.height;
+
+    if(screenHeight>1500) {
+
+        <?php $screenwidth = "col-md-12"; ?>
+    }
+    }
+</script>
+
+<div class="page-container <?=$screenwidth?>">
 
 	<?php include('subpages/sidebar.php');?>
 

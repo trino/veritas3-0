@@ -74,8 +74,8 @@ function btnclass($xscolor, $stripecolor = ""){
     $mode = true;//true = regular button, false = striped
     switch ($xscolor){
         case "VIEW":
-            $xscolor = "btn-info";//light blue
-            $stripecolor = "blue-chambray";
+            $xscolor = "btn-primary";//light blue
+            $stripecolor = "blue";
             break;
         case "EDIT":
             $xscolor = "btn-primary";

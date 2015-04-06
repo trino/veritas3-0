@@ -1,14 +1,9 @@
-
-
-
 <?php if ($_SERVER['SERVER_NAME'] == "localhost" || $_SERVER['SERVER_NAME'] == "127.0.0.1") {
           include_once('/subpages/api.php');
       } else {
           include_once('subpages/api.php');
       }
-
 ?>
-
 
 <style>
     @media print {
@@ -311,11 +306,10 @@
                                                 }
                                             ?></td>
 
-
                                         <td><?php echo $ProClients->getAllClientsname($profile->id);?></td>
                                         <td class="actions  util-btn-margin-bottom-5">
                                             <?php if ($sidebar->profile_list == '1' && !isset($_GET["draft"])) {
-                                                        echo $this->Html->link(__('View'), ['action' => 'view', $profile->id], ['class' => btnclass("VIEW")]);
+                                                        echo $this->Html->link(__('View'), ['action' => 'view', $profile->id], ['class' => btnclass("btn-info", "blue-soft")]);
                                                     } ?>
 
                                                     <?php
@@ -332,28 +326,10 @@
                                                                     echo $this->Html->link(__('Edit'), ['action' => 'edit', $profile->id], ['class' => btnclass("EDIT")]);
                                                             }
                                                         } ?>
-                                                    <?php if ($sidebar->profile_delete == '1') {
-                                                        if ($this->request->session()->read('Profile.super') == '1') {
-                                                            if ($this->request->session()->read('Profile.id') != $profile->id) {
-                                                                ?>
-
-                                                                <a href="<?php echo $this->request->webroot; ?>profiles/delete/<?php echo $profile->id; ?><?php echo (isset($_GET['draft'])) ? "?draft" : ""; ?>"
-                                                                   onclick="return confirm('Are you sure you want to delete <?= ucfirst(h($profile->username)) ?>?');"
-                                                                   class="<?= btnclass("DELETE") ?>">Delete</a>
-                                                                </span>
-                                                            <?php
-                                                            }
-                                                        } else if ($this->request->session()->read('Profile.profile_type') == '2' && ($profile->profile_type == '5')) {
-                                                            ?>
-                                                            <a href="<?php echo $this->request->webroot; ?>profiles/delete/<?php echo $profile->id; ?><?php echo (isset($_GET['draft'])) ? "?draft" : ""; ?>"
-                                                               onclick="return confirm('Are you sure you want to delete <?= ucfirst(h($profile->username)) ?>?');"
-                                                               class="<?= btnclass("DELETE") ?>">Delete</a>
-                                                        <?php
-                                                        }
-
-                                                    }
 
 
+
+                                            <?php
                                                 if ($sidebar->document_list == 1/* && $doc != 0 && $cn != 0*/) {
                                                     ?>
                                                     <a href="<?php
@@ -376,13 +352,33 @@
                                                         <a href="<?php echo $this->request->webroot; ?>orders/orderslist/?uploaded_for=<?php echo $profile->id; ?>"
                                                            class="<?= btnclass("btn-info", "blue-soft") ?>">
                                                             View Orders</a>
-
-                                                        
                                                     <?php
-
                                                     }
-            
-                                                     ?>
+                                                    ?>
+
+                                            <?php if ($sidebar->profile_delete == '1') {
+                                                if ($this->request->session()->read('Profile.super') == '1') {
+                                                    if ($this->request->session()->read('Profile.id') != $profile->id) {
+                                                        ?>
+
+            <a href="<?php echo $this->request->webroot; ?>profiles/delete/<?php echo $profile->id; ?><?php echo (isset($_GET['draft'])) ? "?draft" : ""; ?>"
+               onclick="return confirm('Are you sure you want to delete <?= ucfirst(h($profile->username)) ?>?');"
+               class="<?= btnclass("DELETE") ?>">Delete</a>
+            </span>
+        <?php
+                                                    }
+                                                } else if ($this->request->session()->read('Profile.profile_type') == '2' && ($profile->profile_type == '5')) {
+                                                    ?>
+                                                    <a href="<?php echo $this->request->webroot; ?>profiles/delete/<?php echo $profile->id; ?><?php echo (isset($_GET['draft'])) ? "?draft" : ""; ?>"
+                                                       onclick="return confirm('Are you sure you want to delete <?= ucfirst(h($profile->username)) ?>?');"
+                                                       class="<?= btnclass("DELETE") ?>">Delete</a>
+                                                <?php
+                                                }
+                                            }
+                                            ?>
+
+
+
                                         </td>
                                     </tr>
 

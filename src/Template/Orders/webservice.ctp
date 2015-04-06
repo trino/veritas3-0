@@ -27,7 +27,7 @@
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     $upload_additional_id = '';
 
-    $startorder1 = false;
+    $startorder1 = true;
     $upload_additional = true; //additional are all attachments in all forms
 
     $uploadbinaryconsent_1603 = true;
@@ -62,37 +62,38 @@
         $productdetails79 = false; // only TRUE if complete mee roders  - DONT CHANGE
 
         $myArray = explode(',', $order_info->forms);
+        var_dump($myArray);
         foreach ($myArray as $splitArray) {
             switch ($splitArray) {
-                case 1:
+                case 1603:
                     $productdetailsebs1603 = true;
                     break;
-                case 2:
+                case 1:
                     $productdetails1 = true;
                     break;
-                case 3:
+                case 14:
                     $productdetails14 = true;
                     break;
-                case 4:
+                case 77:
                     $productdetails77 = true;
                     break;
-                case 5:
+                case 78:
                     $productdetails78 = true;
                     break;
-                case 6:
+                case 1650:
                     $productdetailsebs1650 = true;
                     break;
-                case 7:
+                case 1627:
                     $productdetailsebs1627 = true;
                     break;
-                case 8:
+                case 72:
                     $productdetails_CheckDL_72 = true;
                     break;
             }
         }
     }
 
-    /*
+
         echo '<br>1' . $productdetailsebs1603;         // 1603 Premium check
         echo '<br>2' . $productdetails1;               // 1    MVR Driver's Record Abstract
         echo '<br>3' . $productdetails14;              // 14   CVOR
@@ -101,7 +102,6 @@
         echo '<br>6' . $productdetailsebs1650;         // 1650 Certification (Education)
         echo '<br>7' . $productdetailsebs1627;         // 1627 LOE (Employment)
         echo '<br>8' . $productdetails_CheckDL_72;     // 72   checkdl
-    */
 
     if ($startorder1 == true) {
 
@@ -395,10 +395,7 @@
 
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-
-
     if ($upload_additional == true) {
-
         foreach ($order_attach as $d) {
             echo "Attachment: " . $d->attachment;
 
@@ -416,8 +413,6 @@
             var_dump( $result);
         }
     }
-
-
 
 
     die();
