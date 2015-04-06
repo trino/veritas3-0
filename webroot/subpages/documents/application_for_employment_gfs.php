@@ -668,8 +668,9 @@ through 7 inclusive, and acknowledge that with my signature below.
                 <div class="col-md-12"><textarea name="if_rejected" class="form-control"><?php if(isset($application_for_employment_gfs))echo $application_for_employment_gfs->if_rejected;?></textarea></div>            
             </div>       
         </div>
-        <div class="clearfix"></div>
         
+        <div class="clearfix"></div>
+        <p>&nbsp;</p>
     
 
 </form>
