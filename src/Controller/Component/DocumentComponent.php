@@ -306,8 +306,9 @@ class DocumentComponent extends Component
                                 }
                             }
                         }
-                    echo $did;
+                    
                 }
+                echo $did;
             }
             die();
         }

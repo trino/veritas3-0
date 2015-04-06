@@ -14,6 +14,8 @@
             if (isset($_GET["forms"])){
                 $forms = explode(",", $_GET["forms"]);
             }
+            else
+            $forms ="";
 
             $attachment = array();//Files are in: C:\wamp\www\veritas3-0\webroot\img\pdfs
             if (in_array("1", $forms)){//                  Name         Filename
