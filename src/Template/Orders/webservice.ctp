@@ -214,6 +214,14 @@
         }
         $pdi = $r[0];
         echo '999ins_72';
+        echo '999ins_72';
+        echo '999ins_72';
+        echo '999ins_72';
+        echo '999ins_72';
+        echo '999ins_72';
+        echo '999ins_72';
+        echo '999ins_72';
+        echo '999ins_72';
         $upload_additional_id = '72';
 
         var_dump($result);

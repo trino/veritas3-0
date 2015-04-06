@@ -195,8 +195,6 @@
                 $settings = $this->requestAction('settings/get_settings');
                 $uploaded_by = $doc_comp->getUser($order->user_id);
 
-
-
                 if ($order->bright_planet_html_binary && $order->bright_planet_html_binary != "done") {
                     create_files_from_binary($order->id, 'bright_planet_html', $order->bright_planet_html_binary);
 
@@ -222,47 +220,43 @@
                         } elseif ($pp == 1627) {
                             $sendit = strip_tags(trim(get_mee_results_binary($order->bright_planet_html_binary, "Letter Of Experience")));
                             $this->requestAction('orders/save_bright_planet_grade/' . $order->id . '/ebs_1627/' . $sendit);
+                        } elseif ($pp == 72) {
+                            $sendit = strip_tags(trim(get_mee_results_binary($order->bright_planet_html_binary, "Letter Of Experience")));
+                            $this->requestAction('orders/save_bright_planet_grade/' . $order->id . '/ins_72/' . $sendit);
                         }
 
                     }
                     $this->requestAction('orders/save_bright_planet_grade/' . $order->id . '/bright_planet_html_binary/done');
                 }
-                if ($order->ebs_1603_binary && $order->ebs_1603_binary !="done") {
+                if ($order->ebs_1603_binary && $order->ebs_1603_binary != "done") {
                     create_files_from_binary($order->id, '1603', $order->ebs_1603_binary);
                     $this->requestAction('orders/save_bright_planet_grade/' . $order->id . '/ebs_1603_binary/done');
-
                 }
                 if ($order->ins_1_binary && $order->ins_1_binary != "done") {
                     create_files_from_binary($order->id, '1', $order->ins_1_binary);
                     $this->requestAction('orders/save_bright_planet_grade/' . $order->id . '/ins_1_binary/done');
-
                 }
                 if ($order->ins_14_binary && $order->ins_14_binary != "done") {
                     create_files_from_binary($order->id, '14', $order->ins_14_binary);
                     $this->requestAction('orders/save_bright_planet_grade/' . $order->id . '/ins_14_binary/done');
-
                 }
                 if ($order->ins_77_binary && $order->ins_77_binary != "done") {
                     create_files_from_binary($order->id, '77', $order->ins_77_binary);
                     $this->requestAction('orders/save_bright_planet_grade/' . $order->id . '/ins_77_binary/done');
-
                 }
-                if ($order->ins_78_binary && $order->ins_78_binary !="done") {
+                if ($order->ins_78_binary && $order->ins_78_binary != "done") {
                     create_files_from_binary($order->id, '78', $order->ins_78_binary);
                     $this->requestAction('orders/save_bright_planet_grade/' . $order->id . '/ins_78_binary/done');
-
                 }
-                if ($order->ebs_1650_binary && $order->ebs_1650_binary !="done") {
+                if ($order->ebs_1650_binary && $order->ebs_1650_binary != "done") {
                     create_files_from_binary($order->id, '1650', $order->ebs_1650_binary);
                     $this->requestAction('orders/save_bright_planet_grade/' . $order->id . '/ebs_1650_binary/done');
-
                 }
-                if ($order->ebs_1627_binary && $order->ebs_1627_binary !="done") {
+                if ($order->ebs_1627_binary && $order->ebs_1627_binary != "done") {
                     create_files_from_binary($order->id, '1627', $order->ebs_1627_binary);
                     $this->requestAction('orders/save_bright_planet_grade/' . $order->id . '/ebs_1627_binary/done');
-
                 }
-                if ($order->ins_72_binary && $order->ins_72_binary !="done") {
+                if ($order->ins_72_binary && $order->ins_72_binary != "done") {
                     create_files_from_binary($order->id, '72', $order->ins_72_binary);
                     $this->requestAction('orders/save_bright_planet_grade/' . $order->id . '/ins_72_binary/done');
                 }
@@ -310,17 +304,19 @@
                     <div class="col-sm-6" style="padding-top:10px;"
                          oldstyle="border: 1px solid #E5E5E5;">
                         <span class="profile-desc-text">   <p>Driver:
-                                <strong><?php
-
-                                        echo $order->profile->fname . ' ' . $order->profile->lname; ?></strong></p>
-            			<p>Recruiter: <strong><?php echo $uploaded_by->username; ?></strong></p>
-
-            			<p>Recruiter ID # <strong><?php echo $uploaded_by->isb_id; ?></strong></p>
-            			<p>Client: <strong><?php if (isset($order->client->company_name)) {
+                                <strong>
+                                    <?php echo $order->profile->fname . ' ' . $order->profile->lname; ?>
+                                </strong></p>
+            			    <p>Recruiter: <strong><?php echo $uploaded_by->username; ?></strong></p>
+            			    <p>Recruiter ID # <strong><?php echo $uploaded_by->isb_id; ?></strong></p>
+            			    <p>Client:
+                            <strong><?php if (isset($order->client->company_name)) {
                                     echo $order->client->company_name;
                                 } else {
                                     echo "Unknown";
-                                } ?></strong></p>
+                                } ?>
+                            </strong>
+                        </p>
 
             			<p>Uploaded on: <strong><?php echo $order->created; ?></strong></p>
 
@@ -331,11 +327,11 @@
                         <TABLE align="right" style="float;right;">
                             <TR>
                                 <TD>
-                                               <SPAN style="white-space:nowrap"><a style="float;right;" href="#"
-                                                                                   class=" btn btn-lg default yellow-stripe">
-                                                       Road Test Score </a><a href="#" class="btn btn-lg yellow">
-                                                       <i class="fa fa-bar-chart-o"></i> <?php if (isset($order->road_test[0]->total_score)) echo $order->road_test[0]->total_score; ?>
-                                                   </a></SPAN></TD>
+                               <SPAN style="white-space:nowrap"><a style="float;right;" href="#"
+                                                                   class=" btn btn-lg default yellow-stripe">
+                                       Road Test Score </a><a href="#" class="btn btn-lg yellow">
+                                       <i class="fa fa-bar-chart-o"></i> <?php if (isset($order->road_test[0]->total_score)) echo $order->road_test[0]->total_score; ?>
+                                   </a></SPAN></TD>
                             </TR>
                             <TR>
                                 <TD>
@@ -346,36 +342,27 @@
                     </div>
                 <?php } ?>
 
-                                            <div class="clearfix"></div>
-                                            <div class="col-md-12" style="margin-bottom: 8px;">
-                                                <H4 style=""><i class="icon-doc font-blue-hoki"></i>
-								<span class="caption-subject bold font-blue-hoki uppercase">
-								Products Ordered </span></H4>
-                                            </div>
+                    <div class="clearfix"></div>
+                    <div class="col-md-12" style="margin-bottom: 8px;">
+                    <H4 style=""><i class="icon-doc font-blue-hoki"></i>
+                    <span class="caption-subject bold font-blue-hoki uppercase">
+                    Products Ordered </span></H4>
+                    </div>
 
-
-                                            <div class="clearfix"></div>
-
-                                            <div class="col-md-12" style="">
-
-                                                <table class="table" style="margin-bottom: 0px;">
-                                                    <tbody>
+                    <div class="clearfix"></div>
+                    <div class="col-md-12" style="">
+                    <table class="table" style="margin-bottom: 0px;">
+                    <tbody>
 
                 <?php
-
-                //   DEBUG($order);
                 foreach ($p as $pp) {
-
                     $title_pr = $this->requestAction('/orders/getProductTitle/' . $pp);
                     ?>
                     <tr class="even" role="row">
                         <td>
                             <span class="icon-notebook"></span>
                         </td>
-
-
                         <td>
-
                             <?php
                                 echo $title_pr->title; ?>
                             <?php
@@ -433,18 +420,25 @@
                                     } else {
                                         get_color($order->ebs_1627);
                                     }
+                                } elseif ($pp == 72) {
+
+                                    if ($order->ins_72 == "Duplicate Order") {
+                                        $duplicate_log = "Duplicate Order";
+                                    } else {
+                                        get_color($order->ins_72);
+                                    }
                                 }
 
 
-                              //  echo $duplicate_log;
+                                //  echo $duplicate_log;
                             ?>
                         </td>
 
                         <td class="actions">
                             <?php
                                 if ($duplicate_log == "Duplicate Order") {
-                                  //  get_color("Duplicate Order");
-?>
+                                    //  get_color("Duplicate Order");
+                                    ?>
                                     <span class="label label-danger">Duplicate Order  </span>
                                 <?php
                                 } elseif (return_link($pp, $order->id) == false) { ?>
