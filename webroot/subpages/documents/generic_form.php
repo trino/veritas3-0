@@ -6,7 +6,8 @@ if(isset($disabled)) { $is_disabled = 'disabled="disabled"'; }
  ?>
 
 <form  enctype="multipart/form-data" action="<?php echo $this->request->webroot;?>documents/basic/<?php echo $cid .'/' .$did;?>" method="post" id="form_tab11">
-
+   <input type="hidden" class="document_type" name="document_type" value="<?php echo $dx->title;?>"/>
+        <input type="hidden" name="sub_doc_id" value="<?php echo $dx->id;?>" class="sub_docs_id" id="af" /> 
  <div class="form-group col-md-12">
     <label class="control-label col-md-6">How did you hear about the oppourtunity? </label>
     <div class="col-md-6">

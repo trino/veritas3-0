@@ -2,7 +2,8 @@
  if($this->request->session()->read('debug')){ echo "<span style ='color:red;'>subpages/documents/bc.php #INC166</span>"; }
 ?>
 <form id="form_tab<?php echo $dx->id;?>" enctype="multipart/form-data" action="<?php echo $this->request->webroot;?>documents/bc/<?php echo $cid .'/' .$did;?>" method="post">
-
+<input type="hidden" class="document_type" name="document_type" value="<?php echo $dx->title;?>"/>
+        <input type="hidden" name="sub_doc_id" value="<?php echo $dx->id;?>" class="sub_docs_id" id="af" />
 <div class="col-md-12">
     <div class="col-md-4" style="float: right;">
             <input type="text" class="form-control" name="claim_number" value="<?php if(isset($bc_forms)) echo $bc_forms->claim_number;?>" />

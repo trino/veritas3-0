@@ -2,8 +2,8 @@
  if($this->request->session()->read('debug')){  echo "<span style ='color:red;'>subpages/documents/pre_employment_road_tesdt.php #INC205</span>";}
  ?>
 <form id="form_tab17" action="<?php echo $this->request->webroot;?>documents/pre_employment_road_test/<?php echo $cid .'/' .$did;?>" method="post">
-        <input type="hidden" class="document_type" name="document_type" value="Pre Employment Road Test"/>
-        <input type="hidden" name="sub_doc_id" value="17" class="sub_docs_id" id="af" />
+        <input type="hidden" class="document_type" name="document_type" value="<?php echo $dx->title;?>"/>
+        <input type="hidden" name="sub_doc_id" value="<?php echo $dx->id;?>" class="sub_docs_id" id="af" />
         <div class="clearfix"></div>
         <hr/>
         
