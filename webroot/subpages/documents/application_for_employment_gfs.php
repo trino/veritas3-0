@@ -346,7 +346,151 @@
             </table>
         </div>   
                 
+        
+        <div class="col-md-12">
+            <label class="col-md-6">Show special courses or training that will help you as as driver</label>
+            <div class="col-md-6"><textarea class="form-control" name="special_course"></textarea></div>
+            <p>&nbsp;</p>
+        </div>
+        <div class="col-md-12">
+            <label class="col-md-6">Which safe driving awaards do you hold and from whom?</label>
+            <div class="col-md-6"><textarea class="form-control" name="which_safe_driving"></textarea></div>
+            <p>&nbsp;</p>
+        </div>
+        <div class="col-md-12">
+            <label class="col-md-6">Show any trucking, transportation or other experiences that may help in your work for this company:</label>
+            <div class="col-md-6"><textarea class="form-control" name="show_any_trucking"></textarea></div>
+            <p>&nbsp;</p>
+        </div>
+        <div class="col-md-12">
+            <label class="col-md-6">List courses and training other than shown elsewhere in this application</label>
+            <div class="col-md-6"><textarea class="form-control" name="list_courses_training"></textarea></div>
+            <p>&nbsp;</p>
+        </div>
+        <div class="col-md-12">
+            <label class="col-md-6">List special equipment or technical materials you can work with (other than those already shown)</label>
+            <div class="col-md-6"><textarea class="form-control" name="list_special_equipment"></textarea></div>
+            <p>&nbsp;</p>
+        </div>
+        
+        <hr>
+        <div class="col-md-12">
+             <h3>EMPLOYMENT HISTORY</h3>
+             <p>Please list your most recent employment first. Add another sheet if necessary. History must be the last three year’s. Commercial drivers shall provide
+
+                an additional seven year’s information on employers for whom the applicant operated a commercial vehicle.
+            </p>
+            <p>&nbsp;</p>
+            <table class="table table-bordered">
+                <tr>
+                    <td colspan="3">
+                        <label class="col-md-12">Name & Address Of Employer:</label>
+                        <div class="col-md-12"><textarea name="name_and_address_employer1" class="form-control form-control"></textarea></div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label class="col-md-12">Dates of Employment</label>
+                        <div class="col-md-6"><input type="text" class="date-picker form-control" name="date_of_employment_from1" placeholder="From" /></div><div class="col-md-6"><input type="text" class="date-picker form-control" name="date_of_employment_to1" placeholder="To" /></div></div>
+                    </td>
+                    <td colspan="2">
+                        <label class="col-md-12">Type of work done</label>
+                        <div class="col-md-12"><textarea name="type_of_work_done1" class="form-control"></textarea></div>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <label class="col-md-12">Supervisor's Name & Phone No.:</label>
+                        <div class="col-md-12"><textarea name="supervisor_name_phone1" class="form-control form-control"></textarea></div>
+                    </td>
+                    <td>
+                       <label class="col-md-12">Final Salary</label> 
+                       <div class="col-md-12"><input type="text" class="form-control" name="final_salary1" /></div>
+                    </td>               
+                </tr>
+                <tr>
+                    <td colspan="3">
+                        <label class="col-md-12">Reasons of leaving:</label>
+                        <div class="col-md-12"><textarea name="reasons_of_leaving1" class="form-control form-control"></textarea></div>
+                    </td>
+                </tr>
+            </table>
+            
+            <p>&nbsp;</p>
+            <table class="table table-bordered">
+                <tr>
+                    <td colspan="3">
+                        <label class="col-md-12">Name & Address Of Employer:</label>
+                        <div class="col-md-12"><textarea name="name_and_address_employer2" class="form-control form-control"></textarea></div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label class="col-md-12">Dates of Employment</label>
+                        <div class="col-md-6"><input type="text" class="date-picker form-control" name="date_of_employment_from2" placeholder="From" /></div><div class="col-md-6"><input type="text" class="date-picker form-control" name="date_of_employment_to2" placeholder="To" /></div></div>
+                    </td>
+                    <td colspan="2">
+                        <label class="col-md-12">Type of work done</label>
+                        <div class="col-md-12"><textarea name="type_of_work_done2" class="form-control"></textarea></div>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <label class="col-md-12">Supervisor's Name & Phone No.:</label>
+                        <div class="col-md-12"><textarea name="supervisor_name_phone2" class="form-control form-control"></textarea></div>
+                    </td>
+                    <td>
+                       <label class="col-md-12">Final Salary</label> 
+                       <div class="col-md-12"><input type="text" class="form-control" name="final_salary2" /></div>
+                    </td>               
+                </tr>
+                <tr>
+                    <td colspan="3">
+                        <label class="col-md-12">Reasons of leaving:</label>
+                        <div class="col-md-12"><textarea name="reasons_of_leaving2" class="form-control form-control"></textarea></div>
+                    </td>
+                </tr>
+            </table>
+            
+            <p>&nbsp;</p>
+            <table class="table table-bordered">
+                <tr>
+                    <td colspan="3">
+                        <label class="col-md-12">Name & Address Of Employer:</label>
+                        <div class="col-md-12"><textarea name="name_and_address_employer3" class="form-control form-control"></textarea></div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label class="col-md-12">Dates of Employment</label>
+                        <div class="col-md-6"><input type="text" class="date-picker form-control" name="date_of_employment_from3" placeholder="From" /></div><div class="col-md-6"><input type="text" class="date-picker form-control" name="date_of_employment_to3" placeholder="To" /></div></div>
+                    </td>
+                    <td colspan="2">
+                        <label class="col-md-12">Type of work done</label>
+                        <div class="col-md-12"><textarea name="type_of_work_done3" class="form-control"></textarea></div>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <label class="col-md-12">Supervisor's Name & Phone No.:</label>
+                        <div class="col-md-12"><textarea name="supervisor_name_phone3" class="form-control form-control"></textarea></div>
+                    </td>
+                    <td>
+                       <label class="col-md-12">Final Salary</label> 
+                       <div class="col-md-12"><input type="text" class="form-control" name="final_salary3" /></div>
+                    </td>               
+                </tr>
+                <tr>
+                    <td colspan="3">
+                        <label class="col-md-12">Reasons of leaving:</label>
+                        <div class="col-md-12"><textarea name="reasons_of_leaving3" class="form-control form-control"></textarea></div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        
         <div class="clearfix"></div>
+        
     
 
 </form>
