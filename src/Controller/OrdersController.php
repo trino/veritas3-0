@@ -81,7 +81,21 @@
 
                 $feed = $feeds->find()->where(['order_id' => $did])->first();
                 $this->set('feeds', $feed);
-
+                
+                $pre_employment_road_test = TableRegistry::get('pre_employment_road_test');
+                $pre_employment_road_test = $pre_employment_road_test->find()->where(['order_id' => $did])->first();
+                $this->set('pre_employment_road_test', $pre_employment_road_test);
+                
+                $past_employment_survey = TableRegistry::get('past_employment_survey');
+                $past_employment_survey = $past_employment_survey->find()->where(['order_id' => $did])->first();
+                $this->set('past_employment_survey', $past_employment_survey);
+                
+                $application_for_employment_gfs = TableRegistry::get('application_for_employment_gfs');
+                $application_for_employment_gfs = $application_for_employment_gfs->find()->where(['order_id' => $did])->first();
+                $this->set('application_for_employment_gfs', $application_for_employment_gfs);
+                
+                	
+                
                 $survey = TableRegistry::get('Survey');
                 //$pre_at = TableRegistry::get('driver_application_accident');
                 $sur = $survey->find()->where(['order_id' => $did])->first();
@@ -220,6 +234,14 @@
 
                 $feed = $feeds->find()->where(['order_id' => $did])->first();
                 $this->set('feeds', $feed);
+                
+                $pre_employment_road_test = TableRegistry::get('pre_employment_road_test');
+                $pre_employment_road_test = $pre_employment_road_test->find()->where(['order_id' => $did])->first();
+                $this->set('pre_employment_road_test', $pre_employment_road_test);
+                
+                $past_employment_survey = TableRegistry::get('past_employment_survey');
+                $past_employment_survey = $past_employment_survey->find()->where(['order_id' => $did])->first();
+                $this->set('past_employment_survey', $past_employment_survey);
 
                 $survey = TableRegistry::get('Survey');
                 //$pre_at = TableRegistry::get('driver_application_accident');
