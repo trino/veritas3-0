@@ -8,12 +8,6 @@
 
 }
 
-
-.whitecenterdiv {
-    padding-top: 30px;
-    color:white; width:100%; text-align: center;
-}
-
 .whiteCorner {
     z-index: 2;
     width: 25px;
@@ -69,7 +63,7 @@
 
 .whitecenterdiv {
   padding-top: 30px;
-  color:white; width:100%; text-align: center;
+  color:#c9dae9; width:100%; text-align: center;
 }
 
 .whiteCorner {
