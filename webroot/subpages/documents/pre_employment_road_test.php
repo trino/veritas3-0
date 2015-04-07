@@ -117,81 +117,104 @@
         <p>&nbsp;</p>
         <div class="col-md-12">
             <div class="col-md-12">
-                <?php 
-                if($this->request->params['action'] == 'vieworder'  || $this->request->params['action']== 'view')
-                {
-                    if(isset($pre_employment_road_test) && $pre_employment_road_test->c4 =='1')
-                    {
-                        ?>
-                        &#9745;
-                        <?php
-                    }
-                    else 
-                    {
-                        ?>
-                        &#9744;
-                        <?php
-                    } 
-                }
-                else
-                {
-                    ?>                                      
-                    <input type="checkbox" name="c4" value="1" <?php if(isset($pre_employment_road_test) && $pre_employment_road_test->c4 =='1')echo "checked='checked'";?>/> 
-                    <?php
-                }
-             ?>
-                 Aim High In Steering&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Looking 15 seconds ahead
-                <p>&nbsp;</p>
-                <?php 
-                if($this->request->params['action'] == 'vieworder'  || $this->request->params['action']== 'view')
-                {
-                    if(isset($pre_employment_road_test) && $pre_employment_road_test->c5 =='1')
-                    {
-                        ?>
-                        &#9745;
-                        <?php
-                    }
-                    else 
-                    {
-                        ?>
-                        &#9744;
-                        <?php
-                    } 
-                }
-                else
-                {
-                    ?>                                      
-                    <input type="checkbox" name="c5" value="1" <?php if(isset($pre_employment_road_test) && $pre_employment_road_test->c5 =='1')echo "checked='checked'";?>/> 
-                    <?php
-                }
-             ?>
-                 Get The Big Picture&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Check mirrors every 5 to 8 seconds
-                <p>&nbsp;</p>
-                <?php 
-                if($this->request->params['action'] == 'vieworder'  || $this->request->params['action']== 'view')
-                {
-                    if(isset($pre_employment_road_test) && $pre_employment_road_test->c6 =='1')
-                    {
-                        ?>
-                        &#9745;
-                        <?php
-                    }
-                    else 
-                    {
-                        ?>
-                        &#9744;
-                        <?php
-                    } 
-                }
-                else
-                {
-                    ?>                                      
-                    <input type="checkbox" name="c6" value="1" <?php if(isset($pre_employment_road_test) && $pre_employment_road_test->c6 =='1')echo "checked='checked'";?>/> 
-                    <?php
-                }
-             ?>
-                 Keep Your Eyes Moving&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Every 2 seconds, avoid stares
-                <p>&nbsp;</p>
+                <table class="table table-bordered">
+                        <tr>
+                            <td>
+                            
+                                    <?php 
+                                    if($this->request->params['action'] == 'vieworder'  || $this->request->params['action']== 'view')
+                                    {
+                                        if(isset($pre_employment_road_test) && $pre_employment_road_test->c4 =='1')
+                                        {
+                                            ?>
+                                            &#9745;
+                                            <?php
+                                        }
+                                        else 
+                                        {
+                                            ?>
+                                            &#9744;
+                                            <?php
+                                        } 
+                                    }
+                                    else
+                                    {
+                                        ?>                                      
+                                        <input type="checkbox" name="c4" value="1" <?php if(isset($pre_employment_road_test) && $pre_employment_road_test->c4 =='1')echo "checked='checked'";?>/> 
+                                        <?php
+                                    }
+                                 ?>
+                                     Aim High In Steering
+                             </td>
+                             <td>
+                             Looking 15 seconds ahead
+                             </td>
+                         </tr>
+                         <tr>
+                             <td>
+                                    <?php 
+                                    if($this->request->params['action'] == 'vieworder'  || $this->request->params['action']== 'view')
+                                    {
+                                        if(isset($pre_employment_road_test) && $pre_employment_road_test->c5 =='1')
+                                        {
+                                            ?>
+                                            &#9745;
+                                            <?php
+                                        }
+                                        else 
+                                        {
+                                            ?>
+                                            &#9744;
+                                            <?php
+                                        } 
+                                    }
+                                    else
+                                    {
+                                        ?>                                      
+                                        <input type="checkbox" name="c5" value="1" <?php if(isset($pre_employment_road_test) && $pre_employment_road_test->c5 =='1')echo "checked='checked'";?>/> 
+                                        <?php
+                                    }
+                                 ?>
+                                     Get The Big Picture
+                             </td>
+                             <td>
+                             Check mirrors every 5 to 8 seconds
+                             </td>
+                    </tr>
+                    <tr>
+                            <td>
+                                <?php 
+                                if($this->request->params['action'] == 'vieworder'  || $this->request->params['action']== 'view')
+                                {
+                                    if(isset($pre_employment_road_test) && $pre_employment_road_test->c6 =='1')
+                                    {
+                                        ?>
+                                        &#9745;
+                                        <?php
+                                    }
+                                    else 
+                                    {
+                                        ?>
+                                        &#9744;
+                                        <?php
+                                    } 
+                                }
+                                else
+                                {
+                                    ?>                                      
+                                    <input type="checkbox" name="c6" value="1" <?php if(isset($pre_employment_road_test) && $pre_employment_road_test->c6 =='1')echo "checked='checked'";?>/> 
+                                    <?php
+                                }
+                             ?>
+                                 Keep Your Eyes Moving
+                         </td>
+                         <td>
+                            Every 2 seconds, avoid stares
+                         </td>
+                </tr>
+                <tr>
+                <td>
+                
                 <?php 
                 if($this->request->params['action'] == 'vieworder'  || $this->request->params['action']== 'view')
                 {
@@ -215,8 +238,16 @@
                     <?php
                 }
              ?>
-                 Leave Yourself An Out&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Surround Yourself With Space
-                <p>&nbsp;</p>
+                 Leave Yourself An Out
+                 
+                 </td>
+                <td>
+                Surround Yourself With Space
+                </td>
+                </tr>
+                <tr>
+                <td>
+                
                 <?php 
                 if($this->request->params['action'] == 'vieworder'  || $this->request->params['action']== 'view')
                 {
@@ -240,8 +271,13 @@
                     <?php
                 }
              ?>
-                 Make Sure They See You&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Eye Contact, Tap of the Horn
-                
+                 Make Sure They See You
+                 </td>
+                 <td>
+                 Eye Contact, Tap of the Horn
+                 </td>
+                </tr>
+                </table>
             </div>
         </div>
         <p>&nbsp;</p>
@@ -326,11 +362,6 @@
              <strong>Smooth shifting, using proper gear, and down shifts</strong>
         </div>
         <p>&nbsp;</p>
-        </td>
-        
-        <td>
-        
-        
         <div class="col-md-12">
             <?php 
                 if($this->request->params['action'] == 'vieworder'  || $this->request->params['action']== 'view')
@@ -360,6 +391,10 @@
         <p>&nbsp;</p>
         <div class="col-md-12">
             <div class="col-md-12">
+                <table class="table table-bordered">
+                <tr>
+                <td>
+                
                 <?php 
                 if($this->request->params['action'] == 'vieworder'  || $this->request->params['action']== 'view')
                 {
@@ -384,7 +419,11 @@
                 }
              ?>
                  Uses signals properly
-                <p>&nbsp;</p>
+                </td>
+                </tr>
+                <tr>
+                <td>
+                
                 <?php 
                 if($this->request->params['action'] == 'vieworder'  || $this->request->params['action']== 'view')
                 {
@@ -409,7 +448,11 @@
                 }
              ?>
                  Obeys traffic sings and signals
-                <p>&nbsp;</p>
+                </td>
+                </tr>
+                <tr>
+                <td>
+                
                 <?php 
                 if($this->request->params['action'] == 'vieworder'  || $this->request->params['action']== 'view')
                 {
@@ -434,8 +477,13 @@
                 }
              ?>
                  Intersections
-                <p>&nbsp;</p>
+                 <p>&nbsp;</p>
+                
                 <div class="col-md-12">
+                <table class="table table-bordered">
+                <tr>
+                <td>
+                
                 <?php 
                 if($this->request->params['action'] == 'vieworder'  || $this->request->params['action']== 'view')
                 {
@@ -460,7 +508,10 @@
                 }
              ?>
                      Stops ahead of crosswalk
-                    <p>&nbsp;</p>
+                    </td>
+                </tr>  
+                <tr>
+                    <td>
                     <?php 
                 if($this->request->params['action'] == 'vieworder'  || $this->request->params['action']== 'view')
                 {
@@ -485,7 +536,11 @@
                 }
              ?>
                      Yields right of way
-                    <p>&nbsp;</p>
+                    </td>                
+                </tr> 
+                <tr>
+                    <td>
+                    
                     <?php 
                 if($this->request->params['action'] == 'vieworder'  || $this->request->params['action']== 'view')
                 {
@@ -510,11 +565,22 @@
                 }
              ?>
                 Looks left, right and left
-                    <p>&nbsp;</p>
-                </div>                
+                    </td>                
+                </tr>             
+                </table>
+                </div>  
+                </td>
+                </tr>
+                </table>              
             </div>
         </div>
         <p>&nbsp;</p>
+        </td>
+        
+        <td>
+        
+        
+        
         <div class="col-md-12">
             <?php 
                 if($this->request->params['action'] == 'vieworder'  || $this->request->params['action']== 'view')
@@ -655,6 +721,10 @@
         <p>&nbsp;</p>
         <div class="col-md-12">
             <div class="col-md-12">
+            <table class="table table-bordered">
+            <tr>
+            <td>
+            
                 <?php 
                 if($this->request->params['action'] == 'vieworder'  || $this->request->params['action']== 'view')
                 {
@@ -679,7 +749,11 @@
                 }
              ?>
                      Avoid blind side backing whenever possible
-                    <p>&nbsp;</p>
+                    </td>
+            </tr>
+            <tr>
+            <td>
+            
                     <?php 
                 if($this->request->params['action'] == 'vieworder'  || $this->request->params['action']== 'view')
                 {
@@ -704,7 +778,11 @@
                 }
              ?>
                      Uses horn and hazards
-                    <p>&nbsp;</p>
+                    </td>
+            </tr>
+            <tr>
+            <td>
+            
                     <?php 
                 if($this->request->params['action'] == 'vieworder'  || $this->request->params['action']== 'view')
                 {
@@ -729,7 +807,11 @@
                 }
              ?>
                      Keeps eye on both sides of truck
-                    <p>&nbsp;</p>
+                    </td>
+            </tr>
+            <tr>
+            <td>
+            
                     <?php 
                 if($this->request->params['action'] == 'vieworder'  || $this->request->params['action']== 'view')
                 {
@@ -754,7 +836,9 @@
                 }
              ?>
                 Get out and look to ensure clearance 
-                    <p>&nbsp;</p>
+                    </td>
+            </tr>
+            </table>
             </div>
         </div>
         
@@ -762,7 +846,7 @@
         <div class="col-md-12">
             <label class="col-md-12">Comments</label>
             <div class="col-md-12">
-                <textarea name="comment" class="form-control"><?php if(isset($pre_employment_road_test))echo $pre_employment_road_test->comment;?></textarea>
+                <textarea name="comment" style="height: 120px;" class="form-control"><?php if(isset($pre_employment_road_test))echo $pre_employment_road_test->comment;?></textarea>
             </div>
         </div>
         <p>&nbsp;</p>
