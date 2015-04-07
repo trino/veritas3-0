@@ -200,10 +200,10 @@ function listfiles($client_docs, $dir, $field_name='client_doc',$delete, $method
                 if ($count==0){
 
                     ?>
-                    <div class="form-group col-md-12">
+                    <!--<div class="form-group col-md-12">
 
                         None
-                    </div>
+                    </div>-->
 
                 <?
 

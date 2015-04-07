@@ -266,6 +266,9 @@
             $arr['profile_id'] = str_replace(',', ' ', $arr['profile_id']);
             $arr['profile_id'] = trim($arr['profile_id']);
             $arr['profile_id'] = str_replace(' ', ',', $arr['profile_id']);
+            $arr['profile_id'] = str_replace(',,', ',', $arr['profile_id']);
+            $arr['profile_id'] = str_replace(',,', ',', $arr['profile_id']);
+            $arr['profile_id'] = str_replace(',,', ',', $arr['profile_id']);
             $query2 = $querys->query();
             $query2->update()
                 ->set($arr)
@@ -841,6 +844,8 @@
             $didit = false;
             if (is_object($q)) {
                 if ($q->profile_id) {
+                    $q->profile_id = str_replace(',,',',',$q->profile_id);
+                    $q->profile_id = str_replace(',,',',',$q->profile_id);
                     $querys = $pro->find()->where(['id IN (' . $q->profile_id . ')']);
                     $didit = true;
                 }
@@ -1001,6 +1006,8 @@
             $p_ids = str_replace(',', ' ', $p_ids);
             $p_ids = trim($p_ids);
             $p_ids = str_replace(' ', ',', $p_ids);
+            $p_ids = str_replace(',,', ',', $p_ids);
+            $p_ids = str_replace(',,', ',', $p_ids);
             if ($query->query()->update()->set(['profile_id' => $p_ids])
                 ->where(['id' => $_POST['client_id']])
                 ->execute()
