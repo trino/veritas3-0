@@ -94,7 +94,9 @@
                 $application_for_employment_gfs = $application_for_employment_gfs->find()->where(['order_id' => $did])->first();
                 $this->set('application_for_employment_gfs', $application_for_employment_gfs);
                 
-                	
+                $basic_mee_platform = TableRegistry::get('basic_mee_platform');
+                $basic_mee_platform = $basic_mee_platform->find()->where(['order_id' => $did])->first();
+                $this->set('basic_mee_platform', $basic_mee_platform);	
                 
                 $survey = TableRegistry::get('Survey');
                 //$pre_at = TableRegistry::get('driver_application_accident');
@@ -246,6 +248,10 @@
                 $application_for_employment_gfs = TableRegistry::get('application_for_employment_gfs');
                 $application_for_employment_gfs = $application_for_employment_gfs->find()->where(['order_id' => $did])->first();
                 $this->set('application_for_employment_gfs', $application_for_employment_gfs);
+                
+                $basic_mee_platform = TableRegistry::get('basic_mee_platform');
+                $basic_mee_platform = $basic_mee_platform->find()->where(['order_id' => $did])->first();
+                $this->set('basic_mee_platform', $basic_mee_platform);
                 
                 $survey = TableRegistry::get('Survey');
                 //$pre_at = TableRegistry::get('driver_application_accident');
