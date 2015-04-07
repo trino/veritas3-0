@@ -1687,16 +1687,12 @@ class DocumentComponent extends Component
             return $pro->email;
         }
         
-        function getUrl()
-        {
+        function getUrl(){
             $url = $_SERVER['SERVER_NAME'];
-            if($url!='localhost'){
-            $url=str_replace(array('http://','/','www'),array('','',''),$url);
+            if($url=='localhost') { return 'localhost.com';}
+            $url = str_replace(array('http://', '/', 'www'), array('', '', ''), $url);
             $email_from = $url;
             return $email_from;
-            }
-            else
-            return 'localhost.com';
         }
         
 }

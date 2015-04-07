@@ -127,6 +127,10 @@
                 }
                 $DocID = $_POST['DocID'];
                 switch ($_POST["Type"]) {
+                    case "enabledocument":
+                        $this->enabledisableproduct($DocID,$Value );
+                        echo $DocID . " set to " . $Value;
+                        break;
                     case "selectproduct":
                         $this->generateproductHTML($DocID);
                         break;
@@ -162,6 +166,10 @@
             }
         }
 
+        function enabledisableproduct($ID, $Value){
+            $table = TableRegistry::get('order_products');
+            $table->query()->update()->set(['enable' => $Value])->where(['number' => $ID])->execute();
+        }
         function isproductprovinceenabled($ProductID, $DocumentID, $Province)
         {
             $item = TableRegistry::get('order_provinces')->find()->where(['ProductID' => $ProductID, 'FormID' => $DocumentID, "Province" => $Province])->first();

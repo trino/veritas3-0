@@ -1,7 +1,6 @@
 <!-- BEGIN PORTLET-->
 <?php
- if($this->request->session()->read('debug'))
-        echo "<span style ='color:red;'>display.php #INC120</span>";
+ if($this->request->session()->read('debug')) {echo "<span style ='color:red;'>display.php #INC120</span>";}
  ?>
 <div class="portlet box green-haze">
     <div class="portlet-title">
