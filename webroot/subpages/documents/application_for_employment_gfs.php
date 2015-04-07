@@ -49,11 +49,58 @@
             <div class="col-md-12">
                     <label class="control-label col-md-4">Have you ever applied for work with us before? </label>  
                     <div class="col-md-2 radio-list yesNoCheck">
-                        <label class="radio-inline">              
-                        <input type="radio" class="form-control" name="workedbefore" id="yesCheck" value="1" <?php if(isset($application_for_employment_gfs) && $application_for_employment_gfs->workedbefore=='1')echo "checked='checked'";?> /> <span>Yes</span>
+                        <label class="radio-inline">
+                        <?php 
+                        if($this->request->params['action'] == 'vieworder'  || $this->request->params['action']== 'view')
+                        {
+                            if(isset($application_for_employment_gfs) && $application_for_employment_gfs->workedbefore=='1')
+                            {
+                                ?>
+                                &#10004;
+                                <?php
+                            }
+                            else 
+                            {
+                                ?>
+                                &#10006;
+                                <?php
+                            } 
+                        }
+                        else
+                        {
+                            ?>                                      
+                            <input type="radio" class="form-control" name="workedbefore" id="yesCheck" value="1" 
+                            <?php if(isset($application_for_employment_gfs) && $application_for_employment_gfs->workedbefore=='1')echo "checked='checked'";?>/>
+                            <?php
+                        }
+                         ?> <span>Yes</span>
                         </label>
                         <label class="radio-inline">
-                        <input type="radio" class="form-control" name="workedbefore" id="noCheck" value="0" <?php if(isset($application_for_employment_gfs) && $application_for_employment_gfs->workedbefore=='0')echo "checked='checked'";?>/> <span>No</span>
+                        <?php 
+                        if($this->request->params['action'] == 'vieworder'  || $this->request->params['action']== 'view')
+                        {
+                            if(isset($application_for_employment_gfs) && $application_for_employment_gfs->workedbefore=='0')
+                            {
+                                ?>
+                                &#10004;
+                                <?php
+                            }
+                            else 
+                            {
+                                ?>
+                                &#10006;
+                                <?php
+                            } 
+                        }
+                        else
+                        {
+                            ?>                                      
+                            <input type="radio" class="form-control" name="workedbefore" id="noCheck" value="0" 
+                            <?php if(isset($application_for_employment_gfs) && $application_for_employment_gfs->workedbefore=='0')echo "checked='checked'";?>/>
+                            <?php
+                        }
+                         ?> 
+                        <span>No</span>
                         </label>
                     </div>
                     <div id="yesDiv" style="display: none;">
@@ -81,22 +128,114 @@
             <div class="col-md-6">
                     <label class="control-label col-md-8">Are you 18 years of age or older? </label>  
                     <div class="col-md-4 radio-list">
-                        <label class="radio-inline">              
-                        <input type="radio" class="form-control" name="age" value="1" <?php if(isset($application_for_employment_gfs) && $application_for_employment_gfs->age=='1')echo "checked='checked'";?>/>Yes
+                        <label class="radio-inline">
+                        <?php 
+                        if($this->request->params['action'] == 'vieworder'  || $this->request->params['action']== 'view')
+                        {
+                            if(isset($application_for_employment_gfs) && $application_for_employment_gfs->age=='1')
+                            {
+                                ?>
+                                &#10004;
+                                <?php
+                            }
+                            else 
+                            {
+                                ?>
+                                &#10006;
+                                <?php
+                            } 
+                        }
+                        else
+                        {
+                            ?>                                      
+                            <input type="radio" class="form-control" name="age" value="1" <?php if(isset($application_for_employment_gfs) && $application_for_employment_gfs->age=='1')echo "checked='checked'";?>/>
+                            <?php
+                        }
+                         ?>              
+                        Yes
                         </label>
                         <label class="radio-inline">
-                        <input type="radio" class="form-control" name="age" value="0" <?php if(isset($application_for_employment_gfs) && $application_for_employment_gfs->age=='0')echo "checked='checked'";?>/> No
+                        <?php 
+                        if($this->request->params['action'] == 'vieworder'  || $this->request->params['action']== 'view')
+                        {
+                            if(isset($application_for_employment_gfs) && $application_for_employment_gfs->age=='0')
+                            {
+                                ?>
+                                &#10004;
+                                <?php
+                            }
+                            else 
+                            {
+                                ?>
+                                &#10006;
+                                <?php
+                            } 
+                        }
+                        else
+                        {
+                            ?>                                      
+                            <input type="radio" class="form-control" name="age" value="0" <?php if(isset($application_for_employment_gfs) && $application_for_employment_gfs->age=='0')echo "checked='checked'";?>/>
+                            <?php
+                        }
+                         ?>
+                         No
                         </label>
                     </div>
             </div>
             <div class="col-md-6">
                     <label class="control-label col-md-8">Are you legally eligible to work in Canada? </label>  
                     <div class="col-md-4 radio-list">
-                        <label class="radio-inline">              
-                        <input type="radio" class="form-control" name="legal" value="1" <?php if(isset($application_for_employment_gfs) && $application_for_employment_gfs->legal=='1')echo "checked='checked'";?>/>Yes
+                        <label class="radio-inline">
+                        <?php 
+                        if($this->request->params['action'] == 'vieworder'  || $this->request->params['action']== 'view')
+                        {
+                            if(isset($application_for_employment_gfs) && $application_for_employment_gfs->legal=='1')
+                            {
+                                ?>
+                                &#10004;
+                                <?php
+                            }
+                            else 
+                            {
+                                ?>
+                                &#10006;
+                                <?php
+                            } 
+                        }
+                        else
+                        {
+                            ?>                                      
+                            <input type="radio" class="form-control" name="legal" value="1" <?php if(isset($application_for_employment_gfs) && $application_for_employment_gfs->legal=='1')echo "checked='checked'";?>/>
+                            <?php
+                        }
+                         ?>              
+                        Yes
                         </label>
                         <label class="radio-inline">
-                        <input type="radio" class="form-control" name="legal" value="0" <?php if(isset($application_for_employment_gfs) && $application_for_employment_gfs->legal=='0')echo "checked='checked'";?>/> No
+                        <?php 
+                        if($this->request->params['action'] == 'vieworder'  || $this->request->params['action']== 'view')
+                        {
+                            if(isset($application_for_employment_gfs) && $application_for_employment_gfs->legal=='0')
+                            {
+                                ?>
+                                &#10004;
+                                <?php
+                            }
+                            else 
+                            {
+                                ?>
+                                &#10006;
+                                <?php
+                            } 
+                        }
+                        else
+                        {
+                            ?>                                      
+                            <input type="radio" class="form-control" name="legal" value="0" <?php if(isset($application_for_employment_gfs) && $application_for_employment_gfs->legal=='0')echo "checked='checked'";?>/>
+                            <?php
+                        }
+                         ?>
+                         No
                         </label>
                     </div>
             </div>
@@ -198,11 +337,57 @@
             <div class="col-md-12">
                     <label class="control-label col-md-5">Do you want to work: </label>  
                     <div class="col-md-7 radio-list">
-                        <label class="radio-inline">              
-                        <input type="radio" class="form-control" name="legal1" id="partTime" value="1" <?php if(isset($application_for_employment_gfs) && $application_for_employment_gfs->legal1=='1')echo "checked='checked'";?>/> Part Time
+                        <label class="radio-inline">
+                        <?php 
+                        if($this->request->params['action'] == 'vieworder'  || $this->request->params['action']== 'view')
+                        {
+                            if(isset($application_for_employment_gfs) && $application_for_employment_gfs->legal1=='1')
+                            {
+                                ?>
+                                &#10004;
+                                <?php
+                            }
+                            else 
+                            {
+                                ?>
+                                &#10006;
+                                <?php
+                            } 
+                        }
+                        else
+                        {
+                            ?>                                      
+                            <input type="radio" class="form-control" name="legal1" id="partTime" value="1" <?php if(isset($application_for_employment_gfs) && $application_for_employment_gfs->legal1=='1')echo "checked='checked'";?>/>
+                            <?php
+                        }
+                         ?>               
+                         Part Time
                         </label>
                         <label class="radio-inline">
-                        <input type="radio" class="form-control" name="legal1" id="fullTime" value="0" <?php if(isset($application_for_employment_gfs) && $application_for_employment_gfs->legal1=='0')echo "checked='checked'";?>/> Full Time ?
+                        <?php 
+                        if($this->request->params['action'] == 'vieworder'  || $this->request->params['action']== 'view')
+                        {
+                            if(isset($application_for_employment_gfs) && $application_for_employment_gfs->legal1=='0')
+                            {
+                                ?>
+                                &#10004;
+                                <?php
+                            }
+                            else 
+                            {
+                                ?>
+                                &#10006;
+                                <?php
+                            } 
+                        }
+                        else
+                        {
+                            ?>                                      
+                            <input type="radio" class="form-control" name="legal1" id="fullTime" value="0" <?php if(isset($application_for_employment_gfs) && $application_for_employment_gfs->legal1=='0')echo "checked='checked'";?>/>
+                            <?php
+                        }
+                         ?>                        
+                         Full Time ?
                         </label>
                     </div>
             </div>
@@ -219,11 +404,57 @@
             <div class="col-md-12">
                     <label class="control-label col-md-5">Are you able to do the job(s) for which you are applying? </label>  
                     <div class="col-md-7 radio-list">
-                        <label class="radio-inline">              
-                        <input type="radio" class="form-control" name="legal2" id="ableToWork" value="1" <?php if(isset($application_for_employment_gfs) && $application_for_employment_gfs->legal2=='1')echo "checked='checked'";?>/> Yes
+                        <label class="radio-inline">
+                        <?php 
+                        if($this->request->params['action'] == 'vieworder'  || $this->request->params['action']== 'view')
+                        {
+                            if(isset($application_for_employment_gfs) && $application_for_employment_gfs->legal2=='1')
+                            {
+                                ?>
+                                &#10004;
+                                <?php
+                            }
+                            else 
+                            {
+                                ?>
+                                &#10006;
+                                <?php
+                            } 
+                        }
+                        else
+                        {
+                            ?>                                      
+                            <input type="radio" class="form-control" name="legal2" id="ableToWork" value="1" <?php if(isset($application_for_employment_gfs) && $application_for_employment_gfs->legal2=='1')echo "checked='checked'";?>/> 
+                            <?php
+                        }
+                         ?>               
+                         Yes
                         </label>
                         <label class="radio-inline">
-                        <input type="radio" class="form-control" name="legal2" id="notAbleToWork" value="2" <?php if(isset($application_for_employment_gfs) && $application_for_employment_gfs->legal2=='0')echo "checked='checked'";?>/> No
+                        <?php 
+                        if($this->request->params['action'] == 'vieworder'  || $this->request->params['action']== 'view')
+                        {
+                            if(isset($application_for_employment_gfs) && $application_for_employment_gfs->legal2=='2')
+                            {
+                                ?>
+                                &#10004;
+                                <?php
+                            }
+                            else 
+                            {
+                                ?>
+                                &#10006;
+                                <?php
+                            } 
+                        }
+                        else
+                        {
+                            ?>                                      
+                            <input type="radio" class="form-control" name="legal2" id="notAbleToWork" value="2" <?php if(isset($application_for_employment_gfs) && $application_for_employment_gfs->legal2=='0')echo "checked='checked'";?>/>
+                            <?php
+                        }
+                         ?>              
+                        No
                         </label>
                     </div> 
             </div>
@@ -497,7 +728,60 @@
         </div>
         <div class="col-md-12">
             <label class="col-md-6">Would you be willing to take a physical exam?</label>
-            <div class="col-md-6"><input type="radio" name="physical_exam" value="1" <?php if(isset($application_for_employment_gfs)&& $application_for_employment_gfs->physical_exam=='1')echo "checked='checked'";?> /> Yes &nbsp; &nbsp; <input type="radio" name="physical_exam" value="0" <?php if(isset($application_for_employment_gfs)&& $application_for_employment_gfs->physical_exam=='0')echo "checked='checked'";?> /> No</div>
+            <div class="col-md-6 radio-list">
+            <label class="radio-inline">
+            <?php 
+                        if($this->request->params['action'] == 'vieworder'  || $this->request->params['action']== 'view')
+                        {
+                            if(isset($application_for_employment_gfs) && $application_for_employment_gfs->physical_exam=='1')
+                            {
+                                ?>
+                                &#10004;
+                                <?php
+                            }
+                            else 
+                            {
+                                ?>
+                                &#10006;
+                                <?php
+                            } 
+                        }
+                        else
+                        {
+                            ?>                                      
+                            <input type="radio" name="physical_exam" value="1" <?php if(isset($application_for_employment_gfs)&& $application_for_employment_gfs->physical_exam=='1')echo "checked='checked'";?> /> 
+                            <?php
+                        }
+                         ?>
+             Yes &nbsp; &nbsp;
+             </label>
+             <label class="radio-inline">
+             <?php 
+                        if($this->request->params['action'] == 'vieworder'  || $this->request->params['action']== 'view')
+                        {
+                            if(isset($application_for_employment_gfs) && $application_for_employment_gfs->physical_exam=='0')
+                            {
+                                ?>
+                                &#10004;
+                                <?php
+                            }
+                            else 
+                            {
+                                ?>
+                                &#10006;
+                                <?php
+                            } 
+                        }
+                        else
+                        {
+                            ?>                                      
+                            <input type="radio" name="physical_exam" value="0" <?php if(isset($application_for_employment_gfs)&& $application_for_employment_gfs->physical_exam=='0')echo "checked='checked'";?> /> 
+                            <?php
+                        }
+                         ?>
+              No
+              </label>
+              </div>
         </div>
         
         <div class="col-md-12">
@@ -510,11 +794,65 @@
         </div>
         <div class="col-md-12">
             <label class="col-md-6">Would you be willing to relocate?</label>
-            <div class="col-md-6"><input type="radio" name="willing_relocate" value="1" <?php if(isset($application_for_employment_gfs)&& $application_for_employment_gfs->willing_relocate=='1')echo "checked='checked'";?>/> Yes &nbsp; &nbsp; <input type="radio" name="willing_relocate" value="0" <?php if(isset($application_for_employment_gfs)&& $application_for_employment_gfs->willing_relocate=='0')echo "checked='checked'";?>/> No</div>
+            <div class="col-md-6 radio-list">
+                <label class="radio-inline">
+                <?php 
+                        if($this->request->params['action'] == 'vieworder'  || $this->request->params['action']== 'view')
+                        {
+                            if(isset($application_for_employment_gfs) && $application_for_employment_gfs->willing_relocate=='1')
+                            {
+                                ?>
+                                &#10004;
+                                <?php
+                            }
+                            else 
+                            {
+                                ?>
+                                &#10006;
+                                <?php
+                            } 
+                        }
+                        else
+                        {
+                            ?>                                      
+                            <input type="radio" name="willing_relocate" value="1" <?php if(isset($application_for_employment_gfs)&& $application_for_employment_gfs->willing_relocate=='1')echo "checked='checked'";?>/> 
+                            <?php
+                        }
+                         ?>
+                    
+                    Yes &nbsp; &nbsp; 
+                 </label>
+                 <label class="radio-inline">
+                 <?php 
+                        if($this->request->params['action'] == 'vieworder'  || $this->request->params['action']== 'view')
+                        {
+                            if(isset($application_for_employment_gfs) && $application_for_employment_gfs->willing_relocate=='0')
+                            {
+                                ?>
+                                &#10004;
+                                <?php
+                            }
+                            else 
+                            {
+                                ?>
+                                &#10006;
+                                <?php
+                            } 
+                        }
+                        else
+                        {
+                            ?>                                      
+                            <input type="radio" name="willing_relocate" value="0" <?php if(isset($application_for_employment_gfs)&& $application_for_employment_gfs->willing_relocate=='0')echo "checked='checked'";?>/> 
+                            <?php
+                        }
+                         ?>
+                     No
+                 </label>
+             </div>
         </div>
         <div class="col-md-12">
             <label class="col-md-6">Which of your former positions did you like best and why?</label>
-            <div class="col-md-12"><textarea class="form-control" name="best_former_posotions"><?php if(isset($application_for_employment_gfs))echo $application_for_employment_gfs->best_former_posotions;?></textarea></div>
+            <div class="col-md-12"><textarea class="form-control" name="best_former_positions"><?php if(isset($application_for_employment_gfs))echo $application_for_employment_gfs->best_former_posotions;?></textarea></div>
         </div>
         <p>&nbsp;</p>
         <div class="col-md-12">
