@@ -50,25 +50,6 @@
             return $lineclass;
         }
 
-        function get_string_between($string, $start, $end)
-        {
-            $string = " " . $string;
-            $ini = strpos($string, $start);
-            if ($ini == 0) return "";
-            $ini += strlen($start);
-            $len = strpos($string, $end, $ini) - $ini;
-            return substr($string, $ini, $len);
-        }
-
-        function get_mee_results_binary($bright_planet_html_binary, $document_type)
-        {
-            return (get_string_between(base64_decode($bright_planet_html_binary), $document_type, '</tr>'));
-        }
-
-        function get_mee_results_binary2($bright_planet_html_binary, $document_type)
-        {
-            return (get_string_between(base64_decode($bright_planet_html_binary), $document_type, '</tr>'));
-        }
 
         function get_color($result_string)
         {
@@ -113,6 +94,24 @@
             }
         }
 
+/*
+        function get_string_between($string, $start, $end)
+        {
+            $string = " " . $string;
+            $ini = strpos($string, $start);
+            if ($ini == 0) return "";
+            $ini += strlen($start);
+            $len = strpos($string, $end, $ini) - $ini;
+            return substr($string, $ini, $len);
+        }
+
+        function get_mee_results_binary($bright_planet_html_binary, $document_type)
+        {
+            return (get_string_between(base64_decode($bright_planet_html_binary), $document_type, '</tr>'));
+        }
+*/
+
+
         function return_link($pdi, $order_id)
         {
             if (file_exists("orders/order_" . $order_id . '/' . $pdi . '.pdf')) {
@@ -130,7 +129,7 @@
             }
             return false;
         }
-
+/*
         function create_files_from_binary($order_id, $pdi, $binary)
         {
             $createfile_pdf = "orders/order_" . $order_id . '/' . $pdi . '.pdf';
@@ -156,7 +155,7 @@
                 }
             }
         }
-
+*/
         $counting = 0;
         $drcl_d = $orders;
         foreach ($drcl_d as $drcld) {
@@ -195,6 +194,7 @@
                 $settings = $this->requestAction('settings/get_settings');
                 $uploaded_by = $doc_comp->getUser($order->user_id);
 
+                /*
                 if ($order->bright_planet_html_binary && $order->bright_planet_html_binary != "done") {
                     create_files_from_binary($order->id, 'bright_planet_html', $order->bright_planet_html_binary);
 
@@ -228,6 +228,9 @@
                     }
                     $this->requestAction('orders/save_bright_planet_grade/' . $order->id . '/bright_planet_html_binary/done');
                 }
+
+
+
                 if ($order->ebs_1603_binary && $order->ebs_1603_binary != "done") {
                     create_files_from_binary($order->id, '1603', $order->ebs_1603_binary);
                     $this->requestAction('orders/save_bright_planet_grade/' . $order->id . '/ebs_1603_binary/done');
@@ -260,6 +263,8 @@
                     create_files_from_binary($order->id, '72', $order->ins_72_binary);
                     $this->requestAction('orders/save_bright_planet_grade/' . $order->id . '/ins_72_binary/done');
                 }
+
+                */
                 ?>
 
                 <!-- BEGIN PROFILE CONTENT -->

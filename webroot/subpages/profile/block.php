@@ -301,12 +301,18 @@ if ($activetab == "permissions") {
                                                                           value="1" <?php if (isset($sidebar) && $sidebar->orders_others == 1) echo "checked"; ?> />
                                         View Other's
                                     </label>
-                                   
+
+
+
+
                                     <label class="uniform-inline">
                                         <input <?php echo $is_disabled ?> type="checkbox" name="side[email_orders]"
                                                                           value="1" <?php if (isset($sidebar) && $sidebar->email_orders == 1) echo "checked"; ?> />
-                                        Recieve Email2
+                                        Recieve Email
                                     </label>
+
+
+
                                     <!--label class="uniform-inline">
 
                                                                        <table class="table table-bordered table-hover">

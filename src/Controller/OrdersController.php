@@ -1085,7 +1085,7 @@
             die();
         }
 
-
+/*
         public function save_bright_planet_grade($orderid = null, $product_id = null, $grade = null)
         {
 
@@ -1103,7 +1103,7 @@
 
 
         }
-
+*/
 
 
 

@@ -37,7 +37,6 @@
             }
 
         }
-        
 
         function upload_img($id)
         {
@@ -116,17 +115,23 @@
             $this->set('logos2', $this->paginate($this->Logos->find()->where(['secondary' => '2'])));
         }
 
-
-        public function products(){
+        public function products()
+        {
             if (isset($_POST["Type"])) {
-                if (isset($_POST['Value'])) { if (strtolower($_POST['Value']) == "true") { $Value = 1; } else { $Value = 0;}}
+                if (isset($_POST['Value'])) {
+                    if (strtolower($_POST['Value']) == "true") {
+                        $Value = 1;
+                    } else {
+                        $Value = 0;
+                    }
+                }
                 $DocID = $_POST['DocID'];
-                switch($_POST["Type"]){
+                switch ($_POST["Type"]) {
                     case "selectproduct":
                         $this->generateproductHTML($DocID);
                         break;
                     case "selectdocument"://Product, DocID, Province, Value
-                        echo $this->setproductprovince($_POST["Product"], $DocID,$_POST["Province"],$Value);
+                        echo $this->setproductprovince($_POST["Product"], $DocID, $_POST["Province"], $Value);
                         break;
                     case "rename":
                         $this->RenameProduct($DocID, $_POST["newname"]);
@@ -137,7 +142,7 @@
                         echo "<FONT COLOR=RED>" . $DocID . " was deleted</FONT>";
                         break;
                     case "createdocument":
-                        if($this->AddProduct($DocID,$_POST["Name"] )) {
+                        if ($this->AddProduct($DocID, $_POST["Name"])) {
                             echo "<FONT COLOR='green'>" . $_POST["Name"] . " was created</FONT>";
                         } else {
                             echo "<FONT COLOR='red'>" . $DocID . " is already in use</FONT>";
@@ -157,96 +162,109 @@
             }
         }
 
-        function isproductprovinceenabled($ProductID, $DocumentID, $Province){
+        function isproductprovinceenabled($ProductID, $DocumentID, $Province)
+        {
             $item = TableRegistry::get('order_provinces')->find()->where(['ProductID' => $ProductID, 'FormID' => $DocumentID, "Province" => $Province])->first();
-            if($item) {return true;} else {return false;}
+            if ($item) {
+                return true;
+            } else {
+                return false;
+            }
         }
-        function setproductprovince($ProductID, $DocumentID, $Province, $Value){
+
+        function setproductprovince($ProductID, $DocumentID, $Province, $Value)
+        {
             $table = TableRegistry::get('order_provinces');//ProductID, Province, FormID
             if ($Value == 1) {
-                $color="green";
+                $color = "green";
                 $item = $table->find()->where(['ProductID' => $ProductID, 'FormID' => $DocumentID, "Province" => $Province])->first();
                 $message = " was already enabled for ";
-                if(!$item){
+                if (!$item) {
                     $table->query()->insert(['ProductID', "FormID", "Province"])->values(['ProductID' => $ProductID, 'FormID' => $DocumentID, "Province" => $Province])->execute();
-                    $message= " was enabled for ";
+                    $message = " was enabled for ";
                 }
             } else {
-                $color="red";
+                $color = "red";
                 $table->deleteAll(array('ProductID' => $ProductID, 'FormID' => $DocumentID, "Province" => $Province), false);
-                $message= " was disabled for ";
+                $message = " was disabled for ";
             }
             return "<FONT COLOR='" . $color . "'>" . $DocumentID . $message . $ProductID . "." . $Province . "</FONT>";
         }
-        function generateproductHTML($Product){
+
+        function generateproductHTML($Product)
+        {
             //TableRegistry::get('order_provinces')->find()->where(['ProductID' => $Product])->all();
             $provincelist = $this->enumProvinces();
             $subdocuments = TableRegistry::get('subdocuments')->find('all');//subdocument type list (id, title, display, form, table_name, orders, color_id)
             echo '<TABLE CLASS="table table-condensed  table-striped table-bordered table-hover dataTable no-footer">';
             echo '<thead><TR><TH WIDTH="1%">ID</TH><TH>Document</TH>';
-            foreach($provincelist as $acronym => $fullname){
+            foreach ($provincelist as $acronym => $fullname) {
                 echo '<th width="1%" TITLE="' . $fullname . '">' . $acronym . '</th>';
             }
             echo '</TR></thead>';
-            $this->generateRowHTML(0, "All documents",  $Product, $provincelist);
-            foreach($subdocuments as $doc){
+            $this->generateRowHTML(0, "All documents", $Product, $provincelist);
+            foreach ($subdocuments as $doc) {
                 $this->generateRowHTML($doc->id, $doc->title, $Product, $provincelist);
             }
             echo '</TABLE>';
         }
-        function generateRowHTML($ID, $Title, $Product, $provincelist){
-            echo '<TR><TD>' .$ID . '</TD><TD><DIV ID="dn' . $ID . '">' . $this->ucfirst2($Title) . '</DIV></TD>';
-            foreach($provincelist as $acronym => $fullname){
-                if($this->isproductprovinceenabled($Product, $ID, $acronym)){ $checked = " CHECKED";} else {$checked="";}//$ProductID, $DocumentID, $Province
+
+        function generateRowHTML($ID, $Title, $Product, $provincelist)
+        {
+            echo '<TR><TD>' . $ID . '</TD><TD><DIV ID="dn' . $ID . '">' . $this->ucfirst2($Title) . '</DIV></TD>';
+            foreach ($provincelist as $acronym => $fullname) {
+                if ($this->isproductprovinceenabled($Product, $ID, $acronym)) {
+                    $checked = " CHECKED";
+                } else {
+                    $checked = "";
+                }//$ProductID, $DocumentID, $Province
                 echo '<TD TITLE="' . $fullname . '"><INPUT TYPE="CHECKBOX" ONCLICK="setprov(' . $ID . ", '" . $acronym . "'" . ');" ID="' . $ID . "." . $acronym . '"' . $checked . '></TD>';
             }
             echo "</TR>";
         }
 
-        function enumProvinces(){
+        function enumProvinces()
+        {
             return array("ALL" => "All Provinces", "AB" => "Alberta", "BC" => "British Columbia", "MB" => "Manitoba", "NB" => "New Brunswick", "NL" => "Newfoundland and Labrador", "NT" => "Northwest Territories", "NS" => "Nova Scotia", "NU" => "Nunavut", "ON" => "Ontario", "PE" => "Prince Edward Island", "QC" => "Quebec", "SK" => "Saskatchewan", "YT" => "Yukon Territories");
         }
-        function ucfirst2($Text){
+
+        function ucfirst2($Text)
+        {
             $Words = explode(" ", $Text);
-            $Words2=array();//php forces me to make a copy
-            foreach($Words as $Word){
+            $Words2 = array();//php forces me to make a copy
+            foreach ($Words as $Word) {
                 $Words2[] = ucfirst($Word);
             }
             return implode(" ", $Words2);
         }
 
-        function ClearProduct($Number){
+        function ClearProduct($Number)
+        {
             TableRegistry::get("order_provinces")->deleteAll(array('ProductID' => $Number), false);
         }
-        function RenameProduct($Number, $NewName){
+
+        function RenameProduct($Number, $NewName)
+        {
             TableRegistry::get("order_products")->query()->update()->set(['title' => $NewName])->where(['number' => $Number])->execute();
         }
-        function DeleteProduct($Number){
+
+        function DeleteProduct($Number)
+        {
             $this->ClearProduct($Number);
             TableRegistry::get("order_products")->deleteAll(array('number' => $Number), false);
             //TableRegistry::get("order_provinces")->deleteAll(array('ProductID' => $Number), false);
         }
-        function AddProduct($Number, $Name){
+
+        function AddProduct($Number, $Name)
+        {
             $table = TableRegistry::get("order_products");
             $item = $table->find()->where(['number' => $Number])->first();
-            if($item){return false;}
+            if ($item) {
+                return false;
+            }
             $table->query()->insert(['number', "title", "enable"])->values(['number' => $Number, 'title' => $Name, "enable" => 0])->execute();
             return true;
         }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
         public function index()
         {
@@ -342,8 +360,8 @@
             /*old code*/
 
             //debug($query);die();
-            if (isset($_GET["all"])){
-                $this->set('profiles',  $this->appendattachments($query));
+            if (isset($_GET["all"])) {
+                $this->set('profiles', $this->appendattachments($query));
             } else {
                 $this->set('profiles', $this->appendattachments($this->paginate($query)));
             }
@@ -474,79 +492,77 @@
             $this->set('logos', $this->paginate($this->Logos->find()->where(['secondary' => '0'])));
             $this->set('logos1', $this->paginate($this->Logos->find()->where(['secondary' => '1'])));
             $profile = $this->Profiles->get($id, ['contain' => []]);
-            
+
             $this->set('doc_comp', $this->Document);
             $orders = TableRegistry::get('orders');
             $order = $orders
                 ->find()
                 ->where(['orders.uploaded_for' => $id, 'orders.draft' => 0])->order('orders.id DESC')->contain(['Profiles', 'Clients', 'RoadTest']);
 
-
-/*
-            if($profile->profile_type==5 || $profile->profile_type==7 || $profile->profile_type==8)
-            {
-                $ord = $order;
-                foreach($ord as $o)
-                {
-                    if($o->ins_1 || $o->ins_14 || $o->ins_77 || $o->ins_78 || $o->ins_78 || $o->ebs_1627 || $o->ebs_1650)
-                    {
-                        $complete = 1;
-                        if($o->ins_1)
+            /*
+                        if($profile->profile_type==5 || $profile->profile_type==7 || $profile->profile_type==8)
                         {
-                            if(!$o->ins_1_binary)
+                            $ord = $order;
+                            foreach($ord as $o)
                             {
-                               $complete = 0; 
+                                if($o->ins_1 || $o->ins_14 || $o->ins_77 || $o->ins_78 || $o->ins_78 || $o->ebs_1627 || $o->ebs_1650)
+                                {
+                                    $complete = 1;
+                                    if($o->ins_1)
+                                    {
+                                        if(!$o->ins_1_binary)
+                                        {
+                                           $complete = 0;
+                                        }
+                                    }
+                                    if($o->ins_14)
+                                    {
+                                        if(!$o->ins_14_binary)
+                                        {
+                                           $complete = 0;
+                                        }
+                                    }
+                                    if($o->ins_77)
+                                    {
+                                        if(!$o->ins_77_binary)
+                                        {
+                                           $complete = 0;
+                                        }
+                                    }
+                                    if($o->ins_78)
+                                    {
+                                        if(!$o->ins_78_binary)
+                                        {
+                                           $complete = 0;
+                                        }
+                                    }
+                                    if($o->ebs_1627)
+                                    {
+                                        if(!$o->ebs_1627_binary)
+                                        {
+                                           $complete = 0;
+                                        }
+                                    }
+                                    if($o->ebs_1650)
+                                    {
+                                        if(!$o->ebs_1650_binary)
+                                        {
+                                           $complete = 0;
+                                        }
+                                    }
+                                    if($complete == 1 && $o->complete == 0)
+                                    {
+                                        $or = TableRegistry::get('orders');
+                                        $quer = $or->query();
+                                        $quer->update()
+                                        ->set(['complete'=>1])
+                                        ->where(['id' => $o->id])
+                                        ->execute();
+                                    }
+                                }
                             }
                         }
-                        if($o->ins_14)
-                        {
-                            if(!$o->ins_14_binary)
-                            {
-                               $complete = 0; 
-                            }
-                        }
-                        if($o->ins_77)
-                        {
-                            if(!$o->ins_77_binary)
-                            {
-                               $complete = 0; 
-                            }
-                        }
-                        if($o->ins_78)
-                        {
-                            if(!$o->ins_78_binary)
-                            {
-                               $complete = 0; 
-                            }
-                        }
-                        if($o->ebs_1627)
-                        {
-                            if(!$o->ebs_1627_binary)
-                            {
-                               $complete = 0; 
-                            }
-                        }
-                        if($o->ebs_1650)
-                        {
-                            if(!$o->ebs_1650_binary)
-                            {
-                               $complete = 0; 
-                            }
-                        }
-                        if($complete == 1 && $o->complete == 0)
-                        {
-                            $or = TableRegistry::get('orders');
-                            $quer = $or->query();
-                            $quer->update()
-                            ->set(['complete'=>1])
-                            ->where(['id' => $o->id])
-                            ->execute();
-                        }
-                    }
-                }
-            }
-*/
-
+            */
 
             $this->set('orders', $order);
             $this->set('profile', $profile);
@@ -751,9 +767,10 @@
                     $password = '';
                     unset($_POST['password']);
                 } else {
-                    if(isset($_POST['password']) && $_POST['password'] != ''){
-                    $password = $_POST['password'];
-                    $_POST['password'] = md5($_POST['password']);}
+                    if (isset($_POST['password']) && $_POST['password'] != '') {
+                        $password = $_POST['password'];
+                        $_POST['password'] = md5($_POST['password']);
+                    }
                 }
                 if ($this->request->is('post')) {
 
@@ -766,18 +783,18 @@
                     if ($profiles->save($profile)) {
                         $this->loadModel('ProfileDocs');
                         $this->ProfileDocs->deleteAll(['profile_id' => $profile->id]);
-                        if(isset($_POST['profile_doc'])){
-                        $profile_docs = array_unique($_POST['profile_doc']);
-                        foreach ($profile_docs as $d) {
-                            if ($d != "") {
-                                $docs = TableRegistry::get('profile_docs');
-                                $ds['profile_id'] = $profile->id;
-                                $ds['file'] = $d;
-                                $doc = $docs->newEntity($ds);
-                                $docs->save($doc);
-                                unset($doc);
+                        if (isset($_POST['profile_doc'])) {
+                            $profile_docs = array_unique($_POST['profile_doc']);
+                            foreach ($profile_docs as $d) {
+                                if ($d != "") {
+                                    $docs = TableRegistry::get('profile_docs');
+                                    $ds['profile_id'] = $profile->id;
+                                    $ds['file'] = $d;
+                                    $doc = $docs->newEntity($ds);
+                                    $docs->save($doc);
+                                    unset($doc);
+                                }
                             }
-                        }
                         }
                         /* if (isset($_POST['profile_type']) && $_POST['profile_type'] == 5) {
                              $username = 'driver_' . $profile->id;
@@ -880,34 +897,31 @@
                                 $u = $uq->profile_type;
                                 $type_query = TableRegistry::get('profile_types');
                                 $type_q = $type_query->find()->where(['id' => $u])->first();
-                                if($type_q)
-                                $ut = $type_q->title;
+                                if ($type_q)
+                                    $ut = $type_q->title;
                                 else
+                                    $ut = '';
+                            } else
                                 $ut = '';
-                            }
-                            else
-                            $ut = '';
                             if ($_POST['profile_type']) {
                                 $pt = $_POST['profile_type'];
                                 $u = $pt;
                                 $type_query = TableRegistry::get('profile_types');
                                 $type_q = $type_query->find()->where(['id' => $u])->first();
-                                if($type_q)
-                                $protype = $type_q->title;
+                                if ($type_q)
+                                    $protype = $type_q->title;
                                 else
+                                    $protype = '';
+                            } else
                                 $protype = '';
-                            }
-                            else
-                            $protype = '';
-                            $from = array('info@'.$path => "ISB MEE");
+                            $from = array('info@' . $path => "ISB MEE");
                             $to = $em;
 
                             $sub = 'Profile Created: ' . $_POST['username'];
                             $msg = 'Domain:' . $path . '<br />
                             <br/>Profile Created: ' . $_POST['username'] . ' (Profile Type: ' . $protype . ')
                             <br/>By: ' . $uq->username . '
-                            <br/>On: ' . date('Y-m-d')
-                           ;
+                            <br/>On: ' . date('Y-m-d');
 
                             $this->Mailer->sendEmail($from, $to, $sub, $msg);
                             $this->Flash->success('Profile saved Successfully . ');
@@ -927,8 +941,8 @@
                         //die('here');
                         $this->request->data['password'] = $profile->password;
                     } else {
-                        if(isset($_POST['password']))
-                        $this->request->data['password'] = md5($_POST['password']);
+                        if (isset($_POST['password']))
+                            $this->request->data['password'] = md5($_POST['password']);
                     }
                     if (isset($_POST['profile_type']) && $_POST['profile_type'] == 1)
                         $this->request->data['admin'] = 1;
@@ -943,18 +957,18 @@
                     if ($this->Profiles->save($profile)) {
                         $this->loadModel('ProfileDocs');
                         $this->ProfileDocs->deleteAll(['profile_id' => $profile->id]);
-                        if(isset($_POST['profile_doc'])){
-                        $profile_docs = array_unique($_POST['profile_doc']);
-                        foreach ($profile_docs as $d) {
-                            if ($d != "") {
-                                $docs = TableRegistry::get('profile_docs');
-                                $ds['profile_id'] = $profile->id;
-                                $ds['file'] = $d;
-                                $doc = $docs->newEntity($ds);
-                                $docs->save($doc);
-                                unset($doc);
+                        if (isset($_POST['profile_doc'])) {
+                            $profile_docs = array_unique($_POST['profile_doc']);
+                            foreach ($profile_docs as $d) {
+                                if ($d != "") {
+                                    $docs = TableRegistry::get('profile_docs');
+                                    $ds['profile_id'] = $profile->id;
+                                    $ds['file'] = $d;
+                                    $doc = $docs->newEntity($ds);
+                                    $docs->save($doc);
+                                    unset($doc);
+                                }
                             }
-                        }
                         }
                         echo $profile->id;
                         if (isset($_POST['drafts']) && ($_POST['drafts'] == '1')) {
@@ -983,7 +997,7 @@
                     $post[$arr_ap[0]] = str_replace('Select Gender', '', urldecode($arr_ap[1]));
                 }
             }
-           //var_dump($post);die();
+            //var_dump($post);die();
             $que = $this->Profiles->find()->where(['email' => $post['email'], 'id <> ' => $post['id']])->first();
 
             if ($que) {
@@ -1095,14 +1109,14 @@
             if (isset($_GET['clientflash']) || $clientcount == 0) {
                 $this->Flash->success('Profile created successfully! Please assign profile to at least one client to start placing orders.');
             }
-            
+
             $pr = TableRegistry::get('profiles');
             $query = $pr->find();
             $aa = $query->select()->where(['id' => $id])->first();
             $checker = $this->Settings->check_edit_permission($this->request->session()->read('Profile . id'), $id, $aa->created_by);
             if ($checker == 0) {
-              //  $this->Flash->error('Sorry, you don\'t have the required permissions6.');
-              //  return $this->redirect("/profiles/index");
+                //  $this->Flash->error('Sorry, you don\'t have the required permissions6.');
+                //  return $this->redirect("/profiles/index");
 
             }
 
@@ -1269,7 +1283,7 @@
             }
             //die();
             if ($client == "") {
-                $sides = array('profile_list', 'profile_create', 'client_list', 'client_create', 'document_list', 'document_create', 'profile_edit', 'profile_delete', 'client_edit', 'client_delete', 'document_edit', 'document_delete', 'document_others', 'document_requalify', 'orders_list', 'orders_create', 'orders_delete', 'orders_requalify', 'orders_edit', 'orders_others', 'order_requalify', 'orders_mee', 'orders_products','order_intact','email_document','email_orders','email_profile');
+                $sides = array('profile_list', 'profile_create', 'client_list', 'client_create', 'document_list', 'document_create', 'profile_edit', 'profile_delete', 'client_edit', 'client_delete', 'document_edit', 'document_delete', 'document_others', 'document_requalify', 'orders_list', 'orders_create', 'orders_delete', 'orders_requalify', 'orders_edit', 'orders_others', 'order_requalify', 'orders_mee', 'orders_products', 'order_intact', 'email_document', 'email_orders', 'email_profile');
                 foreach ($sides as $s) {
                     if (!isset($_POST['side'][$s]))
                         $side[$s] = 0;
@@ -1822,9 +1836,90 @@
             die();
         }
 
+
+
+
+
+
+
+
+
+/////////////////////////////////////////////////////////////////////////////////////process order
+/////////////////////////////////////////////////////////////////////////////////////process order
+/////////////////////////////////////////////////////////////////////////////////////process order
+/////////////////////////////////////////////////////////////////////////////////////process order
+
+        function get_string_between($string, $start, $end)
+        {
+            $string = " " . $string;
+            $ini = strpos($string, $start);
+            if ($ini == 0) return "";
+            $ini += strlen($start);
+            $len = strpos($string, $end, $ini) - $ini;
+            return substr($string, $ini, $len);
+        }
+
+        function get_mee_results_binary($bright_planet_html_binary, $document_type)
+        {
+            return ($this->get_string_between(base64_decode($bright_planet_html_binary), $document_type, '</tr>'));
+        }
+
+        function create_files_from_binary($order_id, $pdi, $binary)
+        {
+            $createfile_pdf = "orders/order_" . $order_id . '/' . $pdi . '.pdf';
+            $createfile_html = "orders/order_" . $order_id . '/' . $pdi . 'html';
+            $createfile_text = "orders/order_" . $order_id . '/' . $pdi . 'txt';
+
+            if (!file_exists($createfile_pdf) && !file_exists($createfile_text) && !file_exists($createfile_html)) {
+
+                if (isset($binary) && $binary != "") {
+                    file_put_contents('unknown_file', base64_decode($binary));
+                    $finfo = finfo_open(FILEINFO_MIME_TYPE);
+                    $mime = finfo_file($finfo, 'unknown_file');
+
+                    if ($mime == "application/pdf") {
+                        rename("unknown_file", "orders/order_" . $order_id . '/' . $pdi . '.pdf');
+                    } elseif ($mime == "text/html") {
+                        rename("unknown_file", "orders/order_" . $order_id . '/' . $pdi . '.html');
+                    } elseif ($mime == "text/plain") {
+                        rename("unknown_file", "orders/order_" . $order_id . '/' . $pdi . '.html');
+                    } else {
+                        rename("unknown_file", "orders/order_" . $order_id . '/' . $pdi . '.html');
+                    }
+                }
+            }
+        }
+
+        public function save_bright_planet_grade($orderid = null, $product_id = null, $grade = null)
+        {
+            $querys = TableRegistry::get('orders');
+            $arr[$product_id] = $grade;
+            $query2 = $querys->query();
+            $query2->update()
+                ->set($arr)
+                ->where(['id' => $orderid])
+                ->execute();
+            $this->response->body($query2);
+            return $this->response;
+        }
+
+
+
+
+
+
+/////////////////////////////////////////////////////////////////////////////////////process order
+/////////////////////////////////////////////////////////////////////////////////////process order
+/////////////////////////////////////////////////////////////////////////////////////process order
+/////////////////////////////////////////////////////////////////////////////////////process order
+
         function cron()
         {
 
+            //////////////////////////////////send out emails
+            //////////////////////////////////send out emails
+            //////////////////////////////////send out emails
+            //////////////////////////////////send out emails
             //////////////////////////////////send out emails
             $path = $this->Document->getUrl();
 
@@ -1840,9 +1935,11 @@
                 if ($todo->email_self == '1') {
                     $query2 = $this->loadprofile($todo->user_id);
                     $email = $query2->email;
-                    if ($email) {  $this->sendtaskreminder($email, $todo, $path, "(Account holder)"); }
+                    if ($email) {
+                        $this->sendtaskreminder($email, $todo, $path, "(Account holder)");
+                    }
                 }
-                if (strlen($todo->others_email) >0) {
+                if (strlen($todo->others_email) > 0) {
                     $emails = explode(",", $todo->others_email);
                     foreach ($emails as $em) {
                         $this->sendtaskreminder($em, $todo, $path, "(Added by account holder)");
@@ -1850,20 +1947,186 @@
                 }
                 $q->query()->update()->set(['sent' => 1, 'email_self' => 0])->where(['id' => $todo->id])->execute();
             }
+
+            //////////////////////////////////send out emails
+            //////////////////////////////////send out emails
+            //////////////////////////////////send out emails
+            //////////////////////////////////send out emails
             //////////////////////////////////send out emails
 
+            $orders = TableRegistry::get('orders');
+            $order = $orders
+                ->find()
+                ->where(['orders.draft' => 0])->order('orders.id DESC')->limit(1);
+            //  debug($order);
+            foreach ($order as $o) {
+                debug($o);
+                if ($o->complete == 0) {
+
+                    $complete = 1;
+                    //   ECHO $o->ins_1_binary;
+
+                    if (!$o->ins_1_binary) {
+                        $complete = 0;
+                    } else {
+                        $this->create_files_from_binary($o->id, "1", $o->ins_1_binary);
+                        $this->save_bright_planet_grade($o->id, 'ins_1_binary', null);
+
+                    }
+
+                    if (!$o->ins_14_binary) {
+                        $complete = 0;
+                    } else {
+                        $this->create_files_from_binary($o->id, "14", $o->ins_14_binary);
+                         $this->save_bright_planet_grade($o->id, 'ins_14_binary', null);
+                    }
+
+                    if (!$o->ins_72_binary) {
+                        $complete = 0;
+                    } else {
+                        $this->create_files_from_binary($o->id, "72", $o->ins_72_binary);
+                         $this->save_bright_planet_grade($o->id, 'ins_72_binary', null);
+
+                    }
+
+                    if (!$o->ins_77_binary) {
+                        $complete = 0;
+                    } else {
+                        $this->create_files_from_binary($o->id, "77", $o->ins_77_binary);
+                         $this->save_bright_planet_grade($o->id, 'ins_77_binary', null);
+
+                    }
+
+                    if (!$o->ins_78_binary) {
+                        $complete = 0;
+                    } else {
+                        $this->create_files_from_binary($o->id, "78", $o->ins_78_binary);
+                         $this->save_bright_planet_grade($o->id, 'ins_78_binary', null);
+
+                    }
+
+                    if (!$o->ebs_1603_binary) {
+                        $complete = 0;
+                    } else {
+                        $this->create_files_from_binary($o->id, "1603", $o->ebs_1603_binary);
+                         $this->save_bright_planet_grade($o->id, 'ebs_1603_binary', null);
+
+                    }
+
+                    if (!$o->ebs_1627_binary) {
+                        $complete = 0;
+                    } else {
+                        $this->create_files_from_binary($o->id, "1627", $o->ebs_1627_binary);
+                         $this->save_bright_planet_grade($o->id, 'ebs_1627_binary', null);
+
+                    }
+
+                    if (!$o->ebs_1650_binary) {
+                        $complete = 0;
+                    } else {
+                        $this->create_files_from_binary($o->id, "1650", $o->ebs_1650_binary);
+                         $this->save_bright_planet_grade($o->id, 'ebs_1650_binary', null);
+
+                    }
+
+                    if ($o->bright_planet_html_binary) {
+
+                        $this->create_files_from_binary($o->id, "bright_planet_html_binary", $o->bright_planet_html_binary);
+
+                        $sendit = strip_tags(trim($this->get_mee_results_binary($o->bright_planet_html_binary, "Driver's Record Abstract")));
+                        if ($sendit) {
+                            $this->save_bright_planet_grade($o->id, 'ins_1', $sendit);
+                        }
+
+                        $sendit = strip_tags(trim($this->get_mee_results_binary($o->bright_planet_html_binary, "Pre-employment Screening Program Report")));
+                        if ($sendit) {
+                            $this->save_bright_planet_grade($o->id, 'ins_77', $sendit);
+                        }
+
+                        $sendit = strip_tags(trim($this->get_mee_results_binary($o->bright_planet_html_binary, "CVOR")));
+                        if ($sendit) {
+                            $this->save_bright_planet_grade($o->id, 'ins_14', $sendit);
+                        }
+                        $sendit = strip_tags(trim($this->get_mee_results_binary($o->bright_planet_html_binary, "Premium National Criminal Record Check")));
+                        if ($sendit) {
+                            $this->save_bright_planet_grade($o->id, 'ebs_1603', $sendit);
+                        }
+
+                        $sendit = strip_tags(trim($this->get_mee_results_binary($o->bright_planet_html_binary, "Certifications")));
+                        if ($sendit) {
+                            $this->save_bright_planet_grade($o->id, 'ebs_1650', $sendit);
+                        }
+
+                        $sendit = strip_tags(trim($this->get_mee_results_binary($o->bright_planet_html_binary, "TransClick")));
+                        if ($sendit) {
+                            $this->save_bright_planet_grade($o->id, 'ins_78', $sendit);
+                        }
+
+                        $sendit = strip_tags(trim($this->get_mee_results_binary($o->bright_planet_html_binary, "Letter Of Experience")));
+                        if ($sendit) {
+                            $this->save_bright_planet_grade($o->id, 'ebs_1627', $sendit);
+                        }
+
+                        /*
+                        $sendit = strip_tags(trim($this->get_mee_results_binary($o->bright_planet_html_binary, "Letter Of Experience")));
+                        if ($sendit) {
+
+                            $this->save_bright_planet_grade($o->id, 'ins_72', $sendit);
+
+                        }
+                        */
+
+                        $this->save_bright_planet_grade($o->id, 'bright_planet_html_binary', null);
+
+                    }
+
+
+                    if ($complete == 1 && $o->complete == 0) {
+                        $or = TableRegistry::get('orders');
+                        $quer = $or->query();
+                        $quer->update()
+                            ->set(['complete' => 1])
+                            ->where(['id' => $o->id])
+                            ->execute();
+
+
+
+
+
+                        //send out emasil here
+                        //send out emasil here
+                        //send out emasil here
+                        //send out emasil here
+
+
+
+
+
+
+
+                    }
+
+
+                }
+
+            }
 
             die();
         }
 
-        public function loadprofile($UserID, $fieldname = "id"){
+        public function loadprofile($UserID, $fieldname = "id")
+        {
             $table = TableRegistry::get("profiles");
             $results = $table->find('all', array('conditions' => array($fieldname => $UserID)))->first();
-            if(is_object($results)){ return $results;}
+            if (is_object($results)) {
+                return $results;
+            }
             return false;
         }
-        function sendtaskreminder($email, $todo, $path, $name){
-            $from = array('info@'.$path => "ISB MEE");
+
+        function sendtaskreminder($email, $todo, $path, $name)
+        {
+            $from = array('info@' . $path => "ISB MEE");
             $to = trim($email);
             $sub = 'ISBMEE Tasks - Reminder';
             $msg = 'Domain: ' . getHost("isbmee.com") . ' <br /><br />Reminder, you have following task due:<br/><br/>Title : ' . $todo->title . '<br />Description : ' . $todo->description . '<br />Due By : ' . $todo->date . '<br /><br /> Regards,<br />the ISB MEE team';
@@ -1871,7 +2134,8 @@
             $this->Mailer->sendEmail($from, $to, $sub, $msg);
         }
 
-        function getDriverById($id){
+        function getDriverById($id)
+        {
             $q2 = TableRegistry::get('profiles');
             $que2 = $q2->find();
             $query2 = $que2->select()->where(['id' => $id])->first();
@@ -1879,14 +2143,16 @@
             return $this->response;
         }
 
-        function getOrders($id){
+        function getOrders($id)
+        {
             $order = TableRegistry::get('orders');
             $order = $order->find()->where(['uploaded_for' => $id]);
             $this->response->body($order);
             return $this->response;
         }
 
-        function forgetpassword(){
+        function forgetpassword()
+        {
             $path = $this->Document->getUrl();
             $email = str_replace(" ", "+", trim($_POST['email']));
             $profiles = TableRegistry::get('profiles');
@@ -1895,7 +2161,7 @@
                 $new_pwd = $this->generateRandomString(6);
                 $p = TableRegistry::get('profiles');
                 if ($p->query()->update()->set(['password' => md5($new_pwd)])->where(['id' => $profile->id])->execute()) {
-                    $from = array('info@'.$path => "ISB MEE");
+                    $from = array('info@' . $path => "ISB MEE");
                     $to = $profile->email;
                     $sub = 'New Password created successfully';
                     $msg = 'Your password has been reset.<br /> Your login details are:<br /> Username: ' . $profile->username . '<br /> Password: ' . $new_pwd . '<br /> Please <a href="' . LOGIN . '">click here</a> to login.<br /> Regards,<br /> The ISB MEE Team';
@@ -1908,7 +2174,8 @@
             die();
         }
 
-        function generateRandomString($length = 10){
+        function generateRandomString($length = 10)
+        {
             $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
             $charactersLength = strlen($characters);
             $randomString = '';
@@ -1918,22 +2185,8 @@
             return $randomString;
         }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        function cleardb(){
+        function cleardb()
+        {
             if ($this->request->session()->read('Profile.super') == 1) {
 
                 //$query = $conn->query("show tables");
@@ -1954,7 +2207,7 @@
                 $this->DeleteDir(getcwd() . "/attachments");//deletes all document attachments
                 $this->DeleteDir(getcwd() . "/img/jobs");//deletes all client pictures
                 $this->DeleteDir(getcwd() . "/img/certificates", ".pdf", "certificate.jpg");//deletes pdf certificates, leaves the jpg
-                $this->DeleteDir(getcwd() . "/img/profile", "", array("female.png", "male.png", "default.png"), "image" );//deletes profile pics
+                $this->DeleteDir(getcwd() . "/img/profile", "", array("female.png", "male.png", "default.png"), "image");//deletes profile pics
                 $this->DeleteDir(getcwd() . "/orders", "", "", "", true);//deletes the pdfs and their sub-directories
                 $this->DeleteDir(getcwd() . "/pdfs");//deletes the pdfs
 
@@ -1963,16 +2216,17 @@
             }
         }
 
-        function DeleteTables($Table){
-            if (is_array($Table)){
-                foreach($Table as $table){
+        function DeleteTables($Table)
+        {
+            if (is_array($Table)) {
+                foreach ($Table as $table) {
                     $this->DeleteTables($table);
                 }
             } else {
-                switch ($Table){
+                switch ($Table) {
                     case "clients":
                         $table = TableRegistry::get("clients")->find('all');
-                        foreach($table as $client){
+                        foreach ($table as $client) {
                             unlink(getcwd() . "/img/jobs/" . $client->image); //delete image
                         }
                         break;
@@ -1987,9 +2241,10 @@
             }
         }
 
-        function DeleteUser($ID){
+        function DeleteUser($ID)
+        {
             $table = TableRegistry::get("profiles");
-            if($ID==-1) {
+            if ($ID == -1) {
                 $users = $table->find('all', array('conditions' => array(['super' => 0])));
                 foreach ($users as $user) {
                     $this->DeleteUser($user->id);
@@ -2006,15 +2261,19 @@
                 $this->CleanUsers("training_enrollments", "UserID");
                 $this->CleanUsers("training_enrollments", "EnrolledBy");
 
-                if(!$this->loadprofile(0)){ $this->DeleteUser(0);}
-            } else if(is_numeric($ID)>0) {
+                if (!$this->loadprofile(0)) {
+                    $this->DeleteUser(0);
+                }
+            } else if (is_numeric($ID) > 0) {
                 $user = $this->loadprofile($ID);
-                if($user){
-                    if ($user->super == 1){return false; }//cannot delete supers
-                    unlink(getcwd() . "/img/profile/" . $user-image);
+                if ($user) {
+                    if ($user->super == 1) {
+                        return false;
+                    }//cannot delete supers
+                    unlink(getcwd() . "/img/profile/" . $user - image);
                 }//delete image
                 $attachments = TableRegistry::get("profile_docs")->find('all', array('conditions' => array(['profile_id' => $ID])));
-                foreach($attachments as $attachment){
+                foreach ($attachments as $attachment) {
                     $this->DeleteAttachment($attachment->id, "profile_docs", "/img/jobs/");
                 }
 
@@ -2031,18 +2290,21 @@
                 echo "<BR>Deleted User: " . $ID;
             }
         }
-        function CleanUsers($tablename, $fieldname = "user_id"){
+
+        function CleanUsers($tablename, $fieldname = "user_id")
+        {
             $table = TableRegistry::get($tablename);
             $users = $table->find('all');
             foreach ($users as $user) {
                 $user2 = $this->loadprofile($user->$fieldname);
-                if (!is_object($user2)){//delete any non-existent profile
+                if (!is_object($user2)) {//delete any non-existent profile
                     $this->DeleteUser($user->$fieldname);
                 }
             }
         }
 
-        function DeleteDir($path, $like = "", $notlike = "", $fieldname = "", $recursive = false){
+        function DeleteDir($path, $like = "", $notlike = "", $fieldname = "", $recursive = false)
+        {
             if (is_dir($path)) {
                 $files = scandir($path);
                 echo "<BR>Deleting Directory: " . $path;
@@ -2092,45 +2354,42 @@
                     }
                 }
             } else {
-                echo "<BR>"  . $path . " Was not a directory";
+                echo "<BR>" . $path . " Was not a directory";
             }
         }
-        function DeleteAttachment($ID, $TableName = 'attachments', $Path = "/attachments/"){//$ID=-1 deletes all attachments
+
+        function DeleteAttachment($ID, $TableName = 'attachments', $Path = "/attachments/")
+        {//$ID=-1 deletes all attachments
             $table = TableRegistry::get($TableName);
-            if($ID==-1){
+            if ($ID == -1) {
                 echo "<BR>Deleting all attachments from " . $TableName;
                 $table = $table->find('all');
-                foreach($table as $attachment){
+                foreach ($table as $attachment) {
                     $this->DeleteAttachment($attachment->id, $TableName, $Path);
                 }
             } else {
-                $attachment =  $table->find()->where(['id'=> $ID])->first();
-                $filename="";
-                if ( isset($attachment->title)) { $filename = $attachment->title; }
-                if ( isset($attachment->file)) { $filename = $attachment->file; }
-                if ( isset($attachment->attachment)) { $filename = $attachment->attachment; }
+                $attachment = $table->find()->where(['id' => $ID])->first();
+                $filename = "";
+                if (isset($attachment->title)) {
+                    $filename = $attachment->title;
+                }
+                if (isset($attachment->file)) {
+                    $filename = $attachment->file;
+                }
+                if (isset($attachment->attachment)) {
+                    $filename = $attachment->attachment;
+                }
                 if ($filename) {
                     if (file_exists(getcwd() . $Path . $filename) && is_file(getcwd() . $Path . $filename)) {
                         echo "<BR>Deleted file " . $Path . $filename;
                         unlink(getcwd() . $Path . $filename);
                     }
                 } else {
-                    echo "<BR>No file to delete " .$ID . " in " . $TableName;
+                    echo "<BR>No file to delete " . $ID . " in " . $TableName;
                 }
-                if($TableName != "profiles") $table->deleteAll(array('id' => $ID), false);
+                if ($TableName != "profiles") $table->deleteAll(array('id' => $ID), false);
             }
         }
-
-
-
-
-
-
-
-
-
-
-
 
         function sproduct($id = '0')
         {
@@ -2316,7 +2575,8 @@
               $this->response->body($cnt);
               return $this->response;
          } */
-        public function appendattachments($query){
+        public function appendattachments($query)
+        {
             foreach ($query as $client) {
                 $client->hasattachments = $this->hasattachments($client->id);
             }
@@ -2333,18 +2593,18 @@
                 return true;
             }
         }
-        
+
         public function getTypeTitle($id)
         {
             $docs = TableRegistry::get('profile_types');
-            $query = $docs->find()->where(['id'=>$id])->first();
-            if($query)
-            $q = $query->title;
+            $query = $docs->find()->where(['id' => $id])->first();
+            if ($query)
+                $q = $query->title;
             else
-            $q = '';
+                $q = '';
             $this->response->body($q);
-              return $this->response;
-            
+            return $this->response;
+
         }
     }
 
