@@ -21,18 +21,23 @@
             $forms = "";
 
         $attachment = array();//Files are in: C:\wamp\www\veritas3-0\webroot\img\pdfs
-        if (in_array("1", $forms)) {//                  Name         Filename
-            if ($DriverProvince == "QC") {
-                $attachment["Quebec MVR Consent"] = "1.QC.pdf";
+
+        if (is_array($forms)) {
+            if (in_array("1", $forms)) {//                  Name         Filename
+                if ($DriverProvince == "QC") {
+                    $attachment["Quebec MVR Consent"] = "1.QC.pdf";
+                }
             }
-        }
-        if (in_array("14", $forms)) {
-            if ($DriverProvince == "SK") {
-                $attachment["Saskatchewan Abstract Consent"] = "14.SK.pdf";
+            if (in_array("14", $forms)) {
+                if ($DriverProvince == "SK") {
+                    $attachment["Saskatchewan Abstract Consent"] = "14.SK.pdf";
+                }
+                if ($DriverProvince == "BC") {
+                    $attachment["British Columbia Abstract Consent"] = "14.BC.pdf";
+                }
             }
-            if ($DriverProvince == "BC") {
-                $attachment["British Columbia Abstract Consent"] = "14.BC.pdf";
-            }
+        } else {
+            $DriverProvince = "";
         }
 
         function printrequired($action, $forms, $AttachmentName, $DriversProvince, $attachment = 0, $message = "Required")
@@ -78,7 +83,7 @@
                             return true;
                         }
                     }
-                } else {
+                } elseif (is_array($forms)) {
                     return in_array($requirements, $forms);
                 }
             }
