@@ -50,7 +50,6 @@
             return $lineclass;
         }
 
-
         function get_color($result_string)
         {
 
@@ -94,23 +93,22 @@
             }
         }
 
-/*
-        function get_string_between($string, $start, $end)
-        {
-            $string = " " . $string;
-            $ini = strpos($string, $start);
-            if ($ini == 0) return "";
-            $ini += strlen($start);
-            $len = strpos($string, $end, $ini) - $ini;
-            return substr($string, $ini, $len);
-        }
+        /*
+                function get_string_between($string, $start, $end)
+                {
+                    $string = " " . $string;
+                    $ini = strpos($string, $start);
+                    if ($ini == 0) return "";
+                    $ini += strlen($start);
+                    $len = strpos($string, $end, $ini) - $ini;
+                    return substr($string, $ini, $len);
+                }
 
-        function get_mee_results_binary($bright_planet_html_binary, $document_type)
-        {
-            return (get_string_between(base64_decode($bright_planet_html_binary), $document_type, '</tr>'));
-        }
-*/
-
+                function get_mee_results_binary($bright_planet_html_binary, $document_type)
+                {
+                    return (get_string_between(base64_decode($bright_planet_html_binary), $document_type, '</tr>'));
+                }
+        */
 
         function return_link($pdi, $order_id)
         {
@@ -129,33 +127,34 @@
             }
             return false;
         }
-/*
-        function create_files_from_binary($order_id, $pdi, $binary)
-        {
-            $createfile_pdf = "orders/order_" . $order_id . '/' . $pdi . '.pdf';
-            $createfile_html = "orders/order_" . $order_id . '/' . $pdi . 'html';
-            $createfile_text = "orders/order_" . $order_id . '/' . $pdi . 'txt';
 
-            if (!file_exists($createfile_pdf) && !file_exists($createfile_text) && !file_exists($createfile_html)) {
+        /*
+                function create_files_from_binary($order_id, $pdi, $binary)
+                {
+                    $createfile_pdf = "orders/order_" . $order_id . '/' . $pdi . '.pdf';
+                    $createfile_html = "orders/order_" . $order_id . '/' . $pdi . 'html';
+                    $createfile_text = "orders/order_" . $order_id . '/' . $pdi . 'txt';
 
-                if (isset($binary) && $binary != "") {
-                    file_put_contents('unknown_file', base64_decode($binary));
-                    $finfo = finfo_open(FILEINFO_MIME_TYPE);
-                    $mime = finfo_file($finfo, 'unknown_file');
+                    if (!file_exists($createfile_pdf) && !file_exists($createfile_text) && !file_exists($createfile_html)) {
 
-                    if ($mime == "application/pdf") {
-                        rename("unknown_file", "orders/order_" . $order_id . '/' . $pdi . '.pdf');
-                    } elseif ($mime == "text/html") {
-                        rename("unknown_file", "orders/order_" . $order_id . '/' . $pdi . '.html');
-                    } elseif ($mime == "text/plain") {
-                        rename("unknown_file", "orders/order_" . $order_id . '/' . $pdi . '.html');
-                    } else {
-                        rename("unknown_file", "orders/order_" . $order_id . '/' . $pdi . '.html');
+                        if (isset($binary) && $binary != "") {
+                            file_put_contents('unknown_file', base64_decode($binary));
+                            $finfo = finfo_open(FILEINFO_MIME_TYPE);
+                            $mime = finfo_file($finfo, 'unknown_file');
+
+                            if ($mime == "application/pdf") {
+                                rename("unknown_file", "orders/order_" . $order_id . '/' . $pdi . '.pdf');
+                            } elseif ($mime == "text/html") {
+                                rename("unknown_file", "orders/order_" . $order_id . '/' . $pdi . '.html');
+                            } elseif ($mime == "text/plain") {
+                                rename("unknown_file", "orders/order_" . $order_id . '/' . $pdi . '.html');
+                            } else {
+                                rename("unknown_file", "orders/order_" . $order_id . '/' . $pdi . '.html');
+                            }
+                        }
                     }
                 }
-            }
-        }
-*/
+        */
         $counting = 0;
         $drcl_d = $orders;
         foreach ($drcl_d as $drcld) {
@@ -315,13 +314,13 @@
             			    <p>Recruiter: <strong><?php echo $uploaded_by->username; ?></strong></p>
             			    <p>Recruiter ID # <strong><?php echo $uploaded_by->isb_id; ?></strong></p>
             			    <p>Client:
-                            <strong><?php if (isset($order->client->company_name)) {
-                                    echo $order->client->company_name;
-                                } else {
-                                    echo "Unknown";
-                                } ?>
-                            </strong>
-                        </p>
+                                <strong><?php if (isset($order->client->company_name)) {
+                                        echo $order->client->company_name;
+                                    } else {
+                                        echo "Unknown";
+                                    } ?>
+                                </strong>
+                            </p>
 
             			<p>Uploaded on: <strong><?php echo $order->created; ?></strong></p>
 
@@ -442,7 +441,6 @@
                         <td class="actions">
                             <?php
                                 if ($duplicate_log == "Duplicate Order") {
-                                    //  get_color("Duplicate Order");
                                     ?>
                                     <span class="label label-danger">Duplicate Order  </span>
                                 <?php
