@@ -17,15 +17,109 @@ if(isset($disabled)) { $is_disabled = 'disabled="disabled"'; }
  <div class="form-group col-md-12">
     <label class="control-label col-md-6">Are you legally eligible to work in Canada? </label>
     <div class="col-md-6">
-        Yes <input type="radio" name="no2" value="1" <?php if(isset($generic) && $generic->no2=='1')echo "checked='checked'";?> />   
-        No <input type="radio" name="no2"  value="0" <?php if(isset($generic) && $generic->no2=='0')echo "checked='checked'";?>/>   
+        Yes 
+        <?php 
+        if($this->request->params['action'] == 'vieworder'  || $this->request->params['action']== 'view')
+        {
+            if(isset($generic) && $generic->no2=='1')
+            {
+                ?>
+                &#10004;
+                <?php
+            }
+            else 
+            {
+                ?>
+                &#10006;
+                <?php
+            } 
+        }
+        else
+        {
+            ?>                                      
+            <input type="radio" name="no2" value="1" <?php if(isset($generic) && $generic->no2=='1')echo "checked='checked'";?> /> 
+            <?php
+        }
+         ?>  
+        No 
+        <?php 
+        if($this->request->params['action'] == 'vieworder'  || $this->request->params['action']== 'view')
+        {
+            if(isset($generic) && $generic->no2=='0')
+            {
+                ?>
+                &#10004;
+                <?php
+            }
+            else 
+            {
+                ?>
+                &#10006;
+                <?php
+            } 
+        }
+        else
+        {
+            ?>                                      
+            <input type="radio" name="no2"  value="0" <?php if(isset($generic) && $generic->no2=='0')echo "checked='checked'";?>/> 
+            <?php
+        }
+         ?> 
+           
     </div>
  </div>
  <div class="form-group col-md-12">
     <label class="control-label col-md-6">Do you hold a valid Canadian passport? </label>
     <div class="col-md-6">
-    Yes <input type="radio" name="no3" value="1" <?php if(isset($generic) && $generic->no3=='1')echo "checked='checked'";?> />   
-        No <input type="radio" name="no3" value="0" <?php if(isset($generic) && $generic->no3=='0')echo "checked='checked'";?> />   
+    Yes 
+    <?php 
+    if($this->request->params['action'] == 'vieworder'  || $this->request->params['action']== 'view')
+    {
+        if(isset($generic) && $generic->no3=='1')
+        {
+            ?>
+            &#10004;
+            <?php
+        }
+        else 
+        {
+            ?>
+            &#10006;
+            <?php
+        } 
+    }
+    else
+    {
+        ?>                                      
+        <input type="radio" name="no3" value="1" <?php if(isset($generic) && $generic->no3=='1')echo "checked='checked'";?> /> 
+        <?php
+    }
+     ?>   
+        No 
+        <?php 
+        if($this->request->params['action'] == 'vieworder'  || $this->request->params['action']== 'view')
+        {
+            if(isset($generic) && $generic->no3=='0')
+            {
+                ?>
+                &#10004;
+                <?php
+            }
+            else 
+            {
+                ?>
+                &#10006;
+                <?php
+            } 
+        }
+        else
+        {
+            ?>                                      
+            <input type="radio" name="no3" value="0" <?php if(isset($generic) && $generic->no3=='0')echo "checked='checked'";?> /> 
+            <?php
+        }
+         ?>
+           
     </div>
  </div>
  
@@ -38,8 +132,55 @@ if(isset($disabled)) { $is_disabled = 'disabled="disabled"'; }
   <div class="form-group col-md-12">
     <label class="control-label col-md-6">Have you ever been convicted of a criminal offence for which a pardon has not been granted or, which could cause you to not cross the border?</label>
     <div class="col-md-6">
-    Yes <input type="radio" name="no5" value="1" <?php if(isset($generic) && $generic->no5=='1')echo "checked='checked'";?> />   
-        No <input type="radio" name="no5" value="0" <?php if(isset($generic) && $generic->no5=='0')echo "checked='checked'";?> />   
+    Yes 
+    <?php 
+    if($this->request->params['action'] == 'vieworder'  || $this->request->params['action']== 'view')
+    {
+        if(isset($generic) && $generic->no5=='1')
+        {
+            ?>
+            &#10004;
+            <?php
+        }
+        else 
+        {
+            ?>
+            &#10006;
+            <?php
+        } 
+    }
+    else
+    {
+        ?>                                      
+        <input type="radio" name="no5" value="1" <?php if(isset($generic) && $generic->no5=='1')echo "checked='checked'";?> /> 
+        <?php
+    }
+     ?>
+       
+        No
+        <?php 
+        if($this->request->params['action'] == 'vieworder'  || $this->request->params['action']== 'view')
+        {
+            if(isset($generic) && $generic->no5=='0')
+            {
+                ?>
+                &#10004;
+                <?php
+            }
+            else 
+            {
+                ?>
+                &#10006;
+                <?php
+            } 
+        }
+        else
+        {
+            ?>                                      
+            <input type="radio" name="no5" value="0" <?php if(isset($generic) && $generic->no5=='0')echo "checked='checked'";?> /> 
+            <?php
+        }
+         ?>   
     </div>
  </div>
   <div class="form-group col-md-12">
@@ -107,8 +248,55 @@ if(isset($disabled)) { $is_disabled = 'disabled="disabled"'; }
   <div class="form-group col-md-12">
     <label class="control-label col-md-6">Reefer Y or No How many loads?</label>
     <div class="col-md-6">
-    Yes <input type="radio" name="no16" value="1" <?php if(isset($generic) && $generic->no16=='1')echo "checked='checked'";?> />   
-        No <input type="radio" name="no16" value="0" <?php if(isset($generic) && $generic->no16=='0')echo "checked='checked'";?> />   
+    Yes 
+    <?php 
+    if($this->request->params['action'] == 'vieworder'  || $this->request->params['action']== 'view')
+    {
+        if(isset($generic) && $generic->no16=='1')
+        {
+            ?>
+            &#10004;
+            <?php
+        }
+        else 
+        {
+            ?>
+            &#10006;
+            <?php
+        } 
+    }
+    else
+    {
+        ?>                                      
+        <input type="radio" name="no16" value="1" <?php if(isset($generic) && $generic->no16=='1')echo "checked='checked'";?> /> 
+        <?php
+    }
+     ?>   
+        No 
+        <?php 
+        if($this->request->params['action'] == 'vieworder'  || $this->request->params['action']== 'view')
+        {
+            if(isset($generic) && $generic->no16=='0')
+            {
+                ?>
+                &#10004;
+                <?php
+            }
+            else 
+            {
+                ?>
+                &#10006;
+                <?php
+            } 
+        }
+        else
+        {
+            ?>                                      
+            <input type="radio" name="no16" value="0" <?php if(isset($generic) && $generic->no16=='0')echo "checked='checked'";?> /> 
+            <?php
+        }
+         ?>
+           
     </div>
  </div>
   <div class="form-group col-md-12">

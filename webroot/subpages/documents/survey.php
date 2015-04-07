@@ -57,9 +57,59 @@ printdocumentinfo($did);
     				<div class="form-group col-md-12" id="yes_text" style="display: none; <?php if(isset($survey) && $survey->ques4=='0')echo "display: none;";?>">
     					<input type="text" <?php echo $is_disabled;?> class="form-control" name="ans4" placeholder="If yes, what?" value="<?php if(isset($survey))echo $survey->ans4;?>"/>
     				</div>
-                    <div class="form-group col-md-12">
-    					<input type="radio" <?php echo $is_disabled;?> class="form-control" name="ques4" value="1" <?php if(isset($survey) && $survey->ques4=='1')echo "checked='checked'";?>/>&nbsp;&nbsp;Yes
-    					<input type="radio" <?php echo $is_disabled;?> class="form-control" name="ques4" value="0" <?php if(isset($survey) && $survey->ques4=='0')echo "checked='checked'";?>/>&nbsp;&nbsp;No
+                    <div class="form-group col-md-12 radio-list">
+                        <label class="radio-inline">
+                        <?php 
+                        if($this->request->params['action'] == 'vieworder'  || $this->request->params['action']== 'view')
+                        {
+                            if(isset($survey) && $survey->ques4=='1')
+                            {
+                                ?>
+                                &#10004;
+                                <?php
+                            }
+                            else 
+                            {
+                                ?>
+                                &#10006;
+                                <?php
+                            } 
+                        }
+                        else
+                        {
+                            ?>                                      
+                            <input type="radio" <?php echo $is_disabled;?> class="form-control" name="ques4" value="1" <?php if(isset($survey) && $survey->ques4=='1')echo "checked='checked'";?>/> 
+                            <?php
+                        }
+                         ?>
+    					&nbsp;&nbsp;Yes
+                        </label>
+                        <label class="radio-inline">
+                        <?php 
+                        if($this->request->params['action'] == 'vieworder'  || $this->request->params['action']== 'view')
+                        {
+                            if(isset($survey) && $survey->ques4=='0')
+                            {
+                                ?>
+                                &#10004;
+                                <?php
+                            }
+                            else 
+                            {
+                                ?>
+                                &#10006;
+                                <?php
+                            } 
+                        }
+                        else
+                        {
+                            ?>                                      
+                            <input type="radio" <?php echo $is_disabled;?> class="form-control" name="ques4" value="0" <?php if(isset($survey) && $survey->ques4=='0')echo "checked='checked'";?>/> 
+                            <?php
+                        }
+                         ?>
+    					&nbsp;&nbsp;No
+                        </label>
     				</div>
                     
                 <div class="clearfix"></div>

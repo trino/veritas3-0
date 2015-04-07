@@ -111,9 +111,60 @@
                         </div>
                         <div class="form-group col-md-12">
                         <label class="control-label col-md-3">Claims with this Employer : </label>
-                        <div class="col-md-3">
-                        &nbsp;&nbsp;<input type="radio" name="claims_with_employer_<?php $rand = rand(0,100); echo $rand; ?>[]" value="1" <?php if($emp->claims_with_employer == 1){?>checked="checked"<?php }?>/>&nbsp;&nbsp;Yes&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                <input type="radio" name="claims_with_employer_<?php echo $rand;?>[]"  value="0" <?php if($emp->claims_with_employer == 0){?>checked="checked"<?php }?>/>&nbsp;&nbsp;&nbsp;&nbsp;No
+                        <div class="col-md-3 radio-list">
+                        &nbsp;&nbsp;
+                        <?php 
+                        if($this->request->params['action'] == 'vieworder'  || $this->request->params['action']== 'view')
+                        {
+                            if($emp->claims_with_employer == 1)
+                            {
+                                ?>
+                                &#10004;
+                                <?php
+                            }
+                            else 
+                            {
+                                ?>
+                                &#10006;
+                                <?php
+                            } 
+                        }
+                        else
+                        {
+                            ?>                                      
+                            <input type="radio" name="claims_with_employer_<?php $rand = rand(0,100); echo $rand; ?>[]" value="1" <?php if($emp->claims_with_employer == 1){?>checked="checked"<?php }?>/> 
+                            <?php
+                        }
+                         ?>
+                         <label class="radio-inline">
+                        Yes&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        </label>
+                        <?php 
+                        if($this->request->params['action'] == 'vieworder'  || $this->request->params['action']== 'view')
+                        {
+                            if($emp->claims_with_employer == 0)
+                            {
+                                ?>
+                                &#10004;
+                                <?php
+                            }
+                            else 
+                            {
+                                ?>
+                                &#10006;
+                                <?php
+                            } 
+                        }
+                        else
+                        {
+                            ?>                                      
+                            <input type="radio" name="claims_with_employer_<?php echo $rand;?>[]"  value="0" <?php if($emp->claims_with_employer == 0){?>checked="checked"<?php }?>/> 
+                            <?php
+                        }
+                         ?>  
+                          <label class="radio-inline">      
+                        No
+                        </label>
                         </div>
                          <label class="control-label col-md-3">Date Claims Occurred : </label>
                          <div class="col-md-3">
@@ -148,21 +199,248 @@
                         <div class="form-group col-md-12">
                                     <label class="control-label col-md-3">Equipment Operated : </label>
                                     <div class="col-md-9">
-                                        <input type="checkbox" <?php if($emp->equipment_vans == 1){?>checked="checked"<?php }?> name="equipment_vans[]" value="1"/>&nbsp;Vans&nbsp;
-                                                        <input type="checkbox" <?php if($emp->equipment_reefer == 1){?>checked="checked"<?php }?> name="equipment_reefer[]" value="1"/>&nbsp;Reefers&nbsp;
-                                                        <input type="checkbox" <?php if($emp->equipment_decks == 1){?>checked="checked"<?php }?> name="equipment_decks[]" value="1"/>&nbsp;Decks&nbsp;
-                                                        <input type="checkbox" <?php if($emp->equipment_super == 1){?>checked="checked"<?php }?> name="equipment_super[]" value="1"/>&nbsp;Super B's&nbsp;
-                                                        <input type="checkbox" <?php if($emp->equipment_straight_truck == 1){?>checked="checked"<?php }?> name="equipment_straight_truck[]" value="1"/>&nbsp;Straight Truck&nbsp;
-                                                        <input type="checkbox" <?php if($emp->equipment_others == 1){?>checked="checked"<?php }?> name="equipment_others[]" value="1"/>&nbsp;Others:
+                                        <?php 
+                if($this->request->params['action'] == 'vieworder'  || $this->request->params['action']== 'view')
+                {
+                    if($emp->equipment_vans == 1)
+                    {
+                        ?>
+                        &#9745;
+                        <?php
+                    }
+                    else 
+                    {
+                        ?>
+                        &#9744;
+                        <?php
+                    } 
+                }
+                else
+                {
+                    ?>                                      
+                    <input type="checkbox" <?php if($emp->equipment_vans == 1){?>checked="checked"<?php }?> name="equipment_vans[]" value="1"/> 
+                    <?php
+                }
+             ?>
+                                        &nbsp;Vans&nbsp;
+                                        <?php 
+                                            if($this->request->params['action'] == 'vieworder'  || $this->request->params['action']== 'view')
+                                            {
+                                                if($emp->equipment_reefer == 1)
+                                                {
+                                                    ?>
+                                                    &#9745;
+                                                    <?php
+                                                }
+                                                else 
+                                                {
+                                                    ?>
+                                                    &#9744;
+                                                    <?php
+                                                } 
+                                            }
+                                            else
+                                            {
+                                                ?>                                      
+                                                <input type="checkbox" <?php if($emp->equipment_reefer == 1){?>checked="checked"<?php }?> name="equipment_reefer[]" value="1"/> 
+                                                <?php
+                                            }
+                                         ?>
+                                        &nbsp;Reefers&nbsp;
+                                        <?php 
+                                            if($this->request->params['action'] == 'vieworder'  || $this->request->params['action']== 'view')
+                                            {
+                                                if($emp->equipment_decks == 1)
+                                                {
+                                                    ?>
+                                                    &#9745;
+                                                    <?php
+                                                }
+                                                else 
+                                                {
+                                                    ?>
+                                                    &#9744;
+                                                    <?php
+                                                } 
+                                            }
+                                            else
+                                            {
+                                                ?>                                      
+                                                <input type="checkbox" <?php if($emp->equipment_decks == 1){?>checked="checked"<?php }?> name="equipment_decks[]" value="1"/> 
+                                                <?php
+                                            }
+                                         ?>
+                                        &nbsp;Decks&nbsp;
+                                        <?php 
+                                            if($this->request->params['action'] == 'vieworder'  || $this->request->params['action']== 'view')
+                                            {
+                                                if($emp->equipment_super == 1)
+                                                {
+                                                    ?>
+                                                    &#9745;
+                                                    <?php
+                                                }
+                                                else 
+                                                {
+                                                    ?>
+                                                    &#9744;
+                                                    <?php
+                                                } 
+                                            }
+                                            else
+                                            {
+                                                ?>                                      
+                                                <input type="checkbox" <?php if($emp->equipment_super == 1){?>checked="checked"<?php }?> name="equipment_super[]" value="1"/> 
+                                                <?php
+                                            }
+                                        ?>
+                                        &nbsp;Super B's&nbsp;
+                                        <?php 
+                if($this->request->params['action'] == 'vieworder'  || $this->request->params['action']== 'view')
+                {
+                    if($emp->equipment_straight_truck == 1)
+                    {
+                        ?>
+                        &#9745;
+                        <?php
+                    }
+                    else 
+                    {
+                        ?>
+                        &#9744;
+                        <?php
+                    } 
+                }
+                else
+                {
+                    ?>                                      
+                    <input type="checkbox" <?php if($emp->equipment_straight_truck == 1){?>checked="checked"<?php }?> name="equipment_straight_truck[]" value="1"/> 
+                    <?php
+                }
+             ?>&nbsp;Straight Truck&nbsp;
+                                        <?php 
+                if($this->request->params['action'] == 'vieworder'  || $this->request->params['action']== 'view')
+                {
+                    if($emp->equipment_others == 1)
+                    {
+                        ?>
+                        &#9745;
+                        <?php
+                    }
+                    else 
+                    {
+                        ?>
+                        &#9744;
+                        <?php
+                    } 
+                }
+                else
+                {
+                    ?>                                      
+                    <input type="checkbox" <?php if($emp->equipment_others == 1){?>checked="checked"<?php }?> name="equipment_others[]" value="1"/> 
+                    <?php
+                }
+             ?>&nbsp;Others:
                         </div>
                         </div>
                         <div class="form-group col-md-12">
                         <label class="control-label col-md-3">Driving Experience : </label>
                         <div class="col-md-9">
-                            <input type="checkbox" <?php if($emp->driving_experince_local == 1){?>checked="checked"<?php }?> name="driving_experince_local[]" value="1"/>&nbsp;Local&nbsp;
-                                            <input type="checkbox" <?php if($emp->driving_experince_canada == 1){?>checked="checked"<?php }?> name="driving_experince_canada[]" value="1"/>&nbsp;Canada&nbsp;
-                                            <input type="checkbox" <?php if($emp->driving_experince_canada_rocky_mountains == 1){?>checked="checked"<?php }?> name="driving_experince_canada_rocky_mountains[]" value="1"/>&nbsp;Canada : Rocky Mountains&nbsp;
-                                            <input type="checkbox" <?php if($emp->driving_experince_usa == 1){?>checked="checked"<?php }?> name="driving_experince_usa[]" value="1"/>&nbsp;USA&nbsp;
+                            <?php 
+                if($this->request->params['action'] == 'vieworder'  || $this->request->params['action']== 'view')
+                {
+                    if($emp->driving_experince_local == 1)
+                    {
+                        ?>
+                        &#9745;
+                        <?php
+                    }
+                    else 
+                    {
+                        ?>
+                        &#9744;
+                        <?php
+                    } 
+                }
+                else
+                {
+                    ?>                                      
+                    <input type="checkbox" <?php if($emp->driving_experince_local == 1){?>checked="checked"<?php }?> name="driving_experince_local[]" value="1"/> 
+                    <?php
+                }
+             ?>
+                            &nbsp;Local&nbsp;
+                            <?php 
+                if($this->request->params['action'] == 'vieworder'  || $this->request->params['action']== 'view')
+                {
+                    if($emp->driving_experince_canada == 1)
+                    {
+                        ?>
+                        &#9745;
+                        <?php
+                    }
+                    else 
+                    {
+                        ?>
+                        &#9744;
+                        <?php
+                    } 
+                }
+                else
+                {
+                    ?>                                      
+                    <input type="checkbox" <?php if($emp->driving_experince_canada == 1){?>checked="checked"<?php }?> name="driving_experince_canada[]" value="1"/> 
+                    <?php
+                }
+             ?>&nbsp;Canada&nbsp;
+                            <?php 
+                if($this->request->params['action'] == 'vieworder'  || $this->request->params['action']== 'view')
+                {
+                    if($emp->driving_experince_canada_rocky_mountains == 1)
+                    {
+                        ?>
+                        &#9745;
+                        <?php
+                    }
+                    else 
+                    {
+                        ?>
+                        &#9744;
+                        <?php
+                    } 
+                }
+                else
+                {
+                    ?>                                      
+                    <input type="checkbox" <?php if($emp->driving_experince_canada_rocky_mountains == 1){?>checked="checked"<?php }?> name="driving_experince_canada_rocky_mountains[]" value="1"/> 
+                    <?php
+                }
+             ?>
+                            &nbsp;Canada : Rocky Mountains&nbsp;
+                            <?php 
+                if($this->request->params['action'] == 'vieworder'  || $this->request->params['action']== 'view')
+                {
+                    if($emp->driving_experince_usa == 1)
+                    {
+                        ?>
+                        &#9745;
+                        <?php
+                    }
+                    else 
+                    {
+                        ?>
+                        &#9744;
+                        <?php
+                    } 
+                }
+                else
+                {
+                    ?>                                      
+                    <input type="checkbox" <?php if($emp->driving_experince_usa == 1){?>checked="checked"<?php }?> name="driving_experince_usa[]" value="1"/> 
+                    <?php
+                }
+             ?>
+                            &nbsp;USA&nbsp;
                         </div>
                     
                         </div>

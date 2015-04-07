@@ -24,11 +24,57 @@
         <div class="col-md-12">
                 <label class="control-label col-md-6">Are you legally eligible to work in Canada? </label>  
                 <div class="col-md-6 radio-list">
-                    <label class="radio-inline">              
-                            <input type="radio" class="form-control" name="legally_eligible" value="1" <?php if(isset($basic_mee_platform) && $basic_mee_platform->legally_eligible=='1')echo "checked='checked'";?> /> <span>Yes</span>
+                    <label class="radio-inline">
+                        <?php 
+                        if($this->request->params['action'] == 'vieworder'  || $this->request->params['action']== 'view')
+                        {
+                            if(isset($basic_mee_platform) && $basic_mee_platform->legally_eligible=='1')
+                            {
+                                ?>
+                                &#10004;
+                                <?php
+                            }
+                            else 
+                            {
+                                ?>
+                                &#10006;
+                                <?php
+                            } 
+                        }
+                        else
+                        {
+                            ?>                                      
+                            <input type="radio" class="form-control" name="legally_eligible" value="1" <?php if(isset($basic_mee_platform) && $basic_mee_platform->legally_eligible=='1')echo "checked='checked'";?> /> 
+                            <?php
+                        }
+                         ?>              
+                             <span>Yes</span>
                     </label>
                     <label class="radio-inline">
-                            <input type="radio" class="form-control" name="legally_eligible" value="0" <?php if(isset($basic_mee_platform) && $basic_mee_platform->legally_eligible=='0')echo "checked='checked'";?>/> <span>No</span>
+                        <?php 
+                        if($this->request->params['action'] == 'vieworder'  || $this->request->params['action']== 'view')
+                        {
+                            if(isset($basic_mee_platform) && $basic_mee_platform->legally_eligible=='0')
+                            {
+                                ?>
+                                &#10004;
+                                <?php
+                            }
+                            else 
+                            {
+                                ?>
+                                &#10006;
+                                <?php
+                            } 
+                        }
+                        else
+                        {
+                            ?>                                      
+                            <input type="radio" class="form-control" name="legally_eligible" value="0" <?php if(isset($basic_mee_platform) && $basic_mee_platform->legally_eligible=='0')echo "checked='checked'";?>/> 
+                            <?php
+                        }
+                         ?>
+                             <span>No</span>
                     </label>
                 </div>
         </div>
@@ -36,11 +82,57 @@
         <div class="col-md-12">
                 <label class="control-label col-md-6">Do you have canadian passport? </label>  
                 <div class="col-md-6 radio-list">
-                    <label class="radio-inline">              
-                            <input onclick="$('#us_visa').hide();" type="radio" class="form-control" name="canadian_passport" value="1" <?php if(isset($basic_mee_platform) && $basic_mee_platform->canadian_passport=='1')echo "checked='checked'";?> /> <span>Yes</span>
+                    <label class="radio-inline">
+                          <?php 
+                        if($this->request->params['action'] == 'vieworder'  || $this->request->params['action']== 'view')
+                        {
+                            if(isset($basic_mee_platform) && $basic_mee_platform->canadian_passport=='1')
+                            {
+                                ?>
+                                &#10004;
+                                <?php
+                            }
+                            else 
+                            {
+                                ?>
+                                &#10006;
+                                <?php
+                            } 
+                        }
+                        else
+                        {
+                            ?>                                      
+                            <input onclick="$('#us_visa').hide();" type="radio" class="form-control" name="canadian_passport" value="1" <?php if(isset($basic_mee_platform) && $basic_mee_platform->canadian_passport=='1')echo "checked='checked'";?> /> 
+                            <?php
+                        }
+                         ?>            
+                             <span>Yes</span>
                     </label>
                     <label class="radio-inline">
-                            <input onclick="$('#us_visa').show();" type="radio" class="form-control" name="canadian_passport" value="0" <?php if(isset($basic_mee_platform) && $basic_mee_platform->canadian_passport=='0')echo "checked='checked'";?>/> <span>No</span>
+                        <?php 
+                        if($this->request->params['action'] == 'vieworder'  || $this->request->params['action']== 'view')
+                        {
+                            if(isset($basic_mee_platform) && $basic_mee_platform->canadian_passport=='0')
+                            {
+                                ?>
+                                &#10004;
+                                <?php
+                            }
+                            else 
+                            {
+                                ?>
+                                &#10006;
+                                <?php
+                            } 
+                        }
+                        else
+                        {
+                            ?>                                      
+                            <input onclick="$('#us_visa').show();" type="radio" class="form-control" name="canadian_passport" value="0" <?php if(isset($basic_mee_platform) && $basic_mee_platform->canadian_passport=='0')echo "checked='checked'";?>/> 
+                            <?php
+                        }
+                         ?>   
+                             <span>No</span>
                     </label>
                 </div>
         </div> 
@@ -49,11 +141,57 @@
         <div class="col-md-12" id="us_visa" style="<?php if(!isset($basic_mee_platform) || (isset($basic_mee_platform)&& !$basic_mee_platform->us_visa)){?>display: none;<?php }?>">
                 <label class="control-label col-md-6">Do you have a Permanent Residency card and US Visa? </label>  
                 <div class="col-md-6 radio-list">
-                    <label class="radio-inline">              
-                            <input type="radio" class="form-control" name="us_visa" value="1" <?php if(isset($basic_mee_platform) && $basic_mee_platform->us_visa=='1')echo "checked='checked'";?> /> <span>Yes</span>
+                    <label class="radio-inline">
+                        <?php 
+                        if($this->request->params['action'] == 'vieworder'  || $this->request->params['action']== 'view')
+                        {
+                            if(isset($basic_mee_platform) && $basic_mee_platform->us_visa=='1')
+                            {
+                                ?>
+                                &#10004;
+                                <?php
+                            }
+                            else 
+                            {
+                                ?>
+                                &#10006;
+                                <?php
+                            } 
+                        }
+                        else
+                        {
+                            ?>                                      
+                            <input type="radio" class="form-control" name="us_visa" value="1" <?php if(isset($basic_mee_platform) && $basic_mee_platform->us_visa=='1')echo "checked='checked'";?> /> 
+                            <?php
+                        }
+                         ?>               
+                             <span>Yes</span>
                     </label>
                     <label class="radio-inline">
-                            <input type="radio" class="form-control" name="us_visa" value="0" <?php if(isset($basic_mee_platform) && $basic_mee_platform->us_visa=='0')echo "checked='checked'";?>/> <span>No</span>
+                        <?php 
+                        if($this->request->params['action'] == 'vieworder'  || $this->request->params['action']== 'view')
+                        {
+                            if(isset($basic_mee_platform) && $basic_mee_platform->us_visa=='0')
+                            {
+                                ?>
+                                &#10004;
+                                <?php
+                            }
+                            else 
+                            {
+                                ?>
+                                &#10006;
+                                <?php
+                            } 
+                        }
+                        else
+                        {
+                            ?>                                      
+                            <input type="radio" class="form-control" name="us_visa" value="0" <?php if(isset($basic_mee_platform) && $basic_mee_platform->us_visa=='0')echo "checked='checked'";?>/> 
+                            <?php
+                        }
+                         ?> 
+                             <span>No</span>
                     </label>
                 </div>
         </div>
@@ -62,11 +200,57 @@
         <div class="col-md-12">
                 <label class="control-label col-md-6">Have you ever been convicted of a criminal offence for which a pardon has not been granted or, which could cause you to not cross the border? </label>  
                 <div class="col-md-6 radio-list">
-                    <label class="radio-inline">              
-                            <input type="radio" class="form-control" name="no_cross_border" value="1" <?php if(isset($basic_mee_platform) && $basic_mee_platform->no_cross_border=='1')echo "checked='checked'";?> /> <span>Yes</span>
+                    <label class="radio-inline">
+                        <?php 
+                        if($this->request->params['action'] == 'vieworder'  || $this->request->params['action']== 'view')
+                        {
+                            if(isset($basic_mee_platform) && $basic_mee_platform->no_cross_border=='1')
+                            {
+                                ?>
+                                &#10004;
+                                <?php
+                            }
+                            else 
+                            {
+                                ?>
+                                &#10006;
+                                <?php
+                            } 
+                        }
+                        else
+                        {
+                            ?>                                      
+                            <input type="radio" class="form-control" name="no_cross_border" value="1" <?php if(isset($basic_mee_platform) && $basic_mee_platform->no_cross_border=='1')echo "checked='checked'";?> /> 
+                            <?php
+                        }
+                         ?>               
+                             <span>Yes</span>
                     </label>
                     <label class="radio-inline">
-                            <input type="radio" class="form-control" name="no_cross_border" value="0" <?php if(isset($basic_mee_platform) && $basic_mee_platform->no_cross_border=='0')echo "checked='checked'";?>/> <span>No</span>
+                        <?php 
+                        if($this->request->params['action'] == 'vieworder'  || $this->request->params['action']== 'view')
+                        {
+                            if(isset($basic_mee_platform) && $basic_mee_platform->no_cross_border=='0')
+                            {
+                                ?>
+                                &#10004;
+                                <?php
+                            }
+                            else 
+                            {
+                                ?>
+                                &#10006;
+                                <?php
+                            } 
+                        }
+                        else
+                        {
+                            ?>                                      
+                            <input type="radio" class="form-control" name="no_cross_border" value="0" <?php if(isset($basic_mee_platform) && $basic_mee_platform->no_cross_border=='0')echo "checked='checked'";?>/> 
+                            <?php
+                        }
+                         ?> 
+                             <span>No</span>
                     </label>
                 </div>
         </div>
@@ -155,11 +339,57 @@
         <div class="col-md-12">
                 <label class="control-label col-md-6">Reefer Y or No How many loads? </label>  
                 <div class="col-md-6 radio-list">
-                    <label class="radio-inline">              
-                            <input type="radio" class="form-control" name="reefer_y_n" value="1" <?php if(isset($basic_mee_platform) && $basic_mee_platform->reefer_y_n=='1')echo "checked='checked'";?> /> <span>Yes</span>
+                    <label class="radio-inline">
+                        <?php 
+                        if($this->request->params['action'] == 'vieworder'  || $this->request->params['action']== 'view')
+                        {
+                            if(isset($basic_mee_platform) && $basic_mee_platform->reefer_y_n=='1')
+                            {
+                                ?>
+                                &#10004;
+                                <?php
+                            }
+                            else 
+                            {
+                                ?>
+                                &#10006;
+                                <?php
+                            } 
+                        }
+                        else
+                        {
+                            ?>                                      
+                            <input type="radio" class="form-control" name="reefer_y_n" value="1" <?php if(isset($basic_mee_platform) && $basic_mee_platform->reefer_y_n=='1')echo "checked='checked'";?> /> 
+                            <?php
+                        }
+                         ?>               
+                             <span>Yes</span>
                     </label>
                     <label class="radio-inline">
-                            <input type="radio" class="form-control" name="reefer_y_n" value="0" <?php if(isset($basic_mee_platform) && $basic_mee_platform->reefer_y_n=='0')echo "checked='checked'";?>/> <span>No</span>
+                        <?php 
+                        if($this->request->params['action'] == 'vieworder'  || $this->request->params['action']== 'view')
+                        {
+                            if(isset($basic_mee_platform) && $basic_mee_platform->reefer_y_n=='0')
+                            {
+                                ?>
+                                &#10004;
+                                <?php
+                            }
+                            else 
+                            {
+                                ?>
+                                &#10006;
+                                <?php
+                            } 
+                        }
+                        else
+                        {
+                            ?>                                      
+                            <input type="radio" class="form-control" name="reefer_y_n" value="0" <?php if(isset($basic_mee_platform) && $basic_mee_platform->reefer_y_n=='0')echo "checked='checked'";?>/> 
+                            <?php
+                        }
+                         ?> 
+                             <span>No</span>
                     </label>
                 </div>
         </div>
@@ -354,11 +584,57 @@
         <div class="col-md-12">
                 <label class="control-label col-md-6">Have you worked for this company before? </label>  
                 <div class="col-md-6 radio-list">
-                    <label class="radio-inline">              
-                            <input onclick="$('#company_before').show();" type="radio" class="form-control" name="any_company_before" value="1" <?php if(isset($basic_mee_platform) && $basic_mee_platform->any_company_before=='1')echo "checked='checked'";?> /> <span>Yes</span>
+                    <label class="radio-inline">
+                        <?php 
+                        if($this->request->params['action'] == 'vieworder'  || $this->request->params['action']== 'view')
+                        {
+                            if(isset($basic_mee_platform) && $basic_mee_platform->any_company_before=='1')
+                            {
+                                ?>
+                                &#10004;
+                                <?php
+                            }
+                            else 
+                            {
+                                ?>
+                                &#10006;
+                                <?php
+                            } 
+                        }
+                        else
+                        {
+                            ?>                                      
+                            <input onclick="$('#company_before').show();" type="radio" class="form-control" name="any_company_before" value="1" <?php if(isset($basic_mee_platform) && $basic_mee_platform->any_company_before=='1')echo "checked='checked'";?> /> 
+                            <?php
+                        }
+                         ?>               
+                             <span>Yes</span>
                     </label>
                     <label class="radio-inline">
-                            <input onclick="$('#company_before').hide();" type="radio" class="form-control" name="any_company_before" value="0" <?php if(isset($basic_mee_platform) && $basic_mee_platform->any_company_before=='0')echo "checked='checked'";?>/> <span>No</span>
+                        <?php 
+                        if($this->request->params['action'] == 'vieworder'  || $this->request->params['action']== 'view')
+                        {
+                            if(isset($basic_mee_platform) && $basic_mee_platform->any_company_before=='0')
+                            {
+                                ?>
+                                &#10004;
+                                <?php
+                            }
+                            else 
+                            {
+                                ?>
+                                &#10006;
+                                <?php
+                            } 
+                        }
+                        else
+                        {
+                            ?>                                      
+                            <input onclick="$('#company_before').hide();" type="radio" class="form-control" name="any_company_before" value="0" <?php if(isset($basic_mee_platform) && $basic_mee_platform->any_company_before=='0')echo "checked='checked'";?>/> 
+                            <?php
+                        }
+                         ?> 
+                             <span>No</span>
                     </label>
                 </div>
         </div>
@@ -435,11 +711,57 @@
         <div class="col-md-12">
             <label class="control-label col-md-6">Are you 21 years of age or more? </label>  
             <div class="col-md-6 radio-list">
-                <label class="radio-inline">              
-                        <input type="radio" class="form-control" name="are_you_21" value="1" <?php if(isset($basic_mee_platform) && $basic_mee_platform->are_you_21=='1')echo "checked='checked'";?> /> <span>Yes</span>
+                <label class="radio-inline">
+                    <?php 
+                        if($this->request->params['action'] == 'vieworder'  || $this->request->params['action']== 'view')
+                        {
+                            if(isset($basic_mee_platform) && $basic_mee_platform->are_you_21=='1')
+                            {
+                                ?>
+                                &#10004;
+                                <?php
+                            }
+                            else 
+                            {
+                                ?>
+                                &#10006;
+                                <?php
+                            } 
+                        }
+                        else
+                        {
+                            ?>                                      
+                            <input type="radio" class="form-control" name="are_you_21" value="1" <?php if(isset($basic_mee_platform) && $basic_mee_platform->are_you_21=='1')echo "checked='checked'";?> /> 
+                            <?php
+                        }
+                         ?>                
+                         <span>Yes</span>
                 </label>
                 <label class="radio-inline">
-                        <input type="radio" class="form-control" name="are_you_21" value="0" <?php if(isset($basic_mee_platform) && $basic_mee_platform->are_you_21=='0')echo "checked='checked'";?>/> <span>No</span>
+                    <?php 
+                        if($this->request->params['action'] == 'vieworder'  || $this->request->params['action']== 'view')
+                        {
+                            if(isset($basic_mee_platform) && $basic_mee_platform->are_you_21=='0')
+                            {
+                                ?>
+                                &#10004;
+                                <?php
+                            }
+                            else 
+                            {
+                                ?>
+                                &#10006;
+                                <?php
+                            } 
+                        }
+                        else
+                        {
+                            ?>                                      
+                            <input type="radio" class="form-control" name="are_you_21" value="0" <?php if(isset($basic_mee_platform) && $basic_mee_platform->are_you_21=='0')echo "checked='checked'";?>/> 
+                            <?php
+                        }
+                         ?> 
+                         <span>No</span>
                 </label>
             </div>
         </div>
@@ -448,11 +770,57 @@
         <div class="col-md-12">
             <label class="control-label col-md-6">Can you provide proof of age? </label>  
             <div class="col-md-6 radio-list">
-                <label class="radio-inline">              
-                        <input type="radio" class="form-control" name="proof_of_age" value="1" <?php if(isset($basic_mee_platform) && $basic_mee_platform->proof_of_age=='1')echo "checked='checked'";?> /> <span>Yes</span>
+                <label class="radio-inline">
+                    <?php 
+                        if($this->request->params['action'] == 'vieworder'  || $this->request->params['action']== 'view')
+                        {
+                            if(isset($basic_mee_platform) && $basic_mee_platform->proof_of_age=='1')
+                            {
+                                ?>
+                                &#10004;
+                                <?php
+                            }
+                            else 
+                            {
+                                ?>
+                                &#10006;
+                                <?php
+                            } 
+                        }
+                        else
+                        {
+                            ?>                                      
+                            <input type="radio" class="form-control" name="proof_of_age" value="1" <?php if(isset($basic_mee_platform) && $basic_mee_platform->proof_of_age=='1')echo "checked='checked'";?> /> 
+                            <?php
+                        }
+                         ?>               
+                         <span>Yes</span>
                 </label>
                 <label class="radio-inline">
-                        <input type="radio" class="form-control" name="proof_of_age" value="0" <?php if(isset($basic_mee_platform) && $basic_mee_platform->proof_of_age=='0')echo "checked='checked'";?>/> <span>No</span>
+                    <?php 
+                        if($this->request->params['action'] == 'vieworder'  || $this->request->params['action']== 'view')
+                        {
+                            if(isset($basic_mee_platform) && $basic_mee_platform->proof_of_age=='0')
+                            {
+                                ?>
+                                &#10004;
+                                <?php
+                            }
+                            else 
+                            {
+                                ?>
+                                &#10006;
+                                <?php
+                            } 
+                        }
+                        else
+                        {
+                            ?>                                      
+                            <input type="radio" class="form-control" name="proof_of_age" value="0" <?php if(isset($basic_mee_platform) && $basic_mee_platform->proof_of_age=='0')echo "checked='checked'";?>/> 
+                            <?php
+                        }
+                         ?> 
+                         <span>No</span>
                 </label>
             </div>
         </div>

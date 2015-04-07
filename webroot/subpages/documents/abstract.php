@@ -6,10 +6,83 @@
     <h2>Driver Licence Abstract Request</h2>
     <h3>Return abstract by</h3>
     <div class="col-md-12">
-        <div class="col-md-12"><input class="form-control"  type="checkbox" name="mail" value="1" <?php if(isset($abstract) && $abstract->mail=='1')echo "checked='checked'";?>/> <label class="control-label">Mail</label> </div>
-         <div class="col-md-2"><input class="form-control"  type="checkbox" name="fax" value="1" <?php if(isset($abstract) && $abstract->fax=='1')echo "checked='checked'";?> /> <label class="control-label">Fax</label></div>
-         <div class="col-md-10"><input class="form-control"  type="text" name="fax_more" value="<?php if(isset($abstract))echo $abstract->fax_more;?>"/></div>
-         <div class="col-md-2"><input class="form-control"  type="checkbox" name="email" value="1" <?php if(isset($abstract) && $abstract->email=='1')echo "checked='checked'";?> /> <label class="control-label">Email</label></div>   
+        <div class="col-md-12">
+            <?php 
+                if($this->request->params['action'] == 'vieworder'  || $this->request->params['action']== 'view')
+                {
+                    if(isset($abstract) && $abstract->mail=='1')
+                    {
+                        ?>
+                        &#9745;
+                        <?php
+                    }
+                    else 
+                    {
+                        ?>
+                        &#9744;
+                        <?php
+                    } 
+                }
+                else
+                {
+                    ?>                                      
+                    <input class="form-control"  type="checkbox" name="mail" value="1" <?php if(isset($abstract) && $abstract->mail=='1')echo "checked='checked'";?>/> 
+                    <?php
+                }
+             ?>
+         <label class="control-label">Mail</label> </div>
+         <div class="col-md-2">
+            <?php 
+                if($this->request->params['action'] == 'vieworder'  || $this->request->params['action']== 'view')
+                {
+                    if(isset($abstract) && $abstract->fax=='1')
+                    {
+                        ?>
+                        &#9745;
+                        <?php
+                    }
+                    else 
+                    {
+                        ?>
+                        &#9744;
+                        <?php
+                    } 
+                }
+                else
+                {
+                    ?>                                      
+                    <input class="form-control"  type="checkbox" name="fax" value="1" <?php if(isset($abstract) && $abstract->fax=='1')echo "checked='checked'";?> /> 
+                    <?php
+                }
+             ?>
+             <label class="control-label">Fax</label></div>
+         <div class="col-md-10">
+         <input class="form-control"  type="text" name="fax_more" value="<?php if(isset($abstract))echo $abstract->fax_more;?>"/></div>
+         <div class="col-md-2">
+            <?php 
+                if($this->request->params['action'] == 'vieworder'  || $this->request->params['action']== 'view')
+                {
+                    if(isset($abstract) && $abstract->email=='1')
+                    {
+                        ?>
+                        &#9745;
+                        <?php
+                    }
+                    else 
+                    {
+                        ?>
+                        &#9744;
+                        <?php
+                    } 
+                }
+                else
+                {
+                    ?>                                      
+                    <input class="form-control"  type="checkbox" name="email" value="1" <?php if(isset($abstract) && $abstract->email=='1')echo "checked='checked'";?> /> 
+                    <?php
+                }
+             ?>
+          <label class="control-label">Email</label></div>   
          <div class="col-md-10"><input class="form-control"  type="text" name="email_more" value="<?php if(isset($abstract))echo $abstract->email_more;?>"/></div>
     </div>
     <h3>Please type or print clearly, illegible information cannot be processed.</h3>
@@ -73,13 +146,82 @@
     
     <h3>Driver Information</h3>
     <div class="col-md-12">
-        <input class="form-control"  type="checkbox" name="auth1" value="1" <?php if(isset($abstract) && $abstract->auth1=='1')echo "checked='checked'";?>/> I authorize the above named company to obtain a copy of my driver's abstract form the Insurance Corporation of Britsh Columbia.
+        <?php 
+                if($this->request->params['action'] == 'vieworder'  || $this->request->params['action']== 'view')
+                {
+                    if(isset($abstract) && $abstract->auth1=='1')
+                    {
+                        ?>
+                        &#9745;
+                        <?php
+                    }
+                    else 
+                    {
+                        ?>
+                        &#9744;
+                        <?php
+                    } 
+                }
+                else
+                {
+                    ?>                                      
+                    <input class="form-control"  type="checkbox" name="auth1" value="1" <?php if(isset($abstract) && $abstract->auth1=='1')echo "checked='checked'";?>/> 
+                    <?php
+                }
+             ?>
+         I authorize the above named company to obtain a copy of my driver's abstract form the Insurance Corporation of Britsh Columbia.
     </div>
     <div class="col-md-12">
-        <input class="form-control"  type="checkbox" name="auth2" value="1" <?php if(isset($abstract) && $abstract->auth2=='1')echo "checked='checked'";?>/> I authorize the above named company to obtain a copy of my driver insurance history(or any insurance information) form the Insurance Corporation of Britsh Columbia.
+        <?php 
+                if($this->request->params['action'] == 'vieworder'  || $this->request->params['action']== 'view')
+                {
+                    if(isset($abstract) && $abstract->auth2=='1')
+                    {
+                        ?>
+                        &#9745;
+                        <?php
+                    }
+                    else 
+                    {
+                        ?>
+                        &#9744;
+                        <?php
+                    } 
+                }
+                else
+                {
+                    ?>                                      
+                    <input class="form-control"  type="checkbox" name="auth2" value="1" <?php if(isset($abstract) && $abstract->auth2=='1')echo "checked='checked'";?>/> 
+                    <?php
+                }
+             ?>
+         I authorize the above named company to obtain a copy of my driver insurance history(or any insurance information) form the Insurance Corporation of Britsh Columbia.
     </div>
     <div class="col-md-12">
-        <input class="form-control"  type="checkbox" name="auth3" value="1" <?php if(isset($abstract) && $abstract->auth3=='1')echo "checked='checked'";?>/> I authorize the above named company to obtain a copy of my cehicle claim history form the Insurance Corporation of Britsh Columbia.
+        <?php 
+                if($this->request->params['action'] == 'vieworder'  || $this->request->params['action']== 'view')
+                {
+                    if(isset($abstract) && $abstract->auth3=='1')
+                    {
+                        ?>
+                        &#9745;
+                        <?php
+                    }
+                    else 
+                    {
+                        ?>
+                        &#9744;
+                        <?php
+                    } 
+                }
+                else
+                {
+                    ?>                                      
+                    <input class="form-control"  type="checkbox" name="auth3" value="1" <?php if(isset($abstract) && $abstract->auth3=='1')echo "checked='checked'";?>/> 
+                    <?php
+                }
+             ?>
+         I authorize the above named company to obtain a copy of my cehicle claim history form the Insurance Corporation of Britsh Columbia.
     </div>
     
     <div class="col-md-2">

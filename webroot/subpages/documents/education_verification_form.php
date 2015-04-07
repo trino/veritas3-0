@@ -107,10 +107,54 @@
                                 <label class="control-label col-md-3">Claims with this Tutor</label>
 
                                 <div class="col-md-3">
-                                    &nbsp;&nbsp;<input type="radio" name="claim_tutor[]" value="1"
-                                                       <?php if ($emp->claim_tutor == '1'){ ?>checked="checked"<?php }?>/>&nbsp;&nbsp;Yes&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input
-                                        type="radio" name="claim_tutor[]" value="0"
-                                        <?php if ($emp->claim_tutor == '0'){ ?>checked="checked"<?php }?>/>&nbsp;&nbsp;&nbsp;&nbsp;No
+                                    &nbsp;&nbsp;
+                                    <?php 
+                                    if($this->request->params['action'] == 'vieworder'  || $this->request->params['action']== 'view')
+                                    {
+                                        if($emp->claim_tutor == '1')
+                                        {
+                                            ?>
+                                            &#10004;
+                                            <?php
+                                        }
+                                        else 
+                                        {
+                                            ?>
+                                            &#10006;
+                                            <?php
+                                        } 
+                                    }
+                                    else
+                                    {
+                                        ?>                                      
+                                        <input type="radio" name="claim_tutor[]" value="1" <?php if ($emp->claim_tutor == '1'){ ?>checked="checked"<?php }?>/> 
+                                        <?php
+                                    }
+                                     ?>
+                                    &nbsp;&nbsp;Yes&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    <?php 
+                                    if($this->request->params['action'] == 'vieworder'  || $this->request->params['action']== 'view')
+                                    {
+                                        if($emp->claim_tutor == '0')
+                                        {
+                                            ?>
+                                            &#10004;
+                                            <?php
+                                        }
+                                        else 
+                                        {
+                                            ?>
+                                            &#10006;
+                                            <?php
+                                        } 
+                                    }
+                                    else
+                                    {
+                                        ?>                                      
+                                        <input type="radio" name="claim_tutor[]" value="0" <?php if ($emp->claim_tutor == '0'){ ?>checked="checked"<?php }?>/> 
+                                        <?php
+                                    }
+                                     ?>&nbsp;&nbsp;&nbsp;&nbsp;No
                                 </div>
                                 <label class="control-label col-md-3">Date Claims Occured</label>
 

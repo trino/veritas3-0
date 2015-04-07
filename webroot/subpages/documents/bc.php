@@ -54,7 +54,30 @@
     
     <div class="col-md-12">
         <div class="col-md-1">
-            <input type="checkbox" name="mail" <?php if(isset($bc_forms)&& $bc_forms->mail=='1')echo "checked='checked'";?> value="1"/>
+            <?php 
+                if($this->request->params['action'] == 'vieworder'  || $this->request->params['action']== 'view')
+                {
+                    if(isset($bc_forms)&& $bc_forms->mail=='1')
+                    {
+                        ?>
+                        &#9745;
+                        <?php
+                    }
+                    else 
+                    {
+                        ?>
+                        &#9744;
+                        <?php
+                    } 
+                }
+                else
+                {
+                    ?>                                      
+                    <input type="checkbox" name="mail" <?php if(isset($bc_forms)&& $bc_forms->mail=='1')echo "checked='checked'";?> value="1"/> 
+                    <?php
+                }
+             ?>
+            
             <label class="control-label"> Mail </label>
         </div>
         
@@ -109,7 +132,29 @@
         
          <div class="col-md-12">
             <div class="col-md-1">
-                <input type="checkbox" name="fax" value="1" <?php if(isset($bc_forms)&& $bc_forms->fax=='1')echo "checked='checked'";?>/>
+                <?php 
+                if($this->request->params['action'] == 'vieworder'  || $this->request->params['action']== 'view')
+                {
+                    if(isset($bc_forms)&& $bc_forms->fax=='1')
+                    {
+                        ?>
+                        &#9745;
+                        <?php
+                    }
+                    else 
+                    {
+                        ?>
+                        &#9744;
+                        <?php
+                    } 
+                }
+                else
+                {
+                    ?>                                      
+                    <input type="checkbox" name="fax" value="1" <?php if(isset($bc_forms)&& $bc_forms->fax=='1')echo "checked='checked'";?>/> 
+                    <?php
+                }
+             ?>
                 <label class="control-label"> Fax </label>
             </div>
         
@@ -139,7 +184,29 @@
             <div class="col-md-12">
             
                 <div class="col-md-1">
-                    <input type="checkbox" name="email" value="1" <?php if(isset($bc_forms)&& $bc_forms->email=='1')echo "checked='checked'";?>/>
+                    <?php 
+                if($this->request->params['action'] == 'vieworder'  || $this->request->params['action']== 'view')
+                {
+                    if(isset($bc_forms)&& $bc_forms->email=='1')
+                    {
+                        ?>
+                        &#9745;
+                        <?php
+                    }
+                    else 
+                    {
+                        ?>
+                        &#9744;
+                        <?php
+                    } 
+                }
+                else
+                {
+                    ?>                                      
+                    <input type="checkbox" name="email" value="1" <?php if(isset($bc_forms)&& $bc_forms->email=='1')echo "checked='checked'";?>/> 
+                    <?php
+                }
+             ?>
                     <label class="control-label"> Email </label>
                 </div>
                 <div class="col-md-11">

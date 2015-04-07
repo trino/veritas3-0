@@ -187,8 +187,30 @@
                         <div class="profile-usertitle-job">-->
                         <?php if($profile->profile_type == 5 || $profile->profile_type == 7 || $profile->profile_type == 8) { ?>
                             <label class="uniform-inline" style="margin-top:10px;">
-                                <input <?php if(!$this->request->session()->read('Profile.super') && ($this->request->session()->read('Profile.profile_type') != '2')) {?> disabled="disabled" <?php }?> type="checkbox" name="stat" value="1" id="<?php echo $order->profile->id; ?>"
-                                       class="checkdriver" <?php if ($order->profile->is_hired == '1') echo "checked"; ?> />
+                            <?php 
+                                if($this->request->params['action'] == 'vieworder'  || $this->request->params['action']== 'view')
+                                {
+                                    if($order->profile->is_hired == '1')
+                                    {
+                                        ?>
+                                        &#9745;
+                                        <?php
+                                    }
+                                    else 
+                                    {
+                                        ?>
+                                        &#9744;
+                                        <?php
+                                    } 
+                                }
+                                else
+                                {
+                                    ?>                                      
+                                    <input <?php if(!$this->request->session()->read('Profile.super') && ($this->request->session()->read('Profile.profile_type') != '2')) {?> disabled="disabled" <?php }?> type="checkbox" name="stat" value="1" id="<?php echo $order->profile->id; ?>" class="checkdriver" <?php if ($order->profile->is_hired == '1') echo "checked"; ?> /> 
+                                    <?php
+                                }
+                             ?>
+                                
                                 Was this driver hired? </label>
                             <?php } ?>
                        <!-- </div>
