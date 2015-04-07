@@ -1,9 +1,21 @@
 <?php
     if ($this->request->session()->read('debug')) {
-        echo "<span style ='color:red;'>subpages/documents/for_view.php #INC144</span>";
+        echo "<span style ='color:red;'>subpages/documents/forview.php #INC144</span>";
     }
     include_once 'subpages/filelist.php';
     $includeabove = true;
+
+function dotest($Number, $pp, $order, $duplicate_log, $ins2 = "ins"){
+    $ins = $ins2 . "_" . $Number ;
+    if ($pp == $Number) {
+        if ($order->$ins == "Duplicate Order") {
+            $duplicate_log = "Duplicate Order";
+        } else {
+            get_color($order->$ins);
+        }
+    }
+    return $duplicate_log;
+}
 ?>
 <style>
     @media print {
@@ -371,69 +383,15 @@
                                 echo $title_pr->title; ?>
                             <?php
 
-                                $duplicate_log = "";
-
-                                if ($pp == 1) {
-                                    if ($order->ins_1 == "Duplicate Order") {
-                                        $duplicate_log = "Duplicate Order";
-                                    } else {
-                                        get_color($order->ins_1);
-                                    }
-                                } elseif ($pp == 77) {
-
-                                    if ($order->ins_77 == "Duplicate Order") {
-                                        $duplicate_log = "Duplicate Order";
-                                    } else {
-                                        get_color($order->ins_77);
-                                    }
-
-                                } elseif ($pp == 14) {
-
-                                    if ($order->ins_14 == "Duplicate Order") {
-                                        $duplicate_log = "Duplicate Order";
-                                    } else {
-                                        get_color($order->ins_14);
-                                    }
-
-                                } elseif ($pp == 1603) {
-                                    if ($order->ebs_1603 == "Duplicate Order") {
-                                        $duplicate_log = "Duplicate Order";
-                                    } else {
-                                        get_color($order->ebs_1603);
-                                    }
-
-                                } elseif ($pp == 1650) {
-                                    if ($order->ebs_1650 == "Duplicate Order") {
-                                        $duplicate_log = "Duplicate Order";
-                                    } else {
-                                        get_color($order->ebs_1650);
-                                    }
-
-                                } elseif ($pp == 78) {
-                                    if ($order->ins_78 == "Duplicate Order") {
-
-                                        $duplicate_log = "Duplicate Order";
-                                    } else {
-                                        get_color($order->ins_78);
-                                    }
-
-                                } elseif ($pp == 1627) {
-
-                                    if ($order->ebs_1627 == "Duplicate Order") {
-                                        $duplicate_log = "Duplicate Order";
-                                    } else {
-                                        get_color($order->ebs_1627);
-                                    }
-                                } elseif ($pp == 72) {
-
-                                    if ($order->ins_72 == "Duplicate Order") {
-                                        $duplicate_log = "Duplicate Order";
-                                    } else {
-                                        get_color($order->ins_72);
-                                    }
-                                }
-
-
+                            $duplicate_log = "";
+                            $duplicate_log = dotest(1,  $pp, $order, $duplicate_log);
+                            $duplicate_log = dotest(77,  $pp, $order, $duplicate_log);
+                            $duplicate_log = dotest(14,  $pp, $order, $duplicate_log);
+                            $duplicate_log = dotest(1603,  $pp, $order, $duplicate_log);//, "ebs");
+                            $duplicate_log = dotest(1650,  $pp, $order, $duplicate_log);//, "ebs");
+                            $duplicate_log = dotest(78,  $pp, $order, $duplicate_log);
+                            $duplicate_log = dotest(1627,  $pp, $order, $duplicate_log);//, "ebs");
+                            $duplicate_log = dotest(72,  $pp, $order, $duplicate_log);
                                 //  echo $duplicate_log;
                             ?>
                         </td>
