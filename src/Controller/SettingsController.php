@@ -187,6 +187,11 @@ class SettingsController extends AppController {
         die();
             
     }
+    function getproductlist(){
+        $this->set('products',  TableRegistry::get('product_types')->find('all'));
+        die();
+    }
+
     
     public function check_client_count(){
         //$this->loadModel('Clients');

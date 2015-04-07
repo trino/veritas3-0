@@ -1184,6 +1184,8 @@
             $this->set(compact('profile'));
             $this->set('id', $id);
             $this->set('uid', $id);
+
+            $this->set('products', TableRegistry::get('product_types')->find('all'));
         }
 
         function changePass($id)

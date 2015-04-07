@@ -23,10 +23,14 @@
         public function productSelection()
         {
             $this->set('doc_comp', $this->Document);
-             $this->loadMOdel('OrderProducts');
+            $this->loadMOdel('OrderProducts');
             $settings = $this->Settings->get_settings();
             $this->set('products', $this->OrderProducts->find()->where(['enable'=>'1'])->all());
             $this->set('settings', $settings);
+
+            $ordertype = strtoupper(substr($_GET["ordertype"], 0, 3));
+            $table = TableRegistry::get('product_types')->find()->where(['Acronym' => $ordertype])->first();;
+            $this->set('product', $table);
         }
 
         public function initialize()
@@ -1267,17 +1271,15 @@
         function getProNum()
         {
             $products =  TableRegistry::get('order_products');
-            $pro = $products->find()->where(['enable'=>1,'id <>'=>8]);
+            $pro = $products->find()->where(['enable'=>1]);//,'id <>'=>8
             $prod = '';
-            foreach($pro as $p)
-            {
-                if($prod == '')
-                {
+            foreach($pro as $p) {
+                if($prod == '') {
                     $prod = $p->number;
                 }
-                else
-                $prod = $prod.','.$p->number;
-                
+                else {
+                    $prod = $prod . ',' . $p->number;
+                }
             }
             $this->response->body($prod);
             return $this->response;

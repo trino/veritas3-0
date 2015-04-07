@@ -202,28 +202,17 @@ $profileID = $this->Session->read('Profile.id');
 
                             <?php if ($sidebar->orders_create == 1) { 
                                 if ($sidebar->orders_mee == 1){
-                                ?>
-                                <li <?php echo ($this->request['controller'] == 'Orders' && $this->request['action'] == 'productSelection' && $ordertype == "MEE" && !isset($_GET['draft'])) ? 'class="active"' : ''; ?>>
-                                    <a href="<?php /*echo $this->request->webroot . $order_url;*/ echo $this->request->webroot;?>orders/productSelection?driver=0&ordertype=MEE">
-                                        <i class="icon-plus"></i>
-                                        Order MEE</a>
-                                </li>
-                                <?php }
-                                if ($sidebar->orders_products == 1){?>
-                                <li <?php echo ($this->request['controller'] == 'Orders' && $ordertype == "CART" && !isset($_GET['draft'])) ? 'class="active"' : ''; ?>>
-                            <a href="<?php echo $this->request->webroot;?>orders/productSelection?driver=0&ordertype=CART">
-                                <i class="icon-plus"></i>
-                                Order Products </a>
-                                </li>
-                                <?php }
-                                if ($sidebar->order_requalify == 1){?>
-                                <li <?php echo ($this->request['controller'] == 'Orders' && $ordertype == "QUA" && !isset($_GET['draft'])) ? 'class="active"' : ''; ?>>
-                            <a href="<?php echo $this->request->webroot;?>orders/productSelection?driver=0&ordertype=QUA">
-                                <i class="icon-plus"></i>
-                                Re-Qualify </a>
-                                </li>
-                                <?php }?>
-                            <?php } ?>
+                                    foreach($productlist as $product){
+                                        echo "<LI ";
+                                        if ($this->request['controller'] == 'Orders' && $this->request['action'] == 'productSelection' && $ordertype == $product->Acronym && !isset($_GET['draft'])){ echo 'class="active"';}
+                                        echo '><a href="';
+                                        /*echo $this->request->webroot . $order_url;*/
+                                        echo $this->request->webroot . "orders/productSelection?driver=0&ordertype=" . $product->Acronym . '">';
+                                        echo '<i class="icon-plus"></i>';
+                                        echo $product->Name . "</a></li>";
+                                    }
+                                 }
+                            } ?>
                             <?php if ($sidebar->order_intact == 1){ ?>
                                 <li <?php echo ($this->request['controller'] == 'Orders' && $this->request['action'] == 'intact' && isset($_GET['draft'])) ? 'class="active"' : ''; ?>>
                                     <a href="<?php echo $this->request->webroot; ?>orders/intact">
