@@ -270,7 +270,7 @@ if ($_SERVER['SERVER_NAME'] == "localhost" || $_SERVER['SERVER_NAME'] == "127.0.
                                                echo $this->request->webroot . 'documents/view/' . $docs->client_id . '/' . $docs->id . '?order_id=' . $docs->order_id;if($docs->sub_doc_id==4)echo '&doc='.urlencode($docs->document_type);
                                                }
                                        } else { ?>javascript:;<?php } ?>">
-                                        <?= h($docs->document_type); //it won't let me put it in the desc  ?>
+                                        <?= h(str_replace('_',' ',$docs->document_type)); //it won't let me put it in the desc  ?>
 
                                         <i class="fa fa-copy"></i>
 
