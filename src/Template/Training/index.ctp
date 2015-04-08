@@ -182,6 +182,7 @@
                                 }
                             }
 
+                            $Q = "'";
                             $totalquizzes = 0;
                             foreach ($quizes as $quiz) {
                                 $quiz = clean($quiz);
@@ -227,8 +228,8 @@
                                                         $download = '" download="' . basename($attachment) . '"';
                                                     }
 
-                                                    echo '<input type="checkbox" id="chk' . $id . '" disabled' . $checked . '></input>' . ($id + 1) . ' <a href="' . $attachment . $download . ' class="btn btn-xs btn-warning" onclick="check(';
-                                                    echo "'chk" . $id . "'" . ');" title="Please follow these steps in sequential order before you can take the quiz"' . $checked . '>' . $name . '</a>';
+                                                    echo '<input type="checkbox" id="chk' . $id . '" disabled' . $checked . '></input>' . ($id + 1) . ' <a href="' . $attachment . $download . ' class="btn btn-xs btn-warning" onclick="return check(';
+                                                    echo "'chk" . $id . "', '" . $attachment . $Q . ');" title="Please follow these steps in sequential order before you can take the quiz"' . $checked . '>' . $name . '</a>';
                                                     $id += 1;
                                                 }
                                             }
@@ -316,21 +317,31 @@
 
 
                         <script language="JavaScript">
-                            $(document).ready(function () {
-                                $(".checkbox").click(function (ev) {
-                                    ev.stopPropagation();
-                                });
-                            });
+                            var is_firefox = navigator.userAgent.toLowerCase().indexOf('firefox') > -1;
+                            var is_IE = ((navigator.appName == 'Microsoft Internet Explorer') || ((navigator.appName == 'Netscape') && (new RegExp("Trident/.*rv:([0-9]{1,}[\.0-9]{0,})").exec(navigator.userAgent) != null)));
 
-                            function check(name) {
+                            function simulateClick(name) {
+                                var evt = document.createEvent("MouseEvents");
+                                evt.initMouseEvent("click", true, true, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
+                                var cb = document.getElementById(name);
+                                var canceled = !cb.dispatchEvent(evt);
+                            }
+
+                            function check(name, filename) {
                                 var element = document.getElementById(name);
                                 element.disabled = false;
-                                element.click();
-                                element.checked = true;
+                                //if (is_firefox){
+                                    simulateClick(name);
+                                //} else {
+                                //    element.click();
+                                //    element.checked = true;
+                               // }
                                 element.disabled = true;
-                                element.setAttribute('checked', 'checked');
-                                element.prop('checked', true)
-                                return element.checked;
+                                if(is_IE){
+                                    //open attachment in a new window
+                                    
+                                }
+                                return !is_IE;//if it's IE, stop the link from working
                             }
                             function checkboxes() {
                                 var value = <?= $attachmentJS; ?>;
