@@ -378,6 +378,13 @@ var FormWizard = function () {
                                     MissingData = "Missing the required piece of ID";
                                 }
                             }
+
+                            if($('#mee_att_7').length>0){
+                                if ($('.mee_att_7').val().length == 0) {//first piece of ID
+                                    MissingData = "Missing the abstract consent form";
+                                }
+                            }
+
                         }
                         /* for(var i =1; i<=6; i++){
                             if (i != 2) {//skip second piece ID

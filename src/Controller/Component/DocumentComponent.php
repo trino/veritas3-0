@@ -1096,13 +1096,16 @@ class DocumentComponent extends Component
             $roadTest = TableRegistry::get('mee_attachments');
             
             $arr['client_id'] = $cid;
+            if ($cid == "undefined"){ echo "THIS SHOULD NOT BE!";}
+
             $arr['user_id'] = $controller->request->session()->read('Profile.id');
-            
+
             if (!isset($_GET['document']) || isset($_GET['order_id'])) {
-                if(!isset($_GET['order_id']))
-                $arr['order_id'] = $document_id;
-                else
-                $arr['order_id'] = $_GET['order_id'];
+                if(!isset($_GET['order_id'])) {
+                    $arr['order_id'] = $document_id;
+                } else {
+                    $arr['order_id'] = $_GET['order_id'];
+                }
                 $arr['document_id'] = 0;
                 
                 

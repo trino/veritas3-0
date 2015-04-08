@@ -453,7 +453,7 @@ function provinces($name){
                             ?>
                             <div class="tabber <?php echo $tab; ?>" id="tab<?php echo $tab_count; ?>">
                                 <?php
-                                printdocumentinfo($d->id);
+                                if ($action == "View") {printdocumentinfo($d->id);}
                                 include('subpages/documents/' . $d->form); ?>
                             </div>
                         <?php }}}
