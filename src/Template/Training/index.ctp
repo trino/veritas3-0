@@ -316,28 +316,14 @@
 
 
                         <script language="JavaScript">
-                            $(document).ready(function () {
-                                $(".checkbox").click(function (ev) {
-                                    ev.stopPropagation();
-                                });
-                            });
-
                             function check(name) {
-                                var element = document.getElementById(name);
-                                element.disabled = false;
-                                element.click();
-                                element.checked = true;
-                                element.disabled = true;
-                                element.setAttribute('checked', 'checked');
-                                element.prop('checked', true)
-                                return element.checked;
+                                document.getElementById(name).disabled = false;
+                                document.getElementById(name).click();
+                                document.getElementById(name).disabled = true;
+                                return document.getElementById(name).checked;
                             }
                             function checkboxes() {
-                                var value = <?= $attachmentJS; ?>;
-                                if(!value){
-                                    alert('Please click the attachments to the left before proceeding');
-                                }
-                                return value;
+                                return <?= $attachmentJS; ?>;
                             }
 
                             function checkboxesold(name1, name2) {
