@@ -208,7 +208,7 @@ $profileID = $this->Session->read('Profile.id');
                                         echo '><a href="';
                                         /*echo $this->request->webroot . $order_url;*/
                                         echo $this->request->webroot . "orders/productSelection?driver=0&ordertype=" . $product->Acronym . '">';
-                                        echo '<i class="icon-plus"></i>';
+                                        echo '<i class="icon-plus"></i> ';
                                         echo $product->Name . "</a></li>";
                                     }
                                 }
