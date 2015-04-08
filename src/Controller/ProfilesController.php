@@ -166,14 +166,12 @@
             }
         }
 
-        function enabledisableproduct($ID, $Value)
-        {
+        function enabledisableproduct($ID, $Value){
             $table = TableRegistry::get('order_products');
             $table->query()->update()->set(['enable' => $Value])->where(['number' => $ID])->execute();
         }
 
-        function isproductprovinceenabled($ProductID, $DocumentID, $Province)
-        {
+        function isproductprovinceenabled($ProductID, $DocumentID, $Province){
             $item = TableRegistry::get('order_provinces')->find()->where(['ProductID' => $ProductID, 'FormID' => $DocumentID, "Province" => $Province])->first();
             if ($item) {
                 return true;
@@ -182,8 +180,7 @@
             }
         }
 
-        function setproductprovince($ProductID, $DocumentID, $Province, $Value)
-        {
+        function setproductprovince($ProductID, $DocumentID, $Province, $Value){
             $table = TableRegistry::get('order_provinces');//ProductID, Province, FormID
             if ($Value == 1) {
                 $color = "green";

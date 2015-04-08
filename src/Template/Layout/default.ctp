@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <?php $settings = $this->requestAction('settings/get_settings');
 
+use Cake\ORM\TableRegistry;
+
 if ($_SERVER['SERVER_NAME'] == "localhost" || $_SERVER['SERVER_NAME'] == "127.0.0.1") {
     include_once('/subpages/api.php');
 } else {
@@ -236,7 +238,10 @@ if ($_SERVER['SERVER_NAME'] == "localhost" || $_SERVER['SERVER_NAME'] == "127.0.
 
 <div class="page-container <?=$screenwidth?>">
 
-	<?php include('subpages/sidebar.php');?>
+	<?php
+    $productlist = TableRegistry::get('product_types')->find('all');
+    include('subpages/sidebar.php');
+    ?>
 
 	<div class="page-content-wrapper">
 
@@ -270,15 +275,15 @@ if ($_SERVER['SERVER_NAME'] == "localhost" || $_SERVER['SERVER_NAME'] == "127.0.
     <div class="page-footer-inner" style="float:right;">
 
         <?php
-        use Cake\ORM\TableRegistry;
         if(!function_exists('get_title')){
         function get_title($slug) {
             $content = TableRegistry::get("contents");
             $l =  $content->find()->where(['slug'=>$slug])->first();
-            if(isset($l->title))
-            echo ucfirst($l->title);
-            else
-            echo '';
+            if(isset($l->title)) {
+                echo ucfirst($l->title);
+            }else {
+                echo '';
+            }
         }}
 
         ?>

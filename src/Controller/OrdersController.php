@@ -23,10 +23,14 @@
         public function productSelection()
         {
             $this->set('doc_comp', $this->Document);
-             $this->loadMOdel('OrderProducts');
+            $this->loadModel('OrderProducts');
             $settings = $this->Settings->get_settings();
             $this->set('products', $this->OrderProducts->find()->where(['enable'=>'1'])->all());
             $this->set('settings', $settings);
+
+            $ordertype = strtoupper(substr($_GET["ordertype"], 0, 3));
+            $table = TableRegistry::get('product_types')->find()->where(['Acronym' => $ordertype])->first();;
+            $this->set('product', $table);
         }
 
         public function initialize()

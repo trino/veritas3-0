@@ -1,740 +1,525 @@
 <?php
-    if ($_GET['ordertype'] == 'MEE') {
-        $o_type = 'Order MEE';
-    } else
-        if ($_GET['ordertype'] == 'CART') {
-            $o_type = 'Order Products';
-        } else
-            $o_type = 'QUA';
-    $intable = true;
-    $cols = 8;
-    $_this = $this;
-    function getcheckboxes($name, $amount)
-    {
-        $tempstr = "";
-        for ($temp = 0; $temp < $amount; $temp += 1) {
-            if (strlen($tempstr) > 0) {
-                $tempstr .= "+','";
-            }
-            $tempstr .= "+Number($('#" . $name . $temp . "').prop('checked'))";
-        }
-        return $tempstr;
-    }
-
-    $tempstr = getcheckboxes("form", 8);
-    $tempstr2 = getcheckboxes("formb", 8);
-
-    $driver = 0;
-    if (isset($_GET['driver'])) {
-        $driver = $_GET['driver'];
-    }
-
-    $client = 0;
-    if (isset($_GET['client'])) {
-        $client = $_GET['client'];
-    }
-
-    $dr_cl = $doc_comp->getDriverClient($driver, $client);
-
-    $counting = 0;
-    $drcl_c = $dr_cl['client'];
-    foreach ($drcl_c as $drclc) {
-        $counting++;
-    }
-
-    function GET($name, $default = "")
-    {
-        if (isset($_GET[$name])) {
-            return $_GET[$name];
-        }
-        return $default;
-    }
-
-    $ordertype = strtoupper(GET("ordertype"));
-    if (strlen($ordertype) == 0) {
-        $intable = false;
-        $cols = 6;
-    } else {
-        $ordertype = substr($ordertype, 0, 3);
-    }
-
-    function printbutton($type, $webroot, $index, $tempstr = "",$_this)
-    {
-        if (strlen($type) > 0) {
-            switch ($index) {
-                case 3:
-                    $index = 1;
-                    break;
-                case 4:
-                    $index = 5;
-                    break;
-            }
-        }
-        switch ($index) {
-            case 1:
-                if ($type == 'QUA') {
-                    ?>
-                    <a href="javascript:void(0);" id="qua_btn" class="btn btn-danger  btn-lg placenow">Continue <i
-                            class="m-icon-swapright m-icon-white"></i></a>
-                <?php
-                } else {
-                    if ($type == 'MEE') {
-                        $o_type = 'Order MEE';
-                    } else {
-                        $o_type = 'Order Products';
-                    }
-                    ?>
-                    <a href="javascript:void(0);" class="btn btn-danger btn-lg placenow"
-                       onclick="if(!check_div())return false;var div = $('#divisionsel').val();if(!isNaN(parseFloat(div)) && isFinite(div)){var division = div;}else var division = '0';if($('.selecting_client').val()){if($('.selecting_driver').val()==''){alert('Please select driver');$('#s2id_selecting_driver .select2-choice').attr('style','border:1px solid red;');$('html,body').animate({scrollTop: $('#s2id_selecting_driver .select2-choice').offset().top},'slow');return false;}else window.location='<?php echo $webroot; ?>orders/addorder/'+$('.selecting_client').val()+'/?driver='+$('.selecting_driver').val()+'&division='+division+'&forms=<?php echo $_this->requestAction('orders/getProNum');?>&order_type=<?php echo urlencode($o_type); ?>';}else{$('#s2id_selecting_client .select2-choice').attr('style','border:1px solid red;');$('html,body').animate({scrollTop: $('#s2id_selecting_client .select2-choice').offset().top},'slow');}">Continue
-                        <i class="m-icon-swapright m-icon-white"></i></a>
-
-                <?php
-                }
-                break;
-            case 2: ?>
-                <a href="javascript:void(0);" class="btn btn-info"
-                   onclick="$('.alacarte').show(200);$('.placenow').attr('disabled','');">A La Carte
-                    <i class="m-icon-swapright m-icon-white"></i></a>
-                <?php
-                break;
-            case 3:
-                echo '<a href="#" class="btn red-flamingo"> Place Order <i class="m-icon-swapright m-icon-white"></i></a>';
-                break;
-            case 4:
-                echo '<a href="#" class="btn yellow-crusta">Place Order <i class="m-icon-swapright m-icon-white"></i></a>';
-                break;
-            case 5:
-                if ($type == 'MEE') {
-                    $o_type = 'Order MEE';
-                } else {
-                    $o_type = 'Order Products';
-                }
-                ?>
-
-                <a class=" btn btn-danger   btn-lg  button-next proceed" id="cart_btn"
-                   href="javascript:void(0)">
-                    Continue <i class="m-icon-swapright m-icon-white"></i>
-                </a>
-
-            <?php
-        }
-    }
-
-    function printform($counting, $settings, $client, $dr_cl, $driver, $intable = false,$_this)
-    {//pass the variables exactly as given, then specifiy if it's in a table or not
-        echo '<input type="hidden" name="document_type" value="add_driver"/>';
-        echo '<div class="form-group clientsel">';
-        $dodiv = false;
-        if ($intable) {
-            echo '<div class="row" style="margin-top: 15px;">';
-            $size = "large";
-        } else {
-            $size = "xlarge";
-        }
-        $size = "ignore";
-
-        echo '<div class="col-xs-3 control-label" align="right" style="margin-top: 6px;">Client</div><div class="col-xs-6">';
-
-        $dodiv = true;?>
-
-<script type="text/javascript">
-    function reload(value) {
-        var container = document.getElementById("selecting_driver");
-        var was = container.value;
-        container.value = value;  //THIS IS NOT WORKING!!!
-        //this should set the select dropdown to "Create a Driver"
-    }
-</script>
+if($this->request->session()->read('debug'))
+    echo "<span style ='color:red;'>info_order.php #INC152</span>";
+?>
+<style>div {
+        border: 0px solid green;
+    }</style>
 
 <?php
+$getProfileType = $this->requestAction('profiles/getProfileType/' . $this->Session->read('Profile.id'));
+$sidebar = $this->requestAction("settings/all_settings/" . $this->request->session()->read('Profile.id') . "/sidebar");
 
-        if ($counting > 1) { ?>
-            <select id="selecting_client" class="form-control input-<?= $size ?> select2me"
-            onoldchange="reload(-1);"
-            data-placeholder="Select <?php echo ucfirst($settings->client) . '" ';
-            if ($client) { ?><?php } ?>>
-                        <option>None Selected</option><?php
-        } else { ?>
-
-                    <select id="selecting_client" class="form-control input-<?= $size; ?> select2me"
-                            data-placeholder="Select <?php echo ucfirst($settings->client); ?>">
-                        <?php
-        }
-        foreach ($dr_cl['client'] as $dr) {
-            $client_id = $dr->id;
-            ?>
-            <option value="<?php echo $dr->id; ?>"
-                    <?php if ($dr->id == $client || $counting == 1){ ?>selected="selected"<?php } ?>><?php echo $dr->company_name; ?></option>
-        <?php
-        }
-        ?>
-</select>
-
-<input class="selecting_client" type="hidden"
-       value="<?php if ($client) echo $client; else if ($counting == 1) echo $client_id; ?>"/>
-</div></div>
-
-<?php if ($intable) {
-        echo '</div>';
-    } ?>
-
-<div class="divisionsel form-group">
-    <?php if ($counting == 1) $cl_count = 1; else {
-        $cl_count = 0;
-    } ?>
-</div>
-
-<?php if ($intable) {
-        echo '<div class="row" style="margin-top: 15px;margin-bottom: 15px;">';
-    } ?>
-<?php if(!isset($_GET['profiles'])){?>
-<div class="form-group ">
-
-    <?php
-        echo '<div class="col-xs-3 control-label"  align="right" style="margin-top: 6px;">Driver</div><div class="col-xs-6" >';
-        ?>
-
-    <select class="form-control input-<?= $size ?> select2me"
-            <?php if (!isset($_GET['ordertype']) || (isset($_GET['ordertype']) && $_GET['ordertype'] != "QUA")) { ?>data-placeholder="Create New Driver"<?php }?>
-            id="selecting_driver" <?php if ($driver) { ?>disabled="disabled"<?php } ?>>
-        <?php if (!isset($_GET['ordertype']) || (isset($_GET['ordertype']) && $_GET['ordertype'] != "QUA")) { ?>
-    <option <? if ($driver == '0') {
-        echo 'selected';
-    } ?>>Select Driver
-        </option><?php } else {
-        ?>
-        <option <? if ($driver == '0') {
-            echo 'selected';
-        } ?>>Select Driver
-        </option>
-    <?php
+function printoption($option, $selected, $value = "")
+{
+    $tempstr = "";
+    if ($option == $selected) {
+        $tempstr = " selected";
     }
-        ?>
-        <?php
-        $counting = 0;
-        $drcl_d = $dr_cl['driver'];
-        foreach ($drcl_d as $drcld) {
-
-            $counting++;
-        }
-
-        foreach ($dr_cl['driver'] as $dr) {
-
-            $driver_id = $dr->id;
-            ?>
-            <option value="<?php echo $dr->id; ?>"
-                    <?php if ($dr->id == $driver || $counting == 1 && $driver != '0'){ ?>selected="selected"<?php } ?>><?php echo $dr->fname . ' ' . $dr->mname . ' ' . $dr->lname ?></option>
-        <?php
-        }
-        ?>
-    </select>
-    
-    <input class="selecting_driver" type="hidden" value="<?php if ($driver) {
-        echo $driver;
-    }?>"/>
-    </div>
-    <?php
-        
-        if ($settings->profile_create == '1') echo "<div class='col-xs-3 ' style='margin-left: -20px;'>or&nbsp;&nbsp;<a href='" . $_this->request->webroot . "profiles/add' class='btn grey-steel '>Add Driver</a></div>";?>
-
-    </div>
-    <?php
-        if ($intable) {
-            echo "</div>";
-        }
+    if (strlen($value) > 0) {
+        $value = " value='" . $value . "'";
     }
-    } ?>
+    echo '<option' . $value . $tempstr . ">" . $option . "</option>";
+}
 
-<div class=" portlet-body">
+function printoption2($value, $selected = "", $option)
+{
+    $tempstr = "";
+    if ($option == $selected or $value == $selected) {
+        $tempstr = " selected";
+    }
+    echo '<OPTION VALUE="' . $value . '"' . $tempstr . ">" . $option . "</OPTION>";
+}
 
-    <div class="createDriver">
-        <div class="portlet box form-horizontal">
+function printoptions($name, $valuearray, $selected = "", $optionarray, $isdisabled = "")
+{
+    echo '<SELECT ' . $isdisabled . ' name="' . $name . '" class="form-control member_type required" >';
+    for ($temp = 0; $temp < count($valuearray); $temp += 1) {
+        printoption2($valuearray[$temp], $selected, $optionarray[$temp]);
+    }
+    echo '</SELECT>';
+}
 
-            <?php
-                if ($driver && !$client && $counting == 0) {
-                    echo '<div class="alert alert-danger"><strong>Error!</strong> This driver is not assigned to a client. <A href="' . $this->request->webroot . 'profiles/edit/' . $driver . '">Click here to assign them to one</A></div>';
-                }
-            ?>
+function printprovinces($name, $selected = "", $isdisabled = "")
+{
+    printoptions($name, array("", "AB", "BC", "MB", "NB", "NL", "NT", "NS", "NU", "ON", "PE", "QC", "SK", "YT"), $selected, array("Select Province", "Alberta", "British Columbia", "Manitoba", "New Brunswick", "Newfoundland and Labrador", "Northwest Territories", "Nova Scotia", "Nunavut", "Ontario", "Prince Edward Island", "Quebec", "Saskatchewan", "Yukon Territories"), $isdisabled);
+}
 
-            <?php if (!$intable) {
-                printform($counting, $settings, $client, $dr_cl, $driver,$_this);
-            } ?>
+?>
 
-            <div class="">
-                <div class="col-xs-offset-3 col-xs-9">
-                    <?php
-                        if ($ordertype == "") {
-                            printbutton($ordertype, $this->request->webroot, 1, $tempstr,$_this);
-                            echo "&nbsp;&nbsp; or &nbsp;&nbsp";
-                            printbutton($ordertype, $this->request->webroot, 2, $tempstr,$_this);
-                        }
-                    ?>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+<div>
+
+    <div class="portlet-body">
+        <div class="createDriver">
+            <div class="portlet box form">
+                <input type="hidden" name="document_type" value="add_driver"/>
+
+                <form role="form" action="" method="post" id="createDriver">
+
+                    <input type="hidden" name="client_ids" value="<?php echo $cid; ?>" class="client_profile_id"/>
+                    <input type="hidden" name="id" value="<?php if (isset($p->id)) echo $p->id; else echo 0; ?>"
+                           class="driver_id"/>
+
+                    <div class="row">
+                        <div class="col-md-3">
+
+                            <div style="display:inline-block;border-radius:30px;"><img id="clientpic"
+                                                                                       class="img-responsive"
+                                                                                       style="height: auto;width: 150px;margin-left:15px;"
+                                                                                       alt=""
+                                                                                       src="<?php echo $this->request->webroot; ?>img/profile/default.png"/>
+                            </div>
+                        </div>
+                        <div class="col-md-9">
+
+                            <div class="clearfix"></div>
+                            <input type="hidden" name="created_by"
+                                   value="<?php echo $this->request->session()->read('Profile.id') ?>"/>
+
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="control-label">Profile Type</label>
+
+                                    <select name="profile_type" class="form-control member_type required">
+                                        <option
+                                            value="5" <?php if (isset($p) && $p->profile_type == 5) { ?> selected="selected" <?php }  ?>>
+                                            Driver
+                                        </option>
+                                        <option
+                                            value="7" <?php if (isset($p) && $p->profile_type == 7) { ?> selected="selected" <?php }  ?>>
+                                            Owner Operator
+                                        </option>
+                                        <option
+                                            value="8" <?php if (isset($p) && $p->profile_type == 8) { ?> selected="selected" <?php }  ?>>
+                                            Owner Driver
+                                        </option>
+
+                                    </select>
+
+                                </div>
+                            </div>
+                            <?php if ($sidebar->client_option == 0 /*&& (isset($p) && $p->profile_type == 5)*/) { ?>
+
+                                <div class="col-md-4" id="driver_div"
+                                     style="">
+                                    <div class="form-group">
+                                        <label class="control-label">Driver Type</label>
+                                        <select name="driver" class="form-control select_driver required">
+                                            <option value="">Select Driver Type</option>
+                                            <option
+                                                value="1" <?php if (isset($p) && $p->driver == 1) echo "selected='selected'"; ?>
+                                                >BC - BC FTL AB/BC
+                                            </option>
+                                            <option value="2"
+                                                <?php if (isset($p) && $p->driver == 2) echo "selected='selected'"; ?>>
+                                                BCI5 - BC FTL I5
+                                            </option>
+                                            <option value="3"
+                                                <?php if (isset($p) && $p->driver == 3) echo "selected='selected'"; ?>>
+                                                BULK
+                                            </option>
+                                            <option value="4"
+                                                <?php if (isset($p) && $p->driver == 4) echo "selected='selected'"; ?>>
+                                                CLIMATE
+                                            </option>
+                                            <option value="5"
+                                                <?php if (isset($p) && $p->driver == 5) echo "selected='selected'"; ?>>
+                                                FTL - SINGLE DIVISION
+                                            </option>
+                                            <option value="6"
+                                                <?php if (isset($p) && $p->driver == 6) echo "selected='selected'"; ?>>
+                                                FTL - TOYOTA SINGLE HRLY
+                                            </option>
+                                            <option value="7"
+                                                <?php if (isset($p) && $p->driver == 7) echo "selected='selected'"; ?>>
+                                                FTL - TOYOTA SINGLE HWY
+                                            </option>
+                                            <option value="8"
+                                                <?php if (isset($p) && $p->driver == 8) echo "selected='selected'"; ?>>
+                                                LCV - LCV UNITS
+                                            </option>
+                                            <option value="9"
+                                                <?php if (isset($p) && $p->driver == 9) echo "selected='selected'"; ?>>
+                                                LOC - LOCAL
+                                            </option>
+                                            <option value="10"
+                                                <?php if (isset($p) && $p->driver == 10) echo "selected='selected'"; ?>>
+                                                OWNER - OPERATOR
+                                            </option>
+                                            <option value="11"
+                                                <?php if (isset($p) && $p->driver == 11) echo "selected='selected'"; ?>>
+                                                OWNER - DRIVER
+                                            </option>
+                                            <option value="12"
+                                                <?php if (isset($p) && $p->driver == 12) echo "selected='selected'"; ?>>
+                                                SCD - SPECIAL COMMODITIES
+                                            </option>
+                                            <option value="13"
+                                                <?php if (isset($p) && $p->driver == 13) echo "selected='selected'"; ?>>
+                                                SST-SANDRK- OPEN FUEL
+                                            </option>
+                                            <option value="14"
+                                                <?php if (isset($p) && $p->driver == 14) echo "selected='selected'"; ?>>
+                                                SWD-SANDRK
+                                            </option>
+                                            <option value="15"
+                                                <?php if (isset($p) && $p->driver == 15) echo "selected='selected'"; ?>>
+                                                TBL-TRANSBORDER
+                                            </option>
+                                            <option value="16"
+                                                <?php if (isset($p) && $p->driver == 16) echo "selected='selected'"; ?>>
+                                                TEM - TEAM DIVISION
+                                            </option>
+                                            <option value="17"
+                                                <?php if (isset($p) && $p->driver == 17) echo "selected='selected'"; ?>>
+                                                TEM - TOYOTA TEAM
+                                            </option>
+                                            <option value="18"
+                                                <?php if (isset($p) && $p->driver == 18) echo "selected='selected'"; ?>>
+                                                WD - Wind
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                            <?php } ?>
+
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="control-label">Email</label>
+                                    <input <?php echo $is_disabled ?> name="email" id="driverEm" type="email"
+                                                                      placeholder="eg. test@domain.com"
+                                                                      class="form-control un email required" <?php if (isset($p->email)) { ?> value="<?php echo $p->email; ?>" <?php } ?>/>
+                            <span class="error passerror flashEmail"
+                                  style="display: none;">Email already exists</span>
+                                </div>
+                            </div>
+                            <div class="clearfix flashEmail" style="display: none;">
+                            </div>
 
 
-<div class="row">
-    <?php
-        $offset = $cols;
-        if ($ordertype == "" || $ordertype == "MEE") {
-            if ($ordertype != "") {
-                $offset .= " col-xs-offset-2";
-            }
-            ?>
-            <div class="col-xs-<?= $offset ?>">
+                            <div class="clearfix">
+                            </div>
+                            <?php if ($sidebar->client_option == 0) { ?>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="control-label">Title</label><BR>
+                                    <SELECT <?php echo $is_disabled ?> name="title" class="form-control "><?php
+                                        $title = "";
+                                        if (isset($p->title)) {
+                                            $title = $p->title;
+                                        }
+                                        printoption("Mr.", $title, "Mr");
+                                        printoption("Mrs.", $title, "Mrs");
+                                        printoption("Ms.", $title, "Ms");
+                                        ?></SELECT>
 
-                <div class="pricing-red  hover-effect">
-                    <div class="pricing-red-head pricing-head-active">
-                        <h3>Order MEE <span>
-											The all in one package </span>
-                        </h3>
-                        <h4><!--i>$</i>999<i>.99</i> <span> One Time Payment </span-->
-                        </h4>
-                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
 
-                    <?php if ($intable) {
-                        printform($counting, $settings, $client, $dr_cl, $driver, true,$_this);
-                    } ?>
+                                    <label class="control-label">First Name</label>
+                                    <input <?php echo $is_disabled ?> name="fname" type="text"
+                                                                      placeholder="eg. John"
+                                                                      class="form-control req_driver required" <?php if (isset($p->fname)) { ?> value="<?php echo $p->fname; ?>" <?php } ?>/>
+                                </div>
+                            </div>
 
-                    <ul class="pricing-red-content list-unstyled">
-                        <?php
-                            foreach ($products as $p) {
-                                if ($p->id != 8) {
-                                    ?>
 
-                                    <li id="product_<?php echo $p->number; ?>">
-                                        <div class="col-xs-10"><i
-                                                class="fa fa-file-text-o"></i> <?php echo $p->title; ?>
+                            <div class="col-md-4">
+                                <div class="form-group">
+
+                                    <label class="control-label">Middle Name</label>
+                                    <input <?php echo $is_disabled ?> name="mname" type="text"
+                                                                      placeholder=""
+                                                                      class="form-control" <?php if (isset($p->mname)) { ?> value="<?php echo $p->mname; ?>" <?php } ?>/>
+                                </div>
+                            </div>
+
+
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="control-label">Last Name</label>
+                                    <input <?php echo $is_disabled ?> name="lname" type="text"
+                                                                      placeholder="eg. Doe"
+                                                                      class="form-control req_driver required" <?php if (isset($p->lname)) { ?> value="<?php echo $p->lname; ?>" <?php } ?>/>
+                                </div>
+                            </div>
+
+
+                            <div class="col-md-4">
+                                <div class="form-group">
+
+                                    <label class="control-label">Phone Number</label>
+                                    <input <?php echo $is_disabled ?> name="phone" type="text"
+                                                                      placeholder="eg. +1 646 580 6284"
+                                                                      class="form-control req_driver required" <?php if (isset($p->phone)) { ?> value="<?php echo $p->phone; ?>" <?php } ?>/>
+                                </div>
+                            </div>
+
+
+                            <div class="col-md-4">
+                                <div class="form-group">
+
+                                    <label class="control-label">Gender</label>
+                                    <SELECT <?php echo $is_disabled ?> name="gender" class="form-control "><?php
+                                        $gender = "";
+                                        if (isset($p->gender)) {
+                                            $gender = $p->gender;
+                                        }
+                                        echo '<!-- selected option is ' . $gender . '-->';
+                                        printoption("Select Gender", "");
+                                        printoption("Male", $gender, "Male");
+                                        printoption("Female", $gender, "Female");
+                                        ?></SELECT>
+                                </div>
+                            </div>
+
+
+                            <div class="col-md-4">
+                                <div class="form-group">
+
+                                    <label class="control-label">Place of Birth</label>
+                                    <input <?php echo $is_disabled ?> name="placeofbirth" type="text"
+                                                                      placeholder=""
+                                                                      class="form-control" <?php if (isset($p->placeofbirth)) { ?> value="<?php echo $p->placeofbirth; ?>" <?php } ?>/>
+                                </div>
+                            </div>
+
+                            <div class="col-md-8">
+
+                                <div class="form-group">
+                                    <label class="control-label">Date of Birth (YYYY MM DD)</label><BR>
+
+                                    <div class="row">
+
+
+                                        <div class="col-md-4 no-margin">
+                                            <?php
+
+
+
+
+                                            $currentyear = "0000";
+                                            $currentmonth = 0;
+                                            $currentday = 0;
+
+                                            if (isset($p->dob)) {
+                                                $currentyear = substr($p->dob, 0, 4);
+                                                $currentmonth = substr($p->dob, 5, 2);
+                                                $currentday = substr($p->dob, -2);
+                                            }
+
+
+                                            echo '<select class="form-control req_driver required" NAME="doby" ' . $is_disabled . '>';
+
+                                            $now = date("Y");
+                                            for ($temp = $now; $temp > 1899; $temp -= 1) {
+                                                printoption($temp, $currentyear, $temp);
+                                            }
+                                            echo '</select></div><div class="col-md-4">';
+
+
+                                            echo '<select  class="form-control req_driver required" NAME="dobm" ' . $is_disabled . '>';
+                                            $monthnames = array("Jan", "Feb", "Mar", "Apr", "May", "June", "July", "Aug", "Sept", "Oct", "Nov", "Dec");
+                                            for ($temp = 1; $temp < 13; $temp += 1) {
+                                                if ($temp < 10)
+                                                    $temp = "0" . $temp;
+                                                printoption($temp, $currentmonth, $temp);
+                                            }
+                                            echo '</select></div><div class="col-md-4">';
+
+
+                                            echo '<select class="form-control req_driver required" name="dobd" ' . $is_disabled . '>';
+                                            for ($temp = 1; $temp < 32; $temp++) {
+                                                if ($temp < 10)
+                                                    $temp = "0" . $temp;
+                                                printoption($temp, $currentday, $temp);
+                                            }
+
+                                            echo '</select></div>';
+                                            ?>
                                         </div>
-                                        <div class="col-xs-2"><input checked disabled="disabled" type="checkbox"
-                                                                     value="<?php echo $p->number; ?>"/></div>
-                                        <div class="clearfix"></div>
-                                    </li>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <h3 class="block">Address</h3>
+                                    </div>
+                                </div>
+
+
+                                <div class="col-md-8">
+                                    <div class="form-group">
+                                        <input <?php echo $is_disabled ?> name="street" type="text"
+                                                                          placeholder="Street"
+                                                                          class="form-control req_driver required" <?php if (isset($p->street)) { ?> value="<?php echo $p->street; ?>" <?php } ?>/>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <input <?php echo $is_disabled ?> name="city" type="text"
+                                                                          placeholder="City"
+                                                                          class="form-control req_driver required" <?php if (isset($p->city)) { ?> value="<?php echo $p->city; ?>" <?php } ?>/>
+                                    </div>
+                                </div>
+
+
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <?php
+                                        if (isset($p->province))
+                                            printprovinces("province", $p->province, $is_disabled);
+                                        else
+                                            printprovinces("province", "", $is_disabled);
+                                        ?>
+
+
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <input <?php echo $is_disabled ?>  type="text"
+                                                                           placeholder="Postal code"
+                                                                           class="form-control req_driver required"
+                                                                           name="postal"  <?php if (isset($p->postal)) { ?> value="<?php echo $p->postal; ?>" <?php } ?>/>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <input <?php echo $is_disabled ?>  type="text"
+                                                                           placeholder="Country" value="Canada"
+                                                                           class="form-control req_driver required"
+                                                                           name="country" <?php if (isset($p->country)) { ?> value="<?php echo $p->country; ?>" <?php } ?>/>
+                                    </div>
+                                </div>
+
+
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <h3 class="block">Driver's License</h3></div>
+                                </div>
+
+
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label class="control-label">Driver License #</label>
+                                        <input <?php echo $is_disabled ?> name="driver_license_no" type="text"
+                                                                          class="form-control req_driver required" <?php if (isset($p->driver_license_no)) { ?> value="<?php echo $p->driver_license_no; ?>" <?php } ?> />
+                                    </div>
+                                </div>
+
+
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label class="control-label">Province issued</label>
+
+                                        <?php
+                                        if (isset($p->driver_province))
+                                            printprovinces("driver_province", $p->driver_province, $is_disabled);
+                                        else
+                                            printprovinces("driver_province", "", $is_disabled);
+                                        ?>
+
+
+                                    </div>
+                                </div>
+
+
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label class="control-label">Expiry Date</label>
+                                        <input <?php echo $is_disabled ?> name="expiry_date" type="text"
+                                                                          class="form-control req_driver date-picker required" <?php if (isset($p->expiry_date)) { ?> value="<?php echo $p->expiry_date; ?>" <?php } ?> />
+
+                                    </div>
+                                </div>
+                                <?php }
+                                else {
+                                    ?>
+                                    <input type="hidden" name="doby" value="0000"/>
+                                    <input type="hidden" name="dobm" value="00"/>
+                                    <input type="hidden" name="dobd" value="00"/>
                                 <?php
                                 }
-                            }
-                        ?>
-
-
-                    </ul>
-                    <div class="pricing-footer">
-                        <p>
-                        <hr/>
-                        </p>
-                        <?php printbutton($ordertype, $this->request->webroot, 3, $tempstr,$_this); ?>
-
-                    </div>
-                </div>
-            </div>
-        <?php }
-
-        $offset = $cols;
-        if ($ordertype == "" || $ordertype == "CAR") {
-            if ($ordertype != "") {
-                $offset .= " col-xs-offset-2";
-            }
-
-            ?>
-            <div class="col-xs-<?= $offset; ?>">
-                <div class="pricing hover-effect">
-                    <div class="pricing-head">
-                        <h3>Order Products <span>
-											Place an Order A La Carte </span>
-                        </h3>
-                        <h4><!--i>$</i>999<i>.99+</i><span>	(Starting At) </span-->
-                        </h4>
-                    </div>
-
-                    <?php if ($intable) {
-                        printform($counting, $settings, $client, $dr_cl, $driver, true,$_this);
-                    } ?>
-
-                    <ul class="pricing-content list-unstyled" id="cartlist">
-                        <?php
-                            $index = 0;
-                            foreach ($products as $p) {
-
                                 ?>
-                                <li id="product_<?php echo $p->number; ?>">
 
-                                    <div class="col-xs-10"><i class="fa fa-file-text-o"></i> <?php echo $p->title; ?>
-                                    </div>
-                                    <div class="col-xs-2"><input checked type="checkbox" id="form<?= $index ?>"
-                                                                 value="<?php echo $p->number; ?>"/></div>
-                                    <div class="clearfix"></div>
-                                </li>
-                                <?php
-                                $index += 1;
-                            }
-                        ?>
 
-                    </ul>
-                    <div class="pricing-footer">
-                        <p>
-                        <hr/>
-                        </p>
-                        <?php printbutton($ordertype, $this->request->webroot, 4, $tempstr,$_this); ?>
-                    </div>
-                </div>
+                </form>
+
+                <div class="clearfix"></div>
+
+
             </div>
-        <?php }
-
-        ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        $offset = $cols;
-        if ($ordertype == "QUA") {
-            if ($ordertype != "") {
-                $offset .= " col-xs-offset-2";
-            }
-            ?>
-
-            <div class="col-xs-<?= $offset ?>">
-                <div class="pricing-blue hover-effect">
-                    <div class="pricing-blue-head pricing-head-active">
-                        <h3>Requalify <span>Requalify existing drivers </span>
-                        </h3>
-                        <h4><!--i>$</i>999<i>.99</i>
-											<span>
-											One Time Payment </span-->
-                        </h4>
-                    </div>
-
-                    <?php if ($intable) {
-                        printform($counting, $settings, $client, $dr_cl, $driver, true,$_this);
-                    } ?>
-
-                    <ul class="pricing-blue-content list-unstyled" id="qualist">
-                        <?php
-                            $b = 0;
-                            foreach ($products as $p) {
-                                ?>
-                                <li id="product_<?php echo $p->number; ?>">
-
-                                    <div class="col-xs-10"><i class="fa fa-file-text-o"></i> <?php echo $p->title; ?>
-                                    </div>
-                                    <div class="col-xs-2"><input checked type="checkbox" name="prem_nat"
-                                                                 id="formb<?php echo $b; ?>"
-                                                                 value="<?php echo $p->number; ?>"/></div>
-                                    <div class="clearfix"></div>
-                                </li>
-                                <?php
-                                $b++;
-                            }
-                        ?>
-                    </ul>
-                    <div class="pricing-footer">
-                        <p>
-                        <hr/>
-                        </p>
-                        <?php printbutton($ordertype, $this->request->webroot, 3, $tempstr2,$_this); ?>
-
-                    </div>
-                </div>
-            </div>
-        <?php }
+        </div>
 
 
-        ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    </div>
 
-    ?>
-    <!--//End Pricing -->
+
+</div>
+
+
+</div>
 </div>
 
 <script>
-    
-    function check_driver_abstract(driver) {
-        /*$.ajax({
-         url:'
-        <?php echo $this->request->webroot;?>orders/check_driver_abstract/'+driver,
-         success:function(res)
-         {
-         if(res=='0')
-         {
-         if($('#product_2 input[type="checkbox"]').is(':checked'))
-         {
-         $('#product_2 input[type="checkbox"]').click();
-         }
-         $('#product_2').hide();
-         }
-         else
-         {
-         if(!$('#product_2 input[type="checkbox"]').is(':checked'))
-         {
-         $('#product_2 input[type="checkbox"]').click();
-         }
-         $('#product_2').show();
-         }
-         }
-         });*/
-    }
-    function check_cvor(driver) {
-        /*$.ajax({
-         url:'
-        <?php echo $this->request->webroot;?>orders/check_cvor/'+driver,
-         success:function(res)
-         {
-         if(res=='0')
-         {
-         if($('#product_3 input[type="checkbox"]').is(':checked'))
-         {
-         $('#product_3 input[type="checkbox"]').click();
-         }
-         $('#product_3').hide();
-         }
-         else
-         {
-         if(!$('#product_3 input[type="checkbox"]').is(':checked'))
-         {
-         $('#product_3 input[type="checkbox"]').click();
-         }
-         $('#product_3').show();
-         }
-         }
-         });*/
-    }
-    function check_div() {
-        //alert('test');
-        var checkerbox = 0;
-        $('input[type="checkbox"]').each(function () {
-            if ($(this).is(':checked'))
-                checkerbox = 1;
-        });
-        if (checkerbox == 0) {
-            alert('Please select at least one product');
-            return false;
-        }
-        var checker = 0;
-        $('.divisionsel select').each(function () {
-            checker++;
-        });
-        if (checker > 0) {
 
-            if (!$('.divisionsel select').val()) {
-                $('.divisionsel select').attr('style', 'border:1px solid red;');
-                return false;
-            }
-            return true;
-        }
-        else
-            return true;
-
-    }
     $(function () {
-        <?php
-        if($driver)
-        {
-            ?>
-        check_driver_abstract(<?php echo $driver;?>);
-        check_cvor(<?php echo $driver;?>);
-        <?php
-    }
-    ?>
-        $('#cart_btn').click(function () {
-            if (!check_div())
-                return false;
 
-            var div = $('#divisionsel').val();
-            if (!isNaN(parseFloat(div)) && isFinite(div)) {
-                var division = div;
-            }
-            else
-                var division = '0';
-            if ($('.selecting_client').val()) {
-                <?php if(!isset($_GET['profiles'])){?>
-                if ($('.selecting_driver').val() == '') {
-                    alert('Please select driver');
-                    $('#s2id_selecting_driver .select2-choice').attr('style', 'border:1px solid red;');
-                    $('html,body').animate({scrollTop: $('#s2id_selecting_driver .select2-choice').offset().top}, 'slow');
-                    return false;
-                } else {
-                    var tempstr = '';
-                    $('#cartlist input[type="checkbox"]').each(function () {
-
-                        if ($(this).is(':checked')) {
-                            if (tempstr == '') {
-                                tempstr = $(this).val();
-                            }
-                            else
-                                tempstr = tempstr + ',' + $(this).val();
-                        }
-                    });
-                    window.location = '<?php echo $this->request->webroot; ?>orders/addorder/' + $('.selecting_client').val() + '/?driver=' + $('.selecting_driver').val() + '&division=' + division + '&order_type=<?php echo urlencode($o_type);?>&forms=' + tempstr;
-                }
-                <?php }
-                else
-                {?>
-                    var tempstr = '';
-                    $('#cartlist input[type="checkbox"]').each(function () {
-
-                        if ($(this).is(':checked')) {
-                            if (tempstr == '') {
-                                tempstr = $(this).val();
-                            }
-                            else
-                                tempstr = tempstr + ',' + $(this).val();
-                        }
-                    });
-                    window.location = '<?php echo $this->request->webroot; ?>orders/addorder/' + $('.selecting_client').val() + '/?driver=<?php echo $_GET['profiles'];?>&division=' + division + '&order_type=<?php echo urlencode($o_type);?>&forms=' + tempstr;
-                <?php    
-                }
-                ?>
-                
-            }
-            else {
-                $('#s2id_selecting_client .select2-choice').attr('style', 'border:1px solid red;');
-                $('html,body').animate({scrollTop: $('#s2id_selecting_client .select2-choice').offset().top}, 'slow');
-            }
-
+        $('#addmore_id').click(function () {
+            $('#more_id_div').append('<div id="append_id"><div class="pad_bot"><a href="" class="btn btn-primary">Browse</a> <a href="javascript:void(0);" id="delete_id_div" class="btn btn-danger">Delete</a></div></div>')
         });
 
-        $('#qua_btn').click(function () {
-            if (!check_div())
-                return false;
+        $('#delete_id_div').live('click', function () {
+            $(this).closest('#append_id').remove();
+        })
 
-            var div = $('#divisionsel').val();
-            if (!isNaN(parseFloat(div)) && isFinite(div)) {
-                var division = div;
-            }
-            else
-                var division = '0';
-            if ($('.selecting_client').val()) {
-                <?php if(!isset($_GET['profiles'])){?>
-                if ($('.selecting_driver').val() == '') {
-                    alert('Please select driver.');
-                    $('#s2id_selecting_driver .select2-choice').attr('style', 'border:1px solid red;');
-                    $('html,body').animate({scrollTop: $('#s2id_selecting_driver .select2-choice').offset().top}, 'slow');
-                    return false;
-                }
-                else {
-                    var tempstr = '';
-                    $('#qualist input[type="checkbox"]').each(function () {
-
-                        if ($(this).is(':checked')) {
-                            if (tempstr == '') {
-                                tempstr = $(this).val();
-                            }
-                            else
-                                tempstr = tempstr + ',' + $(this).val();
-                        }
-                    });
-                    window.location = '<?php echo $this->request->webroot; ?>orders/addorder/' + $('.selecting_client').val() + '/?driver=' + $('.selecting_driver').val() + '&division=' + division + '&order_type=Requalification&forms=' + tempstr;
-                }
-                <?php
-                }
-                else
-                {?>
-                    var tempstr = '';
-                    $('#qualist input[type="checkbox"]').each(function () {
-
-                        if ($(this).is(':checked')) {
-                            if (tempstr == '') {
-                                tempstr = $(this).val();
-                            }
-                            else
-                                tempstr = tempstr + ',' + $(this).val();
-                        }
-                    });
-                    window.location = '<?php echo $this->request->webroot; ?>orders/addorder/' + $('.selecting_client').val() + '/?driver=<?php echo $_GET['profiles'];?>&division=' + division + '&order_type=Requalification&forms=' + tempstr;
-                <?php
-                }?>
-            }
-            else {
-                $('#s2id_selecting_client .select2-choice').attr('style', 'border:1px solid red;');
-                $('html,body').animate({scrollTop: $('#s2id_selecting_client .select2-choice').offset().top}, 'slow');
-            }
-
-
+        $('#addmore_trans').click(function () {
+            $('#more_trans_div').append('<div id="append_trans"><div class="pad_bot"><a href="" class="btn btn-primary">Browse</a> <a href="javascript:void(0);" id="delete_trans_div" class="btn btn-danger">Delete</a></div></div>')
         });
 
-        $('#divisionsel').live('change', function () {
-            $(this).removeAttr('style');
-        });
-        if ($('.selecting_client').val()) {
-            var client = $('#selecting_client').val();
-            if (!isNaN(parseFloat(client)) && isFinite(client)) {
-                $('.selecting_client').val(client);
-                //alert(client);
-                $.ajax({
-                    url: '<?php echo $this->request->webroot;?>clients/divisionDropDown/' + client,
-                    data: {istable: '<?= $intable; ?>'},
-                    success: function (response) {
-                        $('.divisionsel').html(response);
-                    }
+        $('#delete_trans_div').live('click', function () {
+            $(this).closest('#append_trans').remove();
+        })
+
+        $('.member_type').change(function () {
+            if ($(this).val() == '5' || $(this).val() == '7' || $(this).val() == '8') {
+                $('.nav-tabs li:not(.active)').each(function () {
+                    $(this).hide();
                 });
-            }
-        }
-        $('#selecting_driver').change(function () {
-            $('#s2id_selecting_driver .select2-chosen-2').removeAttr('style');
-            var driver = $('#selecting_driver').val();
-            //alert(driver);
-            if (!isNaN(parseFloat(driver)) && isFinite(driver)) {
-                $('.selecting_driver').val(driver);
-                check_driver_abstract(driver);
-                check_cvor(driver);
+                $('#driver_div').show();
+                $('#driver_div select').addClass('required');
+                $('.un').removeProp('required');
+                $('#password').removeProp('required');
+                $('#retype_password').removeProp('required');
+                $('.req_rec').removeProp('required');
+                $('.req_driver').prop('required', "required");
             }
             else {
-                $('.selecting_driver').val('');
-                return false;
-            }
-        });
-
-        $('#selecting_client').change(function () {
-            $('s2id_selecting_client.select2-choice').removeAttr('style');
-            <?php
-            if(!isset($_GET['ordertype']) || (isset($_GET['ordertype']) && $_GET['ordertype']!='QUA'))
-            {
-                ?>
-
-            $('#s2id_selecting_driver .select2-chosen').html('Select Driver');
-            <?php
-            }
-            else
-            {?>
-            $('#s2id_selecting_driver .select2-chosen').html('Select Driver');
-            <?php
-            }
-            ?>
-            var client = $('#selecting_client').val();
-            if (!isNaN(parseFloat(client)) && isFinite(client)) {
-                $('.selecting_client').val(client);
-                //alert(client);
-                $.ajax({
-                    url: '<?php echo $this->request->webroot;?>clients/divisionDropDown/' + client,
-                    data: {istable: '<?= $intable; ?>'},
-                    success: function (response) {
-                        $('.divisionsel').html(response);
-                    }
+                $('#driver_div select').removeClass('required');
+                $('.nav-tabs li:not(.active)').each(function () {
+                    $(this).show();
                 });
-            }
-            else {
-                $('.selecting_client').val('');
-                return false;
+                $('#driver_div').hide();
+                $('.req_driver').removeProp('required');
+                $('.req_rec').removeProp('required');
+                $('.un').prop('required', "required");
             }
 
-            <?php
+            if ($(this).val() == '2') {
+                $('.req_driver').removeProp('required');
+                $('.un').removeProp('required');
+                $('.req_rec').prop('required', "required");
+            }
 
-        if(!$driver)
-        {
-            ?>
-            $.ajax({
-                url: '<?php echo $this->request->webroot;?>orders/getDriverByClient/' + client + '?ordertype=<?php if(isset($_GET['ordertype']))echo $_GET['ordertype']?>',
-                success: function (res) {
-                    var div = $('#divisionsel').val();
-                    if (!isNaN(parseFloat(div)) && isFinite(div)) {
-                        var division = div;
-                    }
-                    else
-                        var division = '0';
-                    $('#selecting_driver').html(res);
-                    $('.selecting_client').val($('#selecting_client').val());
-                }
-            });
-            <?php
-       }
-       ?>
-            $('#s2id_selecting_driver .select2-chosen-2').removeAttr('style');
         });
     });
 </script>
+
+
+<!-- END PORTLET-->

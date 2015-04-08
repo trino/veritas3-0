@@ -187,13 +187,17 @@ class SettingsController extends AppController {
         die();
             
     }
-    
+
+    function getproductlist(){//DO NOT REMOVE CODE!!!
+        $this->set('products',  TableRegistry::get('product_types')->find('all'));
+        die();
+    }
+
     public function check_client_count(){
         //$this->loadModel('Clients');
-        
     }
-    function getclienturl($uid,$type)
-    {
+
+    function getclienturl($uid,$type){
         $setting = TableRegistry::get('clients');
         $u = $uid;
         $l ="";
