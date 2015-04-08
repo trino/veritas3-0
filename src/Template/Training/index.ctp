@@ -145,6 +145,9 @@
                                     // echo '<div class="caption"><i class="fa fa-graduation-cap"></i>Results for: ' . ucfirst($user->fname) . " " . ucfirst($user->lname) . " (" . ucfirst($user->username) . ") on ";
                                     // echo $results['datetaken'] . '</div></div><div class="portlet-body"><div class="row">';
                                     //echo '<div class="col-md-2"><img src="img/profile/' . $user->image . '" style="max-height: 100px; max-width: 100px;"></div>';
+                                    echo '<div class="col-md-12" style="border:1px solid #888888;padding: 10px;margin-bottom:10px;">';
+
+
                                     PrintResult("Incorrect", $results['incorrect']);
                                     PrintResult("Missing", $results['missing']);
                                     PrintResult("Correct", $results['correct']);
@@ -161,6 +164,7 @@
                                         echo '<CENTER><a class=" btn btn-danger" href="' . $link232 . '">Click here to view the certificate</A></CENTER>';
                                     }
                                     //echo '</div></div>';
+                                    echo "</div>";
                                 }
                             }
 
