@@ -1,5 +1,6 @@
 <?php
  if($this->request->session()->read('debug')){  echo "<span style ='color:red;'>subpages/documents/company_pre_screen_question.php #INC137</span>";}
+include_once 'subpages/filelist.php';
  ?>
 <form id="form_tab1">
 <input type="hidden" class="document_type" name="document_type" value="Pre-Screening"/>
@@ -12,18 +13,14 @@
             $controller = $this->request->params['controller'];
             $controller = strtolower($controller);
 
-            include_once 'subpages/filelist.php';
-            printdocumentinfo($did);
             if( isset($pre_at)){  listfiles($pre_at['attach_doc'], "attachments/", "", false,3); }
             echo "</div>";
-            if($controller == 'orders' )
-            {
+            if($controller == 'orders' ) {
                 echo '<h4 class="col-md-12">Driver Pre-Screen Questions</h4>';
-                }
-                else {
+            } else {
                     
-                }
-                ?>
+            }
+            ?>
             <div class="col-md-4">
                 <label class="control-label">Recruiter's Name: </label>
     
@@ -39,33 +36,23 @@
 
         <div class="col-md-4">
             <label class="control-label">Applicant's Phone Number: </label>
-
             <input type="text" class="form-control" name="applicant_phone_number"/>
-
         </div>
         <div class="col-md-4">
             <label class="control-label">Applicant's Name: </label>
-
             <input type="text" class="form-control" name="aplicant_name">
-
         </div>
         <div class="col-md-4" id="email_cons">
             <label class="control-label">Applicant's Email: </label>
-
             <input type="text" class="form-control email1" name="applicant_email">
-
         </div>
         <div class="col-md-4">
             <label class="control-label">Date: </label>
-
             <input type="text" class="form-control date-picker" placeholder="YYYY-MM-DD" name="pre_screen_date">
-
         </div>
         <div class="col-md-4">
             <label class="control-label">Position: </label>
-
             <input type="text" class="form-control" placeholder="S,T" name="position">
-
         </div>
             </div>
         <div class="clearfix"></div>

@@ -9,13 +9,6 @@ if(isset($disabled)){$is_disabled = 'disabled="disabled"';}
 <!-- BEGIN FORM-->
 <form  id="form_tab8" method="post" action="<?php echo $this->request->webroot;?>documents/audits/<?php echo $cid;?>/<?php echo $did;?>" class="form-horizontal">
 
-    <?php
-    include_once 'subpages/filelist.php';
-    printdocumentinfo($did);
-    //listfiles($sub['de_at'], "attachments/", "", false,3);
-    ?>
-
-
 <input type="hidden" class="document_type" name="document_type" value="Audits"/>
     <input type="hidden" name="sub_doc_id" value="8" class="sub_docs_id" id="af" />
 <div class="form-body">

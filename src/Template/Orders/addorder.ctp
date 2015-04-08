@@ -15,6 +15,7 @@
 </script>
 
 <?php
+include_once 'subpages/filelist.php';
 $param = $this->request->params['action'];
 $view = 'nope';
 if($this->request->params['action'] == 'vieworder'){$view = 'view';}
@@ -99,7 +100,8 @@ function provinces($name){
         }
         $_this = $this;
 
-    $DriverProvince = $p->driver_province;
+    $DriverProvince = "";
+    if (is_object($p)){$DriverProvince = $p->driver_province;}
     echo "<SCRIPT>var DriverProvince = '" . $DriverProvince . "';</SCRIPT>";
 
     function FindIterator($ObjectArray, $FieldName, $FieldValue){
@@ -450,7 +452,9 @@ function provinces($name){
                             }
                             ?>
                             <div class="tabber <?php echo $tab; ?>" id="tab<?php echo $tab_count; ?>">
-                                <?php include('subpages/documents/' . $d->form); ?>
+                                <?php
+                                printdocumentinfo($d->id);
+                                include('subpages/documents/' . $d->form); ?>
                             </div>
                         <?php }}}
                         if(!isset($k_co)) {$k_co=1;} ?>

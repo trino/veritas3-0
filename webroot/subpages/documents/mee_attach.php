@@ -1,11 +1,4 @@
-<?php
-if ($this->request->session()->read('debug')) {
-    echo "<span style ='color:red;'>subpages/documents/mee_attach.php #INC203</span>";
-}
-
-include_once 'subpages/filelist.php';
-printdocumentinfo($did);
-?>
+<?php if ($this->request->session()->read('debug')) {echo "<span style ='color:red;'>subpages/documents/mee_attach.php #INC203</span>";} ?>
 <form id="form_tab15">
     <input type="hidden" class="document_type" name="document_type" value="MEE Attachments"/>
     <input type="hidden" name="sub_doc_id" value="15" class="sub_docs_id" id="af"/>
