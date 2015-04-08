@@ -126,9 +126,16 @@
                 //$pre_at = TableRegistry::get('driver_application_accident');
                 $mee_a['attach_doc'] = $mee_att->find()->where(['order_id' => $did])->first();
                 $this->set('mee_att', $mee_a);
-
+                
+                $ps_detail = TableRegistry::get('pre_screening')->find()->where(['order_id' => $did])->first();
+                $this->set('ps_detail',$ps_detail);
+                
+                $deval_detail = TableRegistry::get('road_test')->find()->where(['order_id' => $did])->first();
+                $this->set('deval_detail',$deval_detail);
+                
                 $da = TableRegistry::get('driver_application');
                 $da_detail = $da->find()->where(['order_id' => $did])->first();
+                $this->set('da_detail',$da_detail);
                 if ($da_detail) {
                     $da_ac = TableRegistry::get('driver_application_accident');
                     $sub['da_ac_detail'] = $da_ac->find()->where(['driver_application_id' => $da_detail->id])->all();
@@ -281,9 +288,16 @@
                 //$pre_at = TableRegistry::get('driver_application_accident');
                 $mee_a['attach_doc'] = $mee_att->find()->where(['order_id' => $did])->first();
                 $this->set('mee_att', $mee_a);
+                
+                $ps_detail = TableRegistry::get('pre_screening')->find()->where(['order_id' => $did])->first();
+                $this->set('ps_detail',$ps_detail);
+                
+                $deval_detail = TableRegistry::get('road_test')->find()->where(['order_id' => $did])->first();
+                $this->set('deval_detail',$deval_detail);
 
                 $da = TableRegistry::get('driver_application');
                 $da_detail = $da->find()->where(['order_id' => $did])->first();
+                $this->set('da_detail',$da_detail);
                 if ($da_detail) {
                     $da_ac = TableRegistry::get('driver_application_accident');
                     $sub['da_ac_detail'] = $da_ac->find()->where(['driver_application_id' => $da_detail->id])->all();
@@ -298,6 +312,7 @@
                     $sub['de_at'] = $de_at->find()->where(['order_id' => $did, 'sub_id' => 3])->all();
 
                     $this->set('sub', $sub);
+                    
                 }
                 $con = TableRegistry::get('consent_form');
                 $con_detail = $con->find()->where(['order_id' => $did])->first();

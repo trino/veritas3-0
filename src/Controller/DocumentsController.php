@@ -319,11 +319,27 @@
                 $mee_a['attach_doc'] = $mee_att->find()->where(['order_id' => $_GET['order_id']])->first();
                 $this->set('mee_att', $mee_a);
 
+                if(!isset($_GET['order_id']))
+                $ps_detail = TableRegistry::get('pre_screening')->find()->where(['document_id' => $did])->first();
+                else
+                $ps_detail = TableRegistry::get('pre_screening')->find()->where(['order_id' => $did])->first();
+                $this->set('ps_detail',$ps_detail);
+                
+                if(!isset($_GET['order_id']))
+                $deval_detail = TableRegistry::get('road_test')->find()->where(['document_id' => $did])->first();
+                else
+                $deval_detail = TableRegistry::get('road_test')->find()->where(['order_id' => $did])->first();
+                $this->set('deval_detail',$deval_detail);
+
+                
+                
                 $da = TableRegistry::get('driver_application');
                 if(!isset($_GET['order_id']))
                 $da_detail = $da->find()->where(['document_id' => $did])->first();
                 else
                 $da_detail = $da->find()->where(['order_id' => $_GET['order_id']])->first();
+                $this->set('da_detail',$da_detail);
+                
                 if ($da_detail) {
                     $da_ac = TableRegistry::get('driver_application_accident');
                     $sub['da_ac_detail'] = $da_ac->find()->where(['driver_application_id' => $da_detail->id])->all();
@@ -699,12 +715,27 @@
                 else
                 $mee_a['attach_doc'] = $mee_att->find()->where(['order_id' => $_GET['order_id']])->first();
                 $this->set('mee_att', $mee_a);
+                
+                if(!isset($_GET['order_id']))
+                $ps_detail = TableRegistry::get('pre_screening')->find()->where(['document_id' => $did])->first();
+                else
+                $ps_detail = TableRegistry::get('pre_screening')->find()->where(['order_id' => $did])->first();
+                $this->set('ps_detail',$ps_detail);
+                
+                if(!isset($_GET['order_id']))
+                $deval_detail = TableRegistry::get('road_test')->find()->where(['document_id' => $did])->first();
+                else
+                $deval_detail = TableRegistry::get('road_test')->find()->where(['order_id' => $did])->first();
+                $this->set('deval_detail',$deval_detail);
 
+                
+                
                 $da = TableRegistry::get('driver_application');
                 if(!isset($_GET['order_id']))
                 $da_detail = $da->find()->where(['document_id' => $did])->first();
                 else
                 $da_detail = $da->find()->where(['order_id' => $_GET['order_id']])->first();
+                $this->set('da_detail',$da_detail);
                 if ($da_detail) {
                     $da_ac = TableRegistry::get('driver_application_accident');
                     $sub['da_ac_detail'] = $da_ac->find()->where(['driver_application_id' => $da_detail->id])->all();
