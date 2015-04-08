@@ -7,11 +7,17 @@
 
     <?php
 
+    function alert($Text){
+        echo "<SCRIPT>alert('" . $Text . "');</SCRIPT>";
+    }
+
     $action = ucfirst($param);
     if (!isset($mee_att)) {$mee_att = array();}
 
     $forms = "";
+    if(!isset($DriverProvince)){$DriverProvince = "";}
     if (isset($_GET["forms"])) {$forms = explode(",", $_GET["forms"]);}
+    if (isset($_GET["type"])) {$forms = explode(",", $_GET["type"]);}//THIS SHOULD BE FORMS, NOT TYPE!!!!
     $attachment = array();//Files are in: C:\wamp\www\veritas3-0\webroot\img\pdfs
     if (is_array($forms)) {
         if (in_array("1", $forms)) {//                  Name         Filename
@@ -27,9 +33,8 @@
                 $attachment["British Columbia Abstract Consent"] = "14.BC.pdf";
             }
         }
-    } else {
-        $DriverProvince = "";
     }
+
 
     function printrequired($action, $forms, $AttachmentName, $DriversProvince, $attachment = 0, $message = "Required"){
         if ($action != "View" && $action != "Vieworder" && isrequired($forms, $AttachmentName, $DriversProvince, $attachment)) {
@@ -125,7 +130,6 @@
 
     <div class="col-md-12"><h4><strong>The following form(s) are Mandatory</strong></h4></div>
     <?php
-
 
     if (printdivrequired($action, $forms, "attachments", $DriverProvince, count($attachment))) {
         $doit = false;

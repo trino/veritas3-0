@@ -478,10 +478,6 @@
         function add($cid = 0, $did = 0, $type = NULL){
             $this->set('doc_comp',$this->Document);
             $this->set('cid', $cid);
-            if($cid=="undefined"){
-                echo "Client info missing!";
-                die();
-            }
             $this->set('did', $did);
             $this->set('sid', '');
             $clients = TableRegistry::get('Clients');
