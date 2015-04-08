@@ -203,13 +203,18 @@ $profileID = $this->Session->read('Profile.id');
                             <?php if ($sidebar->orders_create == 1) { 
                                 if ($sidebar->orders_mee == 1){
                                     foreach($productlist as $product){
-                                        echo "<LI ";
-                                        if ($this->request['controller'] == 'Orders' && $this->request['action'] == 'productSelection' && $ordertype == $product->Acronym && !isset($_GET['draft'])){ echo 'class="active"';}
-                                        echo '><a href="';
-                                        /*echo $this->request->webroot . $order_url;*/
-                                        echo $this->request->webroot . "orders/productSelection?driver=0&ordertype=" . $product->Acronym . '">';
-                                        echo '<i class="icon-plus"></i> ';
-                                        echo $product->Name . "</a></li>";
+                                        $alias = $product->Sidebar_Alias;
+                                        if($sidebar->$alias ==1) {
+                                            echo "<LI ";
+                                            if ($this->request['controller'] == 'Orders' && $this->request['action'] == 'productSelection' && $ordertype == $product->Acronym && !isset($_GET['draft'])) {
+                                                echo 'class="active"';
+                                            }
+                                            echo '><a href="';
+                                            /*echo $this->request->webroot . $order_url;*/
+                                            echo $this->request->webroot . "orders/productSelection?driver=0&ordertype=" . $product->Acronym . '">';
+                                            echo '<i class="icon-plus"></i> ';
+                                            echo $product->Name . "</a></li>";
+                                        }
                                     }
                                 }
                             } ?>

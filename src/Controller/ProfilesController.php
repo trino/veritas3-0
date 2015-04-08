@@ -1175,14 +1175,14 @@
 
             $this->set('doc_comp', $this->Document);
             $orders = TableRegistry::get('orders');
-            $order = $orders
-                ->find()
-                ->where(['orders.uploaded_for' => $id])->contain(['Profiles', 'Clients', 'RoadTest']);
+            $order = $orders->find()->where(['orders.uploaded_for' => $id])->contain(['Profiles', 'Clients', 'RoadTest']);
 
             $this->set('orders', $order);
             $this->set(compact('profile'));
             $this->set('id', $id);
             $this->set('uid', $id);
+
+            $this->set('products', TableRegistry::get('product_types')->find('all'));
         }
 
         function changePass($id)
