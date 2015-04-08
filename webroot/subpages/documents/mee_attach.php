@@ -155,7 +155,7 @@
             echo "<div>";
         }
         echo '<div class="col-md-12">';
-        if ($doit) {
+        if ($doit && count($attachment) > 0) {
             echo '<label class="control-label col-md-4">Upload BC, QU, SA Abstract Consent Form PDF: </label>';
         }
         echo '<div class="col-md-8 mee_more">';
@@ -172,14 +172,15 @@
             }
 
         }
-        if (!$morecount) {
+        if (!$morecount ) {
+            if(count($attachment) > 0) {
+                ?>
 
-            ?>
-
-            <span><a style="margin-bottom:5px;" href="javascript:void(0)" class="btn btn-primary additional"
-                     id="mee_att_7">Browse</a>&nbsp;<span class="uploaded"></span></span>
-            <input type="hidden" name="mee_attachments[]" class="mee_att_7"/>
+                <span><a style="margin-bottom:5px;" href="javascript:void(0)" class="btn btn-primary additional"
+                         id="mee_att_7">Browse</a>&nbsp;<span class="uploaded"></span></span>
+                <input type="hidden" name="mee_attachments[]" class="mee_att_7"/><FONT COLOR="RED"> * Required</FONT>
             <?php
+            }
             //echo  printrequired($action, $forms, "attachments", $DriverProvince, count($attachment)) . "<br />";
         } else {
             $id_count = 6;
