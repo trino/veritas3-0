@@ -465,7 +465,7 @@
                                         <?php if($param=="add"){ ?>
                                             <div class="col-md-4">
                                                 <div class="form-group">
-                                                    <label class="control-label">Email Credentials : </label><BR>
+                                                    <label class="control-label">Email Credentials: </label><BR>
                                                     <input type="checkbox" name="emailcreds", id="emailcreds">
                                                     <label style="margin-top: 5px;" for="emailcreds">Email to the new user</label>
                                                         </DIV>

@@ -117,7 +117,7 @@ $(function(){
   
   
   $('#add_more_employ_doc').click(function(){
-        $('#more_employ_doc').append('<div class="del_append_employ"><label class="control-label col-md-3">Attach File : </label><div class="col-md-6 pad_bot"><a href="javascript:void(0);" class="btn btn-primary">Browse</a><a  href="javascript:void(0);" class="btn btn-danger" id="delete_employ_doc">Delete</a></div></div><div class="clearfix"></div>')
+        $('#more_employ_doc').append('<div class="del_append_employ"><label class="control-label col-md-3">Attach File: </label><div class="col-md-6 pad_bot"><a href="javascript:void(0);" class="btn btn-primary">Browse</a><a  href="javascript:void(0);" class="btn btn-danger" id="delete_employ_doc">Delete</a></div></div><div class="clearfix"></div>')
        }); 
        
        $('#delete_employ_doc').live('click',function(){

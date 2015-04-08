@@ -5,7 +5,7 @@ if($this->request->session()->read('debug'))
 <?php $users = $this->requestAction('/profiles/getallusers/5/'.$jid);?>
 <div class="form-group">
 
-	<label class="control-label col-md-3"><?php if($this->request['controller']=='Clients')echo "Client Admin"; elseif($this->request['action']=='add') echo "Documents created for : "; else echo "Orders created for : "?></label>
+	<label class="control-label col-md-3"><?php if($this->request['controller']=='Clients')echo "Client Admin"; elseif($this->request['action']=='add') echo "Documents created for: "; else echo "Orders created for: "?></label>
     <div class="col-md-4">
 		<select class="form-control input-xlarge select2me" data-placeholder="Select..." name="uploaded_for" id="uploaded_for">
 			<option value=""></option>

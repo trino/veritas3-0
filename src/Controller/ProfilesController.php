@@ -952,7 +952,7 @@
                             $this->Mailer->sendEmail($from, $to, $sub, $msg);
                             //$this->sendEmail($to, $sub, $msg);
                             if (isset($_POST["emailcreds"]) && $_POST["emailcreds"] == "on" && strlen(trim($_POST["email"]))>0 ) {
-                                if($password){$msg.="<br/>Your password is : " . $password;}
+                                if($password){$msg.="<br/>Your password is: " . $password;}
                                 $this->Mailer->sendEmail($from, $_POST["email"], $sub, $msg);
 
                                // $this->sendEmail($_POST["email"], $sub, $msg);
@@ -2163,7 +2163,7 @@
             $from = array('info@' . $path => "ISB MEE");
             $to = trim($email);
             $sub = 'ISBMEE Tasks - Reminder';
-            $msg = 'Domain: ' . getHost("isbmee.com") . ' <br /><br />Reminder, you have following task due:<br/><br/>Title : ' . $todo->title . '<br />Description : ' . $todo->description . '<br />Due By : ' . $todo->date . '<br /><br /> Regards,<br />the ISB MEE team';
+            $msg = 'Domain: ' . getHost("isbmee.com") . ' <br /><br />Reminder, you have following task due:<br/><br/>Title: ' . $todo->title . '<br />Description: ' . $todo->description . '<br />Due By: ' . $todo->date . '<br /><br /> Regards,<br />the ISB MEE team';
             echo "<hR>From: " . $from . "<BR>To: " . $to . " " . $name . "<BR>Subject: " . $sub . "<BR>Message: " . $msg;
             $this->Mailer->sendEmail($from, $to, $sub, $msg);
         }
