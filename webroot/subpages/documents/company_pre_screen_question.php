@@ -128,7 +128,56 @@
             </div>
             <div class="col-md-6 radio-list">
                 <label class="radio-inline">
-                    <input type="radio" id="legal_eligible_work_cananda_1" name="legal_eligible_work_cananda" value="1"/> Yes</label><label class="radio-inline"><input type="radio" id="legal_eligible_work_cananda_0" name="legal_eligible_work_cananda" value="0"/> No</label>
+                <?php 
+                        if($this->request->params['action'] == 'vieworder'  || $this->request->params['action']== 'view')
+                        {
+                            if(isset($ps_detail)&&$ps_detail->legal_eligible_work_cananda == '1' )
+                            {
+                                ?>
+                                &#10004;
+                                <?php
+                            }
+                            else 
+                            {
+                                ?>
+                                &#10006;
+                                <?php
+                            } 
+                        }
+                        else
+                        {
+                            ?>                                      
+                            <input type="radio" id="legal_eligible_work_cananda_1" name="legal_eligible_work_cananda" value="1"/> 
+                            <?php
+                        }
+                         ?>
+                     Yes
+                     </label>
+                     <label class="radio-inline">
+                        <?php 
+                        if($this->request->params['action'] == 'vieworder'  || $this->request->params['action']== 'view')
+                        {
+                            if(isset($ps_detail)&&$ps_detail->legal_eligible_work_cananda == '0' )
+                            {
+                                ?>
+                                &#10004;
+                                <?php
+                            }
+                            else 
+                            {
+                                ?>
+                                &#10006;
+                                <?php
+                            } 
+                        }
+                        else
+                        {
+                            ?>                                      
+                            <input type="radio" id="legal_eligible_work_cananda_0" name="legal_eligible_work_cananda" value="0"/> 
+                            <?php
+                        }
+                         ?>
+                         No</label>
             </div>
         </div>
 
@@ -138,7 +187,59 @@
             </div>
             <div class="col-md-6 radio-list">
                 <label class="radio-inline">
-                    <input type="radio" id="hold_current_canadian_pp_1" name="hold_current_canadian_pp" value="1"/> Yes</label><label class="radio-inline"><input type="radio" id="hold_current_canadian_pp_0" name="hold_current_canadian_pp" value="0"/>No</label>
+                    <?php 
+                        if($this->request->params['action'] == 'vieworder'  || $this->request->params['action']== 'view')
+                        {
+                            if(isset($ps_detail)&&$ps_detail->hold_current_canadian_pp == '1' )
+                            {
+                                ?>
+                                &#10004;
+                                <?php
+                            }
+                            else 
+                            {
+                                ?>
+                                &#10006;
+                                <?php
+                            } 
+                        }
+                        else
+                        {
+                            ?>                                      
+                            <input type="radio" id="hold_current_canadian_pp_1" name="hold_current_canadian_pp" value="1"/> 
+                            <?php
+                        }
+                         ?>
+                     
+                    Yes
+                    </label>
+                    <label class="radio-inline">
+                        <?php 
+                        if($this->request->params['action'] == 'vieworder'  || $this->request->params['action']== 'view')
+                        {
+                            if(isset($ps_detail)&&$ps_detail->hold_current_canadian_pp == '0' )
+                            {
+                                ?>
+                                &#10004;
+                                <?php
+                            }
+                            else 
+                            {
+                                ?>
+                                &#10006;
+                                <?php
+                            } 
+                        }
+                        else
+                        {
+                            ?>                                      
+                            <input type="radio" id="hold_current_canadian_pp_0" name="hold_current_canadian_pp" value="0"/> 
+                            <?php
+                        }
+                         ?>
+                        
+                        No
+                        </label>
             </div>
         </div>
 
@@ -148,7 +249,55 @@
             </div>
             <div class="col-md-6 radio-list">
                 <label class="radio-inline">
-                    <input type="radio" id="have_pr_us_visa_1" name="have_pr_us_visa" value="1"/> Yes</label><label class="radio-inline"><input type="radio" id="have_pr_us_visa_0" name="have_pr_us_visa" value="0"/> No</label>
+                <?php 
+                        if($this->request->params['action'] == 'vieworder'  || $this->request->params['action']== 'view')
+                        {
+                            if(isset($ps_detail)&&$ps_detail->have_pr_us_visa == '1' )
+                            {
+                                ?>
+                                &#10004;
+                                <?php
+                            }
+                            else 
+                            {
+                                ?>
+                                &#10006;
+                                <?php
+                            } 
+                        }
+                        else
+                        {
+                            ?>                                      
+                            <input type="radio" id="have_pr_us_visa_1" name="have_pr_us_visa" value="1"/> 
+                            <?php
+                        }
+                         ?>
+                     Yes</label>
+                    <label class="radio-inline">
+                    <?php 
+                        if($this->request->params['action'] == 'vieworder'  || $this->request->params['action']== 'view')
+                        {
+                            if(isset($ps_detail)&&$ps_detail->have_pr_us_visa == '0' )
+                            {
+                                ?>
+                                &#10004;
+                                <?php
+                            }
+                            else 
+                            {
+                                ?>
+                                &#10006;
+                                <?php
+                            } 
+                        }
+                        else
+                        {
+                            ?>                                      
+                            <input type="radio" id="have_pr_us_visa_0" name="have_pr_us_visa" value="0"/> 
+                            <?php
+                        }
+                         ?>
+                     No</label>
             </div>
         </div>
 
@@ -158,7 +307,55 @@
             </div>
             <div class="col-md-6 radio-list">
                 <label class="radio-inline">
-                    <input type="radio" id="fast_card_1" name="fast_card" value="1"/> Yes</label><label class="radio-inline"><input type="radio" id="fast_card_0" name="fast_card" value="0"/> No</label>
+                <?php 
+                        if($this->request->params['action'] == 'vieworder'  || $this->request->params['action']== 'view')
+                        {
+                            if(isset($ps_detail)&&$ps_detail->fast_card == '1' )
+                            {
+                                ?>
+                                &#10004;
+                                <?php
+                            }
+                            else 
+                            {
+                                ?>
+                                &#10006;
+                                <?php
+                            } 
+                        }
+                        else
+                        {
+                            ?>                                      
+                            <input type="radio" id="fast_card_1" name="fast_card" value="1"/> 
+                            <?php
+                        }
+                         ?>
+                     Yes</label>
+                    <label class="radio-inline">
+                        <?php 
+                        if($this->request->params['action'] == 'vieworder'  || $this->request->params['action']== 'view')
+                        {
+                            if(isset($ps_detail)&&$ps_detail->fast_card == '0' )
+                            {
+                                ?>
+                                &#10004;
+                                <?php
+                            }
+                            else 
+                            {
+                                ?>
+                                &#10006;
+                                <?php
+                            } 
+                        }
+                        else
+                        {
+                            ?>                                      
+                            <input type="radio" id="fast_card_0" name="fast_card" value="0"/> 
+                            <?php
+                        }
+                         ?>
+                         No</label>
             </div>
         </div>
 
@@ -168,7 +365,56 @@
             </div>
             <div class="col-md-6 radio-list">
                 <label class="radio-inline">
-                    <input type="radio" id="criminal_offence_pardon_not_granted_1" name="criminal_offence_pardon_not_granted" value="1"/> Yes</label><label class="radio-inline"><input type="radio" id="criminal_offence_pardon_not_granted_0" name="criminal_offence_pardon_not_granted" value="0"/> No</label>
+                <?php 
+                        if($this->request->params['action'] == 'vieworder'  || $this->request->params['action']== 'view')
+                        {
+                            if(isset($ps_detail)&&$ps_detail->criminal_offence_pardon_not_granted == '1' )
+                            {
+                                ?>
+                                &#10004;
+                                <?php
+                            }
+                            else 
+                            {
+                                ?>
+                                &#10006;
+                                <?php
+                            } 
+                        }
+                        else
+                        {
+                            ?>                                      
+                            <input type="radio" id="criminal_offence_pardon_not_granted_1" name="criminal_offence_pardon_not_granted" value="1"/> 
+                            <?php
+                        }
+                         ?>
+                    
+                     Yes</label>
+                     <label class="radio-inline">
+                     <?php 
+                        if($this->request->params['action'] == 'vieworder'  || $this->request->params['action']== 'view')
+                        {
+                            if(isset($ps_detail)&&$ps_detail->criminal_offence_pardon_not_granted == '0' )
+                            {
+                                ?>
+                                &#10004;
+                                <?php
+                            }
+                            else 
+                            {
+                                ?>
+                                &#10006;
+                                <?php
+                            } 
+                        }
+                        else
+                        {
+                            ?>                                      
+                            <input type="radio" id="criminal_offence_pardon_not_granted_0" name="criminal_offence_pardon_not_granted" value="0"/> 
+                            <?php
+                        }
+                         ?>
+                      No</label>
             </div>
         </div>
 
@@ -299,7 +545,55 @@
             </div>
             <div class="col-md-6 radio-list">
                 <label class="radio-inline">
-                    <input type="radio" id="reefer_load_1" name="reefer_load" value="1"/> Yes</label><label class="radio-inline"><input type="radio" id="reefer_load_0" name="reefer_load" value="0"/> No</label>
+                <?php 
+                        if($this->request->params['action'] == 'vieworder'  || $this->request->params['action']== 'view')
+                        {
+                            if(isset($ps_detail)&&$ps_detail->reefer_load == '1' )
+                            {
+                                ?>
+                                &#10004;
+                                <?php
+                            }
+                            else 
+                            {
+                                ?>
+                                &#10006;
+                                <?php
+                            } 
+                        }
+                        else
+                        {
+                            ?>                                      
+                            <input type="radio" id="reefer_load_1" name="reefer_load" value="1"/> 
+                            <?php
+                        }
+                         ?>
+                     Yes</label>
+                    <label class="radio-inline">
+                    <?php 
+                        if($this->request->params['action'] == 'vieworder'  || $this->request->params['action']== 'view')
+                        {
+                            if(isset($ps_detail)&&$ps_detail->reefer_load == '0' )
+                            {
+                                ?>
+                                &#10004;
+                                <?php
+                            }
+                            else 
+                            {
+                                ?>
+                                &#10006;
+                                <?php
+                            } 
+                        }
+                        else
+                        {
+                            ?>                                      
+                            <input type="radio" id="reefer_load_0" name="reefer_load" value="0"/> 
+                            <?php
+                        }
+                         ?>
+                         No</label>
             </div>
         </div>
 

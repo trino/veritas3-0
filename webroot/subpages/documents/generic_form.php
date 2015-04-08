@@ -3,8 +3,6 @@
  $is_disabled = '';//there is no place for attachments
 if(isset($disabled)) { $is_disabled = 'disabled="disabled"'; }
 
-include_once 'subpages/filelist.php';
-printdocumentinfo($did);
  ?>
 
 <form  enctype="multipart/form-data" action="<?php echo $this->request->webroot;?>documents/basic/<?php echo $cid .'/' .$did;?>" method="post" id="form_tab11">

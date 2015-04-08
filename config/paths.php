@@ -87,11 +87,10 @@ if($_SERVER['SERVER_NAME']=='localhost'){
 }
 else{
     define('WEB_ROOT', "/");
-    //define('W_ROOT', "http://isbmeereports.com");
 }
 define('W_ROOT',strtolower(substr($_SERVER["SERVER_PROTOCOL"],0,strpos( $_SERVER["SERVER_PROTOCOL"],'/'))).'://'.$_SERVER['HTTP_HOST'] );
 if($_SERVER['SERVER_NAME']=='localhost')
-define('LOGIN', W_ROOT."/veritas3/");
+define('LOGIN', W_ROOT."/veritas3-0/");
 else
 define('LOGIN', W_ROOT.'/');
 

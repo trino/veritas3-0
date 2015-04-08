@@ -164,8 +164,58 @@ if( isset($sub)){ listfiles($sub['da_at'], "attachments/", "", false,3); }
             <div class="form-group row">
                 <label class="control-label col-md-9">Have you worked for this company before? : </label>
 				<div class="col-md-3 radio-list" align="center">
-					<label class="radio-inline"><input type="radio" id="worked_for_client_1" name="worked_for_client" value="1" /> Yes</label>
-                    <label class="radio-inline"><input type="radio" id="worked_for_client_0" name="worked_for_client" value="0"/> No</label>
+					<label class="radio-inline">
+                        <?php 
+                        if($this->request->params['action'] == 'vieworder'  || $this->request->params['action']== 'view')
+                        {
+                            if(isset($da_detail)&&$da_detail->worked_for_client == '1' )
+                            {
+                                ?>
+                                &#10004;
+                                <?php
+                            }
+                            else 
+                            {
+                                ?>
+                                &#10006;
+                                <?php
+                            } 
+                        }
+                        else
+                        {
+                            ?>                                      
+                            <input type="radio" id="worked_for_client_1" name="worked_for_client" value="1" /> 
+                            <?php
+                        }
+                         ?>
+                         Yes
+                    </label>
+                    <label class="radio-inline">
+                        <?php 
+                        if($this->request->params['action'] == 'vieworder'  || $this->request->params['action']== 'view')
+                        {
+                            if(isset($da_detail)&&$da_detail->worked_for_client == '0' )
+                            {
+                                ?>
+                                &#10004;
+                                <?php
+                            }
+                            else 
+                            {
+                                ?>
+                                &#10006;
+                                <?php
+                            } 
+                        }
+                        else
+                        {
+                            ?>                                      
+                            <input type="radio" id="worked_for_client_0" name="worked_for_client" value="0"/> 
+                            <?php
+                        }
+                         ?>
+                         No
+                    </label>
                 </div>
                 </div>
                 <div class="form-group row">
@@ -200,8 +250,58 @@ if( isset($sub)){ listfiles($sub['da_at'], "attachments/", "", false,3); }
             <div class="form-group row">
                 <label class="control-label col-md-3">Are you now employed?: </label>
 				<div class="col-md-3 radio-list">
-					<label class="radio-inline"><input type="radio" id="is_employed_1" name="is_employed" value="1"/>Yes</label>
-                    <label class="radio-inline"><input type="radio" id="is_employed_0" name="is_employed" value="0" />No</label>
+					<label class="radio-inline">
+                        <?php 
+                        if($this->request->params['action'] == 'vieworder'  || $this->request->params['action']== 'view')
+                        {
+                            if(isset($da_detail)&&$da_detail->is_employed == '1' )
+                            {
+                                ?>
+                                &#10004;
+                                <?php
+                            }
+                            else 
+                            {
+                                ?>
+                                &#10006;
+                                <?php
+                            } 
+                        }
+                        else
+                        {
+                            ?>                                      
+                            <input type="radio" id="is_employed_1" name="is_employed" value="1"/> 
+                            <?php
+                        }
+                         ?>
+                        Yes
+                    </label>
+                    <label class="radio-inline">
+                        <?php 
+                        if($this->request->params['action'] == 'vieworder'  || $this->request->params['action']== 'view')
+                        {
+                            if(isset($da_detail)&&$da_detail->is_employed == '0' )
+                            {
+                                ?>
+                                &#10004;
+                                <?php
+                            }
+                            else 
+                            {
+                                ?>
+                                &#10006;
+                                <?php
+                            } 
+                        }
+                        else
+                        {
+                            ?>                                      
+                            <input type="radio" id="is_employed_0" name="is_employed" value="0" /> 
+                            <?php
+                        }
+                         ?>
+                        No
+                    </label>
 				</div>
                 <label class="control-label col-md-3">If not, how long since leaving last employment? : </label>
 				<div class="col-md-3">
@@ -237,56 +337,406 @@ if( isset($sub)){ listfiles($sub['da_at'], "attachments/", "", false,3); }
             <div class="form-group row">
                 <label class="control-label col-md-6">Are you 21 years of age or more? </label>
 				<div class="col-md-6 radio-list">
-					<label class="radio-inline"><input type="radio" id="age_21_1" name="age_21" value="1" /> Yes</label>
-                    <label class="radio-inline"><input type="radio" id="age_21_0" name="age_21" value="0"  /> No</label>
+					<label class="radio-inline">
+                        <?php 
+                        if($this->request->params['action'] == 'vieworder'  || $this->request->params['action']== 'view')
+                        {
+                            if(isset($da_detail)&&$da_detail->age_21 == '1' )
+                            {
+                                ?>
+                                &#10004;
+                                <?php
+                            }
+                            else 
+                            {
+                                ?>
+                                &#10006;
+                                <?php
+                            } 
+                        }
+                        else
+                        {
+                            ?>                                      
+                            <input type="radio" id="age_21_1" name="age_21" value="1" /> 
+                            <?php
+                        }
+                         ?>
+                         Yes
+                    </label>
+                    <label class="radio-inline">
+                        <?php 
+                        if($this->request->params['action'] == 'vieworder'  || $this->request->params['action']== 'view')
+                        {
+                            if(isset($da_detail)&&$da_detail->age_21 == '0' )
+                            {
+                                ?>
+                                &#10004;
+                                <?php
+                            }
+                            else 
+                            {
+                                ?>
+                                &#10006;
+                                <?php
+                            } 
+                        }
+                        else
+                        {
+                            ?>                                      
+                            <input type="radio" id="age_21_0" name="age_21" value="0"  /> 
+                            <?php
+                        }
+                         ?>
+                         No
+                    </label>
 				</div>
             </div>
 
             <div class="form-group row">
                 <label class="control-label col-md-6">Can you provide proof of age?  </label>
 				<div class="col-md-6 radio-list">
-					<label class="radio-inline"><input type="radio" id="proof_of_age_1" name="proof_of_age" value="1" /> Yes</label>
-                    <label class="radio-inline"><input type="radio" id="proof_of_age_0" name="proof_of_age" value="0"  /> No</label> (Required for Truck Drivers)
+					<label class="radio-inline">
+                        <?php 
+                        if($this->request->params['action'] == 'vieworder'  || $this->request->params['action']== 'view')
+                        {
+                            if(isset($da_detail)&&$da_detail->proof_of_age == '1' )
+                            {
+                                ?>
+                                &#10004;
+                                <?php
+                            }
+                            else 
+                            {
+                                ?>
+                                &#10006;
+                                <?php
+                            } 
+                        }
+                        else
+                        {
+                            ?>                                      
+                            <input type="radio" id="proof_of_age_1" name="proof_of_age" value="1" /> 
+                            <?php
+                        }
+                         ?>
+                         Yes
+                    </label>
+                    <label class="radio-inline">
+                        <?php 
+                        if($this->request->params['action'] == 'vieworder'  || $this->request->params['action']== 'view')
+                        {
+                            if(isset($da_detail)&&$da_detail->proof_of_age == '0' )
+                            {
+                                ?>
+                                &#10004;
+                                <?php
+                            }
+                            else 
+                            {
+                                ?>
+                                &#10006;
+                                <?php
+                            } 
+                        }
+                        else
+                        {
+                            ?>                                      
+                            <input type="radio" id="proof_of_age_0" name="proof_of_age" value="0"  /> 
+                            <?php
+                        }
+                         ?>
+                         No
+                    </label> (Required for Truck Drivers)
 				</div>
             </div>
 
             <div class="form-group row">
                 <label class="control-label col-md-6">Have you ever been convicted of a criminal offence for which a pardon has not been granted?  </label>
                 <div class="col-md-6 radio-list">
-					<label class="radio-inline"><input type="radio" id="convicted_criminal_1" name="convicted_criminal" value="1" /> Yes</label>
-                   <label class="radio-inline"><input type="radio" id="convicted_criminal_0" name="convicted_criminal" value="0" /> No</label>
+					<label class="radio-inline">
+                        <?php 
+                        if($this->request->params['action'] == 'vieworder'  || $this->request->params['action']== 'view')
+                        {
+                            if(isset($da_detail)&&$da_detail->convicted_criminal == '1' )
+                            {
+                                ?>
+                                &#10004;
+                                <?php
+                            }
+                            else 
+                            {
+                                ?>
+                                &#10006;
+                                <?php
+                            } 
+                        }
+                        else
+                        {
+                            ?>                                      
+                            <input type="radio" id="convicted_criminal_1" name="convicted_criminal" value="1" /> 
+                            <?php
+                        }
+                         ?>
+                         Yes
+                    </label>
+                   <label class="radio-inline">
+                        <?php 
+                        if($this->request->params['action'] == 'vieworder'  || $this->request->params['action']== 'view')
+                        {
+                            if(isset($da_detail)&&$da_detail->convicted_criminal == '0' )
+                            {
+                                ?>
+                                &#10004;
+                                <?php
+                            }
+                            else 
+                            {
+                                ?>
+                                &#10006;
+                                <?php
+                            } 
+                        }
+                        else
+                        {
+                            ?>                                      
+                            <input type="radio" id="convicted_criminal_0" name="convicted_criminal" value="0" /> 
+                            <?php
+                        }
+                         ?>
+                         No
+                    </label>
 				</div>
             </div>
 
             <div class="form-group row">
                 <label class="control-label col-md-6">Have you ever been denied entry into the U.S? </label>
                 <div class="col-md-6 radio-list">
-					<label class="radio-inline"><input type="radio" id="denied_entry_us_1" name="denied_entry_us" value="1" /> Yes</label>
-                   <label class="radio-inline"> <input type="radio" id="denied_entry_us_0" name="denied_entry_us" value="0"  /> No</label>
+					<label class="radio-inline">
+                        <?php 
+                        if($this->request->params['action'] == 'vieworder'  || $this->request->params['action']== 'view')
+                        {
+                            if(isset($da_detail)&&$da_detail->denied_entry_us == '1' )
+                            {
+                                ?>
+                                &#10004;
+                                <?php
+                            }
+                            else 
+                            {
+                                ?>
+                                &#10006;
+                                <?php
+                            } 
+                        }
+                        else
+                        {
+                            ?>                                      
+                            <input type="radio" id="denied_entry_us_1" name="denied_entry_us" value="1" /> 
+                            <?php
+                        }
+                         ?>
+                         Yes
+                    </label>
+                   <label class="radio-inline"> 
+                        <?php 
+                        if($this->request->params['action'] == 'vieworder'  || $this->request->params['action']== 'view')
+                        {
+                            if(isset($da_detail)&&$da_detail->denied_entry_us == '0' )
+                            {
+                                ?>
+                                &#10004;
+                                <?php
+                            }
+                            else 
+                            {
+                                ?>
+                                &#10006;
+                                <?php
+                            } 
+                        }
+                        else
+                        {
+                            ?>                                      
+                            <input type="radio" id="denied_entry_us_0" name="denied_entry_us" value="0"  /> 
+                            <?php
+                        }
+                         ?>
+                         No
+                   </label>
 				</div>
             </div>
 
             <div class="form-group row">
                 <label class="control-label col-md-6">Have you ever tested positive for a controlled substance?  </label>
                 <div class="col-md-6 radio-list">
-					<label class="radio-inline"><input type="radio" id="positive_controlled_substance_1" name="positive_controlled_substance" value="1" /> Yes</label>
-                    <label class="radio-inline"><input type="radio" id="positive_controlled_substance_0" name="positive_controlled_substance" value="0"/> No</label>
+					<label class="radio-inline">
+                        <?php 
+                        if($this->request->params['action'] == 'vieworder'  || $this->request->params['action']== 'view')
+                        {
+                            if(isset($da_detail)&&$da_detail->positive_controlled_substance == '1' )
+                            {
+                                ?>
+                                &#10004;
+                                <?php
+                            }
+                            else 
+                            {
+                                ?>
+                                &#10006;
+                                <?php
+                            } 
+                        }
+                        else
+                        {
+                            ?>                                      
+                            <input type="radio" id="positive_controlled_substance_1" name="positive_controlled_substance" value="1" /> 
+                            <?php
+                        }
+                         ?>
+                         Yes
+                    </label>
+                    <label class="radio-inline">
+                        <?php 
+                        if($this->request->params['action'] == 'vieworder'  || $this->request->params['action']== 'view')
+                        {
+                            if(isset($da_detail)&&$da_detail->positive_controlled_substance == '0' )
+                            {
+                                ?>
+                                &#10004;
+                                <?php
+                            }
+                            else 
+                            {
+                                ?>
+                                &#10006;
+                                <?php
+                            } 
+                        }
+                        else
+                        {
+                            ?>                                      
+                            <input type="radio" id="positive_controlled_substance_0" name="positive_controlled_substance" value="0"/> 
+                            <?php
+                        }
+                         ?>
+                         No
+                    </label>
 				</div>
             </div>
 
             <div class="form-group row">
                 <label class="control-label col-md-6">Have you ever refused a drug test? </label>
                 <div class="col-md-6 radio-list">
-					<label class="radio-inline"><input type="radio" id="refuse_drug_test_1" name="refuse_drug_test" value="1"/> Yes</label>
-                    <label class="radio-inline"><input type="radio" id="refuse_drug_test_0" name="refuse_drug_test" value="0" /> No</label>
+					<label class="radio-inline">
+                        <?php 
+                        if($this->request->params['action'] == 'vieworder'  || $this->request->params['action']== 'view')
+                        {
+                            if(isset($da_detail)&&$da_detail->refuse_drug_test == '1' )
+                            {
+                                ?>
+                                &#10004;
+                                <?php
+                            }
+                            else 
+                            {
+                                ?>
+                                &#10006;
+                                <?php
+                            } 
+                        }
+                        else
+                        {
+                            ?>                                      
+                            <input type="radio" id="refuse_drug_test_1" name="refuse_drug_test" value="1"/> 
+                            <?php
+                        }
+                         ?>
+                         Yes
+                    </label>
+                    <label class="radio-inline">
+                        <?php 
+                        if($this->request->params['action'] == 'vieworder'  || $this->request->params['action']== 'view')
+                        {
+                            if(isset($da_detail)&&$da_detail->refuse_drug_test == '0' )
+                            {
+                                ?>
+                                &#10004;
+                                <?php
+                            }
+                            else 
+                            {
+                                ?>
+                                &#10006;
+                                <?php
+                            } 
+                        }
+                        else
+                        {
+                            ?>                                      
+                            <input type="radio" id="refuse_drug_test_0" name="refuse_drug_test" value="0" /> 
+                            <?php
+                        }
+                         ?>
+                         No
+                    </label>
 				</div>
             </div>
 
             <div class="form-group row">
                 <label class="control-label col-md-6">Had a breath alcohol test greater than 0.04? </label>
                 <div class="col-md-6 radio-list">
-					<label class="radio-inline"><input type="radio" id="breath_alcohol_1" name="breath_alcohol" value="1" /> Yes</label>
-                    <label class="radio-inline"><input type="radio" id="breath_alcohol_0" name="breath_alcohol" value="0" /> No</label>
+					<label class="radio-inline">
+                        <?php 
+                        if($this->request->params['action'] == 'vieworder'  || $this->request->params['action']== 'view')
+                        {
+                            if(isset($da_detail)&&$da_detail->breath_alcohol == '1' )
+                            {
+                                ?>
+                                &#10004;
+                                <?php
+                            }
+                            else 
+                            {
+                                ?>
+                                &#10006;
+                                <?php
+                            } 
+                        }
+                        else
+                        {
+                            ?>                                      
+                            <input type="radio" id="breath_alcohol_1" name="breath_alcohol" value="1" /> 
+                            <?php
+                        }
+                         ?>
+                         Yes
+                    </label>
+                    <label class="radio-inline">
+                        <?php 
+                        if($this->request->params['action'] == 'vieworder'  || $this->request->params['action']== 'view')
+                        {
+                            if(isset($da_detail)&&$da_detail->breath_alcohol == '0' )
+                            {
+                                ?>
+                                &#10004;
+                                <?php
+                            }
+                            else 
+                            {
+                                ?>
+                                &#10006;
+                                <?php
+                            } 
+                        }
+                        else
+                        {
+                            ?>                                      
+                            <input type="radio" id="breath_alcohol_0" name="breath_alcohol" value="0" /> 
+                            <?php
+                        }
+                         ?>
+                         No
+                    </label>
                     (For a company to which you applied but did not work for)
 				</div>
             </div>
@@ -294,8 +744,58 @@ if( isset($sub)){ listfiles($sub['da_at'], "attachments/", "", false,3); }
             <div class="form-group row">
                 <label class="control-label col-md-6">Do you have a FAST card? </label>
                 <div class="col-md-6 radio-list">
-					<label class="radio-inline"><input type="radio" id="fast_card_1" name="fast_card" value="1" /> Yes</label>
-                    <label class="radio-inline"><input type="radio" id="fast_card_0" name="fast_card" value="0" /> No</label>
+					<label class="radio-inline">
+                        <?php 
+                        if($this->request->params['action'] == 'vieworder'  || $this->request->params['action']== 'view')
+                        {
+                            if(isset($da_detail)&&$da_detail->fast_card == '1' )
+                            {
+                                ?>
+                                &#10004;
+                                <?php
+                            }
+                            else 
+                            {
+                                ?>
+                                &#10006;
+                                <?php
+                            } 
+                        }
+                        else
+                        {
+                            ?>                                      
+                            <input type="radio" id="fast_card_1" name="fast_card" value="1" /> 
+                            <?php
+                        }
+                         ?>
+                         Yes
+                    </label>
+                    <label class="radio-inline">
+                        <?php 
+                        if($this->request->params['action'] == 'vieworder'  || $this->request->params['action']== 'view')
+                        {
+                            if(isset($da_detail)&&$da_detail->fast_card == '0' )
+                            {
+                                ?>
+                                &#10004;
+                                <?php
+                            }
+                            else 
+                            {
+                                ?>
+                                &#10006;
+                                <?php
+                            } 
+                        }
+                        else
+                        {
+                            ?>                                      
+                            <input type="radio" id="fast_card_0" name="fast_card" value="0" /> 
+                            <?php
+                        }
+                         ?>
+                         No
+                    </label>
 				</div>
                 </div>
                 <div class="form-group row">
@@ -315,8 +815,57 @@ if( isset($sub)){ listfiles($sub['da_at'], "attachments/", "", false,3); }
             <div class="form-group row">
                 <label class="control-label col-md-6">Are there any reasons you may not be able to perform the functions of the position for which you have applied? </label>
 				<div class="col-md-6 radio-list">
-					<label class="radio-inline"><input type="radio" id="not_able_perform_function_position_1" name="not_able_perform_function_position" value="1"/> Yes</label>
-                    <label class="radio-inline"><input type="radio" id="not_able_perform_function_position_0" name="not_able_perform_function_position" value="0"/> No</label>
+					<label class="radio-inline">
+                        <?php 
+                        if($this->request->params['action'] == 'vieworder'  || $this->request->params['action']== 'view')
+                        {
+                            if(isset($da_detail)&&$da_detail->not_able_perform_function_position == '1' )
+                            {
+                                ?>
+                                &#10004;
+                                <?php
+                            }
+                            else 
+                            {
+                                ?>
+                                &#10006;
+                                <?php
+                            } 
+                        }
+                        else
+                        {
+                            ?>                                      
+                            <input type="radio" id="not_able_perform_function_position_1" name="not_able_perform_function_position" value="1"/> 
+                            <?php
+                        }
+                         ?>
+                         Yes</label>
+                    <label class="radio-inline">
+                        <?php 
+                        if($this->request->params['action'] == 'vieworder'  || $this->request->params['action']== 'view')
+                        {
+                            if(isset($da_detail)&&$da_detail->not_able_perform_function_position == '0' )
+                            {
+                                ?>
+                                &#10004;
+                                <?php
+                            }
+                            else 
+                            {
+                                ?>
+                                &#10006;
+                                <?php
+                            } 
+                        }
+                        else
+                        {
+                            ?>                                      
+                            <input type="radio" id="not_able_perform_function_position_0" name="not_able_perform_function_position" value="0"/> 
+                            <?php
+                        }
+                         ?>
+                         No
+                    </label>
 				</div>
             </div>
 
@@ -329,15 +878,111 @@ if( isset($sub)){ listfiles($sub['da_at'], "attachments/", "", false,3); }
             <div class="form-group row">
                 <label class="control-label col-md-6">Are you physically capable of heavy manual work?</label>
 				<div class="col-md-6 radio-list">
-					<label class="radio-inline"><input type="radio" id="physical_capable_heavy_manual_work_1" name="physical_capable_heavy_manual_work" value="1" /> Yes</label>
-                    <label class="radio-inline"><input type="radio" id="physical_capable_heavy_manual_work_0" name="physical_capable_heavy_manual_work" value="0" /> No</label>
+					<label class="radio-inline">
+                        <?php 
+                        if($this->request->params['action'] == 'vieworder'  || $this->request->params['action']== 'view')
+                        {
+                            if(isset($da_detail)&&$da_detail->physical_capable_heavy_manual_work == '1' )
+                            {
+                                ?>
+                                &#10004;
+                                <?php
+                            }
+                            else 
+                            {
+                                ?>
+                                &#10006;
+                                <?php
+                            } 
+                        }
+                        else
+                        {
+                            ?>                                      
+                            <input type="radio" id="physical_capable_heavy_manual_work_1" name="physical_capable_heavy_manual_work" value="1" /> 
+                            <?php
+                        }
+                         ?>
+                         Yes</label>
+                    <label class="radio-inline">
+                        <?php 
+                        if($this->request->params['action'] == 'vieworder'  || $this->request->params['action']== 'view')
+                        {
+                            if(isset($da_detail)&&$da_detail->physical_capable_heavy_manual_work == '0' )
+                            {
+                                ?>
+                                &#10004;
+                                <?php
+                            }
+                            else 
+                            {
+                                ?>
+                                &#10006;
+                                <?php
+                            } 
+                        }
+                        else
+                        {
+                            ?>                                      
+                            <input type="radio" id="physical_capable_heavy_manual_work_0" name="physical_capable_heavy_manual_work" value="0" /> 
+                            <?php
+                        }
+                         ?>
+                         No</label>
 				</div>
             </div>
             <div class="form-group row">
                 <label class="control-label col-md-6">Have you ever been injured while on the job? </label>
 				<div class="col-md-6 radio-list">
-					<label class="radio-inline"><input type="radio" id="injured_on_job_1" name="injured_on_job" value="1" /> Yes</label>
-                    <label class="radio-inline"><input type="radio" id="injured_on_job_0" name="injured_on_job" value="0"/> No</label>
+					<label class="radio-inline">
+                        <?php 
+                        if($this->request->params['action'] == 'vieworder'  || $this->request->params['action']== 'view')
+                        {
+                            if(isset($da_detail)&&$da_detail->injured_on_job == '1' )
+                            {
+                                ?>
+                                &#10004;
+                                <?php
+                            }
+                            else 
+                            {
+                                ?>
+                                &#10006;
+                                <?php
+                            } 
+                        }
+                        else
+                        {
+                            ?>                                      
+                            <input type="radio" id="injured_on_job_1" name="injured_on_job" value="1" /> 
+                            <?php
+                        }
+                         ?>
+                         Yes</label>
+                    <label class="radio-inline">
+                        <?php 
+                        if($this->request->params['action'] == 'vieworder'  || $this->request->params['action']== 'view')
+                        {
+                            if(isset($da_detail)&&$da_detail->injured_on_job == '0' )
+                            {
+                                ?>
+                                &#10004;
+                                <?php
+                            }
+                            else 
+                            {
+                                ?>
+                                &#10006;
+                                <?php
+                            } 
+                        }
+                        else
+                        {
+                            ?>                                      
+                            <input type="radio" id="injured_on_job_0" name="injured_on_job" value="0"/> 
+                            <?php
+                        }
+                         ?>
+                         No</label>
 				</div>
             </div>
 
@@ -359,9 +1004,55 @@ if( isset($sub)){ listfiles($sub['da_at'], "attachments/", "", false,3); }
                 <label class="control-label col-md-6">Would you be willing to take a physical examination?</label>
 				<div class="col-md-6 radio-list">
 					<label class="radio-inline">
-					<input type="radio" id="willing_physical_examination_1" name="willing_physical_examination" value="1"/> Yes</label>
+                    <?php 
+                        if($this->request->params['action'] == 'vieworder'  || $this->request->params['action']== 'view')
+                        {
+                            if(isset($da_detail)&&$da_detail->willing_physical_examination == '1' )
+                            {
+                                ?>
+                                &#10004;
+                                <?php
+                            }
+                            else 
+                            {
+                                ?>
+                                &#10006;
+                                <?php
+                            } 
+                        }
+                        else
+                        {
+                            ?>                                      
+                            <input type="radio" id="willing_physical_examination_1" name="willing_physical_examination" value="1"/> 
+                            <?php
+                        }
+                         ?>
+					 Yes</label>
                     <label class="radio-inline">
-                    <input type="radio" id="willing_physical_examination_0" name="willing_physical_examination" value="0" /> No</label>
+                    <?php 
+                        if($this->request->params['action'] == 'vieworder'  || $this->request->params['action']== 'view')
+                        {
+                            if(isset($da_detail)&&$da_detail->willing_physical_examination == '0' )
+                            {
+                                ?>
+                                &#10004;
+                                <?php
+                            }
+                            else 
+                            {
+                                ?>
+                                &#10006;
+                                <?php
+                            } 
+                        }
+                        else
+                        {
+                            ?>                                      
+                            <input type="radio" id="willing_physical_examination_0" name="willing_physical_examination" value="0" /> 
+                            <?php
+                        }
+                         ?>
+                     No</label>
 				</div>
             </div>
             <div class="clearfix"></div>
@@ -531,20 +1222,112 @@ if( isset($sub)){ listfiles($sub['da_at'], "attachments/", "", false,3); }
             <div class="form-group row">
 										<label class="control-label col-md-8">A) Have you ever been denied a license, permit or privilege to operate a motor vehicle? </label>
 										<div class="col-md-3 radio-list">
-					<label class="radio-inline">
-                                            <input type="radio" id="ever_been_denied_1" name="ever_been_denied" value="1" /> Yes</label>
-                    <label class="radio-inline">
-                                            <input type="radio" id="ever_been_denied_0" name="ever_been_denied" value="0" /> No</label>
+					                   <label class="radio-inline">
+                                            <?php 
+                        if($this->request->params['action'] == 'vieworder'  || $this->request->params['action']== 'view')
+                        {
+                            if(isset($da_detail)&&$da_detail->ever_been_denied == '1' )
+                            {
+                                ?>
+                                &#10004;
+                                <?php
+                            }
+                            else 
+                            {
+                                ?>
+                                &#10006;
+                                <?php
+                            } 
+                        }
+                        else
+                        {
+                            ?>                                      
+                            <input type="radio" id="ever_been_denied_1" name="ever_been_denied" value="1" /> 
+                            <?php
+                        }
+                         ?>
+                                             Yes</label>
+                                        <label class="radio-inline">
+                                        <?php 
+                        if($this->request->params['action'] == 'vieworder'  || $this->request->params['action']== 'view')
+                        {
+                            if(isset($da_detail)&&$da_detail->ever_been_denied == '0' )
+                            {
+                                ?>
+                                &#10004;
+                                <?php
+                            }
+                            else 
+                            {
+                                ?>
+                                &#10006;
+                                <?php
+                            } 
+                        }
+                        else
+                        {
+                            ?>                                      
+                            <input type="radio" id="ever_been_denied_0" name="ever_been_denied" value="0" /> 
+                            <?php
+                        }
+                         ?>
+                                             No</label>
                                         </div>
             </div>
 
             <div class="form-group row">
 										<label class="control-label col-md-8">B) Has any license, permit or privilege ever been suspended or revoked?</label>
 											<div class="col-md-3 radio-list">
-					<label class="radio-inline">
-                                            <input type="radio" id="suspend_any_license_1" name="suspend_any_license" value="1" /> Yes</label>
-                    <label class="radio-inline">
-                                            <input type="radio" id="suspend_any_license_0" name="suspend_any_license" value="0" /> No</label>
+					                       <label class="radio-inline">
+                                           <?php 
+                        if($this->request->params['action'] == 'vieworder'  || $this->request->params['action']== 'view')
+                        {
+                            if(isset($da_detail)&&$da_detail->suspend_any_license == '1' )
+                            {
+                                ?>
+                                &#10004;
+                                <?php
+                            }
+                            else 
+                            {
+                                ?>
+                                &#10006;
+                                <?php
+                            } 
+                        }
+                        else
+                        {
+                            ?>                                      
+                            <input type="radio" id="suspend_any_license_1" name="suspend_any_license" value="1" /> 
+                            <?php
+                        }
+                         ?>
+                                             Yes</label>
+                                            <label class="radio-inline">
+                                            <?php 
+                        if($this->request->params['action'] == 'vieworder'  || $this->request->params['action']== 'view')
+                        {
+                            if(isset($da_detail)&&$da_detail->suspend_any_license == '0' )
+                            {
+                                ?>
+                                &#10004;
+                                <?php
+                            }
+                            else 
+                            {
+                                ?>
+                                &#10006;
+                                <?php
+                            } 
+                        }
+                        else
+                        {
+                            ?>                                      
+                            <input type="radio" id="suspend_any_license_0" name="suspend_any_license" value="0" /> 
+                            <?php
+                        }
+                         ?>
+                           No</label>
                                         </div>
             </div>
             <label class="control-label col-md-8">If the answer to either A or B is Yes, attach statement giving details.</label>
@@ -751,7 +1534,29 @@ if( isset($sub)){ listfiles($sub['da_at'], "attachments/", "", false,3); }
 
                             <label for="confirm_check" style="margin: 0;">
                                 <h4 style="line-height: 120%;">
-                                    <input type="checkbox" class="form-control" value="1" id="confirm_check" name="confirm_check"/>
+                                    <?php 
+                if($this->request->params['action'] == 'vieworder'  || $this->request->params['action']== 'view')
+                {
+                    if(isset($da_detail) && $da_detail->confirm_check =='1')
+                    {
+                        ?>
+                        &#9745;
+                        <?php
+                    }
+                    else 
+                    {
+                        ?>
+                        &#9744;
+                        <?php
+                    } 
+                }
+                else
+                {
+                    ?>                                      
+                    <input type="checkbox" class="form-control" value="1" id="confirm_check" name="confirm_check"/> 
+                    <?php
+                }
+             ?>
                                     I confirm that I have read and understand the above conditions as part of the application process. I have been given an opportunity to ask questions.</h4></label>
                         </div>
                     </div>

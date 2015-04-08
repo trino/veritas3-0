@@ -23,14 +23,10 @@
         public function productSelection()
         {
             $this->set('doc_comp', $this->Document);
-            $this->loadMOdel('OrderProducts');
+             $this->loadMOdel('OrderProducts');
             $settings = $this->Settings->get_settings();
             $this->set('products', $this->OrderProducts->find()->where(['enable'=>'1'])->all());
             $this->set('settings', $settings);
-
-            $ordertype = strtoupper(substr($_GET["ordertype"], 0, 3));
-            $table = TableRegistry::get('product_types')->find()->where(['Acronym' => $ordertype])->first();;
-            $this->set('product', $table);
         }
 
         public function initialize()
@@ -126,9 +122,16 @@
                 //$pre_at = TableRegistry::get('driver_application_accident');
                 $mee_a['attach_doc'] = $mee_att->find()->where(['order_id' => $did])->first();
                 $this->set('mee_att', $mee_a);
-
+                
+                $ps_detail = TableRegistry::get('pre_screening')->find()->where(['order_id' => $did])->first();
+                $this->set('ps_detail',$ps_detail);
+                
+                $deval_detail = TableRegistry::get('road_test')->find()->where(['order_id' => $did])->first();
+                $this->set('deval_detail',$deval_detail);
+                
                 $da = TableRegistry::get('driver_application');
                 $da_detail = $da->find()->where(['order_id' => $did])->first();
+                $this->set('da_detail',$da_detail);
                 if ($da_detail) {
                     $da_ac = TableRegistry::get('driver_application_accident');
                     $sub['da_ac_detail'] = $da_ac->find()->where(['driver_application_id' => $da_detail->id])->all();
@@ -281,9 +284,16 @@
                 //$pre_at = TableRegistry::get('driver_application_accident');
                 $mee_a['attach_doc'] = $mee_att->find()->where(['order_id' => $did])->first();
                 $this->set('mee_att', $mee_a);
+                
+                $ps_detail = TableRegistry::get('pre_screening')->find()->where(['order_id' => $did])->first();
+                $this->set('ps_detail',$ps_detail);
+                
+                $deval_detail = TableRegistry::get('road_test')->find()->where(['order_id' => $did])->first();
+                $this->set('deval_detail',$deval_detail);
 
                 $da = TableRegistry::get('driver_application');
                 $da_detail = $da->find()->where(['order_id' => $did])->first();
+                $this->set('da_detail',$da_detail);
                 if ($da_detail) {
                     $da_ac = TableRegistry::get('driver_application_accident');
                     $sub['da_ac_detail'] = $da_ac->find()->where(['driver_application_id' => $da_detail->id])->all();
@@ -298,6 +308,7 @@
                     $sub['de_at'] = $de_at->find()->where(['order_id' => $did, 'sub_id' => 3])->all();
 
                     $this->set('sub', $sub);
+                    
                 }
                 $con = TableRegistry::get('consent_form');
                 $con_detail = $con->find()->where(['order_id' => $did])->first();
@@ -1271,15 +1282,17 @@
         function getProNum()
         {
             $products =  TableRegistry::get('order_products');
-            $pro = $products->find()->where(['enable'=>1]);//,'id <>'=>8
+            $pro = $products->find()->where(['enable'=>1,'id <>'=>8]);
             $prod = '';
-            foreach($pro as $p) {
-                if($prod == '') {
+            foreach($pro as $p)
+            {
+                if($prod == '')
+                {
                     $prod = $p->number;
                 }
-                else {
-                    $prod = $prod . ',' . $p->number;
-                }
+                else
+                $prod = $prod.','.$p->number;
+                
             }
             $this->response->body($prod);
             return $this->response;

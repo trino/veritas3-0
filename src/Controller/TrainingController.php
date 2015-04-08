@@ -378,7 +378,7 @@ class TrainingController extends AppController {
             //$users = array($UserID, $this->whoenrolled($QuizID,$UserID ))
             $users = $this->enumsupers();
             $users[] = $UserID;
-            $this->email($users, "IBMEE Course completion", $message);
+            $this->email($users, "ISBMEE Course completion", $message);
             //http://localhost/veritas3/training/certificate?quizid=1
             $this->Flash->success($answers . ' answers were saved');
         }

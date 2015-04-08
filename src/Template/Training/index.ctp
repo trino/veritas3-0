@@ -344,11 +344,7 @@
                                 return !is_IE;//if it's IE, stop the link from working
                             }
                             function checkboxes() {
-                                var value = <?= $attachmentJS; ?>;
-                                if(!value){
-                                    alert('Please click the attachments to the left before proceeding');
-                                }
-                                return value;
+                                return <?= $attachmentJS; ?>;
                             }
 
                             function checkboxesold(name1, name2) {

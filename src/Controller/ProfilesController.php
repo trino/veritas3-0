@@ -128,7 +128,7 @@
                 $DocID = $_POST['DocID'];
                 switch ($_POST["Type"]) {
                     case "enabledocument":
-                        $this->enabledisableproduct($DocID,$Value );
+                        $this->enabledisableproduct($DocID, $Value);
                         echo $DocID . " set to " . $Value;
                         break;
                     case "selectproduct":
@@ -166,10 +166,12 @@
             }
         }
 
-        function enabledisableproduct($ID, $Value){
+        function enabledisableproduct($ID, $Value)
+        {
             $table = TableRegistry::get('order_products');
             $table->query()->update()->set(['enable' => $Value])->where(['number' => $ID])->execute();
         }
+
         function isproductprovinceenabled($ProductID, $DocumentID, $Province)
         {
             $item = TableRegistry::get('order_provinces')->find()->where(['ProductID' => $ProductID, 'FormID' => $DocumentID, "Province" => $Province])->first();
@@ -1184,8 +1186,6 @@
             $this->set(compact('profile'));
             $this->set('id', $id);
             $this->set('uid', $id);
-
-            $this->set('products', TableRegistry::get('product_types')->find('all'));
         }
 
         function changePass($id)
@@ -1970,7 +1970,7 @@
                 ->where(['orders.draft' => 0])->order('orders.id DESC')->limit(1);
             //  debug($order);
             foreach ($order as $o) {
-                debug($o);
+                // debug($o);
                 if ($o->complete == 0) {
 
                     $complete = 1;
@@ -1988,14 +1988,14 @@
                         $complete = 0;
                     } else {
                         $this->create_files_from_binary($o->id, "14", $o->ins_14_binary);
-                         $this->save_bright_planet_grade($o->id, 'ins_14_binary', null);
+                        $this->save_bright_planet_grade($o->id, 'ins_14_binary', null);
                     }
 
                     if (!$o->ins_72_binary) {
                         $complete = 0;
                     } else {
                         $this->create_files_from_binary($o->id, "72", $o->ins_72_binary);
-                         $this->save_bright_planet_grade($o->id, 'ins_72_binary', null);
+                        $this->save_bright_planet_grade($o->id, 'ins_72_binary', null);
 
                     }
 
@@ -2003,7 +2003,7 @@
                         $complete = 0;
                     } else {
                         $this->create_files_from_binary($o->id, "77", $o->ins_77_binary);
-                         $this->save_bright_planet_grade($o->id, 'ins_77_binary', null);
+                        $this->save_bright_planet_grade($o->id, 'ins_77_binary', null);
 
                     }
 
@@ -2011,7 +2011,7 @@
                         $complete = 0;
                     } else {
                         $this->create_files_from_binary($o->id, "78", $o->ins_78_binary);
-                         $this->save_bright_planet_grade($o->id, 'ins_78_binary', null);
+                        $this->save_bright_planet_grade($o->id, 'ins_78_binary', null);
 
                     }
 
@@ -2019,7 +2019,7 @@
                         $complete = 0;
                     } else {
                         $this->create_files_from_binary($o->id, "1603", $o->ebs_1603_binary);
-                         $this->save_bright_planet_grade($o->id, 'ebs_1603_binary', null);
+                        $this->save_bright_planet_grade($o->id, 'ebs_1603_binary', null);
 
                     }
 
@@ -2027,7 +2027,7 @@
                         $complete = 0;
                     } else {
                         $this->create_files_from_binary($o->id, "1627", $o->ebs_1627_binary);
-                         $this->save_bright_planet_grade($o->id, 'ebs_1627_binary', null);
+                        $this->save_bright_planet_grade($o->id, 'ebs_1627_binary', null);
 
                     }
 
@@ -2035,7 +2035,7 @@
                         $complete = 0;
                     } else {
                         $this->create_files_from_binary($o->id, "1650", $o->ebs_1650_binary);
-                         $this->save_bright_planet_grade($o->id, 'ebs_1650_binary', null);
+                        $this->save_bright_planet_grade($o->id, 'ebs_1650_binary', null);
 
                     }
 
@@ -2082,7 +2082,6 @@
                         if ($sendit) {
 
                             $this->save_bright_planet_grade($o->id, 'ins_72', $sendit);
-
                         }
                         */
 
@@ -2090,8 +2089,8 @@
 
                     }
 
-
                     if ($complete == 1 && $o->complete == 0) {
+
                         $or = TableRegistry::get('orders');
                         $quer = $or->query();
                         $quer->update()
@@ -2099,23 +2098,25 @@
                             ->where(['id' => $o->id])
                             ->execute();
 
+                        $table = TableRegistry::get('profiles');
+                        $profile1 = $table->find()->where(['id' => 71])->first();
 
-
-
+                        if ($profile1->email) {
+                            $path = $this->Document->getUrl();
+                            //  $from = array('info@' . $path => "ISB MEE");
+                            $from = 'info@' . $path;
+                            $to = $profile1->email;
+                            $sub = 'ISBMEE Order Completed';
+                            $msg = 'Your order has been processed and ready for download.<br /><br /> Please login <a href="' . LOGIN . '">here</a> to retreive your reports.<br /><br /> Regards,<br /> The ISB MEE Team';
+                            $this->Mailer->sendEmail($from, $to, $sub, $msg);
+                        }
 
                         //send out emasil here
                         //send out emasil here
                         //send out emasil here
                         //send out emasil here
-
-
-
-
-
-
 
                     }
-
 
                 }
 
