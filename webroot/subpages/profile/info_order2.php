@@ -1,32 +1,38 @@
 <?php
-    if($this->request->session()->read('debug')) {echo "<span style ='color:red;'>info_order2.php #INC???</span>";}
-
+    if ($_GET['ordertype'] == 'MEE') {
+        $o_type = 'Order MEE';
+    } else
+        if ($_GET['ordertype'] == 'CART') {
+            $o_type = 'Order Products';
+        } else
+            $o_type = 'QUA';
     $intable = true;
     $cols = 8;
     $_this = $this;
-    function getcheckboxes($name, $amount) {
+    function getcheckboxes($name, $amount)
+    {
         $tempstr = "";
         for ($temp = 0; $temp < $amount; $temp += 1) {
             if (strlen($tempstr) > 0) {
                 $tempstr .= "+','";
             }
-            $tempstr .= "+Number($('#" . $name . $temp . "').val())";
+            $tempstr .= "+Number($('#" . $name . $temp . "').prop('checked'))";
         }
         return $tempstr;
     }
 
-    function alert($Text){
-        echo "<SCRIPT>alert('$Text');</SCRIPT>";
-    }
-
-    $productcount=iterator_count($products);
-    $tempstr = getcheckboxes("form", $productcount);
+    $tempstr = getcheckboxes("form", 8);
+    $tempstr2 = getcheckboxes("formb", 8);
 
     $driver = 0;
-    if (isset($_GET['driver'])) { $driver = $_GET['driver'];}
+    if (isset($_GET['driver'])) {
+        $driver = $_GET['driver'];
+    }
 
     $client = 0;
-    if (isset($_GET['client'])) {$client = $_GET['client'];}
+    if (isset($_GET['client'])) {
+        $client = $_GET['client'];
+    }
 
     $dr_cl = $doc_comp->getDriverClient($driver, $client);
 
@@ -44,51 +50,15 @@
         return $default;
     }
 
-    $ordertype = substr(strtoupper(GET("ordertype")), 0, 3);
-
-    function makeform($ordertype, $cols, $color, $Title, $Description, $products, $Disabled, $counting, $settings, $client, $dr_cl, $driver, $_this, $Otype ="", $inforequired = false){
-        if (strlen($Otype)==0) { $Otype = $Title; }
-        if (strlen($color)>0){ $color = "-" . $color;}
-        echo '<div class="col-xs-' . $cols . ' col-xs-offset-2">';
-        echo '<div class="pricing' . $color . ' hover-effect">';
-        echo '<div class="pricing' . $color . '-head pricing-head-active">';
-        echo '<h3>' . $Title . '<span>' . $Description . '</span></h3>';
-        echo '<h4><!--i>$</i>999<i>.99</i> <span> One Time Payment </span--></h4></div>';
-
-        printform($counting, $settings, $client, $dr_cl, $driver, true,$_this);
-
-        echo '<ul class="pricing' . $color . '-content list-unstyled">';
-        productslist($ordertype, $products, "form", $Disabled);
-
-        $productcount=iterator_count($products);
-        $tempstr = getcheckboxes("form", $productcount);
-
-        echo '</ul><div class="pricing-footer"><p><hr/></p>';
-        printbutton($ordertype, $_this->request->webroot, 3, $tempstr,$_this, $Otype, $inforequired);
-
-        echo '</div></div></div>';
-        return $Otype;
+    $ordertype = strtoupper(GET("ordertype"));
+    if (strlen($ordertype) == 0) {
+        $intable = false;
+        $cols = 6;
+    } else {
+        $ordertype = substr($ordertype, 0, 3);
     }
 
-    function showproduct($ordertype, $product){
-        if($ordertype == "MEE"){
-            if ($product->number == 72) { return false; } //Hide "Check DL" for Order MEE}
-        }
-        return true;
-    }
-    function productslist($ordertype, $products, $ID, $Checked = false){
-        if ($Checked) { $Checked = ' checked disabled="disabled"';} else { $Checked = "";}
-        $index=0;
-        foreach ($products as $p) {
-            if(showproduct($ordertype, $p)) {
-                echo '<li id="product_' . $p->number . '"><div class="col-xs-10"><i class="fa fa-file-text-o"></i> ' . $p->title . '</div>';
-                echo '<div class="col-xs-2"><input type="checkbox" value="' . $p->number . '" id="' . $ID . $index . '"' . $Checked . '/></div>';
-                echo '<div class="clearfix"></div></li>';
-            }
-        }
-        $index+=1;
-    }
-    function printbutton($type, $webroot, $index, $tempstr = "",$_this, $o_type, $inforequired = true)
+    function printbutton($type, $webroot, $index, $tempstr = "",$_this)
     {
         if (strlen($type) > 0) {
             switch ($index) {
@@ -102,19 +72,29 @@
         }
         switch ($index) {
             case 1:
-                if (!$inforequired) {
-                    echo '<a href="javascript:void(0);" id="qua_btn" class="btn btn-danger  btn-lg placenow">Continue <i class="m-icon-swapright m-icon-white"></i></a>';
-                } else {
+                if ($type == 'QUA') {
                     ?>
-                    <!--a href="javascript:void(0);" class="btn btn-danger btn-lg placenow"
+                    <a href="javascript:void(0);" id="qua_btn" class="btn btn-danger  btn-lg placenow">Continue <i
+                            class="m-icon-swapright m-icon-white"></i></a>
+                <?php
+                } else {
+                    if ($type == 'MEE') {
+                        $o_type = 'Order MEE';
+                    } else {
+                        $o_type = 'Order Products';
+                    }
+                    ?>
+                    <a href="javascript:void(0);" class="btn btn-danger btn-lg placenow"
                        onclick="if(!check_div())return false;var div = $('#divisionsel').val();if(!isNaN(parseFloat(div)) && isFinite(div)){var division = div;}else var division = '0';if($('.selecting_client').val()){if($('.selecting_driver').val()==''){alert('Please select driver');$('#s2id_selecting_driver .select2-choice').attr('style','border:1px solid red;');$('html,body').animate({scrollTop: $('#s2id_selecting_driver .select2-choice').offset().top},'slow');return false;}else window.location='<?php echo $webroot; ?>orders/addorder/'+$('.selecting_client').val()+'/?driver='+$('.selecting_driver').val()+'&division='+division+'&forms=<?php echo $_this->requestAction('orders/getProNum');?>&order_type=<?php echo urlencode($o_type); ?>';}else{$('#s2id_selecting_client .select2-choice').attr('style','border:1px solid red;');$('html,body').animate({scrollTop: $('#s2id_selecting_client .select2-choice').offset().top},'slow');}">Continue
-                        <i class="m-icon-swapright m-icon-white"></i></a-->
+                        <i class="m-icon-swapright m-icon-white"></i></a>
 
                 <?php
                 }
                 break;
             case 2: ?>
-                <a href="javascript:void(0);" class="btn btn-info" onclick="$('.alacarte').show(200);$('.placenow').attr('disabled','');">A La Carte<i class="m-icon-swapright m-icon-white"></i></a>
+                <a href="javascript:void(0);" class="btn btn-info"
+                   onclick="$('.alacarte').show(200);$('.placenow').attr('disabled','');">A La Carte
+                    <i class="m-icon-swapright m-icon-white"></i></a>
                 <?php
                 break;
             case 3:
@@ -124,9 +104,19 @@
                 echo '<a href="#" class="btn yellow-crusta">Place Order <i class="m-icon-swapright m-icon-white"></i></a>';
                 break;
             case 5:
-                echo '<a class=" btn btn-danger btn-lg  button-next proceed" id="cart_btn" href="javascript:void(0)">';
-                echo 'Continue <i class="m-icon-swapright m-icon-white"></i></a>';
-                break;
+                if ($type == 'MEE') {
+                    $o_type = 'Order MEE';
+                } else {
+                    $o_type = 'Order Products';
+                }
+                ?>
+
+                <a class=" btn btn-danger   btn-lg  button-next proceed" id="cart_btn"
+                   href="javascript:void(0)">
+                    Continue <i class="m-icon-swapright m-icon-white"></i>
+                </a>
+
+            <?php
         }
     }
 
@@ -255,37 +245,205 @@
     }
     } ?>
 
+<div class=" portlet-body">
+
+    <div class="createDriver">
+        <div class="portlet box form-horizontal">
+
+            <?php
+                if ($driver && !$client && $counting == 0) {
+                    echo '<div class="alert alert-danger"><strong>Error!</strong> This driver is not assigned to a client. <A href="' . $this->request->webroot . 'profiles/edit/' . $driver . '">Click here to assign them to one</A></div>';
+                }
+            ?>
+
+            <?php if (!$intable) {
+                printform($counting, $settings, $client, $dr_cl, $driver,$_this);
+            } ?>
+
+            <div class="">
+                <div class="col-xs-offset-3 col-xs-9">
+                    <?php
+                        if ($ordertype == "") {
+                            printbutton($ordertype, $this->request->webroot, 1, $tempstr,$_this);
+                            echo "&nbsp;&nbsp; or &nbsp;&nbsp";
+                            printbutton($ordertype, $this->request->webroot, 2, $tempstr,$_this);
+                        }
+                    ?>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 
 <div class="row">
     <?php
-    $o_type = makeform($product->Acronym, $cols, $product->Color, $product->Name, $product->Description, $products, $product->Checked == 1, $counting, $settings, $client, $dr_cl, $driver, $_this, $product->Alias);
+        $offset = $cols;
+        if ($ordertype == "" || $ordertype == "MEE") {
+            if ($ordertype != "") {
+                $offset .= " col-xs-offset-2";
+            }
+            ?>
+            <div class="col-xs-<?= $offset ?>">
 
-    /*
-    if ($ordertype == "MEE") {
-        $o_type = makeform("MEE", $cols, "red", "Order MEE", "The all in one package", $products, true, $counting, $settings, $client, $dr_cl, $driver, $_this);
-    }
-    if ($ordertype == "CAR") {
-        $o_type = makeform("CAR", $cols, "", "Order Products", "Place an Order A La Carte", $products, false, $counting, $settings, $client, $dr_cl, $driver, $_this);
-    }
-    if ($ordertype == "QUA") {
-        $o_type = makeform("QUA", $cols, "blue", "Requalify", "Requalify existing drivers", $products, false, $counting, $settings, $client, $dr_cl, $driver, $_this, "Requalification", false);
-    }
-    */
+                <div class="pricing-red  hover-effect">
+                    <div class="pricing-red-head pricing-head-active">
+                        <h3>Order MEE <span>
+											The all in one package </span>
+                        </h3>
+                        <h4><!--i>$</i>999<i>.99</i> <span> One Time Payment </span-->
+                        </h4>
+                    </div>
+
+                    <?php if ($intable) {
+                        printform($counting, $settings, $client, $dr_cl, $driver, true,$_this);
+                    } ?>
+
+                    <ul class="pricing-red-content list-unstyled">
+                        <?php
+                            foreach ($products as $p) {
+                                if ($p->id != 8) {
+                                    ?>
+
+                                    <li id="product_<?php echo $p->number; ?>">
+                                        <div class="col-xs-10"><i
+                                                class="fa fa-file-text-o"></i> <?php echo $p->title; ?>
+                                        </div>
+                                        <div class="col-xs-2"><input checked disabled="disabled" type="checkbox"
+                                                                     value="<?php echo $p->number; ?>"/></div>
+                                        <div class="clearfix"></div>
+                                    </li>
+                                <?php
+                                }
+                            }
+                        ?>
+
+
+                    </ul>
+                    <div class="pricing-footer">
+                        <p>
+                        <hr/>
+                        </p>
+                        <?php printbutton($ordertype, $this->request->webroot, 3, $tempstr,$_this); ?>
+
+                    </div>
+                </div>
+            </div>
+        <?php }
+
+        $offset = $cols;
+        if ($ordertype == "" || $ordertype == "CAR") {
+            if ($ordertype != "") {
+                $offset .= " col-xs-offset-2";
+            }
+
+            ?>
+            <div class="col-xs-<?= $offset; ?>">
+                <div class="pricing hover-effect">
+                    <div class="pricing-head">
+                        <h3>Order Products <span>
+											Place an Order A La Carte </span>
+                        </h3>
+                        <h4><!--i>$</i>999<i>.99+</i><span>	(Starting At) </span-->
+                        </h4>
+                    </div>
+
+                    <?php if ($intable) {
+                        printform($counting, $settings, $client, $dr_cl, $driver, true,$_this);
+                    } ?>
+
+                    <ul class="pricing-content list-unstyled" id="cartlist">
+                        <?php
+                            $index = 0;
+                            foreach ($products as $p) {
+
+                                ?>
+                                <li id="product_<?php echo $p->number; ?>">
+
+                                    <div class="col-xs-10"><i class="fa fa-file-text-o"></i> <?php echo $p->title; ?>
+                                    </div>
+                                    <div class="col-xs-2"><input checked type="checkbox" id="form<?= $index ?>"
+                                                                 value="<?php echo $p->number; ?>"/></div>
+                                    <div class="clearfix"></div>
+                                </li>
+                                <?php
+                                $index += 1;
+                            }
+                        ?>
+
+                    </ul>
+                    <div class="pricing-footer">
+                        <p>
+                        <hr/>
+                        </p>
+                        <?php printbutton($ordertype, $this->request->webroot, 4, $tempstr,$_this); ?>
+                    </div>
+                </div>
+            </div>
+        <?php }
+
+        ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        $offset = $cols;
+        if ($ordertype == "QUA") {
+            if ($ordertype != "") {
+                $offset .= " col-xs-offset-2";
+            }
+            ?>
+
+            <div class="col-xs-<?= $offset ?>">
+                <div class="pricing-blue hover-effect">
+                    <div class="pricing-blue-head pricing-head-active">
+                        <h3>Requalify <span>Requalify existing drivers </span>
+                        </h3>
+                        <h4><!--i>$</i>999<i>.99</i>
+											<span>
+											One Time Payment </span-->
+                        </h4>
+                    </div>
+
+                    <?php if ($intable) {
+                        printform($counting, $settings, $client, $dr_cl, $driver, true,$_this);
+                    } ?>
+
+                    <ul class="pricing-blue-content list-unstyled" id="qualist">
+                        <?php
+                            $b = 0;
+                            foreach ($products as $p) {
+                                ?>
+                                <li id="product_<?php echo $p->number; ?>">
+
+                                    <div class="col-xs-10"><i class="fa fa-file-text-o"></i> <?php echo $p->title; ?>
+                                    </div>
+                                    <div class="col-xs-2"><input checked type="checkbox" name="prem_nat"
+                                                                 id="formb<?php echo $b; ?>"
+                                                                 value="<?php echo $p->number; ?>"/></div>
+                                    <div class="clearfix"></div>
+                                </li>
+                                <?php
+                                $b++;
+                            }
+                        ?>
+                    </ul>
+                    <div class="pricing-footer">
+                        <p>
+                        <hr/>
+                        </p>
+                        <?php printbutton($ordertype, $this->request->webroot, 3, $tempstr2,$_this); ?>
+
+                    </div>
+                </div>
+            </div>
+        <?php }
+
+
+        ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
     ?>
+    <!--//End Pricing -->
 </div>
 
 <script>
-    function getcheckboxes(){
-        var tempstr = '';
-        $('input[type="checkbox"]').each(function () {
-            if ($(this).is(':checked')){
-                if (tempstr.length==0) { tempstr = $(this).val();} else {tempstr = tempstr + "," + $(this).val();}
-            }
-        });
-        return tempstr;
-    }
-
+    
     function check_driver_abstract(driver) {
         /*$.ajax({
          url:'
@@ -373,9 +531,67 @@
         <?php
     }
     ?>
+        $('#cart_btn').click(function () {
+            if (!check_div())
+                return false;
+
+            var div = $('#divisionsel').val();
+            if (!isNaN(parseFloat(div)) && isFinite(div)) {
+                var division = div;
+            }
+            else
+                var division = '0';
+            if ($('.selecting_client').val()) {
+                <?php if(!isset($_GET['profiles'])){?>
+                if ($('.selecting_driver').val() == '') {
+                    alert('Please select driver');
+                    $('#s2id_selecting_driver .select2-choice').attr('style', 'border:1px solid red;');
+                    $('html,body').animate({scrollTop: $('#s2id_selecting_driver .select2-choice').offset().top}, 'slow');
+                    return false;
+                } else {
+                    var tempstr = '';
+                    $('#cartlist input[type="checkbox"]').each(function () {
+
+                        if ($(this).is(':checked')) {
+                            if (tempstr == '') {
+                                tempstr = $(this).val();
+                            }
+                            else
+                                tempstr = tempstr + ',' + $(this).val();
+                        }
+                    });
+                    window.location = '<?php echo $this->request->webroot; ?>orders/addorder/' + $('.selecting_client').val() + '/?driver=' + $('.selecting_driver').val() + '&division=' + division + '&order_type=<?php echo urlencode($o_type);?>&forms=' + tempstr;
+                }
+                <?php }
+                else
+                {?>
+                    var tempstr = '';
+                    $('#cartlist input[type="checkbox"]').each(function () {
+
+                        if ($(this).is(':checked')) {
+                            if (tempstr == '') {
+                                tempstr = $(this).val();
+                            }
+                            else
+                                tempstr = tempstr + ',' + $(this).val();
+                        }
+                    });
+                    window.location = '<?php echo $this->request->webroot; ?>orders/addorder/' + $('.selecting_client').val() + '/?driver=<?php echo $_GET['profiles'];?>&division=' + division + '&order_type=<?php echo urlencode($o_type);?>&forms=' + tempstr;
+                <?php    
+                }
+                ?>
+                
+            }
+            else {
+                $('#s2id_selecting_client .select2-choice').attr('style', 'border:1px solid red;');
+                $('html,body').animate({scrollTop: $('#s2id_selecting_client .select2-choice').offset().top}, 'slow');
+            }
+
+        });
 
         $('#qua_btn').click(function () {
-            if (!check_div()){ return false;}
+            if (!check_div())
+                return false;
 
             var div = $('#divisionsel').val();
             if (!isNaN(parseFloat(div)) && isFinite(div)) {
@@ -392,15 +608,35 @@
                     return false;
                 }
                 else {
-                    var tempstr = getcheckboxes();
-                    window.location = '<?php echo $this->request->webroot; ?>orders/addorder/' + $('.selecting_client').val() + '/?driver=' + $('.selecting_driver').val() + '&division=' + division + '&order_type=<?php echo urlencode($o_type);?>&forms=' + tempstr;
+                    var tempstr = '';
+                    $('#qualist input[type="checkbox"]').each(function () {
+
+                        if ($(this).is(':checked')) {
+                            if (tempstr == '') {
+                                tempstr = $(this).val();
+                            }
+                            else
+                                tempstr = tempstr + ',' + $(this).val();
+                        }
+                    });
+                    window.location = '<?php echo $this->request->webroot; ?>orders/addorder/' + $('.selecting_client').val() + '/?driver=' + $('.selecting_driver').val() + '&division=' + division + '&order_type=Requalification&forms=' + tempstr;
                 }
                 <?php
                 }
                 else
                 {?>
-                    var tempstr = getcheckboxes();
-                    window.location = '<?php echo $this->request->webroot; ?>orders/addorder/' + $('.selecting_client').val() + '/?driver=<?php echo $_GET['profiles'];?>&division=' + division + '&order_type=<?php echo urlencode($o_type);?>&forms=' + tempstr;
+                    var tempstr = '';
+                    $('#qualist input[type="checkbox"]').each(function () {
+
+                        if ($(this).is(':checked')) {
+                            if (tempstr == '') {
+                                tempstr = $(this).val();
+                            }
+                            else
+                                tempstr = tempstr + ',' + $(this).val();
+                        }
+                    });
+                    window.location = '<?php echo $this->request->webroot; ?>orders/addorder/' + $('.selecting_client').val() + '/?driver=<?php echo $_GET['profiles'];?>&division=' + division + '&order_type=Requalification&forms=' + tempstr;
                 <?php
                 }?>
             }

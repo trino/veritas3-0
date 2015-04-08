@@ -518,14 +518,27 @@ if ($activetab == "permissions") {
                                 </div>
                                 <div class="clearfix"></div>
                                 <div class="col-md-12 nopad martop yesno">
-                                    <?php foreach($products as $product){
-                                        echo '<label class="uniform-inline">';
-                                        $alias = $product->Sidebar_Alias;
-                                        echo "<input " . $is_disabled . ' type="checkbox" name="side[' . $alias . ']"';
-                                        echo ' value="1" ';
-                                        if (isset($sidebar) && $sidebar->$alias == 1) echo "checked";
-                                        echo "/>" . $product->Name . "</label>";
-                                    }?>
+                                    <label class="uniform-inline">
+                                        <input <?php echo $is_disabled ?> type="checkbox" name="side[orders_mee]"
+                                                                          value="1" <?php if (isset($sidebar) && $sidebar->orders_mee == 1) echo "checked"; ?> />
+                                        Order MEE
+                                    </label>
+                                    <label class="uniform-inline">
+                                        <input <?php echo $is_disabled ?> type="checkbox" name="side[orders_products]"
+                                                                          value="1" <?php if (isset($sidebar) && $sidebar->orders_products == 1) echo "checked"; ?> />
+                                        Order Products
+                                    </label>
+                                    <label class="uniform-inline">
+                                        <input <?php echo $is_disabled ?> type="checkbox" name="side[order_requalify]"
+                                                                          value="1" <?php if (isset($sidebar) && $sidebar->order_requalify == 1) echo "checked"; ?> />
+                                        Re-Qualify
+                                    </label>
+
+                                    <label class="uniform-inline">
+                                        <input <?php echo $is_disabled ?> type="checkbox" name="side[order_intact]"
+                                                                          value="1" <?php if (isset($sidebar) && $sidebar->order_intact == 1) echo "checked"; ?> />
+                                        Intact Orders
+                                    </label>
                                 </div>
                             </td>
                         </tr>
