@@ -926,7 +926,7 @@
         </div>
         
         <p>&nbsp;</p>
-        
+        <div class="addattachment<?php echo $dx->id;?> form-group col-md-12"></div> 
         <div class="clearfix"></div>
         
         

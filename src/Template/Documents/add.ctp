@@ -1,7 +1,9 @@
-<style>.allattach{display:none;}</style>
+
 <script src="<?php echo $this->request->webroot; ?>js/jquery.easyui.min.js" type="text/javascript"></script>
 <?php
 $param = $this->request->params['action'];
+if(!isset($_GET['type']))
+$_GET['type'] = 0;
 $doc_ext = array('pdf','doc','docx','txt','csv','xls','xlsx');
 $img_ext = array('jpg','jpeg','png','bmp','gif');
 if (isset($disabled))
@@ -99,18 +101,18 @@ if (isset($this->request->params['pass'][1])) {
                     <?php
                     }
                     ?>
-                    <a href="javascript:void(0);" onclick="$('.dashboard-stat').parent().each(function(){$(this).show(300);});$(this).hide();$('.moredocxs').hide();$('.btndocs').hide();$('.clients_select').show();" class="btn btn-success moreback" style="display: none;">Back</a>
+                    <!--<a href="javascript:void(0);" onclick="$('.dashboard-stat').parent().each(function(){$(this).show(300);});$(this).hide();$('.moredocxs').hide();$('.btndocs').hide();$('.clients_select').show();" class="btn btn-success moreback" style="display: none;">Back</a>-->
 
                     <?php
                     $doc_count = 0;
-                    if($cid)
-                        include('subpages/home_blocks.php');
+                    /*if($cid)
+                        include('subpages/home_blocks.php');*/
                     if(isset($mod->uploaded_for))
                         $driver = $mod->uploaded_for;
                     else
                         $driver=0;
                     ?>
-                    <div class="col-md-6 clients_select" style="margin: 10px 0;padding:0">
+                    <div class="col-md-12 clients_select" style="margin: 10px 0;padding:0">
 
                         <select name="clients" class="form-control select2me" data-placeholder="Select Client" id="changeclient">
                             <option value="0">Select Client</option>
@@ -129,8 +131,42 @@ if (isset($this->request->params['pass'][1])) {
                         </select>
 
                     </div>
+                    <?php
+                    if($cid)
+                    {
+                        ?>
+                       
+                    <div class="col-md-12 doc_select" style="margin: 10px 0;padding:0">
+
+                        <select name="doctype" class="form-control select2me" data-placeholder="Select Document" onchange="window.location='<?php echo $this->request->webroot;?>documents/add/<?php echo $cid;?>?type='+$(this).val()">
+                            <option value="0">Select Document</option>
+                            <?php
+                             $doc = $doc_comp->getDocument('orders');
+                                        $subdoccli = $this->requestAction('/clients/getSubCli2/'.$cid);
+
+                                        $subdoccli2 = $subdoccli;
+                                        //$doc2 = $doc;
+                                        $i = 2;
+                                        $end = 0;
+                                        $k_c=0;
+                                        $index=0;
+                                        foreach ($subdoccli as $sd) {
+
+                                            $index+=1;
+                                            $d = $this->requestAction('/clients/getFirstSub/'.$sd->sub_id);
+                                          ?>  
+                                    <option value="<?php echo $d->id;?>" <?php if($_GET['type'] ==$d->id)echo "selected='selected'";?>><?php echo ucfirst(str_replace('_',' ',$d->title));?></option>
+                                <?php
+                            }
+                            ?>
+                        </select>
+
+                    </div>
+                     <?php
+                    }
+                    ?>
                     <div class="clearfix"></div>
-                    <div class="col-md-6" style="margin: 10px 0;padding:0">
+                    <div class="col-md-12" style="margin: 10px 0;padding:0">
 
                         <?php $dr_cl = $doc_comp->getDriverClient(0, $cid);?>
                         <select class="form-control select2me" data-placeholder="No Driver"
@@ -153,10 +189,12 @@ if (isset($this->request->params['pass'][1])) {
 
                         <input type="hidden" name="did" value="<?php echo $did; ?>" id="did"/>
                         <?php
-                        if(isset($_GET['doc']))
+                        if(isset($_GET['type']))
                         {
-                            $sid = 4;
+                            $sid = $_GET['type'];
                         }
+                        else
+                        $sid = 0;
                         ?>
                         <input type="hidden" name="sub_doc_id" value="<?php echo $sid; ?>" id="sub_id"/>
 
@@ -171,8 +209,12 @@ if (isset($this->request->params['pass'][1])) {
                         $controller = strtolower($controller);
                         ?>
 
-
-                        <div class="subform1" style="display: none;">
+                        <?php
+                        if($_GET['type']==1)
+                        {
+                            
+                       ?>
+                        <div class="subform1">
                             <?php
                             if($controller == 'documents' )
                             {
@@ -206,11 +248,26 @@ if (isset($this->request->params['pass'][1])) {
                             ?>
 
                         </div>
-                        <div class="subform2" style="display: none;">
+                        <?php
+                         }
+                        ?>
+                        
+                        <?php
+                        if($_GET['type']==2)
+                        {
+                            
+                       ?>
+                        <div class="subform2">
                             <?php include('subpages/documents/driver_application.php');
                             ?>
                         </div>
-                        <div class="subform3" style="display: none;">
+                        <?php }?>
+                        <?php
+                        if($_GET['type']==3)
+                        {
+                          
+                        ?>
+                        <div class="subform3">
                             <?php
                             if($controller == 'documents' )
                             {
@@ -243,7 +300,13 @@ if (isset($this->request->params['pass'][1])) {
                             }
                             ?>
                         </div>
-                        <div class="subform4" <?php if(!isset($_GET['doc'])){?>style="display: none;"<?php }?>>
+                        <?php }?>
+                        <?php
+                        if($_GET['type']==4)
+                        {
+                          
+                        ?>
+                        <div class="subform4">
                             <?php
                             if($controller == 'documents' )
                             {
@@ -276,7 +339,13 @@ if (isset($this->request->params['pass'][1])) {
                             }
                             ?>
                         </div>
-                        <div class="subform5" style="display: none;">
+                        <?php }?>
+                        <?php
+                        if($_GET['type']==5)
+                        {
+                          
+                        ?>
+                        <div class="subform5">
                             <?php
                             if($controller == 'documents' )
                             {
@@ -309,7 +378,14 @@ if (isset($this->request->params['pass'][1])) {
                             }
                             ?>
                         </div>
-                        <div class="subform6" style="display: none;">
+                        <?php
+                        }
+                            
+                            if($_GET['type']==6)
+                        {
+                          
+                        ?>
+                        <div class="subform6">
                             <?php
                             if($controller == 'documents' )
                             {
@@ -342,7 +418,14 @@ if (isset($this->request->params['pass'][1])) {
                             }
                             ?>
                         </div>
-                        <div class="subform7" style="display: none;">
+                        <?php
+                        }
+                            
+                            if($_GET['type']==7)
+                        {
+                          
+                        ?>
+                        <div class="subform7">
                             <?php
                             if($controller == 'documents' )
                             {
@@ -375,7 +458,14 @@ if (isset($this->request->params['pass'][1])) {
                             }
                             ?>
                         </div>
-                        <div class="subform8" style="display: none;">
+                        <?php
+                        }
+                            
+                            if($_GET['type']==8)
+                        {
+                          
+                        ?>
+                        <div class="subform8">
                             <?php
                             if($controller == 'documents' )
                             {
@@ -408,8 +498,14 @@ if (isset($this->request->params['pass'][1])) {
                             }
                             ?>
                         </div>
-
-                        <div class="subform9" style="display: none;">
+                        <?php
+                        }
+                            
+                            if($_GET['type']==9)
+                        {
+                          
+                        ?>
+                        <div class="subform9">
                             <?php
                             if($controller == 'documents' )
                             {
@@ -442,9 +538,15 @@ if (isset($this->request->params['pass'][1])) {
                             }
                             ?>
                         </div>
+                        <?php
+                        }
+                            
+                            if($_GET['type']==10)
+                        {
+                          
+                        ?>
 
-
-                        <div class="subform10" style="display: none;">
+                        <div class="subform10">
                             <?php
                             if($controller == 'documents' )
                             {
@@ -477,11 +579,16 @@ if (isset($this->request->params['pass'][1])) {
                         }
                          ?>
                     </div>
+                    <?php
+                        }
+                          
+                        ?>
                     <?php foreach($doc as $dx)
                     {
                         if($dx->id >10){
+                            if($_GET['type'] == $dx->id){
                         ?>
-                        <div class="subform<?php echo $dx->id;?>" style="display: none;">
+                        <div class="subform<?php echo $dx->id;?>">
                              <input type="hidden" class="document_type" name="document_type" value="<?php echo $dx->title;?>"/>
                                 <input type="hidden" name="sub_doc_id" value="<?php echo $dx->id;?>" class="sub_docs_id"  />
                             <?php
@@ -516,7 +623,7 @@ if (isset($this->request->params['pass'][1])) {
                          ?>
                         </div>
                     <?php
-                        }
+                        }}
                     }
                     ?>
 
@@ -524,7 +631,7 @@ if (isset($this->request->params['pass'][1])) {
                 </div>
                 <div class="form-actions">
                     <div class="row">
-                        <div class="col-md-offset-3 col-md-9 btndocs" <?php if(!isset($_GET['doc'])){?>style="display: none;"<?php }?>>
+                        <div class="col-md-offset-3 col-md-9 btndocs" <?php if(!isset($_GET['type'])){?>style="display: none;"<?php }?>>
 
 
                             <a href="javascript:void(0)" class="btn green cont">Save</a>
@@ -673,24 +780,6 @@ if (isset($this->request->params['pass'][1])) {
         <?php       }
                 }
         ?>
-
-        if (s_arr[1] == 1) {
-            $('#form_tab1').prepend('<input type="hidden" class="document_type" name="document_type" value="Pre-Screening"/>' +
-            '<input type="hidden" name="sub_doc_id" value="1" class="sub_docs_id" id="af" />');
-        }
-        if (s_arr[1] == 2) {
-            $('#form_tab2').prepend('<input type="hidden" class="document_type" name="document_type" value="Driver Application"/>' +
-            '<input type="hidden" name="sub_doc_id" value="2" class="sub_docs_id" id="af" />');
-        }
-        if (s_arr[1] == 3) {
-            $('#form_tab3').prepend('<input class="document_type" type="hidden" name="document_type" value="Road test" />' +
-            '<input type="hidden" class="sub_docs_id" name="sub_doc_id" value="3" id="af" />');
-        }
-        if (s_arr[1] == 4) {
-            $('#form_tab4').prepend('<input class="document_type" type="hidden" name="document_type" value="Consent Form" />' +
-            '<input type="hidden" class="sub_docs_id" name="sub_doc_id" value="4"  />');
-        }
-
         if (s_arr[1] == 5) {
             $('#form_tab5').prepend('<input class="document_type" type="hidden" name="document_type" value="Survey" />' +
             '<input type="hidden" class="sub_docs_id" name="sub_doc_id" value="5"  />');
@@ -739,6 +828,25 @@ if (isset($this->request->params['pass'][1])) {
              });
 
         }
+
+        if (s_arr[1] == 1) {
+            $('#form_tab1').prepend('<input type="hidden" class="document_type" name="document_type" value="Pre-Screening"/>' +
+            '<input type="hidden" name="sub_doc_id" value="1" class="sub_docs_id" id="af" />');
+        }
+        if (s_arr[1] == 2) {
+            $('#form_tab2').prepend('<input type="hidden" class="document_type" name="document_type" value="Driver Application"/>' +
+            '<input type="hidden" name="sub_doc_id" value="2" class="sub_docs_id" id="af" />');
+        }
+        if (s_arr[1] == 3) {
+            $('#form_tab3').prepend('<input class="document_type" type="hidden" name="document_type" value="Road test" />' +
+            '<input type="hidden" class="sub_docs_id" name="sub_doc_id" value="3" id="af" />');
+        }
+        if (s_arr[1] == 4) {
+            $('#form_tab4').prepend('<input class="document_type" type="hidden" name="document_type" value="Consent Form" />' +
+            '<input type="hidden" class="sub_docs_id" name="sub_doc_id" value="4"  />');
+        }
+
+        
 
 
 
@@ -1442,6 +1550,65 @@ if (isset($this->request->params['pass'][1])) {
         $('.subform').load('<?php echo $this->request->webroot;?>documents/subpages/' + filename);
     }
     jQuery(document).ready(function () {
+        var subdocid = $('#sub_id').val();
+        subdocid = parseFloat(subdocid);
+        <?php
+        if(isset($_GET['type']))
+        {
+            ?>
+            <?php foreach($doc as $dx)
+                {
+                    if($dx->id >11)
+                    {
+                    ?>
+                    if(subdocid == <?php echo $dx->id;?>){
+                        
+                        $('.addattachment<?php echo $dx->id;?>').load('<?php echo $this->request->webroot;?>documents/attach_doc/<?php echo $did."/".$view;?>', function(){
+                            initiate_ajax_upload1('addMore1', 'doc');
+                         });
+                    }
+        <?php       }
+                }
+        ?>
+        if (subdocid == 5) {
+            
+            $('.addattachment5').load('<?php echo $this->request->webroot;?>documents/attach_doc/<?php echo $did."/".$view;?>', function(){
+                initiate_ajax_upload1('addMore1', 'doc');
+             });
+        }
+        if (subdocid == 6) {
+            
+            $('.addattachment6').load('<?php echo $this->request->webroot;?>documents/attach_doc/<?php echo $did."/".$view;?>', function(){
+                initiate_ajax_upload1('addMore1', 'doc');
+             });
+        }
+        if (subdocid == 7) {
+            
+            $('.addattachment7').load('<?php echo $this->request->webroot;?>documents/attach_doc/<?php echo $did."/".$view;?>', function(){
+                initiate_ajax_upload1('addMore1', 'doc');
+             });
+        }
+        if (subdocid == 8) {
+            
+             $('.addattachment8').load('<?php echo $this->request->webroot;?>documents/attach_doc/<?php echo $did."/".$view;?>', function(){
+                initiate_ajax_upload1('addMore1', 'doc');
+             });
+
+        }
+        
+        if (subdocid == 11) {
+           
+            $('.addattachment11').load('<?php echo $this->request->webroot;?>documents/attach_doc/<?php echo $did."/".$view;?>', function(){
+                initiate_ajax_upload1('addMore1', 'doc');
+             });
+
+        }
+            
+            
+            <?php
+        }
+        ?>
+        
         $('#changeclient').change(function(){
             var id = $(this).val();
             window.location ="<?php echo $this->request->webroot;?>documents/add/"+id;

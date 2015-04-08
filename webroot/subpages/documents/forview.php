@@ -38,12 +38,12 @@ function dotest($Number, $pp, $order, $duplicate_log, $ins2 = "ins"){
     {
 
         //include('subpages/documents/forprofileview.php');
-        function PrintLine($lineclass, $name, $cnt, $doc_id, $c_id, $o_id, $webroot, $bypass = false)
+        function PrintLine($lineclass, $name, $cnt, $doc_id, $c_id, $o_id, $webroot, $bypass = false,$sub=0)
         {
             if ($cnt > 0 || $bypass) {
                 echo '<tr class="' . $lineclass . '" role="row"><td><span class="icon-notebook"></span></td>';
                 if ($doc_id) {
-                    echo '<td><a href="' . $webroot . 'documents/view/' . $c_id . '/' . $doc_id . '/?order_id=' . $o_id . '">' . $name . '</a></td>';
+                    echo '<td><a href="' . $webroot . 'documents/view/' . $c_id . '/' . $doc_id . '/?order_id=' . $o_id . '&type='.$sub.'">' . $name . '</a></td>';
                 } else
                     echo '<td>' . $name . '</td>';
                 echo '<td class="actions">';
@@ -446,7 +446,7 @@ function dotest($Number, $pp, $order, $duplicate_log, $ins2 = "ins"){
                             $docfind++;
                             $docu_id = $d_id->id;
                             $cnt = $this->requestAction("/orders/getprocessed/" . $d->table_name . "/" . $order->id);
-                            $line = PrintLine($line, $title, $cnt, $docu_id, $c_id, $o_id, $this->request->webroot, false);
+                            $line = PrintLine($line, $title, $cnt, $docu_id, $c_id, $o_id, $this->request->webroot, false,$sub_doc_id);
                         }
                     }
                     //die();
