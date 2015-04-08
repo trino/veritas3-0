@@ -125,7 +125,7 @@ if (isset($this->request->params['pass'][1])) {
                         $driver=0;
                     ?>
                     <div class="col-md-4">
-                        <div class="portlet">
+                        <div class="portlet box blue" style="">
                             <div class="portlet-title">
                                 <div class="caption"> Document Option </div>
                             </div>
