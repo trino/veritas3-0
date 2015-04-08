@@ -104,7 +104,7 @@
                                 </div>
                                 </div>
                                 <div class="form-group col-md-12">
-                                            <label class="control-label col-md-3">Equipment Operated : </label>
+                                            <label class="control-label col-md-3">Equipment Operated: </label>
                                             <div class="col-md-9">
                                                 <input type="checkbox" name="equipment_vans[]" value="1"/>&nbsp;Vans&nbsp;
                                                 <input type="checkbox" name="equipment_reefer[]" value="1"/>&nbsp;Reefers&nbsp;
@@ -115,11 +115,11 @@
                                 </div>
                                 </div>
                                 <div class="form-group col-md-12">
-                                <label class="control-label col-md-3">Driving Experience : </label>
+                                <label class="control-label col-md-3">Driving Experience: </label>
                                 <div class="col-md-9">
                                     <input type="checkbox" name="driving_experince_local[]" value="1"/>&nbsp;Local&nbsp;
                                     <input type="checkbox" name="driving_experince_canada[]" value="1"/>&nbsp;Canada&nbsp;
-                                    <input type="checkbox" name="driving_experince_canada_rocky_mountains[]" value="1"/>&nbsp;Canada : Rocky Mountains&nbsp;
+                                    <input type="checkbox" name="driving_experince_canada_rocky_mountains[]" value="1"/>&nbsp;Canada: Rocky Mountains&nbsp;
                                     <input type="checkbox" name="driving_experince_usa[]" value="1"/>&nbsp;USA&nbsp;
                                 </div>
                 

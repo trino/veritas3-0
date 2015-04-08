@@ -15,7 +15,7 @@
         <p>&nbsp;</p>
         <div>
             <div class="col-md-6">
-                    <label class="control-label col-md-3">Name : </label>  
+                    <label class="control-label col-md-3">Name: </label>  
                     <div class="col-md-3">              
                         <input class="form-control" name="lname" placeholder="Last" value="<?php if(isset($application_for_employment_gfs))echo $application_for_employment_gfs->lname;?>" />
                     </div> 
@@ -27,7 +27,7 @@
                     </div>
             </div>
             <div class="col-md-6">
-                    <label class="control-label col-md-4">Telephone : </label>  
+                    <label class="control-label col-md-4">Telephone: </label>  
                     <div class="col-md-3">              
                         <input class="form-control" name="code" placeholder="Area Code" value="<?php if(isset($application_for_employment_gfs))echo $application_for_employment_gfs->code;?>" />
                     </div>  
@@ -39,7 +39,7 @@
         
         <p>&nbsp;</p>
             <div class="col-md-12">
-                    <label class="control-label col-md-4">Current Address : </label>  
+                    <label class="control-label col-md-4">Current Address: </label>  
                     <div class="col-md-8">              
                         <input class="form-control" name="address" value="<?php if(isset($application_for_employment_gfs))echo $application_for_employment_gfs->address;?>" />
                     </div>  
@@ -301,7 +301,7 @@
             <p>&nbsp;</p>
             <div class="col-md-12">
                     <div class="col-md-12">
-                        <label class="control-label col-md-2">Job(s) Applied for : </label> 
+                        <label class="control-label col-md-2">Job(s) Applied for: </label> 
                     </div> 
                     <div class="col-md-12">
                         <label class="control-label col-md-1">1. </label>

@@ -48,69 +48,69 @@
 
                         
                        <div class="form-group row">
-                            <label class="control-label col-md-3">Company Name : </label>
+                            <label class="control-label col-md-3">Company Name: </label>
                             <div class=" col-md-9">
                             <input type="text" class="form-control" name="company_name[]" value="<?php echo $emp->company_name;?>"  />
                             </div>
                         </div>
 
                         <div class="form-group row">
-                            <label class="control-label col-md-3">Address : </label>
+                            <label class="control-label col-md-3">Address: </label>
                             <div class="col-md-3">
                                 <input type="text" class="form-control" name="address[]" value="<?php echo $emp->address;?>" />
                             </div>
 
-                            <label class="control-label col-md-3">City : </label>
+                            <label class="control-label col-md-3">City: </label>
                             <div class="col-md-3">
                                 <input type="text" class="form-control" name="city[]" value="<?php echo $emp->city;?>" />
                             </div>
                         </div>
 
                         <div class="form-group row">
-                            <label class="control-label col-md-3">State/Province : </label>
+                            <label class="control-label col-md-3">State/Province: </label>
                             <div class="col-md-3">
                                 <input type="text" class="form-control" name="state_province[]" value="<?php echo $emp->state_province;?>" />
                             </div>
-                            <label class="control-label col-md-3">Country : </label>
+                            <label class="control-label col-md-3">Country: </label>
                             <div class="col-md-3">
                                 <input type="text" class="form-control" name="country[]" value="<?php echo $emp->country;?>" />
                             </div>
                         </div>
 
                         <div class="form-group col-md-12">
-                            <label class="control-label col-md-3">Supervisor's Name : </label>
+                            <label class="control-label col-md-3">Supervisor's Name: </label>
                             <div class="col-md-3">
                                 <input type="text" class="form-control" name="supervisor_name[]" value="<?php echo $emp->address;?>" value="<?php echo $emp->supervisor_name;?>"/>
                             </div>
-                            <label class="control-label col-md-3">Phone # : </label>
+                            <label class="control-label col-md-3">Phone #: </label>
                             <div class="col-md-3">
                                 <input type="text" class="form-control" name="supervisor_phone[]" value="<?php echo $emp->supervisor_phone;?>"/>
                             </div>
                        </div>
 
                        <div class="form-group col-md-12">
-                            <label class="control-label col-md-3">Supervisor's Email : </label>
+                            <label class="control-label col-md-3">Supervisor's Email: </label>
                             <div class="col-md-3">
                                 <input type="text" class="form-control email1" name="supervisor_email[]" value="<?php echo $emp->supervisor_email;?>"/>
                             </div>
-                            <label class="control-label col-md-3">Secondary Email : </label>
+                            <label class="control-label col-md-3">Secondary Email: </label>
                             <div class="col-md-3">
                                 <input type="text" class="form-control email1" name="supervisor_secondary_email[]" value="<?php echo $emp->supervisor_secondary_email;?>"/>
                             </div>
                        </div>
 
                        <div class="form-group col-md-12">
-                        <label class="control-label col-md-3">Employment Start Date : </label>
+                        <label class="control-label col-md-3">Employment Start Date: </label>
                         <div class="col-md-3">
                         <input type="text" class="form-control date-picker" name="employment_start_date[]" value="<?php echo $emp->employment_start_date;?>"/>
                         </div>
-                        <label class="control-label col-md-3">Employment End Date : </label>
+                        <label class="control-label col-md-3">Employment End Date: </label>
                         <div class="col-md-3">
                         <input type="text" class="form-control date-picker" name="employment_end_date[]" value="<?php echo $emp->employment_end_date;?>"/>
                         </div>
                         </div>
                         <div class="form-group col-md-12">
-                        <label class="control-label col-md-3">Claims with this Employer : </label>
+                        <label class="control-label col-md-3">Claims with this Employer: </label>
                         <div class="col-md-3 radio-list">
                         &nbsp;&nbsp;
                         <?php 
@@ -166,38 +166,38 @@
                         No
                         </label>
                         </div>
-                         <label class="control-label col-md-3">Date Claims Occurred : </label>
+                         <label class="control-label col-md-3">Date Claims Occurred: </label>
                          <div class="col-md-3">
                          <input type="text" class="form-control date-picker" name="claims_recovery_date[]" value="<?php echo $emp->claims_recovery_date;?>"/>
                          </div>
                          </div>
 
                          <div class="form-group col-md-12">
-                        <label class="control-label col-md-3">Employment history confirmed by (Verifier Use Only) : </label>
+                        <label class="control-label col-md-3">Employment history confirmed by (Verifier Use Only): </label>
                         <div class="col-md-9">
                         <input type="text" class="form-control" name="emploment_history_confirm_verify_use[]" value="<?php echo $emp->emploment_history_confirm_verify_use;?>"/>
                         </div>
                         </div>
 
                         <div class="form-group col-md-12">
-                        <label class="control-label col-md-3">US DOT MC/MX# : </label>
+                        <label class="control-label col-md-3">US DOT MC/MX#: </label>
                         <div class="col-md-3">
                         <input name="us_dot[]" type="text" class="form-control" name="us_dot[]" value="<?php echo $emp->us_dot;?>" />
                         </div>
-                        <label class="control-label col-md-3" style="display: none;">Signature : </label>
+                        <label class="control-label col-md-3" style="display: none;">Signature: </label>
                         <div class="col-md-3">
                         <input type="text" class="form-control" style="display: none;" name="signature[]" value="<?php echo $emp->signature;?>" />
                         </div>
                         </div>
 
                         <div class="form-group col-md-12">
-                        <label class="control-label col-md-3">Date : </label>
+                        <label class="control-label col-md-3">Date: </label>
                         <div class="col-md-9">
                         <input type="text" class="form-control date-picker" name="signature_datetime[]" value="<?php echo $emp->signature_datetime;?>"/>
                         </div>
                         </div>
                         <div class="form-group col-md-12">
-                                    <label class="control-label col-md-3">Equipment Operated : </label>
+                                    <label class="control-label col-md-3">Equipment Operated: </label>
                                     <div class="col-md-9">
                                         <?php 
                 if($this->request->params['action'] == 'vieworder'  || $this->request->params['action']== 'view')
@@ -344,7 +344,7 @@
                         </div>
                         </div>
                         <div class="form-group col-md-12">
-                        <label class="control-label col-md-3">Driving Experience : </label>
+                        <label class="control-label col-md-3">Driving Experience: </label>
                         <div class="col-md-9">
                             <?php 
                 if($this->request->params['action'] == 'vieworder'  || $this->request->params['action']== 'view')
@@ -416,7 +416,7 @@
                     <?php
                 }
              ?>
-                            &nbsp;Canada : Rocky Mountains&nbsp;
+                            &nbsp;Canada: Rocky Mountains&nbsp;
                             <?php 
                 if($this->request->params['action'] == 'vieworder'  || $this->request->params['action']== 'view')
                 {
@@ -575,7 +575,7 @@
                                 </div>
                                 </div>
                                 <div class="form-group row">
-                                            <label class="control-label col-md-3">Equipment Operated : </label>
+                                            <label class="control-label col-md-3">Equipment Operated: </label>
                                             <div class="col-md-9">
                                                 <input type="checkbox" name="equipment_vans[]" value="1"/>&nbsp;Vans&nbsp;
                                                 <input type="checkbox" name="equipment_reefer[]" value="1"/>&nbsp;Reefers&nbsp;
@@ -586,11 +586,11 @@
                                 </div>
                                 </div>
                                 <div class="form-group row">
-                                <label class="control-label col-md-3">Driving Experience : </label>
+                                <label class="control-label col-md-3">Driving Experience: </label>
                                 <div class="col-md-9">
                                     <input type="checkbox" name="driving_experince_local[]" value="1"/>&nbsp;Local&nbsp;
                                     <input type="checkbox" name="driving_experince_canada[]" value="1"/>&nbsp;Canada&nbsp;
-                                    <input type="checkbox" name="driving_experince_canada_rocky_mountains[]" value="1"/>&nbsp;Canada : Rocky Mountains&nbsp;
+                                    <input type="checkbox" name="driving_experince_canada_rocky_mountains[]" value="1"/>&nbsp;Canada: Rocky Mountains&nbsp;
                                     <input type="checkbox" name="driving_experince_usa[]" value="1"/>&nbsp;USA&nbsp;
                                 </div>
                 
@@ -613,7 +613,7 @@
                                                         if(!count($sub3['att']))
                                                         {?>
         <div class="form-group row" style="display:block;margin-top:5px; margin-bottom: 5px;">
-            <label class="control-label col-md-3">Attach File : </label>
+            <label class="control-label col-md-3">Attach File: </label>
             <div class="col-md-9">
             <input type="hidden" name="attach_doc[]" class="emp1" />
             <a href="javascript:void(0);" id="emp1" class="btn btn-primary">Browse</a> <span class="uploaded"></span>
@@ -635,7 +635,7 @@
                                                                 if($pa->attachment){
                                                                 $at++;
                                                                 ?>
-                                                                <div class="del_append_employ"><label class="control-label col-md-3">Attach File : </label><div class="col-md-6 pad_bot"><input type="hidden" class="emp<?php echo $at;?>" name="attach_doc[]" value="<?php echo $pa->attachment;?>" /><a href="#" id="emp<?php echo $at;?>" class="btn btn-primary">Browse</a> <?php if($at>1){?><a  href="javascript:void(0);" class="btn btn-danger" id="delete_employ_doc" onclick="$(this).parent().remove();">Delete</a><?php }?>
+                                                                <div class="del_append_employ"><label class="control-label col-md-3">Attach File: </label><div class="col-md-6 pad_bot"><input type="hidden" class="emp<?php echo $at;?>" name="attach_doc[]" value="<?php echo $pa->attachment;?>" /><a href="#" id="emp<?php echo $at;?>" class="btn btn-primary">Browse</a> <?php if($at>1){?><a  href="javascript:void(0);" class="btn btn-danger" id="delete_employ_doc" onclick="$(this).parent().remove();">Delete</a><?php }?>
                                                                 <span class="uploaded"><?php echo $pa->attachment;?>  <?php if($pa->attachment){$ext_arr = explode('.',$pa->attachment);$ext = end($ext_arr);$ext = strtolower($ext);if(in_array($ext,$img_ext)){?><img src="<?php echo $this->request->webroot;?>attachments/<?php echo $pa->attachment;?>" style="max-width:120px;" /><?php }elseif(in_array($ext,$doc_ext)){?><a class="dl" href="<?php echo $this->request->webroot;?>attachments/<?php echo $pa->attachment;?>">Download</a><?php }else{?><br />
                                                              <video width="320" height="240" controls>
                                                               <source src="<?php echo $this->request->webroot;?>attachments/<?php echo $pa->attachment;?>" type="video/mp4">

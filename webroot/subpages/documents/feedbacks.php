@@ -16,14 +16,14 @@ printdocumentinfo($did);
     <input type="hidden" class="document_type" name="document_type" value="Feedbacks"/>
     <input type="hidden" name="sub_doc_id" value="6" class="sub_docs_id" id="af" />
     <div class="form-group col-md-12">
-            <label class="control-label col-md-6">Title : </label>
+            <label class="control-label col-md-6">Title: </label>
             <div class="col-md-6">
                 <input type="text" class="form-control" name="title" <?php echo $is_disabled;?> value="<?php if(isset($feed->title)){echo $feed->title;} ?>" />
             </div>
             <!--<div class="clearfix"></div>-->
     </div>
     <div class="form-group col-md-12">
-            <label class="control-label col-md-6">Description : </label>
+            <label class="control-label col-md-6">Description: </label>
             <div class="col-md-6">
                 <textarea class="form-control" name="description" <?php echo $is_disabled;?> ><?php if(isset($feed->description)) echo $feed->description; ?></textarea>
             </div>

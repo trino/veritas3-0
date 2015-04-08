@@ -21,27 +21,27 @@ if(isset($disabled)){$is_disabled = 'disabled="disabled"';}
 <div class="form-body">
                                                 
                                                 <div class="form-group">
-<label class="col-md-3 control-label">Company / Division : </label>
+<label class="col-md-3 control-label">Company / Division: </label>
 <div class="col-md-4">
 <input type="text" name="company" class="form-control " <?php echo $is_disabled;?> placeholder="Enter text" value="<?php if(isset($audits))echo $audits->company;?>" />
 </div>
 </div>
                                                 
 <div class="form-group">
-<label class="col-md-3 control-label">Conference Name : </label>
+<label class="col-md-3 control-label">Conference Name: </label>
 <div class="col-md-4">
 <input type="text" name="conference_name"  class="form-control " <?php echo $is_disabled;?> placeholder="Enter text" value="<?php if(isset($audits))echo $audits->conference_name;?>" />
 </div>
 </div>
 
 <div class="form-group">
-<label class="col-md-3 control-label">Related Association : </label>
+<label class="col-md-3 control-label">Related Association: </label>
 <div class="col-md-4">
 <input type="text" name="association" class="form-control " <?php echo $is_disabled;?> placeholder="Enter text" value="<?php if(isset($audits))echo $audits->association;?>"/>	</div>
 </div>
                                                                                                 
 <div class="form-group">
-<label class="col-md-3 control-label">Date : </label>
+<label class="col-md-3 control-label">Date: </label>
 <?php if(isset($audits))
 {
     $date = explode("-",$audits->date);
@@ -81,7 +81,7 @@ if(isset($disabled)){$is_disabled = 'disabled="disabled"';}
 
 
                                                 <div class="form-group">
-<label class="col-md-3 control-label">Location : </label>
+<label class="col-md-3 control-label">Location: </label>
 
 <div class="col-md-3">
 <input type="text" name="city"  class="form-control req_driver" <?php echo $is_disabled;?> placeholder="City" value="<?php if(isset($audits))echo $audits->city;?>">
@@ -116,7 +116,7 @@ if(isset($disabled)){$is_disabled = 'disabled="disabled"';}
  
  
                                                 <div class="form-group">
-<label class="col-md-3 control-label">Estimated Total Cost :
+<label class="col-md-3 control-label">Estimated Total Cost:
                                                     <small class=" control-label">Booth/Travel/Hotels/Meals</small>
                                                     </label>
                                                     
@@ -127,7 +127,7 @@ if(isset($disabled)){$is_disabled = 'disabled="disabled"';}
 
  	<div class="form-group">
 <label class="col-md-3 control-label">Rating Total
-                                                    <small class=" control-label">[Out of 40]</small> :
+                                                    <small class=" control-label">[Out of 40]</small>:
                                                     </label>
                                                     
 <div class="col-md-4">

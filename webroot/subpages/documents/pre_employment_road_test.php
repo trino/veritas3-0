@@ -10,20 +10,20 @@
         
         <div>
             <div class="col-md-4">
-                    <label class="control-label col-md-4">Driver : </label>  
+                    <label class="control-label col-md-4">Driver: </label>  
                     <div class="col-md-8">              
                         <input class="form-control" name="driver" value="<?php if(isset($pre_employment_road_test))echo $pre_employment_road_test->driver;?>"/>
                     </div>
             </div>
 
             <div class="col-md-4">
-                    <label class="control-label col-md-4">Evaluator : </label>  
+                    <label class="control-label col-md-4">Evaluator: </label>  
                     <div class="col-md-8">              
                         <input class="form-control" name="evaluator" value="<?php if(isset($pre_employment_road_test))echo $pre_employment_road_test->evaluator;?>"/>
                     </div>
             </div> 
             <div class="col-md-4">
-                    <label class="control-label col-md-4">Date : </label>  
+                    <label class="control-label col-md-4">Date: </label>  
                     <div class="col-md-8">              
                         <input class="form-control" name="date" value="<?php if(isset($pre_employment_road_test))echo $pre_employment_road_test->date;?>"/>
                     </div>

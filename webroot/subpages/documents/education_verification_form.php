@@ -176,7 +176,7 @@
 
                             <div class="form-group row">
 
-                                <label class="col-md-3 control-label">Highest grade completed : </label>
+                                <label class="col-md-3 control-label">Highest grade completed: </label>
 
                                 <div class="col-md-3">
                                     <select name="highest_grade_completed[]" class="form-control">
@@ -190,7 +190,7 @@
                                         ?>
                                     </select>
                                 </div>
-                                <label class="col-md-3 control-label">High School : </label>
+                                <label class="col-md-3 control-label">High School: </label>
 
                                 <div class="col-md-3">
                                     <select name="high_school[]" class="form-control">
@@ -209,7 +209,7 @@
 
 
                             <div class="form-group row">
-                                <label class="col-md-3 control-label">College : </label>
+                                <label class="col-md-3 control-label">College: </label>
 
                                 <div class="col-md-3">
                                     <select name="college[]" class="form-control">
@@ -223,7 +223,7 @@
                                         ?>
                                     </select>
                                 </div>
-                                <label class="col-md-3 control-label">Last School attended : </label>
+                                <label class="col-md-3 control-label">Last School attended: </label>
 
                                 <div class="col-md-3">
                                     <input type="text" class="form-control" name="last_school_attended[]"
@@ -278,7 +278,7 @@
                             <h4 class="control-label col-md-12">Past Education</h4>
                         </div>
                         <div class="form-group row">
-                            <label class="control-label col-md-3">School/College Name : </label>
+                            <label class="control-label col-md-3">School/College Name: </label>
 
                             <div class="col-md-9">
                                 <input type="text" class="form-control" name="college_school_name[]"/>
@@ -286,7 +286,7 @@
                         </div>
 
                         <div class="form-group row">
-                            <label class="control-label col-md-3">Address : </label>
+                            <label class="control-label col-md-3">Address: </label>
 
                             <div class="col-md-9">
                                 <input type="text" class="form-control" name="address[]"/>
@@ -294,12 +294,12 @@
                         </div>
 
                         <div class="form-group row">
-                            <label class="control-label col-md-3">Supervisor's Name : </label>
+                            <label class="control-label col-md-3">Supervisor's Name: </label>
 
                             <div class="col-md-3">
                                 <input type="text" class="form-control" name="supervisior_name[]"/>
                             </div>
-                            <label class="control-label col-md-3">Phone # : </label>
+                            <label class="control-label col-md-3">Phone #: </label>
 
                             <div class="col-md-3">
                                 <input type="text" class="form-control" name="supervisior_phone[]"/>
@@ -308,12 +308,12 @@
 
 
                         <div class="form-group row">
-                            <label class="control-label col-md-3">Supervisor's Email : </label>
+                            <label class="control-label col-md-3">Supervisor's Email: </label>
 
                             <div class="col-md-3">
                                 <input type="text" class="form-control email1" name="supervisior_email[]"/>
                             </div>
-                            <label class="control-label col-md-3">Secondary Email : </label>
+                            <label class="control-label col-md-3">Secondary Email: </label>
 
                             <div class="col-md-3">
                                 <input type="text" class="form-control email1" name="supervisior_secondary_email[]"/>
@@ -321,12 +321,12 @@
                         </div>
 
                         <div class="form-group row">
-                            <label class="control-label col-md-3">Education Start Date : </label>
+                            <label class="control-label col-md-3">Education Start Date: </label>
 
                             <div class="col-md-3">
                                 <input type="text" class="form-control date-picker" name="education_start_date[]"/>
                             </div>
-                            <label class="control-label col-md-3">Education End Date : </label>
+                            <label class="control-label col-md-3">Education End Date: </label>
 
                             <div class="col-md-3">
                                 <input type="text" class="form-control date-picker" name="education_end_date[]"/>
@@ -334,13 +334,13 @@
                         </div>
 
                         <div class="form-group row">
-                            <label class="control-label col-md-3">Claims with this Tutor : </label>
+                            <label class="control-label col-md-3">Claims with this Tutor: </label>
 
                             <div class="col-md-3">
                                 &nbsp;&nbsp;<input type="radio" name="claim_tutor[]" value="1"/>&nbsp;&nbsp;Yes&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input
                                     type="radio" name="claim_tutor[]" value="0"/>&nbsp;&nbsp;&nbsp;&nbsp;No
                             </div>
-                            <label class="control-label col-md-3">Date Claims Occurred : </label>
+                            <label class="control-label col-md-3">Date Claims Occurred: </label>
 
                             <div class="col-md-3">
                                 <input type="text" class="form-control date-picker" name="date_claims_occur[]"/>
@@ -349,7 +349,7 @@
 
                         <div class="form-group row">
                             <label class="control-label col-md-3">Education history confirmed by (Verifier Use Only)
-                                : </label>
+                               : </label>
 
                             <div class="col-md-9">
                                 <input type="text" class="form-control" name="education_history_confirmed_by[]"/>
@@ -358,7 +358,7 @@
 
                         <div class="form-group row">
 
-                            <label class="col-md-3 control-label">Highest grade completed : </label>
+                            <label class="col-md-3 control-label">Highest grade completed: </label>
 
                             <div class="col-md-3">
                                 <select name="highest_grade_completed[]" class="form-control">
@@ -373,7 +373,7 @@
                             </div>
                             <label class="col-md-3 control-label">High School
                                 <small>(years attended)</small>
-                                : </label>
+                               : </label>
 
                             <div class="col-md-3">
                                 <select name="high_school[]" class="form-control">
@@ -391,7 +391,7 @@
 
 
                         <div class="form-group row">
-                            <label class="col-md-3 control-label">College (years attended) : </label>
+                            <label class="col-md-3 control-label">College (years attended): </label>
 
                             <div class="col-md-3">
                                 <select name="college[]" class="form-control">
@@ -404,7 +404,7 @@
                                     ?>
                                 </select>
                             </div>
-                            <label class="col-md-3 control-label">Last School attended : </label>
+                            <label class="col-md-3 control-label">Last School attended: </label>
 
                             <div class="col-md-3">
                                 <input type="text" class="form-control" name="last_school_attended[]"/>
@@ -412,7 +412,7 @@
                         </div>
 
                         <div class="form-group row">
-                            <label class="col-md-3 control-label">Date : </label>
+                            <label class="col-md-3 control-label">Date: </label>
 
                             <div class="col-md-3">
                                 <input type="text" class="form-control date-picker" name="date_time[]"/>
@@ -438,7 +438,7 @@
                     if (!count($sub4['att'])) {
                         ?>
                         <div class="form-group row" style="display:block;margin-top:5px; margin-bottom: 5px;">
-                            <label class="control-label col-md-3">Attach File : </label>
+                            <label class="control-label col-md-3">Attach File: </label>
 
                             <div class="col-md-9">
                                 <input type="hidden" name="attach_doc[]" class="edu1"/>

@@ -12,64 +12,64 @@
     <div class="gndn">
         <div class="form-group row">
 
-            <div class="col-md-4"><label class="control-label">Surname : </label>
+            <div class="col-md-4"><label class="control-label">Surname: </label>
                 <input type="text" class="form-control required" name="last_name"/>
             </div>
 
-            <div class="col-md-4"><label class="control-label">First Name : </label>
+            <div class="col-md-4"><label class="control-label">First Name: </label>
                 <input type="text" class="form-control required" name="first_name"/>
             </div>
 
-            <div class="col-md-4"><label class="control-label">Middle Name : </label>
+            <div class="col-md-4"><label class="control-label">Middle Name: </label>
                 <input type="text" class="form-control" name="mid_name"/>
             </div>
 
             <div class="col-md-4"><label class="control-label">
-                    <small>Previous Surname(s) or Maiden Name(s) :</small>
+                    <small>Previous Surname(s) or Maiden Name(s):</small>
                 </label>
                 <input type="text" class="form-control" name="previous_last_name"/>
             </div>
 
-            <div class="col-md-4"><label class="control-label">Place of Birth (Country) : </label>
+            <div class="col-md-4"><label class="control-label">Place of Birth (Country): </label>
                 <input type="text" class="form-control" name="place_birth_country"/>
             </div>
 
 
-            <div class="col-md-4"><label class="control-label">Date of Birth : </label>
+            <div class="col-md-4"><label class="control-label">Date of Birth: </label>
                 <input type="text" class="form-control date-picker required" placeholder="YYYY-MM-DD"
                        name="birth_date"/>
             </div>
 
-            <div class="col-md-4"><label class="control-label">Sex : </label>
+            <div class="col-md-4"><label class="control-label">Sex: </label>
                 <input type="text" class="form-control" name="sex"/>
             </div>
 
-            <div class="col-md-4"><label class="control-label">Phone Number : </label>
+            <div class="col-md-4"><label class="control-label">Phone Number: </label>
                 <input type="text" class="form-control" name="phone"/>
             </div>
 
 
-            <div class="col-md-4"><label class="control-label">Aliases : </label>
+            <div class="col-md-4"><label class="control-label">Aliases: </label>
                 <input type="text" class="form-control" name="aliases"/>
             </div>
 
 
-            <div class="col-md-4"><label class="control-label">Drivers License Number : </label>
+            <div class="col-md-4"><label class="control-label">Drivers License Number: </label>
                 <input type="text" class="form-control required" name="driver_license_number"/>
             </div>
 
-            <div class="col-md-4"><label class="control-label">Driver's License was issued in :</label>
+            <div class="col-md-4"><label class="control-label">Driver's License was issued in:</label>
                 <?php provinces("driver_license_issued"); ?>
             </div>
 
 
-            <div class="col-md-4"><label class="control-label">Applicants Email : </label>
+            <div class="col-md-4"><label class="control-label">Applicants Email: </label>
                 <input type="text" class="form-control email1 " name="applicants_email"/>
             </div>
         </div>
 
         <div class="form-group row  col-md-12">
-            <label class="control-label">Current Address : </label>
+            <label class="control-label">Current Address: </label>
         </div>
         <div class="form-group row">
             <div class="col-md-3">
@@ -176,7 +176,7 @@
 
         <div class="form-group row">
             <label style="  text-align: left;" class="control-label col-md-11">Applicant's Signature- by signing this form you agree and consent to
-                the terms and release of information listed on this form : </label>
+                the terms and release of information listed on this form: </label>
 
 
         </div>
@@ -191,12 +191,12 @@
         <div class="form-group row">
 
 
-            <div class="col-md-4"><label class="control-label">Company Name Requesting Search : </label>
+            <div class="col-md-4"><label class="control-label">Company Name Requesting Search: </label>
                 <input type="text" class="form-control" name="company_name_requesting"/>
             </div>
 
 
-            <div class="col-md-4"><label class="control-label">Printed Name of Company Witness : </label>
+            <div class="col-md-4"><label class="control-label">Printed Name of Company Witness: </label>
                 <input type="text" class="form-control" name="printed_name_company_witness"/>
             </div>
 
@@ -247,7 +247,7 @@
                 </div>
 
 
-                <div class="col-md-4"><label class="control-label">Date of Birth : </label>
+                <div class="col-md-4"><label class="control-label">Date of Birth: </label>
                     <input type="text" class="form-control date-picker" placeholder="YYYY-MM-DD"
                            name="criminal_date_birth"/>
                 </div>
@@ -467,7 +467,7 @@
                     and/or
                     affiliates to obtain the information authorized above.</p>
 
-                <label class="control-label col-md-2">Date : </label>
+                <label class="control-label col-md-2">Date: </label>
 
                 <div class="col-md-2">
                     <input type="text" class="form-control date-picker" name="authorize_date"/>
@@ -587,7 +587,7 @@
                                 $at++;
                                 ?>
                                 <div class="del_append_consent">
-                                    <label class="control-label col-md-3">Attach File : </label>
+                                    <label class="control-label col-md-3">Attach File: </label>
 
                                     <div class="col-md-6 pad_bot">
                                         <input type="hidden" class="consent<?php echo $at; ?>" name="attach_doc[]"

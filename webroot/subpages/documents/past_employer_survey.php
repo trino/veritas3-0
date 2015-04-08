@@ -14,13 +14,13 @@
         <p>&nbsp;</p>
         <div>
             <div class="col-md-6">
-                    <label class="control-label col-md-4">Applicant's Name : </label>  
+                    <label class="control-label col-md-4">Applicant's Name: </label>  
                     <div class="col-md-8">              
                         <input class="form-control" name="applicant_name" value="<?php if(isset($past_employment_survey))echo $past_employment_survey->applicant_name;?>" />
                     </div>
             </div>
             <div class="col-md-6">
-                    <label class="control-label col-md-4">Date : </label>  
+                    <label class="control-label col-md-4">Date: </label>  
                     <div class="col-md-8">              
                         <input class="form-control" name="date" value="<?php if(isset($past_employment_survey))echo $past_employment_survey->date;?>" />
                     </div>

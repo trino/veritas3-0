@@ -146,7 +146,7 @@
 <div class="row col-md-6">
     <div class="form-group">
 
-        <label class="control-label col-md-12">Please sign here to confirm your submission :</label>
+        <label class="control-label col-md-12">Please sign here to confirm your submission:</label>
         <input type="hidden" name="recruiter_signature" id="recruiter_signature"
                value="<?php if (isset($modal->recruiter_signature) && $modal->recruiter_signature) echo $modal->recruiter_signature; ?>"/>
 

@@ -53,7 +53,7 @@ if( isset($sub)){ listfiles($sub['da_at'], "attachments/", "", false,3); }
             <p>(Answer all questions)</p>
             <p>In compliance with Federal and Provincial equal employment opportunity laws, qualified applicants are considered for all positions without regard to race, colour, religion, sex, national origin, age, marital status, or the presence of a non-job related medical condition or handicap.</p>
             <div class="form-group row">
-				<label class="control-label col-md-3">Name : </label>
+				<label class="control-label col-md-3">Name: </label>
 				<div class="col-md-3">
 					<input type="text" class="form-control" placeholder="Last" name="last_name"/>
 				</div>
@@ -66,14 +66,14 @@ if( isset($sub)){ listfiles($sub['da_at'], "attachments/", "", false,3); }
             </div>
 
             <div class="form-group row">
-                <label class="control-label col-md-3">Social Insurance No. : </label>
+                <label class="control-label col-md-3">Social Insurance No.: </label>
 				<div class="col-md-9">
 					<input type="text" class="form-control" name="social_insurance_number"/>
 				</div>
             </div>
 
             <div class="form-group row">
-                <label class="control-label col-md-3">Address : </label>
+                <label class="control-label col-md-3">Address: </label>
 				<div class="col-md-3">
 					<input type="text" class="form-control" placeholder="Street" name="street_address"/>
 				</div>
@@ -90,7 +90,7 @@ if( isset($sub)){ listfiles($sub['da_at'], "attachments/", "", false,3); }
 			</div>
 
             <div class="form-group row">
-                <label class="control-label col-md-4">Addresses for past 3 years : </label>
+                <label class="control-label col-md-4">Addresses for past 3 years: </label>
 
             </div>
 
@@ -129,7 +129,7 @@ if( isset($sub)){ listfiles($sub['da_at'], "attachments/", "", false,3); }
             </div>
 
                 <div class="form-group row">
-                    <label class="control-label col-md-3">Contact information :</label>
+                    <label class="control-label col-md-3">Contact information:</label>
                     <div class="col-md-3">
                         <input type="text" class="form-control" placeholder="Phone number" name="phone"/>
                     </div>
@@ -145,7 +145,7 @@ if( isset($sub)){ listfiles($sub['da_at'], "attachments/", "", false,3); }
 
 
             <div class="form-group row">
-                <label class="control-label col-md-3">In case of emergency notify : </label>
+                <label class="control-label col-md-3">In case of emergency notify: </label>
 				<div class="col-md-3">
 					<input type="text" class="form-control" placeholder="Name" name="emergency_notify_name"/>
 				</div>
@@ -162,7 +162,7 @@ if( isset($sub)){ listfiles($sub['da_at'], "attachments/", "", false,3); }
 
 
             <div class="form-group row">
-                <label class="control-label col-md-9">Have you worked for this company before? : </label>
+                <label class="control-label col-md-9">Have you worked for this company before?: </label>
 				<div class="col-md-3 radio-list" align="center">
 					<label class="radio-inline">
                         <?php 
@@ -219,7 +219,7 @@ if( isset($sub)){ listfiles($sub['da_at'], "attachments/", "", false,3); }
                 </div>
                 </div>
                 <div class="form-group row">
-                <label class="control-label col-md-3" align="left">Dates : </label>
+                <label class="control-label col-md-3" align="left">Dates: </label>
 
                 <div class="col-md-3">
                     <input type="text" placeholder="From" class="form-control date-picker" name="worked_start_date"/>
@@ -230,18 +230,18 @@ if( isset($sub)){ listfiles($sub['da_at'], "attachments/", "", false,3); }
             </div>
 
             <div class="form-group row">
-                <label class="control-label col-md-3">Where? : </label>
+                <label class="control-label col-md-3">Where?: </label>
                 <div class="col-md-3">
                     <input type="text" class="form-control" name="worked_where"/>
                 </div>
-                <label class="control-label col-md-3">Position : </label>
+                <label class="control-label col-md-3">Position: </label>
 				<div class="col-md-3">
 					<input type="text" class="form-control" name="worked_position"/>
 				</div>
             </div>
 
             <div class="form-group row">
-                <label class="control-label col-md-3">Reason for leaving : </label>
+                <label class="control-label col-md-3">Reason for leaving: </label>
 				<div class="col-md-9">
 					<input type="text" class="form-control" name="reason_to_leave"/>
 				</div>
@@ -303,7 +303,7 @@ if( isset($sub)){ listfiles($sub['da_at'], "attachments/", "", false,3); }
                         No
                     </label>
 				</div>
-                <label class="control-label col-md-3">If not, how long since leaving last employment? : </label>
+                <label class="control-label col-md-3">If not, how long since leaving last employment?: </label>
 				<div class="col-md-3">
 					<input type="text" class="form-control" name="unemployed_total_time"/>
 				</div>
@@ -314,18 +314,18 @@ if( isset($sub)){ listfiles($sub['da_at'], "attachments/", "", false,3); }
 				<div class="col-md-3">
 					<input type="text" class="form-control" name="referrer_name"/>
 				</div>
-                <label class="control-label col-md-3">Rate of pay expected : </label>
+                <label class="control-label col-md-3">Rate of pay expected: </label>
 				<div class="col-md-3">
 					<input type="text" class="form-control" name="rate_of_pay_excepted"/>
 				</div>
             </div>
 
             <div class="form-group row">
-                <label class="control-label col-md-3">Date of Application : </label>
+                <label class="control-label col-md-3">Date of Application: </label>
 				<div class="col-md-3">
 					<input type="text" class="form-control date-picker" name="date_of_application"/>
 				</div>
-                <label class="control-label col-md-3">Position(s) Applied for : </label>
+                <label class="control-label col-md-3">Position(s) Applied for: </label>
 				<div class="col-md-3">
 					<input type="text" class="form-control" name="position_apply_for"/>
 				</div>
@@ -799,12 +799,12 @@ if( isset($sub)){ listfiles($sub['da_at'], "attachments/", "", false,3); }
 				</div>
                 </div>
                 <div class="form-group row">
-                <label class="control-label col-md-3">Card Number :</label>
+                <label class="control-label col-md-3">Card Number:</label>
                 <div class="col-md-3">
 					<input type="text" class="form-control" name="card_number"/>
                 </div>
 
-                <label class="control-label col-md-3">Expiry Date :</label>
+                <label class="control-label col-md-3">Expiry Date:</label>
                 <div class="col-md-3">
 					<input type="text" class="form-control date-picker" name="card_expiry_date"/>
                 </div>
@@ -870,7 +870,7 @@ if( isset($sub)){ listfiles($sub['da_at'], "attachments/", "", false,3); }
             </div>
 
             <div class="form-group row">
-                <label class="control-label col-md-6">If yes, please provide details : </label>
+                <label class="control-label col-md-6">If yes, please provide details: </label>
                 <div class="col-md-6">
                 <textarea class="form-control" name="reason_not_perform_function_of_position"></textarea>
                 </div>
@@ -987,7 +987,7 @@ if( isset($sub)){ listfiles($sub['da_at'], "attachments/", "", false,3); }
             </div>
 
             <div class="form-group row">
-                <label class="control-label col-md-6">Give nature and degree of such injuries : </label>
+                <label class="control-label col-md-6">Give nature and degree of such injuries: </label>
                 <div class="col-md-6">
 					<textarea class="form-control" name="give_nature_degree_of_injury"></textarea>
                 </div>
@@ -1072,28 +1072,28 @@ if( isset($sub)){ listfiles($sub['da_at'], "attachments/", "", false,3); }
                 {
                     ?>
                     <div class="form-group row">
-                        <label class="control-label col-md-6">Date : </label>
+                        <label class="control-label col-md-6">Date: </label>
                         <div class="col-md-6">
         					<input type="text" class="form-control date-picker" name="date_of_accident[]" value="<?php echo $da_ac->date_of_accident;?>"/>
         				</div>
                     </div>
 
                     <div class="form-group row">
-                        <label class="control-label col-md-6">Nature of Accident(Head-On, Rear-End, Upset, etc.) : </label>
+                        <label class="control-label col-md-6">Nature of Accident(Head-On, Rear-End, Upset, etc.): </label>
                         <div class="col-md-6">
         					<textarea class="form-control" name="nature_of_accident[]"><?php echo $da_ac->nature_of_accident;?></textarea>
         				</div>
                     </div>
 
                     <div class="form-group row">
-                        <label class="control-label col-md-6">Fatalities : </label>
+                        <label class="control-label col-md-6">Fatalities: </label>
                         <div class="col-md-6">
         					<textarea class="form-control" name="fatalities[]"><?php echo $da_ac->fatalities;?></textarea>
         				</div>
                     </div>
 
                     <div class="form-group row">
-                        <label class="control-label col-md-6">Injuries : </label>
+                        <label class="control-label col-md-6">Injuries: </label>
                         <div class="col-md-6">
         					<textarea class="form-control" name="injuries[]"><?php echo $da_ac->injuries;?></textarea>
         				</div>
@@ -1108,28 +1108,28 @@ if( isset($sub)){ listfiles($sub['da_at'], "attachments/", "", false,3); }
             {
                 ?>
                 <div class="form-group row">
-                    <label class="control-label col-md-6">Date : </label>
+                    <label class="control-label col-md-6">Date: </label>
                     <div class="col-md-6">
     					<input type="text" class="form-control date-picker" name="date_of_accident[]"/>
     				</div>
                 </div>
 
                 <div class="form-group row">
-                    <label class="control-label col-md-6">Nature of Accident(Head-On, Rear-End, Upset, etc.) : </label>
+                    <label class="control-label col-md-6">Nature of Accident(Head-On, Rear-End, Upset, etc.): </label>
                     <div class="col-md-6">
     					<textarea class="form-control" name="nature_of_accident[]"></textarea>
     				</div>
                 </div>
 
                 <div class="form-group row">
-                    <label class="control-label col-md-6">Fatalities : </label>
+                    <label class="control-label col-md-6">Fatalities: </label>
                     <div class="col-md-6">
     					<textarea class="form-control" name="fatalities[]"></textarea>
     				</div>
                 </div>
 
                 <div class="form-group row">
-                    <label class="control-label col-md-6">Injuries : </label>
+                    <label class="control-label col-md-6">Injuries: </label>
                     <div class="col-md-6">
     					<textarea class="form-control" name="injuries[]"></textarea>
     				</div>
@@ -1373,7 +1373,7 @@ if( isset($sub)){ listfiles($sub['da_at'], "attachments/", "", false,3); }
                 </div>
             <div class="form-group row">
 
-										<label class="col-md-6 control-label">List states operated for in five years : </label>
+										<label class="col-md-6 control-label">List states operated for in five years: </label>
 										<div class="col-md-6">
                                             <textarea class="form-control" name="list_states_operated_5year"></textarea>
                                         </div>
@@ -1562,7 +1562,7 @@ if( isset($sub)){ listfiles($sub['da_at'], "attachments/", "", false,3); }
                     </div>
 
                      <div class="form-group row">
-                                        <label class="control-label col-md-6">Dated at on the day of : </label>
+                                        <label class="control-label col-md-6">Dated at on the day of: </label>
                                         <div class="col-md-6">
 										<input type="text" class="form-control date-picker" placeholder="YYYY-MM-DD" name="dated_day"/>
                                         </div>
@@ -1596,7 +1596,7 @@ if( isset($sub)){ listfiles($sub['da_at'], "attachments/", "", false,3); }
                                             if(!count($sub['da_at'])){
                                             ?>
                        <div class="form-group " style="display:block;margin-top:5px; margin-bottom: 5px;">
-                                        <label class="control-label col-md-3">Attach File : </label>
+                                        <label class="control-label col-md-3">Attach File: </label>
                                         <div class="col-md-9">
                                         <input type="hidden" class="driveApp1" name="attach_doc[]" />
                                         <a href="#" id="driveApp1" class="btn btn-primary">Browse</a> <span class="uploaded"></span>
@@ -1614,7 +1614,7 @@ if( isset($sub)){ listfiles($sub['da_at'], "attachments/", "", false,3); }
                                                 if($pa->attachment){
                                                 $at++;
                                                 ?>
-                                                <div class="del_append"><label class="control-label col-md-3">Attach File : </label><div class="col-md-6 pad_bot"><input type="hidden" class="driveApp<?php echo $at;?>" name="attach_doc[]" value="<?php echo $pa->attachment;?>" /><a href="#" id="driveApp<?php echo $at;?>" class="btn btn-primary">Browse</a> <a  href="javascript:void(0);" class="btn btn-danger" id="delete_doc" onclick="$(this).parent().remove();">Delete</a>
+                                                <div class="del_append"><label class="control-label col-md-3">Attach File: </label><div class="col-md-6 pad_bot"><input type="hidden" class="driveApp<?php echo $at;?>" name="attach_doc[]" value="<?php echo $pa->attachment;?>" /><a href="#" id="driveApp<?php echo $at;?>" class="btn btn-primary">Browse</a> <a  href="javascript:void(0);" class="btn btn-danger" id="delete_doc" onclick="$(this).parent().remove();">Delete</a>
                                                 <span class="uploaded"><?php echo $pa->attachment;?>  <?php if($pa->attachment){$ext_arr = explode('.',$pa->attachment);$ext = end($ext_arr);$ext = strtolower($ext);if(in_array($ext,$img_ext)){?><img src="<?php echo $this->request->webroot;?>attachments/<?php echo $pa->attachment;?>" style="max-width:120px;" /><?php }elseif(in_array($ext,$doc_ext)){?><a class="dl" href="<?php echo $this->request->webroot;?>attachments/<?php echo $pa->attachment;?>">Download</a><?php }else{?><br />
                                                  <video width="320" height="240" controls>
                                                   <source src="<?php echo $this->request->webroot;?>attachments/<?php echo $pa->attachment;?>" type="video/mp4">
@@ -1642,7 +1642,7 @@ if( isset($sub)){ listfiles($sub['da_at'], "attachments/", "", false,3); }
                         </div>
                       </div>
                       <!--<div class="form-group col-md-12">
-                            <label class="control-label col-md-3">Signature : </label>
+                            <label class="control-label col-md-3">Signature: </label>
                             <?php //include('canvas/example2.php');?>
                             <div class="clearfix"></div>                                        
                       </div>-->

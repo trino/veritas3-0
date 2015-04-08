@@ -75,7 +75,7 @@
 
                             <div class="form-group col-md-12">
 
-                                <label class="col-md-3 control-label">Highest grade completed : </label>
+                                <label class="col-md-3 control-label">Highest grade completed: </label>
                                 <div class="col-md-3">
                                 <select name="highest_grade_completed[]" class="form-control">
                                 <?php
@@ -88,7 +88,7 @@
                                 ?>
                                 </select>
                                 </div>
-                                <label class="col-md-3 control-label">High School : </label>
+                                <label class="col-md-3 control-label">High School: </label>
                                 <div class="col-md-3">
                                     <select name="high_school[]" class="form-control">
                                     <?php
@@ -106,7 +106,7 @@
 
 
                             <div class="form-group col-md-12">
-                                <label class="col-md-3 control-label">College : </label>
+                                <label class="col-md-3 control-label">College: </label>
                                 <div class="col-md-3">
                                     <select name="college[]" class="form-control">
                                     <?php
@@ -119,7 +119,7 @@
                                     ?>
                                 </select>
                                 </div>
-                                <label class="col-md-3 control-label">Last School attended : </label>
+                                <label class="col-md-3 control-label">Last School attended: </label>
                                 <div class="col-md-3">
                                     <input type="text" class="form-control" name="last_school_attended[]" />
                                 </div>

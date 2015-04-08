@@ -119,7 +119,7 @@ printdocumentinfo($did);
 
     if (printdivrequired($action, $forms, "id_piece", $DriverProvince, getattachment($mee_att, "id_piece1") . getattachment($mee_att, "id_piece2"))) { ?>
             <div class="col-md-12">
-                <label class="control-label col-md-4">Upload 2 pieces of ID : </label>  
+                <label class="control-label col-md-4">Upload 2 pieces of ID: </label>  
                 <div class="col-md-8">              
                     <span><a href="javascript:void(0)" class="btn btn-primary" id="mee_att_1">Browse</a>
                     &nbsp;<span class="uploaded">
@@ -160,7 +160,7 @@ printdocumentinfo($did);
 
     if (printdivrequired($action, $forms, "driver_record_abstract", $DriverProvince, getattachment($mee_att, "driver_record_abstract"))) { ?>
             <div class="col-md-12">
-                <label class="control-label col-md-4">Upload Driver's Record Abstract : </label>
+                <label class="control-label col-md-4">Upload Driver's Record Abstract: </label>
                 <div class="col-md-8">
                     <span><a href="javascript:void(0)" class="btn btn-primary" id="mee_att_3">Browse</a>&nbsp;<span class="uploaded"><?php if (isset($mee_att['attach_doc']) && $mee_att['attach_doc']->driver_record_abstract) { ?>
         <a class="dl"
@@ -182,7 +182,7 @@ printdocumentinfo($did);
     }
     if (printdivrequired($action, $forms, "cvor", $DriverProvince, getattachment($mee_att,'cvor'))) { ?>
             <div class="col-md-12">
-                <label class="control-label col-md-4">Upload CVOR : </label>
+                <label class="control-label col-md-4">Upload CVOR: </label>
                 <div class="col-md-8">
                     <span><a href="javascript:void(0)" class="btn btn-primary" id="mee_att_4">Browse</a>&nbsp;<span class="uploaded"><?php if (isset($mee_att['attach_doc']) && $mee_att['attach_doc']->cvor) { ?>
         <a class="dl"
@@ -205,7 +205,7 @@ printdocumentinfo($did);
     if (printdivrequired($action, $forms, "resume", $DriverProvince,getattachment($mee_att,'resume'))) {
         ?>
             <div class="col-md-12">
-                <label class="control-label col-md-4">Upload Resume : </label>
+                <label class="control-label col-md-4">Upload Resume: </label>
                 <div class="col-md-8">
                     <span><a href="javascript:void(0)" class="btn btn-primary" id="mee_att_5">Browse</a>&nbsp;<span class="uploaded"><?php if (isset($mee_att['attach_doc']) && $mee_att['attach_doc']->resume) { ?>
             <a class="dl"
@@ -228,7 +228,7 @@ printdocumentinfo($did);
     if (printdivrequired($action, $forms, "certification", $DriverProvince, getattachment($mee_att, 'certification'))) {
         ?>
             <div class="col-md-12">
-                <label class="control-label col-md-4">Upload Certifications : </label>
+                <label class="control-label col-md-4">Upload Certifications: </label>
                 <div class="col-md-8">
                     <span><a href="javascript:void(0)" class="btn btn-primary" id="mee_att_6">Browse</a>&nbsp;<span class="uploaded"><?php if (isset($mee_att['attach_doc']) && $mee_att['attach_doc']->certification) { ?>
             <a class="dl"
@@ -255,7 +255,7 @@ printdocumentinfo($did);
             echo '</DIV><HR>';
             if (count($attachment) > 0) {
                 echo '<div class="form-group row"><div class="col-md-12">';
-                echo '<label class="control-label col-md-4">Please download, fill out, and upload these forms (Required) : </label><div class="col-md-8">';
+                echo '<label class="control-label col-md-4">Please download, fill out, and upload these forms (Required): </label><div class="col-md-8">';
                 foreach ($attachment as $name => $file) {//C:\wamp\www\veritas3-0\webroot\ http://localhost/veritas3-0/webroot/img/certificates/certificate71-1.pdf
                     echo '<A class="btn btn-info" DOWNLOAD="' . $name . '.pdf" HREF="' . $this->request->webroot . 'webroot/img/pdfs/' . $file . '">';
                     echo '<i class="fa fa-floppy-o"></i> ' . $name . ' </A> ';
@@ -268,7 +268,7 @@ printdocumentinfo($did);
 
         if ($doit){ echo "<div class='form-group row'>"; } else { echo "<div>";}
         echo '<div class="col-md-12">';
-        if ($doit){ echo '<label class="control-label col-md-4">Upload Forms : </label>';}
+        if ($doit){ echo '<label class="control-label col-md-4">Upload Forms: </label>';}
         echo '<div class="col-md-8 mee_more">';
 
         $morecount = 0;

@@ -14,7 +14,7 @@
             </div>
             
             <div class="form-group col-md-12">
-				<label class="control-label col-md-3">Employer : </label>
+				<label class="control-label col-md-3">Employer: </label>
 				<div class="col-md-9">
 					<input type="text" class="form-control"/>
 				</div>
@@ -23,7 +23,7 @@
             
             
             <div class="form-group col-md-12">
-                <label class="control-label col-md-3">Address : </label>
+                <label class="control-label col-md-3">Address: </label>
                 <div class="col-md-3">
 					<input type="text" class="form-control" placeholder="City"/>
 				</div>
@@ -36,7 +36,7 @@
 			</div>
             
             <div class="form-group col-md-12">
-                <label class="control-label col-md-3">Dates : From </label>
+                <label class="control-label col-md-3">Dates: From </label>
 				<div class="col-md-3">
 					<input type="text" class="form-control date-picker" placeholder="YYYY-MM-DD"/>
 				</div>
@@ -47,25 +47,25 @@
             </div>
             
             <div class="form-group col-md-12">
-                <label class="control-label col-md-3">Phone Number : </label>
+                <label class="control-label col-md-3">Phone Number: </label>
                 <div class="col-md-3">
 					<input type="text" class="form-control"/>
 				</div>
-                <label class="control-label col-md-3">Position Held : </label>
+                <label class="control-label col-md-3">Position Held: </label>
                 <div class="col-md-3">
 					<input type="text" class="form-control"/>
 				</div>
             </div>
             
             <div class="form-group col-md-12">
-                <label class="control-label col-md-3">Reason for Leaving : </label>
+                <label class="control-label col-md-3">Reason for Leaving: </label>
                 <div class="col-md-9">
 					<textarea class="form-control"></textarea>
 				</div>
             </div>
             
             <div class="form-group col-md-12">
-                <label class="control-label col-md-3">Equipment Operated : </label>
+                <label class="control-label col-md-3">Equipment Operated: </label>
                 <div class="col-md-6">
 					<input type="checkbox"/>&nbsp;Vans&nbsp;
                     <input type="checkbox"/>&nbsp;Reefers&nbsp;
@@ -79,11 +79,11 @@
             </div>
             
             <div class="form-group col-md-12">
-                <label class="control-label col-md-3">Driving Experience : </label>
+                <label class="control-label col-md-3">Driving Experience: </label>
                 <div class="col-md-6">
 					<input type="checkbox"/>&nbsp;Local&nbsp;
                     <input type="checkbox"/>&nbsp;Canada&nbsp;
-                    <input type="checkbox"/>&nbsp;Canada : Rocky Mountains&nbsp;
+                    <input type="checkbox"/>&nbsp;Canada: Rocky Mountains&nbsp;
                     <input type="checkbox"/>&nbsp;USA&nbsp;
                     </div>
             </div>

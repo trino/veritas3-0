@@ -25,7 +25,7 @@
                 }
                 ?>
             <div class="col-md-4">
-                <label class="control-label">Recruiter's Name : </label>
+                <label class="control-label">Recruiter's Name: </label>
     
                 <?php
                     $value="";
@@ -38,31 +38,31 @@
         </div>
 
         <div class="col-md-4">
-            <label class="control-label">Applicant's Phone Number : </label>
+            <label class="control-label">Applicant's Phone Number: </label>
 
             <input type="text" class="form-control" name="applicant_phone_number"/>
 
         </div>
         <div class="col-md-4">
-            <label class="control-label">Applicant's Name : </label>
+            <label class="control-label">Applicant's Name: </label>
 
             <input type="text" class="form-control" name="aplicant_name">
 
         </div>
         <div class="col-md-4" id="email_cons">
-            <label class="control-label">Applicant's Email : </label>
+            <label class="control-label">Applicant's Email: </label>
 
             <input type="text" class="form-control email1" name="applicant_email">
 
         </div>
         <div class="col-md-4">
-            <label class="control-label">Date : </label>
+            <label class="control-label">Date: </label>
 
             <input type="text" class="form-control date-picker" placeholder="YYYY-MM-DD" name="pre_screen_date">
 
         </div>
         <div class="col-md-4">
-            <label class="control-label">Position : </label>
+            <label class="control-label">Position: </label>
 
             <input type="text" class="form-control" placeholder="S,T" name="position">
 
@@ -465,21 +465,21 @@
 
 
         <div class="form-group row">
-            <label class="control-label col-md-3"> Miles : </label>
+            <label class="control-label col-md-3"> Miles: </label>
             <div class="col-md-3">
                 <input type="text" class="form-control" name="current_miles" />
             </div>
-            <label class="control-label col-md-3"> Time out/home : </label>
+            <label class="control-label col-md-3"> Time out/home: </label>
             <div class="col-md-3">
                 <input type="text" class="form-control" name="current_time_out_home" />
             </div>
         </div>
         <div class="form-group row">
-            <label class="control-label col-md-3"> Locations : </label>
+            <label class="control-label col-md-3"> Locations: </label>
             <div class="col-md-3">
                 <input type="text" class="form-control" name="current_location" />
             </div>
-            <label class="control-label col-md-3"> Border Cross : </label>
+            <label class="control-label col-md-3"> Border Cross: </label>
             <div class="col-md-3">
                 <input type="text" class="form-control" name="current_border_cross" />
             </div>
@@ -854,21 +854,21 @@
 
     <div class="form-group row">
         <div class="col-md-4">
-            <label class="control-label"> Miles : </label>
+            <label class="control-label"> Miles: </label>
 
             <input  type="text" class="form-control" name="driven_az_miles" />
         </div><div class="col-md-4">
-            <label class="control-label"> Time out/home : </label>
+            <label class="control-label"> Time out/home: </label>
 
             <input type="text" class="form-control" name="driven_az_time_out_home" />
 
         </div><div class="col-md-4">
 
-            <label class="control-label "> Locations : </label>
+            <label class="control-label "> Locations: </label>
 
             <input type="text" class="form-control" name="driven_az_location" />
         </div><div class="col-md-4">
-            <label class="control-label"> Border Cross : </label>
+            <label class="control-label"> Border Cross: </label>
 
             <input type="text" class="form-control" name="driven_az_border_cross" />
         </div>
@@ -895,7 +895,7 @@
 
         <div class="form-group row">
             <div class="col-md-6">
-                <label class="control-label">Type of equipment :</label>
+                <label class="control-label">Type of equipment:</label>
             </div>
             <div class="col-md-6">
                 <textarea class="form-control" name="driven_az_type_equipment"></textarea>
@@ -904,7 +904,7 @@
 
         <div class="form-group row">
             <div class="col-md-6">
-                <label class="control-label">Recruiters comments and recommendations :<BR><small>(note what day they are booked to come in for a road test and interview)</small></label>
+                <label class="control-label">Recruiters comments and recommendations:<BR><small>(note what day they are booked to come in for a road test and interview)</small></label>
             </div>
             <div class="col-md-6">
                 <textarea class="form-control" name="recruiter_comment_recommendation"></textarea>
@@ -922,7 +922,7 @@
             ?>
 
             <div class="form-group row" style="display:block;margin-top:5px; margin-bottom: 5px;">
-                <label class="control-label col-md-3">Attach File : </label>
+                <label class="control-label col-md-3">Attach File: </label>
                 <div class="col-md-9">
                     <input type="hidden" class="fileUpload1" name="attach_doc[]" />
                     <a href="#" id="fileUpload1" class="btn btn-primary">Browse</a> <span class="uploaded"></span>
@@ -944,7 +944,7 @@
                         
                         ?>
                         <div class="pad_bot" id="del_pre">
-                            <label class="control-label col-md-3">Attach File : </label>
+                            <label class="control-label col-md-3">Attach File: </label>
                             <div class="col-md-6 pad_bot">
                                 <input type="hidden" class="fileUpload<?php echo $at;?>" name="attach_doc[]" value="<?php echo $pa->attachment;?>" />
                                 <a href="#" id="fileUpload<?php echo $at;?>"  class="btn btn-primary">Browse</a>
