@@ -11,12 +11,8 @@
             <form id="form_education">
 
                 <?php
-
                     include_once 'subpages/filelist.php';
-                    printdocumentinfo($did);
-                    if (isset($sub4['att'])) {
-                        listfiles($sub4['att'], "attachments/", "", false, 3);
-                    }
+                    if (isset($sub4['att'])) {listfiles($sub4['att'], "attachments/", "", false, 3);}
 
                     $counter = 0;
                     if (isset($sub4['edu']) && count($sub4['edu'])) {

@@ -170,7 +170,7 @@
 
                             function PrintResult($name, $number)
                             {
-                                echo '<div class="col-md-2"><label class="control-label">' . $name . ' : </label><BR><DIV align="center"><H2>' . $number . '</H2></div></div>';
+                                echo '<div class="col-md-2"><label class="control-label">' . $name . ': </label><BR><DIV align="center"><H2>' . $number . '</H2></div></div>';
                             }
 
 

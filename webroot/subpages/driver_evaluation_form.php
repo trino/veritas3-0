@@ -574,7 +574,7 @@
  <script>
     $(function(){
        $('#add_more_driver_doc').click(function(){
-        $('#more_driver_doc').append('<div class="del_append_driver"><label class="control-label col-md-6">Attach File : </label><div class="col-md-6 pad_bot"><a href="javascript:void(0);" class="btn btn-primary">Browse</a><a  href="javascript:void(0);" class="btn btn-danger" id="delete_driver_doc">Delete</a></div></div>')
+        $('#more_driver_doc').append('<div class="del_append_driver"><label class="control-label col-md-6">Attach File: </label><div class="col-md-6 pad_bot"><a href="javascript:void(0);" class="btn btn-primary">Browse</a><a  href="javascript:void(0);" class="btn btn-danger" id="delete_driver_doc">Delete</a></div></div>')
        }); 
        
        $('#delete_driver_doc').live('click',function(){
