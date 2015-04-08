@@ -13,7 +13,7 @@
         if (!isset($disabled)) {
 
             $upload_max_size = ini_get('upload_max_filesize');
-            echo "The largest file you can upload is " . $upload_max_size;
+            echo "<h3>Attachments</h3><br/>The largest file you can upload is " . $upload_max_size;
             ?>
             <div class="form-group col-md-12">
 

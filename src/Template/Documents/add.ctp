@@ -112,6 +112,13 @@ if (isset($this->request->params['pass'][1])) {
                     else
                         $driver=0;
                     ?>
+                    <div class="col-md-4">
+                        <div class="portlet">
+                            <div class="portlet-title">
+                                <div class="caption"> Document Option </div>
+                            </div>
+                            <div class="portlet-body form" >
+                            
                     <div class="col-md-12 clients_select" style="margin: 10px 0;padding:0">
 
                         <select name="clients" class="form-control select2me" data-placeholder="Select Client" id="changeclient">
@@ -200,7 +207,10 @@ if (isset($this->request->params['pass'][1])) {
 
                     </div>
                     <div class="clearfix"></div>
-
+                    </div>
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
                     <div class="moredocxs">
 
                         <?php
@@ -1548,6 +1558,15 @@ if (isset($this->request->params['pass'][1])) {
         var filename = filename.toLowerCase();
         $('.subform').show();
         $('.subform').load('<?php echo $this->request->webroot;?>documents/subpages/' + filename);
+    }
+    function addmoredoc(idname)
+    {
+        var total_count = $('.'+idname).data('count');
+            $('.'+idname).data('count', parseInt(total_count) + 1);
+            total_count = $('.'+idname).data('count');
+            var input_field = '<div  class="form-group col-md-12" style="padding-left:15px;"><div class="col-md-12"><a href="javascript:void(0);" id="'+idname + total_count + '" class="btn btn-primary">Browse</a><input type="hidden" name="attach_doc[]" value="" class="'+idname + total_count + '_doc moredocs" /> <a href="javascript:void(0);" class = "btn btn-danger img_delete" id="delete_'+idname + total_count + '" title ="">Delete</a><span></span></div></div>';
+            $('.'+idname).append(input_field);
+            initiate_ajax_upload1(idname + total_count, 'doc');
     }
     jQuery(document).ready(function () {
         var subdocid = $('#sub_id').val();
