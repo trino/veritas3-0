@@ -13,7 +13,6 @@
 
     <?php
         $action = ucfirst($param);
-        if (!isset($mee_att)) { $mee_att = array(); }
 
         if (isset($_GET["forms"])) {
             $forms = explode(",", $_GET["forms"]);
@@ -42,25 +41,15 @@
             }
         }
 
-        function printdivrequired($Action, $forms, $AttachmentName, $DriversProvince, $attachment = 0)
+        function printdivrequired($forms, $AttachmentName, $DriversProvince, $attachment = 0)
         {
-            $doit=true;
-            if ($Action == "View" || $Action == "Vieworder") {
-                if (is_array($attachment)) {
-
-                } elseif (is_numeric($attachment)) {
-                    $doit = $attachment>0;
-                } else {
-                    if (!$attachment) { $doit=false; }
-                }
-            }
-            if ($doit) { //isrequired($forms, $AttachmentName, $DriversProvince, $attachment)) {
+            if (true) { //isrequired($forms, $AttachmentName, $DriversProvince, $attachment)) {
                 echo '<div class="form-group row">';
                 return true;
             } else {
-                //echo '<div style="display: none;">';
+                // echo '<div style="display: none;">';
             }
-            return $doit;
+
         }
 
         function isrequired($forms, $AttachmentName, $DriversProvince, $attachments = 0)
@@ -100,15 +89,10 @@
         } else {
 
         }
+    ?>
 
-        function getattachment($mee_att, $name){
-            if (isset($mee_att['attach_doc'])){
-                return $mee_att['attach_doc']->$name;
-            }
-        }
-
-
-        if (printdivrequired($action, $forms, "id_piece", $DriverProvince, getattachment($mee_att, "id_piece1") . getattachment($mee_att, "id_piece2"))) { ?>
+    <?php
+        if (printdivrequired($forms, "id_piece", $DriverProvince)) { ?>
             <div class="col-md-12">
                 <label class="control-label col-md-4">Upload 2 pieces of ID : </label>  
                 <div class="col-md-8">              
@@ -142,14 +126,13 @@
            fileUpload('mee_att_2'); 
         });
         </script>
+    <div class="col-md-12">
+<hr>
+                            <h4>The following documents are optional. If available, please upload them and it will be included in your report.</h4>
+</div>
+    <?php }
 
-    <?php
-    if ($action != "View" && $action != "Vieworder") {
-        echo '<div class="col-md-12"><hr><h4>The following documents are optional. If available, please upload them and it will be included in your report.</h4></div>';
-    }
-        }
-
-        if (printdivrequired($action, $forms, "driver_record_abstract", $DriverProvince, getattachment($mee_att, "driver_record_abstract"))) { ?>
+        if (printdivrequired($forms, "driver_record_abstract", $DriverProvince)) { ?>
             <div class="col-md-12">
                 <label class="control-label col-md-4">Upload Driver's Record Abstract : </label>
                 <div class="col-md-8">
@@ -171,7 +154,7 @@
         </script>
     <?php
         }
-        if (printdivrequired($action, $forms, "cvor", $DriverProvince, getattachment($mee_att,'cvor'))) { ?>
+        if (printdivrequired($forms, "cvor", $DriverProvince)) { ?>
             <div class="col-md-12">
                 <label class="control-label col-md-4">Upload CVOR : </label>
                 <div class="col-md-8">
@@ -193,7 +176,7 @@
         </script>
     <?php }
 
-        if (printdivrequired($action, $forms, "resume", $DriverProvince,getattachment($mee_att,'resume'))) {
+        if (printdivrequired($forms, "resume", $DriverProvince)) {
             ?>
             <div class="col-md-12">
                 <label class="control-label col-md-4">Upload Resume : </label>
@@ -216,7 +199,7 @@
         </script>
     <?php }
 
-        if (printdivrequired($action, $forms, "certification", $DriverProvince, getattachment($mee_att, 'certification'))) {
+        if (printdivrequired($forms, "certification", $DriverProvince)) {
             ?>
             <div class="col-md-12">
                 <label class="control-label col-md-4">Upload Certifications : </label>
@@ -239,10 +222,8 @@
         </script>
     <?php }
 
-        if (printdivrequired($action, $forms, "attachments", $DriverProvince, count($attachment))) {
-            $doit=false;
+        if (printdivrequired($forms, "attachments", $DriverProvince, count($attachment))) {
             if ($action != "View" && $action != "Vieworder") {
-                $doit=true;
                 echo '</DIV><HR>';
                 if (count($attachment) > 0) {
                     echo '<div class="form-group row"><div class="col-md-12">';
@@ -256,12 +237,12 @@
                 //echo "<FONT COLOR='red'> * Required</FONT>";
                 echo "<DIV>";
             }
-
-            if ($doit){ echo "<div class='form-group row'>"; } else { echo "<div>";}
-            echo '<div class="col-md-12">';
-            if ($doit){ echo '<label class="control-label col-md-4">Upload Forms : </label>';}
-            echo '<div class="col-md-8 mee_more">';
-
+            ?>
+        <div class="form-group row">
+            <div class="col-md-12">
+                <label class="control-label col-md-4">Upload Forms : </label>
+                <div class="col-md-8 mee_more">
+                <?php
             $morecount = 0;
             if ($did) {
                 if (isset($mee_att['attach_doc']->id) && $mee_att['attach_doc']->id) {
