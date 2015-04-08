@@ -35,14 +35,9 @@
 
 
 <?php
-    if (isset($disabled)) {
-        $is_disabled = 'disabled="disabled"';// style="border: 0px solid;"';
-        //echo "<style>select {    -webkit-appearance: none;    -moz-appearance: none;    text-indent: 1px;    text-overflow: '';}</style>";
-    } else {
-        $is_disabled = '';
-    }
-    if (isset($profile))
-        $p = $profile;
+    $is_disabled = '';
+    if (isset($disabled)) { $is_disabled = 'disabled="disabled"';}// style="border: 0px solid;"';}
+    if (isset($profile)){$p = $profile;}
     $settings = $this->requestAction('settings/get_settings');
     $sidebar = $this->requestAction("settings/all_settings/" . $this->request->session()->read('Profile.id') . "/sidebar"); ?>
 
@@ -50,11 +45,10 @@
 <!-- BEGIN STYLE CUSTOMIZER -->
 <div class="theme-panel hidden-xs hidden-sm">
     <?php if (strlen($is_disabled) == 0) {
-        if($_SERVER['SERVER_NAME'] =='localhost')
-        {
-
-        echo '<div class="toggler"></div>';//doesn't work in view mode, so remove it and be done with it
-    }} ?>
+        if($_SERVER['SERVER_NAME'] =='localhost'){
+            echo '<div class="toggler"></div>';//doesn't work in view mode, so remove it and be done with it
+        }
+    } ?>
     <div class="toggler-close">
     </div>
 
@@ -666,7 +660,7 @@
                 },
                 submitHandler: function () {
                     $('#pass_form').submit();
-                },
+                }
             });
         });
 

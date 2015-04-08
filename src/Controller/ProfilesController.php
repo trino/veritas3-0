@@ -759,15 +759,34 @@
             $this->render("edit");
         }
 
-        function saveprofile($add = "")
-        {
+        function sendEmail($To, $Subject, $Message){
+            $path = $this->Document->getUrl();
+            $replace = array("%PATH%" => $path, "%CRLF%" => "\r\n");//auto-replace these terms
+            foreach($replace as $key => $value){
+                $Subject =str_replace($key, $value, $Subject);
+                $Message =str_replace($key, $value, $Message);
+            }
+
+            //method 1
+            //$email = new Email('default');
+            //$res = $email->from(['info@'. $path => "ISB MEE"])->to($To)->subject($Subject)->send($Message);
+
+            //method 2, needs a transport set up
+            //Email::deliver($To,$Subject, $Message, ['info@'. $path => "ISB MEE"]);
+
+            //method 3 actually uses method 1
+            $from = array('info@'. $path => "ISB MEE");
+            $this->Mailer->sendEmail($from, $To, $Subject, $Message);
+            file_put_contents("royslog.txt", "To: " . $To . " Subject: " .  $Subject . " Mesage: " . $Message, FILE_APPEND);
+        }
+
+        function saveprofile($add = ""){
             $settings = $this->Settings->get_settings();
             $profiles = TableRegistry::get('Profiles');
             $path = $this->Document->getUrl();
 
             if ($add == '0') {
                 $profile_type = $this->request->session()->read('Profile.profile_type');
-
                 $_POST['created'] = date('Y-m-d');
 
                 if (isset($_POST['password']) && $_POST['password'] == '') {
@@ -780,10 +799,9 @@
                     }
                 }
                 if ($this->request->is('post')) {
-
-                    if (isset($_POST['profile_type']) && $_POST['profile_type'] == 1)
+                    if (isset($_POST['profile_type']) && $_POST['profile_type'] == 1) {
                         $_POST['admin'] = 1;
-
+                    }
                     $_POST['dob'] = $_POST['doby'] . "-" . $_POST['dobm'] . "-" . $_POST['dobd'];
 
                     $profile = $profiles->newEntity($_POST);
@@ -814,7 +832,6 @@
                         if ($profile_type == 2) {
                             //save profiles to clients if recruiter
                             $clients_id = $this->Settings->getAllClientsId($this->request->session()->read('Profile.id'));
-
                             if ($clients_id != "") {
                                 $client_id = explode(",", $clients_id);
                                 foreach ($client_id as $cid) {
@@ -829,10 +846,11 @@
                                     $pro_id = array_unique($pros);
 
                                     foreach ($pro_id as $k => $p) {
-                                        if (count($pro_id) == $k + 1)
+                                        if (count($pro_id) == $k + 1) {
                                             $p_ids .= $p;
-                                        else
+                                        } else {
                                             $p_ids .= $p . ",";
+                                        }
                                     }
 
                                     $query->query()->update()->set(['profile_id' => $p_ids])
@@ -855,10 +873,11 @@
                                 $pro_id = array_unique($pros);
 
                                 foreach ($pro_id as $k => $p) {
-                                    if (count($pro_id) == $k + 1)
+                                    if (count($pro_id) == $k + 1) {
                                         $p_ids .= $p;
-                                    else
+                                    } else {
                                         $p_ids .= $p . ",";
+                                    }
                                 }
 
                                 $query->query()->update()->set(['profile_id' => $p_ids])
@@ -921,7 +940,7 @@
                                     $protype = '';
                             } else
                                 $protype = '';
-                            $from = array('info@' . $path => "ISB MEE");
+                            $from = 'info@' . $path;// 'array('info@' . $path => "ISB MEE");
                             $to = $em;
 
                             $sub = 'Profile Created: ' . $_POST['username'];
@@ -931,7 +950,15 @@
                             <br/>On: ' . date('Y-m-d');
 
                             $this->Mailer->sendEmail($from, $to, $sub, $msg);
-                            $this->Flash->success('Profile saved Successfully . ');
+                            //$this->sendEmail($to, $sub, $msg);
+                            if (isset($_POST["emailcreds"]) && $_POST["emailcreds"] == "on" && strlen(trim($_POST["email"]))>0 ) {
+                                if($password){$msg.="<br/>Your password is : " . $password;}
+                                $this->Mailer->sendEmail($from, $_POST["email"], $sub, $msg);
+
+                               // $this->sendEmail($_POST["email"], $sub, $msg);
+                                //file_put_contents("royslog.txt",$to . " " .  $_POST["email"] . ": " .  $sub . " - " . $msg, FILE_APPEND);
+                            }
+                            $this->Flash->success('Profile Saved Successfully . ');
 
                         }
                         echo $profile->id;
@@ -940,21 +967,20 @@
                         echo "0";
                 }
             } else {
-                $profile = $this->Profiles->get($add, [
-                    'contain' => []
-                ]);
+                $profile = $this->Profiles->get($add, ['contain' => []]);
                 if ($this->request->is(['patch', 'post', 'put'])) {
                     if (isset($_POST['password']) && $_POST['password'] == '') {
-                        //die('here');
                         $this->request->data['password'] = $profile->password;
                     } else {
-                        if (isset($_POST['password']))
+                        if (isset($_POST['password'])) {
                             $this->request->data['password'] = md5($_POST['password']);
+                        }
                     }
-                    if (isset($_POST['profile_type']) && $_POST['profile_type'] == 1)
+                    if (isset($_POST['profile_type']) && $_POST['profile_type'] == 1) {
                         $this->request->data['admin'] = 1;
-                    else
+                    } else {
                         $this->request->data['admin'] = 0;
+                    }
                     $this->request->data['dob'] = $_POST['doby'] . "-" . $_POST['dobm'] . "-" . $_POST['dobd'];
                     if (isset($this->request->data['username']) && $this->request->data['username'] == 5) {
                         unset($this->request->data['username']);
@@ -981,7 +1007,7 @@
                         if (isset($_POST['drafts']) && ($_POST['drafts'] == '1')) {
                             $this->Flash->success('Profile Saved as draft . ');
                         } else {
-                            $this->Flash->success('Profile saved Successfully . ');
+                            $this->Flash->success('Profile Saved Successfully . ');
                         }
                     } else {
                         echo "0";

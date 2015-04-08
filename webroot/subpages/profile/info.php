@@ -1,41 +1,32 @@
-
 <style>div {
-        border: 0px solid green;
-    }</style>
+    border: 0px solid green;
+}</style>
 
 <?php
-     if($this->request->session()->read('debug'))
-        echo "<span style ='color:red;'>info.php #INC117</span>";
+    $param = $this->request->params['action'];
+    if($this->request->session()->read('debug')){ echo "<span style ='color:red;'>subpages/profile/info.php #INC117</span>";}
     $getProfileType = $this->requestAction('profiles/getProfileType/' . $this->Session->read('Profile.id'));
     $sidebar = $this->requestAction("settings/all_settings/" . $this->request->session()->read('Profile.id') . "/sidebar");
     $settings = $this->requestAction('settings/get_settings');
-    function printoption($option, $selected, $value = "")
-    {
+    function printoption($option, $selected, $value = ""){
         $tempstr = "";
-        if ($option == $selected) {
-            $tempstr = " selected";
-        }
-        if (strlen($value) > 0) {
-            $value = " value='" . $value . "'";
-        }
+        if ($option == $selected) {$tempstr = " selected";}
+        if (strlen($value) > 0) {$value = " value='" . $value . "'";}
         echo '<option' . $value . $tempstr . ">" . $option . "</option>";
     }
 
-    function printoption2($value, $selected = "", $option)
-    {
+    function printoption2($value, $selected = "", $option){
         $tempstr = "";
-        if ($option == $selected or $value == $selected) {
-            $tempstr = " selected";
-        }
+        if ($option == $selected or $value == $selected) {$tempstr = " selected";}
         echo '<OPTION VALUE="' . $value . '"' . $tempstr . ">" . $option . "</OPTION>";
     }
 
-    function printoptions($name, $valuearray, $selected = "", $optionarray, $isdisabled = "", $isrequired = false)
-    {
-        if ($name == 'profile_type')
+    function printoptions($name, $valuearray, $selected = "", $optionarray, $isdisabled = "", $isrequired = false){
+        if ($name == 'profile_type') {
             echo '<SELECT ' . $isdisabled . ' name="' . $name . '" class="form-control member_type req_driver"';
-        else
+        } else {
             echo '<SELECT ' . $isdisabled . ' name="' . $name . '" class="form-control req_driver"';
+        }
         echo '>';
 
         for ($temp = 0; $temp < count($valuearray); $temp += 1) {
@@ -44,10 +35,8 @@
         echo '</SELECT>';
     }
 
-    function printprovinces($name, $selected = "", $isdisabled = "", $isrequired = false)
-    {
+    function printprovinces($name, $selected = "", $isdisabled = "", $isrequired = false){
         printoptions($name, array("", "AB", "BC", "MB", "NB", "NL", "NT", "NS", "NU", "ON", "PE", "QC", "SK", "YT"), $selected, array("Select Province", "Alberta", "British Columbia", "Manitoba", "New Brunswick", "Newfoundland and Labrador", "Northwest Territories", "Nova Scotia", "Nunavut", "Ontario", "Prince Edward Island", "Quebec", "Saskatchewan", "Yukon Territories"), $isdisabled, $isrequired);
-
     }
 
 ?>
@@ -473,6 +462,15 @@
                                   style="display: none;">Please enter the same password in both boxes</span>
                                             </div>
                                         </div>
+                                        <?php if($param=="add"){ ?>
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label class="control-label">Email Credentials : </label><BR>
+                                                    <input type="checkbox" name="emailcreds", id="emailcreds">
+                                                    <label style="margin-top: 5px;" for="emailcreds">Email to the new user</label>
+                                                        </DIV>
+                                                </DIV>
+                                                    <?php } ?>
                                         <div class="clearfix"></div>
 
                                     <?php }
@@ -487,8 +485,9 @@
 
                                             if (isset($p->title)) {
                                                 $title = $p->title;
-                                            } else
+                                            } else {
                                                 $title = "";
+                                            }
                                             printoption("Mr.", $title, "Mr.");
                                             printoption("Mrs.", $title, "Mrs.");
                                             printoption("Ms.", $title, "Ms.");
@@ -602,9 +601,7 @@
                                                 echo '<select class="form-control req_driver " NAME="doby" ' . $is_disabled . '>';
 
                                                 $now = date("Y");
-                                                for ($temp = $now;
-                                                     $temp > 1899;
-                                                     $temp -= 1) {
+                                                for ($temp = $now; $temp > 1899; $temp -= 1) {
                                                     printoption($temp, $currentyear, $temp);
                                                 }
                                                 echo '</select></div><div class="col-md-4">';
@@ -612,22 +609,16 @@
 
                                                 echo '<select  class="form-control req_driver " NAME="dobm" ' . $is_disabled . '>';
                                                 $monthnames = array("Jan", "Feb", "Mar", "Apr", "May", "June", "July", "Aug", "Sept", "Oct", "Nov", "Dec");
-                                                for ($temp = 1;
-                                                     $temp < 13;
-                                                     $temp += 1) {
-                                                    if ($temp < 10)
-                                                        $temp = "0" . $temp;
+                                                for ($temp = 1; $temp < 13; $temp += 1) {
+                                                    if ($temp < 10){$temp = "0" . $temp;}
                                                     printoption($temp, $currentmonth, $temp);
                                                 }
                                                 echo '</select></div><div class="col-md-4">';
 
 
                                                 echo '<select class="form-control req_driver " name="dobd" ' . $is_disabled . '>';
-                                                for ($temp = 1;
-                                                     $temp < 32;
-                                                     $temp++) {
-                                                    if ($temp < 10)
-                                                        $temp = "0" . $temp;
+                                                for ($temp = 1; $temp < 32; $temp++) {
+                                                    if ($temp < 10) { $temp = "0" . $temp;}
                                                     printoption($temp, $currentday, $temp);
                                                 }
 
@@ -666,10 +657,11 @@
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <?php
-                                            if (isset($p->province))
+                                            if (isset($p->province)) {
                                                 printprovinces("province", $p->province, $is_disabled, false);
-                                            else
+                                            } else {
                                                 printprovinces("province", "", $is_disabled, false);
+                                            }
                                         ?>
 
                                         <!-- old
@@ -731,10 +723,11 @@
                                         <label class="control-label">Province issued: </label>
 
                                         <?php
-                                            if (isset($p->driver_province))
+                                            if (isset($p->driver_province)) {
                                                 printprovinces("driver_province", $p->driver_province, $is_disabled, true);
-                                            else
+                                            } else {
                                                 printprovinces("driver_province", "", $is_disabled, true);
+                                            }
                                         ?>
 
 
@@ -865,8 +858,7 @@
                             'slow');
 
                         return false;
-                    }
-                    else {
+                    } else {
                         $('.flashUser').hide();
                         if ($('.email').val() != '') {
                             var un = $('.email').val();
@@ -885,15 +877,13 @@
                                             'slow');
 
                                         return false;
-                                    }
-                                    else {
+                                    } else {
                                         $(this).attr('disabled', 'disabled');
                                         $('#hiddensub').click();
                                     }
                                 }
                             });
-                        }
-                        else {
+                        } else {
                             $('#hiddensub').click();
                         }
                     }
@@ -901,8 +891,7 @@
             });
 
 
-        }
-        else {
+        } else {
             $('#retype_password').focus();
             $('html,body').animate({
                     scrollTop: $('.page-title').offset().top
@@ -930,8 +919,7 @@
             var file = $(this).attr('title');
             if (file == file.replace("&", " ")) {
                 var id = 0;
-            }
-            else {
+            } else {
                 var f = file.split("&");
                 file = f[0];
                 var id = f[1];
@@ -949,9 +937,9 @@
                 });
                 $(this).parent().parent().remove();
 
-            }
-            else
+            } else {
                 return false;
+            }
         });
         $('#save_clientz').submit(function (event) {
             event.preventDefault();
@@ -963,7 +951,6 @@
             $(':disabled[name]').each(function () {
                 strs = strs + '&' + $(this).attr('name') + '=' + $(this).val();
             });
-
             var adds = "<?php echo ($this->request['action']=='add')?'0':$this->request['pass'][0];?>";
             $.ajax({
                 url: '<?php echo $this->request->webroot;?>profiles/saveprofile/' + adds,
@@ -1035,8 +1022,7 @@
                 if(isset($p->password) && $p->password)
                 {
                     //do nth
-                }
-                else{
+                } else{
                     ?>
 
                 $('#password').prop('required', "required");
@@ -1074,8 +1060,7 @@
                 //$('#username_field').attr('disabled','disabled');
                 $('.req_rec').removeProp('required');
 
-            }
-            else {
+            } else {
                 $('.nav-tabs li:not(.active)').each(function () {
                     $(this).show();
                 });
@@ -1112,12 +1097,12 @@
 
 
     function initiate_ajax_upload1(button_id, doc) {
-
         var button = $('#' + button_id), interval;
-        if (doc == 'doc')
+        if (doc == 'doc') {
             var act = "<?php echo $this->request->webroot;?>profiles/upload_all/<?php if(isset($id))echo $id;?>";
-        else
+        } else {
             var act = "<?php echo $this->request->webroot;?>profiles/upload_img/<?php if(isset($id))echo $id;?>";
+        }
         new AjaxUpload(button, {
             action: act,
             name: 'myfile',
@@ -1134,11 +1119,11 @@
                 }, 200);
             },
             onComplete: function (file, response) {
-                if (doc == "doc")
+                if (doc == "doc") {
                     button.html('Browse');
-                else
+                } else {
                     button.html('<i class="fa fa-image"></i> Add/Edit Image');
-
+                }
                 window.clearInterval(interval);
                 this.enable();
                 if (doc == "doc") {
