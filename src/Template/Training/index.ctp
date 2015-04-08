@@ -225,7 +225,7 @@
                                                     }
                                                     if (!strpos($attachment, "/")) {
                                                         $attachment = "webroot/assets/global/" . $attachment;
-                                                        $download = '" download="' . basename($attachment) . '"';
+                                                        $download .= ' download="' . basename($attachment) . '" TITLE="Internet Explorer users need to right-click, then click Save Target As"';
                                                     }
 
                                                     echo '<input type="checkbox" id="chk' . $id . '" disabled' . $checked . '></input>' . ($id + 1) . ' <a href="' . $attachment . $download . ' class="btn btn-xs btn-warning" onclick="return check(';
@@ -337,11 +337,7 @@
                                 //    element.checked = true;
                                // }
                                 element.disabled = true;
-                                if(is_IE){
-                                    //open attachment in a new window
-                                    
-                                }
-                                return !is_IE;//if it's IE, stop the link from working
+                                return true;//if it's IE, stop the link from working
                             }
                             function checkboxes() {
                                 return <?= $attachmentJS; ?>;
