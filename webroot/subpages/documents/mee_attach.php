@@ -11,7 +11,6 @@
     <input type="hidden" name="sub_doc_id" value="15" class="sub_docs_id" id="af"/>
 
     <div class="clearfix"></div>
-    <hr/>
 
     <?php
 
@@ -125,11 +124,12 @@
 
     //    if ($action != "View" && $action != "Vieworder") {
             echo '<div class="col-md-12">
+   <hr/>
 
 <p>Note that two pieces of Identification will be necessary for any order including a Premium Criminal Record Check.</p>
 <p>ISB Canada is unable to obtain <strong>Alberta</strong> Driver’s Record Abstracts and CVOR’s. Please upload driver provided documentation for <strong>Alberta or any other province (optional)</strong> if you wish to include these products in the driver’s Score Card.</p>
 
-
+<HR>
 </div>';
     //    }
 
@@ -137,17 +137,18 @@
 
 
 
+?>
 
 
-
-
+        <div class="col-md-12"><h4><strong>The following form(s) are Mandatory</strong></h4></div>
+<?php
 
 
         if (printdivrequired($action, $forms, "attachments", $DriverProvince, count($attachment))) {
             $doit = false;
             if ($action != "View" && $action != "Vieworder") {
                 $doit = true;
-                echo '</DIV><HR>';
+                echo '</DIV>';
                 if (count($attachment) > 0) {
                     echo '<div class="form-group row"><div class="col-md-12">';
                     echo '<label class="control-label col-md-4">Please download, fill out, and upload these forms (Required): </label><div class="col-md-8">';
@@ -233,26 +234,10 @@
 
 
 
+?>
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    <?php
 
 
 
@@ -292,9 +277,13 @@
            fileUpload('mee_att_2'); 
         });
         </script>
-<hr>
-    <?php
+            <div class="col-md-12"><hr></div>
 
+
+
+    <div class="col-md-12"><h4><strong>The following form(s) are Optional</strong></h4></div>
+
+    <?php
         }
 
         if (printdivrequired($action, $forms, "driver_record_abstract", $DriverProvince, getattachment($mee_att, "driver_record_abstract"))) { ?>
