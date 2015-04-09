@@ -148,7 +148,9 @@ class DocumentComponent extends Component
                                              $sub = 'Order Submitted';
                                             $msg = 'A new order has been created in '.$path.'<br />
                                             <br/>
-                                            By: '.$uq->username.' (Profile Type : '.$ut.')<br/> Date : '.date('Y-m-d H:i:s').'<br/><br /> Client Name: ' . $client_name.'<br/> For: '.$p.'<br /><br /> Regards,<br />the ISB MEE Team';
+
+                                            By: '.$uq->username.' (Profile Type: '.$ut.')<br/> Date : '.date('Y-m-d H:i:s').'<br/><br /> Client Name: ' . $client_name.'<br/> For: '.$p.'<br /><br /> Regards,<br />the ISB MEE Team';
+
                                              $controller->Mailer->sendEmail($from, $to, $sub, $msg);
                                             
                                         }
@@ -224,8 +226,8 @@ class DocumentComponent extends Component
                             $to = $p;
                              $sub = 'Document Submitted';
                             $msg = 'A new document has been created in '.$path.'<br /><br />
+                            Username : '.$uq->username.'<br/>Profile Type : '.$ut.'<br/> Date : '.date('Y-m-d H:i:s').'<br/>Client Name: ' . $client_name.'<br/> Document type : '.$arr['document_type'].'<br /><br />Regards,<br />The ISB MEE Team';
 
-                            Username : '.$uq->username.'<br/>Profile Type : '.$ut.'<br/> Date : '.date('Y-m-d H:i:s').'<br/>Client Name: ' . $client_name.'<br/> Document type : '.$arr['document_type'].'<br /><br />Regards,<br />the ISB MEE team';
                              $controller->Mailer->sendEmail($from, $to, $sub, $msg);
                                 }
                             }}else {}
@@ -256,7 +258,9 @@ class DocumentComponent extends Component
                              $sub = 'Document Submitted';
                             $msg = 'A new document has been created in '.$path.'<br /><br />
 
-                            Username : '.$uq->username.'<br/>Profile Type : '.$ut.'<br/> Date : '.date('Y-m-d H:i:s').'<br/>Client Name: ' . $client_name.'<br/> Document type : '.$arr['document_type'].'<br/> <br /> Regards,<br />the ISB MEE team';
+
+                            Username : '.$uq->username.'<br/>Profile Type : '.$ut.'<br/> Date : '.date('Y-m-d H:i:s').'<br/>Client Name: ' . $client_name.'<br/> Document type : '.$arr['document_type'].'<br/> <br /> Regards,<br />The ISB MEE Team';
+
                              $controller->Mailer->sendEmail($from, $to, $sub, $msg);
                              }
                         if(isset($_POST['attach_doc']))
@@ -1092,13 +1096,16 @@ class DocumentComponent extends Component
             $roadTest = TableRegistry::get('mee_attachments');
             
             $arr['client_id'] = $cid;
+            if ($cid == "undefined"){ echo "THIS SHOULD NOT BE!";}
+
             $arr['user_id'] = $controller->request->session()->read('Profile.id');
-            
+
             if (!isset($_GET['document']) || isset($_GET['order_id'])) {
-                if(!isset($_GET['order_id']))
-                $arr['order_id'] = $document_id;
-                else
-                $arr['order_id'] = $_GET['order_id'];
+                if(!isset($_GET['order_id'])) {
+                    $arr['order_id'] = $document_id;
+                } else {
+                    $arr['order_id'] = $_GET['order_id'];
+                }
                 $arr['document_id'] = 0;
                 
                 

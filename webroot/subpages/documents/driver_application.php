@@ -37,7 +37,6 @@
 
 
 include_once 'subpages/filelist.php';
-printdocumentinfo($did);
 if( isset($sub)){ listfiles($sub['da_at'], "attachments/", "", false,3); }
     ?><P>
     <div class="form-group row">

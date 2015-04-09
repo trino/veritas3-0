@@ -116,11 +116,11 @@ $profileID = $this->Session->read('Profile.id');
                                         List <?php echo ucfirst($settings->profile); ?>s</a>
                                 </li>
 
-                                <li <?php echo ($this->request['controller'] == 'Profiles' && $this->request['action'] == 'index' && !isset($_GET["draft"]) ) ? 'class="active"' : ''; ?>>
+                                <!--li <?php echo ($this->request['controller'] == 'Profiles' && $this->request['action'] == 'index' && !isset($_GET["draft"]) ) ? 'class="active"' : ''; ?>>
                                     <a href="<?php echo WEB_ROOT; ?>profiles?all">
                                         <i class="icon-list"></i>
                                         List All <?php echo ucfirst($settings->profile); ?>s</a>
-                                </li>
+                                </li-->
                             <?php } ?>
                             <?php if ($sidebar->profile_create == 1) { ?>
                                 <li <?php echo ($this->request['controller'] == 'Profiles' && $this->request['action'] == 'add') ? 'class="active"' : ''; ?>>

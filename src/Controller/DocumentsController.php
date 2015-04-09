@@ -854,8 +854,10 @@
             $to = $em;
              $sub = 'Client created';
             $msg = 'A client has been created<br />
+
             By a user with following details :<br/>
-            Username : '.$uq->username.'<br/>Profile Type : '.$ut.'<br/> Dated on : '.$_POST['created'].'<br/>With client details<br /> Client Name: ' . $_POST['company_name'].'<br/><br /> Regards,<br />the ISB MEE team';
+            Username : '.$uq->username.'<br/>Profile Type : '.$ut.'<br/> Dated on : '.$_POST['created'].'<br/>With client details<br /> Client Name: ' . $_POST['company_name'].'<br/><br /> Regards,<br />The ISB MEE Team';
+
              $this->Mailer->sendEmail($from, $to, $sub, $msg);
         }
 
@@ -2937,8 +2939,7 @@
             $client_docs = $query->select()->where(['order_id' => $orderid,'document_id'=>$documentid, 'attachment LIKE' => "%.%"])->first();
             if($client_docs) {return true;}
         }
-        public function mee_attach($order_id,$cid)
-        {
+        public function mee_attach($order_id,$cid){
            $this->Document->mee_attach($cid,$order_id); 
            die();
         }

@@ -186,7 +186,7 @@ $hereby = "<p><br/>I hereby consent to the search of the following:</p>
      
      
         
-            Applicant's Signature- by signing this form you agree and consent to the terms and release of information listed on this form : ";
+            Applicant's Signature- by signing this form you agree and consent to the terms and release of information listed on this form: ";
             $hereby = $hereby."<br/><br/><p>
                             <strong>Signature of Driver</strong><br />";
                 if(isset($detail['consent']) && $detail['consent']->criminal_signature_applicant2){

@@ -5,15 +5,9 @@ if(isset($disabled)){ $is_disabled = 'disabled="disabled"'; }
 if(isset($feeds)) {$feed = $feeds; }
 ?>
 <form role="form" action="" method="post" id="form_tab6">
-<?php
-include_once 'subpages/filelist.php';
-printdocumentinfo($did);
-?>
 
+ <input type="hidden" class="document_type" name="document_type" value="<?php echo $dx->title;?>"/>
 
-
-    
-    <input type="hidden" class="document_type" name="document_type" value="<?php echo $dx->title;?>"/>
     <input type="hidden" name="sub_doc_id" value="6" class="sub_docs_id" id="af" />
     <div class="form-group col-md-12">
             <label class="control-label col-md-6">Title: </label>

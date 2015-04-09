@@ -387,7 +387,7 @@
 <script>
     $(function(){
         $('.add_attach').click(function(){
-           $('.attach_more').append('<div class="pad_bot" id="del_pre"><label class="control-label col-md-3">Attach File : </label><div class="col-md-6 pad_bot"><a href="javascript:void(0);" class="btn btn-primary">Browse</a><a  href="javascript:void(0);" class="btn btn-danger delete_attach">Delete</a></div></div></div><div class="clearfix"></div>')
+           $('.attach_more').append('<div class="pad_bot" id="del_pre"><label class="control-label col-md-3">Attach File: </label><div class="col-md-6 pad_bot"><a href="javascript:void(0);" class="btn btn-primary">Browse</a><a  href="javascript:void(0);" class="btn btn-danger delete_attach">Delete</a></div></div></div><div class="clearfix"></div>')
         });
         
         $('.delete_attach').live('click',function(){

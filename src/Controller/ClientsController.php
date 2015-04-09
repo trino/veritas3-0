@@ -472,7 +472,7 @@
                             $from = array('info@'.$path => "ISB MEE");
                             $to = $em;
                             $sub = 'Client Created: ' . $_POST['company_name'];
-                            $msg = 'Domain: ' . $path . '<br />' . 'Client Name: ' . $_POST['company_name'] . '<br>Created by: ' . $username . ' (Profile Type : ' . $ut . ')<br/> On: ' . $_POST['created'];
+                            $msg = 'Domain: ' . $path . '<br />' . 'Client Name: ' . $_POST['company_name'] . '<br>Created by: ' . $username . ' (Profile Type: ' . $ut . ')<br/> On: ' . $_POST['created'];
                             $this->Mailer->sendEmail($from, $to, $sub, $msg);
                         } else {
                             $this->Flash->error(ucfirst($settings->client) . ' could not be saved. Please try again.');

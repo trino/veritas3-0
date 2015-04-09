@@ -90,7 +90,7 @@ if (isset($question)) {$question = clean($question,1);}
         <?php function printanswer($index, $value = "", $correctanswer=0){
             echo '<div class="col-md-6">';
             echo '<div class="form-group">';
-                echo '<label class="control-label">Answer ' . chr(ord("a") + $index) . ' :</label><BR>';
+                echo '<label class="control-label">Answer ' . chr(ord("a") + $index) . ':</label><BR>';
                 echo '<label class="uniform-inline"><span>';
                     if ($correctanswer == $index){ $checked = " checked";} else {$checked= " ANSWER="  . $correctanswer ;}
                     echo '<input onchange="changed=true;" type="radio" name="answer" value="' . $index . '"' . $checked . '>';

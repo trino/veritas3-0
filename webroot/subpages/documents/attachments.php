@@ -7,8 +7,6 @@ if(isset($disabled)) { $is_disabled = 'disabled="disabled"'; }
 
 echo '<form role="form" enctype="multipart/form-data" action="' . $this->request->webroot . 'documents/addattachment/' . $cid . '/' . $did . '" method="post" id="form_tab7">';
 
-include_once 'subpages/filelist.php';
-printdocumentinfo($did);
 ?>
 
     <div class="row">

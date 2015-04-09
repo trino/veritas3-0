@@ -151,7 +151,7 @@ if(isset($detail['consent']) && $detail['consent'])
                             $pdf->Ln(6); 
                             }
                             if(!is_null($emp->driving_experince_local)){
-                            $driving_experince_local = ['','Local','Canada','Canada : Rocky Mountains','USA'];
+                            $driving_experince_local = ['','Local','Canada','Canada: Rocky Mountains','USA'];
                             $pdf->Cell(80, 5, 'Driving Experience ');
                             $pdf->TextField('driving_experince_local'.$k, 50, 5,array(),array('v'=>$driving_experince_local[$emp->driving_experince_local], 'dv'=>$driving_experince_local[$emp->driving_experince_local]));
                             $pdf->Ln(6);

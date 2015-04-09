@@ -197,7 +197,7 @@
                           }
                           ?>
                           <div class="col-md-12" style="text-align: right;">
-                                <a href="#" class="btn btn-success" onclick="$('#sub_add').toggle(150);">Add New SubDocument</a>
+                                <a href="#" class="btn btn-success"  style="margin:10px 0;" onclick="$('#sub_add').toggle(150);">Add New SubDocument</a>
                                 <div class="col-md-12" id="sub_add" style="display: none;margin:10px 0;padding:0">
                                     <div class="col-md-10" style="text-align: right;padding:0;">
                                         <input type="text" placeholder="Sub-Document title" class="form-control subdocname" />

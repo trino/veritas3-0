@@ -15,6 +15,7 @@
 </script>
 
 <?php
+include_once 'subpages/filelist.php';
 $param = $this->request->params['action'];
 $view = 'nope';
 if($this->request->params['action'] == 'vieworder'){$view = 'view';}
@@ -99,7 +100,8 @@ function provinces($name){
         }
         $_this = $this;
 
-    $DriverProvince = $p->driver_province;
+    $DriverProvince = "";
+    if (is_object($p)){$DriverProvince = $p->driver_province;}
     echo "<SCRIPT>var DriverProvince = '" . $DriverProvince . "';</SCRIPT>";
 
     function FindIterator($ObjectArray, $FieldName, $FieldValue){
@@ -450,7 +452,9 @@ function provinces($name){
                             }
                             ?>
                             <div class="tabber <?php echo $tab; ?>" id="tab<?php echo $tab_count; ?>">
-                                <?php include('subpages/documents/' . $d->form); ?>
+                                <?php
+                                if ($action == "View") {printdocumentinfo($d->id);}
+                                include('subpages/documents/' . $d->form); ?>
                             </div>
                         <?php }}}
                         if(!isset($k_co)) {$k_co=1;} ?>
@@ -1637,10 +1641,10 @@ function provinces($name){
                 $.ajax({
                 url: '<?php echo $this->request->webroot;?>orders/webservice/<?php echo $_GET['order_type'];?>/<?php echo $_GET['forms']; ?>/' + $('#did').val() +'/' + $('#uploaded_for').val(),
                 success:function(){
-             //     window.location = '<?php echo $this->request->webroot;?>profiles/view/'+$('#uploaded_for').val()+'?getprofilescore=1&success';
+                 window.location = '<?php echo $this->request->webroot;?>profiles/view/'+$('#uploaded_for').val()+'?getprofilescore=1&success';
                 },
                 error:function(){
-               //    window.location = '<?php echo $this->request->webroot;?>profiles/view/'+$('#uploaded_for').val()+'?getprofilescore=1&success';
+                 window.location = '<?php echo $this->request->webroot;?>profiles/view/'+$('#uploaded_for').val()+'?getprofilescore=1&success';
                 }
             });
                 

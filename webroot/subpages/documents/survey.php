@@ -1,16 +1,9 @@
 <?php
- if($this->request->session()->read('debug')){ echo "<span style ='color:red;'>subpages/documents/survey.php #INC127</span>";}
-
-$is_disabled = '';
-if(isset($disabled)){$is_disabled = 'disabled="disabled"';}
-
+    if($this->request->session()->read('debug')){ echo "<span style ='color:red;'>subpages/documents/survey.php #INC127</span>";}
+    $is_disabled = '';
+    if(isset($disabled)){$is_disabled = 'disabled="disabled"';}
 ?>
 <form role="form" action="" method="post" id="form_tab5">
-<?php
-include_once 'subpages/filelist.php';
-printdocumentinfo($did);
-?>
-
 <h4 class="col-md-12">Understanding Your Businesses Security Risks and Focus</h4>
 			
     

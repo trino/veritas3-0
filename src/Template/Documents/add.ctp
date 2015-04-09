@@ -1,21 +1,17 @@
-
 <script src="<?php echo $this->request->webroot; ?>js/jquery.easyui.min.js" type="text/javascript"></script>
 <?php
 $param = $this->request->params['action'];
-if(!isset($_GET['type']))
-$_GET['type'] = 0;
+include_once 'subpages/filelist.php';
+if(!isset($_GET['type'])) {$_GET['type'] = 0;}
 $doc_ext = array('pdf','doc','docx','txt','csv','xls','xlsx');
 $img_ext = array('jpg','jpeg','png','bmp','gif');
-if (isset($disabled))
-{
+$is_disabled = '';
+$view ="";
+if (isset($disabled)) {
     $is_disabled = 'disabled="disabled"';
     $view = "view";
 }
-else
-{
-    $is_disabled = '';
-    $view ="";
-}
+
 function provinces($name){
     echo '<SELECT class="form-control" name="' . $name . '">';
     echo '<OPTION>Province</OPTION>';
@@ -34,8 +30,7 @@ function provinces($name){
     echo '<OPTION value="YT">Yukon</OPTION>';
     echo '</SELECT>';
 }
-?>
-<?php
+
 $settings = $this->requestAction('settings/get_settings');
 $action = ucfirst($param);
 if ($action == "Add") {
@@ -75,6 +70,23 @@ if (isset($this->request->params['pass'][1])) {
     if (isset($this->request->params['pass'][1])) { echo '<a href="../../' . $url . '/' . $id0 . "/" . $id1 . $id2 . '" class="floatright btn btn-info btnspc">' . ucfirst($opposite) . '</a>'; }
 
 
+    function makeportlet($did, $color="", $Title=""){
+        if (strlen($Title)>0){
+            echo '<div class="row">
+                            <div class="col-md-12">
+                            <div class="portlet box ' . $color .'">
+
+                                    <div class="portlet-title">
+                                        <div class="caption">
+                                            ' . $Title . '
+                                        </div>
+                                    </div>
+                                    <div class="portlet-body form">
+                                    <div class="form-body" style="padding-bottom: 0px;">
+                                                    <div class="tab-content">';
+            printdocumentinfo($did);
+        }
+    }
     ?>
 
 
@@ -112,13 +124,14 @@ if (isset($this->request->params['pass'][1])) {
                     else
                         $driver=0;
                     ?>
-                    <div class="col-md-4">
-                        <div class="portlet">
+                    <div class="col-md-4" style="padding-right: 0;
+  padding-left: 0;">
+                        <div class="portlet box blue" style="border:0;">
                             <div class="portlet-title">
-                                <div class="caption"> Document Option </div>
+                                <div class="caption"> Document Options </div>
                             </div>
                             <div class="portlet-body form" >
-                            
+
                     <div class="col-md-12 clients_select" style="margin: 10px 0;padding:0">
 
                         <select name="clients" class="form-control select2me" data-placeholder="Select Client" id="changeclient" <?php if($this->request->params['action']=='view'){?>disabled="disabled"<?php }?>>
@@ -172,7 +185,6 @@ if (isset($this->request->params['pass'][1])) {
                      <?php
                     }
                     ?>
-                    <div class="clearfix"></div>
                     <div class="col-md-12" style="margin: 10px 0;padding:0">
 
                         <?php $dr_cl = $doc_comp->getDriverClient(0, $cid);?>
@@ -226,86 +238,50 @@ if (isset($this->request->params['pass'][1])) {
                        ?>
                         <div class="subform1">
                             <?php
-                            if($controller == 'documents' )
-                            {
-
+                            if($controller == 'documents' ) {
                                 $colr = $this->requestAction('/documents/getColorId/1');
-                                if(!$colr)
-                                    $colr = $class[0];
-
-                                echo '<div class="row">
-                            <div class="col-md-12">
-                            <div class="portlet box '.$colr.'">
-
-                                    <div class="portlet-title">
-                                        <div class="caption">
-                                            Driver Pre-Screen Questions
-                                        </div>
-                                    </div>
-                                    <div class="portlet-body form">
-                                    <div class="form-body" style="padding-bottom: 0px;">
-                                                    <div class="tab-content">';
-                            }
-                            else {
+                                if(!$colr){$colr = $class[0];}
+                                makeportlet($did, $colr,"Driver Pre-Screen Questions");
+                            } else {
 
                             }
-                            ?>
-                            <?php include('subpages/documents/company_pre_screen_question.php');
-                            if($controller == 'documents' )
-                            {
+                             include('subpages/documents/company_pre_screen_question.php');
+                            if($controller == 'documents' ) {
                                 echo '</div></div></div></div></div></div>' ;
                             }
-                            ?>
-
-                        </div>
-                        <?php
+                            echo "</div>";
                          }
+
                         ?>
                         
                         <?php
                         if($_GET['type']==2)
                         {
                             $dx = $this->requestAction('/orders/getSubDetail/'.$_GET['type']);
+
+                            echo '<div class="subform2">';
+
                        ?>
-                        <div class="subform2">
-                            <?php include('subpages/documents/driver_application.php');
-                            ?>
-                        </div>
-                        <?php }?>
+
+                            <?php include('subpages/documents/driver_application.php');?>
+
                         <?php
+
                         if($_GET['type']==3)
                         {
                           $dx = $this->requestAction('/orders/getSubDetail/'.$_GET['type']);
-                        ?>
-                        <div class="subform3">
-                            <?php
-                            if($controller == 'documents' )
-                            {
+            ?>
+                        <div class="subform3"><?php
+                            if($controller == 'documents' ) {
 
                                 $colr = $this->requestAction('/documents/getColorId/3');
-                                if(!$colr)
-                                    $colr = $class[2];
-
-                                echo '<div class="row">
-                            <div class="col-md-12">
-                            <div class="portlet box '.$colr.'">
-
-                                    <div class="portlet-title">
-                                        <div class="caption">
-                                            Road Test
-                                        </div>
-                                    </div>
-                                    <div class="portlet-body form">
-                                    <div class="form-body" style="padding-bottom: 0px;">
-                                                    <div class="tab-content">';
-                            }
-                            else {
+                                if(!$colr){$colr = $class[2];}
+                                makeportlet($did, $colr,"Road Test");
+                            } else {
 
                             }
-                            ?>
-                            <?php include('subpages/documents/driver_evaluation_form.php');
-                            if($controller == 'documents' )
-                            {
+                            include('subpages/documents/driver_evaluation_form.php');
+                            if($controller == 'documents' ) {
                                 echo '</div></div></div></div></div></div>' ;
                             }
                             ?>
@@ -318,33 +294,16 @@ if (isset($this->request->params['pass'][1])) {
                         ?>
                         <div class="subform4">
                             <?php
-                            if($controller == 'documents' )
-                            {
-
+                            if($controller == 'documents' ) {
                                 $colr = $this->requestAction('/documents/getColorId/4');
-                                if(!$colr)
-                                    $colr = $class[3];
-
-                                echo '<div class="row">
-                            <div class="col-md-12">
-                            <div class="portlet box '.$colr.'">
-
-                                    <div class="portlet-title">
-                                        <div class="caption">
-                                            Consent Form
-                                        </div>
-                                    </div>
-                                    <div class="portlet-body form">
-                                    <div class="form-body" style="padding-bottom: 0px;">
-                                                    <div class="tab-content">';
+                                if(!$colr) {$colr = $class[3];}
+                                makeportlet($did, $colr,"Consent Form");
                             }
                             else {
 
                             }
-                            ?>
-                            <?php include('subpages/documents/document_tab_3.php');
-                            if($controller == 'documents' )
-                            {
+                            include('subpages/documents/document_tab_3.php');
+                            if($controller == 'documents' ) {
                                 echo '</div></div></div></div></div></div>' ;
                             }
                             ?>
@@ -357,33 +316,15 @@ if (isset($this->request->params['pass'][1])) {
                         ?>
                         <div class="subform5">
                             <?php
-                            if($controller == 'documents' )
-                            {
-
+                            if($controller == 'documents' ) {
                                 $colr = $this->requestAction('/documents/getColorId/5');
-                                if(!$colr)
-                                    $colr = $class[4];
-
-                                echo '<div class="row">
-                            <div class="col-md-12">
-                            <div class="portlet box '.$colr.'">
-
-                                    <div class="portlet-title">
-                                        <div class="caption">
-                                            Survey
-                                        </div>
-                                    </div>
-                                    <div class="portlet-body form">
-                                    <div class="form-body" style="padding-bottom: 0px;">
-                                                    <div class="tab-content">';
-                            }
-                            else {
+                                if(!$colr) {$colr = $class[4];}
+                                makeportlet($did, $colr,"Survey");
+                            } else {
 
                             }
-                            ?>
-                            <?php include('subpages/documents/survey.php');
-                            if($controller == 'documents' )
-                            {
+                            include('subpages/documents/survey.php');
+                            if($controller == 'documents' ) {
                                 echo '</div></div></div></div></div></div>' ;
                             }
                             ?>
@@ -401,109 +342,62 @@ if (isset($this->request->params['pass'][1])) {
                             {
 
                                 $colr = $this->requestAction('/documents/getColorId/6');
-                                if(!$colr)
-                                    $colr = $class[5];
-
-                                echo '<div class="row">
-                            <div class="col-md-12">
-                            <div class="portlet box '.$colr.'">
-
-                                    <div class="portlet-title">
-                                        <div class="caption">
-                                            Feedbacks
-                                        </div>
-                                    </div>
-                                    <div class="portlet-body form">
-                                    <div class="form-body" style="padding-bottom: 0px;">
-                                                    <div class="tab-content">';
+                                if(!$colr) {$colr = $class[5];}
+                                makeportlet($did, $colr,"Feedback");
                             }
                             else {
 
                             }
                             ?>
                             <?php include('subpages/documents/feedbacks.php');
-                            if($controller == 'documents' )
-                            {
+                            if($controller == 'documents' ) {
                                 echo '</div></div></div></div></div></div>' ;
                             }
                             ?>
                         </div>
                         <?php
                         }
-                            
+
                             if($_GET['type']==7)
                         {
                           $dx = $this->requestAction('/orders/getSubDetail/'.$_GET['type']);
                         ?>
                         <div class="subform7">
                             <?php
-                            if($controller == 'documents' )
-                            {
-
+                            if($controller == 'documents' ) {
                                 $colr = $this->requestAction('/documents/getColorId/7');
-                                if(!$colr)
-                                    $colr = $class[6];
-
-                                echo '<div class="row">
-                            <div class="col-md-12">
-                            <div class="portlet box '.$colr.'">
-
-                                    <div class="portlet-title">
-                                        <div class="caption">
-                                            Attachments
-                                        </div>
-                                    </div>
-                                    <div class="portlet-body form">
-                                    <div class="form-body" style="padding-bottom: 0px;">
-                                                    <div class="tab-content">';
+                                if(!$colr) {$colr = $class[6];}
+                                makeportlet($did, $colr,"Attachments");
                             }
                             else {
 
                             }
                             ?>
                             <?php include('subpages/documents/attachments.php');
-                            if($controller == 'documents' )
-                            {
+                            if($controller == 'documents' ) {
                                 echo '</div></div></div></div></div></div>' ;
                             }
                             ?>
                         </div>
                         <?php
                         }
-                            
+
                             if($_GET['type']==8)
                         {
                           $dx = $this->requestAction('/orders/getSubDetail/'.$_GET['type']);
                         ?>
                         <div class="subform8">
                             <?php
-                            if($controller == 'documents' )
-                            {
-
+                            if($controller == 'documents' ) {
                                 $colr = $this->requestAction('/documents/getColorId/8');
-                                if(!$colr)
-                                    $colr = $class[7];
-
-                                echo '<div class="row">
-                            <div class="col-md-12">
-                            <div class="portlet box '.$colr.'">
-
-                                    <div class="portlet-title">
-                                        <div class="caption">
-                                            Audits
-                                        </div>
-                                    </div>
-                                    <div class="portlet-body form">
-                                    <div class="form-body" style="padding-bottom: 0px;">
-                                                    <div class="tab-content">';
-                            }
-                            else {
+                                if(!$colr) {$colr = $class[7];}
+                                makeportlet($did, $colr,"Audits");
+                            } else {
 
                             }
                             ?>
                             <?php include('subpages/documents/audits.php');
-                            if($controller == 'documents' )
-                            {
+                            if($controller == 'documents' ) {
                                 echo '</div></div></div></div></div></div>' ;
                             }
                             ?>
@@ -517,40 +411,23 @@ if (isset($this->request->params['pass'][1])) {
                         ?>
                         <div class="subform9">
                             <?php
-                            if($controller == 'documents' )
-                            {
-
+                            if($controller == 'documents' ) {
                                 $colr = $this->requestAction('/documents/getColorId/9');
-                                if(!$colr)
-                                    $colr = $class[8];
-
-                                echo '<div class="row">
-                            <div class="col-md-12">
-                            <div class="portlet box '.$colr.'">
-
-                                    <div class="portlet-title">
-                                        <div class="caption">
-                                            Employment Verification
-                                        </div>
-                                    </div>
-                                    <div class="portlet-body form">
-                                    <div class="form-body" style="padding-bottom: 0px;">
-                                                    <div class="tab-content">';
-                            }
-                            else {
+                                if(!$colr) {$colr = $class[8];}
+                                makeportlet($did, $colr,"Employment Verification");
+                            } else {
 
                             }
                             ?>
                             <?php include('subpages/documents/employment_verification_form.php');
-                            if($controller == 'documents' )
-                            {
+                            if($controller == 'documents' ) {
                                 echo '</div></div></div></div></div></div>' ;
                             }
                             ?>
                         </div>
                         <?php
                         }
-                            
+
                             if($_GET['type']==10)
                         {
                             $dx = $this->requestAction('/orders/getSubDetail/'.$_GET['type']);
@@ -559,33 +436,16 @@ if (isset($this->request->params['pass'][1])) {
 
                         <div class="subform10">
                             <?php
-                            if($controller == 'documents' )
-                            {
+                            if($controller == 'documents' ) {
                                 $colr = $this->requestAction('/documents/getColorId/10');
-                                if(!$colr)
-                                    $colr = $class[9];
+                                if(!$colr) {$colr = $class[9];}
+                                makeportlet($did, $colr,"Education Verification");
+                             } else {
 
-                                echo '<div class="row">
-                            <div class="col-md-12">
-                            <div class="portlet box '.$colr.'">
-
-                                    <div class="portlet-title">
-                                        <div class="caption">
-                                            Education Verification
-                                        </div>
-                                    </div>
-                                    <div class="portlet-body form">
-                                    <div class="form-body" style="padding-bottom: 0px;">
-                                                    <div class="tab-content">';
-
-                                                    }
-                                        else {
-
-                                        }
+                            }
                         ?>
                         <?php include('subpages/documents/education_verification_form.php');
-                        if($controller == 'documents' )
-                        {
+                        if($controller == 'documents' ) {
                         echo '</div></div></div></div></div></div>' ;
                         }
                          ?>
@@ -603,33 +463,17 @@ if (isset($this->request->params['pass'][1])) {
                              <input type="hidden" class="document_type" name="document_type" value="<?php echo $dx->title;?>"/>
                                 <input type="hidden" name="sub_doc_id" value="<?php echo $dx->id;?>" class="sub_docs_id"  />
                             <?php
-                        if($controller == 'documents' )
-                        {
+                        if($controller == 'documents' ) {
                             $colr = $this->requestAction('/documents/getColorId/'.$dx->id);
-                            if(!$colr)
-                            $colr = $class[9];
+                            if(!$colr) {$colr = $class[9];}
+                            makeportlet($did, $colr,$dx->title);
+                        } else {
 
-                             echo '<div class="row">
-                            <div class="col-md-12">
-                            <div class="portlet box '.$colr.'">
-
-                                    <div class="portlet-title">
-                                        <div class="caption">
-                                           '.$dx->title.'
-                                        </div>
-                                    </div>
-                                    <div class="portlet-body form">
-                                    <div class="form-body" style="padding-bottom: 0px;">
-                                                    <div class="tab-content">';
-                                                    }
-                                        else {
-
-                                        }
+                        }
                         ?>
                         <?php if($dx->form && file_exists('subpages/documents/'.$dx->form))include('subpages/documents/'.$dx->form);
-                        if($controller == 'documents' )
-                        {
-                        echo '</div></div></div></div></div></div>' ;
+                        if($controller == 'documents' ) {
+                            echo '</div></div></div></div></div></div>' ;
                         }
                          ?>
                         </div>
@@ -799,7 +643,7 @@ if (isset($this->request->params['pass'][1])) {
              });
         }
         if (s_arr[1] == 6) {
-            $('#form_tab6').prepend('<input class="document_type" type="hidden" name="document_type" value="Feedbacks" />' +
+            $('#form_tab6').prepend('<input class="document_type" type="hidden" name="document_type" value="Feedback" />' +
             '<input type="hidden" class="sub_docs_id" name="sub_doc_id" value="6"  />');
             $('.addattachment6').load('<?php echo $this->request->webroot;?>documents/attach_doc/<?php echo $did."/".$view;?>', function(){
                 initiate_ajax_upload1('addMore1', 'doc');
