@@ -112,52 +112,11 @@ function provinces($name){
     }
 
     function displayform2($DriverProvince, $thedocuments, $name){
-        if(isset($_GET['order_type']) && urldecode($_GET['order_type'])=='Order MEE'){ return true;}//uncomment
+        if(isset($_GET['order_type']) && urldecode($_GET['order_type'])=='Driver Order'){ return true;}//uncomment
         $name=trim(strtolower($name));
         //echo "<BR>" . $DriverProvince . " " . $name . " <BR>"; print_r($thedocuments[$name]);
         return isset($thedocuments[$name][$DriverProvince]);
     }
-
-        function displayform($DriverProvince, $Provinces, $forms, $name,$_this){
-            if(isset($_GET['order_type']) && urldecode($_GET['order_type'])=='Order MEE'){ return true;}//uncomment
-            $name=trim(strtolower($name));
-           // print_r($Provinces);
-            //if ($name == "consent form") { return true; } //mandatory in all sections now
-            foreach($forms as $form){
-                $data = FindIterator($Provinces, "ID", $form);
-                if ($data) {
-                    //echo $DriverProvince . " " . $data->$DriverProvince;
-                    if($data->$DriverProvince ==1) {
-                        //echo ("Checking for: " . $name);
-                        //print_r($data->subdocuments);
-
-                        if (in_array($name, $data->subdocuments)) { return true; }
-                    }
-                }
-            }
-            return false;
-            /*
-            if(in_array('2',$forms) && isset($_GET['driver']) && $name=='consent form') {
-                $c2 = $_this->requestAction('/orders/check_driver_abstract2/'.$_GET['driver']);
-                if(in_array($c2->driver_province,array('BC','MB','NU','NT','QC','SK','YT'))){ return true;}
-                if(in_array('3',$forms) && isset($_GET['driver']) && $name=='consent form'){
-                    $c3 = $_this->requestAction('/orders/check_cvor2/'.$_GET['driver']);
-                    return in_array($c3->driver_province,array('BC','SK','MB'));
-                }
-                return false;
-            } else if(in_array('3',$forms) && isset($_GET['driver']) && $name=='consent form'){
-                    $c3 = $_this->requestAction('/orders/check_cvor2/'.$_GET['driver']);
-                    return in_array($c3->driver_province,array('BC','SK','MB'));
-            }
-            */
-
-
-
-
-            //return true if all boxes were checked
-            //if (isallone($forms)) {return true; }
-            //return true; //returns true if $forms is empty or smaller than the ID number (ie: MEE order)
-        }
 
         if (isset($disabled)) { ?>
             <a href="javascript:window.print();" class="floatright btn btn-primary">Print</a>
