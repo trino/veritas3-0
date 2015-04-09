@@ -1304,6 +1304,7 @@
         }
         function getSubDetail($id)
         {
+            //die('here');
             $products =  TableRegistry::get('subdocuments');
             $pro = $products->find()->where(['id'=>$id])->first();
             $this->response->body($pro);

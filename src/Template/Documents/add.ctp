@@ -234,7 +234,7 @@ if (isset($this->request->params['pass'][1])) {
                         <?php
                         if($_GET['type']==1)
                         {
-                            $dx = $this->requestAction('/orders/getSubDetail/'.$_GET['type']);
+                            $dx = $subdoc->find()->where(['id'=>$_GET['type']])->first();
                        ?>
                         <div class="subform1">
                             <?php
@@ -251,13 +251,13 @@ if (isset($this->request->params['pass'][1])) {
                             }
                             echo "</div>";
                          }
-
+                            
                         ?>
                         
                         <?php
                         if($_GET['type']==2)
                         {
-                            $dx = $this->requestAction('/orders/getSubDetail/'.$_GET['type']);
+                            $dx = $subdoc->find()->where(['id'=>$_GET['type']])->first();
 
                             echo '<div class="subform2">';
 
@@ -266,10 +266,11 @@ if (isset($this->request->params['pass'][1])) {
                             <?php include('subpages/documents/driver_application.php');?>
 
                         <?php
-
+                        echo "</div>";
+                        }
                         if($_GET['type']==3)
                         {
-                          $dx = $this->requestAction('/orders/getSubDetail/'.$_GET['type']);
+                          $dx = $subdoc->find()->where(['id'=>$_GET['type']])->first();
             ?>
                         <div class="subform3"><?php
                             if($controller == 'documents' ) {
@@ -290,7 +291,7 @@ if (isset($this->request->params['pass'][1])) {
                         <?php
                         if($_GET['type']==4)
                         {
-                          $dx = $this->requestAction('/orders/getSubDetail/'.$_GET['type']);
+                          $dx = $subdoc->find()->where(['id'=>$_GET['type']])->first();
                         ?>
                         <div class="subform4">
                             <?php
@@ -312,7 +313,7 @@ if (isset($this->request->params['pass'][1])) {
                         <?php
                         if($_GET['type']==5)
                         {
-                          $dx = $this->requestAction('/orders/getSubDetail/'.$_GET['type']);
+                          $dx = $subdoc->find()->where(['id'=>$_GET['type']])->first();
                         ?>
                         <div class="subform5">
                             <?php
@@ -334,7 +335,7 @@ if (isset($this->request->params['pass'][1])) {
                             
                             if($_GET['type']==6)
                         {
-                          $dx = $this->requestAction('/orders/getSubDetail/'.$_GET['type']);
+                          $dx = $subdoc->find()->where(['id'=>$_GET['type']])->first();
                         ?>
                         <div class="subform6">
                             <?php
@@ -360,7 +361,7 @@ if (isset($this->request->params['pass'][1])) {
 
                             if($_GET['type']==7)
                         {
-                          $dx = $this->requestAction('/orders/getSubDetail/'.$_GET['type']);
+                          $dx = $subdoc->find()->where(['id'=>$_GET['type']])->first();
                         ?>
                         <div class="subform7">
                             <?php
@@ -384,7 +385,7 @@ if (isset($this->request->params['pass'][1])) {
 
                             if($_GET['type']==8)
                         {
-                          $dx = $this->requestAction('/orders/getSubDetail/'.$_GET['type']);
+                          $dx = $subdoc->find()->where(['id'=>$_GET['type']])->first();
                         ?>
                         <div class="subform8">
                             <?php
@@ -407,7 +408,7 @@ if (isset($this->request->params['pass'][1])) {
                             
                             if($_GET['type']==9)
                         {
-                          $dx = $this->requestAction('/orders/getSubDetail/'.$_GET['type']);
+                          $dx = $subdoc->find()->where(['id'=>$_GET['type']])->first();
                         ?>
                         <div class="subform9">
                             <?php
@@ -430,13 +431,16 @@ if (isset($this->request->params['pass'][1])) {
 
                             if($_GET['type']==10)
                         {
-                            $dx = $this->requestAction('/orders/getSubDetail/'.$_GET['type']);
+                            //die($_GET['type']);
+                            $dx = $subdoc->find()->where(['id'=>$_GET['type']])->first();
+                           
                           
                         ?>
 
                         <div class="subform10">
                             <?php
                             if($controller == 'documents' ) {
+                                
                                 $colr = $this->requestAction('/documents/getColorId/10');
                                 if(!$colr) {$colr = $class[9];}
                                 makeportlet($did, $colr,"Education Verification");

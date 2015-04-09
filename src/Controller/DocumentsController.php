@@ -180,6 +180,8 @@
             $this->set('doc_comp',$this->Document);
             $meedocs = TableRegistry::get('mee_attachments_more');
             $this->set('meedocs',$meedocs);
+            $subdoc = TableRegistry::get('subdocuments');
+            $this->set('subdoc',$subdoc);
             $clients = TableRegistry::get('Clients');
             $c = $clients->find()->all();
             $this->set('clients', $c);
@@ -479,11 +481,13 @@
         
 
         function add($cid = 0, $did = 0, $type = NULL){
+            
             $this->set('doc_comp',$this->Document);
             $this->set('cid', $cid);
             $this->set('did', $did);
             $this->set('sid', '');
-            
+            $subdoc = TableRegistry::get('subdocuments');
+            $this->set('subdoc',$subdoc);
             $meedocs = TableRegistry::get('mee_attachments_more');
             $this->set('meedocs',$meedocs);
             $clients = TableRegistry::get('Clients');
@@ -2943,13 +2947,15 @@
            $this->Document->mee_attach($cid,$order_id); 
            die();
         }
-        /*public function getMeeAtt($id)
+        public function getSubDetails($id)
         {
-            $meedocs = TableRegistry::get('mee_attachments_more');
-            $query = $docs->find()->where(['mee_id'=>$id]);
-            $this->response->body($query);
+            //die('here');
+            $products =  TableRegistry::get('subdocuments');
+            $pro = $products->find()->where(['id'=>$id])->first();
+            $this->response->body($pro);
             return $this->response;
-            die();
-        }*/
+            die;
+            
+        }
 
     }
