@@ -9,16 +9,14 @@
     include(APP . '../webroot/subpages/soap/nusoap.php');
     if ($_SERVER['SERVER_NAME'] == "localhost" || $_SERVER['SERVER_NAME'] == "127.0.0.1") { include_once('/subpages/api.php'); } else { include_once('subpages/api.php'); }
 
-    class DocumentsController extends AppController
-    {
+    class DocumentsController extends AppController{
 
         public $paginate = [
             'limit' => 10,
             'order' => ['id' => 'DESC'],
         ];
         
-        public function initialize()
-        {
+        public function initialize(){
             parent::initialize();
             $this->loadComponent('Settings');
             $this->loadComponent('Document');
@@ -27,46 +25,40 @@
                 $url = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
                 $this->redirect('/login?url='.urlencode($url));
             }
-
         }
 
         public function index()
         {
             $cond = '';
-            $this->set('doc_comp',$this->Document);
+            $this->set('doc_comp', $this->Document);
             $setting = $this->Settings->get_permission($this->request->session()->read('Profile.id'));
             $doc = $this->Document->getDocumentcount();
             $cn = $this->Document->getUserDocumentcount();
             if ($setting->document_list == 0 || count($doc) == 0 || $cn == 0) {
                 $this->Flash->error('Sorry, you don\'t have the required permissions to view documents. Please contact the administrator to enable.');
                 return $this->redirect("/");
-
             }
             if (!$this->request->session()->read('Profile.super')) {
                 $u = $this->request->session()->read('Profile.id');
                 $setting = $this->Settings->get_permission($u);
                 if ($setting && $setting->document_others == 0) {
-                    
-                    if ($cond == '')
+                    if ($cond == '') {
                         $cond = $cond . ' user_id = ' . $u;
-                    else
+                    } else {
                         $cond = $cond . ' AND user_id = ' . $u;
-                    
+                    }
                 }
-                
-
             }
-           
-             $sess = $this->request->session()->read('Profile.id');      
+
+            $sess = $this->request->session()->read('Profile.id');
             $docs = TableRegistry::get('Documents');
             $cls = TableRegistry::get('Clients');
             //$attachments = TableRegistry::get('attachments');
 
-            $cl = $cls->find()->where(['(profile_id LIKE "'.$sess.',%" OR profile_id LIKE "%,'.$sess.',%" OR profile_id LIKE "%,'.$sess.'%")'])->all();
+            $cl = $cls->find()->where(['(profile_id LIKE "' . $sess . ',%" OR profile_id LIKE "%,' . $sess . ',%" OR profile_id LIKE "%,' . $sess . '%")'])->all();
             $cli_id = '999999999';
-            foreach($cl as $cc)
-            {
-                $cli_id = $cli_id.','.$cc->id;
+            foreach ($cl as $cc) {
+                $cli_id = $cli_id . ',' . $cc->id;
             }
             $doc = $docs->find();
             $doc = $doc->select()->where(['(order_id = 0 OR (order_id <> 0 AND order_id IN (SELECT id FROM orders)))']);
@@ -82,37 +74,41 @@
                 $cond = $cond . ' (title LIKE "%' . $_GET['searchdoc'] . '%" OR document_type LIKE "%' . $_GET['searchdoc'] . '%" OR description LIKE "%' . $_GET['searchdoc'] . '%")';
             }
             if (!$this->request->session()->read('Profile.admin') && $setting->document_others == 0) {
-                if ($cond == '')
+                if ($cond == '') {
                     $cond = $cond . ' user_id = ' . $this->request->session()->read('Profile.id');
-                else
+                } else {
                     $cond = $cond . ' AND user_id = ' . $this->request->session()->read('Profile.id');
+                }
             }
             if (!$this->request->session()->read('Profile.admin') && $setting->document_others == 1) {
-                if ($cond == '')
-                    $cond = $cond . ' client_id IN ('.$cli_id.')';
-                else
-                    $cond = $cond . ' AND client_id IN ('.$cli_id.')';
+                if ($cond == '') {
+                    $cond = $cond . ' client_id IN (' . $cli_id . ')';
+                } else {
+                    $cond = $cond . ' AND client_id IN (' . $cli_id . ')';
+                }
             }
-            
             if (isset($_GET['submitted_by_id']) && $_GET['submitted_by_id']) {
-                if ($cond == '')
+                if ($cond == '') {
                     $cond = $cond . ' user_id = ' . $_GET['submitted_by_id'];
-                else
+                } else {
                     $cond = $cond . ' AND user_id = ' . $_GET['submitted_by_id'];
+                }
             }
-            
+
             if (isset($_GET['submitted_for_id']) && $_GET['submitted_for_id']) {
-                if ($cond == '')
+                if ($cond == '') {
                     $cond = $cond . ' uploaded_for = ' . $_GET['submitted_for_id'];
-                else
+                } else {
                     $cond = $cond . ' AND uploaded_for = ' . $_GET['submitted_for_id'];
+                }
             }
-            
+
             if (isset($_GET['client_id']) && $_GET['client_id']) {
-                if ($cond == '')
+                if ($cond == '') {
                     $cond = $cond . ' client_id = ' . $_GET['client_id'];
-                else
+                } else {
                     $cond = $cond . ' AND client_id = ' . $_GET['client_id'];
+                }
             }
             /*if (isset($_GET['type']) && $_GET['type']) {
                 if ($cond == '')
@@ -121,22 +117,22 @@
                     $cond = $cond . ' AND document_type = "' . $_GET['type'] . '"';
             }*/
             if (isset($_GET['type']) && $_GET['type']) {
-                if ($cond == '')
+                if ($cond == ''){
                     $cond = $cond . ' sub_doc_id = "' . $_GET['type'] . '"';
-                else
+                } else {
                     $cond = $cond . ' AND sub_doc_id = "' . $_GET['type'] . '"';
+                }
             }
 
             if (isset($_GET['from']) && isset($_GET['to'])) {
-
                 $f = date('Y-m-d h:i:s', strtotime($_GET['from']));
                 $t = date('Y-m-d h:i:s', strtotime($_GET['to']));
-                if ($cond == '')
+                if ($cond == '') {
                     $cond = $cond . ' (created >="' . $f . '" AND created <= "' . $t . '")';
-                else
+                }else {
                     $cond = $cond . ' AND (created >="' . $f . '" AND created <= "' . $t . '")';
-                // $this->set('start',$cond);
-
+                    // $this->set('start',$cond);
+                }
             }
 
             if($cond=='') {
@@ -175,8 +171,7 @@
             }
         }
 
-        public function view($cid = 0, $did = 0)
-        {
+        public function view($cid = 0, $did = 0) {
             $this->set('doc_comp',$this->Document);
             $meedocs = TableRegistry::get('mee_attachments_more');
             $this->set('meedocs',$meedocs);
@@ -2919,7 +2914,13 @@
         }
 
         public function appendattachments($query){
+            $docs = TableRegistry::get('subdocuments')->find();
+            $docnames = array();
+            foreach($docs as $doc){
+                $docnames[$doc->id] = $doc->title;
+            }
             foreach($query as $client){
+                $client->document_type = $docnames[$client->sub_doc_id];
                 $client->hasattachments = $this->hasattachments($client->order_id, $client->id);
             }
             return $query;
