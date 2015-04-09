@@ -189,7 +189,7 @@ if (isset($this->request->params['pass'][1])) {
 
                         <?php $dr_cl = $doc_comp->getDriverClient(0, $cid);?>
                         <select class="form-control select2me" data-placeholder="No Driver"
-                                id="selecting_driver" <?php if ($driver){ ?>disabled="disabled"<?php } ?>>
+                                id="selecting_driver" <?php if ($driver || $this->request->params['action']=='view' ){ ?>disabled="disabled"<?php } ?>>
                             <option value="0">No Driver
                             </option>
                             <?php

@@ -2173,7 +2173,6 @@
                         $did = $doc->id;
                         if(isset($_POST['attach_doc']))
                         {
-                            //var_dump($_POST['attach_doc']);die();
                             $model = $this->loadModel('DocAttachments');
                             $model->deleteAll(['document_id'=> $did]);
                             //$client_do = implode(',',$_POST['attach_doc']);

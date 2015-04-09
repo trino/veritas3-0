@@ -1604,7 +1604,8 @@
                 </tbody>
             </table>
         </div>
-                    
+           <div class="addattachment<?php echo $dx->id;?> form-group col-md-12"></div> 
+      
                 
         <div class="clearfix"></div>
     <p>&nbsp;</p>
