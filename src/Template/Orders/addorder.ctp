@@ -111,9 +111,19 @@ function provinces($name){
         return false;
     }
 
-    function displayform2($DriverProvince, $thedocuments, $name){
-        if(isset($_GET['order_type']) && urldecode($_GET['order_type'])=='Driver Order'){ return true;}//uncomment
-        $name=trim(strtolower($name));
+    function displayform2($DriverProvince, $thedocuments, $name, $theproduct){
+        $name = strtolower($name);
+        if(isset($_GET['order_type'])) {
+            switch ($theproduct->Acronym){
+                case "MEE":
+                    return true;
+                    break;
+                case "GEM":
+                    if ($name == "challenger road test"){ return false;}
+                    break;
+            }
+        }
+        //echo "Testing: " . $name . " '" . isset($thedocuments[$name][$DriverProvince]) . "'"; debug($thedocuments);
         //echo "<BR>" . $DriverProvince . " " . $name . " <BR>"; print_r($thedocuments[$name]);
         return isset($thedocuments[$name][$DriverProvince]);
     }
@@ -199,7 +209,7 @@ function provinces($name){
 
                                             //debug($sd);
 
-                                            if (displayform2($DriverProvince,$thedocuments,$d->title)){//(displayform($DriverProvince, $provinces, $forms, $d->title,$_this)){
+                                            if (displayform2($DriverProvince,$thedocuments,$d->title, $theproduct)){//(displayform($DriverProvince, $provinces, $forms, $d->title,$_this)){
                                                 $index+=1;
                                                 $act = 0;
                                                 if ($d->table_name == $table) {
@@ -393,7 +403,7 @@ function provinces($name){
                             $dx = $this->requestAction('/orders/getSubDetail/'.$sd->sub_id);
                            // debug($d);
                            
-                        if (displayform2($DriverProvince,$thedocuments,$d->title)){//if (displayform($DriverProvince, $provinces, $forms, $d->title,$_this)){
+                        if (displayform2($DriverProvince,$thedocuments,$d->title, $theproduct)){//if (displayform($DriverProvince, $provinces, $forms, $d->title,$_this)){
 
 
                             $prosubdoc = $this->requestAction('/settings/all_settings/0/0/profile/' . $this->Session->read('Profile.id') . '/' . $d->id);

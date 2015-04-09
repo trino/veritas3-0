@@ -45,7 +45,7 @@ function GET($name, $default = ""){
 
 $ordertype = substr(strtoupper(GET("ordertype")), 0, 3);
 
-function makeform($ordertype, $cols, $color, $Title, $Description, $products, $Disabled, $counting, $settings, $client, $dr_cl, $driver, $_this, $Otype ="", $inforequired = false){
+function makeform($ordertype, $cols, $color, $Title, $Description, $products, $Disabled, $counting, $settings, $client, $dr_cl, $driver, $_this, $Otype ="", $inforequired = false, $Blocked = ""){
     if (strlen($Otype)==0) { $Otype = $Title; }
     if (strlen($color)>0){ $color = "-" . $color;}
     echo '<div class="col-xs-' . $cols . ' col-xs-offset-2">';
@@ -57,7 +57,7 @@ function makeform($ordertype, $cols, $color, $Title, $Description, $products, $D
     printform($counting, $settings, $client, $dr_cl, $driver, true,$_this);
 
     echo '<ul class="pricing' . $color . '-content list-unstyled">';
-    productslist($ordertype, $products, "form", $Disabled);
+    productslist($ordertype, $products, "form", $Disabled, $Blocked);
 
     $productcount=iterator_count($products);
     $tempstr = getcheckboxes("form", $productcount);
@@ -69,18 +69,30 @@ function makeform($ordertype, $cols, $color, $Title, $Description, $products, $D
     return $Otype;
 }
 
-function showproduct($ordertype, $product){
+function showproduct($ordertype, $product, $Blocked){
     $num = $product->number;//do not use the ID number or the name
-    if($ordertype == "MEE"){
-        if ($num == 72 || $num == 32) { return false; } //Hide "Check DL" for Order MEE}
+    if(is_array($Blocked)){
+        return !in_array($num, $Blocked);
     }
+    /*
+    switch ($ordertype) {
+        case "MEE":
+            if ($num == 72 || $num == 32) {return false;} //Hide "Check DL" and social media search for Order MEE
+            break;
+        case "GEM":
+            if ($num == 72) {return false;} //hide road test for GFS employee
+            break;
+    }
+    */
     return true;
 }
-function productslist($ordertype, $products, $ID, $Checked = false){
-    if ($Checked) { $Checked = ' checked disabled="disabled"';} else { $Checked = "";}
+
+function productslist($ordertype, $products, $ID, $Checked = false, $Blocked = ""){
+    if ($Checked) { $Checked = ' checked disabled';} else { $Checked = "";}
     $index=0;
+    if($Blocked){$Blocked = explode(",", $Blocked);}
     foreach ($products as $p) {
-        if(showproduct($ordertype, $p)) {
+        if(showproduct($ordertype, $p, $Blocked)) {
             echo '<li id="product_' . $p->number . '"><div class="col-xs-10"><i class="fa fa-file-text-o"></i> ' . $p->title . '</div>';
             echo '<div class="col-xs-2"><input type="checkbox" value="' . $p->number . '" id="' . $ID . $index . '"' . $Checked . '/></div>';
             echo '<div class="clearfix"></div></li>';
@@ -259,7 +271,7 @@ function printform($counting, $settings, $client, $dr_cl, $driver, $intable = fa
 
 <div class="row">
     <?php
-    $o_type = makeform($product->Acronym, $cols, $product->Color, $product->Name, $product->Description, $products, $product->Checked == 1, $counting, $settings, $client, $dr_cl, $driver, $_this, $product->Alias);
+    $o_type = makeform($product->Acronym, $cols, $product->Color, $product->Name, $product->Description, $products, $product->Checked == 1, $counting, $settings, $client, $dr_cl, $driver, $_this, $product->Alias, false, $product->Blocked);
 
     /*
     if ($ordertype == "MEE") {

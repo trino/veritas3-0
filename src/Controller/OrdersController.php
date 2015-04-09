@@ -1288,6 +1288,11 @@ echo 131231232113;
                 //}
                 $return[strtolower(trim($document->title))] = $insert;
             }
+
+            if (isset($_GET["order_type"])){
+                $prod = TableRegistry::get('product_types')->find()->where(['Name'=> $_GET["order_type"]])->first();
+                $this->set('theproduct', $prod);
+            }
             $this->set('thedocuments',  $return);
             return $return;
         }
