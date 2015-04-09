@@ -150,8 +150,8 @@ if ($orientation== "L") {
 } else {//landscape
     $pdf->Text(45, 116, ucfirst($user->fname) . " " . ucfirst($user->lname), false, false, true, 0, 0, "C");
     $pdf->Text(45, 148, $quiz->Name, false, false, true, 0, 0, "C");
-//    $pdf->SetFontSize(15);
-//    $pdf->Text(15, 123.67, "On this date: " . date("F d, Y", getdatestamp($date)), false, false, true, 0, 0, "C");
+    $pdf->SetFontSize(15);
+    $pdf->Text(45, 160.67, "On this date: " . date("F d, Y", getdatestamp($date)), false, false, true, 0, 0, "C");
 }
 
 
