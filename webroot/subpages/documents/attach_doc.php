@@ -6,9 +6,8 @@
     $delete = isset($disabled);
     //var_dump($attachments);
         if (isset($attachments)) {
-            
-            include 'subpages/filelist.php';
-           listfiles($attachments, "attachments/", 'attach_doc', $delete);
+            include_once 'subpages/filelist.php';
+            listfiles($attachments, "attachments/", 'attach_doc', $delete, 3);
         }
         if (!isset($disabled)) {
 
