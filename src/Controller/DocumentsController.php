@@ -1264,28 +1264,28 @@ class DocumentsController extends AppController{
     }
     function audits($cid, $did)
     {
-        $this->set('doc_comp',$this->Document);
-
-        if (isset($_POST)) {
-
-            if (isset($_GET['draft']) && $_GET['draft'])
-            {
-                $arr['draft'] = 1;
-                $draft = '?draft';
-            }
-            else
-            {
-                $arr['draft'] = 0;
-                $draft = '';
-            }
-            $arr['sub_doc_id'] = $_POST['sub_doc_id'];
-            $arr['client_id'] = $cid;
-            $arr['document_type'] = $_POST['document_type'];
-
-
-            if(!isset($_GET['order_id'])){
+            $this->set('doc_comp',$this->Document);
+           
+            if (isset($_POST)) {
+                
+                if (isset($_GET['draft']) && $_GET['draft'])
+                {
+                    $arr['draft'] = 1;
+                    $draft = '?draft';
+                }
+                else
+                {
+                    $arr['draft'] = 0;
+                    $draft = '';    
+                }
+                $arr['sub_doc_id'] = $_POST['sub_doc_id'];
+                $arr['client_id'] = $cid;
+                $arr['document_type'] = $_POST['document_type'];
+               
+                
+                 if(!isset($_GET['order_id'])){
                 if (!$did || $did == '0') {
-
+                    
                     $arr['user_id'] = $this->request->session()->read('Profile.id');
                     $arr['created'] = date('Y-m-d H:i:s');
                     $docs = TableRegistry::get('Documents');
@@ -1314,7 +1314,6 @@ class DocumentsController extends AppController{
                             {
                                 if($d != "")
                                 {
-
                                     $attach = TableRegistry::get('doc_attachments');
                                     $ds['document_id']= $did;
                                     $ds['attachment'] =$d;
@@ -1355,7 +1354,7 @@ class DocumentsController extends AppController{
                         $doczs->save($docz);
                         if(isset($_POST['attach_doc']))
                         {
-                            
+                           
                             $model = $this->loadModel('doc_attachments');
                             $model->deleteAll(['document_id'=> $did]);
                             $client_docs = $_POST['attach_doc'];
@@ -1432,7 +1431,7 @@ class DocumentsController extends AppController{
             }
 
         }
-        
+        /*
         function pre_employment_road_test($cid, $did)
         {
             $this->set('doc_comp',$this->Document);
@@ -1602,7 +1601,7 @@ class DocumentsController extends AppController{
 
         }
 
-    }
+    }*/
 
     function pre_employment_road_test($cid, $did)
     {
