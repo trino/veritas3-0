@@ -1698,7 +1698,7 @@ if (isset($this->request->params['pass'][1])) {
                 //beforeSend:saveSignature,
                 url: '<?php echo $this->request->webroot;?>documents/savedoc/<?php echo $cid;?>/' + doc_id + '/?document=' + type + '&draft=' + draft+'<?php if(isset($_GET['order_id'])){?>&order_id=<?php echo $_GET['order_id'];}?>',
                 success: function (res) {
-                    //alert(res);
+                   
                     $('#did').val(res);
                     //alert(type);return false;
                     //alert(type);return false;

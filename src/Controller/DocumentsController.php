@@ -1323,17 +1323,17 @@
                         if(isset($_POST['attach_doc']))
                         {
                             //var_dump($_POST['attach_doc']);die();
-                            $model = $this->loadModel('AttachDocs');
-                            $model->deleteAll(['doc_id'=> $did]);
+                            $model = $this->loadModel('doc_attachments');
+                            $model->deleteAll(['document_id'=> $did]);
                             //$client_do = implode(',',$_POST['attach_doc']);
                             //$client_docs=explode(',',$client_do);
                             foreach($_POST['attach_doc'] as $d)
                             {
                                 if($d != "")
                                 {
-                                    $attach = TableRegistry::get('attach_docs');
-                                    $ds['doc_id']= $did;
-                                    $ds['file'] =$d;
+                                    $attach = TableRegistry::get('doc_attachments');
+                                    $ds['document_id']= $did;
+                                    $ds['attachment'] =$d;
                                      $att = $attach->newEntity($ds);
                                      $attach->save($att);
                                     unset($att);
@@ -1371,17 +1371,17 @@
                         $doczs->save($docz);
                         if(isset($_POST['attach_doc']))
                         {
-                            $did = $doc->id;
-                            $model = $this->loadModel('AttachDocs');
-                            $model->deleteAll(['doc_id'=> $did]);
-                            $client_docs = explode(',',$_POST['attach_doc']);
+                            
+                            $model = $this->loadModel('doc_attachments');
+                            $model->deleteAll(['document_id'=> $did]);
+                            $client_docs = $_POST['attach_doc'];
                             foreach($client_docs as $d)
                             {
                                 if($d != "")
                                 {
-                                    $attach = TableRegistry::get('attach_docs');
-                                    $ds['doc_id']= $did;
-                                    $ds['file'] =$d;
+                                    $attach = TableRegistry::get('doc_attachments');
+                                    $ds['document_id']= $did;
+                                    $ds['attachment'] =$d;
                                      $att = $attach->newEntity($ds);
                                      $attach->save($att);
                                     unset($att);
