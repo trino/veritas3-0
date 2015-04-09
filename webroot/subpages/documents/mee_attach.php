@@ -133,9 +133,20 @@
 
     if (printdivrequired($action, $forms, "attachments", $DriverProvince, count($attachment))) {
         $doit = false;
-        if ($action != "View" && $action != "Vieworder") {
+        $description = 'Upload BC, QU, SA Abstract Consent Form PDF';
+
+        echo '</DIV>';
+        if ($action == "View" || $action == "Vieworder") {
+            if (count($attachment) > 0) {
+                $description = "";
+                foreach ($attachment as $name => $file) {
+                    if (strlen($description)>0){$description.=", ";}
+                    $description.= $name;
+                }
+                $doit=true;
+            }
+        } else {
             $doit = true;
-            echo '</DIV>';
             if (count($attachment) > 0) {
                 echo '<div class="form-group row"><div class="col-md-12">';
                 echo '<label class="control-label col-md-4">Please download, fill out, and upload these forms (Required): </label><div class="col-md-8">';
@@ -145,9 +156,8 @@
                 }
                 echo "</DIV></DIV></DIV>";
             }
-            //echo "<FONT COLOR='red'> * Required</FONT>";
-            echo "<DIV>";
         }
+        echo "<DIV>";
 
         if ($doit) {
             echo "<div class='form-group row'>";
@@ -156,7 +166,7 @@
         }
         echo '<div class="col-md-12">';
         if ($doit && count($attachment) > 0) {
-            echo '<label class="control-label col-md-4">Upload BC, QU, SA Abstract Consent Form PDF: </label>';
+            echo '<label class="control-label col-md-4">' . $description . ': </label>';
         }
         echo '<div class="col-md-8 mee_more">';
 
