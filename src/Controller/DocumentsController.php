@@ -180,6 +180,9 @@
             $this->set('doc_comp',$this->Document);
             $meedocs = TableRegistry::get('mee_attachments_more');
             $this->set('meedocs',$meedocs);
+            $clients = TableRegistry::get('Clients');
+            $c = $clients->find()->all();
+            $this->set('clients', $c);
             if (!$this->request->session()->read('Profile.id')) {
                 $this->redirect('/login');
             }
@@ -480,9 +483,10 @@
             $this->set('cid', $cid);
             $this->set('did', $did);
             $this->set('sid', '');
-            $clients = TableRegistry::get('Clients');
+            
             $meedocs = TableRegistry::get('mee_attachments_more');
             $this->set('meedocs',$meedocs);
+            $clients = TableRegistry::get('Clients');
             $c = $clients->find()->all();
             $this->set('clients', $c);
             if ($did) {

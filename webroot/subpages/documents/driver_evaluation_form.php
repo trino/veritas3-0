@@ -5,7 +5,7 @@ printdocumentinfo($did);
 if( isset($sub['de_at'])){  listfiles($sub['de_at'], "attachments/", "", false,3); }
  ?>
 <form id="form_tab3">
-<input class="document_type" type="hidden" name="document_type" value="Road test" />
+<input class="document_type" type="hidden" name="document_type" value="<?php echo $dx->title;?>" />
 
 <input type="hidden" class="sub_docs_id" name="sub_doc_id" value="3" id="af" />
 <div class="clearfix"></div>

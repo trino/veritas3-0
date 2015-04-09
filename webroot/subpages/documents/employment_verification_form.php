@@ -3,7 +3,7 @@
   //      echo "<span style ='color:red;'>subpages/documents/employment_verification_form.php #INC143</span>";
  ?>
 <div id="form_tab9">
-<input class="document_type" type="hidden" name="document_type" value="Employment Verification" />
+<input class="document_type" type="hidden" name="document_type" value="<?php echo $dx->title;?>" />
 <input type="hidden" class="sub_docs_id" name="sub_doc_id" value="9"  />
 <div class="tab-content">
 <div class="tab-pane active" id="subtab_2_2">

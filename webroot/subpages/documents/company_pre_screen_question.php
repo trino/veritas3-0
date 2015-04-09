@@ -2,7 +2,7 @@
  if($this->request->session()->read('debug')){  echo "<span style ='color:red;'>subpages/documents/company_pre_screen_question.php #INC137</span>";}
  ?>
 <form id="form_tab1">
-<input type="hidden" class="document_type" name="document_type" value="Pre-Screening"/>
+<input type="hidden" class="document_type" name="document_type" value="<?php echo $dx->title;?>"/>
 <input type="hidden" name="sub_doc_id" value="1" class="sub_docs_id" id="af" />
 <div class="clearfix"></div>
 <hr/>

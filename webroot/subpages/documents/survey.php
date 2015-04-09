@@ -14,7 +14,7 @@ printdocumentinfo($did);
 <h4 class="col-md-12">Understanding Your Businesses Security Risks and Focus</h4>
 			
     
-    <input type="hidden" class="document_type" name="document_type" value="Survey"/>
+    <input type="hidden" class="document_type" name="document_type" value="<?php echo $dx->title;?>"/>
     <input type="hidden" name="sub_doc_id" value="5" class="sub_docs_id" id="af" />
             <div class="form-body">
                 <div class="form-group col-md-12">

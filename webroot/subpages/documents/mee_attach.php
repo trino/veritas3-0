@@ -7,7 +7,7 @@ include_once 'subpages/filelist.php';
 printdocumentinfo($did);
 ?>
 <form id="form_tab15">
-    <input type="hidden" class="document_type" name="document_type" value="MEE Attachments"/>
+    <input type="hidden" class="document_type" name="document_type" value="<?php echo $dx->title;?>"/>
     <input type="hidden" name="sub_doc_id" value="15" class="sub_docs_id" id="af"/>
 
     <div class="clearfix"></div>

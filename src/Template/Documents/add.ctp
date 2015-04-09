@@ -121,7 +121,7 @@ if (isset($this->request->params['pass'][1])) {
                             
                     <div class="col-md-12 clients_select" style="margin: 10px 0;padding:0">
 
-                        <select name="clients" class="form-control select2me" data-placeholder="Select Client" id="changeclient">
+                        <select name="clients" class="form-control select2me" data-placeholder="Select Client" id="changeclient" <?php if($this->request->params['action']=='view'){?>disabled="disabled"<?php }?>>
                             <option value="0">Select Client</option>
                             <?php
                             $profile_id = $this->request->session()->read('Profile.id');
@@ -145,7 +145,7 @@ if (isset($this->request->params['pass'][1])) {
                        
                     <div class="col-md-12 doc_select" style="margin: 10px 0;padding:0">
 
-                        <select name="doctype" class="form-control select2me" data-placeholder="Select Document" onchange="window.location='<?php echo $this->request->webroot;?>documents/add/<?php echo $cid;?>?type='+$(this).val()">
+                        <select name="doctype" class="form-control select2me" data-placeholder="Select Document" onchange="window.location='<?php echo $this->request->webroot;?>documents/add/<?php echo $cid;?>?type='+$(this).val()" <?php if($this->request->params['action']=='view'){?>disabled="disabled"<?php }?>>
                             <option value="0">Select Document</option>
                             <?php
                              $doc = $doc_comp->getDocument('orders');
@@ -222,7 +222,7 @@ if (isset($this->request->params['pass'][1])) {
                         <?php
                         if($_GET['type']==1)
                         {
-                            
+                            $dx = $this->requestAction('/orders/getSubDetail/'.$_GET['type']);
                        ?>
                         <div class="subform1">
                             <?php
@@ -265,7 +265,7 @@ if (isset($this->request->params['pass'][1])) {
                         <?php
                         if($_GET['type']==2)
                         {
-                            
+                            $dx = $this->requestAction('/orders/getSubDetail/'.$_GET['type']);
                        ?>
                         <div class="subform2">
                             <?php include('subpages/documents/driver_application.php');
@@ -275,7 +275,7 @@ if (isset($this->request->params['pass'][1])) {
                         <?php
                         if($_GET['type']==3)
                         {
-                          
+                          $dx = $this->requestAction('/orders/getSubDetail/'.$_GET['type']);
                         ?>
                         <div class="subform3">
                             <?php
@@ -314,7 +314,7 @@ if (isset($this->request->params['pass'][1])) {
                         <?php
                         if($_GET['type']==4)
                         {
-                          
+                          $dx = $this->requestAction('/orders/getSubDetail/'.$_GET['type']);
                         ?>
                         <div class="subform4">
                             <?php
@@ -353,7 +353,7 @@ if (isset($this->request->params['pass'][1])) {
                         <?php
                         if($_GET['type']==5)
                         {
-                          
+                          $dx = $this->requestAction('/orders/getSubDetail/'.$_GET['type']);
                         ?>
                         <div class="subform5">
                             <?php
@@ -393,7 +393,7 @@ if (isset($this->request->params['pass'][1])) {
                             
                             if($_GET['type']==6)
                         {
-                          
+                          $dx = $this->requestAction('/orders/getSubDetail/'.$_GET['type']);
                         ?>
                         <div class="subform6">
                             <?php
@@ -433,7 +433,7 @@ if (isset($this->request->params['pass'][1])) {
                             
                             if($_GET['type']==7)
                         {
-                          
+                          $dx = $this->requestAction('/orders/getSubDetail/'.$_GET['type']);
                         ?>
                         <div class="subform7">
                             <?php
@@ -473,7 +473,7 @@ if (isset($this->request->params['pass'][1])) {
                             
                             if($_GET['type']==8)
                         {
-                          
+                          $dx = $this->requestAction('/orders/getSubDetail/'.$_GET['type']);
                         ?>
                         <div class="subform8">
                             <?php
@@ -513,7 +513,7 @@ if (isset($this->request->params['pass'][1])) {
                             
                             if($_GET['type']==9)
                         {
-                          
+                          $dx = $this->requestAction('/orders/getSubDetail/'.$_GET['type']);
                         ?>
                         <div class="subform9">
                             <?php
@@ -553,6 +553,7 @@ if (isset($this->request->params['pass'][1])) {
                             
                             if($_GET['type']==10)
                         {
+                            $dx = $this->requestAction('/orders/getSubDetail/'.$_GET['type']);
                           
                         ?>
 
@@ -1688,7 +1689,7 @@ if (isset($this->request->params['pass'][1])) {
         if($this->request->params['action']=='view')
         {
             ?>
-        for (var h = 1; h <= parseFloat('<?php echo $doc_count;?>'); h++) {
+        /*for (var h = 1; h <= parseFloat('<?php echo $doc_count;?>'); h++) {
             $('#form_tab' + h + ' input').attr('disabled', 'disabled');
             $('#form_tab' + h + ' textarea').attr('disabled', 'disabled');
             $('#form_tab' + h + ' select').attr('disabled', 'disabled');
@@ -1697,7 +1698,16 @@ if (isset($this->request->params['pass'][1])) {
             $('.nav a').show();
             $('#form_tab' + h + ' input[type="submit"]').hide();
             $('.form-actions').hide();
-        }
+        }*/
+        var h = '<?php echo $_GET['type'];?>'; 
+        $('#form_tab' + h + ' input').attr('disabled', 'disabled');
+            $('#form_tab' + h + ' textarea').attr('disabled', 'disabled');
+            $('#form_tab' + h + ' select').attr('disabled', 'disabled');
+            $('#form_tab' + h + ' button').hide();
+            $('#form_tab' + h + ' a').not('.dl').hide();
+            $('.nav a').show();
+            $('#form_tab' + h + ' input[type="submit"]').hide();
+            $('.form-actions').hide();
         <?php
     }
     if(isset($did) && $did)
@@ -1709,6 +1719,7 @@ if (isset($this->request->params['pass'][1])) {
     ?>
         var draft = 0;
         $(document.body).on('click', '.cont', function () {
+            var sid = $('#sub_id').val();
             <?php
             if(!isset($_GET['doc']))
             {
@@ -1843,24 +1854,24 @@ if (isset($this->request->params['pass'][1])) {
                     $('#did').val(res);
                     //alert(type);return false;
                     //alert(type);return false;
-                    if (type == "Pre-Screening") {
+                    if (sid == "1") {
                         var forms = $(".tab-pane.active").prev('.tab-pane').find(':input'),
                             url = '<?php echo $this->request->webroot;?>documents/savePrescreening/?document=' + type + '&draft=' + draft+'<?php if(isset($_GET['order_id'])){?>&order_id=<?php echo $_GET['order_id'];}?>',
                             order_id = $('#did').val(),
                             cid = '<?php echo $cid;?>';
                         savePrescreen(url, order_id, cid, draft);
 
-                    } else if (type == "Driver Application") {
+                    } else if (sid == "2") {
                         var order_id = $('#did').val(),
                             cid = '<?php echo $cid;?>',
                             url = '<?php echo $this->request->webroot;?>documents/savedDriverApp/' + order_id + '/' + cid + '/?document=' + type + '&draft=' + draft+'<?php if(isset($_GET['order_id'])){?>&order_id=<?php echo $_GET['order_id'];}?>';
                         savedDriverApp(url, order_id, cid,draft);
-                    } else if (type == "Road test") {
+                    } else if (sid == "3") {
                         var order_id = $('#did').val(),
                             cid = '<?php echo $cid;?>',
                             url = '<?php echo $this->request->webroot;?>documents/savedDriverEvaluation/' + order_id + '/' + cid + '/?document=' + type + '&draft=' + draft+'<?php if(isset($_GET['order_id'])){?>&order_id=<?php echo $_GET['order_id'];}?>';
                         savedDriverEvaluation(url, order_id, cid,draft);
-                    } else if (type == "Consent Form") {
+                    } else if (sid == "4") {
                         save_signature('3');
                         save_signature('4');
                         save_signature('5');
@@ -1873,7 +1884,7 @@ if (isset($this->request->params['pass'][1])) {
                         },1000);
 
                     }
-                    else if (type == "Employment Verification") {
+                    else if (sid == "9") {
 
                         //alert(type);
                         var order_id = $('#did').val(),
@@ -1881,7 +1892,7 @@ if (isset($this->request->params['pass'][1])) {
                             url = '<?php echo $this->request->webroot;?>documents/saveEmployment/' + order_id + '/' + cid + '/?document=' + type + '&draft=' + draft+'<?php if(isset($_GET['order_id'])){?>&order_id=<?php echo $_GET['order_id'];}?>';
                         saveEmployment(url, order_id, cid, type,draft);
                     }
-                    else if (type == "Education Verification") {
+                    else if (sid == "10") {
 
                         //alert(type);
                         var order_id = $('#did').val(),
@@ -1889,7 +1900,7 @@ if (isset($this->request->params['pass'][1])) {
                             url = '<?php echo $this->request->webroot;?>documents/saveEducation/' + order_id + '/' + cid + '/?document=' + type + '&draft=' + draft+'<?php if(isset($_GET['order_id'])){?>&order_id=<?php echo $_GET['order_id'];}?>';
                         saveEducation(url, order_id, cid, type,draft);
                     }
-                    else if (type == "Feedbacks") {
+                    else if (sid == "6") {
                         var order_id = $('#did').val(),
                             cid = '<?php echo $cid;?>',
                             url = '<?php echo $this->request->webroot;?>feedbacks/add/' + order_id + '/' + cid + '/?document=' + type + '&draft=' + draft;
@@ -1910,7 +1921,7 @@ if (isset($this->request->params['pass'][1])) {
                         });
 
                     }
-                    else if (type == "Survey") {
+                    else if (sid == "5") {
                         var order_id = $('#did').val(),
                             cid = '<?php echo $cid;?>',
                             url = '<?php echo $this->request->webroot;?>feedbacks/addsurvey/' + order_id + '/' + cid + '/?document=' + type + '&draft=' + draft;
@@ -1931,7 +1942,7 @@ if (isset($this->request->params['pass'][1])) {
                         });
 
                     }
-                    else if (type == "Attachment") {
+                    else if (sid == "7") {
                         var act = $('#form_tab7').attr('action');
 
                         $('#form_tab7').attr('action', function (i, val) {
@@ -1941,7 +1952,7 @@ if (isset($this->request->params['pass'][1])) {
 
 
                     }
-                    else if (type == "Audits") {
+                    else if (sid == "8") {
                         var act = $('#form_tab8').attr('action');
 
                         $('#form_tab8').attr('action', function (i, val) {
@@ -1952,7 +1963,7 @@ if (isset($this->request->params['pass'][1])) {
 
 
                     }
-                    else if(type == 'Basic Pre-Screen Questions')
+                    else if(sid == '11')
                     {
                          var act = $('#form_tab11').attr('action');
 
@@ -1964,7 +1975,7 @@ if (isset($this->request->params['pass'][1])) {
 
                     }
                     else
-                    if (type == "MEE Attachments") {
+                    if (sid == "15") {
                         //alert('test');return;
                          var order_id = $('#did').val(),
                             cid = '<?php echo $cid;?>',

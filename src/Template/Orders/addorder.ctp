@@ -1412,6 +1412,7 @@ function provinces($name){
         var draft = 0;
         var saving_draft = 0;
         $(document.body).on('click', '.cont', function () {
+
             
             //$('.submit_dra').attr('style','display:inline-block');
 
@@ -1439,6 +1440,7 @@ function provinces($name){
             }
 
             var type = $(".tabber.active").prev('.tabber').find("input[name='document_type']").val();
+            var sid = $(".tabber.active").prev('.tabber').find("input[name='sub_doc_id']").val();
             //alert(type);
             if (type == 'add_driver') {
                 saveDriver('<?php echo $cid;?>');
@@ -1478,7 +1480,7 @@ function provinces($name){
                         });
                         // saving data
                         doc_id = res;
-                        if (type == "Pre-Screening") {
+                        if (sid == "1") {
                             var forms = $(".tabber.active").prev('.tabber').find(':input'),
                                 url = '<?php echo $this->request->webroot;?>documents/savePrescreening',
                                 order_id = $('#did').val(),
@@ -1487,7 +1489,7 @@ function provinces($name){
                             savePrescreen(url, order_id, cid, forms);
 
 
-                        } else if (type == "Driver Application") {
+                        } else if (sid == "2") {
                             if ($('#confirm_check').is(':checked')) {
                                 var order_id = $('#did').val(),
                                     cid = '<?php echo $cid;?>',
@@ -1496,12 +1498,12 @@ function provinces($name){
                             }
 
 
-                        } else if (type == "Road test") {
+                        } else if (sid == "3") {
                             var order_id = $('#did').val(),
                                 cid = '<?php echo $cid;?>',
                                 url = '<?php echo $this->request->webroot;?>documents/savedDriverEvaluation/' + order_id + '/' + cid;
                             savedDriverEvaluation(url, order_id, cid);
-                        } else if (type == "Consent Form") {
+                        } else if (sid == "4") {
 
                             //alert(type);
                             var order_id = $('#did').val(),
@@ -1509,7 +1511,7 @@ function provinces($name){
                                 url = '<?php echo $this->request->webroot;?>documents/savedMeeOrder/' + order_id + '/' + cid;
                             savedMeeOrder(url, order_id, cid);
                         }
-                        else if (type == "Employment Verification") {
+                        else if (sid == "9") {
 
                             //alert(type);
                             var order_id = $('#did').val(),
@@ -1517,7 +1519,7 @@ function provinces($name){
                                 url = '<?php echo $this->request->webroot;?>documents/saveEmployment/' + order_id + '/' + cid;
                             saveEmployment(url, order_id, cid);
                         }
-                        else if (type == "Education Verification") {
+                        else if (sid == "10") {
 
                             //alert(type);
                             var order_id = $('#did').val(),
@@ -1525,7 +1527,7 @@ function provinces($name){
                                 url = '<?php echo $this->request->webroot;?>documents/saveEducation/' + order_id + '/' + cid;
                             saveEducation(url, order_id, cid);
                         }
-                        else if (type == "Feedbacks") {
+                        else if (sid == "6") {
                         var order_id = $('#did').val(),
                             cid = '<?php echo $cid;?>',
                             url = '<?php echo $this->request->webroot;?>feedbacks/add/' + order_id + '/' + cid;
@@ -1537,7 +1539,7 @@ function provinces($name){
                         });
 
                     }
-                    else if (type == "Survey") {
+                    else if (sid == "5") {
                         var order_id = $('#did').val(),
                             cid = '<?php echo $cid;?>',
                             url = '<?php echo $this->request->webroot;?>feedbacks/addsurvey/' + order_id + '/' + cid;
@@ -1549,7 +1551,7 @@ function provinces($name){
                         });
 
                     }
-                    else if (type == "Attachment") {
+                    else if (sid == "7") {
 
                         var order_id = $('#did').val(),
                             cid = '<?php echo $cid;?>',
@@ -1563,7 +1565,7 @@ function provinces($name){
 
 
                     }
-                    else if (type == "Audits") {
+                    else if (sid == "8") {
                          var order_id = $('#did').val(),
                             cid = '<?php echo $cid;?>',
                             url = '<?php echo $this->request->webroot;?>documents/audits/' + cid + '/' + order_id+ '?draft=' + draft;
@@ -1575,7 +1577,7 @@ function provinces($name){
                         });
 
                     }
-                    else if (type == "MEE Attachments") {
+                    else if (sid == "15") {
                          var order_id = $('#did').val(),
                             cid = '<?php echo $cid;?>',
                             url = '<?php echo $this->request->webroot;?>documents/mee_attach/' + order_id + '/' + cid+ '?draft=' + draft;
@@ -1590,7 +1592,7 @@ function provinces($name){
                     else{
                     <?php foreach($doc as $dx)
                             {
-                                if($dx->id >15)
+                                if($dx->id >15 || $dx->id==11)
                                 {
                                     
                                 ?>

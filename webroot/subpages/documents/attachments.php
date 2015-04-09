@@ -12,7 +12,7 @@ printdocumentinfo($did);
 ?>
 
     <div class="row">
-    <input type="hidden" class="document_type" name="document_type" value="Attachment"/>
+    <input type="hidden" class="document_type" name="document_type" value="<?php echo $dx->title;?>"/>
     <input type="hidden" name="sub_doc_id" value="7" class="sub_docs_id" id="af" />
     <div class="form-group col-md-12">
             <label class="control-label col-md-3">Title</label>
