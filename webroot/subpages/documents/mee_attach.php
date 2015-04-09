@@ -13,11 +13,9 @@
 
     $action = ucfirst($param);
     if (!isset($mee_att)) {$mee_att = array();}
-
-    $forms = "";
+    if (!isset($forms)){$forms = "";}
     if(!isset($DriverProvince)){$DriverProvince = "";}
     if (isset($_GET["forms"])) {$forms = explode(",", $_GET["forms"]);}
-    if (isset($_GET["type"])) {$forms = explode(",", $_GET["type"]);}//THIS SHOULD BE FORMS, NOT TYPE!!!!
     $attachment = array();//Files are in: C:\wamp\www\veritas3-0\webroot\img\pdfs
     if (is_array($forms)) {
         if (in_array("1", $forms)) {//                  Name         Filename
@@ -35,6 +33,11 @@
         }
     }
 
+    function nodocs($docsprinted){
+        if($docsprinted==0){
+            echo '<div class="form-group row"><div class="col-md-12" align="center">No attachments</div></div>';
+        }
+    }
 
     function printrequired($action, $forms, $AttachmentName, $DriversProvince, $attachment = 0, $message = "Required"){
         if ($action != "View" && $action != "Vieworder" && isrequired($forms, $AttachmentName, $DriversProvince, $attachment)) {
@@ -117,24 +120,13 @@
 <p>Note that two pieces of Identification will be necessary for any order including a Premium Criminal Record Check.</p>
 <p>ISB Canada is unable to obtain <strong>Alberta</strong> Driver’s Record Abstracts and CVOR’s. Please upload driver provided documentation for <strong>Alberta or any other province (optional)</strong> if you wish to include these products in the driver’s Score Card.</p>
 
-<HR>
-</div>';
-    //    }
+<HR></div><div class="col-md-12"><h4><strong>The following form(s) are Mandatory</strong></h4></div>';
 
-
-
-
-
-    ?>
-
-
-    <div class="col-md-12"><h4><strong>The following form(s) are Mandatory</strong></h4></div>
-    <?php
-
+    $docsprinted=0;
     if (printdivrequired($action, $forms, "attachments", $DriverProvince, count($attachment))) {
         $doit = false;
         $description = 'Upload BC, QU, SA Abstract Consent Form PDF';
-
+        $docsprinted+=1;
         echo '</DIV>';
         if ($action == "View" || $action == "Vieworder") {
             if (count($attachment) > 0) {
@@ -241,7 +233,8 @@
 
 
 
-    if (printdivrequired($action, $forms, "id_piece", $DriverProvince, getattachment($mee_att, "id_piece1") . getattachment($mee_att, "id_piece2"))) { ?>
+    if (printdivrequired($action, $forms, "id_piece", $DriverProvince, getattachment($mee_att, "id_piece1") . getattachment($mee_att, "id_piece2"))) {
+        $docsprinted+=1; ?>
             <div class="col-md-12">
                 <label class="control-label col-md-4">Upload 2 pieces of ID: </label>  
                 <div class="col-md-8">              
@@ -276,15 +269,15 @@
         });
         </script>
             <div class="col-md-12"><hr></div>
-
-
-
-    <div class="col-md-12"><h4><strong>The following form(s) are Optional</strong></h4></div>
-
     <?php
     }
 
-    if (printdivrequired($action, $forms, "driver_record_abstract", $DriverProvince, getattachment($mee_att, "driver_record_abstract"))) { ?>
+    nodocs($docsprinted);
+    echo '<div class="col-md-12"><h4><strong>The following form(s) are Optional</strong></h4></div>';
+
+    $docsprinted=0;
+    if (printdivrequired($action, $forms, "driver_record_abstract", $DriverProvince, getattachment($mee_att, "driver_record_abstract"))) {
+        $docsprinted+=1;?>
             <div class="col-md-12">
                 <label class="control-label col-md-4">Upload Driver's Record Abstract: </label>
                 <div class="col-md-8">
@@ -306,7 +299,8 @@
         </script>
     <?php
     }
-    if (printdivrequired($action, $forms, "cvor", $DriverProvince, getattachment($mee_att, 'cvor'))) { ?>
+    if (printdivrequired($action, $forms, "cvor", $DriverProvince, getattachment($mee_att, 'cvor'))) {
+        $docsprinted+=1;?>
             <div class="col-md-12">
                 <label class="control-label col-md-4">Upload CVOR: </label>
                 <div class="col-md-8">
@@ -329,6 +323,7 @@
     <?php }
 
     if (printdivrequired($action, $forms, "resume", $DriverProvince, getattachment($mee_att, 'resume'))) {
+        $docsprinted+=1;
         ?>
             <div class="col-md-12">
                 <label class="control-label col-md-4">Upload Resume: </label>
@@ -352,6 +347,7 @@
     <?php }
 
     if (printdivrequired($action, $forms, "certification", $DriverProvince, getattachment($mee_att, 'certification'))) {
+        $docsprinted+=1;
         ?>
             <div class="col-md-12">
                 <label class="control-label col-md-4">Upload Certifications: </label>
@@ -373,6 +369,8 @@
         });
         </script>
     <?php }
+
+    nodocs($docsprinted);
     ?>
 
     <div class="clearfix"></div>

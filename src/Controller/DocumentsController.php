@@ -187,9 +187,7 @@
             $this->set('clients', $c);
             if (!$this->request->session()->read('Profile.id')) {
                 $this->redirect('/login');
-            }
-            else
-            {
+            } else {
             $this->set('cid', $cid);
             $this->set('did', $did);
             $this->set('sid', '');
@@ -199,10 +197,11 @@
                 $this->set('mod', $document);
 
                 $order = TableRegistry::get('orders')->find()->where(['id' => $document->order_id])->first();
-                if($order)
-                $this->set('forms', explode(",", $order->forms));
-                else
-                $this->set('forms', '');
+                if($order) {
+                    $this->set('forms', explode(",", $order->forms));
+                } else {
+                    $this->set('forms', '');
+                }
                 $profile = TableRegistry::get('profiles')->find()->where(['id' => $document->user_id])->first();
                 $this->set('DriverProvince', $profile->driver_province);
 
@@ -221,7 +220,6 @@
             if ($setting->document_list == 0 || count($doc) == 0 || $cn == 0) {
                 $this->Flash->error('Sorry, you don\'t have the required permissions.');
                 return $this->redirect("/");
-
             }
             /*$profile = $this->Clients->get($id);
             $this->set('profile', $profile);*/
@@ -234,21 +232,17 @@
                 $sub_doc = TableRegistry::get('Subdocuments');
                 $sd = $sub_doc->find()->all();
                 
-                foreach($sd as $s)
-                {
-                    if($s->id >12)
-                    {
-                        if ($query->sub_doc_id == $s->id) 
-                        {
+                foreach($sd as $s) {
+                    if($s->id >12) {
+                        if ($query->sub_doc_id == $s->id) {
                             //echo $s->table_name;
                             $mods = TableRegistry::get($s->table_name);
-                            if(!isset($_GET['order_id']))                    
+                            if(!isset($_GET['order_id'])) {
                                 $mod = $mods->find()->where(['document_id' => $did])->first();
-                            else
-                                $mod = $mods->find()->where(['order_id' => $_GET['order_id']])->first();                                        
+                            } else {
+                                $mod = $mods->find()->where(['order_id' => $_GET['order_id']])->first();
+                            }
                             $this->set($s->table_name, $mod);
-                            //var_dump($mod);
-                            
                         }
                     }   
                 }
@@ -261,15 +255,12 @@
                     $feed = $feeds->find()->where(['order_id' => $_GET['order_id']])->first();                                        
                     $this->set('feeds', $feed);
                 } elseif ($query->sub_doc_id == '5') {
-
                     $survey = TableRegistry::get('Survey');
                     //$pre_at = TableRegistry::get('driver_application_accident');
                     if(!isset($_GET['order_id']))                    
                     $sur = $survey->find()->where(['document_id' => $did])->first();
                     else
-                    $sur = $survey->find()->where(['order_id' => $_GET['order_id']])->first();                                                            
-                    
-                                                                                
+                    $sur = $survey->find()->where(['order_id' => $_GET['order_id']])->first();
                     $this->set('survey', $sur);
                 } elseif ($query->sub_doc_id == '7') {
                     $attachments = TableRegistry::get('attachments');
@@ -279,8 +270,7 @@
                     else
                     $attachment = $attachments->find()->where(['order_id' => $_GET['order_id']])->all();                                        
                     $this->set('attach', $attachment);
-                }
-                elseif ($query->sub_doc_id == '8') {
+                } elseif ($query->sub_doc_id == '8') {
                     $attachments = TableRegistry::get('audits');
                     //$pre_at = TableRegistry::get('driver_application_accident');
                     if(!isset($_GET['order_id']))                    
@@ -288,8 +278,7 @@
                     else
                     $audits = $attachments->find()->where(['order_id' => $_GET['order_id']])->first();                                        
                     $this->set('audits', $audits);
-                }
-                elseif ($query->sub_doc_id == '11') {
+                } elseif ($query->sub_doc_id == '11') {
                     $attachments = TableRegistry::get('generic_forms');
                     //$pre_at = TableRegistry::get('driver_application_accident');
                     if(!isset($_GET['order_id']))                    
@@ -297,8 +286,7 @@
                     else
                     $audits = $attachments->find()->where(['order_id' => $_GET['order_id']])->first();                                        
                     $this->set('generic', $audits);
-                }
-                elseif ($query->sub_doc_id == '12') {
+                } elseif ($query->sub_doc_id == '12') {
                     $attachments = TableRegistry::get('abstract_forms');
                     //$pre_at = TableRegistry::get('driver_application_accident');
                     if(!isset($_GET['order_id']))                    
