@@ -905,7 +905,7 @@ include_once 'subpages/filelist.php';
             $pre_at['attach_doc'] = array();
         }
         if(!count($pre_at['attach_doc']) && $this->request->params['action']!='view' && $this->request->params['action']!='vieworder'){
-         
+
             ?>
 
             <div class="form-group row" style="display:block;margin-top:5px; margin-bottom: 5px;">

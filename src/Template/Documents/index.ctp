@@ -241,11 +241,11 @@ if ($_SERVER['SERVER_NAME'] == "localhost" || $_SERVER['SERVER_NAME'] == "127.0.
                                 <td style="width: 240px;">
                                     <?php switch (1){//change the number to pick a style
                                         case 0://plain text
-                                            echo h($docs->document_type);
+                                            echo  h($docs->document_type);
                                             break;
                                         case 1://top block
                                         echo '<div class="dashboard-stat ';
-                                        $colors = array("pre-screening" => "blue-madison", "survey" => "green", "driver application" => "red", "road test" => "yellow", "consent form" => "purple", "feedbacks" => "red-intense", "attachment" => "yellow-saffron", "audits" => "grey-cascade");
+                                       // $colors = array("pre-screening" => "blue-madison", "survey" => "green", "driver application" => "red", "road test" => "yellow", "consent form" => "purple", "feedbacks" => "red-intense", "attachment" => "yellow-saffron", "audits" => "grey-cascade");
                                        /* if (isset($colors[strtolower($docs->document_type)])) {
                                             echo $colors[strtolower($docs->document_type)];
                                         }
@@ -270,7 +270,7 @@ if ($_SERVER['SERVER_NAME'] == "localhost" || $_SERVER['SERVER_NAME'] == "127.0.
                                                echo $this->request->webroot . 'documents/view/' . $docs->client_id . '/' . $docs->id . '?order_id=' . $docs->order_id.'&type='.$docs->sub_doc_id;if($docs->sub_doc_id==4)echo '&doc='.urlencode($docs->document_type);
                                                }
                                        } else { ?>javascript:;<?php } ?>">
-                                        <?= h(str_replace('_',' ',$docs->document_type)); //it won't let me put it in the desc  ?>
+                                        <?=  h(str_replace('_',' ',$docs->document_type)); //it won't let me put it in the desc  ?>
 
                                         <i class="fa fa-copy"></i>
 

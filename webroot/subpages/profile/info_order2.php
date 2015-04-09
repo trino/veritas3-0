@@ -1,5 +1,5 @@
 <?php
-if($this->request->session()->read('debug')) {echo "<span style ='color:red;'>info_order2.php #INC???</span>";}
+if($this->request->session()->read('debug')) {echo "<span style ='color:red;'>subpages/profile/info_order2.php #INC???</span>";}
 
 $intable = true;
 $cols = 8;
@@ -36,8 +36,7 @@ foreach ($drcl_c as $drclc) {
     $counting++;
 }
 
-function GET($name, $default = "")
-{
+function GET($name, $default = ""){
     if (isset($_GET[$name])) {
         return $_GET[$name];
     }
@@ -71,8 +70,9 @@ function makeform($ordertype, $cols, $color, $Title, $Description, $products, $D
 }
 
 function showproduct($ordertype, $product){
+    $num = $product->number;//do not use the ID number or the name
     if($ordertype == "MEE"){
-        if ($product->number == 72) { return false; } //Hide "Check DL" for Order MEE}
+        if ($num == 72 || $num == 32) { return false; } //Hide "Check DL" for Order MEE}
     }
     return true;
 }

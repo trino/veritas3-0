@@ -90,8 +90,7 @@ function listfiles($client_docs, $dir, $field_name='client_doc',$delete, $method
             $count += 1;
             if (isset($cd->attachment)) {
                 $file = $cd->attachment;
-            }//id, order_id, document_id, sub_id, attach_doc (null)
-            if (isset($cd->file)) {
+            } else if (isset($cd->file)) {
                 $file = $cd->file;
             }
                 
@@ -157,7 +156,7 @@ function listfiles($client_docs, $dir, $field_name='client_doc',$delete, $method
 
 
         <div class="form-group col-md-12">
-            <label class="control-label" id="attach_label">Attached Files : </label>
+            <label class="control-label" id="attach_label">Attached Files: </label>
 
             <div class="row">
                 <!-- <a href="#" class="btn btn-primary">Browse</a> -->
