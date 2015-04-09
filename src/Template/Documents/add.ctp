@@ -124,13 +124,14 @@ if (isset($this->request->params['pass'][1])) {
                     else
                         $driver=0;
                     ?>
-                    <div class="col-md-4">
-                        <div class="portlet box blue" style="">
+                    <div class="col-md-4" style="padding-right: 0;
+  padding-left: 0;">
+                        <div class="portlet box blue" style="border:0;">
                             <div class="portlet-title">
-                                <div class="caption"> Document Option </div>
+                                <div class="caption"> Document Options </div>
                             </div>
                             <div class="portlet-body form" >
-                            
+
                     <div class="col-md-12 clients_select" style="margin: 10px 0;padding:0">
 
                         <select name="clients" class="form-control select2me" data-placeholder="Select Client" id="changeclient">
@@ -184,7 +185,6 @@ if (isset($this->request->params['pass'][1])) {
                      <?php
                     }
                     ?>
-                    <div class="clearfix"></div>
                     <div class="col-md-12" style="margin: 10px 0;padding:0">
 
                         <?php $dr_cl = $doc_comp->getDriverClient(0, $cid);?>
