@@ -118,9 +118,11 @@
    <hr/>
 
 <p>Note that two pieces of Identification will be necessary for any order including a Premium Criminal Record Check.</p>
-<p>ISB Canada is unable to obtain <strong>Alberta</strong> Driver’s Record Abstracts and CVOR’s. Please upload driver provided documentation for <strong>Alberta or any other province (optional)</strong> if you wish to include these products in the driver’s Score Card.</p>
+<p>ISB Canada is unable to obtain <strong>Alberta</strong> Driver’s Record Abstracts and CVOR’s. Please upload driver provided documentation for <strong>Alberta or any other province (optional)</strong> if you wish to include these products in the driver’s Score Card.</p>';
 
-<HR></div><div class="col-md-12"><h4><strong>The following form(s) are Mandatory</strong></h4></div>';
+    $mand = "Optional";//isrequired($forms, $AttachmentName, $DriversProvince, $attachments = 0){
+    if (count($attachment) > 0 || isrequired($forms, "id_piece", $DriverProvince, 0, True)) { $mand = "Mandatory"; }
+    echo '<HR></div><div class="col-md-12"><h4><strong>The following form(s) are ' . $mand . '</strong></h4></div>';
 
     $docsprinted=0;
     if (printdivrequired($action, $forms, "attachments", $DriverProvince, count($attachment))) {
@@ -268,12 +270,13 @@
            fileUpload('mee_att_2'); 
         });
         </script>
-            <div class="col-md-12"><hr></div>
     <?php
     }
 
     nodocs($docsprinted);
-    echo '<div class="col-md-12"><h4><strong>The following form(s) are Optional</strong></h4></div>';
+    if ($mand != "Optional") {
+        echo '<div class="col-md-12"><hr></div><div class="col-md-12"><h4><strong>The following form(s) are Optional</strong></h4></div>';
+    }
 
     $docsprinted=0;
     if (printdivrequired($action, $forms, "driver_record_abstract", $DriverProvince, getattachment($mee_att, "driver_record_abstract"))) {
