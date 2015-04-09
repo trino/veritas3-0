@@ -38,26 +38,17 @@
             <a href="<?php echo $this->request->webroot; ?>orders/orderslist" class="floatright btn btn-warning btnspc">
                 List All Orders</a>
         <?php }
-        if ($sidebar->orders_mee == 1) { ?>
-            <a href="<?php /*echo $this->request->webroot . $order_url;*/
-                echo $this->request->webroot; ?>orders/productSelection?driver=0&ordertype=MEE"
-               class="floatright btn red btnspc">
-                Order MEE</a>
-        <?php }
-        if ($sidebar->orders_create == 1) {
-            if ($sidebar->order_requalify == 1) {
-                ?>
-                <a href="<?php echo $this->request->webroot; ?>orders/productSelection?driver=0&ordertype=QUA"
-                   class="floatright btn btn-primary btnspc">
-                    Re-Qualify </a>
-            <?php }
-            if ($sidebar->orders_products == 1) {
-                ?>
-                <a href="<?php echo $this->request->webroot; ?>orders/productSelection?driver=0&ordertype=CART"
-                   class="floatright btn green-haze btnspc" color="#36d7ac">
-                    Order Products </a>
-            <?php }
+
+
+    if ($sidebar->orders_create == 1){
+        foreach($products as $product){
+            $alias = $product->Sidebar_Alias;
+            if($sidebar->$alias ==1) {
+                echo '<a href="' . $this->request->webroot . 'orders/productSelection?driver=0&ordertype=' . $product->Acronym . '"';
+                echo ' class="floatright btn ' . $product->ButtonColor  . ' btnspc">' . $product->Name . "</a>";
+            }
         }
+    }
     ?>
 
 

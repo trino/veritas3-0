@@ -975,6 +975,7 @@ echo 131231232113;
             $setting = $this->Settings->get_permission($this->request->session()->read('Profile.id'));
             $doc = $this->Document->getDocumentcount();
             $cn = $this->Document->getUserDocumentcount();
+            $this->set('products', TableRegistry::get('product_types')->find('all'));
 
             if ($setting->orders_list == 0 || count($doc) == 0 || $cn == 0) {
                 $this->Flash->error('Sorry, you don\'t have the required permissions.');

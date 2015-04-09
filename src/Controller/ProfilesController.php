@@ -474,11 +474,12 @@
             die();
         }
 
-        public function view($id = null)
-        {
+        public function view($id = null){
             if (isset($_GET['success'])) {
                 $this->Flash->success('Order saved successfully');
             }
+            $this->set('products', TableRegistry::get('product_types')->find('all'));
+
             $this->loadModel("ProfileTypes");
             $this->set("ptypes", $this->ProfileTypes->find()->where(['enable' => '1'])->all());
             $this->set('uid', $id);
@@ -576,6 +577,8 @@
             $this->set('disabled', 1);
             $this->set('id', $id);
             $this->render("edit");
+
+
         }
 
         public function viewReport($profile, $profile_edit_view = 0)

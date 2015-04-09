@@ -200,8 +200,7 @@ $profileID = $this->Session->read('Profile.id');
                                 </li>
                             <?php } ?>
 
-                            <?php if ($sidebar->orders_create == 1) { 
-                                if ($sidebar->orders_mee == 1){
+                            <?php if ($sidebar->orders_create == 1) {
                                     foreach($productlist as $product){
                                         $alias = $product->Sidebar_Alias;
                                         if($sidebar->$alias ==1) {
@@ -216,7 +215,6 @@ $profileID = $this->Session->read('Profile.id');
                                             echo $product->Name . "</a></li>";
                                         }
                                     }
-                                }
                             } ?>
                         </ul>
                     <?php } ?>
