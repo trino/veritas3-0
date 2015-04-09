@@ -331,7 +331,8 @@ class TrainingController extends AppController {
     public function getanswereddate($QuizID, $UserID){
         $table = TableRegistry::get("training_answers");
         $quiz =  $table->find('all', array('conditions' => array(['QuizID'=>$QuizID, 'UserID'=>$UserID]), 'order' => array('QuestionID ASC') ))->first();
-        return $quiz->created;
+        if($quiz) {return $quiz->created;}
+        return false;
     }
 
     public function enumanswers($QuizID, $UserID){

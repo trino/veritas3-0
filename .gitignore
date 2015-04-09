@@ -54,7 +54,7 @@ vendor/**
 webroot/subpages/soap/**
 webroot/attachments/**
 webroot/orders/**
-webroot/img/certificates/**
+webroot/img/certificates/*.pdf
 webroot/img/jobs/**
 webroot/img/logos/**
 webroot/img/profile/**

@@ -11,15 +11,19 @@ function right($text, $length){
     return substr($text, -$length);
 }
 function extractdate($text){
-    if(str_replace(' ','',$text)!=$text)
+    if(str_replace(' ','',$text)!=$text) {
         return trim(left($text, strpos($text, " ")));
-    else
+    } else {
         return $text;
+    }
 }
 
 function getdatestamp($date){
-    $newdate = date_create($date);
-    return date_timestamp_get($newdate);
+    if($date) {
+        $newdate = date_create($date);
+        return date_timestamp_get($newdate);
+    }
+    return "Not completed!";
 }
 
 function clean($data, $datatype=0){
@@ -50,7 +54,7 @@ function clean($data, $datatype=0){
     return $data;
 }
 $quiz = clean($quiz);
-$orientation = "L";//P or L
+$orientation = "P";//P or L
 if (isset($_GET["orientation"])) {$orientation = $_GET["orientation"]; }
 $GLOBALS["orientation"] = $orientation;
 
@@ -64,7 +68,7 @@ class MYPDF extends TCPDF {
         // disable auto-page-break
         $this->SetAutoPageBreak(false, 0);
         // set bacground image
-        $img_file = K_PATH_IMAGES.'../img/certificates/certificate.jpg';
+        $img_file = K_PATH_IMAGES.'../img/certificates/certificate.png'; //jpg';
 
 
         //Image	(    $file,     $x,$y,$w,  $h,  $type, $link, $align, $resize, $dpi, $palign, $ismask, $imgmask, $border, $fitbox, $hidden, $fitonpage, $alt, $altimgs)
@@ -82,7 +86,10 @@ class MYPDF extends TCPDF {
 }
 
 // create new PDF document
-$pdf = new MYPDF($orientation, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
+
+$page_layout = array(210, 271);// PDF_PAGE_FORMAT
+$page_unit = PDF_UNIT; //  [pt=point, mm=millimeter, cm=centimeter, in=inch].
+$pdf = new MYPDF($orientation, $page_unit, $page_layout, true, 'UTF-8', false);
 
 // set document information
 $pdf->SetCreator(PDF_CREATOR);
@@ -134,18 +141,18 @@ $pdf->AddPage();
 $pdf->SetFontSize(30);
 
 $ScaleFactor=1;
-if ($orientation== "L") { $ScaleFactor = "1.344262295081967"; }//portrait 1.344262295081967
-
+if ($orientation== "L") {
+    $ScaleFactor = "1.344262295081967";
     $pdf->Text(15, 61 * $ScaleFactor, ucfirst($user->fname) . " " . ucfirst($user->lname), false, false, true, 0, 0, "C");
     $pdf->Text(15, 80 * $ScaleFactor, $quiz->Name, false, false, true, 0, 0, "C");
     $pdf->SetFontSize(15);
     $pdf->Text(15, 92 * $ScaleFactor, "On this date: " . date("F d, Y", getdatestamp($date)), false, false, true, 0, 0, "C");
-//} else {//landscape
-//    $pdf->Text(15, 82, ucfirst($user->fname) . " " . ucfirst($user->lname), false, false, true, 0, 0, "C");
-//    $pdf->Text(15, 108.54, $quiz->Name, false, false, true, 0, 0, "C");
+} else {//landscape
+    $pdf->Text(45, 116, ucfirst($user->fname) . " " . ucfirst($user->lname), false, false, true, 0, 0, "C");
+    $pdf->Text(45, 148, $quiz->Name, false, false, true, 0, 0, "C");
 //    $pdf->SetFontSize(15);
 //    $pdf->Text(15, 123.67, "On this date: " . date("F d, Y", getdatestamp($date)), false, false, true, 0, 0, "C");
-//}
+}
 
 
 ob_end_clean();
@@ -155,7 +162,7 @@ $pdf->Output($name, 'F', '../webroot/img/certificates');
 $name='../webroot/img/certificates/' . $name;
 echo "<center><a download='certificate.pdf' href='" . $name . "'><i class='fa fa-floppy-o'></i> Click here to save your certificate</a><BR></center>";
 
-echo '<iframe src="' . $name . '#view=FitW" width="100%" height="603" type="application/pdf"></iframe>';
+echo '<iframe src="' . $name . '#view=FitW" width="100%" height="700" type="application/pdf"></iframe>';
 //============================================================+
 // END OF FILE
 //============================================================+
