@@ -1909,11 +1909,11 @@ if (isset($this->request->params['pass'][1])) {
             success: function (res) {
                 //alert(draft);
                 //return;
-                /*if(draft==0)
+                if(draft==0)
                     window.location = '<?php echo $this->request->webroot?>documents/index?flash';
                 else
                     window.location = '<?php echo $this->request->webroot?>documents/index?flash';
-                */
+                
 
             }
         });
