@@ -367,7 +367,7 @@ if ($_SERVER['SERVER_NAME'] == "localhost" || $_SERVER['SERVER_NAME'] == "127.0.
                             }
                         } ?>
                         <?php
-                            if ($sidebar->document_edit == '1') {
+                            if ($sidebar->document_edit == '1' && ($this->request->session()->read('Profile.super')==1 || $this->request->session()->read('Profile.id')==$docs->user_id)) {
                                 if ($docs->document_type == 'feedbacks')
                                     echo $this->Html->link(__('Edit'), ['controller' => 'feedbacks', 'action' => 'edit', $docs->id], ['class' => btnclass("EDIT")]);
                                 else {

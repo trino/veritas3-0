@@ -307,7 +307,7 @@
                                             <?php
                                                 $super = $this->request->session()->read('Profile.super');
                                                 //if (isset($super) || isset($_GET['draft'])) {
-                                                    if ($sidebar->orders_edit == '1') {
+                                                    if ($sidebar->orders_edit == '1' && ($this->request->session()->read('Profile.super')==1 || $this->request->session()->read('Profile.id')==$order->user_id)) {
                                                         if (!isset($_GET['table']) && $order->draft == 1) {
                                                             ?>
                                                             <a class="<?= btnclass("EDIT") ?>"
