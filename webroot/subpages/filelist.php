@@ -138,7 +138,9 @@ function listfiles($client_docs, $dir, $field_name='client_doc',$delete, $method
                         echo 'paperclip';
                 }
                 echo "' title='" . $type . "'></i></TD>";
-                echo "<TD><A class='nohide' HREF='" . $webroot . $dir . $file . "'>" . $filename . "</A></TD>";
+                echo "<TD><A class='nohide' HREF='" . $webroot . $dir . $file . "'>" . $filename . "</A>
+                <input type='hidden' value='".$file."' name='attach_doc[]' />
+                </TD>";
                 echo "<TD>" . date('Y-m-d H:i:s', filemtime(getcwd() . $path)) . "</TD>";
                 switch (TRUE) {
                     case isset($cd->client_id):
