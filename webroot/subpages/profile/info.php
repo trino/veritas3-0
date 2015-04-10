@@ -981,7 +981,7 @@
                 type: 'post',
                 success: function (res) {
                     res = res.replace(' ', '');
-                    if (res != 0) {
+                    if (res != 0 && !isNaN(res)) {
                         $('#savepro').text("Save Changes");
                         $('.flash').show();
                         $('.flash').fadeOut(3500);

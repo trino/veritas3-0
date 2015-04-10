@@ -84,7 +84,7 @@
                         } else {
                             ?>
                             <img class="img-responsive" id="clientpic" alt=""
-                                 src="<?php echo $this->request->webroot; ?>img/logos/MEELogo.png"/>
+                                 src="<?php echo $this->request->webroot;?>img/clients/<?php echo $settings->client_img;?>"/>
                         <?php
                         }
                     ?>

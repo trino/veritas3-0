@@ -67,6 +67,37 @@
             }
             die();
         }
+        function client_default()
+        {
+            if (isset($_FILES['myfile']['name']) && $_FILES['myfile']['name']) {
+                $arr = explode('.', $_FILES['myfile']['name']);
+                $ext = end($arr);
+                $rand = rand(100000, 999999) . '_' . rand(100000, 999999) . '.' . $ext;
+                $allowed = array('jpg', 'jpeg', 'png', 'bmp', 'gif');
+                $check = strtolower($ext);
+                if (in_array($check, $allowed)) {
+                    move_uploaded_file($_FILES['myfile']['tmp_name'], APP . '../webroot/img/clients/' . $rand);
+
+                    unset($_POST);
+                    $_POST['client_img'] = $rand;
+                    $img = TableRegistry::get('settings');
+                    $i = $img->find()->first();
+                    $old_image = $i->client_img;
+                    $query = $img->query();
+                    $query->update()
+                        ->set($_POST)
+                        ->where(['id' => 1])
+                        ->execute();
+                   
+                    @unlink(WWW_ROOT.'img/clients/'.$old_image);    
+                    echo $rand;
+
+                } else {
+                    echo "error";
+                }
+            }
+            die();
+        }
 
         function upload_all($id = "")
         {
@@ -957,7 +988,7 @@
                                 '<br/>On: ' . date('Y-m-d') .
                                 '<br>Profile Type: ' . $protype .
 
-                                '<br/><br/>Username: ' . $_POST['username'] .
+                                '<br/><br/>Username: ' . $_POST['username'];
 
 
                             $this->Mailer->sendEmail($from, $to, $sub, $msg);
@@ -967,7 +998,7 @@
                                 if ($password) {
                                     $msg .= "<br/>Password: " . $password;
                                     $msg .= "<br /><br />#162
-Click <a href='" . LOGIN . "'>here</a> to login<br /><br /> Regards,<br /> The ISB MEE Team";
+                                            Click <a href='" . LOGIN . "'>here</a> to login<br /><br /> Regards,<br /> The ISB MEE Team";
                                 }
 
                                 $this->Mailer->sendEmail($from, $_POST["email"], $sub, $msg);

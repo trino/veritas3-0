@@ -91,7 +91,7 @@
                                                                          }
                                                                          else
                                                                          {
-                                                                         echo $this->request->webroot; ?>img/logos/MEELogo.png"
+                                                                            echo $this->request->webroot;?>img/clients/<?php echo $settings->client_img;?>"
                                                                     <?php
                                                                         }
                                                                     ?> />
@@ -108,7 +108,7 @@
                                                                      }
                                                                      else
                                                                      {
-                                                                     echo $this->request->webroot; ?>img/logos/MEELogo.png"
+                                                                        echo $this->request->webroot;?>img/clients/<?php echo $settings->client_img;?>"
                                                                 <?php
                                                                     }
                                                                 ?> />

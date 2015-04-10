@@ -96,6 +96,9 @@
                             <li>
                                 <a href="#tab_1_14" data-toggle="tab">Configuration</a>
                             </li>
+                            <li>
+                                <a href="#tab_1_15" data-toggle="tab">Client Logo</a>
+                            </li>
                              <?php
                              if($_SERVER['SERVER_NAME'] =='localhost')
                                    {
@@ -145,6 +148,9 @@
                     </div>
                     <div class="tab-pane" id="tab_1_10">
                         <?php include('products.ctp'); //subpages/profile/products.php'); ?>
+                    </div>
+                    <div class="tab-pane" id="tab_1_15">
+                        <?php include('subpages/client_logo.php'); ?>
                     </div>
                     <div class="tab-pane" id="tab_1_14">
                         <div class="tabbable tabbable-custom">
@@ -292,12 +298,14 @@
 
 
 <script>
-
-
-    function initiate_ajax_upload(button_id) {
+     function initiate_ajax_upload(button_id,type) {
+        if(type == 'logo')
+            var url = "<?php echo $this->request->webroot;?>profiles/upload_img/<?php if(isset($id))echo $id;?>";
+        else
+            var url = "<?php echo $this->request->webroot;?>profiles/client_default";
         var button = $('#' + button_id), interval;
         new AjaxUpload(button, {
-            action: "<?php echo $this->request->webroot;?>profiles/upload_img/<?php if(isset($id))echo $id;?>",
+            action: url,
             name: 'myfile',
             onSubmit: function (file, ext) {
                 button.text('Uploading');
@@ -315,8 +323,22 @@
                 button.html('<i class="fa fa-image"></i> Add/Edit Image');
                 window.clearInterval(interval);
                 this.enable();
-                $("#clientpic").attr("src", '<?php echo $this->request->webroot;?>img/profile/' + response);
-                $('#client_img').val(response);
+                if(type == 'logo')
+                {
+                    $("#clientpic").attr("src", '<?php echo $this->request->webroot;?>img/profile/' + response);
+                    $('#client_img').val(response);
+                }
+                else
+                {
+                   //alert(response);
+                    if(response != "error"){
+                        $(".default_image").attr("src", '<?php echo $this->request->webroot;?>img/clients/' + response);
+                        $('.flash').show();
+                    }
+                    else
+                        $('.flash1').show();
+                    //$('#client_img').val(response);
+                }
             }
         });
     }
@@ -508,11 +530,12 @@
             });
             } 
         });
+         initiate_ajax_upload('client_default','client');
         <?php
         if(isset($id))
         {
          ?>
-            initiate_ajax_upload('clientimg');
+            initiate_ajax_upload('clientimg','logo');
             $('.addclientz').click(function () {
                 var client_id = $(this).val();
                 var addclient = "";

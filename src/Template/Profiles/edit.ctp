@@ -186,7 +186,7 @@
             <a href=""><?php echo $param2 . ' ' . ucfirst($settings->profile); ?></a>
         </li>
     </ul>
-    <?php// if($settings->mee != "ASAP Secured Training" && $settings->mee != "Events Audit"){?>
+    <?php // if($settings->mee != "ASAP Secured Training" && $settings->mee != "Events Audit"){?>
 
     <?php
         if (isset($disabled)) { ?>

@@ -186,11 +186,12 @@ class DocumentComponent extends Component
                 $arr['client_id'] = $cid;
                 $arr['document_type'] = urldecode($_GET['document']);
                 if ((!$did || $did == '0'))
-                $arr['created'] = date('Y-m-d H:i:s');
+                    $arr['created'] = date('Y-m-d H:i:s');
                 //$arr['conf_recruiter_name'] = $_POST['conf_recruiter_name'];
                 //$arr['conf_driver_name'] = $_POST['conf_driver_name'];
                 //$arr['conf_date'] = $_POST['conf_date'];
-                if ((!$did || $did == '0') && ($arr['sub_doc_id'] < 7 || $arr['sub_doc_id'] == 15 || $arr['sub_doc_id'] == 9 || $arr['sub_doc_id'] == 10)) {
+                if ((!$did || $did == '0') && ($arr['sub_doc_id'] < 7 || $arr['sub_doc_id'] == 15 || $arr['sub_doc_id'] == 9 || $arr['sub_doc_id'] == 10))
+                {
                     $arr['user_id'] = $controller->request->session()->read('Profile.id');
                     $doc = $docs->newEntity($arr);
 
@@ -201,6 +202,7 @@ class DocumentComponent extends Component
                         $gc = $get_client->find()->where(['id' => $cid])->first();
                         $client_name = $gc->company_name;
                         $assignedProfile = $this->getAssignedProfile($cid);
+                       
                         if($assignedProfile)
                         {
                             if(!isset($_GET['draft']) && !($_GET['draft']))
@@ -237,7 +239,7 @@ class DocumentComponent extends Component
                         //$this->Flash->success('Client saved successfully.');
                         echo $doc->id;
                         if(!isset($_GET['draft']) || !($_GET['draft'])){
-                        $pro_query = TableRegistry::get('Profiles');
+                            $pro_query = TableRegistry::get('Profiles');
                             $email_query = $pro_query->find()->where(['super' => 1])->first();
                             $em = $email_query->email;
                             $user_id = $controller->request->session()->read('Profile.id');
@@ -289,15 +291,16 @@ class DocumentComponent extends Component
                     }
 
                 } else{
+                   
                     $query2 = $docs->query();
                     $query2->update()
                         ->set($arr)
                         ->where(['id' => $did])
                         ->execute();
-                        if(isset($_POST['attach_doc']))
+                        /*if(isset($_POST['attach_doc']))
                         {
                             $model = $controller->loadModel('AttachDocs');
-                            $model->deleteAll(['doc_id'=>$did]);
+                            $model->deleteAll(['document_id'=>$did]);
                             $client_docs = explode(',',$_POST['attach_doc']);
                             foreach($client_docs as $d)
                             {
@@ -311,7 +314,7 @@ class DocumentComponent extends Component
                                     unset($att);
                                 }
                             }
-                        }
+                        }*/
                     echo $did;
                 }
                 

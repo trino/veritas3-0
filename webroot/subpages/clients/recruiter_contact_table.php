@@ -1,6 +1,6 @@
 <?php
  if($this->request->session()->read('debug'))
-        echo "<span style ='color:red;'>recruiter_contact_table.php #INC149</span>";
+        echo "<span style ='color:red;'>subpages/clients/recruiter_contact_table.php #INC149</span>";
  ?>
 <?php
     $profiles = $this->requestAction('/profiles/getProfile');
@@ -12,9 +12,12 @@ if (!$viewmode){
 ?>
 
 
-
-
+<div class="col-md-3" style=" float: right;margin-bottom: 10px;padding-right: 0;">
+<a href="<?php echo $this->request->webroot;?>profiles/add" class="btn btn-primary" style="float: right;">Add Profile</a>
+</div>
+<div class="clearfix"></div>
 <div class="scrolldiv" style="margin-bottom: 15px;">
+
     <input type="text" id="searchProfile" onkeyup="searchProfile()" class="form-control" placeholder="Search <?php echo ucfirst($settings->profile); ?>s"/>
     <table class="table table-striped table-bordered table-advance table-hover recruiters">
         <thead>
