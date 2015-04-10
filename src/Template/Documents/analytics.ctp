@@ -281,6 +281,7 @@ jQuery(document).ready(function() {
 													<input type="text" class="form-control" name="from" value="<?php echo $enddate; ?>">
 													<span class="input-group-addon"> to </span>
 													<input type="text" class="form-control" name="to" title="Leave blank to end at today" value="<?php echo get2("to", date("Y-m-d")); ?>">
+                                                    <button type="submit" class="btn btn-primary" style="float">Search</button>
 
 												</div>
 											</div>
