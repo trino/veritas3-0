@@ -166,12 +166,14 @@
             }
         }
 
-        function enabledisableproduct($ID, $Value){
+        function enabledisableproduct($ID, $Value)
+        {
             $table = TableRegistry::get('order_products');
             $table->query()->update()->set(['enable' => $Value])->where(['number' => $ID])->execute();
         }
 
-        function isproductprovinceenabled($ProductID, $DocumentID, $Province){
+        function isproductprovinceenabled($ProductID, $DocumentID, $Province)
+        {
             $item = TableRegistry::get('order_provinces')->find()->where(['ProductID' => $ProductID, 'FormID' => $DocumentID, "Province" => $Province])->first();
             if ($item) {
                 return true;
@@ -180,7 +182,8 @@
             }
         }
 
-        function setproductprovince($ProductID, $DocumentID, $Province, $Value){
+        function setproductprovince($ProductID, $DocumentID, $Province, $Value)
+        {
             $table = TableRegistry::get('order_provinces');//ProductID, Province, FormID
             if ($Value == 1) {
                 $color = "green";
@@ -474,7 +477,8 @@
             die();
         }
 
-        public function view($id = null){
+        public function view($id = null)
+        {
             if (isset($_GET['success'])) {
                 $this->Flash->success('Order saved successfully');
             }
@@ -577,7 +581,6 @@
             $this->set('disabled', 1);
             $this->set('id', $id);
             $this->render("edit");
-
 
         }
 
@@ -762,12 +765,13 @@
             $this->render("edit");
         }
 
-        function sendEmail($To, $Subject, $Message){
+        function sendEmail($To, $Subject, $Message)
+        {
             $path = $this->Document->getUrl();
             $replace = array("%PATH%" => $path, "%CRLF%" => "\r\n");//auto-replace these terms
-            foreach($replace as $key => $value){
-                $Subject =str_replace($key, $value, $Subject);
-                $Message =str_replace($key, $value, $Message);
+            foreach ($replace as $key => $value) {
+                $Subject = str_replace($key, $value, $Subject);
+                $Message = str_replace($key, $value, $Message);
             }
 
             //method 1
@@ -778,12 +782,13 @@
             //Email::deliver($To,$Subject, $Message, ['info@'. $path => "ISB MEE"]);
 
             //method 3 actually uses method 1
-            $from = array('info@'. $path => "ISB MEE");
+            $from = array('info@' . $path => "ISB MEE");
             $this->Mailer->sendEmail($from, $To, $Subject, $Message);
-            file_put_contents("royslog.txt", "To: " . $To . " Subject: " .  $Subject . " Mesage: " . $Message, FILE_APPEND);
+            file_put_contents("royslog.txt", "To: " . $To . " Subject: " . $Subject . " Mesage: " . $Message, FILE_APPEND);
         }
 
-        function saveprofile($add = ""){
+        function saveprofile($add = "")
+        {
             $settings = $this->Settings->get_settings();
             $profiles = TableRegistry::get('Profiles');
             $path = $this->Document->getUrl();
@@ -947,23 +952,27 @@
                             $to = $em;
 
                             $sub = 'Profile Created: ' . $_POST['username'];
-                            $msg = 'Domain:' . $path . '<br />
-                            <br/>Profile Created: ' . $_POST['username'] . ' (Profile Type: ' . $protype . ')
-                            <br/>By: ' . $uq->username . '
-                            <br/>On: ' . date('Y-m-d');
+                            $msg = 'Domain:' . $path .
+                                '<br/>Created By: ' . $uq->username .
+                                '<br/>On: ' . date('Y-m-d') .
+                                '<br>Profile Type: ' . $protype .
+
+                                '<br/><br/>Username: ' . $_POST['username'] .
+
 
                             $this->Mailer->sendEmail($from, $to, $sub, $msg);
                             //$this->sendEmail($to, $sub, $msg);
-                            if (isset($_POST["emailcreds"]) && $_POST["emailcreds"] == "on" && strlen(trim($_POST["email"]))>0 ) {
+                            if (isset($_POST["emailcreds"]) && $_POST["emailcreds"] == "on" && strlen(trim($_POST["email"])) > 0) {
 
-                                if($password){
-                                    $msg.="<br/>Your password is: " . $password;
-                                    $msg.= "<br />Click <a href='" . LOGIN . "'>here</a> to login<br /><br /> Regards,<br /> The ISB MEE Team";
+                                if ($password) {
+                                    $msg .= "<br/>Password: " . $password;
+                                    $msg .= "<br /><br />#162
+Click <a href='" . LOGIN . "'>here</a> to login<br /><br /> Regards,<br /> The ISB MEE Team";
                                 }
 
                                 $this->Mailer->sendEmail($from, $_POST["email"], $sub, $msg);
 
-                               // $this->sendEmail($_POST["email"], $sub, $msg);
+                                // $this->sendEmail($_POST["email"], $sub, $msg);
                                 //file_put_contents("royslog.txt",$to . " " .  $_POST["email"] . ": " .  $sub . " - " . $msg, FILE_APPEND);
                             }
                             $this->Flash->success('Profile Saved Successfully . ');

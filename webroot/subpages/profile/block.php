@@ -942,7 +942,7 @@ if ($activetab == "permissions") {
                     </tr>
                     <tr>
                         <td>
-                            List a <?= $settings->profile; ?>
+                            List <?= $settings->profile; ?>s
                         </td>
                         <td>
                             <label class="uniform-inline">
@@ -976,7 +976,7 @@ if ($activetab == "permissions") {
                     </tr>
                     <tr>
                         <td>
-                            List a <?= $settings->client; ?>
+                            List <?= $settings->client; ?>s
                         </td>
                         <td>
                             <label class="uniform-inline">

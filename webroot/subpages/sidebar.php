@@ -50,7 +50,9 @@ $profileID = $this->Session->read('Profile.id');
 
             </li>
 
-            <?php if ($sidebar->client == 1 && $this->request->session()->read('Profile.super')) { ?>
+            <?php
+
+                if (($sidebar->client == 1 && $this->request->session()->read('Profile.super')) || ($sidebar->client == 1 && $settings->mee =="Events Audit")) { ?>
 
                 <li class="<?php echo ($this->request['controller'] == 'Clients' && !isset($_GET['draft']) && $this->request['action'] != 'quickcontact') ? 'active open' : ''; ?>">
                     <a href="<?php echo WEB_ROOT; ?>clients">

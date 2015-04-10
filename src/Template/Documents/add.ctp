@@ -183,7 +183,15 @@ if (isset($this->request->params['pass'][1])) {
 
                     </div>
 
-                    <div class="col-md-12" style="margin: 10px 0;padding:0">
+
+
+
+
+
+
+
+                        <div class="col-md-12" style="margin: 10px 0;padding:0 ;                        <?php if($settings->mee == "ASAP Secured Training" || $settings->mee == "Events Audit"){ echo "display:none;";}?>
+                            ">
 
                         <?php $dr_cl = $doc_comp->getDriverClient(0, $cid);?>
                         <select class="form-control select2me" data-placeholder="No Driver"
@@ -216,6 +224,11 @@ if (isset($this->request->params['pass'][1])) {
                         <input type="hidden" name="sub_doc_id" value="<?php echo $sid; ?>" id="sub_id"/>
 
                     </div>
+
+
+
+
+
                     <div class="clearfix"></div>
                     <?php
                     }

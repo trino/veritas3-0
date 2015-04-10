@@ -329,6 +329,11 @@
                                                                     <input type="text" class="form-control date-picker"
                                                                            name="date_end" <?php if (isset($client->date_end)) { ?> value="<?php echo $client->date_end; ?>" <?php } ?>/>
                                                                 </div>
+
+
+                                                            <?php if($settings->mee != "ASAP Secured Training" && $settings->mee != "Events Audit"){?>
+
+
                                                                 <div class="form-group col-md-4">
                                                                     <label class="control-label">Referred By</label>
                                                                     <select class="form-control" name="referred_by"
@@ -379,6 +384,12 @@
                                                                     <input type="text" class="form-control"
                                                                            name="sacc_number" <?php if (isset($client->sacc_number)) { ?> value="<?php echo $client->sacc_number; ?>" <?php } ?>/>
                                                                 </div>
+
+
+
+
+
+
 
                                                                 <div class="col-md-12">
                                                                     <div class="form-group">
@@ -454,7 +465,7 @@
                                                                            name="billing_instructions" <?php if (isset($client->billing_instructions) && $client->billing_instructions == "centralized") { ?> checked="checked" <?php } ?>
                                                                            value="centralized"/> Centralized&nbsp;&nbsp;
                                                                 </div>
-
+<?php } ?>
                                                                 <div class="form-group col-md-12">
 
                                                                     <label class="control-label">Description</label>
@@ -472,12 +483,25 @@
                                                                 }
                                                             ?>
 
-                                                            <div class="form-group row"><!--<center>-->
+                                                            <div class="form-group row">
+
 
                                                                 <div class="docMore col-md-12" data-count="1">
+
                                                                     <div style="display:block;" class="col-md-12">
+
+<?php
+if($action =="create") {
+    ?>
+
+    Attach Documents<br>
+
+<?php
+}
+                                                                        ?>
+
                                                                         <a href="javascript:void(0)" id="addMore1"
-                                                                           class="btn btn-primary">Browse</a>
+                                                                           class="btn btn-primary clearfix">Browse</a>
                                                                         <input type="hidden" name="client_doc[]"
                                                                                value="" class="addMore1_doc moredocs"/>
                                                                         <span></span>
@@ -486,7 +510,7 @@
                                                             </div>
 
 
-                                                            <div class="form-group col-md-12"><!--<center>-->
+                                                            <div class="form-group col-md-12">
 
                                                                 <a href="javascript:void(0)" class="btn btn-info"
                                                                    id="addMoredoc">
