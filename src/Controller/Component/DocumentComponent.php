@@ -12,6 +12,8 @@ class DocumentComponent extends Component
     public function savedoc($cid = 0, $did = 0)
         {
              $controller = $this->_registry->getController();
+              $settings = TableRegistry::get('settings');
+              $setting = $settings->find()->first();
 //         echo "<pre>";print_r($_POST);
             if (!isset($_GET['document'])) {
                 // saving in order table
@@ -143,13 +145,13 @@ class DocumentComponent extends Component
                                                 $ut = '';
                                               }
                                               //$path = 'https://isbmeereports.com/documents/view/'.$cid;
-                                            $from = array('info@'.$path => "ISB MEE");
+                                            $from = array('info@'.$path => $setting->mee);
                                             $to = $p;
                                              $sub = 'Order Submitted';
                                             $msg = 'A new order has been created in '.$path.'<br />
                                             <br/>
 
-                                            By: '.$uq->username.' (Profile Type: '.$ut.')<br/> Date : '.date('Y-m-d H:i:s').'<br/><br /> Client Name: ' . $client_name.'<br/> For: '.$p.'<br /><br /> Regards,<br />the ISB MEE Team';
+                                            By: '.$uq->username.' (Profile Type: '.$ut.')<br/> Date : '.date('Y-m-d H:i:s').'<br/><br /> Client Name: ' . $client_name.'<br/> For: '.$p.'<br /><br /> Regards,<br />The '.$setting->mee.' Team';
 
                                              $controller->Mailer->sendEmail($from, $to, $sub, $msg);
                                             
@@ -207,34 +209,39 @@ class DocumentComponent extends Component
                         {
                             if(!isset($_GET['draft']) && !($_GET['draft']))
                             {
-                            $profile = $this->getProfilePermission($assignedProfile->profile_id, 'document');
-                            if($profile)
-                            {
-                                foreach($profile as $p)
+                                $profile = $this->getProfilePermission($assignedProfile->profile_id, 'document');
+                                if($profile)
                                 {
-                                    
-                            $pro_query = TableRegistry::get('Profiles');
-                            $email_query = $pro_query->find()->where(['super' => 1])->first();
-                            $em = $email_query->email;
-                            $user_id = $controller->request->session()->read('Profile.id');
-                            $uq = $pro_query->find('all')->where(['id' => $user_id])->first();
-                            if (isset($uq->profile_type))
-                              {
-                                $u = $uq->profile_type;
-                                $type_query = TableRegistry::get('profile_types');
-                                $type_q = $type_query->find()->where(['id'=>$u])->first(); 
-                                $ut = $type_q->title;
-                              }
-                              //$path = 'https://isbmeereports.com/documents/view/'.$cid;
-                            $from = array('info@'.$path => "ISB MEE");
-                            $to = $p;
-                             $sub = 'Document Submitted';
-                            $msg = 'A new document has been created in '.$path.'<br /><br />
-                            Username : '.$uq->username.'<br/>Profile Type : '.$ut.'<br/> Date : '.date('Y-m-d H:i:s').'<br/>Client Name: ' . $client_name.'<br/> Document type : '.$arr['document_type'].'<br /><br />Regards,<br />The ISB MEE Team';
-
-                             $controller->Mailer->sendEmail($from, $to, $sub, $msg);
+                                    foreach($profile as $p)
+                                    {
+                                        
+                                $pro_query = TableRegistry::get('Profiles');
+                                $email_query = $pro_query->find()->where(['super' => 1])->first();
+                                $em = $email_query->email;
+                                $user_id = $controller->request->session()->read('Profile.id');
+                                $uq = $pro_query->find('all')->where(['id' => $user_id])->first();
+                                if (isset($uq->profile_type))
+                                  {
+                                    $u = $uq->profile_type;
+                                    $type_query = TableRegistry::get('profile_types');
+                                    $type_q = $type_query->find()->where(['id'=>$u])->first(); 
+                                    $ut = $type_q->title;
+                                  }
+                                  //$path = 'https://isbmeereports.com/documents/view/'.$cid;
+                                $from = array('info@'.$path => $setting->mee);
+                                $to = $p;
+                                 $sub = 'Document Submitted';
+                                $msg = 'A new document has been created in '.$path.'<br /><br />
+                                Username : '.$uq->username.'<br/>Profile Type : '.$ut.'<br/> Date : '.date('Y-m-d H:i:s').'<br/>Client Name: ' . $client_name.'<br/> Document type : '.$arr['document_type'].'<br /><br />Regards,<br />The '.$setting->mee.' Team';
+    
+                                 $controller->Mailer->sendEmail($from, $to, $sub, $msg);
+                                    }
                                 }
-                            }}else {}
+                            }
+                            else 
+                            {
+                                
+                            }
                         }
                         //$this->Flash->success('Client saved successfully.');
                         echo $doc->id;
@@ -257,13 +264,13 @@ class DocumentComponent extends Component
                               }
                               else
                               $ut = '';
-                            $from = array('info@'.$path => "ISB MEE");
+                            $from = array('info@'.$path => $setting->mee);
                             $to = $em;
                              $sub = 'Document Submitted';
                             $msg = 'A new document has been created in '.$path.'<br /><br />
 
 
-                            Username : '.$uq->username.'<br/>Profile Type : '.$ut.'<br/> Date : '.date('Y-m-d H:i:s').'<br/>Client Name: ' . $client_name.'<br/> Document type : '.$arr['document_type'].'<br/> <br /> Regards,<br />The ISB MEE Team';
+                            Username : '.$uq->username.'<br/>Profile Type : '.$ut.'<br/> Date : '.date('Y-m-d H:i:s').'<br/>Client Name: ' . $client_name.'<br/> Document type : '.$arr['document_type'].'<br/> <br /> Regards,<br />The '.$setting->mee.' Team';
 
                              $controller->Mailer->sendEmail($from, $to, $sub, $msg);
                              }
@@ -290,13 +297,55 @@ class DocumentComponent extends Component
                         //echo "e";
                     }
 
-                } else{
+                } else
+                {
                    
                     $query2 = $docs->query();
                     $query2->update()
                         ->set($arr)
                         ->where(['id' => $did])
                         ->execute();
+                        $path = $this->getUrl();
+                        $get_client = TableRegistry::get('Clients');
+                        $gc = $get_client->find()->where(['id' => $cid])->first();
+                        $client_name = $gc->company_name;
+                        $assignedProfile = $this->getAssignedProfile($cid);
+                     
+                        if($assignedProfile)
+                        {
+                            if(!isset($_GET['draft']) || !($_GET['draft']))
+                            {
+                                $profile = $this->getProfilePermission($assignedProfile->profile_id, 'document');
+                                
+                                if($profile)
+                                {
+                                    foreach($profile as $p)
+                                    {
+                                        
+                                        $pro_query = TableRegistry::get('Profiles');
+                                        $email_query = $pro_query->find()->where(['super' => 1])->first();
+                                        $em = $email_query->email;
+                                        $user_id = $controller->request->session()->read('Profile.id');
+                                        $uq = $pro_query->find('all')->where(['id' => $user_id])->first();
+                                        if (isset($uq->profile_type))
+                                          {
+                                            $u = $uq->profile_type;
+                                            $type_query = TableRegistry::get('profile_types');
+                                            $type_q = $type_query->find()->where(['id'=>$u])->first(); 
+                                            $ut = $type_q->title;
+                                          }
+                                          //$path = 'https://isbmeereports.com/documents/view/'.$cid;
+                                        $from = array('info@'.$path => $setting->mee);
+                                        $to = $p;
+                                        $sub = 'Document Submitted';
+                                        $msg = 'A new document has been created in '.$path.'<br /><br />
+                                        Username : '.$uq->username.'<br/>Profile Type : '.$ut.'<br/> Date : '.date('Y-m-d H:i:s').'<br/>Client Name: ' . $client_name.'<br/> Document type : '.$arr['document_type'].'<br /><br />Regards,<br />The '.$setting->mee.' Team';
+            
+                                        $controller->Mailer->sendEmail($from, $to, $sub, $msg);
+                                    }
+                                }
+                            }
+                        }
                         /*if(isset($_POST['attach_doc']))
                         {
                             $model = $controller->loadModel('AttachDocs');
@@ -1661,7 +1710,7 @@ class DocumentComponent extends Component
         function getAssignedProfile($cid = 0)
         {
             $profile = TableRegistry::get('Clients');
-            $pro = $profile->find('all')->where(['id' => $cid])->first();
+            $pro = $profile->find()->where(['id' => $cid])->first();
             return $pro;
         }
         
@@ -1676,14 +1725,14 @@ class DocumentComponent extends Component
                  $query = $setting->find()->where(['user_id'=>$ap]);
                  $permit = $query->first();
                  if($permit){
-                if($type =='documents')
-                    $v = $permit->email_documents;
+                if($type =='document')
+                    $v = $permit->email_document;
                 elseif($type =='orders')
                     $v = $permit->email_orders; 
-                if($permit && ($v == 1))
+                if($v == 1)
                 {
                     $email = $this->getEmail($ap);
-                    if($email)
+                    if($email && $email != "")
                     $email_arr[] = $email;
                 }
                 }
