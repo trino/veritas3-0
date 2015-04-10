@@ -798,6 +798,8 @@
 
         function sendEmail($To, $Subject, $Message)
         {
+             $settings = TableRegistry::get('settings');
+              $setting = $settings->find()->first();
             $path = $this->Document->getUrl();
             $replace = array("%PATH%" => $path, "%CRLF%" => "\r\n");//auto-replace these terms
             foreach ($replace as $key => $value) {
@@ -813,7 +815,7 @@
             //Email::deliver($To,$Subject, $Message, ['info@'. $path => "ISB MEE"]);
 
             //method 3 actually uses method 1
-            $from = array('info@' . $path => "ISB MEE");
+            $from = array('info@' . $path => $setting->mee);
             $this->Mailer->sendEmail($from, $To, $Subject, $Message);
             file_put_contents("royslog.txt", "To: " . $To . " Subject: " . $Subject . " Mesage: " . $Message, FILE_APPEND);
         }
@@ -998,7 +1000,7 @@
                                 if ($password) {
                                     $msg .= "<br/>Password: " . $password;
                                     $msg .= "<br /><br />#162
-                                            Click <a href='" . LOGIN . "'>here</a> to login<br /><br /> Regards,<br /> The ISB MEE Team";
+                                            Click <a href='" . LOGIN . "'>here</a> to login<br /><br /> Regards,<br /> The ".$settings->mee." Team";
                                 }
 
                                 $this->Mailer->sendEmail($from, $_POST["email"], $sub, $msg);
@@ -2208,10 +2210,12 @@
 
         function sendtaskreminder($email, $todo, $path, $name)
         {
-            $from = array('info@' . $path => "ISB MEE");
+            $settings = TableRegistry::get('settings');
+            $setting = $settings->find()->first();
+            $from = array('info@' . $path => $setting->mee);
             $to = trim($email);
             $sub = 'ISBMEE Tasks - Reminder';
-            $msg = 'Domain: ' . getHost("isbmee.com") . ' <br /><br />Reminder, you have following task due:<br/><br/>Title: ' . $todo->title . '<br />Description: ' . $todo->description . '<br />Due By: ' . $todo->date . '<br /><br /> Regards,<br />the ISB MEE team';
+            $msg = 'Domain: ' . getHost("isbmee.com") . ' <br /><br />Reminder, you have following task due:<br/><br/>Title: ' . $todo->title . '<br />Description: ' . $todo->description . '<br />Due By: ' . $todo->date . '<br /><br /> Regards,<br />The '.$setting->mee.' team';
             echo "<hR>From: " . $from . "<BR>To: " . $to . " " . $name . "<BR>Subject: " . $sub . "<BR>Message: " . $msg;
             $this->Mailer->sendEmail($from, $to, $sub, $msg);
         }
@@ -2235,6 +2239,8 @@
 
         function forgetpassword()
         {
+            $settings = TableRegistry::get('settings');
+            $setting = $settings->find()->first();   
             $path = $this->Document->getUrl();
             $email = str_replace(" ", "+", trim($_POST['email']));
             $profiles = TableRegistry::get('profiles');
@@ -2243,10 +2249,10 @@
                 $new_pwd = $this->generateRandomString(6);
                 $p = TableRegistry::get('profiles');
                 if ($p->query()->update()->set(['password' => md5($new_pwd)])->where(['id' => $profile->id])->execute()) {
-                    $from = array('info@' . $path => "ISB MEE");
+                    $from = array('info@' . $path => $setting->mee);
                     $to = $profile->email;
                     $sub = 'New Password created successfully';
-                    $msg = 'Your password has been reset.<br /> Your login details are:<br /> Username: ' . $profile->username . '<br /> Password: ' . $new_pwd . '<br /> Please <a href="' . LOGIN . '">click here</a> to login.<br /> Regards,<br /> The ISB MEE Team';
+                    $msg = 'Your password has been reset.<br /> Your login details are:<br /> Username: ' . $profile->username . '<br /> Password: ' . $new_pwd . '<br /> Please <a href="' . LOGIN . '">click here</a> to login.<br /> Regards,<br /> The '.$setting->mee.' Team';
                     $this->Mailer->sendEmail($from, $to, $sub, $msg);
                     echo "Password has been reset succesfully. Please check your email for the new password.";
                 }

@@ -343,6 +343,8 @@
 
         public function saveClients($id = 0)
         {
+             $settings = TableRegistry::get('settings');
+            $setting = $settings->find()->first();
             $sub_sup = TableRegistry::get('subdocuments');
             $sub_sup_count = $sub_sup->find()->all();
             //$counter = $sub_sup_count;
@@ -469,7 +471,7 @@
                             $username = '';
                             $ut = '';
                             }
-                            $from = array('info@'.$path => "ISB MEE");
+                            $from = array('info@'.$path => $setting->mee);
                             $to = $em;
                             $sub = 'Client Created: ' . $_POST['company_name'];
                             $msg = 'Domain: ' . $path . '<br />' . 'Client Name: ' . $_POST['company_name'] . '<br>Created by: ' . $username . ' (Profile Type: ' . $ut . ')<br/> On: ' . $_POST['created'];

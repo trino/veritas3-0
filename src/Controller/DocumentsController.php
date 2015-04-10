@@ -811,7 +811,8 @@ class DocumentsController extends AppController{
 
     public function forMail()
     {
-
+         $settings = TableRegistry::get('settings');
+            $setting = $settings->find()->first();
         $pro_query = TableRegistry::get('Profiles');
         $email_query = $pro_query->find()->where(['super' => 1])->first();
         $em = $email_query->email;
@@ -843,7 +844,7 @@ class DocumentsController extends AppController{
         $msg = 'A client has been created<br />
 
             By a user with following details :<br/>
-            Username : '.$uq->username.'<br/>Profile Type : '.$ut.'<br/> Dated on : '.$_POST['created'].'<br/>With client details<br /> Client Name: ' . $_POST['company_name'].'<br/><br /> Regards,<br />The ISB MEE Team';
+            Username : '.$uq->username.'<br/>Profile Type : '.$ut.'<br/> Dated on : '.$_POST['created'].'<br/>With client details<br /> Client Name: ' . $_POST['company_name'].'<br/><br /> Regards,<br />The '.$setting->mee.' Team';
 
         $this->Mailer->sendEmail($from, $to, $sub, $msg);
     }
