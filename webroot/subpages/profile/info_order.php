@@ -93,6 +93,10 @@
                                             value="8" <?php if (isset($p) && $p->profile_type == 8) { ?> selected="selected" <?php }  ?>>
                                             Owner Driver
                                         </option>
+                                        <option
+                                            value="11" <?php if (isset($p) && $p->profile_type == 11) { ?> selected="selected" <?php }  ?>>
+                                            Employee
+                                        </option>
 
                                     </select>
 

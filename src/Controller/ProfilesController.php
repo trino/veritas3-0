@@ -1109,6 +1109,9 @@
                             else
                                 if ($profile->profile_type == '8')
                                     $username = 'owner_driver_' . $profile->id;
+                                    else
+                                     if ($profile->profile_type == '11')
+                                    $username = 'employee_' . $profile->id;
                         $queries = TableRegistry::get('Profiles');
                         $queries->query()->update()->set(['username' => $username])
                             ->where(['id' => $profile->id])

@@ -340,7 +340,7 @@
                                 }
 
                                 if (isset($p)) {
-                                    if ($profile->profile_type == 5 || $profile->profile_type == 7 || $profile->profile_type == 8) {//driver, owner driver, owner operator
+                                    if ($profile->profile_type == 5 || $profile->profile_type == 7 || $profile->profile_type == 8 || $profile->profile_type == 11) {//driver, owner driver, owner operator
                                         if ($sidebar->orders_create == 1){
                                             foreach($products as $product){
                                                 $alias = $product->Sidebar_Alias;
@@ -424,7 +424,7 @@
                                         <a href="#tab_1_1" data-toggle="tab">Profile</a>
                                     </li>
                                     <?php
-                                     if ($this->request['action'] == 'view' && ($p->profile_type == 5 || $p->profile_type == 7 || $p->profile_type == 8)) {
+                                     if ($this->request['action'] == 'view' && ($p->profile_type == 5 || $p->profile_type == 7 || $p->profile_type == 8 || $profile->profile_type == 11)) {
                                         //if (($this->request['action'] == 'edit' || $this->request['action'] == 'view') && ($p->profile_type == 5 || $p->profile_type == 7 || $p->profile_type == 8) ) {
                                     ?>
                                         <li <?php activetab($activetab, "scorecard"); ?>>

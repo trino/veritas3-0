@@ -67,7 +67,12 @@ if (isset($this->request->params['pass'][1])) {
     }
     $opposite = "edit"; $url="add";
     if ($action=="Edit"){ $opposite = "view"; $url= "view";}
-    if (isset($this->request->params['pass'][1])) { echo '<a href="../../' . $url . '/' . $id0 . "/" . $id1 . $id2 . '" class="floatright btn btn-info btnspc">' . ucfirst($opposite) . '</a>'; }
+    if($did){
+    if(str_replace('?','',$id1.$id2)==$id1.$id2)
+    $sep = '?';
+    else
+    $sep = '&';}
+    if (isset($this->request->params['pass'][1])) { echo '<a href="../../' . $url . '/' . $id0 . "/" . $id1 . $id2 .$sep. 'type='.$_GET['type'].'" class="floatright btn btn-info btnspc">' . ucfirst($opposite) . '</a>'; }
 
 
     function makeportlet($did, $color="", $Title=""){

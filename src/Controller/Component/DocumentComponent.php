@@ -1282,7 +1282,8 @@ class DocumentComponent extends Component
         {
             $query = TableRegistry::get('Profiles');
             //$query = $query->find();
-            $q = $query->find()->where(['profile_type !=' => '5'])->all();
+            //$q = $query->find()->where(['profile_type !=' => '5'])->all();
+            $q = $query->find()->all();
             //$this->response->body($q);
             return $q;
             die();
@@ -1536,7 +1537,7 @@ class DocumentComponent extends Component
                 $profile_ids2 = str_replace(',,',',',$profile_ids2);
                 $profile_ids2 = str_replace(',,',',',$profile_ids2);
                 
-                $q = $model->find()->where(['id IN ('.$profile_ids2.')','(profile_type = 5 OR profile_type = 7 OR profile_type = 8)']);
+                $q = $model->find()->where(['id IN ('.$profile_ids2.')','(profile_type = 5 OR profile_type = 7 OR profile_type = 8 OR profile_type = 11)']);
                 
             }
             $profile_ids = '';
@@ -1565,12 +1566,12 @@ class DocumentComponent extends Component
                 {
                     
                     $model = TableRegistry::get('Profiles');
-                    $q = $model->find()->where(['(profile_type = 5 OR profile_type = 7 OR profile_type = 8)']);
+                    $q = $model->find()->where(['(profile_type = 5 OR profile_type = 7 OR profile_type = 8 OR profile_type = 11)']);
                     //var_dump($q);die();
                 } else {
                     $model = TableRegistry::get('Profiles');  
                      
-                    $q = $model->find()->where(['(profile_type = 5 OR profile_type = 7 OR profile_type = 8)','id IN ('.$profile_ids.')']);
+                    $q = $model->find()->where(['(profile_type = 5 OR profile_type = 7 OR profile_type = 8 OR profile_type = 11)','id IN ('.$profile_ids.')']);
                 }  
                 
             }

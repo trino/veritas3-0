@@ -269,7 +269,7 @@
                                         </td>
                                         <td class="actions  util-btn-margin-bottom-5">
                                         <?php
-                                        if($sidebar->bulk=='1' && ($profile->profile_type == 5 || $profile->profile_type == 7 || $profile->profile_type == 8))
+                                        if($sidebar->bulk=='1' && ($profile->profile_type == 5 || $profile->profile_type == 7 || $profile->profile_type == 8 || $profile->profile_type == 11))
                                         {
                                         ?>
                                             <!--input type="checkbox" class="form-control bulk_user" value="<?php echo $profile->id; ?>" id="checkbox_id_<?php echo $profile->id; ?>" /-->
@@ -333,7 +333,7 @@
                                                 if ($sidebar->document_list == 1/* && $doc != 0 && $cn != 0*/) {
                                                     ?>
                                                     <a href="<?php
-                                                    if($profile->profile_type == '5' || $profile->profile_type == '7' || $profile->profile_type == '8' )
+                                                    if($profile->profile_type == '5' || $profile->profile_type == '7' || $profile->profile_type == '8' || $profile->profile_type == '11')
                                                     {
                                                         echo $this->request->webroot . 'documents/index?type=&submitted_for_id=' . $profile->id;
                                                      }
