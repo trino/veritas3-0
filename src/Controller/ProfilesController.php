@@ -999,8 +999,7 @@
 
                                 if ($password) {
                                     $msg .= "<br/>Password: " . $password;
-                                    $msg .= "<br /><br />#162
-                                            Click <a href='" . LOGIN . "'>here</a> to login<br /><br /> Regards,<br /> The ".$settings->mee." Team";
+                                    $msg .= "<br /><br />Click <a href='" . LOGIN . "'>here</a> to login<br /><br /> Regards,<br /> The ".$settings->mee." Team";
                                 }
 
                                 $this->Mailer->sendEmail($from, $_POST["email"], $sub, $msg);

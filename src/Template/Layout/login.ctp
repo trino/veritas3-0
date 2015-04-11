@@ -262,7 +262,7 @@ $(function(){
 </div>
 
 <div class="form-group">
-    <label class="control-label visible-ie8 visible-ie9">Postal Code</label>
+    <label class="control-label visible-ie8 visible-ie9">Postal/Zip Code</label>
     <div class="input-icon">
         <i class="fa fa-location-arrow"></i>
         <input class="form-control placeholder-no-fix" type="text" placeholder="Postal Code" name="postalcode" required="required"/>

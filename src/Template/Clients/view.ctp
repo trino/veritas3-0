@@ -211,7 +211,7 @@ $contact = $this->requestAction('clients/getContact/'.$id);
                                             <tr><td>Address</td><td><?php if($client->billing_address) echo $client->billing_address; else echo "Not Available"; ?></td></tr>
                                             <tr><td>City</td><td><?php if($client->city) echo $client->city; else echo "Not Available"; ?></td></tr>
                                             <tr><td>Province</td><td><?php if($client->province) echo $client->province; else echo "Not Available"; ?></td></tr>
-											<tr><td>Postal code</td><td><?php if($client->postal) echo $client->postal; else echo "Not Available"; ?></td></tr>
+											<tr><td>Postal/Zip Code</td><td><?php if($client->postal) echo $client->postal; else echo "Not Available"; ?></td></tr>
 
                                         </table>
 

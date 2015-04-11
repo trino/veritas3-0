@@ -1,25 +1,27 @@
 <?php
-$profileID = $this->Session->read('Profile.id');
- if(strlen($profileID)==0) {
-  //  echo '<div class="alert alert-danger"><strong>Error!</strong> <a href="profiles/login">Your session has timed out, click here to log back in.</a></div>';
+    $profileID = $this->Session->read('Profile.id');
+    if (strlen($profileID) == 0) {
+        //  echo '<div class="alert alert-danger"><strong>Error!</strong> <a href="profiles/login">Your session has timed out, click here to log back in.</a></div>';
 
-     header("Location: " . $this->request->webroot);
+        header("Location: " . $this->request->webroot);
 
- }
+    }
     $sidebar = $this->requestAction("settings/all_settings/" . $profileID . "/sidebar");
     $order_url = $this->requestAction("settings/getclienturl/" . $profileID . "/order");
     $document_url = $this->requestAction("settings/getclienturl/" . $profileID . "/document");
     $ordertype = "MEE";
-    if (isset($_GET["ordertype"])){ $ordertype = strtoupper($_GET["ordertype"]) ;}
+    if (isset($_GET["ordertype"])) {
+        $ordertype = strtoupper($_GET["ordertype"]);
+    }
 ?>
 
 <div class="page-sidebar-wrapper">
- 
+
     <div class="page-sidebar navbar-collapse collapse">
-     <?php
- if($this->request->session()->read('debug'))
-        echo "<span style ='color:red;'>sidebar.php #INC162</span>";
- ?>
+        <?php
+            if ($this->request->session()->read('debug'))
+                echo "<span style ='color:red;'>sidebar.php #INC162</span>";
+        ?>
         <ul id="mainbar" class="<?php echo $settings->sidebar; ?>" data-keep-expanded="false" data-auto-scroll="true"
             data-slide-speed="200">
 
@@ -32,7 +34,8 @@ $profileID = $this->Session->read('Profile.id');
                     </a>
 
                     <div class="input-group">
-                        <input type="text" name="searchdoc" class="form-control" placeholder="<?php echo ucfirst($settings->document); ?> Search...">
+                        <input type="text" name="searchdoc" class="form-control"
+                               placeholder="<?php echo ucfirst($settings->document); ?> Search...">
 							<span class="input-group-btn">
 							<a href="javascript:;" class="btn submit"><i class="icon-magnifier"></i></a>
 							</span>
@@ -52,54 +55,52 @@ $profileID = $this->Session->read('Profile.id');
 
             <?php
 
-                if (($sidebar->client == 1 && $this->request->session()->read('Profile.super')) || ($sidebar->client == 1 && $settings->mee =="Events Audit")) { ?>
+                if (($sidebar->client == 1 && $this->request->session()->read('Profile.super')) || ($sidebar->client == 1 && $settings->mee == "Events Audit")) { ?>
 
-                <li class="<?php echo ($this->request['controller'] == 'Clients' && !isset($_GET['draft']) && $this->request['action'] != 'quickcontact') ? 'active open' : ''; ?>">
-                    <a href="<?php echo WEB_ROOT; ?>clients">
-                        <i class="icon-globe"></i>
-                        <span class="title"><?php echo ucfirst($settings->client); ?>s</span>
-                        <?php echo ($this->request['controller'] == 'Clients') ? '<span class="selected"></span>' : ''; ?>
-                        <span class="arrow "></span>
-                    </a>
-                    <?php if ($sidebar->client_list == 1 || $sidebar->client_create == 1) { ?>
-                        <ul class="sub-menu">
-                            <?php if ($sidebar->client_list == 1) { ?>
-                                <li <?php echo ($this->request['controller'] == 'Clients' && $this->request['action'] == 'index' && !isset($_GET["draft"]) ) ? 'class="active"' : ''; ?>>
-                                    <a href="<?php echo WEB_ROOT; ?>clients">
-                                        <i class="icon-list"></i>
-                                        List <?php echo ucfirst($settings->client); ?>s</a>
-                                </li>
-                                
-                            <?php }
-                                if ($sidebar->client_create == 1) {
-                                    ?>
-
-                                    <li <?php echo ($this->request['controller'] == 'Clients' && $this->request['action'] == 'add') ? 'class="active"' : '';?>>
-                                        <a href="<?php echo WEB_ROOT;?>clients/add">
-                                            <i class="icon-plus"></i>
-                                            Create <?php echo ucfirst($settings->client);?></a>
+                    <li class="<?php echo ($this->request['controller'] == 'Clients' && !isset($_GET['draft']) && $this->request['action'] != 'quickcontact') ? 'active open' : ''; ?>">
+                        <a href="<?php echo WEB_ROOT; ?>clients">
+                            <i class="icon-globe"></i>
+                            <span class="title"><?php echo ucfirst($settings->client); ?>s</span>
+                            <?php echo ($this->request['controller'] == 'Clients') ? '<span class="selected"></span>' : ''; ?>
+                            <span class="arrow "></span>
+                        </a>
+                        <?php if ($sidebar->client_list == 1 || $sidebar->client_create == 1) { ?>
+                            <ul class="sub-menu">
+                                <?php if ($sidebar->client_list == 1) { ?>
+                                    <li <?php echo ($this->request['controller'] == 'Clients' && $this->request['action'] == 'index' && !isset($_GET["draft"])) ? 'class="active"' : ''; ?>>
+                                        <a href="<?php echo WEB_ROOT; ?>clients">
+                                            <i class="icon-list"></i>
+                                            List <?php echo ucfirst($settings->client); ?>s</a>
                                     </li>
 
-                                <?php
-                                }
-								if ($sidebar->client_list == 1) { ?>
-								
-								
-								<!--li <?php echo ($this->request['controller'] == 'Clients' && $this->request['action'] == 'index' && isset($_GET["draft"]) ) ? 'class="active"' : ''; ?>>
+                                <?php }
+                                    if ($sidebar->client_create == 1) {
+                                        ?>
+
+                                        <li <?php echo ($this->request['controller'] == 'Clients' && $this->request['action'] == 'add') ? 'class="active"' : ''; ?>>
+                                            <a href="<?php echo WEB_ROOT; ?>clients/add">
+                                                <i class="icon-plus"></i>
+                                                Create <?php echo ucfirst($settings->client); ?></a>
+                                        </li>
+
+                                    <?php
+                                    }
+                                    if ($sidebar->client_list == 1) { ?>
+
+
+                                        <!--li <?php echo ($this->request['controller'] == 'Clients' && $this->request['action'] == 'index' && isset($_GET["draft"])) ? 'class="active"' : ''; ?>>
                                     <a href="<?php echo $this->request->webroot; ?>clients/index?draft">
                                         <i class="fa fa-pencil"></i>
                                         <?php echo ucfirst($settings->client); ?> Drafts</a>
                                 </li-->
-								
-								<?php }     ?>
+
+                                    <?php } ?>
 
 
-
-
-                        </ul>
-                    <?php } ?>
-                </li>
-            <?php } ?>
+                            </ul>
+                        <?php } ?>
+                    </li>
+                <?php } ?>
             <?php if ($sidebar->profile == 1) { ?>
                 <li class="<?php echo ($this->request['controller'] == 'Profiles' && !isset($_GET['draft']) && $this->request['action'] != 'logo' && $this->request['action'] != 'todo') ? 'active open' : ''; ?>">
                     <a href="<?php echo WEB_ROOT; ?>profiles">
@@ -112,13 +113,13 @@ $profileID = $this->Session->read('Profile.id');
                     <?php if ($sidebar->profile_list == 1 || $sidebar->profile_create == 1) { ?>
                         <ul class="sub-menu">
                             <?php if ($sidebar->profile_list == 1) { ?>
-                                <li <?php echo ($this->request['controller'] == 'Profiles' && $this->request['action'] == 'index' && !isset($_GET["draft"]) ) ? 'class="active"' : ''; ?>>
+                                <li <?php echo ($this->request['controller'] == 'Profiles' && $this->request['action'] == 'index' && !isset($_GET["draft"])) ? 'class="active"' : ''; ?>>
                                     <a href="<?php echo WEB_ROOT; ?>profiles">
                                         <i class="icon-list"></i>
                                         List <?php echo ucfirst($settings->profile); ?>s</a>
                                 </li>
 
-                                <!--li <?php echo ($this->request['controller'] == 'Profiles' && $this->request['action'] == 'index' && !isset($_GET["draft"]) ) ? 'class="active"' : ''; ?>>
+                                <!--li <?php echo ($this->request['controller'] == 'Profiles' && $this->request['action'] == 'index' && !isset($_GET["draft"])) ? 'class="active"' : ''; ?>>
                                     <a href="<?php echo WEB_ROOT; ?>profiles?all">
                                         <i class="icon-list"></i>
                                         List All <?php echo ucfirst($settings->profile); ?>s</a>
@@ -131,8 +132,8 @@ $profileID = $this->Session->read('Profile.id');
                                         Create <?php echo ucfirst($settings->profile); ?></a>
                                 </li>
                             <?php } ?>
-						<?php if ($sidebar->profile_create == 1 && 1+1==3) { ?>
-                                <li <?php echo ($this->request['controller'] == 'Profiles' && $this->request['action'] == 'index' && isset($_GET["draft"]) ) ? 'class="active"' : ''; ?>>
+                            <?php if ($sidebar->profile_create == 1 && 1 + 1 == 3) { ?>
+                                <li <?php echo ($this->request['controller'] == 'Profiles' && $this->request['action'] == 'index' && isset($_GET["draft"])) ? 'class="active"' : ''; ?>>
                                     <a href="<?php echo WEB_ROOT; ?>profiles/index?draft">
                                         <i class="fa fa-pencil"></i>
                                         <?php echo ucfirst($settings->profile); ?> Drafts</a>
@@ -168,23 +169,24 @@ $profileID = $this->Session->read('Profile.id');
                                 </li>
 
                             <?php } ?>
-							<?php if ($sidebar->document_list == 1 && false) { ?>
+                            <?php if ($sidebar->document_list == 1 && false) { ?>
                                 <li <?php echo ($this->request['controller'] == 'Documents' && $this->request['action'] == 'index' && isset($_GET['draft'])) ? 'class="active"' : ''; ?>>
                                     <a href="<?php echo $this->request->webroot; ?>documents/index?draft">
                                         <i class="fa fa-pencil"></i>
                                         <?php echo ucfirst($settings->document); ?> Drafts</a>
                                 </li>
-                            <?php } 
+                            <?php }
 
                             ?>
 
                         </ul>
                     <?php } ?>
                 </li>
-            <?php }           ?>
+            <?php } ?>
 
             </li>
             <?php if ($sidebar->orders == 1) { ?>
+
                 <li class="<?php echo (($this->request['action'] == 'orderslist' || $this->request['action'] == 'addorder') && !isset($_GET['draft'])) ? 'active open' : ''; ?>">
                     <a href="<?php echo $this->request->webroot; ?>orders/orderslist">
                         <i class="icon-docs"></i>
@@ -192,8 +194,12 @@ $profileID = $this->Session->read('Profile.id');
                         <span class="selected"></span>
                         <span class="arrow "></span>
                     </a>
+
+
                     <?php if ($sidebar->orders_list == 1 || $sidebar->orders_create == 1) { ?>
                         <ul class="sub-menu">
+
+
                             <?php if ($sidebar->orders_list == 1) { ?>
                                 <li <?php echo ($this->request['controller'] == 'Orders' && $this->request['action'] == 'orderslist' && !isset($_GET['draft'])) ? 'class="active"' : ''; ?>>
                                     <a href="<?php echo $this->request->webroot; ?>orders/orderslist">
@@ -202,10 +208,14 @@ $profileID = $this->Session->read('Profile.id');
                                 </li>
                             <?php } ?>
 
+
+
+
                             <?php if ($sidebar->orders_create == 1) {
-                                    foreach($productlist as $product){
-                                        $alias = $product->Sidebar_Alias;
-                                        if($sidebar->$alias ==1) {
+                                foreach ($productlist as $product) {
+                                    $alias = $product->Sidebar_Alias;
+                                    if ($sidebar->$alias == 1) {
+
                                             echo "<LI ";
                                             if ($this->request['controller'] == 'Orders' && $this->request['action'] == 'productSelection' && $ordertype == $product->Acronym && !isset($_GET['draft'])) {
                                                 echo 'class="active"';
@@ -215,12 +225,21 @@ $profileID = $this->Session->read('Profile.id');
                                             echo $this->request->webroot . "orders/productSelection?driver=0&ordertype=" . $product->Acronym . '">';
                                             echo '<i class="icon-plus"></i> ';
                                             echo $product->Name . "</a></li>";
-                                        }
+
                                     }
+                                }
                             } ?>
+
+
+
                         </ul>
                     <?php } ?>
+
+
                 </li>
+
+
+
             <?php } ?>
             <?php if ($sidebar->messages == 1) { ?>
                 <!--li class="<?php echo ($this->request['controller'] == 'Messages') ? 'active open' : ''; ?>">
@@ -233,7 +252,7 @@ $profileID = $this->Session->read('Profile.id');
             <?php }
 
             ?>
-             <?php if ($sidebar->analytics == 1) { ?>
+            <?php if ($sidebar->analytics == 1) { ?>
                 <li class="<?php echo ($this->request['action'] == 'analytics') ? 'active open' : ''; ?>">
                     <a href="<?php echo $this->request->webroot; ?>documents/analytics">
                         <i class="fa fa-bar-chart-o"></i>
@@ -242,26 +261,26 @@ $profileID = $this->Session->read('Profile.id');
                     </a>
                 </li>
             <?php } ?>
-             <?php if ($sidebar->schedule == 1) { ?>
+            <?php if ($sidebar->schedule == 1) { ?>
                 <li class="<?php echo ($this->request['controller'] == 'Tasks') ? 'active open' : ''; ?>">
-                    <a href="<?php echo $this->request->webroot;?>tasks/calender">
+                    <a href="<?php echo $this->request->webroot; ?>tasks/calender">
                         <i class="fa fa-calendar"></i>
                         <span class="title">Tasks</span>
                         <span class="selected"></span>
                     </a>
                     <ul class="sub-menu">
-                            <li <?php echo ($this->request['controller'] == 'Tasks' && $this->request['action'] == 'calender') ? 'class="active"' : ''; ?>>
-                                <a href="<?php echo $this->request->webroot;?>tasks/calender">
-                                    <i class="icon-plus"></i>
-                                    Calender</a>
-                            </li>
-                    <?php if ($sidebar->schedule_add =='1') { ?>
+                        <li <?php echo ($this->request['controller'] == 'Tasks' && $this->request['action'] == 'calender') ? 'class="active"' : ''; ?>>
+                            <a href="<?php echo $this->request->webroot; ?>tasks/calender">
+                                <i class="icon-plus"></i>
+                                Calender</a>
+                        </li>
+                        <?php if ($sidebar->schedule_add == '1') { ?>
                             <li <?php echo ($this->request['controller'] == 'Tasks' && $this->request['action'] == 'add') ? 'class="active"' : ''; ?>>
-                                <a href="<?php echo $this->request->webroot;?>tasks/add">
+                                <a href="<?php echo $this->request->webroot; ?>tasks/add">
                                     <i class="icon-plus"></i>
                                     Add Tasks</a>
                             </li>
-                    <?php } ?>
+                        <?php } ?>
                     </ul>
                 </li>
             <?php } ?>
@@ -273,22 +292,22 @@ $profileID = $this->Session->read('Profile.id');
                         <span class="selected"></span>
                     </a>
                     <ul class="sub-menu">
-                                <li <?php echo ($this->request['controller'] == 'Training' && $this->request['action'] == 'index') ? 'class="active"' : ''; ?>>
-                                    <a href="<?php echo $this->request->webroot;?>training">
-                                        <i class="icon-plus"></i>
-                                        Courses</a>
-                                </li>
+                        <li <?php echo ($this->request['controller'] == 'Training' && $this->request['action'] == 'index') ? 'class="active"' : ''; ?>>
+                            <a href="<?php echo $this->request->webroot; ?>training">
+                                <i class="icon-plus"></i>
+                                Courses</a>
+                        </li>
                         <?php if ($this->request->session()->read('Profile.super') or $this->request->session()->read('Profile.admin')) { ?>
-                                <li <?php echo ($this->request['controller'] == 'Training' && $this->request['action'] == 'users') ? 'class="active"' : ''; ?>>
-                                    <a href="<?php echo $this->request->webroot;?>training/users">
-                                        <i class="icon-plus"></i>
-                                        Quiz Results</a>
-                                </li>
+                            <li <?php echo ($this->request['controller'] == 'Training' && $this->request['action'] == 'users') ? 'class="active"' : ''; ?>>
+                                <a href="<?php echo $this->request->webroot; ?>training/users">
+                                    <i class="icon-plus"></i>
+                                    Quiz Results</a>
+                            </li>
                         <?php } ?>
                     </ul>
                 </li>
             <?php } ?>
-             <?php /*if ($sidebar->bulk == 1) { ?>
+            <?php if ($sidebar->bulk == 1) { ?>
                 <li class="<?php echo ($this->request['controller'] == 'Profiles') ? 'active open' : ''; ?>">
                     <a href="<?php echo $this->request->webroot; ?>profiles">
                         <i class="fa fa-calendar"></i>
@@ -296,14 +315,10 @@ $profileID = $this->Session->read('Profile.id');
                         <span class="selected"></span>
                     </a>
                 </li>
-            <?php }*/ ?>
+            <?php } ?>
 
             <?php if ($sidebar->logo == '1') { ?>
                 <li class="sidebar-toggler-wrapper">
-                    <!-- BEGIN SIDEBAR TOGGLER BUTTON -->
-                    <!--<div class="sidebar-toggler">
-                    </div>-->
-                    <!-- END SIDEBAR TOGGLER BUTTON -->
                     <?php $logo1 = $this->requestAction('Logos/getlogo/1'); ?>
                     <div class="whitecenterdiv">A service division of</div>
 

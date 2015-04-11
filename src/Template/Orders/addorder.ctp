@@ -180,7 +180,7 @@ function provinces($name){
 												<span class="number">
 												1</span><br/>
 												<span class="desc">
-												<i class="fa fa-check"  align="center"></i> Driver </span>
+												<i class="fa fa-check"  align="center"></i> Applicant </span>
                                         </a>
                                     </li>
                                      <!--<li>

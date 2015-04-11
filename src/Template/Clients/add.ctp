@@ -268,7 +268,7 @@
                                                             </div>
                                                             <?php if ($settings->client_option == 0) { ?>
                                                                 <div class="form-group col-md-4">
-                                                                    <label class="control-label">Postal Code</label>
+                                                                    <label class="control-label">Postal/Zip Code</label>
                                                                     <input type="text" class="form-control"
                                                                            name="postal" <?php if (isset($client->postal)) { ?> value="<?php echo $client->postal; ?>" <?php } ?>/>
                                                                 </div>

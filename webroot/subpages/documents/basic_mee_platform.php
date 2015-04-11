@@ -549,7 +549,7 @@
         
         
         
-        
+        <?php if(false){?>
         <div class="col-md-12">
         <h3>Basic Driver Application</h3>
         </div>
@@ -924,8 +924,16 @@
                         <textarea name="states_operated" class="form-control"><?php if(isset($basic_mee_platform))echo $basic_mee_platform->states_operated;?></textarea>
                     </div>
         </div>
-        
-        <p>&nbsp;</p>
+
+
+    <?php }?>
+
+
+    <p>&nbsp;</p>
+
+
+
+
         <div class="addattachment<?php echo $dx->id;?> form-group col-md-12"></div> 
         <div class="clearfix"></div>
         

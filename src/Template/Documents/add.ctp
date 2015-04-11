@@ -134,8 +134,8 @@ if (isset($this->request->params['pass'][1])) {
 
                     <div class="col-md-12 clients_select" style="margin: 10px 0;padding:0">
 
-                        <select name="clients" class="form-control select2me" data-placeholder="Select Client" id="changeclient" <?php if($this->request->params['action']=='view'){?>disabled="disabled"<?php }?>>
-                            <option value="0">Select Client</option>
+                        <select name="clients" class="form-control select2me" data-placeholder="<?=$settings->client?>" id="changeclient" <?php if($this->request->params['action']=='view'){?>disabled="disabled"<?php }?>>
+                            <option value="0">Select <?=$settings->client?></option>
                             <?php
                             $profile_id = $this->request->session()->read('Profile.id');
                             foreach ($clients as $c){

@@ -111,18 +111,24 @@
     }
 
 
+        //    if ($action != "View" && $action != "Vieworder") {
 
-
-    //    if ($action != "View" && $action != "Vieworder") {
-    echo '<div class="col-md-12">
+?>
+   <div class="col-md-12">
    <hr/>
 
-<p>Note that two pieces of Identification will be necessary for any order including a Premium Criminal Record Check.</p>
-<p>ISB Canada is unable to obtain <strong>Alberta</strong> Driver’s Record Abstracts and CVOR’s. Please upload driver provided documentation for <strong>Alberta or any other province (optional)</strong> if you wish to include these products in the driver’s Score Card.</p>';
+<strong>Please upload the appropriate document or item to the associated field below. </strong><br><br>
+<ul>
+<li>Note that two pieces of Identification will be mandatory for any order including a Premium Criminal Record Check.</li>
+<li>British Columbia, Quebec and Saskatchewan require specific consent for Driver’s Record Abstracts and CVOR’s to be obtained. Please download the form found below and upload the signed consent in the proper field displayed below.</li>
+<li>ISB Canada is unable to obtain <strong>Alberta</strong> Driver’s Record Abstracts and CVOR’s. Please upload driver provided documentation for <strong>Alberta or any other province (optional)</strong> if you wish to include these products in the driver’s Score Card.</li>
+<li>We will contact you if a requested product has further requirements.</li>
+</ul>
 
+<?php
     $mand = "Optional";//isrequired($forms, $AttachmentName, $DriversProvince, $attachments = 0){
     if (count($attachment) > 0 || isrequired($forms, "id_piece", $DriverProvince, 0, True)) { $mand = "Mandatory"; }
-    echo '<HR></div><div class="col-md-12"><h4><strong>The following form(s) are ' . $mand . '</strong></h4></div>';
+    echo '<HR></div><div class="col-md-12"><strong>The following form(s) are ' . $mand . '</strong></div>';
 
     $docsprinted=0;
     if (printdivrequired($action, $forms, "attachments", $DriverProvince, count($attachment))) {
@@ -260,7 +266,7 @@
                     <input type="hidden" name="id_piece2" class="mee_att_2" value="<?php if (isset($mee_att['attach_doc']) && $mee_att['attach_doc']->id_piece2) {
         echo $mee_att['attach_doc']->id_piece2;
     } ?>" />
-                    <?= printrequired($action, $forms, "id_piece", $DriverProvince, 0, "At least 1 is required"); ?>
+                    <?= printrequired($action, $forms, "id_piece", $DriverProvince, 0, "Required"); ?>
                 </div>
             </div>
         </div>
@@ -275,7 +281,7 @@
 
     nodocs($docsprinted);
     if ($mand != "Optional") {
-        echo '<div class="col-md-12"><hr></div><div class="col-md-12"><h4><strong>The following form(s) are Optional</strong></h4></div>';
+        echo '<div class="col-md-12"><hr></div><div class="col-md-12"><strong>The following form(s) are Optional</strong></div>';
     }
 
     $docsprinted=0;
