@@ -166,8 +166,8 @@ if (isset($this->request->params['pass'][1])) {
                         <select name="doctype" class="form-control select2me" data-placeholder="Select Document" onchange="window.location='<?php echo $this->request->webroot;?>documents/add/<?php echo $cid;?>?type='+$(this).val()" <?php if($this->request->params['action']=='view'){?>disabled="disabled"<?php }?>>
                             <option value="0">Select Document</option>
                             <?php
-                             $doc = $doc_comp->getDocument('orders');
-                                        $subdoccli = $this->requestAction('/clients/getSubCli2/'.$cid);
+                             $doc = $doc_comp->getDocument('document');
+                                        $subdoccli = $this->requestAction('/clients/getSubCli2/'.$cid.'/document');
 
                                         $subdoccli2 = $subdoccli;
                                         //$doc2 = $doc;

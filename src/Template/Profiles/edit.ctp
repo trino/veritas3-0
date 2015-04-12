@@ -326,7 +326,7 @@
 
                             <?php }
                                 if (isset($p)) {
-                                    if ($p->profile_type == 5) {
+                                    if ($p->profile_type == 5 || $profile->profile_type == 7 || $profile->profile_type == 8 || $profile->profile_type == 11) {
                                         ?>
 
                                         <label class="uniform-inline" style="margin-bottom:20px;">

@@ -193,7 +193,11 @@ function provinces($name){
                                     </li>-->
                                     <?php
                                         $doc = $doc_comp->getDocument('orders');
-                                        $subdoccli = $this->requestAction('/clients/getSubCli2/'.$cid);
+                                        $doc_ids = $this->requestAction('/clients/orders_doc/'.$cid.'/'.$_GET['order_type']);
+                                        if(count($doc_ids)>0)
+                                            $subdoccli = $doc_ids;
+                                        else
+                                            $subdoccli = $this->requestAction('/clients/getSubCli2/'.$cid);
 
                                         $subdoccli2 = $subdoccli;
                                         $doc2 = $doc;
@@ -252,7 +256,7 @@ function provinces($name){
                                     ?>
 
                                     <li>
-                                        <a href="#tab<?php echo ++$k_cou; ?>" data-toggle="tab" class="step confirmations">
+                                        <a href="#tab100000x" data-toggle="tab" class="step confirmations">
 												<span class="number">
 												<?php echo $i++;?></span><br/>
 												<span class="desc">
@@ -260,7 +264,7 @@ function provinces($name){
                                         </a>
                                     </li>
                                     <li style="display: none;">
-                                        <a href="#tab<?php echo ++$k_cou; ?>" data-toggle="tab" class="step">
+                                        <a href="#tab100001x" data-toggle="tab" class="step">
 												<span class="number">
 												<?php echo $i++;?></span><br/>
 												<span class="desc">
@@ -398,7 +402,7 @@ function provinces($name){
                                                 {
                                                     $show_all2='all';
                                                 }
-                        foreach ($subdoccli2 as $sd) {
+                        foreach ($subdoccli as $sd) {
                             $d = $this->requestAction('/clients/getFirstSub/'.$sd->sub_id);
                             $dx = $this->requestAction('/orders/getSubDetail/'.$sd->sub_id);
                            // debug($d);
@@ -428,10 +432,10 @@ function provinces($name){
                         <?php }}}
                         if(!isset($k_co)) {$k_co=1;} ?>
 
-                        <div class="tabber <?php echo $tab; ?> confirmations2" id="tab<?php echo ++$k_co; ?>">
+                        <div class="tabber <?php echo $tab; ?> confirmations2" id="tab100000x">
                             <?php include('subpages/documents/confirmation.php'); ?>
                         </div>
-                        <div class="tabber <?php echo $tab; ?>" id="tab<?php echo ++$k_co; ?>">
+                        <div class="tabber <?php echo $tab; ?>" id="tab100001x">
                             <?php include('subpages/documents/success.php'); //include('subpages/documents/forview.php'); ?>
                         </div>
                         <?php if ($tab == 'nodisplay') { // For view action only ?>
