@@ -161,7 +161,7 @@
                                         </option>
                                         <option
                                             value="11" <?php if (isset($return_profile_type) && $return_profile_type == 11) { ?> selected="selected"<?php } ?> >
-                                            Partner
+                                            Employee
                                         </option>
                                     <?php } ?>
 
@@ -292,7 +292,6 @@
 
                                         <td><?php
                                                 if (strlen($profile->profile_type) > 0) {
-                                                    echo h($profiletype[$profile->profile_type]);
                                                     if ($profile->profile_type == 5) {//is a driver
                                                         $expires = strtotime($profile->expiry_date);
                                                         if ($expires) {
