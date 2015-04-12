@@ -118,9 +118,7 @@ function printbutton($type, $webroot, $index, $tempstr = "",$_this, $o_type, $in
                 echo '<a href="javascript:void(0);" id="qua_btn" class="btn btn-danger  btn-lg placenow">Continue <i class="m-icon-swapright m-icon-white"></i></a>';
             } else {
                 ?>
-                <!--a href="javascript:void(0);" class="btn btn-danger btn-lg placenow"
-                       onclick="if(!check_div())return false;var div = $('#divisionsel').val();if(!isNaN(parseFloat(div)) && isFinite(div)){var division = div;}else var division = '0';if($('.selecting_client').val()){if($('.selecting_driver').val()==''){alert('Please select driver');$('#s2id_selecting_driver .select2-choice').attr('style','border:1px solid red;');$('html,body').animate({scrollTop: $('#s2id_selecting_driver .select2-choice').offset().top},'slow');return false;}else window.location='<?php echo $webroot; ?>orders/addorder/'+$('.selecting_client').val()+'/?driver='+$('.selecting_driver').val()+'&division='+division+'&forms=<?php echo $_this->requestAction('orders/getProNum');?>&order_type=<?php echo urlencode($o_type); ?>';}else{$('#s2id_selecting_client .select2-choice').attr('style','border:1px solid red;');$('html,body').animate({scrollTop: $('#s2id_selecting_client .select2-choice').offset().top},'slow');}">Continue
-                        <i class="m-icon-swapright m-icon-white"></i></a-->
+                
 
             <?php
             }
@@ -272,18 +270,6 @@ function printform($counting, $settings, $client, $dr_cl, $driver, $intable = fa
 <div class="row">
     <?php
     $o_type = makeform($product->Acronym, $cols, $product->Color, $product->Name, $product->Description, $products, $product->Checked == 1, $counting, $settings, $client, $dr_cl, $driver, $_this, $product->Alias, false, $product->Blocked);
-
-    /*
-    if ($ordertype == "MEE") {
-        $o_type = makeform("MEE", $cols, "red", "Order MEE", "The all in one package", $products, true, $counting, $settings, $client, $dr_cl, $driver, $_this);
-    }
-    if ($ordertype == "CAR") {
-        $o_type = makeform("CAR", $cols, "", "Order Products", "Place an Order A La Carte", $products, false, $counting, $settings, $client, $dr_cl, $driver, $_this);
-    }
-    if ($ordertype == "QUA") {
-        $o_type = makeform("QUA", $cols, "blue", "Requalify", "Requalify existing drivers", $products, false, $counting, $settings, $client, $dr_cl, $driver, $_this, "Requalification", false);
-    }
-    */
     ?>
 </div>
 
@@ -299,54 +285,10 @@ function printform($counting, $settings, $client, $dr_cl, $driver, $intable = fa
     }
 
     function check_driver_abstract(driver) {
-        /*$.ajax({
-         url:'
-        <?php echo $this->request->webroot;?>orders/check_driver_abstract/'+driver,
-         success:function(res)
-         {
-         if(res=='0')
-         {
-         if($('#product_2 input[type="checkbox"]').is(':checked'))
-         {
-         $('#product_2 input[type="checkbox"]').click();
-         }
-         $('#product_2').hide();
-         }
-         else
-         {
-         if(!$('#product_2 input[type="checkbox"]').is(':checked'))
-         {
-         $('#product_2 input[type="checkbox"]').click();
-         }
-         $('#product_2').show();
-         }
-         }
-         });*/
+        
     }
     function check_cvor(driver) {
-        /*$.ajax({
-         url:'
-        <?php echo $this->request->webroot;?>orders/check_cvor/'+driver,
-         success:function(res)
-         {
-         if(res=='0')
-         {
-         if($('#product_3 input[type="checkbox"]').is(':checked'))
-         {
-         $('#product_3 input[type="checkbox"]').click();
-         }
-         $('#product_3').hide();
-         }
-         else
-         {
-         if(!$('#product_3 input[type="checkbox"]').is(':checked'))
-         {
-         $('#product_3 input[type="checkbox"]').click();
-         }
-         $('#product_3').show();
-         }
-         }
-         });*/
+        
     }
     function check_div() {
         //alert('test');

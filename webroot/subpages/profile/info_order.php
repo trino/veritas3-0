@@ -82,22 +82,21 @@
 
                                     <select name="profile_type" class="form-control member_type required">
                                         <option
-                                            value="5" <?php if (isset($p) && $p->profile_type == 5) { ?> selected="selected" <?php }  ?>>
+                                            value="5" <?php if (isset($p) && $p->profile_type == 5) { ?> selected="selected" <?php }?>>
                                             Driver
                                         </option>
                                         <option
-                                            value="7" <?php if (isset($p) && $p->profile_type == 7) { ?> selected="selected" <?php }  ?>>
+                                            value="7" <?php if (isset($p) && $p->profile_type == 7) { ?> selected="selected" <?php }?>>
                                             Owner Operator
                                         </option>
                                         <option
-                                            value="8" <?php if (isset($p) && $p->profile_type == 8) { ?> selected="selected" <?php }  ?>>
+                                            value="8" <?php if (isset($p) && $p->profile_type == 8) { ?> selected="selected" <?php }?>>
                                             Owner Driver
                                         </option>
                                         <option
-                                            value="11" <?php if (isset($p) && $p->profile_type == 11) { ?> selected="selected" <?php }  ?>>
+                                            value="11" <?php if (isset($p) && $p->profile_type == 11) {?> selected="selected" <?php }?>>
                                             Employee
                                         </option>
-
                                     </select>
 
                                 </div>

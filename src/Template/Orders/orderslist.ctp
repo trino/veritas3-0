@@ -50,11 +50,7 @@
         }
     }
     ?>
-
-
 </div>
-
-
 <div class="row">
     <div class="col-md-12">
         <div class="portlet box yellow">
@@ -94,12 +90,10 @@
                                 <option value="">Submitted for</option>
                                 <?php
                                     foreach ($users as $u) {
-                                        //if($u->profile_type == '5' || $u->profile_type == '7' || $u->profile_type == '8'){
                                         ?>
                                         <option
                                             value="<?php echo $u->id; ?>" <?php if (isset($_GET['uploaded_for']) && $_GET['uploaded_for'] == $u->id) { ?> selected="selected"<?php } ?> ><?php echo ucfirst($u->fname) . " " . ucfirst($u->lname); ?></option>
                                         <?php
-                                        //}
                                     }
                                 ?>
                             </select>
