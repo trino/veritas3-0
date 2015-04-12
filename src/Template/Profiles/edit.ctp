@@ -1,5 +1,4 @@
-<link href="<?php echo $this->request->webroot; ?>assets/admin/pages/css/profile.css" rel="stylesheet"
-      type="text/css"/> <!--REQUIRED-->
+<link href="<?php echo $this->request->webroot; ?>assets/admin/pages/css/profile.css" rel="stylesheet" type="text/css"/> <!--REQUIRED-->
 <style>
     @media print {
         .page-header {
@@ -340,7 +339,7 @@
                                 }
 
                                 if (isset($p)) {
-                                    if ($profile->profile_type == 5 || $profile->profile_type == 7 || $profile->profile_type == 8) {//driver, owner driver, owner operator
+                                    if ($profile->profile_type == 5 || $profile->profile_type == 7 || $profile->profile_type == 8 || $profile->profile_type == 11) {//driver, owner driver, owner operator
                                         if ($sidebar->orders_create == 1){
                                             foreach($products as $product){
                                                 $alias = $product->Sidebar_Alias;

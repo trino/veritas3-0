@@ -841,7 +841,7 @@ if ($activetab == "permissions") {
                                                                                          value="2" <?php if ($prosubdoc['display'] == 2) { ?> checked="checked" <?php } ?> />
                                                         Upload Only </label>
                                                     <label class="uniform-inline">
-                                                        <input <?php echo $is_disabled?> type="radio"
+                                                        <input <?php echo $is_disabled?> type="radio" class="documents"
                                                                                          name="profile[<?php echo $sub->id;?>]"
                                                                                          value="3" <?php if ($prosubdoc['display'] == 3) { ?> checked="checked" <?php } ?>/>
                                                         Both </label>
@@ -1546,7 +1546,16 @@ if ($activetab == "permissions") {
             {
                  $('#blockform input[type="radio"]').each(function(){
                     $(this).parent().removeClass('checked');
-                    if($(this).val()=='1')
+                    if($(this).hasClass('documents'))
+                    {
+                      var intg = 3;  
+                    }
+                    else
+                    {
+                        var intg = 1;
+                    }
+                    
+                    if($(this).val()== intg)
                     {
                         $(this).parent().addClass('checked');
                         $(this).attr('checked','checked');

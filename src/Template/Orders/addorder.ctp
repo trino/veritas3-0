@@ -193,7 +193,11 @@ function provinces($name){
                                     </li>-->
                                     <?php
                                         $doc = $doc_comp->getDocument('orders');
-                                        $subdoccli = $this->requestAction('/clients/getSubCli2/'.$cid);
+                                        $doc_ids = $this->requestAction('/clients/orders_doc/'.$cid.'/'.$_GET['order_type']);
+                                        if(count($doc_ids)>0)
+                                            $subdoccli = $doc_ids;
+                                        else
+                                            $subdoccli = $this->requestAction('/clients/getSubCli2/'.$cid);
 
                                         $subdoccli2 = $subdoccli;
                                         $doc2 = $doc;
