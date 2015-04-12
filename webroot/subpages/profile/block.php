@@ -74,6 +74,10 @@ if ($activetab == "permissions") {
 
                     <table class="table table-bordered table-hover">
                         <tr>
+                            <td></td>
+                            <td><input type="checkbox" class="slelectall" /> Select All</td>
+                        </tr>
+                        <tr>
                             <td class="vtop">
                                 <?php echo ucfirst($settings->profile); ?>
                             </td>
@@ -924,6 +928,10 @@ if ($activetab == "permissions") {
                 <input type="hidden" name="block[user_id]" value="<?php echo $uid; ?>"/>
                 <table class="table table-bordered table-hover">
                     <tr>
+                            <td></td>
+                            <td><input type="checkbox" class="slelectall1" /> Select All</td>
+                    </tr>
+                    <tr>
                         <td>
                             Add a <?= $settings->profile; ?>
                         </td>
@@ -1502,6 +1510,76 @@ if ($activetab == "permissions") {
 
 <script>
     $(function () {
+        $('.slelectall1').click(function(){
+            if($(this).is(':checked'))
+            {
+                 $('#homeform input[type="radio"]').each(function(){
+                    $(this).parent().removeClass('checked');
+                    if($(this).val()=='1')
+                    {
+                        $(this).parent().addClass('checked');
+                        $(this).attr('checked','checked');
+                        $(this).click();
+                    }
+
+                 });
+                
+                
+            }
+            else
+            {
+               $('#homeform input[type="radio"]').each(function(){
+                    $(this).parent().removeClass('checked');
+                    if($(this).val()=='0')
+                    {
+                        $(this).parent().addClass('checked');
+                        $(this).attr('checked','checked');
+                        $(this).click();
+                    }
+
+                 });
+                
+            }
+        })
+        $('.slelectall').click(function(){
+            if($(this).is(':checked'))
+            {
+                 $('#blockform input[type="radio"]').each(function(){
+                    $(this).parent().removeClass('checked');
+                    if($(this).val()=='1')
+                    {
+                        $(this).parent().addClass('checked');
+                        $(this).attr('checked','checked');
+                        $(this).click();
+                    }
+
+                 });
+                $('#blockform input[type="checkbox"]').each(function(){
+                   $(this).parent().addClass('checked')
+                    $(this).attr('checked','checked');
+                });
+                
+            }
+            else
+            {
+               
+                $('#blockform input[type="checkbox"]').each(function(){
+                   $(this).parent().removeClass('checked')
+                    $(this).removeAttr('checked');
+                });
+                 $('#blockform input[type="radio"]').each(function(){
+                    $(this).parent().removeClass('checked');
+                    if($(this).val()=='0')
+                    {
+                        $(this).parent().addClass('checked');
+                        $(this).attr('checked','checked');
+                        $(this).click();
+                    }
+
+                 });
+            }
+        })
+        
         $('#saveptype').live('click', function () {
             $(this).text("Saving");
             var cids = $('.ptypeform input[type="checkbox"]').serialize();
