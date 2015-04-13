@@ -1,5 +1,10 @@
-<?php $settings = $this->requestAction('settings/get_settings');?>
-<?php //* Date format= 2015-02-05  "Y-m-d" http://www.flotcharts.org/flot/examples/
+<?php $settings = $this->requestAction('settings/get_settings');
+//* Date format= 2015-02-05  "Y-m-d" http://www.flotcharts.org/flot/examples/
+if ($_SERVER['SERVER_NAME'] == "localhost" || $_SERVER['SERVER_NAME'] == "127.0.0.1") {
+    include_once('/subpages/api.php');
+} else {
+    include_once('subpages/api.php');
+}
 
 function left($text, $length){
 	return substr($text,0,$length)	;
@@ -281,7 +286,7 @@ jQuery(document).ready(function() {
 													<input type="text" class="form-control" name="from" value="<?php echo $enddate; ?>">
 													<span class="input-group-addon"> to </span>
 													<input type="text" class="form-control" name="to" title="Leave blank to end at today" value="<?php echo get2("to", date("Y-m-d")); ?>">
-                                                    <button type="submit" class="btn btn-primary" style="float">Search</button>
+                                                    <!--button type="submit" class="btn btn-primary" style="float">Search</button-->
 
 												</div>
 											</div>
@@ -424,4 +429,24 @@ function enumsubdocs($thedocs, $date, $chartid, $isdraft){
 }
 
 //debug($clients);
+//echo Translate("test", "English", array("name" => "Jim Bob"))
+
+?>
+
+
+<?php
+//http://www.onlamp.com/pub/a/php/2002/06/13/php.html
+/*
+// I18N support information here
+$language = 'en_US';
+putenv("LANG=$language");
+setlocale(LC_ALL, $language);
+
+// Set the text domain as 'messages'
+$domain = 'messages';
+bindtextdomain($domain, "/www/veritsa3-0/locale");
+textdomain($domain);
+
+echo gettext("testing");
+*/
 ?>

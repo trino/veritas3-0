@@ -66,20 +66,20 @@ if (isset($quiz)){
 
 <div class="col-md-6">
     <div class="form-group">
-        <label class="control-label">Quiz Name :</label>
+        <label class="control-label">Quiz Name:</label>
             <?php if (isset($_GET["quizid"])){ echo '<input name="ID" type="hidden" value="' . $_GET["quizid"] . '">'; } ?>
             <input name="Name" class="form-control" required value="<?php if (isset($quiz)) { echo $quiz->Name; } ?>" />
     </div>
 </div>
 <div class="col-md-6">
     <div class="form-group">
-        <label class="control-label">Image :</label>
+        <label class="control-label">Image:</label>
         <input name="image" id="image" class="form-control" value="<?php if (isset($quiz)) { echo $quiz->image; } else {echo "training.png";} ?>" />
     </div>
 </div>
 <div class="col-md-6">
     <div class="form-group">
-        <label class="control-label">Attachments :</label><BR>
+        <label class="control-label">Attachments:</label><BR>
         <small>Separate your attachments with a comma</small>
         <textarea name="Attachments" class="form-control" rows="9"><?php if (isset($quiz)) { echo $quiz->Attachments; } ?></textarea>
     </div>
@@ -87,7 +87,7 @@ if (isset($quiz)){
 
 <div class="col-md-6">
     <div class="form-group">
-        <label class="control-label">Description :</label>
+        <label class="control-label">Description:</label>
         <textarea name="Description" class="form-control" rows="10" required><?php if (isset($quiz)) { echo $quiz->Description; } ?></textarea>
     </div>
 </div>
