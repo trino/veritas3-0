@@ -48,6 +48,8 @@ $ordertype = substr(strtoupper(GET("ordertype")), 0, 3);
 function makeform($ordertype, $cols, $color, $Title, $Description, $products, $Disabled, $counting, $settings, $client, $dr_cl, $driver, $_this, $Otype ="", $inforequired = false, $Blocked = ""){
     if (strlen($Otype)==0) { $Otype = $Title; }
     if (strlen($color)>0){ $color = "-" . $color;}
+    $color=""; //color is disabled for now
+
     echo '<div class="col-xs-' . $cols . ' col-xs-offset-2">';
     echo '<div class="pricing' . $color . ' hover-effect">';
     echo '<div class="pricing' . $color . '-head pricing-head-active">';
@@ -269,7 +271,7 @@ function printform($counting, $settings, $client, $dr_cl, $driver, $intable = fa
 
 <div class="row">
     <?php
-    $o_type = makeform($product->Acronym, $cols, '', $product->Name, $product->Description, $products, $product->Checked == 1, $counting, $settings, $client, $dr_cl, $driver, $_this, $product->Alias, false, $product->Blocked);
+    $o_type = makeform($product->Acronym, $cols, $product->Color, $product->Name, $product->Description, $products, $product->Checked == 1, $counting, $settings, $client, $dr_cl, $driver, $_this, $product->Alias, false, $product->Blocked);
     ?>
 </div>
 

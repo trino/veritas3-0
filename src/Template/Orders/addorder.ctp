@@ -192,13 +192,17 @@ function provinces($name){
                                         </a>
                                     </li>-->
                                     <?php
+                                        function is_iterable($var) {
+                                            return (is_array($var) || $var instanceof Traversable);
+                                        }
+
                                         $doc = $doc_comp->getDocument('orders');
                                         $doc_ids = $this->requestAction('/clients/orders_doc/'.$cid.'/'.$_GET['order_type']);
-                                        if(count($doc_ids)>0)
+                                        if(is_iterable($doc_ids)) {
                                             $subdoccli = $doc_ids;
-                                        else
-                                            $subdoccli = $this->requestAction('/clients/getSubCli2/'.$cid);
-
+                                        } else {
+                                            $subdoccli = $this->requestAction('/clients/getSubCli2/' . $cid);
+                                        }
                                         $subdoccli2 = $subdoccli;
                                         $doc2 = $doc;
                                         $i = 2;
@@ -230,9 +234,7 @@ function provinces($name){
                                                     $j = $j + 1;
                                                     if($k_c==1) {
                                                         $k_cou = $j;
-                                                    }
-                                                    else
-                                                    if($k_cou<$j) {
+                                                    } else if($k_cou<$j) {
                                                         $k_cou=$j;
                                                     }
                                                     ?>

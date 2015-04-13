@@ -697,8 +697,21 @@
             die();
         }
 
-        function getSubCli2($id, $type="")
-        {
+        function orders_doc($cid,$o_name){
+            $products = TableRegistry::get('product_types');
+            $product = $products->find()->where(['Name'=>urldecode($o_name)])->first();
+            $doc_ids= $product->doc_ids;
+            $q="";
+            if(strlen($doc_ids)>0) {
+                $doc = TableRegistry::get('client_sub_order');
+                $query = $doc->find();
+                $q= $query->select()->where(['client_id' => $cid,'sub_id IN('.$doc_ids.')']);
+            }
+            $this->response->body($q);
+            return $this->response;
+            die;
+        }
+        function getSubCli2($id, $type=""){
             $sub = TableRegistry::get('client_sub_order');
             $query = $sub->find();
             //$q = $query->select()->where(['client_id'=>$id,'sub_id IN (SELECT id FROM subdocuments WHERE display = 1 AND orders = 1)','sub_id IN (SELECT sub_id FROM client_sub_order WHERE display_order > 0 AND client_id = '.$id.')'])->order(['display_order'=>'ASC']);
@@ -711,26 +724,8 @@
 
             die();
         }
-        function orders_doc($cid,$o_name)
-        {
-            
-            $products = TableRegistry::get('product_types');
-            $product = $products->find()->where(['Name'=>urldecode($o_name)])->first();
-            $doc_ids= $product->doc_ids;
-            //die($doc_ids);
-            if($doc_ids!="")
-            {
-                
-                $doc = TableRegistry::get('client_sub_order');
-                $query = $doc->find();
-                $q= $query->select()->where(['client_id' => $cid,'sub_id IN('.$doc_ids.')']);
-            }
-            $this->response->body($q);
-            return $this->response;
-            die; 
-        }
-        function getCSubDoc($c_id, $doc_id)
-        {
+
+        function getCSubDoc($c_id, $doc_id){
             $sub = TableRegistry::get('clientssubdocument');
             $query = $sub->find();
             $query->select()->where(['client_id' => $c_id, 'subdoc_id' => $doc_id]);
@@ -739,8 +734,7 @@
             return $this->response;
         }
 
-        function displaySubdocs($id)
-        {
+        function displaySubdocs($id){
             //var_dump($_POST);die();
             $user['client_id'] = $id;
             $display = $_POST; //defining new variable for system base below upcoming foreach
