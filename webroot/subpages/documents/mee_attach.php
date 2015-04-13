@@ -11,6 +11,8 @@
         echo "<SCRIPT>alert('" . $Text . "');</SCRIPT>";
     }
 
+
+
     $action = ucfirst($param);
     if (!isset($mee_att)) {$mee_att = array();}
     if (!isset($forms)){$forms = "";}
@@ -175,13 +177,10 @@
             if (isset($mee_att['attach_doc']->id) && $mee_att['attach_doc']->id) {
                 //echo $mee_att['attach_doc']->id;
                 $mee_more = $meedocs->find()->where(['mee_id' => $mee_att['attach_doc']->id]);
-                if ($mee_more)
-                    foreach ($mee_more as $mm) {
-                        $morecount++;
-                    }
+                if ($mee_more) {$morecount= iterator_count($mee_more);}
             }
-
         }
+
         if (!$morecount ) {
             if(count($attachment) > 0) {
                 ?>
@@ -194,27 +193,29 @@
             //echo  printrequired($action, $forms, "attachments", $DriverProvince, count($attachment)) . "<br />";
         } else {
             $id_count = 6;
+            $directory = "attachments/";//"documents/download/"; //the download page crashes chrome!
             foreach ($mee_more as $mm) {
                 $id_count++;
+                if (file_exists(realpath("attachments/" . $mm->attachments))) {//fixes ghost file issue
                 ?>
-                <div>
-                        <span><a style="margin-bottom:5px;" href="javascript:void(0)" class="btn btn-primary additional"
-                                 id="mee_att_<?php echo $id_count; ?>">Browse</a>&nbsp;<a style="margin-bottom:5px;"
-                                                                                          class="btn btn-danger"
-                                                                                          href="javascript:void(0);"
-                                                                                          onclick="$(this).parent().parent().remove();">Remove</a> <span
-                                class="uploaded"><?php if (isset($mm->attachments) && $mm->attachments) { ?><a
-                                    class="dl"
-                                    href="<?php echo $this->request->webroot; ?>documents/download/<?php echo $mm->attachments; ?>"><?php echo $mm->attachments; ?></a><?php } ?></span></span>
-                    <input type="hidden" name="mee_attachments[]" class="mee_att_<?php echo $id_count; ?>"
-                           value="<?php if (isset($mm->attachments) && $mm->attachments) {
-                               echo $mm->attachments;
-                           } ?>"/>
-                    <?php //echo printrequired($action, $forms, "attachments", $DriverProvince, count($attachment)) . "<br />";
-                    ?>
-                </div>
-            <?php
-            }
+                       <div>
+                                        <span><a style="margin-bottom:5px;" href="javascript:void(0)" class="btn btn-primary additional"
+                                                 id="mee_att_<?php echo $id_count; ?>">Browse</a>&nbsp;<a style="margin-bottom:5px;"
+                                                                                                          class="btn btn-danger"
+                                                                                                          href="javascript:void(0);"
+                                                                                                          onclick="$(this).parent().parent().remove();">Remove</a> <span
+                                                class="uploaded"><?php if (isset($mm->attachments) && $mm->attachments) { ?><a
+                                                    class="dl"
+                                                    href="<?php echo $this->request->webroot . $directory . $mm->attachments; ?>">
+                                                    <?php echo $mm->attachments; ?></a><?php } ?></span></span>
+                           <input type="hidden" name="mee_attachments[]" class="mee_att_<?php echo $id_count; ?>"
+                                  value="<?php if (isset($mm->attachments) && $mm->attachments) {
+                                      echo $mm->attachments;
+                                  } ?>"/>
+                           <?php //echo printrequired($action, $forms, "attachments", $DriverProvince, count($attachment)) . "<br />";
+                           echo "</div>";
+                           }
+                    }
         }
         ?>
                 </div>
