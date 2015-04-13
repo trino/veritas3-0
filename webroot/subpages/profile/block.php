@@ -1,12 +1,9 @@
 <?php
- if($this->request->session()->read('debug'))
-        echo "<span style ='color:red;'>block.php #INC116</span>";
+ if($this->request->session()->read('debug')){echo "<span style ='color:red;'>profiles/block.php #INC116</span>";}
 $uid = ($this->request['action'] == 'add') ? "0" : $this->request['pass'][0];
 $sidebar = $this->requestAction("settings/all_settings/" . $uid . "/sidebar");
 $block = $this->requestAction("settings/all_settings/" . $uid . "/blocks");
-if (!isset($is_disabled1)) {
-    $is_disabled1 = "";
-}//something is wrong with this variable
+if (!isset($is_disabled1)) {$is_disabled1 = "";}//something is wrong with this variable
 
 if ($activetab == "permissions") {
     if ((isset($Clientcount) && $Clientcount == 0) || $this->request->session()->read('Profile.profile_type') == '2') {
@@ -15,10 +12,11 @@ if ($activetab == "permissions") {
         $activetab = "config";
     }
 } else {
-    if ($this->request->session()->read('Profile.profile_type') == '2')
+    if ($this->request->session()->read('Profile.profile_type') == '2') {
         $activetab = "assign";
-    else
+    }else {
         $activetab = "config";
+    }
 }
 
 ?>
@@ -1049,58 +1047,25 @@ if ($activetab == "permissions") {
                                                         No </label>
                                                 </td>
                                             </tr>-->
-
-                    <tr>
-                        <td>
-                            Orders MEE
-                        </td>
-                        <td>
-                            <label class="uniform-inline">
-                                <input <?php echo $is_disabled ?> type="radio"
-                                                                  name="block[ordersmee]"
-                                                                  value="1" <?php if (isset($block) && $block->ordersmee == 1) echo "checked"; ?>/>
-                                Yes </label>
-                            <label class="uniform-inline">
-                                <input <?php echo $is_disabled ?> type="radio"
-                                                                  name="block[ordersmee]"
-                                                                  value="0" <?php if (isset($block) && $block->ordersmee == 0) echo "checked"; ?>/>
-                                No </label>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            Orders Products
-                        </td>
-                        <td>
-                            <label class="uniform-inline">
-                                <input <?php echo $is_disabled ?> type="radio"
-                                                                  name="block[ordersproducts]"
-                                                                  value="1" <?php if (isset($block) && $block->ordersproducts == 1) echo "checked"; ?>/>
-                                Yes </label>
-                            <label class="uniform-inline">
-                                <input <?php echo $is_disabled ?> type="radio"
-                                                                  name="block[ordersproducts]"
-                                                                  value="0" <?php if (isset($block) && $block->ordersproducts == 0) echo "checked"; ?>/>
-                                No </label>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            Orders Requalify
-                        </td>
-                        <td>
-                            <label class="uniform-inline">
-                                <input <?php echo $is_disabled ?> type="radio"
-                                                                  name="block[ordersrequalify]"
-                                                                  value="1" <?php if (isset($block) && $block->ordersrequalify == 1) echo "checked"; ?>/>
-                                Yes </label>
-                            <label class="uniform-inline">
-                                <input <?php echo $is_disabled ?> type="radio"
-                                                                  name="block[ordersrequalify]"
-                                                                  value="0" <?php if (isset($block) && $block->ordersrequalify == 0) echo "checked"; ?>/>
-                                No </label>
-                        </td>
-                    </tr>
+                    <?php
+                    function makeradio($is_disabled, $name, $value, $checked, $Label){
+                        echo '<label class="uniform-inline"><input ' . $is_disabled . 'type="radio" name="' . $name . '" value="' . $value. '" ';
+                        if ($checked){ echo "checked";}
+                        echo '/> ' . $Label . '</label>';
+                    }
+                    if(isset($block)) {
+                        foreach ($products as $product) {
+                            if ($product->Blocks_Alias) {
+                                $alias= $product->Blocks_Alias;
+                                echo '<TR><TD>' . $product->Name . '</TD><TD><label class="uniform-inline">';
+                                makeradio($is_disabled, "block[" . $product->Blocks_Alias . "]", 1, $block->$alias == 1, "Yes");
+                                echo " ";
+                                makeradio($is_disabled, "block[" . $product->Blocks_Alias . "]", 0, $block->$alias == 0, "No");
+                                echo '</TR>';
+                            }
+                        }
+                    }
+                    ?>
                     <tr>
                         <td>
                             List Order

@@ -436,10 +436,11 @@ function enumsubdocs($thedocs, $date, $chartid, $isdraft){
 
 <?php
 //http://www.onlamp.com/pub/a/php/2002/06/13/php.html
-/*
+
 // I18N support information here
 $language = 'en_US';
 putenv("LANG=$language");
+putenv("LANGUAGE=de_DE");
 setlocale(LC_ALL, $language);
 
 // Set the text domain as 'messages'
@@ -448,5 +449,4 @@ bindtextdomain($domain, "/www/veritsa3-0/locale");
 textdomain($domain);
 
 echo gettext("testing");
-*/
 ?>

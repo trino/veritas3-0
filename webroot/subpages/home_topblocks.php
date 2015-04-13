@@ -170,41 +170,19 @@ function randomcolor(){
                 <div class="number"></div>
             </div>
         </a>-->
-
-    <?php if ($sidebar->orders_mee ==1 && $block->ordersmee =='1') { ?>
-        <a href="<?php echo $this->request->webroot.$order_url.'&ordertype=MEE';?>" class="tile bg-grey-cascade" style="display: block;">
-            <div class="tile-body">
-                <i class="icon-docs"></i>
-            </div>
-            <div class="tile-object">
-                <div class="name">Order MEE</div>
-                <div class="number"></div>
-            </div>
-        </a>
-    <?php } ?>
-    <?php if ($sidebar->orders_products ==1 && $block->ordersproducts =='1') { ?>
-        <a href="<?php echo $this->request->webroot.$order_url.'&ordertype=CART';?>" class="tile bg-grey-cascade" style="display: block;">
-            <div class="tile-body">
-                <i class="icon-docs"></i>
-            </div>
-            <div class="tile-object">
-                <div class="name">Order Products</div>
-                <div class="number"></div>
-            </div>
-        </a>
-    <?php } ?>
-    <?php if ($sidebar->order_requalify ==1 && $block->ordersrequalify =='1') { ?>
-        <a href="<?php echo $this->request->webroot.$order_url.'&ordertype=QUA';?>" class="tile bg-grey-cascade" style="display: block;">
-            <div class="tile-body">
-                <i class="icon-docs"></i>
-            </div>
-            <div class="tile-object">
-                <div class="name">Re-Qualify</div>
-                <div class="number"></div>
-            </div>
-        </a>
-    <?php } ?>
-    <?php } ?>
+    <?php
+        foreach($products as $product){
+            if ($product->Blocks_Alias) {
+                $sidebaralias = $product->Sidebar_Alias;
+                $blockalias = $product->Blocks_Alias;
+                if ($sidebar->$sidebaralias ==1 && $block->$blockalias =='1') {
+                    echo '<a href="' . $this->request->webroot . $order_url . '&ordertype=' . $product->Acronym . '" class="tile ' . $product->Block_Color;
+                    echo '" style="display: block;"><div class="tile-body"><i class="icon-docs"></i></div><div class="tile-object">';
+                    echo '<div class="name">' . $product->Name . '</div><div class="number"></div></div></a>';
+                }
+            }
+        }
+    } ?>
 
     <?php if ($sidebar->orders_list ==1 && $block->document_draft =='1') { ?>
         <a class="tile bg-grey-cascade" href="<?php echo $this->request->webroot; ?>orders/orderslist?draft" style="display: block;">

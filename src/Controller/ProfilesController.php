@@ -1180,7 +1180,6 @@
          */
         public function edit($id = null)
         {
-
             $this->set('doc_comp', $this->Document);
             $check_pro_id = $this->Settings->check_pro_id($id);
             if ($check_pro_id == 1) {
@@ -1202,14 +1201,12 @@
             if ($checker == 0) {
                 //  $this->Flash->error('Sorry, you don\'t have the required permissions6.');
                 //  return $this->redirect("/profiles/index");
-
             }
 
             $setting = $this->Settings->get_permission($this->request->session()->read('Profile.id'));
             if ($setting->profile_edit == 0 && $id != $this->request->session()->read('Profile.id')) {
                 $this->Flash->error('Sorry, you don\'t have the required permissions.');
                 return $this->redirect("/");
-
             } else {
                 $this->set('myuser', '1');
             }
@@ -1236,10 +1233,11 @@
                     //die('here');
                     $this->request->data['password'] = $profile->password;
                 }
-                if (isset($_POST['profile_type']) && $_POST['profile_type'] == 1)
+                if (isset($_POST['profile_type']) && $_POST['profile_type'] == 1){
                     $this->request->data['admin'] = 1;
-                else
+                } else {
                     $this->request->data['admin'] = 0;
+                }
                 $this->request->data['dob'] = $_POST['doby'] . "-" . $_POST['dobm'] . "-" . $_POST['dobd'];
                 //var_dump($this->request->data); die();//echo $_POST['admin'];die();
                 $profile = $this->Profiles->patchEntity($profile, $this->request->data);
@@ -1263,15 +1261,13 @@
             $this->set('products', TableRegistry::get('product_types')->find('all'));
         }
 
-        function changePass($id)
-        {
+        function changePass($id){
             $profile = $this->Profiles->get($id, [
                 'contain' => []
             ]);
             if ($this->request->is(['patch', 'post', 'put'])) {
                 $profiles = $this->Profiles->patchEntity($profile, $this->request->data);
                 if ($this->Profiles->save($profiles)) {
-
                     echo "1";
                 } else {
                     echo "0";
@@ -1311,10 +1307,11 @@
                 return $this->redirect("/");
 
             }
-            if (isset($_GET['draft']))
+            if (isset($_GET['draft'])) {
                 $draft = "?draft";
-            else
+            } else {
                 $draft = "";
+            }
             $profile = $this->Profiles->get($id);
             // $this->request->allowMethod(['post', 'delete']);
             if ($this->Profiles->delete($profile)) {

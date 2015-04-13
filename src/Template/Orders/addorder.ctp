@@ -18,6 +18,7 @@
 include_once 'subpages/filelist.php';
 $param = $this->request->params['action'];
 $view = 'nope';
+$debugging=false;
 if($this->request->params['action'] == 'vieworder'){$view = 'view';}
 $action = ucfirst($param);
 if ($action == "Vieworder") { $action = "View";}
@@ -199,8 +200,10 @@ function provinces($name){
                                         $doc_ids = $this->requestAction('/clients/orders_doc/'.$cid.'/'.$_GET['order_type']);
                                         if(is_iterable($doc_ids)) {
                                             $subdoccli = $doc_ids;
+                                            if($debugging) {echo "Source: orders_doc";}
                                         } else {
                                             $subdoccli = $this->requestAction('/clients/getSubCli2/' . $cid);
+                                            if($debugging) {echo "Source: getSubCli2";}
                                         }
                                         $subdoccli2 = $subdoccli;
                                         $doc2 = $doc;
@@ -208,13 +211,22 @@ function provinces($name){
                                         $end = 0;
                                         $k_c=0;
                                         $index=0;
-                                        foreach ($subdoccli as $sd) {
+                                        //client permissions
+                                        //http://localhost/veritas3-0/clients/edit/1
+                                        //user permissions
+                                        //http://localhost/veritas3-0/profiles/edit/118
+                                        //product settings
+                                        //http://localhost/veritas3-0/profiles/settings
 
+                                        foreach ($subdoccli as $sd) {
                                             $index+=1;
                                             $d = $this->requestAction('/clients/getFirstSub/'.$sd->sub_id);
-                                            
 
-                                            //debug($sd);
+                                            if($debugging) {
+                                                echo "<BR>Displayform: " . displayform2($DriverProvince, $thedocuments, $d->title, $theproduct);
+                                                $thedocuments[strtolower($d->title)]["IsSet"] = true;
+                                                debug($d);
+                                            }
 
                                             if (displayform2($DriverProvince,$thedocuments,$d->title, $theproduct)){//(displayform($DriverProvince, $provinces, $forms, $d->title,$_this)){
                                                 $index+=1;
@@ -253,6 +265,7 @@ function provinces($name){
                                                     $i++;
                                                 }}
                                         }
+                                        if($debugging) { debug($thedocuments);}
                                         if(!isset($k_cou)){ $k_cou = 1; }
                                     ?>
 
