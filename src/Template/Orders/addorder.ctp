@@ -253,6 +253,7 @@ function provinces($name){
                                             }
 
                                             if (displayform2($DriverProvince,$thedocuments,$d->title, $theproduct)){//(displayform($DriverProvince, $provinces, $forms, $d->title,$_this)){
+
                                                 $index+=1;
                                                 $act = 0;
                                                 if ($d->table_name == $table) {
@@ -442,28 +443,27 @@ function provinces($name){
                             $dx = $this->requestAction('/orders/getSubDetail/'.$sd->sub_id);
                            // debug($d);
                            
-                        if (displayform2($DriverProvince,$thedocuments,$d->title, $theproduct)){//if (displayform($DriverProvince, $provinces, $forms, $d->title,$_this)){
+                            if (displayform2($DriverProvince,$thedocuments,$d->title, $theproduct)){
+                                //if (displayform($DriverProvince, $provinces, $forms, $d->title,$_this)){
+                                $prosubdoc = $this->requestAction('/settings/all_settings/0/0/profile/' . $this->Session->read('Profile.id') . '/' . $d->id);
+                                if (true){ //($prosubdoc['display'] != 0 && $d->display == 1) {
+                                $k_c++;
 
+                                $tab_count = $d->id;
 
-                            $prosubdoc = $this->requestAction('/settings/all_settings/0/0/profile/' . $this->Session->read('Profile.id') . '/' . $d->id);
-                            if (true){ //($prosubdoc['display'] != 0 && $d->display == 1) {
-                            $k_c++;
-
-                            $tab_count = $d->id;
-
-                            $tab_count = $tab_count + 1;
-                            if($k_c==1) {
-                                $k_co = $tab_count;
-                            } else {
-                                if($k_co<$tab_count)
-                                $k_co = $tab_count;
-                            }
-                            ?>
-                            <div class="tabber <?php echo $tab; ?>" id="tab<?php echo $tab_count; ?>">
-                                <?php
-                                if ($action == "View") {printdocumentinfo($d->id);}
-                                include('subpages/documents/' . $d->form); ?>
-                            </div>
+                                $tab_count = $tab_count + 1;
+                                if($k_c==1) {
+                                    $k_co = $tab_count;
+                                } else {
+                                    if($k_co<$tab_count)
+                                    $k_co = $tab_count;
+                                }
+                                ?>
+                                <div class="tabber <?php echo $tab; ?>" id="tab<?php echo $tab_count; ?>">
+                                    <?php
+                                    if ($action == "View") {printdocumentinfo($d->id);}
+                                    include('subpages/documents/' . $d->form); ?>
+                                </div>
                         <?php }}}
                         if(!isset($k_co)) {$k_co=1;} ?>
 
