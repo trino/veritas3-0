@@ -19,7 +19,6 @@ include_once 'subpages/filelist.php';
 $param = $this->request->params['action'];
 $view = 'nope';
 if($this->request->params['action'] == 'vieworder'){$view = 'view';}
-
 $action = ucfirst($param);
 if ($action == "Vieworder") { $action = "View";}
 if ($action == "Addorder") {
@@ -317,10 +316,7 @@ function provinces($name){
                                        onclick="$('#skip').val('1');">
                                         Skip <i class="m-icon-swapdown m-icon-white"></i>
                                     </a>
-                                    <!--<a href="javascript:;" class="btn red skip" id="submit_dra"
-                                       onclick="$('#skip').val('1');" style="display: inline-block;">
-                                        Save as draft <i class="m-icon-swapdown m-icon-white"></i>
-                                    </a>-->
+                                    
                                     <input type="hidden" id="skip" value="0"/>
                                     <a href="javascript:;" class="btn blue button-next cont"
                                        onclick="$('#skip').val('0');">
@@ -512,8 +508,7 @@ function provinces($name){
         //alert(form_type);
         if (form_type != "") {
             $('.subform').load('<?php echo $this->request->webroot;?>documents/subpages/' + form_type);
-            // loading data from db
-            // debugger;
+            
             var url = '<?php echo $this->request->webroot;?>orders/getOrderData/' + client_id + '/' + doc_id,
                 param = {form_type: form_type};
             $.getJSON(url, param, function (res) {

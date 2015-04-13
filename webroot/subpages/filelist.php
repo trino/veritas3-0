@@ -71,7 +71,11 @@ function printdocumentinfo($ID, $isOrder = false, $linktoOrder = false){
         } else {
             echo '<TD colspan="2">Deleted or Missing Data';
         }
-        echo '</TD></TR></table>';
+        echo '</TD></TR>';
+        if ($isOrder) {
+            echo "<tr><th>Order type</th><td colspan='2'>".$data->order_type."</td></tr>";
+            }
+        echo '</table>';
         return $data;
     }
 }

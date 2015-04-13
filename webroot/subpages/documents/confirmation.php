@@ -82,6 +82,12 @@
                        echo date('Y-m-d');
                    } ?>"/>
         </div>
+        
+        <label class="control-label col-md-12" style="margin-top: 5px;">Order type:</label>
+
+        <div class="col-md-12">
+            <strong><?php if(isset($_GET['order_type']))echo $_GET['order_type'];?></strong>
+        </div>
     </div>
     <p>&nbsp;</p>
 
