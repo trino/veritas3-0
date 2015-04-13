@@ -15,6 +15,7 @@
 </script>
 
 <?php
+use Cake\ORM\TableRegistry;
 include_once 'subpages/filelist.php';
 $param = $this->request->params['action'];
 $view = 'nope';
@@ -111,6 +112,26 @@ function provinces($name){
         return false;
     }
 
+    if($theproduct->doc_ids){
+        $forms = explode(",", $theproduct->doc_ids);
+        $theproduct->BypassForms = array();
+        foreach($forms as $form){
+            $theproduct->BypassForms[strtolower(getForm($form)->title)] = true;
+        }
+    }
+
+    if($debugging){
+        echo "<BR>";
+        debug($theproduct);
+    }
+
+    function getForm($ID){
+        $table = TableRegistry::get('subdocuments')->find();
+        return $table->select()->where(['id' => $ID])->first();
+    }
+
+
+
     function displayform2($DriverProvince, $thedocuments, $name, $theproduct){
         $name = strtolower($name);
         if(isset($_GET['order_type'])) {
@@ -122,6 +143,9 @@ function provinces($name){
                     if ($name == "challenger road test"){ return false;}
                     break;
             }
+        }
+        if(isset($theproduct->BypassForms)){
+            return isset($theproduct->BypassForms[$name]);
         }
         //echo "Testing: " . $name . " '" . isset($thedocuments[$name][$DriverProvince]) . "'"; debug($thedocuments);
         //echo "<BR>" . $DriverProvince . " " . $name . " <BR>"; print_r($thedocuments[$name]);
