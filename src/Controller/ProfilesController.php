@@ -1159,11 +1159,11 @@
                     $this->Profiles->save($pros);
 
                     echo $id;
-                    $username = 'driver_' . $id;
+                    /*$username = 'driver_' . $id;
                     $queries = TableRegistry::get('Profiles');
                     $queries->query()->update()->set(['username' => $username])
                         ->where(['id' => $id])
-                        ->execute();
+                        ->execute();*/
                     die();
 
                 }

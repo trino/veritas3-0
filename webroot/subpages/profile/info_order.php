@@ -80,7 +80,7 @@
                                 <div class="form-group">
                                     <label class="control-label">Profile Type</label>
 
-                                    <select name="profile_type" class="form-control member_type required">
+                                    <select name="profile_type" class="form-control member_type required" disabled="disabled">
                                         <option
                                             value="5" <?php if (isset($p) && $p->profile_type == 5) { ?> selected="selected" <?php }?>>
                                             Driver
@@ -101,7 +101,7 @@
 
                                 </div>
                             </div>
-                            <?php if ($sidebar->client_option == 0 /*&& (isset($p) && $p->profile_type == 5)*/) { ?>
+                            <?php if ($sidebar->client_option == 0 && $p->profile_type != 11 /*&& (isset($p) && $p->profile_type == 5)*/) { ?>
 
                                 <div class="col-md-4" id="driver_div"
                                      style="">
