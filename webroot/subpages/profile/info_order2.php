@@ -403,6 +403,7 @@ function printform($counting, $settings, $client, $dr_cl, $driver, $intable = fa
         $('#selecting_client').change(function () {
             $('s2id_selecting_client.select2-choice').removeAttr('style');
             <?php
+            if(!$_GET['driver']){
             if(!isset($_GET['ordertype']) || (isset($_GET['ordertype']) && $_GET['ordertype']!='QUA'))
             {
                 ?>
@@ -414,12 +415,16 @@ function printform($counting, $settings, $client, $dr_cl, $driver, $intable = fa
             {?>
             $('#s2id_selecting_driver .select2-chosen').html('Select Driver');
             <?php
-            }
+            }}
             ?>
             var client = $('#selecting_client').val();
             if (!isNaN(parseFloat(client)) && isFinite(client)) {
                 $('.selecting_client').val(client);
                 //alert(client);
+                <?php
+                if(!$_GET['driver'])
+                {
+                ?>
                 $.ajax({
                     url: '<?php echo $this->request->webroot;?>clients/divisionDropDown/' + client,
                     data: {istable: '<?= $intable; ?>'},
@@ -427,6 +432,7 @@ function printform($counting, $settings, $client, $dr_cl, $driver, $intable = fa
                         $('.divisionsel').html(response);
                     }
                 });
+                <?php }?>
             }
             else {
                 $('.selecting_client').val('');
