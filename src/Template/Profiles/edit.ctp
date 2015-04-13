@@ -347,7 +347,7 @@
                                                 if($sidebar->$alias ==1) {
                                                     echo '<br><a href="' . $this->request->webroot . 'orders/productSelection?driver=' . $profile->id;
                                                     echo '&ordertype=' . $product->Acronym . '"';
-                                                    echo ' class="btn ' . $product->ButtonColor . '" style="margin-top:2px;width: 100%;">' . $product->Name;
+                                                    echo ' class="blue-stripe btn floatleft ' . $product->ButtonColor . '" style="margin-top:2px;">' . $product->Name;
                                                     echo ' <i class="m-icon-swapright m-icon-white"></i></a>';
                                                 }
                                             }
