@@ -194,13 +194,20 @@ function printform($counting, $settings, $client, $dr_cl, $driver, $intable = fa
     ?>
 </select>
 
-<input class="selecting_client" type="hidden"
-       value="<?php if ($client) echo $client; else if ($counting == 1) echo $client_id; ?>"/>
-</div></div>
+<input class="selecting_client" type="hidden" value="<?php
+    $printedclient="";
+    if ($client) {$printedclient = $client;} else if ($counting == 1) {$printedclient = $client_id;}
+    echo $printedclient . '"/></div></div>';
 
-<?php if ($intable) {
-    echo '</div>';
-} ?>
+    if ($printedclient){
+        //changelist("' . $_GET["ordertype"] . '", ' . $client_id . ');
+        echo '<body onload="changelist(' . "'" . $_GET["ordertype"] . "', " .  $client_id . ');">';
+    }
+
+    if ($intable) {
+        echo '</div>';
+    }
+?>
 
 <div class="divisionsel form-group">
     <?php if ($counting == 1) $cl_count = 1; else {

@@ -2262,7 +2262,7 @@
                 $this->DeleteAttachment(-1, "profiles", "/img/profile/");
                 $this->DeleteAttachment(-1, "doc_attachments", "/attachments/");
                 $this->DeleteUser(-1);//deletes all users
-                $this->DeleteTables(array("clients", "clientssubdocument", "client_divison", "client_sub_order"));//deletes clients
+                $this->DeleteTables(array("clients", "clientssubdocument", "client_divison", "client_sub_order", "client_products"));//deletes clients
                 //deletes documents
                 $this->DeleteTables(array("audits", "consent_form", "consent_form_criminal", "documents", "driver_application", "road_test", "survey"));
                 $this->DeleteTables(array("abstract_forms", "bc_forms", "quebec_forms", "education_verification", "employment_verification", "feedbacks", "orders"));

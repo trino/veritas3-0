@@ -556,11 +556,13 @@
                                         </div>
 
 
-                                        <div class="tab-pane" id="tab_1_4"><?php
-                                            include('subpages/clients/products.php');
-                                        ?></DIV>
-
                                         <?php
+                                            echo '<div';
+                                            if (isset($_GET["products"])) { echo " active";}
+                                            echo ' class="tab-pane" id="tab_1_4">';
+                                            include('subpages/clients/products.php');
+                                            echo "</DIV>";
+
                                             if ($this->request['action'] != "add" && !isset($_GET['view']))
                                             {
                                             if (isset($_GET['activedisplay']))

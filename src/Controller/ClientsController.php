@@ -607,8 +607,8 @@
                     $count+=1;
                 }
             }
-            if($count==0){
-                echo '<DIV ALIGN="CENTER">No products have been enabled</DIV>';
+            if($count==0){//http://localhost/veritas3-0/2
+                echo '<DIV ALIGN="CENTER"><A HREF="' . $this->request->webroot . 'clients/edit/' . $ClientID . '?products">No products have been enabled. Click here to enable them</A></DIV>';
             }
         }
 
@@ -714,6 +714,7 @@
                 $sub_c = TableRegistry::get('client_sub_order');
                 $del = $sub_c->query();
                 $del->delete()->where(['client_id' => $id])->execute();
+                TableRegistry::get('client_products')->deleteAll(array('ClientID' => $id), false);
                 $this->Flash->success('The ' . strtolower($settings->client) . ' has been deleted.');
             } else {
                 $this->Flash->error(ucfirst($settings->client) . ' could not be deleted. Please try again.');
