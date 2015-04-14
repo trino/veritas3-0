@@ -47,15 +47,20 @@
         }
     }
 
-    function printdivrequired($Action, $forms, $AttachmentName, $DriversProvince, $attachment = 0){
+    function printdivrequired($Action, $forms, $AttachmentName, $DriversProvince, $attachment = 0, $Force = false){
         $doit = true;
-        if ($Action == "View" || $Action == "Vieworder") {
-            if (is_array($attachment)) {
-
-            } elseif (is_numeric($attachment)) {
-                $doit = $attachment > 0;
-            } else {
-                if (!$attachment) {$doit = false; }
+        //echo $attachment . "ATTACH";
+        if (!$Force) {
+            if ($Action == "View" || $Action == "Vieworder") {
+                if (is_array($attachment)) {
+                    $doit = true;
+                } elseif (is_numeric($attachment)) {
+                    $doit = $attachment > 0;
+                } else {
+                    if (!$attachment) {
+                        $doit = false;
+                    }
+                }
             }
         }
         if ($doit) { //isrequired($forms, $AttachmentName, $DriversProvince, $attachment)) {
@@ -67,9 +72,9 @@
         return $doit;
     }
 
-    function isrequired($forms, $AttachmentName, $DriversProvince, $attachments = 0){
+    function isrequired($forms, $AttachmentName, $DriversProvince, $attachments = 0, $Force = false){
         //Attachment names are id_piece, driver_record_abstract, cvor, resume, certification, attachments
-        if ($AttachmentName == "attachments" && $attachments > 0) {
+        if ($AttachmentName == "attachments" && $attachments > 0 || $Force) {
             return true;
         }
         $required = array("id_piece" => 1603);//, "driver_record_abstract" => 1, "cvor" => 14, "resume"=> 1627, "certification" => 1650);
@@ -98,11 +103,6 @@
     if( isset($pre_at)){  listfiles($pre_at['attach_doc'], "attachments/", "", false,3); }
     */
     //echo "</div>";
-    if ($controller == 'orders') {
-        //echo '<h4 class="col-md-12">MEE Attachments</h4>';
-    } else {
-
-    }
 
     function getattachment($mee_att, $name){
         if (isset($mee_att['attach_doc'])) {
@@ -130,8 +130,16 @@
     if (count($attachment) > 0 || isrequired($forms, "id_piece", $DriverProvince, 0, True)) { $mand = "Mandatory"; }
     echo '<HR></div><div class="col-md-12"><strong>The following form(s) are ' . $mand . '</strong></div>';
 
+//printdivrequired needs to know if their are attachments BEFORE hand
+$morecount=0;
+if (isset($mee_att['attach_doc']->id) && $mee_att['attach_doc']->id) {
+    //echo $mee_att['attach_doc']->id;
+    $mee_more = $meedocs->find()->where(['mee_id' => $mee_att['attach_doc']->id]);
+    if ($mee_more) {$morecount= iterator_count($mee_more);}
+}
+
     $docsprinted=0;
-    if (printdivrequired($action, $forms, "attachments", $DriverProvince, count($attachment))) {
+    if (printdivrequired($action, $forms, "attachments", $DriverProvince, iterator_count($mee_more) + count($attachment))) {
         $doit = false;
         $description = 'Upload BC, QU, SA Abstract Consent Form PDF';
         $docsprinted+=1;
@@ -165,19 +173,10 @@
             echo "<div>";
         }
         echo '<div class="col-md-12">';
-        if ($doit && count($attachment) > 0) {
+        if ($doit && (count($attachment) > 0) || $morecount>0) {
             echo '<label class="control-label col-md-4">' . $description . ': </label>';
         }
         echo '<div class="col-md-8 mee_more">';
-
-        $morecount = 0;
-        if ($did) {
-            if (isset($mee_att['attach_doc']->id) && $mee_att['attach_doc']->id) {
-                //echo $mee_att['attach_doc']->id;
-                $mee_more = $meedocs->find()->where(['mee_id' => $mee_att['attach_doc']->id]);
-                if ($mee_more) {$morecount= iterator_count($mee_more);}
-            }
-        }
 
         if (!$morecount ) {
             if(count($attachment) > 0) {
