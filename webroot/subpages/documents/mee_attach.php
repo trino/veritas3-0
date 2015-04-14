@@ -271,7 +271,7 @@ if (isset($mee_att['attach_doc']->id) && $mee_att['attach_doc']->id) {
         <script>
         $(function(){
            fileUpload('mee_att_1');
-           fileUpload('mee_att_2'); 
+           fileUpload('mee_att_2');
         });
         </script>
     <?php
@@ -279,7 +279,7 @@ if (isset($mee_att['attach_doc']->id) && $mee_att['attach_doc']->id) {
 
     nodocs($docsprinted);
     if ($mand != "Optional") {
-        echo '<div class="col-md-12"><hr></div><div class="col-md-12"><strong>The following form(s) are Optional</strong></div>';
+        echo '<div class="col-md-12"><hr></div><div class="col-md-12"><strong>The following form(s) are Optional</strong><br><br></div>';
     }
 
     $docsprinted=0;
@@ -301,7 +301,7 @@ if (isset($mee_att['attach_doc']->id) && $mee_att['attach_doc']->id) {
         <script>
         $(function(){
            fileUpload('mee_att_3');
-           //fileUpload('mee_att_2'); 
+           //fileUpload('mee_att_2');
         });
         </script>
     <?php
@@ -325,7 +325,7 @@ if (isset($mee_att['attach_doc']->id) && $mee_att['attach_doc']->id) {
         <script>
         $(function(){
            fileUpload('mee_att_4');
-           //fileUpload('mee_att_2'); 
+           //fileUpload('mee_att_2');
         });
         </script>
     <?php }
@@ -349,7 +349,7 @@ if (isset($mee_att['attach_doc']->id) && $mee_att['attach_doc']->id) {
         <script>
         $(function(){
            fileUpload('mee_att_5');
-           //fileUpload('mee_att_2'); 
+           //fileUpload('mee_att_2');
         });
         </script>
     <?php }
@@ -373,7 +373,7 @@ if (isset($mee_att['attach_doc']->id) && $mee_att['attach_doc']->id) {
         <script>
         $(function(){
            fileUpload('mee_att_6');
-           //fileUpload('mee_att_2'); 
+           //fileUpload('mee_att_2');
         });
         </script>
     <?php }
