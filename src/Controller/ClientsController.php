@@ -597,12 +597,17 @@
             if ($Product->Checked == 1) { $Checked = ' checked disabled';} else { $Checked = "";}
             $Blocked = explode(",", $Product->Blocked);
             $products = TableRegistry::get('order_products')->find('all');
+            $count=0;
             foreach ($products as $p) {
-                if(!in_array($p->number, $Blocked)) {
+                if(!in_array($p->number, $Blocked) && $p->clientenabled) {
                     echo '<li id="product_' . $p->number . '"><div class="col-xs-10"><i class="fa fa-file-text-o"></i> ' . $p->title . '</div>';
                     echo '<div class="col-xs-2"><input type="checkbox" value="' . $p->number . '" id="form0"' . $Checked . '/></div>';
                     echo '<div class="clearfix"></div></li>';
+                    $count+=1;
                 }
+            }
+            if($count==0){
+                echo '<DIV ALIGN="CENTER">No products have been enabled</DIV>';
             }
         }
 
