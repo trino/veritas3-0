@@ -144,7 +144,7 @@ class DocumentComponent extends Component
                                               {
                                                 $ut = '';
                                               }
-                                              //$path = 'https://isbmeereports.com/documents/view/'.$cid;
+                                              
                                             $from = array('info@'.$path => $setting->mee);
                                             $to = $p;
                                              $sub = 'Order Submitted';

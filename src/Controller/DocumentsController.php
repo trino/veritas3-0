@@ -1295,6 +1295,7 @@ class DocumentsController extends AppController{
                     if ($docs->save($doc)) {
 
                         $doczs = TableRegistry::get('audits');
+                        if(!isset($_GET['order_id']) && !isset($_POST['oder_id']))
                         $ds['document_id'] = $doc->id;
                         $ds['date'] = $_POST['year']."-".$_POST['month'];
                         foreach($_POST as $k=>$v)
@@ -3070,6 +3071,27 @@ class DocumentsController extends AppController{
         $this->response->body($pro);
         return $this->response;
         die;
+    }
+    public function aggregate($id)
+    {
+        $client =  TableRegistry::get('clients')->find()->where(['id'=>$id])->first();
+        $audits = TableRegistry::get('audits')->find()->where(['document_id IN (SELECT id FROM documents WHERE draft = 0 AND sub_doc_id = 8 AND client_id = '.$id.')'])->all();
+        $this->set('client',$client);
+        $this->set('audits',$audits);
+        $att =  TableRegistry::get('doc_attachments')->find()->where(['document_id IN (SELECT id FROM documents WHERE draft = 0 AND client_id = '.$id.' AND sub_doc_id = 8)'])->all();
+        $this->set('client_docs',$att);
+        
+    }
+    public function getProfileByDocument($id=0)
+    {
+        
+        if($id)
+        $products =  TableRegistry::get('profiles')->find()->where(['id IN (SELECT user_id FROM documents WHERE id = '.$id.')'])->first();
+        else
+        $products = false;
+        $this->response->body($products);
+        return $this->response;
+        
     }
 
 }

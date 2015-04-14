@@ -198,6 +198,13 @@
                                                         <?php
 
                                                         }
+                                                        
+                                                        if($settings->mee == "Events Audit" || true)
+                                                        {
+                                                            ?>
+                                                            <a href="<?php echo $this->request->webroot;?>documents/aggregate/<?php echo $clients->id;?>" class="<?= btnclass("btn-info", "blue-soft") ?>">Aggregate Audits</a>
+                                                            <?php
+                                                        }
                                                     ?>
                                                 </td>
                                             </tr>
