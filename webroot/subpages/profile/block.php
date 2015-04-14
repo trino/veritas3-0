@@ -636,10 +636,10 @@
                                             $subdoc = $this->requestAction('/profiles/getSub');
 
                                             function printsubdocradios($is_disabled, $sub, $prosubdoc){
-                                                printsubdocradio($is_disabled, $sub, $prosubdoc, 0, "None");
-                                                printsubdocradio($is_disabled, $sub, $prosubdoc, 1, "View Only");
-                                                printsubdocradio($is_disabled, $sub, $prosubdoc, 2, "Create Only");
-                                                printsubdocradio($is_disabled, $sub, $prosubdoc, 3, "Both");
+                                                $values = array("None", "View Only", "Create Only", "Both");
+                                                foreach($values as $Key => $Value){
+                                                    printsubdocradio($is_disabled, $sub, $prosubdoc, $Key, $Value);
+                                                }
                                             }
                                             function printsubdocradio($is_disabled, $sub, $prosubdoc, $Value, $Text){
                                                 echo '<label class="uniform-inline"><input ' . $is_disabled . ' type="radio" name="profile[' . $sub->id . ']"';

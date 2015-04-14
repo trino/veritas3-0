@@ -93,6 +93,7 @@ function productslist($ordertype, $products, $ID, $Checked = false, $Blocked = "
     if ($Checked) { $Checked = ' checked disabled';} else { $Checked = "";}
     $index=0;
     if($Blocked){$Blocked = explode(",", $Blocked);}
+    echo '<DIV CLASS="PRODUCTLIST">';
     foreach ($products as $p) {
         if(showproduct($ordertype, $p, $Blocked)) {
             echo '<li id="product_' . $p->number . '"><div class="col-xs-10"><i class="fa fa-file-text-o"></i> ' . $p->title . '</div>';
@@ -100,8 +101,9 @@ function productslist($ordertype, $products, $ID, $Checked = false, $Blocked = "
             echo '<div class="clearfix"></div></li>';
         }
     }
-    $index+=1;
+    echo "</DIV>";
 }
+
 function printbutton($type, $webroot, $index, $tempstr = "",$_this, $o_type, $inforequired = true)
 {
     if (strlen($type) > 0) {
@@ -276,6 +278,19 @@ function printform($counting, $settings, $client, $dr_cl, $driver, $intable = fa
 </div>
 
 <script>
+    function changelist(Ordertype, ClientID){
+        //PRODUCTLIST
+        $.ajax({
+            url: "<?php echo $this->request->webroot;?>clients/quickcontact",
+            type: "post",
+            dataType: "HTML",
+            data: "Type=generateHTML&ClientID=" + ClientID + "&Ordertype=" + Ordertype,
+            success: function (msg) {
+                $('.PRODUCTLIST').html(msg);
+            }
+        })
+    }
+
     function getcheckboxes(){
         var tempstr = '';
         $('input[type="checkbox"]').each(function () {
@@ -336,25 +351,21 @@ function printform($counting, $settings, $client, $dr_cl, $driver, $intable = fa
             var div = $('#divisionsel').val();
             if (!isNaN(parseFloat(div)) && isFinite(div)) {
                 var division = div;
-            }
-            else
+            } else {
                 var division = '0';
+            }
             if ($('.selecting_client').val()) {
                 <?php if(!isset($_GET['profiles'])){?>
-                if ($('.selecting_driver').val() == '') {
-                    alert('Please select driver.');
-                    $('#s2id_selecting_driver .select2-choice').attr('style', 'border:1px solid red;');
-                    $('html,body').animate({scrollTop: $('#s2id_selecting_driver .select2-choice').offset().top}, 'slow');
-                    return false;
-                }
-                else {
-                    var tempstr = getcheckboxes();
-                    window.location = '<?php echo $this->request->webroot; ?>orders/addorder/' + $('.selecting_client').val() + '/?driver=' + $('.selecting_driver').val() + '&division=' + division + '&order_type=<?php echo urlencode($o_type);?>&forms=' + tempstr;
-                }
-                <?php
-                }
-                else
-                {?>
+                    if ($('.selecting_driver').val() == '') {
+                        alert('Please select driver.');
+                        $('#s2id_selecting_driver .select2-choice').attr('style', 'border:1px solid red;');
+                        $('html,body').animate({scrollTop: $('#s2id_selecting_driver .select2-choice').offset().top}, 'slow');
+                        return false;
+                    } else {
+                        var tempstr = getcheckboxes();
+                        window.location = '<?php echo $this->request->webroot; ?>orders/addorder/' + $('.selecting_client').val() + '/?driver=' + $('.selecting_driver').val() + '&division=' + division + '&order_type=<?php echo urlencode($o_type);?>&forms=' + tempstr;
+                    }
+                <?php } else {?>
                 var tempstr = getcheckboxes();
                 window.location = '<?php echo $this->request->webroot; ?>orders/addorder/' + $('.selecting_client').val() + '/?driver=<?php echo $_GET['profiles'];?>&division=' + division + '&order_type=<?php echo urlencode($o_type);?>&forms=' + tempstr;
                 <?php
@@ -403,16 +414,12 @@ function printform($counting, $settings, $client, $dr_cl, $driver, $intable = fa
         $('#selecting_client').change(function () {
             $('s2id_selecting_client.select2-choice').removeAttr('style');
             <?php
-            if(!$_GET['driver']){
-            if(!isset($_GET['ordertype']) || (isset($_GET['ordertype']) && $_GET['ordertype']!='QUA'))
-            {
-                ?>
-
+                echo 'var ordertype = "' . $_GET['ordertype']. '";';
+                if(!$_GET['driver']){
+                    if(!isset($_GET['ordertype']) || (isset($_GET['ordertype']) && $_GET['ordertype']!='QUA')){
+                        ?>
             $('#s2id_selecting_driver .select2-chosen').html('Select Driver');
-            <?php
-            }
-            else
-            {?>
+            <?php }else { ?>
             $('#s2id_selecting_driver .select2-chosen').html('Select Driver');
             <?php
             }}
@@ -420,7 +427,7 @@ function printform($counting, $settings, $client, $dr_cl, $driver, $intable = fa
             var client = $('#selecting_client').val();
             if (!isNaN(parseFloat(client)) && isFinite(client)) {
                 $('.selecting_client').val(client);
-                //alert(client);
+                changelist(ordertype, client);
                 <?php
                 if(!$_GET['driver'])
                 {

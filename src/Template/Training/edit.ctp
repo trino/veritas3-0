@@ -172,13 +172,16 @@ if (isset($quiz)){
                             echo '<TD>' . $question->QuestionID . '</TD>';
                             echo '<TD>' . trunc($question->Question, 75, "...") . '</TD>';
 
-                            echo '<TD><a href="editquestion?QuestionID=' . $question->QuestionID . '&new=false&quizid=' . $_GET["quizid"] . '" class="' . btnclass("EDIT") . '">Edit</a>';
-                            echo '<a href="edit?action=delete&quizid=' . $_GET["quizid"] . '&QuestionID=' . $question->QuestionID . '" class="' . btnclass("DELETE") . '"  onclick="return confirm(' . "'Are you sure you want to delete question" . $question->QuestionID  . " ?'" . ');">Delete</a></TD>';
-                            //answer($question->Answer, 0, $question->Choice0);
-                            //answer($question->Answer, 1, $question->Choice1);
-                            //answer($question->Answer, 2, $question->Choice2);
-                            //answer($question->Answer, 3, $question->Choice3);
-
+                            if (isset($_GET["answers"])){
+                                echo "<TD>" . $question->Answer . "</TD>";
+                            } else {
+                                echo '<TD><a href="editquestion?QuestionID=' . $question->QuestionID . '&new=false&quizid=' . $_GET["quizid"] . '" class="' . btnclass("EDIT") . '">Edit</a>';
+                                echo '<a href="edit?action=delete&quizid=' . $_GET["quizid"] . '&QuestionID=' . $question->QuestionID . '" class="' . btnclass("DELETE") . '"  onclick="return confirm(' . "'Are you sure you want to delete question" . $question->QuestionID . " ?'" . ');">Delete</a></TD>';
+                                //answer($question->Answer, 0, $question->Choice0);
+                                //answer($question->Answer, 1, $question->Choice1);
+                                //answer($question->Answer, 2, $question->Choice2);
+                                //answer($question->Answer, 3, $question->Choice3);
+                            }
                             echo '</TR>';
                             $index = $question->QuestionID;
                         }
@@ -188,7 +191,7 @@ if (isset($quiz)){
                 </tbody>
             </table>
 
-    <?php if ($pageit){ ?>
+    <?php if ($pageit){//don't pageit ?>
     <div class="form-actions" style="height:75px;">
                 <div class="row">
                     <div class="col-md-12" align="right">

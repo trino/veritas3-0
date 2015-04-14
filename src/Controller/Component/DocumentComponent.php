@@ -1582,8 +1582,7 @@ class DocumentComponent extends Component
                 
             }
             else
-            if($driver!=0)
-            {
+            if($driver!=0) {
                $model = TableRegistry::get('Profiles');
                $q = $model->find()->where(['id' => $driver]); 
             }
@@ -1606,17 +1605,15 @@ class DocumentComponent extends Component
             // print_r($_GET);die;
             if ($_GET['form_type'] == "company_pre_screen_question.php") {
                 $preScreen = TableRegistry::get('pre_screening');
-                if (!isset($_GET['document']) || isset($_GET['order_id'])){
-                    if(isset($_GET['order_id']))
-                    {
-                       $prescreenDetail = $preScreen->find()->where(['client_id' => $cid, 'order_id' => $_GET['order_id'], 'document_id' => 0])->first(); 
+                if (!isset($_GET['document']) || isset($_GET['order_id'])) {
+                    if (isset($_GET['order_id'])) {
+                        $prescreenDetail = $preScreen->find()->where(['client_id' => $cid, 'order_id' => $_GET['order_id'], 'document_id' => 0])->first();
+                    } else {
+                        $prescreenDetail = $preScreen->find()->where(['client_id' => $cid, 'order_id' => $order_id, 'document_id' => 0])->first();
                     }
-                    else
-                    $prescreenDetail = $preScreen->find()->where(['client_id' => $cid, 'order_id' => $order_id, 'document_id' => 0])->first();
-                    }
-                else{
+                }else{
                     $prescreenDetail = $preScreen->find()->where(['client_id' => $cid, 'document_id' => $order_id, 'order_id' => 0])->first();
-                    }
+                }
                 // die('asd');
                 unset($prescreenDetail->id);
                 unset($prescreenDetail->document_id);
@@ -1626,7 +1623,6 @@ class DocumentComponent extends Component
                 if ($prescreenDetail) {
                     $prescreenDetail->sub_doc_id = 1;
                     $prescreenDetail->document_type = 'Pre-Screening';
-
                     echo json_encode($prescreenDetail);
                 }
 
@@ -1634,17 +1630,15 @@ class DocumentComponent extends Component
 
                 // $this->getDriverAppData($cid,$order_id);
                 $driveApp = TableRegistry::get('driver_application');
-                if (!isset($_GET['document']) || isset($_GET['order_id'])){
-                    if(isset($_GET['order_id']))
-                    {
-                       $driveAppDetail = $driveApp->find()->where(['client_id' => $cid, 'order_id' => $_GET['order_id'], 'document_id' => 0])->first(); 
+                if (!isset($_GET['document']) || isset($_GET['order_id'])) {
+                    if (isset($_GET['order_id'])) {
+                        $driveAppDetail = $driveApp->find()->where(['client_id' => $cid, 'order_id' => $_GET['order_id'], 'document_id' => 0])->first();
+                    } else {
+                        $driveAppDetail = $driveApp->find()->where(['client_id' => $cid, 'order_id' => $order_id, 'document_id' => 0])->first();
                     }
-                    else
-                    $driveAppDetail = $driveApp->find()->where(['client_id' => $cid, 'order_id' => $order_id, 'document_id' => 0])->first();
-                    }
-                else
+                } else {
                     $driveAppDetail = $driveApp->find()->where(['client_id' => $cid, 'document_id' => $order_id, 'order_id' => 0])->first();
-
+                }
                 //$driveAppID = $driveAppDetail->id;
                 unset($driveAppDetail->id);
                 unset($driveAppDetail->document_id);
@@ -1665,16 +1659,14 @@ class DocumentComponent extends Component
                 // $this->getRoadTestData($cid,$order_id);
                 $roadTest = TableRegistry::get('road_test');
                 if (!isset($_GET['document']) || isset($_GET['order_id'])){
-                    if(isset($_GET['order_id']))
-                    {
+                    if(isset($_GET['order_id'])) {
                        $roadTestDetail = $roadTest->find()->where(['client_id' => $cid, 'order_id' => $_GET['order_id'], 'document_id' => 0])->first(); 
+                    }  else {
+                        $roadTestDetail = $roadTest->find()->where(['client_id' => $cid, 'order_id' => $order_id, 'document_id' => 0])->first();
                     }
-                    else
-                    $roadTestDetail = $roadTest->find()->where(['client_id' => $cid, 'order_id' => $order_id, 'document_id' => 0])->first();
-                }
-                else
+                } else {
                     $roadTestDetail = $roadTest->find()->where(['client_id' => $cid, 'document_id' => $order_id, 'order_id' => 0])->first();
-
+                }
                 // $prescreenID = $prescreenDetail->id;
                 if ($roadTestDetail) {
                     $roadTestDetail->sub_doc_id = 3;
@@ -1685,71 +1677,65 @@ class DocumentComponent extends Component
             } else if ($_GET['form_type'] == "document_tab_3.php") {
 
                 $consentForm = TableRegistry::get('consent_form');
-                if (!isset($_GET['document']) || isset($_GET['order_id'])){
-                    if(isset($_GET['order_id']))
-                    {
-                       $consentFormDetail = $consentForm->find()->where(['client_id' => $cid, 'order_id' => $_GET['order_id'], 'document_id' => 0])->first(); 
+                if (!isset($_GET['document']) || isset($_GET['order_id'])) {
+                    if (isset($_GET['order_id'])) {
+                        $consentFormDetail = $consentForm->find()->where(['client_id' => $cid, 'order_id' => $_GET['order_id'], 'document_id' => 0])->first();
+                    } else {
+                        $consentFormDetail = $consentForm->find()->where(['client_id' => $cid, 'order_id' => $order_id, 'document_id' => 0])->first();
                     }
-                    else
-                    $consentFormDetail = $consentForm->find()->where(['client_id' => $cid, 'order_id' => $order_id, 'document_id' => 0])->first();
-                    }
-                else
+                }else {
                     $consentFormDetail = $consentForm->find()->where(['client_id' => $cid, 'document_id' => $order_id, 'order_id' => 0])->first();
+                }
                 if($consentFormDetail){
-                $consentFormID = $consentFormDetail->id;
+                    $consentFormID = $consentFormDetail->id;
 
-                $consentFormCriminal = TableRegistry::get('consent_form_criminal');
-                $consentFormCrmDetail = $consentFormCriminal->find()->where(['consent_form_id' => $consentFormID])->first();
+                    $consentFormCriminal = TableRegistry::get('consent_form_criminal');
+                    $consentFormCrmDetail = $consentFormCriminal->find()->where(['consent_form_id' => $consentFormID])->first();
 
-                echo json_encode($consentFormDetail);
+                    echo json_encode($consentFormDetail);
                 }
             }
             die;
-
         }
-        function getOrderById($id)
-        {
+
+        function getOrderById($id){
             $orders = TableRegistry::get('orders');
             $order = $orders->find()->where(['id'=>$id])->first();
             return $order;
         }
         
-        function getAssignedProfile($cid = 0)
-        {
+        function getAssignedProfile($cid = 0){
             $profile = TableRegistry::get('Clients');
             $pro = $profile->find()->where(['id' => $cid])->first();
             return $pro;
         }
         
-        function getProfilePermission($profile,$type)
-        {
+        function getProfilePermission($profile,$type){
             $setting = TableRegistry::get('sidebar');
             $arr_profile = explode(',',$profile);
             $email_arr = array();
-            foreach($arr_profile as $ap)
-            {
+            foreach($arr_profile as $ap) {
                 
                  $query = $setting->find()->where(['user_id'=>$ap]);
                  $permit = $query->first();
-                 if($permit){
-                if($type =='document')
-                    $v = $permit->email_document;
-                elseif($type =='orders')
-                    $v = $permit->email_orders; 
-                if($v == 1)
-                {
-                    $email = $this->getEmail($ap);
-                    if($email && $email != "")
-                    $email_arr[] = $email;
-                }
+                if($permit){
+                    if($type =='document') {
+                        $v = $permit->email_document;
+                    } elseif($type =='orders') {
+                        $v = $permit->email_orders;
+                    }
+                    if($v == 1) {
+                        $email = $this->getEmail($ap);
+                        if($email && $email != "")
+                        $email_arr[] = $email;
+                    }
                 }
                 
             }
             return $email_arr;
         }
         
-        function getEmail($id)
-        {
+        function getEmail($id){
             $query = TableRegistry::get('Profiles');
             $pro = $query->find()->where(['id'=>$id])->first();
             return $pro->email;

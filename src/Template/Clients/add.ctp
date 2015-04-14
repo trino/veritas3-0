@@ -121,9 +121,11 @@
                                 </li>
                                 <?php if ($this->request['action'] != "add" && !isset($_GET['view'])) {
                                     ?>
-
                                     <li>
-                                        <a href="#tab_1_2" data-toggle="tab">Display</a>
+                                        <a href="#tab_1_4" data-toggle="tab">Products Display</a>
+                                    </li>
+                                    <li>
+                                        <a href="#tab_1_2" data-toggle="tab">Forms Display</a>
                                     </li>
 
                                 <?php
@@ -552,6 +554,12 @@
                                                 </div>
                                             </div>
                                         </div>
+
+
+                                        <div class="tab-pane" id="tab_1_4"><?php
+                                            include('subpages/clients/products.php');
+                                        ?></DIV>
+
                                         <?php
                                             if ($this->request['action'] != "add" && !isset($_GET['view']))
                                             {
