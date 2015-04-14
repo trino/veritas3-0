@@ -375,7 +375,7 @@ foreach ($client_docs as $k => $cd) {
            
             $count += 1;
             
-                echo $file = $cd->attachment;
+                 $file = $cd->attachment;
             
                 
             if ($file) {//id, client_id
