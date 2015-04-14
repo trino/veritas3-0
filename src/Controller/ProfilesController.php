@@ -133,7 +133,7 @@
             $this->set('client_types', $this->ClientTypes->find()->all());
             $this->set('products', $this->OrderProducts->find()->all());
 
-            $this->set('ptypes', $this->ProfileTypes->find()->all());
+            $this->set('ptypes', $this->ProfileTypes->find()->all());//where(['secondary' => '0'])
             $this->set('logos', $this->paginate($this->Logos->find()->where(['secondary' => '0'])));
             $this->set('logos1', $this->paginate($this->Logos->find()->where(['secondary' => '1'])));
             $this->set('logos2', $this->paginate($this->Logos->find()->where(['secondary' => '2'])));
@@ -286,7 +286,10 @@
         }
 
         public function index(){
+            $this->loadModel('ProfileTypes');
+            $this->set('ptypes', $this->ProfileTypes->find()->where(['enable' => '1']));
             $this->set('doc_comp', $this->Document);
+
             $setting = $this->Settings->get_permission($this->request->session()->read('Profile.id'));
             $u = $this->request->session()->read('Profile.id');
             $this->set('ProClients', $this->Settings);
