@@ -144,7 +144,7 @@ class DocumentComponent extends Component
                                               {
                                                 $ut = '';
                                               }
-                                              //$path = 'https://isbmeereports.com/documents/view/'.$cid;
+                                              
                                             $from = array('info@'.$path => $setting->mee);
                                             $to = $p;
                                              $sub = 'Order Submitted';
@@ -1143,49 +1143,51 @@ class DocumentComponent extends Component
 
             die;
         }
-        public function mee_attach($cid = 0, $document_id = 0)
-        {
+        public function mee_attach($cid = 0, $document_id = 0){
             // echo "<pre>";print_r($_POST);die;
             $controller = $this->_registry->getController();
             $roadTest = TableRegistry::get('mee_attachments');
-            
+
             $arr['client_id'] = $cid;
-            if ($cid == "undefined"){ echo "THIS SHOULD NOT BE!";}
+            if ($cid == "undefined") {
+                echo "THIS SHOULD NOT BE!";
+            }
 
             $arr['user_id'] = $controller->request->session()->read('Profile.id');
 
             if (!isset($_GET['document']) || isset($_GET['order_id'])) {
-                if(!isset($_GET['order_id'])) {
+                if (!isset($_GET['order_id'])) {
                     $arr['order_id'] = $document_id;
                 } else {
                     $arr['order_id'] = $_GET['order_id'];
                 }
                 $arr['document_id'] = 0;
-                
-                
-                if (isset($_POST['uploaded_for']))
+
+
+                if (isset($_POST['uploaded_for'])) {
                     $uploaded_for = $_POST['uploaded_for'];
-                else
+                }else {
                     $uploaded_for = '';
-                $for_doc = array('document_type'=>'MEE Attachments','sub_doc_id'=>15,'order_id'=>$arr['order_id'],'user_id'=>$arr['user_id'],'uploaded_for'=>$uploaded_for);
+                }
+                $for_doc = array('document_type' => 'MEE Attachments', 'sub_doc_id' => 15, 'order_id' => $arr['order_id'], 'user_id' => $arr['user_id'], 'uploaded_for' => $uploaded_for);
                 $this->saveDocForOrder($for_doc);
-                
-                
+
+
             } else {
                 $arr['document_id'] = $document_id;
                 $arr['order_id'] = 0;
             }
-            
-            $del = $roadTest->query();
-            if (!isset($_GET['document']) || isset($_GET['order_id'])){
-                if(isset($_GET['order_id']))
-                $document_id = $_GET['order_id'];
-                $del->delete()->where(['order_id' => $document_id])->execute();
-                }
-            else{
-                $del->delete()->where(['document_id' => $document_id])->execute();}
 
-            
+            $del = $roadTest->query();
+            if (!isset($_GET['document']) || isset($_GET['order_id'])) {
+                if (isset($_GET['order_id'])) {
+                    $document_id = $_GET['order_id'];
+                }
+                $del->delete()->where(['order_id' => $document_id])->execute();
+            } else {
+                $del->delete()->where(['document_id' => $document_id])->execute();
+            }
+
             $mee['order_id'] = $arr['order_id'];
             $mee['document_id'] = $arr['document_id'];
             $mee['certification'] = $_POST['certification'];
@@ -1200,60 +1202,54 @@ class DocumentComponent extends Component
 
             $save = $roadTest->newEntity($mee);
             if ($roadTest->save($save)) {
-                if(isset($_POST['mee_attachments']))
-                {
+                if(isset($_POST['mee_attachments'])) {
                     $att_mee = TableRegistry::get('mee_attachments_more');
-                    foreach($_POST['mee_attachments'] as $me_a)
-                    {
+                    foreach($_POST['mee_attachments'] as $me_a) {
                         if($me_a){
-                        
-                        $save_mee['mee_id'] = $save->id;
-                        $save_mee['attachments'] = $me_a;
-                        $saving = $att_mee->newEntity($save_mee);
-                        $att_mee->save($saving);
+                            $save_mee['mee_id'] = $save->id;
+                            $save_mee['attachments'] = $me_a;
+                            $saving = $att_mee->newEntity($save_mee);
+                            $att_mee->save($saving);
                         }
                     }
                 }
             }
             die;
         }
-        public function getDocument($type = "")
-        {
+        public function getDocument($type = ""){
             $doc = TableRegistry::get('Subdocuments');
             $query = $doc->find();
             if ($type == 'orders') {
                 $q= $query->select()->where(['display' => 1, 'orders' => 1])->order('id');
-            } else
-                $q= $query->select()->where(['display' => 1])->order('id');
+            } else {
+                $q = $query->select()->where(['display' => 1])->order('id');
+            }
             //debug($query);
             //$this->response->body($query);
             return $q;
         }
-        function getDivById($id)
-        {
+        function getDivById($id){
             //echo $id;die();
             if($id){
-            $doc = TableRegistry::get('client_divison');
-            $query = $doc->find();
-            $q = $query->select()->where(['id' => $id])->first();
-            
-            //$this->response->body($q);
-            return $q;
-            die();
+                $doc = TableRegistry::get('client_divison');
+                $query = $doc->find();
+                $q = $query->select()->where(['id' => $id])->first();
+
+                //$this->response->body($q);
+                return $q;
+                die();
             }
             else
             die();
         }
-        function getDocumentcount()
-        {
+        function getDocumentcount(){
             $doc = TableRegistry::get('Subdocuments');
             $query = $doc->find();
             $query->where(['display' => 1]);
             return $query->all();
         }
 
-        function getUserDocumentcount()
-        {
+        function getUserDocumentcount(){
             //$this->loadComponent('Session');
             $controller = $this->_registry->getController();
             $doc = TableRegistry::get('Subdocuments');
@@ -1268,8 +1264,7 @@ class DocumentComponent extends Component
             return $cnt;
         }
         
-        function getUser($user_id)
-        {
+        function getUser($user_id){
             $query = TableRegistry::get('Profiles');
             $query = $query->find()->where(['id' => $user_id]);
             $q = $query->first();
@@ -1278,8 +1273,7 @@ class DocumentComponent extends Component
             die();
         }
 
-        function getAllUser()
-        {
+        function getAllUser(){
             $query = TableRegistry::get('Profiles');
             //$query = $query->find();
             //$q = $query->find()->where(['profile_type !=' => '5'])->all();
@@ -1289,8 +1283,7 @@ class DocumentComponent extends Component
             die();
         }
 
-        function getAllClient()
-        {
+        function getAllClient(){
             $query = TableRegistry::get('Clients');
             $query = $query->find();
             $q = $query->select();
@@ -1299,29 +1292,41 @@ class DocumentComponent extends Component
             die();
         }
 
-        function getDocType()
-        {
+
+    function getProSubDoc($pro_id,$doc_id){
+        $sub = TableRegistry::get('Profilessubdocument');
+        $query = $sub->find();
+        $query->select()->where(['profile_id'=>$pro_id, 'subdoc_id'=>$doc_id]);
+        $q = $query->first();
+        return $q->display;
+    }
+
+        function getDocType($UserID = -1){
             $query = TableRegistry::get('Subdocuments');
             $query = $query->find();
             $q = $query->select()->where(['display' => '1']);
             //$this->response->body($q);
+            if($UserID>-1){//a user ID was specified, check their settings
+                //use: $this->request->session()->read('Profile.id') to get the user's ID
+                foreach($q as $sub){//inject user's settings
+                    $sub->user = $this->getProSubDoc($UserID, $sub->id);
+                    //3 is both, 2 is create only, 1 is view only, 0 is none (which won't be returned in the results)
+                    $sub->show = $sub->user == 3||$sub->user ==1;
+                }
+            }
             return $q;
             die();
         }
         
-        public function getSpecificData($cid = 0, $order_id = 0)
-        {
-
+        public function getSpecificData($cid = 0, $order_id = 0){
             $modal = TableRegistry::get($_GET['form_type']);
-            if (!isset($_GET['document']))
+            if (!isset($_GET['document'])) {
                 $detail = $modal->find()->where(['client_id' => $cid, 'order_id' => $order_id, 'document_id' => 0]);
-            else
+            } else {
                 $detail = $modal->find()->where(['client_id' => $cid, 'document_id' => $order_id, 'order_id' => 0]);
-
+            }
             // die('asd');
-
             echo json_encode($detail);
-
             die;
         }
 
@@ -1334,51 +1339,52 @@ class DocumentComponent extends Component
             $del = $prescreen->query();
             if ($count == 1) {
                 if (!isset($_GET['document']) || isset($_GET['order_id'])){
-                    if(!isset($_GET['order_id']))
-                    $del->delete()->where(['order_id' => $data['order_id'],'sub_id'=>1])->execute();
-                    else
-                    $del->delete()->where(['order_id' => $_GET['order_id'],'sub_id'=>1])->execute();
+                    if(!isset($_GET['order_id'])) {
+                        $del->delete()->where(['order_id' => $data['order_id'], 'sub_id' => 1])->execute();
+                    } else {
+                        $del->delete()->where(['order_id' => $_GET['order_id'], 'sub_id' => 1])->execute();
                     }
-                else
+                }  else {
                     $del->delete()->where(['document_id' => $data['document_id']])->execute();
+                }
             }
             $data['sub_id'] = 1;
             $save = $prescreen->newEntity($data);
             $prescreen->save($save);
         }
 
-        public function saveAttachmentsDriverApp($data = NULL, $count = 0)
-        {
+        public function saveAttachmentsDriverApp($data = NULL, $count = 0){
             $driverApp = TableRegistry::get('doc_attachments');
             $del = $driverApp->query();
             if ($count == 1) {
                 if (!isset($_GET['document']) || isset($_GET['order_id'])){
-                    if(!isset($_GET['order_id']))
-                    $del->delete()->where(['order_id' => $data['order_id'],'sub_id'=>2])->execute();
-                    else
-                    $del->delete()->where(['order_id' => $_GET['order_id'],'sub_id'=>2])->execute();
+                    if(!isset($_GET['order_id'])) {
+                        $del->delete()->where(['order_id' => $data['order_id'], 'sub_id' => 2])->execute();
+                    } else {
+                        $del->delete()->where(['order_id' => $_GET['order_id'], 'sub_id' => 2])->execute();
                     }
-                else
+                } else {
                     $del->delete()->where(['document_id' => $data['document_id']])->execute();
+                }
             }
             $data['sub_id'] = 2;
             $save = $driverApp->newEntity($data);
             $driverApp->save($save);
         }
 
-        public function saveAttachmentsRoadTest($data = NULL, $count = 0)
-        {
+        public function saveAttachmentsRoadTest($data = NULL, $count = 0){
             $roadTest = TableRegistry::get('doc_attachments');
             $del = $roadTest->query();
             if ($count == 1) {
                 if (!isset($_GET['document']) || isset($_GET['order_id'])){
-                    if(!isset($_GET['order_id']))
-                    $del->delete()->where(['order_id' => $data['order_id'],'sub_id'=>3])->execute();
-                    else
-                    $del->delete()->where(['order_id' => $_GET['order_id'],'sub_id'=>3])->execute();
+                    if(!isset($_GET['order_id'])) {
+                        $del->delete()->where(['order_id' => $data['order_id'], 'sub_id' => 3])->execute();
+                    } else {
+                        $del->delete()->where(['order_id' => $_GET['order_id'], 'sub_id' => 3])->execute();
                     }
-                else
+                } else{
                     $del->delete()->where(['document_id' => $data['document_id']])->execute();
+                }
             }
             $data['sub_id'] = 3;
             $save = $roadTest->newEntity($data);

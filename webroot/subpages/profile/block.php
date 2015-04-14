@@ -607,6 +607,11 @@
                                                                           value="1" <?php if (isset($sidebar) && $sidebar->email_document == 1) echo "checked"; ?> />
                                         Recieve Email
                                     </label>
+                                    <label class="uniform-inline">
+                                        <input <?php echo $is_disabled ?> type="checkbox" name="side[aggregate]"
+                                                                          value="1" <?php if (isset($sidebar) && $sidebar->aggregate == 1) echo "checked"; ?> />
+                                        Aggregate Audit
+                                    </label>
                                     <!--label class="uniform-inline">
                                                                 <input <?php echo $is_disabled ?> type="checkbox"
                                                                                           name="side[document_requalify]"
@@ -630,91 +635,43 @@
                                         <?php
                                             $subdoc = $this->requestAction('/profiles/getSub');
 
-                                            if ($settings->mee == "Events Audit") {
+                                            function printsubdocradios($is_disabled, $sub, $prosubdoc){
+                                                printsubdocradio($is_disabled, $sub, $prosubdoc, 0, "None");
+                                                printsubdocradio($is_disabled, $sub, $prosubdoc, 1, "View Only");
+                                                printsubdocradio($is_disabled, $sub, $prosubdoc, 2, "Create Only");
+                                                printsubdocradio($is_disabled, $sub, $prosubdoc, 3, "Both");
+                                            }
+                                            function printsubdocradio($is_disabled, $sub, $prosubdoc, $Value, $Text){
+                                                echo '<label class="uniform-inline"><input ' . $is_disabled . ' type="radio" name="profile[' . $sub->id . ']"';
+                                                echo 'value="' . $Value . '" ';
+                                                if ($prosubdoc['display'] == $Value) { echo ' checked="checked"';}
+                                                echo '/> ' . $Text . ' </label>';
+                                            }
 
+
+
+                                            if ($settings->mee == "Events Audit") {
+//this code needs to be merged. There doesn't need to be a page of repeating code or 2 loops
                                                 foreach ($subdoc as $sub) {
                                                   //  echo $sub['title'];
                                                     if(strtolower($sub['title']) =="audit" || strtolower($sub['title'])=="attachment"){
                                                     ?>
-                                                    <tr>
-                                                        <td>
-                                                            <?php echo ucfirst($sub['title']); ?>
-                                                        </td>
-                                                        <?php
-                                                            $prosubdoc = $this->requestAction('/settings/all_settings/0/0/profile/' . $id . '/' . $sub->id);
-                                                        ?>
-                                                        <td class="">
-
-                                                            <label class="uniform-inline">
-                                                                <input <?php echo $is_disabled ?> type="radio"
-                                                                                                  name="profile[<?php echo $sub->id; ?>]"
-                                                                                                  value="0"  <?php if ($prosubdoc['display'] == 0) { ?> checked="checked" <?php } ?> />
-                                                                None </label>
-                                                            <label class="uniform-inline">
-                                                                <input <?php echo $is_disabled ?> type="radio"
-                                                                                                  name="profile[<?php echo $sub->id; ?>]"
-                                                                                                  value="1" <?php if ($prosubdoc['display'] == 1) { ?> checked="checked" <?php } ?> />
-                                                                View Only </label>
-                                                            <label class="uniform-inline">
-                                                                <input <?php echo $is_disabled ?> type="radio"
-                                                                                                  name="profile[<?php echo $sub->id; ?>]"
-                                                                                                  value="2" <?php if ($prosubdoc['display'] == 2) { ?> checked="checked" <?php } ?> />
-                                                                Upload Only </label>
-                                                            <label class="uniform-inline">
-                                                                <input <?php echo $is_disabled ?> type="radio"
-                                                                                                  name="profile[<?php echo $sub->id; ?>]"
-                                                                                                  value="3" <?php if ($prosubdoc['display'] == 3) { ?> checked="checked" <?php } ?> />
-                                                                Both </label>
-                                                        </td>
-                                                    </tr>
-                                                <?php
+                                                    <td class="">
+                                                        <!--<label class="uniform-inline">
+                                                                    <input <?php echo $is_disabled?> type="radio" name="profileP[<?php echo $sub->id;?>]" value="" onclick="$(this).closest('tr').next('tr').show();" <?php if ($prosubdoc['display'] != 0) { ?> checked="checked" <?php } ?> />
+                                                                    Yes </label>-->
+                                                                    <?php
+                                                       printsubdocradios($is_disabled, $sub, $prosubdoc);
+                                                    echo '</td></tr>';
                                                 }
                                                 }
                                             }else{
-
-
-
-
                                                 foreach ($subdoc as $sub) {
-
-                                                    ?>
-                                                    <tr>
-                                                        <td>
-                                                            <?php echo ucfirst($sub['title']); ?>
-                                                        </td>
-                                                        <?php
-                                                            $prosubdoc = $this->requestAction('/settings/all_settings/0/0/profile/' . $id . '/' . $sub->id);
-                                                        ?>
-                                                        <td class="">
-
-                                                            <label class="uniform-inline">
-                                                                <input <?php echo $is_disabled ?> type="radio"
-                                                                                                  name="profile[<?php echo $sub->id; ?>]"
-                                                                                                  value="0"  <?php if ($prosubdoc['display'] == 0) { ?> checked="checked" <?php } ?> />
-                                                                None </label>
-                                                            <label class="uniform-inline">
-                                                                <input <?php echo $is_disabled ?> type="radio"
-                                                                                                  name="profile[<?php echo $sub->id; ?>]"
-                                                                                                  value="1" <?php if ($prosubdoc['display'] == 1) { ?> checked="checked" <?php } ?> />
-                                                                View Only </label>
-                                                            <label class="uniform-inline">
-                                                                <input <?php echo $is_disabled ?> type="radio"
-                                                                                                  name="profile[<?php echo $sub->id; ?>]"
-                                                                                                  value="2" <?php if ($prosubdoc['display'] == 2) { ?> checked="checked" <?php } ?> />
-                                                                Upload Only </label>
-                                                            <label class="uniform-inline">
-                                                                <input <?php echo $is_disabled ?> type="radio"
-                                                                                                  name="profile[<?php echo $sub->id; ?>]"
-                                                                                                  value="3" <?php if ($prosubdoc['display'] == 3) { ?> checked="checked" <?php } ?> />
-                                                                Both </label>
-                                                        </td>
-                                                    </tr>
-                                                <?php
+                                                    $prosubdoc = $this->requestAction('/settings/all_settings/0/0/profile/' . $id . '/' . $sub->id);
+                                                    echo '<tr><td>' . ucfirst($sub['title']) . '</td><td class="">';
+                                                    printsubdocradios($is_disabled, $sub, $prosubdoc);
+                                                    echo '</td></tr>';
                                                 }
-
-
-
-
                                             }
                                         ?>
                                     </table>
