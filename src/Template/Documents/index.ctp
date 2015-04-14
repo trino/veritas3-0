@@ -25,7 +25,7 @@ if ($_SERVER['SERVER_NAME'] == "localhost" || $_SERVER['SERVER_NAME'] == "127.0.
 
     <a href="javascript:window.print();" class="floatright btn btn-info">Print</a>
     <?php if ($sidebar->document_create == 1) { ?>
-        <a href="<?php echo $this->request->webroot; ?>clients?flash" class="floatright btn btn-primary btnspc">
+        <a href="<?php echo $this->request->webroot; ?>documents/add" class="floatright btn btn-primary btnspc">
             Create <?php echo ucfirst($settings->document); ?></a>
     <?php }
         if (isset($_GET["draft"])) { ?>

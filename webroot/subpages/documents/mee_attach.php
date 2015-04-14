@@ -47,16 +47,19 @@
         }
     }
 
-    function printdivrequired($Action, $forms, $AttachmentName, $DriversProvince, $attachment = 0){
+    function printdivrequired($Action, $forms, $AttachmentName, $DriversProvince, $attachment = 0, $Force = false){
         $doit = true;
-        if ($Action == "View" || $Action == "Vieworder") {
-            if (is_array($attachment)) {
-
-            } elseif (is_numeric($attachment)) {
-                $doit = $attachment > 0;
-            } else {
-                if (!$attachment) {
-                    $doit = false;
+        //echo $attachment . "ATTACH";
+        if (!$Force) {
+            if ($Action == "View" || $Action == "Vieworder") {
+                if (is_array($attachment)) {
+                    $doit = true;
+                } elseif (is_numeric($attachment)) {
+                    $doit = $attachment > 0;
+                } else {
+                    if (!$attachment) {
+                        $doit = false;
+                    }
                 }
             }
         }
@@ -69,9 +72,9 @@
         return $doit;
     }
 
-    function isrequired($forms, $AttachmentName, $DriversProvince, $attachments = 0){
+    function isrequired($forms, $AttachmentName, $DriversProvince, $attachments = 0, $Force = false){
         //Attachment names are id_piece, driver_record_abstract, cvor, resume, certification, attachments
-        if ($AttachmentName == "attachments" && $attachments > 0) {
+        if ($AttachmentName == "attachments" && $attachments > 0 || $Force) {
             return true;
         }
         $required = array("id_piece" => 1603);//, "driver_record_abstract" => 1, "cvor" => 14, "resume"=> 1627, "certification" => 1650);
@@ -100,11 +103,6 @@
     if( isset($pre_at)){  listfiles($pre_at['attach_doc'], "attachments/", "", false,3); }
     */
     //echo "</div>";
-    if ($controller == 'orders') {
-        //echo '<h4 class="col-md-12">MEE Attachments</h4>';
-    } else {
-
-    }
 
     function getattachment($mee_att, $name){
         if (isset($mee_att['attach_doc'])) {
@@ -132,8 +130,16 @@
     if (count($attachment) > 0 || isrequired($forms, "id_piece", $DriverProvince, 0, True)) { $mand = "Mandatory"; }
     echo '<HR></div><div class="col-md-12"><strong>The following form(s) are ' . $mand . '</strong></div>';
 
+//printdivrequired needs to know if their are attachments BEFORE hand
+$morecount=0;
+if (isset($mee_att['attach_doc']->id) && $mee_att['attach_doc']->id) {
+    //echo $mee_att['attach_doc']->id;
+    $mee_more = $meedocs->find()->where(['mee_id' => $mee_att['attach_doc']->id]);
+    if ($mee_more) {$morecount= iterator_count($mee_more);}
+}
+
     $docsprinted=0;
-    if (printdivrequired($action, $forms, "attachments", $DriverProvince, count($attachment))) {
+    if (printdivrequired($action, $forms, "attachments", $DriverProvince, iterator_count($mee_more) + count($attachment))) {
         $doit = false;
         $description = 'Upload BC, QU, SA Abstract Consent Form PDF';
         $docsprinted+=1;
@@ -167,19 +173,10 @@
             echo "<div>";
         }
         echo '<div class="col-md-12">';
-        if ($doit && count($attachment) > 0) {
-            echo '<label class="control-label col-md-4">' . $description . ': </label>';
+        if ($doit && (count($attachment) > 0) || $morecount>0) {
+            echo '<div class="col-md-4" align="right">' . $description . ': </div>';
         }
         echo '<div class="col-md-8 mee_more">';
-
-        $morecount = 0;
-        if ($did) {
-            if (isset($mee_att['attach_doc']->id) && $mee_att['attach_doc']->id) {
-                //echo $mee_att['attach_doc']->id;
-                $mee_more = $meedocs->find()->where(['mee_id' => $mee_att['attach_doc']->id]);
-                if ($mee_more) {$morecount= iterator_count($mee_more);}
-            }
-        }
 
         if (!$morecount ) {
             if(count($attachment) > 0) {
@@ -194,10 +191,10 @@
         } else {
             $id_count = 6;
             $directory = "attachments/";//"documents/download/"; //the download page crashes chrome!
-            foreach ($mee_more as $mm) {
+            foreach ($mee_more as $mm) {//what is this code?
                 $id_count++;
                 if (file_exists(realpath("attachments/" . $mm->attachments))) {//fixes ghost file issue
-                ?>
+                //rapid switching between PHP and HTML mode should not be used ?>
                        <div>
                                         <span><a style="margin-bottom:5px;" href="javascript:void(0)" class="btn btn-primary additional"
                                                  id="mee_att_<?php echo $id_count; ?>">Browse</a>&nbsp;<a style="margin-bottom:5px;"
@@ -245,8 +242,8 @@
     if (printdivrequired($action, $forms, "id_piece", $DriverProvince, getattachment($mee_att, "id_piece1") . getattachment($mee_att, "id_piece2"))) {
         $docsprinted+=1; ?>
             <div class="col-md-12">
-                <label class="control-label col-md-4">Upload 2 pieces of ID: </label>  
-                <div class="col-md-8">              
+                <div class="col-md-4" align="right"> Upload 2 pieces of ID: </div>
+                <div class="col-md-8">
                     <span><a href="javascript:void(0)" class="btn btn-primary" id="mee_att_1">Browse</a>
                     &nbsp;<span class="uploaded">
 
@@ -289,7 +286,7 @@
     if (printdivrequired($action, $forms, "driver_record_abstract", $DriverProvince, getattachment($mee_att, "driver_record_abstract"))) {
         $docsprinted+=1;?>
             <div class="col-md-12">
-                <label class="control-label col-md-4">Upload Driver's Record Abstract: </label>
+                 <div class="col-md-4" align="right">Upload Driver's Record Abstract: </div>
                 <div class="col-md-8">
                     <span><a href="javascript:void(0)" class="btn btn-primary" id="mee_att_3">Browse</a>&nbsp;<span class="uploaded"><?php if (isset($mee_att['attach_doc']) && $mee_att['attach_doc']->driver_record_abstract) { ?>
         <a class="dl"
@@ -312,7 +309,8 @@
     if (printdivrequired($action, $forms, "cvor", $DriverProvince, getattachment($mee_att, 'cvor'))) {
         $docsprinted+=1;?>
             <div class="col-md-12">
-                <label class="control-label col-md-4">Upload CVOR: </label>
+            <div class="col-md-4" align="right">Upload CVOR:  </div>
+                <!--label class="control-label col-md-4">Upload CVOR: </label-->
                 <div class="col-md-8">
                     <span><a href="javascript:void(0)" class="btn btn-primary" id="mee_att_4">Browse</a>&nbsp;<span class="uploaded"><?php if (isset($mee_att['attach_doc']) && $mee_att['attach_doc']->cvor) { ?>
         <a class="dl"
@@ -336,7 +334,7 @@
         $docsprinted+=1;
         ?>
             <div class="col-md-12">
-                <label class="control-label col-md-4">Upload Resume: </label>
+            <div class="col-md-4" align="right">Upload Resume: </div>
                 <div class="col-md-8">
                     <span><a href="javascript:void(0)" class="btn btn-primary" id="mee_att_5">Browse</a>&nbsp;<span class="uploaded"><?php if (isset($mee_att['attach_doc']) && $mee_att['attach_doc']->resume) { ?>
             <a class="dl"
@@ -360,7 +358,7 @@
         $docsprinted+=1;
         ?>
             <div class="col-md-12">
-                <label class="control-label col-md-4">Upload Certifications: </label>
+            <div class="col-md-4" align="right">Upload Certifications: </div>
                 <div class="col-md-8">
                     <span><a href="javascript:void(0)" class="btn btn-primary" id="mee_att_6">Browse</a>&nbsp;<span class="uploaded"><?php if (isset($mee_att['attach_doc']) && $mee_att['attach_doc']->certification) { ?>
             <a class="dl"

@@ -133,6 +133,20 @@ if ($_SERVER['SERVER_NAME'] == "localhost" || $_SERVER['SERVER_NAME'] == "127.0.
     <style>
         .page-logo a{max-width:100%;max-height:100%;}
         .page-logo img{max-width:100%;max-height:70px!important;}
+         @media print {
+        .form-group{width:100%;}
+        
+        <?php
+        for($i=1;$i<13;$i++)
+        {
+            ?>
+            .col-md-<?php echo $i;?>{width:<?php echo ($i/12)*100;?>%!important;display:inline-block!important;float:left;}
+            <?php
+        }
+        ?>   
+           
+
+    }
     </style>
 
 </head>
