@@ -568,7 +568,8 @@
                                                 <?php
                                                     }
                                                 ?>
-                                                <h4 class="col-md-6"> Enable <?php echo ucfirst($settings->document) . 's?'; ?></h4>
+                                                <h4 class="col-md-6">
+                                                    Enable <?php echo ucfirst($settings->document) . 's?'; ?></h4>
 
                                                 <div class="clearfix"></div>
 
@@ -578,76 +579,126 @@
                                                             <th></th>
                                                             <!--<th class="">System</th>-->
                                                             <th class=""><?php echo ucfirst($settings->document); ?> </th>
-                                                            <th class="">Orders</th>
-                                                            <th class="">Display Order</th>
+
+                                                            <? if ($settings->mee != "Events Audit") {
+                                                                ?>
+                                                                <th class="">Orders</th>
+                                                                <th class="">Display Order</th>
+                                                            <? }?>
                                                         </tr>
                                                         <?php
                                                             //$subdoc = $this->requestAction('/clients/getSub');
                                                             $subdoccli = $this->requestAction('/clients/getSubCli/' . $id);
                                                             $u = 0;
-                                                            foreach ($subdoccli as $subcl) {
-                                                                $u++;
-                                                                $sub = $this->requestAction('/clients/getFirstSub/' . $subcl->sub_id);
-                                                                ?>
-                                                                <tr id="subd_<?php echo $sub->id; ?>"
-                                                                    class="sublisting">
-                                                                    <td>
 
-                                                                        <span
-                                                                            id="sub_<?php echo $sub['id']; ?>"><?php echo ucfirst($sub['title']); ?></span>
-                                                                    </td>
-                                                                    <!--<td class="">
-                                                    <label class="uniform-inline">
-                                                        <input <?php echo $is_disabled ?> type="radio"
-                                                                                          name="<?php echo $sub->id; ?>"
-                                                                                          value="1"
-                                                                                          <?php if ($sub['display'] == 1) { ?>checked="checked" <?php } ?>
-                                                                                          disabled="disabled"/>
-                                                        Yes </label>
-                                                    <label class="uniform-inline">
-                                                        <input <?php echo $is_disabled ?> type="radio"
-                                                                                          name="<?php echo $sub->id; ?>"
-                                                                                          value="0"
-                                                                                          <?php if ($sub['display'] == 0) { ?>checked="checked" <?php } ?>
-                                                                                          disabled="disabled"/>
-                                                        No </label>
-                                                </td>-->
+
+                                                            if ($settings->mee == "Events Audit") {
+
+                                                                foreach ($subdoccli as $subcl) {
+
+
+                                                                        $u++;
+                                                                        $sub = $this->requestAction('/clients/getFirstSub/' . $subcl->sub_id);
+
+                                                                    if (strtolower($sub['title']) == "audit" || strtolower($sub['title']) == "attachment") {
+
+                                                                        ?>
+                                                                        <tr id="subd_<?php echo $sub->id; ?>"
+                                                                            class="sublisting">
+                                                                            <td>
+
+                            <span
+                                id="sub_<?php echo $sub['id']; ?>"><?php echo ucfirst($sub['title']); ?></span>
+                                                                            </td>
+
+                                                                            <?php
+                                                                                $csubdoc = $this->requestAction('/settings/all_settings/0/0/client/' . $id . '/' . $sub->id);
+                                                                            ?>
+                                                                            <td class="">
+                                                                                <label class="uniform-inline">
+                                                                                    <input <?php echo $is_disabled ?>
+                                                                                        type="radio"
+                                                                                        name="clientC[<?php echo $sub->id; ?>]"
+                                                                                        value="1"  <?php if ($csubdoc['display'] == 1) { ?> checked="checked" <?php } ?> />
+                                                                                    Yes </label>
+                                                                                <label class="uniform-inline">
+                                                                                    <input <?php echo $is_disabled ?>
+                                                                                        type="radio"
+                                                                                        name="clientC[<?php echo $sub->id; ?>]"
+                                                                                        value="0"  <?php if ($csubdoc['display'] == 0) { ?> checked="checked" <?php } ?> />
+                                                                                    No </label>
+                                                                            </td>
+
+                                                                        </tr>
+
                                                                     <?php
-                                                                        $csubdoc = $this->requestAction('/settings/all_settings/0/0/client/' . $id . '/' . $sub->id);
+                                                                    }
+                                                                }
+                                                            } else {
+
+                                                                foreach ($subdoccli as $subcl) {
+                                                                    $u++;
+                                                                    $sub = $this->requestAction('/clients/getFirstSub/' . $subcl->sub_id);
                                                                     ?>
-                                                                    <td class="">
-                                                                        <label class="uniform-inline">
-                                                                            <input <?php echo $is_disabled ?>
-                                                                                type="radio"
-                                                                                name="clientC[<?php echo $sub->id; ?>]"
-                                                                                value="1"  <?php if ($csubdoc['display'] == 1) { ?> checked="checked" <?php } ?> />
-                                                                            Yes </label>
-                                                                        <label class="uniform-inline">
-                                                                            <input <?php echo $is_disabled ?>
-                                                                                type="radio"
-                                                                                name="clientC[<?php echo $sub->id; ?>]"
-                                                                                value="0"  <?php if ($csubdoc['display'] == 0) { ?> checked="checked" <?php } ?> />
-                                                                            No </label>
-                                                                    </td>
-                                                                    <td>
-                                                                        <input <?php if ($csubdoc['display_order'] == 1) { ?> checked="checked" <?php } ?>
-                                                                            type="checkbox" id="check<?= $u ?>"
-                                                                            onclick="if($(this).is(':checked')){$(this).closest('td').find('.fororder').val('1');}else {$(this).closest('td').find('.fororder').val('0');}"/>
-                                                                        <label for="check<?= $u ?>">Show</label>
+                                                                    <tr id="subd_<?php echo $sub->id; ?>"
+                                                                        class="sublisting">
+                                                                        <td>
 
-                                                                        <input class="fororder" type="hidden"
-                                                                               value="<?php if ($csubdoc['display_order'] == 1) {
-                                                                                   echo '1';
-                                                                               } else { ?>0<?php } ?>"
-                                                                               name="clientO[<?php echo $sub->id; ?>]"/>
-                                                                    </td>
-                                                                    <td>
-                                                                        <?php echo $u; ?>
-                                                                    </td>
-                                                                </tr>
+                            <span
+                                id="sub_<?php echo $sub['id']; ?>"><?php echo ucfirst($sub['title']); ?></span>
+                                                                        </td>
 
-                                                            <?php
+                                                                        <?php
+                                                                            $csubdoc = $this->requestAction('/settings/all_settings/0/0/client/' . $id . '/' . $sub->id);
+                                                                        ?>
+                                                                        <td class="">
+                                                                            <label class="uniform-inline">
+                                                                                <input <?php echo $is_disabled ?>
+                                                                                    type="radio"
+                                                                                    name="clientC[<?php echo $sub->id; ?>]"
+                                                                                    value="1"  <?php if ($csubdoc['display'] == 1) { ?> checked="checked" <?php } ?> />
+                                                                                Yes </label>
+                                                                            <label class="uniform-inline">
+                                                                                <input <?php echo $is_disabled ?>
+                                                                                    type="radio"
+                                                                                    name="clientC[<?php echo $sub->id; ?>]"
+                                                                                    value="0"  <?php if ($csubdoc['display'] == 0) { ?> checked="checked" <?php } ?> />
+                                                                                No </label>
+                                                                        </td>
+                                                                        <td>
+                                                                            <input <?php if ($csubdoc['display_order'] == 1) { ?> checked="checked" <?php } ?>
+                                                                                type="checkbox" id="check<?= $u ?>"
+                                                                                onclick="if($(this).is(':checked')){$(this).closest('td').find('.fororder').val('1');}else {$(this).closest('td').find('.fororder').val('0');}"/>
+                                                                            <label for="check<?= $u ?>">Show</label>
+
+                                                                            <input class="fororder" type="hidden"
+                                                                                   value="<?php if ($csubdoc['display_order'] == 1) {
+                                                                                       echo '1';
+                                                                                   } else { ?>0<?php } ?>"
+                                                                                   name="clientO[<?php echo $sub->id; ?>]"/>
+                                                                        </td>
+                                                                        <td>
+                                                                            <?php echo $u; ?>
+                                                                        </td>
+                                                                    </tr>
+
+                                                                <?php
+                                                                }
+
                                                             }
+
+
+
+
+
+
+
+
+
+
+
+
+
                                                         ?>
 
                                                     </table>

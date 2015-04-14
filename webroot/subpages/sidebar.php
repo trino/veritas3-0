@@ -308,7 +308,7 @@
             <?php if ($sidebar->bulk == 1) { ?>
                 <li class="<?php echo ($this->request['controller'] == 'Profiles' && isset($_GET["all"])) ? 'active open' : ''; ?>">
                     <a href="<?php echo $this->request->webroot; ?>profiles?all">
-                        <i class="fa fa-calendar"></i>
+                        <i class="fa fa-users"></i>
                         <span class="title">Bulk Order</span>
                         <span class="selected"></span>
                     </a>
