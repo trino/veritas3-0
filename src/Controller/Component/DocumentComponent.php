@@ -153,7 +153,7 @@ class DocumentComponent extends Component
 
                                             By: '.$uq->username.' (Profile Type: '.$ut.')<br/> Date : '.date('Y-m-d H:i:s').'<br/><br /> Client Name: ' . $client_name.'<br/> For: '.$p.'<br /><br /> Regards,<br />The '.$setting->mee.' Team';
 
-                                             $controller->Mailer->sendEmail($from, $to, $sub, $msg);
+                                             //$controller->Mailer->sendEmail($from, $to, $sub, $msg);
                                             
                                         }
                                     }
@@ -234,7 +234,7 @@ class DocumentComponent extends Component
                                 $msg = 'A new document has been created in '.$path.'<br /><br />
                                 Username : '.$uq->username.'<br/>Profile Type : '.$ut.'<br/> Date : '.date('Y-m-d H:i:s').'<br/>Client Name: ' . $client_name.'<br/> Document type : '.$arr['document_type'].'<br /><br />Regards,<br />The '.$setting->mee.' Team';
     
-                                 $controller->Mailer->sendEmail($from, $to, $sub, $msg);
+                                 //$controller->Mailer->sendEmail($from, $to, $sub, $msg);
                                     }
                                 }
                             }
@@ -272,7 +272,7 @@ class DocumentComponent extends Component
 
                             Username : '.$uq->username.'<br/>Profile Type : '.$ut.'<br/> Date : '.date('Y-m-d H:i:s').'<br/>Client Name: ' . $client_name.'<br/> Document type : '.$arr['document_type'].'<br/> <br /> Regards,<br />The '.$setting->mee.' Team';
 
-                             $controller->Mailer->sendEmail($from, $to, $sub, $msg);
+                             //$controller->Mailer->sendEmail($from, $to, $sub, $msg);
                              }
                         if(isset($_POST['attach_doc']))
                         {
@@ -341,7 +341,7 @@ class DocumentComponent extends Component
                                         $msg = 'A new document has been created in '.$path.'<br /><br />
                                         Username : '.$uq->username.'<br/>Profile Type : '.$ut.'<br/> Date : '.date('Y-m-d H:i:s').'<br/>Client Name: ' . $client_name.'<br/> Document type : '.$arr['document_type'].'<br /><br />Regards,<br />The '.$setting->mee.' Team';
             
-                                        $controller->Mailer->sendEmail($from, $to, $sub, $msg);
+                                        //$controller->Mailer->sendEmail($from, $to, $sub, $msg);
                                     }
                                 }
                             }
