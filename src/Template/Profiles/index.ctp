@@ -114,57 +114,20 @@
 
                                 <?php
                                     $isISB = (isset($sidebar) && $sidebar->client_option == 0);
-                                    if ($isISB) {
-                                        ?>
-
-                                        <option
-                                            value="1" <?php if (isset($return_profile_type) && $return_profile_type == 1) { ?> selected="selected"<?php } ?> >
-                                            Admin
-                                        </option>
-                                        <option
-                                            value="2" <?php if (isset($return_profile_type) && $return_profile_type == 2) { ?> selected="selected"<?php } ?>>
-                                            Recruiter
-                                        </option>
-                                        <option
-                                            value="3" <?php if (isset($return_profile_type) && $return_profile_type == 3) { ?> selected="selected"<?php } ?>>
-                                            External
-                                        </option>
-                                        <option
-                                            value="4" <?php if (isset($return_profile_type) && $return_profile_type == 4) { ?> selected="selected"<?php } ?>>
-                                            Safety
-                                        </option>
-                                        <option
-                                            value="5" <?php if (isset($return_profile_type) && $return_profile_type == 5) { ?> selected="selected"<?php } ?>>
-                                            Driver
-                                        </option>
-                                        <option
-                                            value="6" <?php if (isset($return_profile_type) && $return_profile_type == 6) { ?> selected="selected"<?php } ?>>
-                                            Contact
-                                        </option>
-                                        <option
-                                            value="7" <?php if (isset($return_profile_type) && $return_profile_type == 7) { ?> selected="selected"<?php } ?>>
-                                            Owner Operator
-                                        </option>
-                                        <option
-                                            value="8" <?php if (isset($return_profile_type) && $return_profile_type == 8) { ?> selected="selected"<?php } ?>>
-                                            Owner Driver
-                                        </option>
-
-                                    <?php } else { ?>
-                                        <option
-                                            value="9" <?php if (isset($return_profile_type) && $return_profile_type == 9) { ?> selected="selected"<?php } ?> >
-                                            Employee
-                                        </option>
-                                        <option
-                                            value="10" <?php if (isset($return_profile_type) && $return_profile_type == 10) { ?> selected="selected"<?php } ?> >
-                                            Guest
-                                        </option>
-                                        <option
-                                            value="11" <?php if (isset($return_profile_type) && $return_profile_type == 11) { ?> selected="selected"<?php } ?> >
-                                            Employee
-                                        </option>
-                                    <?php } ?>
-
+                                    foreach($ptypes as $ProfileType){
+                                        if($ProfileType->enable) {//id title enable ISB
+                                            $doit = $ProfileType->ISB == 0;
+                                            if ($isISB) {$doit = $ProfileType->ISB == 1;}
+                                            if($doit) {
+                                                echo '<option value="' . $ProfileType->id . '"';
+                                                if (isset($return_profile_type) && $return_profile_type == $ProfileType->id) {
+                                                    echo ' selected="selected"';
+                                                }
+                                                echo ">" . ucfirst($ProfileType->title) . "</option>";
+                                            }
+                                        }
+                                    }
+                                ?>
                             </select>
 
                             <?php
