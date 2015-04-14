@@ -607,6 +607,11 @@
                                                                           value="1" <?php if (isset($sidebar) && $sidebar->email_document == 1) echo "checked"; ?> />
                                         Recieve Email
                                     </label>
+                                    <label class="uniform-inline">
+                                        <input <?php echo $is_disabled ?> type="checkbox" name="side[aggregate]"
+                                                                          value="1" <?php if (isset($sidebar) && $sidebar->aggregate == 1) echo "checked"; ?> />
+                                        Aggregate Audit
+                                    </label>
                                     <!--label class="uniform-inline">
                                                                 <input <?php echo $is_disabled ?> type="checkbox"
                                                                                           name="side[document_requalify]"
