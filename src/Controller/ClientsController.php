@@ -589,6 +589,7 @@
                 }
             }
             $this->set('products',  $products);
+            return $products;
         }
 
         function generateproductHTML($ClientID, $ordertype){//$ordertype = acronym
@@ -596,7 +597,7 @@
             $Product =  TableRegistry::get('product_types')->find()->where(['Acronym' => $ordertype])->first();
             if ($Product->Checked == 1) { $Checked = ' checked disabled';} else { $Checked = "";}
             $Blocked = explode(",", $Product->Blocked);
-            $products = TableRegistry::get('order_products')->find('all');
+            $products = $this->getproductlist($ClientID);
             $count=0;
             foreach ($products as $p) {
                 if(!in_array($p->number, $Blocked) && $p->clientenabled) {
