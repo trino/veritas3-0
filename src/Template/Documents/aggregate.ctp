@@ -8,86 +8,8 @@
                                     <div class="portlet-body form">
                                     <div class="form-body" style="padding-bottom: 0px;">
                                                     <div class="tab-content"><div class="portlet-body form">
-<!-- BEGIN FORM-->
-<form  id="form_tab8" method="post" action="/veritas3-0/documents/audits/1/15" class="form-horizontal">
-
-
-    <table class="table-condensed table-striped table-bordered table-hover dataTable no-footer">
-        <TR><Th>Client</Th><TD align="center"><?php echo $client->id;?></TD><TD><?php echo $client->company_name;?></TD></TR>
-    </table>
-
-<input type="hidden" class="document_type" name="document_type" value="Audits"/>
-
-    <input type="hidden" name="sub_doc_id" value="8" class="sub_docs_id" id="af" />
-<div class="form-body">
-                                                
-                                                <!--
- 
- 
-                                                <div class="form-group">
-<label class="col-md-3 control-label">Estimated Total Cost:
-                                                    <small class=" control-label">Booth/Travel/Hotels/Meals</small>
-                                                    </label>
                                                     
-<div class="col-md-4">
-<input type="text" name="total_cost" class="form-control " disabled="disabled" placeholder="Enter text" value="">
-</div>
-</div>                                                
-
- 	<div class="form-group">
-<label class="col-md-3 control-label">Rating Total
-                                                    <small class=" control-label">[Out of 40]</small>:
-                                                    </label>
-                                                    
-<div class="col-md-4">
-
-                                                            <select name="total_rating" disabled="disabled" class="form-control member_type">
-                                                                                                                            <option value="1" selected='selected'>1</option>
-                                                                                                                            <option value="2" >2</option>
-                                                                                                                            <option value="3" >3</option>
-                                                                                                                            <option value="4" >4</option>
-                                                                                                                            <option value="5" >5</option>
-                                                                                                                            <option value="6" >6</option>
-                                                                                                                            <option value="7" >7</option>
-                                                                                                                            <option value="8" >8</option>
-                                                                                                                            <option value="9" >9</option>
-                                                                                                                            <option value="10" >10</option>
-                                                                                                                            <option value="11" >11</option>
-                                                                                                                            <option value="12" >12</option>
-                                                                                                                            <option value="13" >13</option>
-                                                                                                                            <option value="14" >14</option>
-                                                                                                                            <option value="15" >15</option>
-                                                                                                                            <option value="16" >16</option>
-                                                                                                                            <option value="17" >17</option>
-                                                                                                                            <option value="18" >18</option>
-                                                                                                                            <option value="19" >19</option>
-                                                                                                                            <option value="20" >20</option>
-                                                                                                                            <option value="21" >21</option>
-                                                                                                                            <option value="22" >22</option>
-                                                                                                                            <option value="23" >23</option>
-                                                                                                                            <option value="24" >24</option>
-                                                                                                                            <option value="25" >25</option>
-                                                                                                                            <option value="26" >26</option>
-                                                                                                                            <option value="27" >27</option>
-                                                                                                                            <option value="28" >28</option>
-                                                                                                                            <option value="29" >29</option>
-                                                                                                                            <option value="30" >30</option>
-                                                                                                                            <option value="31" >31</option>
-                                                                                                                            <option value="32" >32</option>
-                                                                                                                            <option value="33" >33</option>
-                                                                                                                            <option value="34" >34</option>
-                                                                                                                            <option value="35" >35</option>
-                                                                                                                            <option value="36" >36</option>
-                                                                                                                            <option value="37" >37</option>
-                                                                                                                            <option value="38" >38</option>
-                                                                                                                            <option value="39" >39</option>
-                                                                                                                            <option value="40" >40</option>
-                                                                                                                          </select>
-
-                                </div>
-</div>
-             -->
-             <?php
+                                                     <?php
              if($audits)
              {
                 foreach($audits as $aud)
@@ -96,6 +18,8 @@
                     $pr = $this->requestAction('/documents/getProfileByDocument/'.$aud->document_id);
                     if($pr)
                     $prof[] = $pr->fname.' '.$pr->lname;
+                    $ec[] = $aud->total_cost;
+                    $rati[] = $aud->total_rating;
                     $po[] = $aud->primary_objectives;
                     $ob[] = $aud->objectives;
                     $imp[] = $aud->improvement;
@@ -113,7 +37,62 @@
                     $bs[] = $aud->booth_staff;
                 }
              }
-             ?>                                   
+             ?> 
+<!-- BEGIN FORM-->
+<form  id="form_tab8" method="post" action="/veritas3-0/documents/audits/1/15" class="form-horizontal">
+
+
+    <table class="table-condensed table-striped table-bordered table-hover dataTable no-footer">
+        <TR><Th>Client</Th><TD align="center"><?php echo $client->id;?></TD><TD><?php echo $client->company_name;?></TD></TR>
+    </table>
+
+<input type="hidden" class="document_type" name="document_type" value="Audits"/>
+
+    <input type="hidden" name="sub_doc_id" value="8" class="sub_docs_id" id="af" />
+<div class="form-body">
+                                                
+                                                
+ 
+ 
+                                                <div class="form-group">
+<label class="col-md-3 control-label">Estimated Total Cost:
+                                                    <small class=" control-label">Booth/Travel/Hotels/Meals</small>
+                                                    </label>
+                                                    
+<div class="col-md-4">
+<?php 
+if(isset($ec))
+foreach($ec as $k=>$v)
+{
+    ?>
+    <p><strong><?php if(isset($prof)&& $prof[$k])echo $prof[$k];else echo "Unknown";?>: </strong> <?php echo $v;?></p> 
+    <?php
+}
+?>
+</div>
+</div>                                                
+
+ 	<div class="form-group">
+<label class="col-md-3 control-label">Rating Total
+                                                    <small class=" control-label">[Out of 40]</small>:
+                                                    </label>
+                                                    
+<div class="col-md-4">
+
+                                                            <?php 
+if(isset($rati))
+foreach($rati as $k=>$v)
+{
+    ?>
+    <p><strong><?php if(isset($prof)&& $prof[$k])echo $prof[$k];else echo "Unknown";?>: </strong> <?php echo $v;?></p> 
+    <?php
+}
+?>
+
+                                </div>
+</div>
+             
+                                              
                                        	<h2> Objectives</h2>
 
 <div class="form-group">
