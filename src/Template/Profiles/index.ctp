@@ -272,7 +272,7 @@
                                         if($sidebar->bulk=='1' && ($profile->profile_type == 5 || $profile->profile_type == 7 || $profile->profile_type == 8 || $profile->profile_type == 11))
                                         {
                                         ?>
-                                            <!--input type="checkbox" class="form-control bulk_user" value="<?php echo $profile->id; ?>" id="checkbox_id_<?php echo $profile->id; ?>" /-->
+                                            <input type="checkbox" class="form-control bulk_user" value="<?php echo $profile->id; ?>" id="checkbox_id_<?php echo $profile->id; ?>" >
                                         <?php
                                         }
                                         ?>
@@ -377,8 +377,6 @@
                                             }
                                             ?>
 
-
-
                                         </td>
                                     </tr>
 
@@ -393,7 +391,7 @@
                     <div class="col-md-12">
                         <div class="col-md-6" align="left">
                         <?php if($sidebar->bulk=='1' && isset($_GET["all"]) ){?>
-                            <a href="javascript:void(0);" class="bulk_order btn btn-primary">Bulk Orders</a>
+                            <a href="javascript:void(0);" class="bulk_order btn btn-primary">Order Bulk</a>
                         <?php }?>
                         </div>
                         <div class="col-md-6" align="right">
@@ -445,7 +443,7 @@
 
 
            });
-           window.location = '<?php echo $this->request->webroot;?>orders/productSelection?driver=0&ordertype=QUA&profiles='+tempstr;
+           window.location = '<?php echo $this->request->webroot;?>orders/productSelection?driver=0&ordertype=BUL&profiles='+tempstr;
         });
         <?php if(isset($_GET['division'])&& $_GET['division']!=""){
                  //var_dump($_GET);
