@@ -174,7 +174,7 @@ if (isset($mee_att['attach_doc']->id) && $mee_att['attach_doc']->id) {
         }
         echo '<div class="col-md-12">';
         if ($doit && (count($attachment) > 0) || $morecount>0) {
-            echo '<label class="control-label col-md-4">' . $description . ': </label>';
+            echo '<div class="col-md-4" align="right">' . $description . ': </div>';
         }
         echo '<div class="col-md-8 mee_more">';
 
@@ -242,8 +242,8 @@ if (isset($mee_att['attach_doc']->id) && $mee_att['attach_doc']->id) {
     if (printdivrequired($action, $forms, "id_piece", $DriverProvince, getattachment($mee_att, "id_piece1") . getattachment($mee_att, "id_piece2"))) {
         $docsprinted+=1; ?>
             <div class="col-md-12">
-                <label class="control-label col-md-4">Upload 2 pieces of ID: </label>  
-                <div class="col-md-8">              
+                <div class="col-md-4" align="right"> Upload 2 pieces of ID: </div>
+                <div class="col-md-8">
                     <span><a href="javascript:void(0)" class="btn btn-primary" id="mee_att_1">Browse</a>
                     &nbsp;<span class="uploaded">
 
@@ -286,7 +286,7 @@ if (isset($mee_att['attach_doc']->id) && $mee_att['attach_doc']->id) {
     if (printdivrequired($action, $forms, "driver_record_abstract", $DriverProvince, getattachment($mee_att, "driver_record_abstract"))) {
         $docsprinted+=1;?>
             <div class="col-md-12">
-                <label class="control-label col-md-4">Upload Driver's Record Abstract: </label>
+                 <div class="col-md-4" align="right">Upload Driver's Record Abstract: </div>
                 <div class="col-md-8">
                     <span><a href="javascript:void(0)" class="btn btn-primary" id="mee_att_3">Browse</a>&nbsp;<span class="uploaded"><?php if (isset($mee_att['attach_doc']) && $mee_att['attach_doc']->driver_record_abstract) { ?>
         <a class="dl"
@@ -309,7 +309,8 @@ if (isset($mee_att['attach_doc']->id) && $mee_att['attach_doc']->id) {
     if (printdivrequired($action, $forms, "cvor", $DriverProvince, getattachment($mee_att, 'cvor'))) {
         $docsprinted+=1;?>
             <div class="col-md-12">
-                <label class="control-label col-md-4">Upload CVOR: </label>
+            <div class="col-md-4" align="right">Upload CVOR:  </div>
+                <!--label class="control-label col-md-4">Upload CVOR: </label-->
                 <div class="col-md-8">
                     <span><a href="javascript:void(0)" class="btn btn-primary" id="mee_att_4">Browse</a>&nbsp;<span class="uploaded"><?php if (isset($mee_att['attach_doc']) && $mee_att['attach_doc']->cvor) { ?>
         <a class="dl"
@@ -333,7 +334,7 @@ if (isset($mee_att['attach_doc']->id) && $mee_att['attach_doc']->id) {
         $docsprinted+=1;
         ?>
             <div class="col-md-12">
-                <label class="control-label col-md-4">Upload Resume: </label>
+            <div class="col-md-4" align="right">Upload Resume: </div>
                 <div class="col-md-8">
                     <span><a href="javascript:void(0)" class="btn btn-primary" id="mee_att_5">Browse</a>&nbsp;<span class="uploaded"><?php if (isset($mee_att['attach_doc']) && $mee_att['attach_doc']->resume) { ?>
             <a class="dl"
@@ -357,7 +358,7 @@ if (isset($mee_att['attach_doc']->id) && $mee_att['attach_doc']->id) {
         $docsprinted+=1;
         ?>
             <div class="col-md-12">
-                <label class="control-label col-md-4">Upload Certifications: </label>
+            <div class="col-md-4" align="right">Upload Certifications: </div>
                 <div class="col-md-8">
                     <span><a href="javascript:void(0)" class="btn btn-primary" id="mee_att_6">Browse</a>&nbsp;<span class="uploaded"><?php if (isset($mee_att['attach_doc']) && $mee_att['attach_doc']->certification) { ?>
             <a class="dl"
