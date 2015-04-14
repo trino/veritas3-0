@@ -55,9 +55,7 @@
             } elseif (is_numeric($attachment)) {
                 $doit = $attachment > 0;
             } else {
-                if (!$attachment) {
-                    $doit = false;
-                }
+                if (!$attachment) {$doit = false; }
             }
         }
         if ($doit) { //isrequired($forms, $AttachmentName, $DriversProvince, $attachment)) {
@@ -194,10 +192,10 @@
         } else {
             $id_count = 6;
             $directory = "attachments/";//"documents/download/"; //the download page crashes chrome!
-            foreach ($mee_more as $mm) {
+            foreach ($mee_more as $mm) {//what is this code?
                 $id_count++;
                 if (file_exists(realpath("attachments/" . $mm->attachments))) {//fixes ghost file issue
-                ?>
+                //rapid switching between PHP and HTML mode should not be used ?>
                        <div>
                                         <span><a style="margin-bottom:5px;" href="javascript:void(0)" class="btn btn-primary additional"
                                                  id="mee_att_<?php echo $id_count; ?>">Browse</a>&nbsp;<a style="margin-bottom:5px;"

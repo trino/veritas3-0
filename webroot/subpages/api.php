@@ -124,6 +124,14 @@ function getHost($localhost = "localhost") {//get HTTP host name
 }
 
 
+function getIterator($Objects, $Fieldname, $Value){
+    foreach($Objects as $Object){
+        if ($Object->$Fieldname == $Value){
+            return $Object;
+        }
+    }
+    return false;
+}
 /*
 function Translate($ID, $Language, $Variables = ""){
     $table = TableRegistry::get('strings');
