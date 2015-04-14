@@ -68,17 +68,22 @@ if ($_SERVER['SERVER_NAME'] == "localhost" || $_SERVER['SERVER_NAME'] == "127.0.
 
 
                             <?php
-                                $type = $doc_comp->getDocType();
+                                $type = $doc_comp->getDocType($this->request->session()->read('Profile.id'));
                             ?>
 
                             <select class="form-control input-inline" name="type">
                                 <option value=""><?php echo ucfirst($settings->document); ?> type</option>
                                 <?php
                                     foreach ($type as $t) {
-                                        ?>
-                                        <option
-                                            value="<?php echo $t->id; ?>" <?php if (isset($return_type) && $return_type == $t->id) { ?> selected="selected"<?php } ?> ><?php echo ucfirst($t->title); ?></option>
-                                    <?php
+                                        if(!isset($t->show) || $t->show) {
+                                            ?>
+                                            <option
+                                                value="<?php echo $t->id; ?>"
+                                                <?php if (isset($return_type) && $return_type == $t->id) { ?> selected="selected"<?php } ?> >
+                                                <?php echo ucfirst($t->title); ?>
+                                            </option>
+                                        <?php
+                                        }
                                     }
                                 ?>
                                 <!--<option

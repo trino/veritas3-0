@@ -654,7 +654,7 @@ if ($activetab == "permissions") {
                                                             <input <?php echo $is_disabled?> type="radio"
                                                                                              name="profile[<?php echo $sub->id;?>]"
                                                                                              value="2" <?php if ($prosubdoc['display'] == 2) { ?> checked="checked" <?php } ?> />
-                                                            Upload Only </label>
+                                                            Create Only </label>
                                                         <label class="uniform-inline">
                                                             <input <?php echo $is_disabled?> type="radio"
                                                                                              name="profile[<?php echo $sub->id;?>]"
