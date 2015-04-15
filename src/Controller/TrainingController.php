@@ -453,7 +453,7 @@ class TrainingController extends AppController {
             $EnrolledBy = $this->getuserid();
 
             $table = TableRegistry::get("training_enrollments");
-            $table->query()->insert(['QuizID', 'UserID'])->values(['QuizID' => $QuizID, 'UserID' => $UserID, 'EnrolledBy' => $EnrolledBy])->execute();
+            $table->query()->insert(['QuizID', 'UserID', 'EnrolledBy'])->values(['QuizID' => $QuizID, 'UserID' => $UserID, 'EnrolledBy' => $EnrolledBy])->execute();
 
             $table = TableRegistry::get('sidebar');
             $table->query()->update()->set(['training' => 1])->where(['user_id' => $UserID])->execute();
