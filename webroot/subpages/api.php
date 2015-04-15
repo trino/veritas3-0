@@ -154,13 +154,13 @@ function Translate($ID, $Language, $Variables = ""){
 
 function translate($language, $flushcache = false){
     //veritas3-0\webroot\Locale\[language]\LC_MESSAGES will need clearing of duplicate mo files
+    //$language="fr_FR";
     putenv("LANG=$language");
     putenv("LANGUAGE=$language");
     putenv("LC_ALL=$language");
     setlocale(LC_ALL, $language);
     $domain = 'default';
     $dir= getcwd() . "/Locale";
-    if($flushcache )
     if($flushcache){//MUST NOT USE ON LIVE!
         $path = $dir . "/" . $language . "/LC_MESSAGES/";
         $filename = $path . $domain . ".mo" ;
@@ -173,6 +173,9 @@ function translate($language, $flushcache = false){
     }
     bindtextdomain($domain, $dir);//www/veritsa3-0/,   Locale
     textdomain($domain);
+    if(gettext("test")=="test"){
+        echo $language . " is not installed on this system.";
+    }
     return $language;
 }
 ?>

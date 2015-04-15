@@ -214,7 +214,7 @@ if ($_SERVER['SERVER_NAME'] == "localhost" || $_SERVER['SERVER_NAME'] == "127.0.
 							<i class="icon-user"></i> My Settings </a>
 						</li>
                         <li>
-                            <a href="<?php echo $this->request->webroot;?>profiles/edit/<?php echo $this->request->session()->read('Profile.id'); ?>" >
+                            <a href="<?php echo $this->request->webroot;?>profiles/langswitch/<?php echo $this->request->session()->read('Profile.id'); ?>" >
                                 <i class="icon-user"></i> <?= gettext("langswitch"); ?> </a>
                         </li>
 						<li class="divider">

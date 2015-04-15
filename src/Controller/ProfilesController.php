@@ -1152,6 +1152,17 @@
             die();
         }
 
+    public function langswitch($id = null){
+        $id=$this->request->session()->read('Profile.id');
+        $language = $this->request->session()->read('Profile.language');
+        $acceptablelanguages = array("en_US", "fr_FR");
+        if (!in_array($language, $acceptablelanguages)) { $language = $acceptablelanguages[0]; }//default to english
+        $index=array_search($language,$acceptablelanguages)+1;
+        if ($index >= count($acceptablelanguages)){$index=0;}
+        $language=$acceptablelanguages[$index];
+        $this->request->session()->write('Profile.language', $language);
+        TableRegistry::get('profiles')->query()->update()->set(['language' => $language])->where(['id' => $id])->execute();
+    }
         /**
          * Edit method
          *

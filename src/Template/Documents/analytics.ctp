@@ -438,5 +438,5 @@ function enumsubdocs($thedocs, $date, $chartid, $isdraft, $profiletypes, $client
 	}
 	return $alldocs;
 }
-    
+
 ?>
