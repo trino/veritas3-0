@@ -57,7 +57,7 @@
                         <?php if($prosubdoc['display'] > 1 && $d->display == 1 && ( !isset($csubdoc)  || (isset($csubdoc) && $csubdoc['display'] == 1)))
                         {
                             
-                             //$getColor = $this->requestAction('documents/getColor/'.$d->color_id);
+                             $getColor = $this->requestAction('documents/getColor/'.$d->color_id);
                             
                         ?>
                         <div class="col-lg-2 col-md-3 col-sm-4 col-xs-6" <?php if(isset($_GET['doc'])){?>style="display:none;"<?php }?>>

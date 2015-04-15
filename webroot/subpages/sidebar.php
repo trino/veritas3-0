@@ -185,7 +185,7 @@
             </li>
             <?php if ($sidebar->orders == 1) { ?>
 
-                <li class="<?php echo (($this->request['action'] == 'orderslist' || $this->request['action'] == 'addorder') && !isset($_GET['draft'])) ? 'active open' : ''; ?>">
+                <li class="<?php echo (($this->request['action'] == 'orderslist' || $this->request['action'] == 'addorder'|| $this->request['controller']=='Orders') && !isset($_GET['draft'])) ? 'active open' : ''; ?>">
                     <a href="<?php echo $this->request->webroot; ?>orders/orderslist">
                         <i class="icon-docs"></i>
                         <span class="title">Orders</span>
@@ -228,7 +228,11 @@
                                 }
                             } ?>
 
-
+                            <li <?php echo ($this->request['controller'] == 'Orders' && $this->request['action'] == 'invoice' && !isset($_GET['draft'])) ? 'class="active"' : ''; ?>>
+                                    <a href="<?php echo $this->request->webroot; ?>orders/invoice">
+                                        <i class="icon-list"></i>
+                                       Invoice</a>
+                            </li>
 
                         </ul>
                     <?php } ?>
