@@ -1,4 +1,6 @@
 <?php
+//use Cake\ORM\TableRegistry;
+
 $islocal=false;
 if ($_SERVER['SERVER_NAME'] == "localhost" || $_SERVER['SERVER_NAME'] == "127.0.0.1" || $_SERVER['SERVER_ADDR'] == "127.0.0.1") { $islocal=true;}
 $GLOBALS["islocal"] =$islocal;
@@ -121,4 +123,32 @@ function getHost($localhost = "localhost") {//get HTTP host name
     return trim($host);
 }
 
+
+function getIterator($Objects, $Fieldname, $Value){
+    foreach($Objects as $Object){
+        if ($Object->$Fieldname == $Value){
+            return $Object;
+        }
+    }
+    return false;
+}
+/*
+function Translate($ID, $Language, $Variables = ""){
+    $table = TableRegistry::get('strings');
+    if (is_numeric($ID)) {$column = $ID;} else {$column = "Name";}
+    $query = $table->find()->select()->where([$column => $ID])->first()->$Language;
+    if ($query) {
+        if (is_array($Variables)) {
+            foreach ($Variables as $Key => $Value) {
+                if (substr($Key, 0, 1) != "%") {$Key = "%" . $Key;}
+                if (substr($Key, -1) != "%") {$Key .= "%";}
+                $query = str_replace($Key, $Value, $query);
+            }
+        }
+        return $query;
+    } else {
+        return $ID . "." . $Language . " is missing a translation";
+    }
+}
+*/
 ?>

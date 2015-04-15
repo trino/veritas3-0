@@ -15,18 +15,14 @@
         include_once('subpages/api.php');
     }
 
-    class ProfilesController extends AppController
-    {
+    class ProfilesController extends AppController{
 
         public $paginate = [
             'limit' => 20,
             'order' => ['id' => 'DESC'],
-
         ];
 
-        public function initialize()
-        {
-
+        public function initialize(){
             parent::initialize();
             $this->loadComponent('Settings');
             $this->loadComponent('Mailer');
@@ -38,8 +34,7 @@
 
         }
 
-        function upload_img($id)
-        {
+        function upload_img($id){
             if (isset($_FILES['myfile']['name']) && $_FILES['myfile']['name']) {
                 $arr = explode('.', $_FILES['myfile']['name']);
                 $ext = end($arr);
@@ -67,8 +62,8 @@
             }
             die();
         }
-        function client_default()
-        {
+
+        function client_default(){
             if (isset($_FILES['myfile']['name']) && $_FILES['myfile']['name']) {
                 $arr = explode('.', $_FILES['myfile']['name']);
                 $ext = end($arr);
@@ -99,8 +94,7 @@
             die();
         }
 
-        function upload_all($id = "")
-        {
+        function upload_all($id = ""){
             if (isset($_FILES['myfile']['name']) && $_FILES['myfile']['name']) {
                 $arr = explode('.', $_FILES['myfile']['name']);
                 $ext = end($arr);
@@ -131,8 +125,7 @@
             die();
         }
 
-        public function settings()
-        {
+        public function settings(){
             $this->loadModel('Logos');
             $this->loadModel('OrderProducts');
             $this->loadModel('ProfileTypes');
@@ -140,21 +133,17 @@
             $this->set('client_types', $this->ClientTypes->find()->all());
             $this->set('products', $this->OrderProducts->find()->all());
 
-            $this->set('ptypes', $this->ProfileTypes->find()->all());
+            $this->set('ptypes', $this->ProfileTypes->find()->all());//where(['secondary' => '0'])
             $this->set('logos', $this->paginate($this->Logos->find()->where(['secondary' => '0'])));
             $this->set('logos1', $this->paginate($this->Logos->find()->where(['secondary' => '1'])));
             $this->set('logos2', $this->paginate($this->Logos->find()->where(['secondary' => '2'])));
         }
 
-        public function products()
-        {
+        public function products(){
             if (isset($_POST["Type"])) {
+                $Value = 0;
                 if (isset($_POST['Value'])) {
-                    if (strtolower($_POST['Value']) == "true") {
-                        $Value = 1;
-                    } else {
-                        $Value = 0;
-                    }
+                    if (strtolower($_POST['Value']) == "true") {$Value = 1;}
                 }
                 $DocID = $_POST['DocID'];
                 switch ($_POST["Type"]) {
@@ -197,14 +186,12 @@
             }
         }
 
-        function enabledisableproduct($ID, $Value)
-        {
+        function enabledisableproduct($ID, $Value){
             $table = TableRegistry::get('order_products');
             $table->query()->update()->set(['enable' => $Value])->where(['number' => $ID])->execute();
         }
 
-        function isproductprovinceenabled($ProductID, $DocumentID, $Province)
-        {
+        function isproductprovinceenabled($ProductID, $DocumentID, $Province){
             $item = TableRegistry::get('order_provinces')->find()->where(['ProductID' => $ProductID, 'FormID' => $DocumentID, "Province" => $Province])->first();
             if ($item) {
                 return true;
@@ -213,8 +200,7 @@
             }
         }
 
-        function setproductprovince($ProductID, $DocumentID, $Province, $Value)
-        {
+        function setproductprovince($ProductID, $DocumentID, $Province, $Value){
             $table = TableRegistry::get('order_provinces');//ProductID, Province, FormID
             if ($Value == 1) {
                 $color = "green";
@@ -232,8 +218,7 @@
             return "<FONT COLOR='" . $color . "'>" . $DocumentID . $message . $ProductID . "." . $Province . "</FONT>";
         }
 
-        function generateproductHTML($Product)
-        {
+        function generateproductHTML($Product){
             //TableRegistry::get('order_provinces')->find()->where(['ProductID' => $Product])->all();
             $provincelist = $this->enumProvinces();
             $subdocuments = TableRegistry::get('subdocuments')->find('all');//subdocument type list (id, title, display, form, table_name, orders, color_id)
@@ -250,8 +235,7 @@
             echo '</TABLE>';
         }
 
-        function generateRowHTML($ID, $Title, $Product, $provincelist)
-        {
+        function generateRowHTML($ID, $Title, $Product, $provincelist){
             echo '<TR><TD>' . $ID . '</TD><TD><DIV ID="dn' . $ID . '">' . $this->ucfirst2($Title) . '</DIV></TD>';
             foreach ($provincelist as $acronym => $fullname) {
                 if ($this->isproductprovinceenabled($Product, $ID, $acronym)) {
@@ -264,13 +248,11 @@
             echo "</TR>";
         }
 
-        function enumProvinces()
-        {
+        function enumProvinces(){
             return array("ALL" => "All Provinces", "AB" => "Alberta", "BC" => "British Columbia", "MB" => "Manitoba", "NB" => "New Brunswick", "NL" => "Newfoundland and Labrador", "NT" => "Northwest Territories", "NS" => "Nova Scotia", "NU" => "Nunavut", "ON" => "Ontario", "PE" => "Prince Edward Island", "QC" => "Quebec", "SK" => "Saskatchewan", "YT" => "Yukon Territories");
         }
 
-        function ucfirst2($Text)
-        {
+        function ucfirst2($Text){
             $Words = explode(" ", $Text);
             $Words2 = array();//php forces me to make a copy
             foreach ($Words as $Word) {
@@ -279,25 +261,21 @@
             return implode(" ", $Words2);
         }
 
-        function ClearProduct($Number)
-        {
+        function ClearProduct($Number){
             TableRegistry::get("order_provinces")->deleteAll(array('ProductID' => $Number), false);
         }
 
-        function RenameProduct($Number, $NewName)
-        {
+        function RenameProduct($Number, $NewName){
             TableRegistry::get("order_products")->query()->update()->set(['title' => $NewName])->where(['number' => $Number])->execute();
         }
 
-        function DeleteProduct($Number)
-        {
+        function DeleteProduct($Number){
             $this->ClearProduct($Number);
             TableRegistry::get("order_products")->deleteAll(array('number' => $Number), false);
             //TableRegistry::get("order_provinces")->deleteAll(array('ProductID' => $Number), false);
         }
 
-        function AddProduct($Number, $Name)
-        {
+        function AddProduct($Number, $Name){
             $table = TableRegistry::get("order_products");
             $item = $table->find()->where(['number' => $Number])->first();
             if ($item) {
@@ -307,9 +285,11 @@
             return true;
         }
 
-        public function index()
-        {
+        public function index(){
+            $this->loadModel('ProfileTypes');
+            $this->set('ptypes', $this->ProfileTypes->find()->where(['enable' => '1']));
             $this->set('doc_comp', $this->Document);
+
             $setting = $this->Settings->get_permission($this->request->session()->read('Profile.id'));
             $u = $this->request->session()->read('Profile.id');
             $this->set('ProClients', $this->Settings);
@@ -320,10 +300,11 @@
                 $this->Flash->error('Sorry, you don\'t have the required permissions.');
                 return $this->redirect("/");
             }
-            if (isset($_GET['draft']))
+            if (isset($_GET['draft'])) {
                 $draft = 1;
-            else
+            } else {
                 $draft = 0;
+            }
             $cond = '';
             $cond = 'drafts = ' . $draft;
             if (isset($_GET['searchprofile'])) {
@@ -340,18 +321,19 @@
             $querys = TableRegistry::get('Profiles');
 
             if (isset($_GET['searchprofile']) && $_GET['searchprofile']) {
-                if ($cond == '')
+                if ($cond == '') {
                     $cond = $cond . ' (LOWER(title) LIKE "%' . $searchs . '%" OR LOWER(fname) LIKE "%' . $searchs . '%" OR LOWER(lname) LIKE "%' . $searchs . '%" OR LOWER(username) LIKE "%' . $searchs . '%" OR LOWER(address) LIKE "%' . $searchs . '%")';
-                else
+                } else {
                     $cond = $cond . ' AND (LOWER(title) LIKE "%' . $searchs . '%" OR LOWER(fname) LIKE "%' . $searchs . '%" OR LOWER(lname) LIKE "%' . $searchs . '%" OR LOWER(username) LIKE "%' . $searchs . '%" OR LOWER(address) LIKE "%' . $searchs . '%")';
+                }
             }
 
             if (isset($_GET['filter_profile_type']) && $_GET['filter_profile_type']) {
-                if ($cond == '')
+                if ($cond == '') {
                     $cond = $cond . ' (profile_type = "' . $profile_type . '" OR admin = "' . $profile_type . '")';
-
-                else
+                } else {
                     $cond = $cond . ' AND (profile_type = "' . $profile_type . '" OR admin = "' . $profile_type . '")';
+                }
             }
 
             if (isset($_GET['filter_by_client']) && $_GET['filter_by_client']) {
@@ -364,10 +346,11 @@
                 if (!$profile_ids) {
                     $profile_ids = '99999999999';
                 }
-                if ($cond == '')
+                if ($cond == '') {
                     $cond = $cond . ' (id IN (' . $profile_ids . '))';
-                else
+                }else {
                     $cond = $cond . ' AND (id IN (' . $profile_ids . '))';
+                }
             }
             if ($this->request->session()->read('Profile.profile_type') == '2') {
                 if ($cond) {
@@ -497,12 +480,10 @@
         }
 
         */
-        function removefiles($file)
-        {
+        function removefiles($file){
             if (isset($_POST['id']) && $_POST['id'] != 0) {
                 $this->loadModel("ProfileDocs");
                 $this->ProfileDocs->deleteAll(['id' => $_POST['id']]);
-
             }
             @unlink(WWW_ROOT . "img/jobs/" . $file);
             die();
@@ -1109,6 +1090,9 @@
                             else
                                 if ($profile->profile_type == '8')
                                     $username = 'owner_driver_' . $profile->id;
+                                    else
+                                     if ($profile->profile_type == '11')
+                                    $username = 'employee_' . $profile->id;
                         $queries = TableRegistry::get('Profiles');
                         $queries->query()->update()->set(['username' => $username])
                             ->where(['id' => $profile->id])
@@ -1156,11 +1140,11 @@
                     $this->Profiles->save($pros);
 
                     echo $id;
-                    $username = 'driver_' . $id;
+                    /*$username = 'driver_' . $id;
                     $queries = TableRegistry::get('Profiles');
                     $queries->query()->update()->set(['username' => $username])
                         ->where(['id' => $id])
-                        ->execute();
+                        ->execute();*/
                     die();
 
                 }
@@ -1177,7 +1161,6 @@
          */
         public function edit($id = null)
         {
-
             $this->set('doc_comp', $this->Document);
             $check_pro_id = $this->Settings->check_pro_id($id);
             if ($check_pro_id == 1) {
@@ -1199,14 +1182,12 @@
             if ($checker == 0) {
                 //  $this->Flash->error('Sorry, you don\'t have the required permissions6.');
                 //  return $this->redirect("/profiles/index");
-
             }
 
             $setting = $this->Settings->get_permission($this->request->session()->read('Profile.id'));
             if ($setting->profile_edit == 0 && $id != $this->request->session()->read('Profile.id')) {
                 $this->Flash->error('Sorry, you don\'t have the required permissions.');
                 return $this->redirect("/");
-
             } else {
                 $this->set('myuser', '1');
             }
@@ -1233,10 +1214,11 @@
                     //die('here');
                     $this->request->data['password'] = $profile->password;
                 }
-                if (isset($_POST['profile_type']) && $_POST['profile_type'] == 1)
+                if (isset($_POST['profile_type']) && $_POST['profile_type'] == 1){
                     $this->request->data['admin'] = 1;
-                else
+                } else {
                     $this->request->data['admin'] = 0;
+                }
                 $this->request->data['dob'] = $_POST['doby'] . "-" . $_POST['dobm'] . "-" . $_POST['dobd'];
                 //var_dump($this->request->data); die();//echo $_POST['admin'];die();
                 $profile = $this->Profiles->patchEntity($profile, $this->request->data);
@@ -1260,15 +1242,13 @@
             $this->set('products', TableRegistry::get('product_types')->find('all'));
         }
 
-        function changePass($id)
-        {
+        function changePass($id){
             $profile = $this->Profiles->get($id, [
                 'contain' => []
             ]);
             if ($this->request->is(['patch', 'post', 'put'])) {
                 $profiles = $this->Profiles->patchEntity($profile, $this->request->data);
                 if ($this->Profiles->save($profiles)) {
-
                     echo "1";
                 } else {
                     echo "0";
@@ -1308,10 +1288,11 @@
                 return $this->redirect("/");
 
             }
-            if (isset($_GET['draft']))
+            if (isset($_GET['draft'])) {
                 $draft = "?draft";
-            else
+            } else {
                 $draft = "";
+            }
             $profile = $this->Profiles->get($id);
             // $this->request->allowMethod(['post', 'delete']);
             if ($this->Profiles->delete($profile)) {
@@ -1365,7 +1346,7 @@
             }
             //die();
             if ($client == "") {
-                $sides = array('profile_list', 'profile_create', 'client_list', 'client_create', 'document_list', 'document_create', 'profile_edit', 'profile_delete', 'client_edit', 'client_delete', 'document_edit', 'document_delete', 'document_others', 'document_requalify', 'orders_list', 'orders_create', 'orders_delete', 'orders_requalify', 'orders_edit', 'orders_others', 'order_requalify', 'orders_mee', 'orders_products', 'order_intact', 'email_document', 'email_orders', 'email_profile');
+                $sides = array('profile_list', 'profile_create', 'client_list', 'client_create', 'document_list', 'document_create', 'profile_edit', 'profile_delete', 'client_edit', 'client_delete', 'document_edit', 'document_delete', 'document_others', 'document_requalify', 'orders_list', 'orders_create', 'orders_delete', 'orders_requalify', 'orders_edit', 'orders_others', 'order_requalify', 'orders_mee', 'orders_products', 'order_intact', 'email_document', 'email_orders', 'email_profile','orders_emp','orders_GEM','orders_GDR','aggregate');
                 foreach ($sides as $s) {
                     if (!isset($_POST['side'][$s]))
                         $side[$s] = 0;
@@ -2284,7 +2265,7 @@
                 $this->DeleteAttachment(-1, "profiles", "/img/profile/");
                 $this->DeleteAttachment(-1, "doc_attachments", "/attachments/");
                 $this->DeleteUser(-1);//deletes all users
-                $this->DeleteTables(array("clients", "clientssubdocument", "client_divison", "client_sub_order"));//deletes clients
+                $this->DeleteTables(array("clients", "clientssubdocument", "client_divison", "client_sub_order", "client_products"));//deletes clients
                 //deletes documents
                 $this->DeleteTables(array("audits", "consent_form", "consent_form_criminal", "documents", "driver_application", "road_test", "survey"));
                 $this->DeleteTables(array("abstract_forms", "bc_forms", "quebec_forms", "education_verification", "employment_verification", "feedbacks", "orders"));

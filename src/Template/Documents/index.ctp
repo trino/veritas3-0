@@ -25,7 +25,7 @@ if ($_SERVER['SERVER_NAME'] == "localhost" || $_SERVER['SERVER_NAME'] == "127.0.
 
     <a href="javascript:window.print();" class="floatright btn btn-info">Print</a>
     <?php if ($sidebar->document_create == 1) { ?>
-        <a href="<?php echo $this->request->webroot; ?>clients?flash" class="floatright btn btn-primary btnspc">
+        <a href="<?php echo $this->request->webroot; ?>documents/add" class="floatright btn btn-primary btnspc">
             Create <?php echo ucfirst($settings->document); ?></a>
     <?php }
         if (isset($_GET["draft"])) { ?>
@@ -68,17 +68,22 @@ if ($_SERVER['SERVER_NAME'] == "localhost" || $_SERVER['SERVER_NAME'] == "127.0.
 
 
                             <?php
-                                $type = $doc_comp->getDocType();
+                                $type = $doc_comp->getDocType($this->request->session()->read('Profile.id'));
                             ?>
 
                             <select class="form-control input-inline" name="type">
-                                <option value=""><?php echo ucfirst($settings->document); ?> type</option>
+                                <option value=""><?php echo ucfirst($settings->document); ?></option>
                                 <?php
                                     foreach ($type as $t) {
-                                        ?>
-                                        <option
-                                            value="<?php echo $t->id; ?>" <?php if (isset($return_type) && $return_type == $t->id) { ?> selected="selected"<?php } ?> ><?php echo ucfirst($t->title); ?></option>
-                                    <?php
+                                        if(!isset($t->show) || $t->show) {
+                                            ?>
+                                            <option
+                                                value="<?php echo $t->id; ?>"
+                                                <?php if (isset($return_type) && $return_type == $t->id) { ?> selected="selected"<?php } ?> >
+                                                <?php echo ucfirst($t->title); ?>
+                                            </option>
+                                        <?php
+                                        }
                                     }
                                 ?>
                                 <!--<option
@@ -174,8 +179,12 @@ if ($_SERVER['SERVER_NAME'] == "localhost" || $_SERVER['SERVER_NAME'] == "127.0.
                             <thead>
                             <tr class="sorting">
                                 <th title="Document ID"><?= $this->Paginator->sort('id'); ?></th>
-                                <th><?= $this->Paginator->sort('document_type', ucfirst($settings->document) . ' type'); ?></th>
+                                <th><?= $this->Paginator->sort('document_type', ucfirst($settings->document) . ''); ?></th>
+
+                                <?php if ($settings->mee != "Events Audit") { ?>
+
                                 <th title="Order ID" style="max-width: 58px;"><?= $this->Paginator->sort('oid', "Order ID"); ?></th>
+                                <?php } ?>
 
                                 <th><?= $this->Paginator->sort('user_id', 'Submitted by'); ?><?php if (isset($end)) echo $end;
                                         if (isset($start)) echo "//" . $start; ?></th>
@@ -238,7 +247,7 @@ if ($_SERVER['SERVER_NAME'] == "localhost" || $_SERVER['SERVER_NAME'] == "127.0.
                                 <td><?echo $this->Number->format($docs->id);
                                     if($docs->hasattachments) { echo '<BR><i  title="Has Attachment" class="fa fa-paperclip"></i>';} ?></td>
 
-                                <td style="width: 240px;">
+                                <td style="width: 160px;">
                                     <?php switch (1){//change the number to pick a style
                                         case 0://plain text
                                             echo  h($docs->document_type);
@@ -257,10 +266,6 @@ if ($_SERVER['SERVER_NAME'] == "localhost" || $_SERVER['SERVER_NAME'] == "127.0.
                                         }
                                     ?>">
 
-                                    <!--div class="details"> //WARNING: This won't work while in a table...
-                                        <div class="number"></div>
-                                        <div class="desc"></div>
-                                    </div-->
                                     <a class="more"  id="sub_doc_click1"
                                        href="<?php if ($sidebar->document_list == '1' && !isset($_GET["draft"])) {
                                            if (!$docs->order_id){
@@ -273,8 +278,6 @@ if ($_SERVER['SERVER_NAME'] == "localhost" || $_SERVER['SERVER_NAME'] == "127.0.
                                         <?=  h(str_replace('_',' ',$docs->document_type)); //it won't let me put it in the desc  ?>
 
                                         <i class="fa fa-copy"></i>
-
-
 
                                     </a>
                     </div>
@@ -299,6 +302,7 @@ if ($_SERVER['SERVER_NAME'] == "localhost" || $_SERVER['SERVER_NAME'] == "127.0.
                     </td>
 
 
+                    <?php if ($settings->mee != "Events Audit") { ?>
 
                     <td align=""><?php if ($orderID > 0) {
                             echo '<a href="'.$this->request->webroot.'orders/vieworder/'.$orderDetail->client_id.'/'.$orderDetail->id;if($orderDetail->order_type){echo '?order_type='.urlencode($orderDetail->order_type);if($orderDetail->forms)echo '&forms='.$orderDetail->forms;}echo '">'.$orderDetail->id;echo '</a>';
@@ -307,7 +311,7 @@ if ($_SERVER['SERVER_NAME'] == "localhost" || $_SERVER['SERVER_NAME'] == "127.0.
                         }  ?></td>
 
 
-
+<?}?>
 
 
                     <td><?php

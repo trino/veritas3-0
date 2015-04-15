@@ -80,25 +80,28 @@
                                 <div class="form-group">
                                     <label class="control-label">Profile Type</label>
 
-                                    <select name="profile_type" class="form-control member_type required">
+                                    <select name="profile_type" class="form-control member_type required" disabled="disabled">
                                         <option
-                                            value="5" <?php if (isset($p) && $p->profile_type == 5) { ?> selected="selected" <?php }  ?>>
+                                            value="5" <?php if (isset($p) && $p->profile_type == 5) { ?> selected="selected" <?php }?>>
                                             Driver
                                         </option>
                                         <option
-                                            value="7" <?php if (isset($p) && $p->profile_type == 7) { ?> selected="selected" <?php }  ?>>
+                                            value="7" <?php if (isset($p) && $p->profile_type == 7) { ?> selected="selected" <?php }?>>
                                             Owner Operator
                                         </option>
                                         <option
-                                            value="8" <?php if (isset($p) && $p->profile_type == 8) { ?> selected="selected" <?php }  ?>>
+                                            value="8" <?php if (isset($p) && $p->profile_type == 8) { ?> selected="selected" <?php }?>>
                                             Owner Driver
                                         </option>
-
+                                        <option
+                                            value="11" <?php if (isset($p) && $p->profile_type == 11) {?> selected="selected" <?php }?>>
+                                            Employee
+                                        </option>
                                     </select>
 
                                 </div>
                             </div>
-                            <?php if ($sidebar->client_option == 0 /*&& (isset($p) && $p->profile_type == 5)*/) { ?>
+                            <?php if ($sidebar->client_option == 0 && $p->profile_type != 11 /*&& (isset($p) && $p->profile_type == 5)*/) { ?>
 
                                 <div class="col-md-4" id="driver_div"
                                      style="">

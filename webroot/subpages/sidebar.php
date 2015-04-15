@@ -1,15 +1,13 @@
 <?php
     $profileID = $this->Session->read('Profile.id');
     if (strlen($profileID) == 0) {
-        //  echo '<div class="alert alert-danger"><strong>Error!</strong> <a href="profiles/login">Your session has timed out, click here to log back in.</a></div>';
-
         header("Location: " . $this->request->webroot);
-
     }
     $sidebar = $this->requestAction("settings/all_settings/" . $profileID . "/sidebar");
     $order_url = $this->requestAction("settings/getclienturl/" . $profileID . "/order");
     $document_url = $this->requestAction("settings/getclienturl/" . $profileID . "/document");
     $ordertype = "MEE";
+
     if (isset($_GET["ordertype"])) {
         $ordertype = strtoupper($_GET["ordertype"]);
     }
@@ -102,11 +100,11 @@
                     </li>
                 <?php } ?>
             <?php if ($sidebar->profile == 1) { ?>
-                <li class="<?php echo ($this->request['controller'] == 'Profiles' && !isset($_GET['draft']) && $this->request['action'] != 'logo' && $this->request['action'] != 'todo') ? 'active open' : ''; ?>">
+                <li class="<?php echo ($this->request['controller'] == 'Profiles' && !isset($_GET['draft']) && !isset($_GET["all"]) && $this->request['action'] != 'logo' && $this->request['action'] != 'todo') ? 'active open' : ''; ?>">
                     <a href="<?php echo WEB_ROOT; ?>profiles">
                         <i class="icon-user"></i>
                         <span class="title"><?php echo ucfirst($settings->profile); ?>s</span>
-                        <?php echo ($this->request['controller'] == 'Profiles') ? '<span class="selected"></span>' : ''; ?>
+                        <?php echo ($this->request['controller'] == 'Profiles'  && !isset($_GET["all"])) ? '<span class="selected"></span>' : ''; ?>
 
                         <span class="arrow "></span>
                     </a>
@@ -308,9 +306,9 @@
                 </li>
             <?php } ?>
             <?php if ($sidebar->bulk == 1) { ?>
-                <li class="<?php echo ($this->request['controller'] == 'Profiles') ? 'active open' : ''; ?>">
-                    <a href="<?php echo $this->request->webroot; ?>profiles">
-                        <i class="fa fa-calendar"></i>
+                <li class="<?php echo ($this->request['controller'] == 'Profiles' && isset($_GET["all"])) ? 'active open' : ''; ?>">
+                    <a href="<?php echo $this->request->webroot; ?>profiles?all">
+                        <i class="fa fa-users"></i>
                         <span class="title">Bulk Order</span>
                         <span class="selected"></span>
                     </a>

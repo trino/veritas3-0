@@ -84,7 +84,7 @@
                         } else {
                             ?>
                             <img class="img-responsive" id="clientpic" alt=""
-                                 src="<?php echo $this->request->webroot;?>img/clients/<?php echo $settings->client_img;?>"/>
+                                 src="<?php echo $this->request->webroot; ?>img/clients/<?php echo $settings->client_img; ?>"/>
                         <?php
                         }
                     ?>
@@ -121,9 +121,11 @@
                                 </li>
                                 <?php if ($this->request['action'] != "add" && !isset($_GET['view'])) {
                                     ?>
-
                                     <li>
-                                        <a href="#tab_1_2" data-toggle="tab">Display</a>
+                                        <a href="#tab_1_4" data-toggle="tab">Products Display</a>
+                                    </li>
+                                    <li>
+                                        <a href="#tab_1_2" data-toggle="tab">Forms Display</a>
                                     </li>
 
                                 <?php
@@ -179,7 +181,7 @@
                                                                                     if (in_array($ct->id, $cts)) {
                                                                                         ?>
                                                                                         <option
-                                                                                            value="<?php echo $ct->id;?>"
+                                                                                            value="<?php echo $ct->id; ?>"
                                                                                             <?php if (isset($client->customer_type) && $client->customer_type == $ct->id) { ?>selected="selected"<?php } ?>>
                                                                                             <?php echo $ct->title; ?>
                                                                                         </option>
@@ -188,7 +190,7 @@
                                                                                 } else {
                                                                                     ?>
                                                                                     <option
-                                                                                        value="<?php echo $ct->id;?>"
+                                                                                        value="<?php echo $ct->id; ?>"
                                                                                         <?php if (isset($client->customer_type) && $client->customer_type == $ct->id) { ?>selected="selected"<?php } ?>>
                                                                                         <?php echo $ct->title; ?>
                                                                                     </option>
@@ -331,141 +333,146 @@
                                                                 </div>
 
 
-                                                            <?php if($settings->mee != "ASAP Secured Training" && $settings->mee != "Events Audit"){?>
+                                                                <?php if ($settings->mee != "ASAP Secured Training" && $settings->mee != "Events Audit") { ?>
 
 
-                                                                <div class="form-group col-md-4">
-                                                                    <label class="control-label">Referred By</label>
-                                                                    <select class="form-control" name="referred_by"
-                                                                            id="referred_by">
-                                                                        <option value="">Select</option>
-                                                                        <option
-                                                                            value="Transrep" <?php if (isset($client->referred_by) && $client->referred_by == "Transrep") { ?> selected="selected" <?php } ?> >
-                                                                            Transrep
-                                                                        </option>
-                                                                        <option
-                                                                            value="ISB" <?php if (isset($client->referred_by) && $client->referred_by == "ISB") { ?> selected="selected" <?php } ?> >
-                                                                            ISB
-                                                                        </option>
-                                                                        <option
-                                                                            value="AFIMAC" <?php if (isset($client->referred_by) && $client->referred_by == "AFIMAC") { ?> selected="selected" <?php } ?>>
-                                                                            AFIMAC
-                                                                        </option>
-                                                                        <option
-                                                                            value="Broker" <?php if (isset($client->referred_by) && $client->referred_by == "Broker") { ?> selected="selected" <?php } ?>>
-                                                                            Broker
-                                                                        </option>
-                                                                        <option
-                                                                            value="Online" <?php if (isset($client->referred_by) && $client->referred_by == "Online") { ?> selected="selected" <?php } ?>>
-                                                                            Online
-                                                                        </option>
-                                                                        <option
-                                                                            value="Tradeshow" <?php if (isset($client->referred_by) && $client->referred_by == "Tradeshow") { ?> selected="selected" <?php } ?>>
-                                                                            Tradeshow
-                                                                        </option>
-                                                                    </select>
-                                                                </div>
-
-                                                                <div class="form-group col-md-4">
-                                                                    <label class="control-label">ARIS Agreement
-                                                                        #</label>
-                                                                    <input type="text" class="form-control"
-                                                                           name="agreement_number" <?php if (isset($client->agreement_number)) { ?> value="<?php echo $client->agreement_number; ?>" <?php } ?>/>
-                                                                </div>
-                                                                <div class="form-group col-md-4">
-                                                                    <label class="control-label">ARIS
-                                                                        Re-verification</label>
-                                                                    <input type="text"
-                                                                           class="form-control form-control-inline date-picker"
-                                                                           name="reverification" <?php if (isset($end_date)) { ?> value="<?php echo $end_date; ?>" <?php } ?>/>
-                                                                </div>
-                                                                <div class="form-group col-md-4">
-                                                                    <label class="control-label">SACC Number</label>
-                                                                    <input type="text" class="form-control"
-                                                                           name="sacc_number" <?php if (isset($client->sacc_number)) { ?> value="<?php echo $client->sacc_number; ?>" <?php } ?>/>
-                                                                </div>
-
-
-
-
-
-
-
-                                                                <div class="col-md-12">
-                                                                    <div class="form-group">
-                                                                        <h3 class="block">Billing</h3>
+                                                                    <div class="form-group col-md-4">
+                                                                        <label class="control-label">Referred By</label>
+                                                                        <select class="form-control" name="referred_by"
+                                                                                id="referred_by">
+                                                                            <option value="">Select</option>
+                                                                            <option
+                                                                                value="Transrep" <?php if (isset($client->referred_by) && $client->referred_by == "Transrep") { ?> selected="selected" <?php } ?> >
+                                                                                Transrep
+                                                                            </option>
+                                                                            <option
+                                                                                value="ISB" <?php if (isset($client->referred_by) && $client->referred_by == "ISB") { ?> selected="selected" <?php } ?> >
+                                                                                ISB
+                                                                            </option>
+                                                                            <option
+                                                                                value="AFIMAC" <?php if (isset($client->referred_by) && $client->referred_by == "AFIMAC") { ?> selected="selected" <?php } ?>>
+                                                                                AFIMAC
+                                                                            </option>
+                                                                            <option
+                                                                                value="Broker" <?php if (isset($client->referred_by) && $client->referred_by == "Broker") { ?> selected="selected" <?php } ?>>
+                                                                                Broker
+                                                                            </option>
+                                                                            <option
+                                                                                value="Online" <?php if (isset($client->referred_by) && $client->referred_by == "Online") { ?> selected="selected" <?php } ?>>
+                                                                                Online
+                                                                            </option>
+                                                                            <option
+                                                                                value="Tradeshow" <?php if (isset($client->referred_by) && $client->referred_by == "Tradeshow") { ?> selected="selected" <?php } ?>>
+                                                                                Tradeshow
+                                                                            </option>
+                                                                        </select>
                                                                     </div>
-                                                                </div>
+
+                                                                    <div class="form-group col-md-4">
+                                                                        <label class="control-label">ARIS Agreement
+                                                                            #</label>
+                                                                        <input type="text" class="form-control"
+                                                                               name="agreement_number" <?php if (isset($client->agreement_number)) { ?> value="<?php echo $client->agreement_number; ?>" <?php } ?>/>
+                                                                    </div>
+                                                                    <div class="form-group col-md-4">
+                                                                        <label class="control-label">ARIS
+                                                                            Re-verification</label>
+                                                                        <input type="text"
+                                                                               class="form-control form-control-inline date-picker"
+                                                                               name="reverification" <?php if (isset($end_date)) { ?> value="<?php echo $end_date; ?>" <?php } ?>/>
+                                                                    </div>
+                                                                    <div class="form-group col-md-4">
+                                                                        <label class="control-label">SACC Number</label>
+                                                                        <input type="text" class="form-control"
+                                                                               name="sacc_number" <?php if (isset($client->sacc_number)) { ?> value="<?php echo $client->sacc_number; ?>" <?php } ?>/>
+                                                                    </div>
 
 
-                                                                <div class="form-group col-md-4">
-                                                                    <label class="control-label">Billing Contact</label>
-                                                                    <input type="text" class="form-control"
-                                                                           name="billing_contact" <?php if (isset($client->billing_contact)) { ?> value="<?php echo $client->billing_contact; ?>" <?php } ?>/>
-                                                                </div>
-                                                                <div class="form-group col-md-4">
-                                                                    <label class="control-label">Billing Address</label>
-                                                                    <input type="text" class="form-control"
-                                                                           name="billing_address" <?php if (isset($client->billing_address)) { ?> value="<?php echo $client->billing_address; ?>" <?php } ?>/>
-                                                                </div>
-
-                                                                <div class="form-group col-md-4">
-                                                                    <label class="control-label">Billing City</label>
-                                                                    <input type="text" class="form-control"
-                                                                           name="billing_city"
-                                                                           value="<?php echo isset($client->billing_city) ? $client->billing_city : '' ?>"/>
-                                                                </div>
-
-                                                                <div class="form-group col-md-4">
-                                                                    <label class="control-label">Billing
-                                                                        Province/State</label>
-                                                                    <?php printprovinces("billing_province", $client->billing_province); ?>
 
 
-                                                                </div>
-                                                                <div class="form-group col-md-4">
-                                                                    <label class="control-label">Billing Postal
-                                                                        Code</label>
-                                                                    <input type="text" class="form-control"
-                                                                           name="billing_postal_code"
-                                                                           value="<?php echo isset($client->billing_postal_code) ? $client->billing_postal_code : '' ?>"/>
-                                                                </div>
 
 
-                                                                <div class="form-group col-md-4">
-                                                                    <label class="control-label">Invoice Terms</label>
-                                                                    <select class="form-control" name="invoice_terms"
-                                                                            id="invoice_terms">
-                                                                        <option value="">Select</option>
-                                                                        <option
-                                                                            value="weekly" <?php if (isset($client->invoice_terms) && $client->invoice_terms == 'weekly') { ?> selected="selected" <?php } ?>>
-                                                                            Weekly
-                                                                        </option>
-                                                                        <option
-                                                                            value="biweekly" <?php if (isset($client->invoice_terms) && $client->invoice_terms == 'biweekly') { ?> selected="selected" <?php } ?>>
-                                                                            Bi-weekly
-                                                                        </option>
-                                                                        <option
-                                                                            value="monthly" <?php if (isset($client->invoice_terms) && $client->invoice_terms == 'monthly') { ?> selected="selected" <?php } ?>>
-                                                                            Monthly
-                                                                        </option>
-                                                                    </select>
-                                                                </div>
-                                                                <div class="form-group col-md-12">
-                                                                    <label class="control-label">Billing
-                                                                        Instructions</label>
-                                                                </div>
-                                                                <div class="form-group col-md-4">
-                                                                    <input type="radio"
-                                                                           name="billing_instructions" <?php if (isset($client->billing_instructions) && $client->billing_instructions == "individual") { ?> checked="checked" <?php } ?>
-                                                                           value="individual"/> Individual&nbsp;&nbsp;
-                                                                </div>
-                                                                <div class="form-group col-md-4">
-                                                                    <input type="radio"
-                                                                           name="billing_instructions" <?php if (isset($client->billing_instructions) && $client->billing_instructions == "centralized") { ?> checked="checked" <?php } ?>
-                                                                           value="centralized"/> Centralized&nbsp;&nbsp;
-                                                                </div>
-<?php } ?>
+
+                                                                    <div class="col-md-12">
+                                                                        <div class="form-group">
+                                                                            <h3 class="block">Billing</h3>
+                                                                        </div>
+                                                                    </div>
+
+
+                                                                    <div class="form-group col-md-4">
+                                                                        <label class="control-label">Billing
+                                                                            Contact</label>
+                                                                        <input type="text" class="form-control"
+                                                                               name="billing_contact" <?php if (isset($client->billing_contact)) { ?> value="<?php echo $client->billing_contact; ?>" <?php } ?>/>
+                                                                    </div>
+                                                                    <div class="form-group col-md-4">
+                                                                        <label class="control-label">Billing
+                                                                            Address</label>
+                                                                        <input type="text" class="form-control"
+                                                                               name="billing_address" <?php if (isset($client->billing_address)) { ?> value="<?php echo $client->billing_address; ?>" <?php } ?>/>
+                                                                    </div>
+
+                                                                    <div class="form-group col-md-4">
+                                                                        <label class="control-label">Billing
+                                                                            City</label>
+                                                                        <input type="text" class="form-control"
+                                                                               name="billing_city"
+                                                                               value="<?php echo isset($client->billing_city) ? $client->billing_city : '' ?>"/>
+                                                                    </div>
+
+                                                                    <div class="form-group col-md-4">
+                                                                        <label class="control-label">Billing
+                                                                            Province/State</label>
+                                                                        <?php printprovinces("billing_province", $client->billing_province); ?>
+
+
+                                                                    </div>
+                                                                    <div class="form-group col-md-4">
+                                                                        <label class="control-label">Billing Postal
+                                                                            Code</label>
+                                                                        <input type="text" class="form-control"
+                                                                               name="billing_postal_code"
+                                                                               value="<?php echo isset($client->billing_postal_code) ? $client->billing_postal_code : '' ?>"/>
+                                                                    </div>
+
+
+                                                                    <div class="form-group col-md-4">
+                                                                        <label class="control-label">Invoice
+                                                                            Terms</label>
+                                                                        <select class="form-control"
+                                                                                name="invoice_terms"
+                                                                                id="invoice_terms">
+                                                                            <option value="">Select</option>
+                                                                            <option
+                                                                                value="weekly" <?php if (isset($client->invoice_terms) && $client->invoice_terms == 'weekly') { ?> selected="selected" <?php } ?>>
+                                                                                Weekly
+                                                                            </option>
+                                                                            <option
+                                                                                value="biweekly" <?php if (isset($client->invoice_terms) && $client->invoice_terms == 'biweekly') { ?> selected="selected" <?php } ?>>
+                                                                                Bi-weekly
+                                                                            </option>
+                                                                            <option
+                                                                                value="monthly" <?php if (isset($client->invoice_terms) && $client->invoice_terms == 'monthly') { ?> selected="selected" <?php } ?>>
+                                                                                Monthly
+                                                                            </option>
+                                                                        </select>
+                                                                    </div>
+                                                                    <div class="form-group col-md-12">
+                                                                        <label class="control-label">Billing
+                                                                            Instructions</label>
+                                                                    </div>
+                                                                    <div class="form-group col-md-4">
+                                                                        <input type="radio"
+                                                                               name="billing_instructions" <?php if (isset($client->billing_instructions) && $client->billing_instructions == "individual") { ?> checked="checked" <?php } ?>
+                                                                               value="individual"/> Individual&nbsp;&nbsp;
+                                                                    </div>
+                                                                    <div class="form-group col-md-4">
+                                                                        <input type="radio"
+                                                                               name="billing_instructions" <?php if (isset($client->billing_instructions) && $client->billing_instructions == "centralized") { ?> checked="checked" <?php } ?>
+                                                                               value="centralized"/> Centralized&nbsp;&nbsp;
+                                                                    </div>
+                                                                <?php } ?>
                                                                 <div class="form-group col-md-12">
 
                                                                     <label class="control-label">Description</label>
@@ -490,14 +497,14 @@
 
                                                                     <div style="display:block;" class="col-md-12">
 
-<?php
-if($action =="create") {
-    ?>
+                                                                        <?php
+                                                                            if ($action == "create") {
+                                                                                ?>
 
-    Attach Documents<br>
+                                                                                Attach Documents<br>
 
-<?php
-}
+                                                                            <?php
+                                                                            }
                                                                         ?>
 
                                                                         <a href="javascript:void(0)" id="addMore1"
@@ -547,7 +554,15 @@ if($action =="create") {
                                                 </div>
                                             </div>
                                         </div>
+
+
                                         <?php
+                                            echo '<div';
+                                            if (isset($_GET["products"])) { echo " active";}
+                                            echo ' class="tab-pane" id="tab_1_4">';
+                                            include('subpages/clients/products.php');
+                                            echo "</DIV>";
+
                                             if ($this->request['action'] != "add" && !isset($_GET['view']))
                                             {
                                             if (isset($_GET['activedisplay']))
@@ -563,8 +578,8 @@ if($action =="create") {
                                                 <?php
                                                     }
                                                 ?>
-                                                <h4 class="col-md-6"> Enable <?php echo ucfirst($settings->document); ?>
-                                                    s?</h4>
+                                                <h4 class="col-md-6">
+                                                    Enable <?php echo ucfirst($settings->document) . 's?'; ?></h4>
 
                                                 <div class="clearfix"></div>
 
@@ -574,76 +589,126 @@ if($action =="create") {
                                                             <th></th>
                                                             <!--<th class="">System</th>-->
                                                             <th class=""><?php echo ucfirst($settings->document); ?> </th>
-                                                            <th class="">Orders</th>
-                                                            <th class="">Display Order</th>
+
+                                                            <? if ($settings->mee != "Events Audit") {
+                                                                ?>
+                                                                <th class="">Orders</th>
+                                                                <th class="">Display Order</th>
+                                                            <? }?>
                                                         </tr>
                                                         <?php
                                                             //$subdoc = $this->requestAction('/clients/getSub');
                                                             $subdoccli = $this->requestAction('/clients/getSubCli/' . $id);
                                                             $u = 0;
-                                                            foreach ($subdoccli as $subcl) {
-                                                                $u++;
-                                                                $sub = $this->requestAction('/clients/getFirstSub/' . $subcl->sub_id);
-                                                                ?>
-                                                                <tr id="subd_<?php echo $sub->id; ?>"
-                                                                    class="sublisting">
-                                                                    <td>
 
-                                                                        <span
-                                                                            id="sub_<?php echo $sub['id']; ?>"><?php echo ucfirst($sub['title']); ?></span>
-                                                                    </td>
-                                                                    <!--<td class="">
-                                                    <label class="uniform-inline">
-                                                        <input <?php echo $is_disabled ?> type="radio"
-                                                                                          name="<?php echo $sub->id; ?>"
-                                                                                          value="1"
-                                                                                          <?php if ($sub['display'] == 1) { ?>checked="checked" <?php } ?>
-                                                                                          disabled="disabled"/>
-                                                        Yes </label>
-                                                    <label class="uniform-inline">
-                                                        <input <?php echo $is_disabled ?> type="radio"
-                                                                                          name="<?php echo $sub->id; ?>"
-                                                                                          value="0"
-                                                                                          <?php if ($sub['display'] == 0) { ?>checked="checked" <?php } ?>
-                                                                                          disabled="disabled"/>
-                                                        No </label>
-                                                </td>-->
+
+                                                            if ($settings->mee == "Events Audit") {
+
+                                                                foreach ($subdoccli as $subcl) {
+
+
+                                                                        $u++;
+                                                                        $sub = $this->requestAction('/clients/getFirstSub/' . $subcl->sub_id);
+
+                                                                    if (strtolower($sub['title']) == "audit" || strtolower($sub['title']) == "attachment") {
+
+                                                                        ?>
+                                                                        <tr id="subd_<?php echo $sub->id; ?>"
+                                                                            class="sublisting">
+                                                                            <td>
+
+                            <span
+                                id="sub_<?php echo $sub['id']; ?>"><?php echo ucfirst($sub['title']); ?></span>
+                                                                            </td>
+
+                                                                            <?php
+                                                                                $csubdoc = $this->requestAction('/settings/all_settings/0/0/client/' . $id . '/' . $sub->id);
+                                                                            ?>
+                                                                            <td class="">
+                                                                                <label class="uniform-inline">
+                                                                                    <input <?php echo $is_disabled ?>
+                                                                                        type="radio"
+                                                                                        name="clientC[<?php echo $sub->id; ?>]"
+                                                                                        value="1"  <?php if ($csubdoc['display'] == 1) { ?> checked="checked" <?php } ?> />
+                                                                                    Yes </label>
+                                                                                <label class="uniform-inline">
+                                                                                    <input <?php echo $is_disabled ?>
+                                                                                        type="radio"
+                                                                                        name="clientC[<?php echo $sub->id; ?>]"
+                                                                                        value="0"  <?php if ($csubdoc['display'] == 0) { ?> checked="checked" <?php } ?> />
+                                                                                    No </label>
+                                                                            </td>
+
+                                                                        </tr>
+
                                                                     <?php
-                                                                        $csubdoc = $this->requestAction('/settings/all_settings/0/0/client/' . $id . '/' . $sub->id);
-                                                                    ?>
-                                                                    <td class="">
-                                                                        <label class="uniform-inline">
-                                                                            <input <?php echo $is_disabled ?>
-                                                                                type="radio"
-                                                                                name="clientC[<?php echo $sub->id; ?>]"
-                                                                                value="1"  <?php if ($csubdoc['display'] == 1) { ?> checked="checked" <?php } ?> />
-                                                                            Yes </label>
-                                                                        <label class="uniform-inline">
-                                                                            <input <?php echo $is_disabled ?>
-                                                                                type="radio"
-                                                                                name="clientC[<?php echo $sub->id; ?>]"
-                                                                                value="0"  <?php if ($csubdoc['display'] == 0) { ?> checked="checked" <?php } ?> />
-                                                                            No </label>
-                                                                    </td>
-                                                                    <td>
-                                                                        <input <?php if ($csubdoc['display_order'] == 1) { ?> checked="checked" <?php } ?>
-                                                                            type="checkbox" id="check<?= $u ?>"
-                                                                            onclick="if($(this).is(':checked')){$(this).closest('td').find('.fororder').val('1');}else {$(this).closest('td').find('.fororder').val('0');}"/>
-                                                                        <label for="check<?= $u ?>">Show</label>
+                                                                    }
+                                                                }
+                                                            } else {
 
-                                                                        <input class="fororder" type="hidden"
+                                                                foreach ($subdoccli as $subcl) {
+                                                                    $u++;
+                                                                    $sub = $this->requestAction('/clients/getFirstSub/' . $subcl->sub_id);
+                                                                    ?>
+                                                                    <tr id="subd_<?php echo $sub->id; ?>"
+                                                                        class="sublisting">
+                                                                        <td>
+
+                            <span
+                                id="sub_<?php echo $sub['id']; ?>"><?php echo ucfirst($sub['title']); ?></span>
+                                                                        </td>
+
+                                                                        <?php
+                                                                            $csubdoc = $this->requestAction('/settings/all_settings/0/0/client/' . $id . '/' . $sub->id);
+                                                                        ?>
+                                                                        <td class="">
+                                                                            <label class="uniform-inline">
+                                                                                <input <?php echo $is_disabled ?>
+                                                                                    type="radio"
+                                                                                    name="clientC[<?php echo $sub->id; ?>]"
+                                                                                    value="1"  <?php if ($csubdoc['display'] == 1) { ?> checked="checked" <?php } ?> />
+                                                                                Yes </label>
+                                                                            <label class="uniform-inline">
+                                                                                <input <?php echo $is_disabled ?>
+                                                                                    type="radio"
+                                                                                    name="clientC[<?php echo $sub->id; ?>]"
+                                                                                    value="0"  <?php if ($csubdoc['display'] == 0) { ?> checked="checked" <?php } ?> />
+                                                                                No </label>
+                                                                        </td>
+                                                                        <td>
+                                                                            <input <?php if ($csubdoc['display_order'] == 1) { ?> checked="checked" <?php } ?>
+                                                                                type="checkbox" id="check<?= $u ?>"
+                                                                                onclick="if($(this).is(':checked')){$(this).closest('td').find('.fororder').val('1');}else {$(this).closest('td').find('.fororder').val('0');}"/>
+                                                                            <label for="check<?= $u ?>">Show</label>
+
+                                                                            <input class="fororder" type="hidden"
                                                                                    value="<?php if ($csubdoc['display_order'] == 1) {
                                                                                        echo '1';
                                                                                    } else { ?>0<?php } ?>"
                                                                                    name="clientO[<?php echo $sub->id; ?>]"/>
-                                                                    </td>
-                                                                    <td>
-                                                                        <?php echo $u; ?>
-                                                                    </td>
-                                                                </tr>
+                                                                        </td>
+                                                                        <td>
+                                                                            <?php echo $u; ?>
+                                                                        </td>
+                                                                    </tr>
 
-                                                            <?php
+                                                                <?php
+                                                                }
+
                                                             }
+
+
+
+
+
+
+
+
+
+
+
+
+
                                                         ?>
 
                                                     </table>
@@ -967,5 +1032,3 @@ if($action =="create") {
                     });
                 }
             </script>
-
-

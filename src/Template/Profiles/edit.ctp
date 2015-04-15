@@ -325,7 +325,7 @@
 
                             <?php }
                                 if (isset($p)) {
-                                    if ($p->profile_type == 5) {
+                                    if ($p->profile_type == 5 || $profile->profile_type == 7 || $profile->profile_type == 8 || $profile->profile_type == 11) {
                                         ?>
 
                                         <label class="uniform-inline" style="margin-bottom:20px;">
@@ -346,7 +346,9 @@
                                                 if($sidebar->$alias ==1) {
                                                     echo '<br><a href="' . $this->request->webroot . 'orders/productSelection?driver=' . $profile->id;
                                                     echo '&ordertype=' . $product->Acronym . '"';
-                                                    echo ' class="btn ' . $product->ButtonColor . '" style="margin-top:2px;width: 100%;">' . $product->Name;
+
+                                                    echo ' class="blue-stripe btn floatleft ' . $product->ButtonColor . '" style="margin-top:2px;width:65%;">' . $product->Name;
+
                                                     echo ' <i class="m-icon-swapright m-icon-white"></i></a>';
                                                 }
                                             }
@@ -423,7 +425,7 @@
                                         <a href="#tab_1_1" data-toggle="tab">Profile</a>
                                     </li>
                                     <?php
-                                     if ($this->request['action'] == 'view' && ($p->profile_type == 5 || $p->profile_type == 7 || $p->profile_type == 8)) {
+                                     if ($this->request['action'] == 'view' && ($p->profile_type == 5 || $p->profile_type == 7 || $p->profile_type == 8 || $profile->profile_type == 11)) {
                                         //if (($this->request['action'] == 'edit' || $this->request['action'] == 'view') && ($p->profile_type == 5 || $p->profile_type == 7 || $p->profile_type == 8) ) {
                                     ?>
                                         <li <?php activetab($activetab, "scorecard"); ?>>

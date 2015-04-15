@@ -543,6 +543,75 @@
             die();
         }
 
+        function HandleAJAX(){
+            $Value = false;
+            if (isset($_POST['Value'])) {$Value = strtolower($_POST['Value']) == "true"; }
+            switch ($_POST["Type"]) {
+                case "enabledocument":
+                    $this->setproductstatus($_POST["ClientID"], $_POST["ProductID"], $Value);
+                    //return $_POST["ClientID"] . " " . $_POST["ProductID"] . " " . $Value;
+                    break;
+                case "generateHTML":
+                    $this->generateproductHTML($_POST["ClientID"], $_POST["Ordertype"]);
+                    break;
+            }
+            $this->layout = 'ajax';
+            $this->render(false);
+            return true;
+        }
+        function setproductstatus($ClientID, $ProductNumber, $Status){
+            if ($ClientID==-1){//global
+                $table = TableRegistry::get('order_products');
+                if($Status){$Status=1;} else {$Status=0;}
+                $table->query()->update()->set(['enable' => $Status])->where(['number' => $ProductNumber])->execute();
+            } else {//local
+                $table = TableRegistry::get('client_products');//ProductID, Province, FormID
+                if ($Status) {
+                    $Item = $table->find()->where(['ClientID' => $ClientID, 'ProductNumber' => $ProductNumber])->first();
+                    if (!$Item) {
+                        $table->query()->insert(['ClientID', "ProductNumber"])->values(['ClientID' => $ClientID, 'ProductNumber' => $ProductNumber])->execute();
+                    }
+                } else {
+                    $table->deleteAll(array('ClientID' => $ClientID, 'ProductNumber' => $ProductNumber), false);
+                }
+            }
+        }
+        function getproductlist($ClientID){
+            $products = TableRegistry::get('order_products')->find('all');
+            $client = TableRegistry::get('client_products')->find()->where(['ClientID'=>$ClientID]);
+            foreach($products as $product){
+                $product->clientenabled = false;
+                foreach($client as $item){
+                    if ($item->ProductNumber == $product->number){
+                        $product->clientenabled = true;
+                        break;
+                    }
+                }
+            }
+            $this->set('products',  $products);
+            return $products;
+        }
+
+        function generateproductHTML($ClientID, $ordertype){//$ordertype = acronym
+            //function productslist($ordertype, $products, $ID, $Checked = false, $Blocked = ""){
+            $Product =  TableRegistry::get('product_types')->find()->where(['Acronym' => $ordertype])->first();
+            if ($Product->Checked == 1) { $Checked = ' checked disabled';} else { $Checked = "";}
+            $Blocked = explode(",", $Product->Blocked);
+            $products = $this->getproductlist($ClientID);
+            $count=0;
+            foreach ($products as $p) {
+                if(!in_array($p->number, $Blocked) && $p->clientenabled) {
+                    echo '<li id="product_' . $p->number . '"><div class="col-xs-10"><i class="fa fa-file-text-o"></i> ' . $p->title . '</div>';
+                    echo '<div class="col-xs-2"><input type="checkbox" value="' . $p->number . '" id="form0"' . $Checked . '/></div>';
+                    echo '<div class="clearfix"></div></li>';
+                    $count+=1;
+                }
+            }
+            if($count==0){//http://localhost/veritas3-0/2
+                echo '<DIV ALIGN="CENTER"><A HREF="' . $this->request->webroot . 'clients/edit/' . $ClientID . '?products">No products have been enabled. Click here to enable them</A></DIV>';
+            }
+        }
+
         /**
          * Edit method
          *
@@ -550,8 +619,7 @@
          * @return void
          * @throws \Cake\Network\Exception\NotFoundException
          */
-        function edit($id = null)
-        {
+        function edit($id = null){
             $check_client_id = $this->Settings->check_client_id($id);
             if ($check_client_id == 1) {
                 $this->Flash->error('The record does not exist.');
@@ -563,15 +631,13 @@
             if ($checker == 0) {
                 $this->Flash->error('Sorry, you don\'t have the required permissions.');
                 return $this->redirect("/clients/index");
-
             }
             $setting = $this->Settings->get_permission($this->request->session()->read('Profile.id'));
             if (isset($_GET['view']) && $setting->client_list == 0) {
                 $this->Flash->error('Sorry, you don\'t have the required permissions.');
                 return $this->redirect("/clients");
             }
-            if(isset($_GET['flash']))
-            {
+            if(isset($_GET['flash'])) {
                 $this->Flash->success('Client created successfully.');
             }
                 
@@ -606,6 +672,8 @@
             $this->set('id', $id);
             $this->set('profile', $arr);
             $this->set('contacts', $arr2);
+
+            $this->getproductlist($id);
             $this->render('add');
         }
 
@@ -616,8 +684,7 @@
          * @return void
          * @throws \Cake\Network\Exception\NotFoundException
          */
-        function delete($id = null)
-        {
+        function delete($id = null){
             $settings = $this->Settings->get_settings();
             $check_client_id = $this->Settings->check_client_id($id);
             if ($check_client_id == 1) {
@@ -625,22 +692,21 @@
                 return $this->redirect("/clients/index");
                 //die();
             }
-            if (isset($_GET['draft']))
+            if (isset($_GET['draft'])) {
                 $draft = "?draft";
-            else
+            } else {
                 $draft = "";
+            }
             $checker = $this->Settings->check_client_permission($this->request->session()->read('Profile.id'), $id);
             if ($checker == 0) {
                 $this->Flash->error('Sorry, you don\'t have the required permissions.');
                 return $this->redirect("/clients/index" . $draft);
-
             }
             $setting = $this->Settings->get_permission($this->request->session()->read('Profile.id'));
 
             if ($setting->client_delete == 0) {
                 $this->Flash->error('Sorry, you don\'t have the required permissions.');
                 return $this->redirect("/");
-
             }
             $profile = $this->Clients->get($id);
             //$this->request->allowMethod(['post', 'delete']);
@@ -648,7 +714,7 @@
                 $sub_c = TableRegistry::get('client_sub_order');
                 $del = $sub_c->query();
                 $del->delete()->where(['client_id' => $id])->execute();
-
+                TableRegistry::get('client_products')->deleteAll(array('ClientID' => $id), false);
                 $this->Flash->success('The ' . strtolower($settings->client) . ' has been deleted.');
             } else {
                 $this->Flash->error(ucfirst($settings->client) . ' could not be deleted. Please try again.');
@@ -656,49 +722,44 @@
             return $this->redirect(['action' => 'index' . $draft]);
         }
 
-        function quickcontact()
-        {
-
+        function quickcontact(){
+            if (isset($_POST["Type"])) {
+                $this->HandleAJAX();
+            }
         }
 
-        function getSub()
-        {
+        function getSub(){
             $sub = TableRegistry::get('Subdocuments');
             $query = $sub->find();
             $q = $query->select();
-
             $this->response->body($q);
             return $this->response;
-
             die();
         }
 
-        function getFirstSub($id)
-        {
+        function getFirstSub($id){
             //echo $id;die();
             $sub = TableRegistry::get('subdocuments');
             $query = $sub->find();
             $q = $query->select()->where(['id' => $id])->first();
             $this->response->body($q);
             return $this->response;
-
             die();
         }
 
-        function getSubCli($id)
-        {
-
+        function getSubCli($id){
             $sub = TableRegistry::get('client_sub_order');
             $query = $sub->find();
             $q = $query->select()->where(['client_id' => $id])->order(['display_order' => 'ASC']);
             $this->response->body($q);
             return $this->response;
-
             die();
         }
 
+
         function getSubCli2($id, $type="")
         {
+
             $sub = TableRegistry::get('client_sub_order');
             $query = $sub->find();
             //$q = $query->select()->where(['client_id'=>$id,'sub_id IN (SELECT id FROM subdocuments WHERE display = 1 AND orders = 1)','sub_id IN (SELECT sub_id FROM client_sub_order WHERE display_order > 0 AND client_id = '.$id.')'])->order(['display_order'=>'ASC']);
@@ -730,8 +791,7 @@
             die; 
         }
 
-        function getCSubDoc($c_id, $doc_id)
-        {
+        function getCSubDoc($c_id, $doc_id){
             $sub = TableRegistry::get('clientssubdocument');
             $query = $sub->find();
             $query->select()->where(['client_id' => $c_id, 'subdoc_id' => $doc_id]);
@@ -740,12 +800,10 @@
             return $this->response;
         }
 
-        function displaySubdocs($id)
-        {
+        function displaySubdocs($id){
             //var_dump($_POST);die();
             $user['client_id'] = $id;
             $display = $_POST; //defining new variable for system base below upcoming foreach
-
             //for user base
             foreach ($_POST as $k => $v) {
                 if ($k == 'clientC') {

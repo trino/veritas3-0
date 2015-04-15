@@ -7,7 +7,8 @@ if ($_SERVER['SERVER_NAME'] == "localhost" || $_SERVER['SERVER_NAME'] == "127.0.
     include_once('/subpages/api.php');
 } else {
     include_once('subpages/api.php');
-}?>
+}
+?>
 
 <!--[if IE 8]> <html lang="en" class="ie8 no-js"> <![endif]-->
 <!--[if IE 9]> <html lang="en" class="ie9 no-js"> <![endif]-->
@@ -132,6 +133,20 @@ if ($_SERVER['SERVER_NAME'] == "localhost" || $_SERVER['SERVER_NAME'] == "127.0.
     <style>
         .page-logo a{max-width:100%;max-height:100%;}
         .page-logo img{max-width:100%;max-height:70px!important;}
+         @media print {
+        .form-group{width:100%;}
+        
+        <?php
+        for($i=1;$i<13;$i++)
+        {
+            ?>
+            .col-md-<?php echo $i;?>{width:<?php echo ($i/12)*100;?>%!important;display:inline-block!important;float:left;}
+            <?php
+        }
+        ?>   
+           
+
+    }
     </style>
 
 </head>
@@ -276,33 +291,34 @@ if ($_SERVER['SERVER_NAME'] == "localhost" || $_SERVER['SERVER_NAME'] == "127.0.
 
         <?php
         if(!function_exists('get_title')){
-        function get_title($slug) {
-            $content = TableRegistry::get("contents");
-            $l =  $content->find()->where(['slug'=>$slug])->first();
-            if(isset($l->title)) {
-                echo ucfirst($l->title);
-            }else {
-                echo '';
+            function get_title($slug) {
+                $content = TableRegistry::get("contents");
+                $l =  $content->find()->where(['slug'=>$slug])->first();
+                if(isset($l->title) && strlen($l->desc)>0) { return ucfirst($l->title);}
             }
-        }}
-
+            $isfirst = true;
+            function print_title($webroot, $URL, $slug, $isfirst, $Bypass=false){
+                if (!$Bypass) {$slug = get_title($slug);}
+                if ($slug) {
+                    if (!$isfirst) {echo " / ";}
+                    echo '<a style="color:white;" href="' . $webroot . $URL . '">' . $slug . '</a>';
+                    return false;
+                }
+                return $isfirst;
+            }
+        }
+        $isfirst = print_title($this->request->webroot, "pages/view/product_example", "product_example", $isfirst);
+        $isfirst = print_title($this->request->webroot, "pages/view/help", "help", $isfirst);
+        $isfirst = print_title($this->request->webroot, "pages/view/faq", "faq", $isfirst);
+        $isfirst = print_title($this->request->webroot, "pages/view/privacy_code", "privacy_code", $isfirst);
+        $isfirst = print_title($this->request->webroot, "pages/view/terms", "terms", $isfirst);
+        if($this->request->session()->read('Profile.super')) {
+            $isfirst = print_title($this->request->webroot, "pages/view/version_log", "version_log", $isfirst);
+            $isfirst = print_title($this->request->webroot, "profiles/settings", "Settings", $isfirst, true);
+        }
         ?>
 
 
-    <a  style="color:white;" href="<?php echo $this->request->webroot;?>pages/view/product_example"><?php get_title('product_example') ?></a> /
-
-		<a style="color:white;" href="<?php echo $this->request->webroot;?>pages/view/help"><?php get_title('help') ?></a> /
-
-		<a  style="color:white;" href="<?php echo $this->request->webroot;?>pages/view/faq"><?php get_title('faq') ?></a> /
-		<a style="color:white;"  href="<?php echo $this->request->webroot;?>pages/view/privacy_code"><?php get_title('privacy_code') ?></a> /
-
-		<a  style="color:white;" href="<?php echo $this->request->webroot;?>pages/view/terms"><?php get_title('terms') ?></a>
-
-        <?php if($this->request->session()->read('Profile.super')){?>
-            /  <a style = "color:white;" href = "<?php echo $this->request->webroot;?>pages/view/version_log" ><?php get_title('version_log') ?></a>
-            / <a style = "color:white;" href = "<?php echo $this->request->webroot;?>profiles/settings" >Settings</a >
-
-        <?php } ?>
     </div>
 
 

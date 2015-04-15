@@ -1,6 +1,7 @@
 <?php
- if($this->request->session()->read('debug'))
-        echo "<span style ='color:red;'>profile_type.php #INC125</span>";
+ if($this->request->session()->read('debug')) {
+     echo "<span style ='color:red;'>subpages/profile/profile_types.php #INC125</span>";
+ }
  ?>
 <div class="portlet box green-haze">
     <div class="portlet-title">

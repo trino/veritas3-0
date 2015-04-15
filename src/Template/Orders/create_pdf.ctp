@@ -161,10 +161,14 @@ $pdf->Ln(6);
 
 $hereby = "<p><br/>I hereby consent to the search of the following:</p>
             <ul>
-            <li>Driver Record/ Abstract - Please specify Province or State (Region where Driver's License Issued)</li>
-            <li>Insurance History - Please specify Province or State (Region where Driver's License Issued)</li>
-            <li>Employment Verifications </li>
-            <li>TransClick (Aptitude Test)</li>
+                 <li>Driver Record/ Abstract - Please specify Province or State (Region where Driver's License Issued)</li>
+                        <li>Insurance History - Please specify Province or State (Region where Driver's License Issued)</li>
+                        <li>CVOR</li>
+                        <li>Education Verification</li>
+                        <li>TransClick (Aptitude Test)</li>
+                        <li>Check DL</li>
+                        <li>Employment Verification (Drug test information and Claims History)</li>
+                        <li>Credit Check</li>
             </ul>
             <p>I hereby consent to a criminal record search (Adult) through both the: </p>
             <ul>

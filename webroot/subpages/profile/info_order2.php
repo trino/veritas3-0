@@ -48,6 +48,8 @@ $ordertype = substr(strtoupper(GET("ordertype")), 0, 3);
 function makeform($ordertype, $cols, $color, $Title, $Description, $products, $Disabled, $counting, $settings, $client, $dr_cl, $driver, $_this, $Otype ="", $inforequired = false, $Blocked = ""){
     if (strlen($Otype)==0) { $Otype = $Title; }
     if (strlen($color)>0){ $color = "-" . $color;}
+    $color=""; //color is disabled for now
+
     echo '<div class="col-xs-' . $cols . ' col-xs-offset-2">';
     echo '<div class="pricing' . $color . ' hover-effect">';
     echo '<div class="pricing' . $color . '-head pricing-head-active">';
@@ -91,6 +93,7 @@ function productslist($ordertype, $products, $ID, $Checked = false, $Blocked = "
     if ($Checked) { $Checked = ' checked disabled';} else { $Checked = "";}
     $index=0;
     if($Blocked){$Blocked = explode(",", $Blocked);}
+    echo '<DIV CLASS="PRODUCTLIST">';
     foreach ($products as $p) {
         if(showproduct($ordertype, $p, $Blocked)) {
             echo '<li id="product_' . $p->number . '"><div class="col-xs-10"><i class="fa fa-file-text-o"></i> ' . $p->title . '</div>';
@@ -98,8 +101,9 @@ function productslist($ordertype, $products, $ID, $Checked = false, $Blocked = "
             echo '<div class="clearfix"></div></li>';
         }
     }
-    $index+=1;
+    echo "</DIV>";
 }
+
 function printbutton($type, $webroot, $index, $tempstr = "",$_this, $o_type, $inforequired = true)
 {
     if (strlen($type) > 0) {
@@ -118,9 +122,7 @@ function printbutton($type, $webroot, $index, $tempstr = "",$_this, $o_type, $in
                 echo '<a href="javascript:void(0);" id="qua_btn" class="btn btn-danger  btn-lg placenow">Continue <i class="m-icon-swapright m-icon-white"></i></a>';
             } else {
                 ?>
-                <!--a href="javascript:void(0);" class="btn btn-danger btn-lg placenow"
-                       onclick="if(!check_div())return false;var div = $('#divisionsel').val();if(!isNaN(parseFloat(div)) && isFinite(div)){var division = div;}else var division = '0';if($('.selecting_client').val()){if($('.selecting_driver').val()==''){alert('Please select driver');$('#s2id_selecting_driver .select2-choice').attr('style','border:1px solid red;');$('html,body').animate({scrollTop: $('#s2id_selecting_driver .select2-choice').offset().top},'slow');return false;}else window.location='<?php echo $webroot; ?>orders/addorder/'+$('.selecting_client').val()+'/?driver='+$('.selecting_driver').val()+'&division='+division+'&forms=<?php echo $_this->requestAction('orders/getProNum');?>&order_type=<?php echo urlencode($o_type); ?>';}else{$('#s2id_selecting_client .select2-choice').attr('style','border:1px solid red;');$('html,body').animate({scrollTop: $('#s2id_selecting_client .select2-choice').offset().top},'slow');}">Continue
-                        <i class="m-icon-swapright m-icon-white"></i></a-->
+                
 
             <?php
             }
@@ -192,13 +194,20 @@ function printform($counting, $settings, $client, $dr_cl, $driver, $intable = fa
     ?>
 </select>
 
-<input class="selecting_client" type="hidden"
-       value="<?php if ($client) echo $client; else if ($counting == 1) echo $client_id; ?>"/>
-</div></div>
+<input class="selecting_client" type="hidden" value="<?php
+    $printedclient="";
+    if ($client) {$printedclient = $client;} else if ($counting == 1) {$printedclient = $client_id;}
+    echo $printedclient . '"/></div></div>';
 
-<?php if ($intable) {
-    echo '</div>';
-} ?>
+    if ($printedclient){
+        //changelist("' . $_GET["ordertype"] . '", ' . $client_id . ');
+        echo '<body onload="changelist(' . "'" . $_GET["ordertype"] . "', " .  $client_id . ');">';
+    }
+
+    if ($intable) {
+        echo '</div>';
+    }
+?>
 
 <div class="divisionsel form-group">
     <?php if ($counting == 1) $cl_count = 1; else {
@@ -271,6 +280,7 @@ function printform($counting, $settings, $client, $dr_cl, $driver, $intable = fa
 
 <div class="row">
     <?php
+
     $o_type = makeform($product->Acronym, $cols, '', $product->Name, $product->Description, $products, $product->Checked == 1, $counting, $settings, $client, $dr_cl, $driver, $_this, $product->Alias, false, $product->Blocked);
 
     /*
@@ -284,10 +294,24 @@ function printform($counting, $settings, $client, $dr_cl, $driver, $intable = fa
         $o_type = makeform("QUA", $cols, "blue", "Requalify", "Requalify existing drivers", $products, false, $counting, $settings, $client, $dr_cl, $driver, $_this, "Requalification", false);
     }
     */
+
     ?>
 </div>
 
 <script>
+    function changelist(Ordertype, ClientID){
+        //PRODUCTLIST
+        $.ajax({
+            url: "<?php echo $this->request->webroot;?>clients/quickcontact",
+            type: "post",
+            dataType: "HTML",
+            data: "Type=generateHTML&ClientID=" + ClientID + "&Ordertype=" + Ordertype,
+            success: function (msg) {
+                $('.PRODUCTLIST').html(msg);
+            }
+        })
+    }
+
     function getcheckboxes(){
         var tempstr = '';
         $('input[type="checkbox"]').each(function () {
@@ -299,54 +323,10 @@ function printform($counting, $settings, $client, $dr_cl, $driver, $intable = fa
     }
 
     function check_driver_abstract(driver) {
-        /*$.ajax({
-         url:'
-        <?php echo $this->request->webroot;?>orders/check_driver_abstract/'+driver,
-         success:function(res)
-         {
-         if(res=='0')
-         {
-         if($('#product_2 input[type="checkbox"]').is(':checked'))
-         {
-         $('#product_2 input[type="checkbox"]').click();
-         }
-         $('#product_2').hide();
-         }
-         else
-         {
-         if(!$('#product_2 input[type="checkbox"]').is(':checked'))
-         {
-         $('#product_2 input[type="checkbox"]').click();
-         }
-         $('#product_2').show();
-         }
-         }
-         });*/
+        
     }
     function check_cvor(driver) {
-        /*$.ajax({
-         url:'
-        <?php echo $this->request->webroot;?>orders/check_cvor/'+driver,
-         success:function(res)
-         {
-         if(res=='0')
-         {
-         if($('#product_3 input[type="checkbox"]').is(':checked'))
-         {
-         $('#product_3 input[type="checkbox"]').click();
-         }
-         $('#product_3').hide();
-         }
-         else
-         {
-         if(!$('#product_3 input[type="checkbox"]').is(':checked'))
-         {
-         $('#product_3 input[type="checkbox"]').click();
-         }
-         $('#product_3').show();
-         }
-         }
-         });*/
+        
     }
     function check_div() {
         //alert('test');
@@ -392,25 +372,21 @@ function printform($counting, $settings, $client, $dr_cl, $driver, $intable = fa
             var div = $('#divisionsel').val();
             if (!isNaN(parseFloat(div)) && isFinite(div)) {
                 var division = div;
-            }
-            else
+            } else {
                 var division = '0';
+            }
             if ($('.selecting_client').val()) {
                 <?php if(!isset($_GET['profiles'])){?>
-                if ($('.selecting_driver').val() == '') {
-                    alert('Please select driver.');
-                    $('#s2id_selecting_driver .select2-choice').attr('style', 'border:1px solid red;');
-                    $('html,body').animate({scrollTop: $('#s2id_selecting_driver .select2-choice').offset().top}, 'slow');
-                    return false;
-                }
-                else {
-                    var tempstr = getcheckboxes();
-                    window.location = '<?php echo $this->request->webroot; ?>orders/addorder/' + $('.selecting_client').val() + '/?driver=' + $('.selecting_driver').val() + '&division=' + division + '&order_type=<?php echo urlencode($o_type);?>&forms=' + tempstr;
-                }
-                <?php
-                }
-                else
-                {?>
+                    if ($('.selecting_driver').val() == '') {
+                        alert('Please select driver.');
+                        $('#s2id_selecting_driver .select2-choice').attr('style', 'border:1px solid red;');
+                        $('html,body').animate({scrollTop: $('#s2id_selecting_driver .select2-choice').offset().top}, 'slow');
+                        return false;
+                    } else {
+                        var tempstr = getcheckboxes();
+                        window.location = '<?php echo $this->request->webroot; ?>orders/addorder/' + $('.selecting_client').val() + '/?driver=' + $('.selecting_driver').val() + '&division=' + division + '&order_type=<?php echo urlencode($o_type);?>&forms=' + tempstr;
+                    }
+                <?php } else {?>
                 var tempstr = getcheckboxes();
                 window.location = '<?php echo $this->request->webroot; ?>orders/addorder/' + $('.selecting_client').val() + '/?driver=<?php echo $_GET['profiles'];?>&division=' + division + '&order_type=<?php echo urlencode($o_type);?>&forms=' + tempstr;
                 <?php
@@ -459,23 +435,24 @@ function printform($counting, $settings, $client, $dr_cl, $driver, $intable = fa
         $('#selecting_client').change(function () {
             $('s2id_selecting_client.select2-choice').removeAttr('style');
             <?php
-            if(!isset($_GET['ordertype']) || (isset($_GET['ordertype']) && $_GET['ordertype']!='QUA'))
-            {
-                ?>
-
+                echo 'var ordertype = "' . $_GET['ordertype']. '";';
+                if(!$_GET['driver']){
+                    if(!isset($_GET['ordertype']) || (isset($_GET['ordertype']) && $_GET['ordertype']!='QUA')){
+                        ?>
+            $('#s2id_selecting_driver .select2-chosen').html('Select Driver');
+            <?php }else { ?>
             $('#s2id_selecting_driver .select2-chosen').html('Select Driver');
             <?php
-            }
-            else
-            {?>
-            $('#s2id_selecting_driver .select2-chosen').html('Select Driver');
-            <?php
-            }
+            }}
             ?>
             var client = $('#selecting_client').val();
             if (!isNaN(parseFloat(client)) && isFinite(client)) {
                 $('.selecting_client').val(client);
-                //alert(client);
+                changelist(ordertype, client);
+                <?php
+                if(!$_GET['driver'])
+                {
+                ?>
                 $.ajax({
                     url: '<?php echo $this->request->webroot;?>clients/divisionDropDown/' + client,
                     data: {istable: '<?= $intable; ?>'},
@@ -483,6 +460,7 @@ function printform($counting, $settings, $client, $dr_cl, $driver, $intable = fa
                         $('.divisionsel').html(response);
                     }
                 });
+                <?php }?>
             }
             else {
                 $('.selecting_client').val('');

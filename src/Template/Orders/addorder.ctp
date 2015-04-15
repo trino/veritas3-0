@@ -15,11 +15,12 @@
 </script>
 
 <?php
+use Cake\ORM\TableRegistry;
 include_once 'subpages/filelist.php';
 $param = $this->request->params['action'];
 $view = 'nope';
+$debugging=false;
 if($this->request->params['action'] == 'vieworder'){$view = 'view';}
-
 $action = ucfirst($param);
 if ($action == "Vieworder") { $action = "View";}
 if ($action == "Addorder") {
@@ -111,6 +112,26 @@ function provinces($name){
         return false;
     }
 
+    if($theproduct->doc_ids){
+        $forms = explode(",", $theproduct->doc_ids);
+        $theproduct->BypassForms = array();
+        foreach($forms as $form){
+            $theproduct->BypassForms[strtolower(getForm($form)->title)] = true;
+        }
+    }
+
+    if($debugging){
+        echo "<BR>";
+        debug($theproduct);
+    }
+
+    function getForm($ID){
+        $table = TableRegistry::get('subdocuments')->find();
+        return $table->select()->where(['id' => $ID])->first();
+    }
+
+
+
     function displayform2($DriverProvince, $thedocuments, $name, $theproduct){
         $name = strtolower($name);
         if(isset($_GET['order_type'])) {
@@ -122,6 +143,9 @@ function provinces($name){
                     if ($name == "challenger road test"){ return false;}
                     break;
             }
+        }
+        if(isset($theproduct->BypassForms)){
+            return isset($theproduct->BypassForms[$name]);
         }
         //echo "Testing: " . $name . " '" . isset($thedocuments[$name][$DriverProvince]) . "'"; debug($thedocuments);
         //echo "<BR>" . $DriverProvince . " " . $name . " <BR>"; print_r($thedocuments[$name]);
@@ -192,28 +216,46 @@ function provinces($name){
                                         </a>
                                     </li>-->
                                     <?php
+
+                                        function is_iterable($var) {
+                                            return (is_array($var) || $var instanceof Traversable);
+                                        }
+
+
                                         $doc = $doc_comp->getDocument('orders');
                                         $doc_ids = $this->requestAction('/clients/orders_doc/'.$cid.'/'.$_GET['order_type']);
-                                        if(count($doc_ids)>0)
+                                        if(is_iterable($doc_ids)) {
                                             $subdoccli = $doc_ids;
-                                        else
-                                            $subdoccli = $this->requestAction('/clients/getSubCli2/'.$cid);
-
+                                            if($debugging) {echo "Source: orders_doc";}
+                                        } else {
+                                            $subdoccli = $this->requestAction('/clients/getSubCli2/' . $cid);
+                                            if($debugging) {echo "Source: getSubCli2";}
+                                        }
                                         $subdoccli2 = $subdoccli;
                                         $doc2 = $doc;
                                         $i = 2;
                                         $end = 0;
                                         $k_c=0;
                                         $index=0;
-                                        foreach ($subdoccli as $sd) {
+                                        //client permissions
+                                        //http://localhost/veritas3-0/clients/edit/1
+                                        //user permissions
+                                        //http://localhost/veritas3-0/profiles/edit/118
+                                        //product settings
+                                        //http://localhost/veritas3-0/profiles/settings
 
+                                        foreach ($subdoccli as $sd) {
                                             $index+=1;
                                             $d = $this->requestAction('/clients/getFirstSub/'.$sd->sub_id);
-                                            
 
-                                            //debug($sd);
+                                            if($debugging) {
+                                                echo "<BR>Displayform: " . displayform2($DriverProvince, $thedocuments, $d->title, $theproduct);
+                                                $thedocuments[strtolower($d->title)]["IsSet"] = true;
+                                                debug($d);
+                                            }
 
                                             if (displayform2($DriverProvince,$thedocuments,$d->title, $theproduct)){//(displayform($DriverProvince, $provinces, $forms, $d->title,$_this)){
+
                                                 $index+=1;
                                                 $act = 0;
                                                 if ($d->table_name == $table) {
@@ -230,9 +272,7 @@ function provinces($name){
                                                     $j = $j + 1;
                                                     if($k_c==1) {
                                                         $k_cou = $j;
-                                                    }
-                                                    else
-                                                    if($k_cou<$j) {
+                                                    } else if($k_cou<$j) {
                                                         $k_cou=$j;
                                                     }
                                                     ?>
@@ -252,11 +292,12 @@ function provinces($name){
                                                     $i++;
                                                 }}
                                         }
+                                        if($debugging) { debug($thedocuments);}
                                         if(!isset($k_cou)){ $k_cou = 1; }
                                     ?>
 
                                     <li>
-                                        <a href="#tab<?php echo ++$k_cou; ?>" data-toggle="tab" class="step confirmations">
+                                        <a href="#tab100000x" data-toggle="tab" class="step confirmations">
 												<span class="number">
 												<?php echo $i++;?></span><br/>
 												<span class="desc">
@@ -264,7 +305,7 @@ function provinces($name){
                                         </a>
                                     </li>
                                     <li style="display: none;">
-                                        <a href="#tab<?php echo ++$k_cou; ?>" data-toggle="tab" class="step">
+                                        <a href="#tab100001x" data-toggle="tab" class="step">
 												<span class="number">
 												<?php echo $i++;?></span><br/>
 												<span class="desc">
@@ -315,10 +356,7 @@ function provinces($name){
                                        onclick="$('#skip').val('1');">
                                         Skip <i class="m-icon-swapdown m-icon-white"></i>
                                     </a>
-                                    <!--<a href="javascript:;" class="btn red skip" id="submit_dra"
-                                       onclick="$('#skip').val('1');" style="display: inline-block;">
-                                        Save as draft <i class="m-icon-swapdown m-icon-white"></i>
-                                    </a>-->
+                                    
                                     <input type="hidden" id="skip" value="0"/>
                                     <a href="javascript:;" class="btn blue button-next cont"
                                        onclick="$('#skip').val('0');">
@@ -402,40 +440,39 @@ function provinces($name){
                                                 {
                                                     $show_all2='all';
                                                 }
-                        foreach ($subdoccli2 as $sd) {
+                        foreach ($subdoccli as $sd) {
                             $d = $this->requestAction('/clients/getFirstSub/'.$sd->sub_id);
                             $dx = $this->requestAction('/orders/getSubDetail/'.$sd->sub_id);
                            // debug($d);
                            
-                        if (displayform2($DriverProvince,$thedocuments,$d->title, $theproduct)){//if (displayform($DriverProvince, $provinces, $forms, $d->title,$_this)){
+                            if (displayform2($DriverProvince,$thedocuments,$d->title, $theproduct)){
+                                //if (displayform($DriverProvince, $provinces, $forms, $d->title,$_this)){
+                                $prosubdoc = $this->requestAction('/settings/all_settings/0/0/profile/' . $this->Session->read('Profile.id') . '/' . $d->id);
+                                if (true){ //($prosubdoc['display'] != 0 && $d->display == 1) {
+                                $k_c++;
 
+                                $tab_count = $d->id;
 
-                            $prosubdoc = $this->requestAction('/settings/all_settings/0/0/profile/' . $this->Session->read('Profile.id') . '/' . $d->id);
-                            if (true){ //($prosubdoc['display'] != 0 && $d->display == 1) {
-                            $k_c++;
-
-                            $tab_count = $d->id;
-
-                            $tab_count = $tab_count + 1;
-                            if($k_c==1) {
-                                $k_co = $tab_count;
-                            } else {
-                                if($k_co<$tab_count)
-                                $k_co = $tab_count;
-                            }
-                            ?>
-                            <div class="tabber <?php echo $tab; ?>" id="tab<?php echo $tab_count; ?>">
-                                <?php
-                                if ($action == "View") {printdocumentinfo($d->id);}
-                                include('subpages/documents/' . $d->form); ?>
-                            </div>
+                                $tab_count = $tab_count + 1;
+                                if($k_c==1) {
+                                    $k_co = $tab_count;
+                                } else {
+                                    if($k_co<$tab_count)
+                                    $k_co = $tab_count;
+                                }
+                                ?>
+                                <div class="tabber <?php echo $tab; ?>" id="tab<?php echo $tab_count; ?>">
+                                    <?php
+                                    if ($action == "View") {printdocumentinfo($d->id);}
+                                    include('subpages/documents/' . $d->form); ?>
+                                </div>
                         <?php }}}
                         if(!isset($k_co)) {$k_co=1;} ?>
 
-                        <div class="tabber <?php echo $tab; ?> confirmations2" id="tab<?php echo ++$k_co; ?>">
+                        <div class="tabber <?php echo $tab; ?> confirmations2" id="tab100000x">
                             <?php include('subpages/documents/confirmation.php'); ?>
                         </div>
-                        <div class="tabber <?php echo $tab; ?>" id="tab<?php echo ++$k_co; ?>">
+                        <div class="tabber <?php echo $tab; ?>" id="tab100001x">
                             <?php include('subpages/documents/success.php'); //include('subpages/documents/forview.php'); ?>
                         </div>
                         <?php if ($tab == 'nodisplay') { // For view action only ?>
@@ -510,8 +547,7 @@ function provinces($name){
         //alert(form_type);
         if (form_type != "") {
             $('.subform').load('<?php echo $this->request->webroot;?>documents/subpages/' + form_type);
-            // loading data from db
-            // debugger;
+            
             var url = '<?php echo $this->request->webroot;?>orders/getOrderData/' + client_id + '/' + doc_id,
                 param = {form_type: form_type};
             $.getJSON(url, param, function (res) {

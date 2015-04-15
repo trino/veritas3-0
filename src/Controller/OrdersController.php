@@ -929,7 +929,7 @@ echo 131231232113;
                 $profile_ids = str_replace(',,', ',', $profile_ids);
 
                 $model = TableRegistry::get('Profiles');
-                $profile = $model->find()->where(['id IN (' . $profile_ids . ')', '(profile_type = 5 OR profile_type = 7 OR profile_type = 8)']);
+                $profile = $model->find()->where(['id IN (' . $profile_ids . ')', '(profile_type = 5 OR profile_type = 7 OR profile_type = 8 OR profile_type = 11)']);
             } else {
                 $cmodel = TableRegistry::get('Clients');
                 $clients = $cmodel->find()->where(['id' => $client])->first();
@@ -942,7 +942,7 @@ echo 131231232113;
                 $profile_ids = str_replace(',,', ',', $profile_ids);
 
                 $model = TableRegistry::get('Profiles');
-                $profile = $model->find()->where(['id IN (' . $profile_ids . ')', '(profile_type = 5 OR profile_type = 7 OR profile_type = 8)']);
+                $profile = $model->find()->where(['id IN (' . $profile_ids . ')', '(profile_type = 5 OR profile_type = 7 OR profile_type = 8 OR profile_type = 11)']);
             }
             if ($_GET['ordertype'] != 'QUA')
                 echo "<option value=''>Select Driver</option>";

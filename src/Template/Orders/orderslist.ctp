@@ -2,12 +2,18 @@
     $settings = $this->requestAction('settings/get_settings');
     $sidebar = $this->requestAction("settings/get_side/" . $this->Session->read('Profile.id'));
 
-
     if ($_SERVER['SERVER_NAME'] == "localhost" || $_SERVER['SERVER_NAME'] == "127.0.0.1") {
         include_once('/subpages/api.php');
     } else {
         include_once('subpages/api.php');
-    } ?>
+    }
+
+function getColor($products, $OrderType, $Default = "blue"){
+    $product = getIterator($products, "Name", $OrderType);
+    if (is_object($product)) { return $product->ButtonColor;}
+    return $Default;
+}
+?>
 
 <h3 class="page-title">
     Orders <?php if (isset($_GET['draft'])) { ?>(Draft)<?php } ?>
@@ -44,17 +50,21 @@
         foreach($products as $product){
             $alias = $product->Sidebar_Alias;
             if($sidebar->$alias ==1) {
-                echo '<a href="' . $this->request->webroot . 'orders/productSelection?driver=0&ordertype=' . $product->Acronym . '"';
-                echo ' class="floatright btn ' . $product->ButtonColor  . ' btnspc">' . $product->Name . "</a>";
+
+                if(strtolower($product->Acronym) !="bul") {
+
+                    echo '<a href="' . $this->request->webroot . 'orders/productSelection?driver=0&ordertype=' . $product->Acronym . '"';
+                    echo ' class="floatright btn ' . $product->ButtonColor . ' btnspc">' . $product->Name . "</a>";
+                }else{
+
+                    echo '<a href="' . $this->request->webroot . 'profiles?all" class="floatright btn ' . $product->ButtonColor . ' btnspc">Bulk Order</a>';
+
+                }
             }
         }
     }
     ?>
-
-
 </div>
-
-
 <div class="row">
     <div class="col-md-12">
         <div class="portlet box yellow">
@@ -94,12 +104,10 @@
                                 <option value="">Submitted for</option>
                                 <?php
                                     foreach ($users as $u) {
-                                        //if($u->profile_type == '5' || $u->profile_type == '7' || $u->profile_type == '8'){
                                         ?>
                                         <option
                                             value="<?php echo $u->id; ?>" <?php if (isset($_GET['uploaded_for']) && $_GET['uploaded_for'] == $u->id) { ?> selected="selected"<?php } ?> ><?php echo ucfirst($u->fname) . " " . ucfirst($u->lname); ?></option>
                                         <?php
-                                        //}
                                     }
                                 ?>
                             </select>
@@ -214,14 +222,20 @@
                                         <td style="min-width: 125px;">
 
                                             <?php
+
+
+
                                                 if ($order->order_type) {
                                                     echo '<div style="" class="dashboard-stat ';
+                                                    /*
                                                     $colors = array("Order_Products" => "green-haze", "Order_MEE" => "red-intense", "ReQualify" => "blue-madison");
                                                     if (isset($colors[str_replace(' ', '_', $order->order_type)])) {
                                                         echo $colors[str_replace(' ', '_', $order->order_type)];
                                                     } else {
                                                         echo "blue";
                                                     }
+                                                    */
+                                                    echo getColor($products, $order->order_type );
                                                     ?>">
                                                     <!--div class="whiteCorner"></div-->
                                                     <!--div class="visual" style="height: 40px;">
@@ -497,3 +511,4 @@ echo $this->Html->link(__('Edit'), ['controller' => 'orders', 'action' => 'addor
     }
 
 </style>
+

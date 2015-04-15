@@ -60,6 +60,8 @@ function printdocumentinfo($ID, $isOrder = false, $linktoOrder = false){
 
         echo '</TH></TR><TR><Th width="25%">Created on</Th><TD colspan="2">' . $data->created . '</TD></TR>';
 
+        if ($isOrder) {echo '<TR><Th>Order Type</Th><TD COLSPAN="2">' . ucfirst($data->order_type) . '</TD></TR>';}
+
         PrintProfile('Submitted by', $data->submitter, $webroot);
         PrintProfile('Submitted for', $data->reciever, $webroot);
 
@@ -69,7 +71,8 @@ function printdocumentinfo($ID, $isOrder = false, $linktoOrder = false){
         } else {
             echo '<TD colspan="2">Deleted or Missing Data';
         }
-        echo '</TD></TR></table>';
+        echo '</TD></TR>';
+        echo '</table>';
         return $data;
     }
 }
