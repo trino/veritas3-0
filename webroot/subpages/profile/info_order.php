@@ -33,14 +33,14 @@
 
     function printoptions($name, $valuearray, $selected = "", $optionarray, $isdisabled = "")
     {
-        echo '<SELECT ' . $isdisabled . ' name="' . $name . '" class="form-control member_type required" >';
+        echo '<SELECT ' . $isdisabled . ' name="' . $name . '" class="form-control member_type" >';
         for ($temp = 0; $temp < count($valuearray); $temp += 1) {
             printoption2($valuearray[$temp], $selected, $optionarray[$temp]);
         }
         echo '</SELECT>';
     }
 
-    function printprovinces($name, $selected = "", $isdisabled = "")
+    function printprovinces($name, $selected = "", $isdisabled = "disabled='disabled'")
     {
         printoptions($name, array("", "AB", "BC", "MB", "NB", "NL", "NT", "NS", "NU", "ON", "PE", "QC", "SK", "YT"), $selected, array("Select Province", "Alberta", "British Columbia", "Manitoba", "New Brunswick", "Newfoundland and Labrador", "Northwest Territories", "Nova Scotia", "Nunavut", "Ontario", "Prince Edward Island", "Quebec", "Saskatchewan", "Yukon Territories"), $isdisabled);
     }
@@ -412,7 +412,7 @@
                                     <div class="form-group">
                                         <label class="control-label">Driver License #</label>
                                         <input <?php echo $is_disabled ?> name="driver_license_no" type="text"
-                                                                          class="form-control req_driver required" <?php if (isset($p->driver_license_no)) { ?> value="<?php echo $p->driver_license_no; ?>" <?php } ?> />
+                                                                          class="form-control req_driver" <?php if (isset($p->driver_license_no)) { ?> value="<?php echo $p->driver_license_no; ?>" <?php } ?> disabled="disabled" />
                                     </div>
                                 </div>
 
@@ -437,7 +437,7 @@
                                     <div class="form-group">
                                         <label class="control-label">Expiry Date</label>
                                         <input <?php echo $is_disabled ?> name="expiry_date" type="text"
-                                                                          class="form-control req_driver date-picker required" <?php if (isset($p->expiry_date)) { ?> value="<?php echo $p->expiry_date; ?>" <?php } ?> />
+                                                                          class="form-control req_driver date-picker" <?php if (isset($p->expiry_date)) { ?> value="<?php echo $p->expiry_date; ?>" <?php } ?> disabled="disabled" />
 
                                     </div>
                                 </div>
