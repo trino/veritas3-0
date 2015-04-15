@@ -263,6 +263,38 @@ if ($_SERVER['SERVER_NAME'] == "localhost" || $_SERVER['SERVER_NAME'] == "127.0.
 
 		<div class="page-content">
         <?= $this->Flash->render() ?>
+        <?php
+        if(!$this->request->session()->read('super'))
+        {
+            $logomain = $this->requestAction('/clients/getLogo');
+            if($logomain){
+         ?>   
+        <div class="mainlogo col-md-2" style="float: right;">
+            <?php 
+            //var_dump($logomain)
+            if(isset($logomain['client']) && $logomain['client'])
+            {
+                ?>
+                <img src="<?php echo $this->request->webroot;?>img/clients/<?php echo $logomain['client'];?>" width="180px;" />
+                <?php
+                
+            }
+            else
+            {
+                if(isset($logomain['setting']))
+                {
+                   ?>
+                   <img src="<?php echo $this->request->webroot;?>img/clients/<?php echo $logomain['setting'];?>" width="180px;" />
+                   <?php 
+                    
+                }
+            }
+            ?>
+        </div>
+        <div class="clearfix"></div>
+        <?php
+        }}
+        ?>
         <?= $this->fetch('content') ?>
 
 		</div>

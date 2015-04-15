@@ -331,6 +331,12 @@
                                                                     <input type="text" class="form-control date-picker"
                                                                            name="date_end" <?php if (isset($client->date_end)) { ?> value="<?php echo $client->date_end; ?>" <?php } ?>/>
                                                                 </div>
+                                                                
+                                                                <div class="form-group col-md-4">
+                                                                    <label class="control-label">Date</label>
+                                                                    <input type="text" class="form-control date-picker"
+                                                                           name="client_date" <?php if (isset($client->client_date)) { ?> value="<?php echo $client->client_date; ?>" <?php } ?>/>
+                                                                </div>
 
 
                                                                 <?php if ($settings->mee != "ASAP Secured Training" && $settings->mee != "Events Audit") { ?>

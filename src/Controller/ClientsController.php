@@ -786,6 +786,8 @@
                 $query = $doc->find();
                 $q= $query->select()->where(['client_id' => $cid,'sub_id IN('.$doc_ids.')']);
             }
+            else
+            $q = null;
             $this->response->body($q);
             return $this->response;
             die; 
@@ -1385,36 +1387,27 @@
                 return true;
             }
         }
-        public function invoice()
-        {
-            
-            $query = TableRegistry::get('Clients');
-            $q = $query->find();
-            $u = $this->request->session()->read('Profile.id');
-            if ($this->request->session()->read('Profile.super'))
-                $q = $q->select();
-            else {
-                $q = $q->select()->where(['profile_id LIKE "' . $u . ',%" OR profile_id LIKE "%,' . $u . ',%" OR profile_id LIKE "%,' . $u . '" OR profile_id LIKE "' . $u . '" ']);
 
-            }
-            $this->set('clients', $q);
-            
-            if(isset($_GET))
+        public function getLogo()
+        {
+            $id = $this->request->session()->read('Profile.id');
+            $client = TableRegistry::get('clients')->find()->where(['profile_id LIKE "'.$id.',%" OR profile_id LIKE "%,'.$id.',%" OR profile_id LIKE "%,'.$id.'"'])->first();
+            $image = array();
+            if($client)
+            $image['client'] = $client->image;
+            if(!$image['client'])
             {
-                $cond =[];
-                if(isset($_GET['from']))
-                    array_push($cond,["created >="=>$_GET['from']]);
-                if(isset($_GET['to']))
-                   array_push($cond,["created <="=>$_GET['to']]);
-                if(isset($_GET['client_id']))
-                   array_push($cond,["client_id"=>$_GET['client_id']]); 
-               
-               
-                $orders = TableRegistry::get('orders');
-                $order = $orders->find()->order(['orders.id' => 'DESC'])->where(['draft' => 0, $cond])->all();
-                $this->set('orders', $order);
+                if($client)
+                {
+                    $cid = $client->id;
+                    $setting = TableRegistry::get('settings')->find()->where(['id'=>1])->first();
+                    $image['setting'] = $setting->client_img;
+                }
                 
             }
+            $this->response->body($image);
+            return $this->response;
+
         }
     }
 

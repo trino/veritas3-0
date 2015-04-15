@@ -448,5 +448,5 @@ $domain = 'messages';
 bindtextdomain($domain, "/www/veritsa3-0/locale");
 textdomain($domain);
 
-echo gettext("testing");
+gettext("testing");
 ?>

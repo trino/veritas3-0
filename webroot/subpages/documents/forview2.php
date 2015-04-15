@@ -185,7 +185,7 @@
 
                     <!--<div class="inputs">
                         <div class="profile-usertitle-job">-->
-                        <?php if($profile->profile_type == 5 || $profile->profile_type == 7 || $profile->profile_type == 8 || $profile->profile_type == 11) { ?>
+                        <?php if($profile->profile_type == 5 || $profile->profile_type == 7 || $profile->profile_type == 8 || $profile->profile_type == 11 && $settings->mee =="MEE") { ?>
                             <label class="uniform-inline" style="margin-top:10px;">
                             <?php 
                                 if($this->request->params['action'] == 'vieworder'  || $this->request->params['action']== 'view')

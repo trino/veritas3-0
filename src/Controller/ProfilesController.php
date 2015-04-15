@@ -2159,7 +2159,7 @@
                             //  $from = array('info@' . $path => "ISB MEE");
                             $from = 'info@' . $path;
                             $to = $profile1->email;
-                            $sub = 'ISBMEE Order Completed';
+                            $sub = 'Order Completed';
                             $msg = 'Your order has been processed and ready for download.<br /><br /> Please login <a href="' . LOGIN . '">here</a> to retreive your reports.<br /><br /> Regards,<br /> The ISB MEE Team';
                             $this->Mailer->sendEmail($from, $to, $sub, $msg);
                         }
@@ -2194,7 +2194,7 @@
             $setting = $settings->find()->first();
             $from = array('info@' . $path => $setting->mee);
             $to = trim($email);
-            $sub = 'ISBMEE Tasks - Reminder';
+            $sub = 'Tasks Reminder';
             $msg = 'Domain: ' . getHost("isbmee.com") . ' <br /><br />Reminder, you have following task due:<br/><br/>Title: ' . $todo->title . '<br />Description: ' . $todo->description . '<br />Due By: ' . $todo->date . '<br /><br /> Regards,<br />The '.$setting->mee.' team';
             echo "<hR>From: " . $from . "<BR>To: " . $to . " " . $name . "<BR>Subject: " . $sub . "<BR>Message: " . $msg;
             $this->Mailer->sendEmail($from, $to, $sub, $msg);
