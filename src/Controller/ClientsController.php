@@ -786,6 +786,8 @@
                 $query = $doc->find();
                 $q= $query->select()->where(['client_id' => $cid,'sub_id IN('.$doc_ids.')']);
             }
+            else
+            $q = null;
             $this->response->body($q);
             return $this->response;
             die; 
