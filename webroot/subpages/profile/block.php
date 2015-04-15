@@ -890,7 +890,7 @@
                                     makeradio($is_disabled, "block[" . $product->Blocks_Alias . "]", 1, $block->$alias == 1, "Yes");
                                     makeradio($is_disabled, "block[" . $product->Blocks_Alias . "]", 0, $block->$alias == 0, "No");
                                     $alias = $alias . "b";
-                                    makeradio($is_disabled, "block[" . $product->Blocks_Alias . "b]", 1, $block->$alias == 1, "Bypass", "checkbox");
+                                    makeradio($is_disabled, "block[" . $product->Blocks_Alias . "b]", 1, $block->$alias == 1, "Bypass product selection", "checkbox");
                                     echo '</TR>';
                                 }
                             }

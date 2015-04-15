@@ -438,15 +438,17 @@ function dotest($Number, $pp, $order, $duplicate_log, $ins2 = "ins"){
                 if ($doc) {
                     foreach ($doc as $d) {
                         $title = ucfirst($d->title);
-                        $sub_doc_id = $d->id;
-                        $o_id = $order->id;
+                        $sub_doc_id = $d->id;//Document ID
+                        $o_id = $order->id;//Order ID
                         $c_id = $order->client_id;
+
                         $d_id = $this->requestAction("/orders/getdocid/" . $sub_doc_id . "/" . $o_id);
                         if ($d_id) {
+                            //echo "<BR>Checking: sub_doc_id " . $sub_doc_id . " for order " . $o_id . " got " . $d_id;
                             $docfind++;
                             $docu_id = $d_id->id;
                             $cnt = $this->requestAction("/orders/getprocessed/" . $d->table_name . "/" . $order->id);
-                            $line = PrintLine($line, $title, $cnt, $docu_id, $c_id, $o_id, $this->request->webroot, false,$sub_doc_id);
+                            $line = PrintLine($line, $title, $cnt, $docu_id, $c_id, $o_id, $this->request->webroot, true,$sub_doc_id);
                         }
                     }
                     //die();

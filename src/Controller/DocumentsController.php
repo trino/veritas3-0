@@ -3020,7 +3020,7 @@ class DocumentsController extends AppController{
                 $attachments = $query->select()->where(['document_id' => $did])->all();
             }else{
                 $attachments = $query->select()->where(['order_id'=>$did,'sub_id'=>$sub])->all();
-                debug($attachments);
+                //debug($attachments);
             }
             $this->set('attachments',$attachments);
         }
