@@ -1387,6 +1387,26 @@
                 return true;
             }
         }
+        public function getLogo()
+        {
+            $id = $this->request->session()->read('Profile.id');
+            $client = TableRegistry::get('clients')->find()->where(['profile_id LIKE "'.$id.',%" OR profile_id LIKE "%,'.$id.',%" OR profile_id LIKE "%,'.$id.'"'])->first();
+            $image = array();
+            if($client)
+            $image['client'] = $client->image;
+            if(!$image['client'])
+            {
+                if($client)
+                {
+                    $cid = $client->id;
+                    $setting = TableRegistry::get('settings')->find()->where(['id'=>1])->first();
+                    $image['setting'] = $setting->client_img;
+                }
+                
+            }
+            $this->response->body($image);
+            return $this->response;
+        }
     }
 
     ?>
