@@ -1,5 +1,4 @@
-<link href="<?php echo $this->request->webroot; ?>assets/admin/pages/css/profile.css" rel="stylesheet"
-      type="text/css"/> <!--REQUIRED-->
+<link href="<?php echo $this->request->webroot; ?>assets/admin/pages/css/profile.css" rel="stylesheet" type="text/css"/> <!--REQUIRED-->
 <style>
     @media print {
         .page-header {

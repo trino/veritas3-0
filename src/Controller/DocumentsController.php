@@ -3072,6 +3072,7 @@ class DocumentsController extends AppController{
         return $this->response;
         die;
     }
+
     public function aggregate($id)
     {
         $client =  TableRegistry::get('clients')->find()->where(['id'=>$id])->first();
@@ -3093,5 +3094,6 @@ class DocumentsController extends AppController{
         return $this->response;
         
     }
+>>>>>>> origin/master
 
 }

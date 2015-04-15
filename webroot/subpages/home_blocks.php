@@ -24,7 +24,7 @@
 
                 
                 $doc = $doc_comp->getDocument();
-                //debug($doc);
+               
                 //
                 $i=0;
                 $cids = $this->requestAction('/settings/getallclients/'.$this->request->session()->read('Profile.id'));
@@ -33,6 +33,7 @@
                     $form_type = "";
                     $titles = array();
                     foreach($doc as $d){
+                     
                         if($d->id > $doc_count)
                         {
                             $doc_count = $d->id;
@@ -43,18 +44,21 @@
                         }
                         //$prosubdoc = $this->requestAction('/profiles/getProSubDoc/'.$this->Session->read('Profile.id').'/'.$d->id);
                         $prosubdoc = $this->requestAction('/settings/all_settings/0/0/profile/'.$this->Session->read('Profile.id').'/'.$d->id);
-                        
+                         
                         if(isset($cid)) {
                             $csubdoc = $this->requestAction('/settings/all_settings/0/0/client/' . $cid . '/' . $d->id);
                         } elseif(isset($cids)) {
                             $csubdoc['display'] = $this->requestAction('/settings/getCSubDocArray/'.urlencode($cids)."/".$d->id);
                         }
+                        
                         //echo $d->id.":".$csubdoc['display']."-".$prosubdoc['display']."-".$d->display.",";
                         if($i==11) { $i=0; }
                         ?>
                         <?php if($prosubdoc['display'] > 1 && $d->display == 1 && ( !isset($csubdoc)  || (isset($csubdoc) && $csubdoc['display'] == 1)))
                         {
-                            $getColor = $this->requestAction('documents/getColor/'.$d->color_id);
+                            
+                             //$getColor = $this->requestAction('documents/getColor/'.$d->color_id);
+                            
                         ?>
                         <div class="col-lg-2 col-md-3 col-sm-4 col-xs-6" <?php if(isset($_GET['doc'])){?>style="display:none;"<?php }?>>
 

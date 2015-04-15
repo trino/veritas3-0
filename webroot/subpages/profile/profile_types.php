@@ -40,7 +40,7 @@
                         <td><?php echo $i;?></td>
                         <td class="titleptype_<?php echo $product->id;?>"><?php echo $product->title;?></td>
                         <td><input type="checkbox" <?php if($product->enable=='1'){echo "checked='checked'";}?> class="penable" id="pchk_<?php echo $product->id;?>" /><span class="span_<?php echo $product->id;?>"></span></td>
-                        <td><?php if($product->id != 1 && $product->id != 2 && $product->id != 5 && $product->id != 7 && $product->id != 8) {?><a href="javascript:;" class="btn btn-info editptype" id="editptype_<?php echo $product->id;?>">Edit</a><?php } ?></td>
+                        <td><?php if($product->id != 1 && $product->id != 2 && $product->id != 5 && $product->id != 7 && $product->id != 8  && $product->id != 11) {?><a href="javascript:;" class="btn btn-info editptype" id="editptype_<?php echo $product->id;?>">Edit</a><?php } ?></td>
                     </tr>        
                 <?php
                 $i++;
