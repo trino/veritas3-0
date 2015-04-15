@@ -43,6 +43,8 @@ class PagesController extends AppController {
         $this->set('hideclient',0);
 		$this->set('client', $this->paginate($this->Clients));
         $this->set('products',  TableRegistry::get('product_types')->find('all'));
+
+        $this->set('forms',  TableRegistry::get('order_products')->find('all'));
 	}
 
     function org_chart(){

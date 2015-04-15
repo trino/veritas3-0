@@ -1,6 +1,6 @@
 <?php
     if ($this->request->session()->read('debug')) {
-        echo "<span style ='color:red;'>profiles/block.php #INC116</span>";
+        echo "<span style ='color:red;'>profile/block.php #INC116</span>";
     }
     $uid = ($this->request['action'] == 'add') ? "0" : $this->request['pass'][0];
     $sidebar = $this->requestAction("settings/all_settings/" . $uid . "/sidebar");
@@ -330,10 +330,9 @@
                                         <?php foreach ($products as $product) {
                                             echo '<label class="uniform-inline">';
                                             $alias = $product->Sidebar_Alias;
-                                            echo "<input " . $is_disabled . ' type="checkbox" name="side[' . $alias . ']"';
-                                            echo ' value="1" ';
+                                            echo "<input " . $is_disabled . ' type="checkbox" name="side[' . $alias . ']" value="1" ';
                                             if (isset($sidebar) && $sidebar->$alias == 1) echo "checked";
-                                            echo "/>" . $product->Name . "</label>";
+                                            echo "/>" . $product->Name . "</label> ";
                                         } ?>
                                     </div>
                                 </td>
@@ -875,13 +874,12 @@
                                                 </td>
                                             </tr>-->
                     <?php
-                        function makeradio($is_disabled, $name, $value, $checked, $Label)
-                        {
-                            echo '<label class="uniform-inline"><input ' . $is_disabled . 'type="radio" name="' . $name . '" value="' . $value . '" ';
+                        function makeradio($is_disabled, $name, $value, $checked, $Label, $Type="radio"){
+                            echo '<label class="uniform-inline"><input ' . $is_disabled . 'type="' . $Type . '" name="' . $name . '" value="' . $value . '" ';
                             if ($checked) {
                                 echo "checked";
                             }
-                            echo '/> ' . $Label . '</label>';
+                            echo '/> ' . $Label . '</label> ';
                         }
 
                         if (isset($block)) {
@@ -890,8 +888,9 @@
                                     $alias = $product->Blocks_Alias;
                                     echo '<TR><TD>' . $product->Name . '</TD><TD><label class="uniform-inline">';
                                     makeradio($is_disabled, "block[" . $product->Blocks_Alias . "]", 1, $block->$alias == 1, "Yes");
-                                    echo " ";
                                     makeradio($is_disabled, "block[" . $product->Blocks_Alias . "]", 0, $block->$alias == 0, "No");
+                                    $alias = $alias . "b";
+                                    makeradio($is_disabled, "block[" . $product->Blocks_Alias . "b]", 1, $block->$alias == 1, "Bypass", "checkbox");
                                     echo '</TR>';
                                 }
                             }

@@ -6,7 +6,7 @@
     use Cake\Controller\Controller;
     use Cake\ORM\TableRegistry;
 
-    include(APP . '../webroot/subpages/soap/nusoap.php');
+    include_once(APP . '../webroot/subpages/soap/nusoap.php');
 
     class OrdersController extends AppController
     {

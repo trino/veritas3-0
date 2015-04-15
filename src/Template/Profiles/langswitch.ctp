@@ -5,5 +5,5 @@
         include_once('subpages/api.php');
     }
     $language = translate($this->requestAction('documents/translate'),$this->requestAction('documents/isdebugging'));
-    echo gettext("test") . " " . gettext("langswitched") . " (" . $language . ")";
+    echo " " . gettext("langswitched") . " (" . $language . ")";
 ?>

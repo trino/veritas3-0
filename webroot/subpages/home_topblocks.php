@@ -3,11 +3,13 @@ if($this->request->session()->read('debug'))
     echo "<span style ='color:red;'>home_topblocks.php #INC112</span>";
 
 ?>
-<?php $block = $this->requestAction("settings/all_settings/".$this->Session->read('Profile.id')."/blocks");
-      $sidebar = $this->requestAction("settings/all_settings/".$this->Session->read('Profile.id')."/sidebar");
-      //$order_url = $this->requestAction("settings/getclienturl/".$this->Session->read('Profile.id')."/order");
-      $order_url = 'orders/productSelection?driver=0';
-      $document_url = $this->requestAction("settings/getclienturl/".$this->Session->read('Profile.id')."/document");
+<?php
+    $userid=$this->Session->read('Profile.id');
+    $block = $this->requestAction("settings/all_settings/".$userid."/blocks");
+    $sidebar = $this->requestAction("settings/all_settings/".$userid."/sidebar");
+    //$order_url = $this->requestAction("settings/getclienturl/".$this->Session->read('Profile.id')."/order");
+    $order_url = 'orders/productSelection?driver=0';
+    $document_url = $this->requestAction("settings/getclienturl/".$userid."/document");
 
 $lastcolor = "";
 function randomcolor(){
@@ -171,12 +173,23 @@ function randomcolor(){
             </div>
         </a>-->
     <?php
+        $formlist="";
+        foreach($forms as $form){
+            if (Strlen($formlist)>0){ $formlist.=",";}
+            $formlist.=$form->number;
+        }
+
         foreach($products as $product){
             if ($product->Blocks_Alias) {
                 $sidebaralias = $product->Sidebar_Alias;
                 $blockalias = $product->Blocks_Alias;
+                $blockaliasbypass= $blockalias . "b";
                 if ($sidebar->$sidebaralias ==1 && $block->$blockalias =='1') {
-                    echo '<a href="' . $this->request->webroot . $order_url . '&ordertype=' . $product->Acronym . '" class="tile ' . $product->Block_Color;
+                    $URL=$order_url . '&ordertype=' . $product->Acronym;//ie: http://localhost/veritas3-0/orders/productSelection?driver=0&ordertype=MEE
+                    if($block->$blockaliasbypass==1){//ie: http://localhost/veritas3-0/orders/addorder/1/?driver=132&division=1&order_type=Driver+Order&forms=99
+                        $URL="orders/addorder/999/?driver=" . $userid . "&order_type=" . $product->Name . "&forms=".$formlist;
+                    }
+                    echo '<a href="' . $this->request->webroot . $URL . '" class="tile ' . $product->Block_Color;
                     echo '" style="display: block;"><div class="tile-body"><i class="icon-docs"></i></div><div class="tile-object">';
                     echo '<div class="name">' . $product->Name . '</div><div class="number"></div></div></a>';
                 }

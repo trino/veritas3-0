@@ -154,11 +154,11 @@ function Translate($ID, $Language, $Variables = ""){
 
 function translate($language, $flushcache = false){
     //veritas3-0\webroot\Locale\[language]\LC_MESSAGES will need clearing of duplicate mo files
-    //$language="fr_FR";
+    //$language="fr_CA";
     putenv("LANG=$language");
     putenv("LANGUAGE=$language");
     putenv("LC_ALL=$language");
-    setlocale(LC_ALL, $language);
+    setlocale(LC_ALL, $language);//.UTF-8
     $domain = 'default';
     $dir= getcwd() . "/Locale";
     if($flushcache){//MUST NOT USE ON LIVE!
