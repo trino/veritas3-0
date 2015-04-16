@@ -123,6 +123,21 @@ function getHost($localhost = "localhost") {//get HTTP host name
     return trim($host);
 }
 
+function S($settings){
+    $variables = Sadd("client", $settings);
+    $variables = array_merge($variables,Sadd("document", $settings));
+    $variables = array_merge($variables,Sadd("profile", $settings));
+    return array_merge($variables,Sadd("mee", $settings));
+}
+function Sadd($Key, $Value){
+    $P="%";
+    $Value=$Value->$Key;
+    $variables=array();
+    $variables[$P. strtolower($Key) .$P] = strtolower($Value);
+    $variables[$P. strtoupper($Key) .$P] = strtoupper($Value);
+    $variables[$P. ucfirst($Key) .$P] = ucfirst($Value);
+    return $variables;
+}
 
 function getIterator($Objects, $Fieldname, $Value){
     foreach($Objects as $Object){
@@ -135,25 +150,25 @@ function getIterator($Objects, $Fieldname, $Value){
 
 function CacheTranslations($Language, $Text, $Variables = ""){
     $data = array();
-    if (is_array($Text)){
-        $Text[] = "dashboard_%";//for all pages
-        $table = TableRegistry::get('strings');
-        $query="";
-        foreach($Text as $text){
-            if(strlen($query)>0){ $query.= " OR ";}
-            if (strpos($text, "%")){
-                $query .= "Name LIKE '" . $text . "'";
-            } else {
-                $query .= "Name = '" . $text . "'";
-            }
+    if (!is_array($Text)){
+        $Text = array($Text);
+    }
+    $Text[] = "dashboard_%";//for all pages
+    $Text[] = "settings_%";//for all pages
+    $table = TableRegistry::get('strings');
+    $query="";
+    foreach($Text as $text){
+        if(strlen($query)>0){ $query.= " OR ";}
+        if (strpos($text, "%")){
+            $query .= "Name LIKE '" . $text . "'";
+        } else {
+            $query .= "Name = '" . $text . "'";
         }
-        //echo "Query: " . $query;
-        $table = $table->find()->where(["(" . $query . ")"])->all();
-        foreach($table as $entry){
-            $data[$entry->Name] = ProcessVariables($entry->$Language, $Variables);
-        }
-    } else {
-        return CacheTranslations($Language, array($Text), $Variables);
+    }
+    //echo "Query: " . $query;
+    $table = $table->find()->where(["(" . $query . ")"])->all();
+    foreach($table as $entry){
+        $data[$entry->Name] = ProcessVariables($entry->$Language, $Variables);
     }
     return $data;
 }

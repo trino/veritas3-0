@@ -220,10 +220,10 @@ function randomcolor(){
         }
     }
 
-    $URL=$this->request->webroot . "orders/addorder/1/?driver=132&division=1&order_type=Order+Products&forms=72";
-    makeblock($URL, "Social media search", "fa fa-search" );
-    makeblock($URL, "Social media investigation", "fa fa-twitter" );
-    makeblock($URL, "Physical surveillance", "fa fa-search" );
+    //$URL=$this->request->webroot . "orders/addorder/1/?driver=132&division=1&order_type=Order+Products&forms=72";
+    //makeblock($URL, "Social media search", "fa fa-search" );
+    //makeblock($URL, "Social media investigation", "fa fa-twitter" );
+    //makeblock($URL, "Physical surveillance", "fa fa-search" );
     ?>
 
     <?php if ($sidebar->orders_list ==1 && $block->document_draft =='1') { ?>

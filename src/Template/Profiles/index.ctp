@@ -3,6 +3,9 @@
       } else {
           include_once('subpages/api.php');
       }
+$settings = $this->requestAction('settings/get_settings');
+$language = $this->request->session()->read('Profile.language');
+$strings = CacheTranslations($language, "profiles_%",s($settings));
 ?>
 
 <style>
@@ -44,38 +47,34 @@
     //include_once ('subpages/api.php');
     $dr_cl = $doc_comp->getDriverClient(0, 0);
     $getProfileType = $this->requestAction('profiles/getProfileType/' . $this->Session->read('Profile.id'));
-    $settings = $this->requestAction('settings/get_settings');
     $sidebar = $this->requestAction("settings/all_settings/" . $this->request->session()->read('Profile.id') . "/sidebar");
 
-    function hasget($name)
-    {
-        if (isset($_GET[$name])) {
-            return strlen($_GET[$name]) > 0;
-        }
+    function hasget($name){
+        if (isset($_GET[$name])) {return strlen($_GET[$name]) > 0;}
         return false;
     }
 ?>
 
 <h3 class="page-title">
-    <?php echo ucfirst($settings->profile); ?>s
+    <?php echo ucfirst($strings["profiles_profile"]); ?>s
 </h3>
 
 <div class="page-bar">
     <ul class="page-breadcrumb">
         <li>
             <i class="fa fa-home"></i>
-            <a href="<?php echo $this->request->webroot; ?>">Dashboard</a>
+            <a href="<?php echo $this->request->webroot; ?>"><?= $strings["dashboard_dashboard"]; ?></a>
             <i class="fa fa-angle-right"></i>
         </li>
         <li>
-            <a href=""><?php echo ucfirst($settings->profile); ?>s</a>
+            <a href=""><?php echo ucfirst($strings["profiles_profile"]); ?>s</a>
         </li>
     </ul>
-    <a href="javascript:window.print();" class="floatright btn btn-info">Print</a>
+    <a href="javascript:window.print();" class="floatright btn btn-info"><?= $strings["dashboard_print"] ?></a>
 
     <?php if ($sidebar->profile_create == 1) { ?>
         <a href="<?php echo WEB_ROOT; ?>profiles/add" class="floatright btn btn-primary btnspc">
-            Create <?php echo ucfirst($settings->profile); ?></a>
+           <?= $strings["profiles_createprofile"]; ?></a>
     <?php } ?>
 
 </div>
@@ -90,7 +89,7 @@
             <div class="portlet-title">
                 <div class="caption">
                     <i class="fa fa-user"></i>
-                    List <?php echo ucfirst($settings->profile); ?>s
+                     <?= $strings["profiles_listprofile"]; ?>s
                 </div>
             </div>
 
@@ -110,7 +109,7 @@
 
 
                             <select class="form-control input-inline" style="" name="filter_profile_type">
-                                <option value=""><?php echo ucfirst($settings->profile); ?> Type</option>
+                                <option value=""><?= $strings["profiles_profiletype"]?></option>
 
                                 <?php
                                     $isISB = (isset($sidebar) && $sidebar->client_option == 0);
@@ -137,7 +136,7 @@
                                     ?>
                                     <select class="form-control showprodivision input-inline" style=""
                                             name="filter_by_client">
-                                        <option value=""><?php echo ucfirst($settings->client); ?></option>
+                                        <option value=""><?php echo ucfirst($strings["settings_client"]); ?></option>
                                         <?php
                                             if ($getClient) {
                                                 foreach ($getClient as $g) {
@@ -158,10 +157,10 @@
                                 <?php } ?>
 
                             <input class="form-control input-inline" type="search" name="searchprofile"
-                                   placeholder=" Search for <?php echo ucfirst($settings->profile); ?>"
+                                   placeholder="<?=  $strings["profiles_searchfor"];  //; ?>"
                                    value="<?php if (isset($search_text)) echo $search_text; ?>"
                                    aria-controls="sample_1"/>
-                            <button type="submit" class="btn btn-primary input-inline">Search</button>
+                            <button type="submit" class="btn btn-primary input-inline"><?= $strings["dashboard_search"] ?></button>
                         </form>
                     </div>
                 </div>
@@ -173,16 +172,16 @@
                             class="table table-condensed  table-striped table-bordered table-hover dataTable no-footer">
                             <thead>
                             <tr class="sorting">
-                                <th><?= $this->Paginator->sort('id') ?></th>
+                                <th><?= $this->Paginator->sort('id', "ID") ?></th>
                                 <th style="width:7px;"><?= $this->Paginator->sort('image', 'Image') ?></th>
-                                <th><?= $this->Paginator->sort('username', 'Username') ?></th>
+                                <th><?= $this->Paginator->sort('username', $strings["profiles_username"]) ?></th>
                                 <!--th><?= $this->Paginator->sort('email') ?></th-->
-                                <th><?= $this->Paginator->sort('fname', 'Name') ?></th>
+                                <th><?= $this->Paginator->sort('fname', $strings["profiles_name"]) ?></th>
                                 <th><?= $this->Paginator->sort('profile_type', ucfirst($settings->profile) . ' Type') ?></th>
 
                                 <!--th><?= $this->Paginator->sort('lname', 'Last Name') ?></th-->
-                                <th>Assigned to <?= $settings->clients; ?></th>
-                                <th>Actions</th>
+                                <th><?= $strings["profiles_assignedto"] . " " . $settings->clients; ?></th>
+                                <th><?= $strings["dashboard_actions"] ?></th>
 
                             </tr>
                             </thead>
@@ -272,7 +271,7 @@
                                         <td><?php echo $ProClients->getAllClientsname($profile->id);?></td>
                                         <td class="actions  util-btn-margin-bottom-5">
                                             <?php if ($sidebar->profile_list == '1' && !isset($_GET["draft"])) {
-                                                        echo $this->Html->link(__('View'), ['action' => 'view', $profile->id], ['class' => btnclass("btn-info", "blue-soft")]);
+                                                        echo $this->Html->link(__($strings["dashboard_view"]), ['action' => 'view', $profile->id], ['class' => btnclass("btn-info", "blue-soft")]);
                                                     } ?>
 
                                                     <?php
@@ -286,7 +285,7 @@
                                                                         echo $this->Html->link(__('Edit'), ['action' => 'edit', $profile->id], ['class' => btnclass("EDIT")]);
                                                                 } else
                                                                 */
-                                                                    echo $this->Html->link(__('Edit'), ['action' => 'edit', $profile->id], ['class' => btnclass("EDIT")]);
+                                                                    echo $this->Html->link(__($strings["dashboard_edit"]), ['action' => 'edit', $profile->id], ['class' => btnclass("EDIT")]);
                                                             }
                                                         } ?>
 
@@ -306,7 +305,7 @@
                                                      }
                                                       ?>"
 
-                                                    class="<?= btnclass("btn-info", "blue-soft") ?>">View Documents</a>
+                                                    class="<?= btnclass("btn-info", "blue-soft") ?>"><?= $strings["profiles_viewdocuments"]; ?></a>
                                                     <?php
                                                     }
 
@@ -314,7 +313,7 @@
                                                         ?>
                                                         <a href="<?php echo $this->request->webroot; ?>orders/orderslist/?uploaded_for=<?php echo $profile->id; ?>"
                                                            class="<?= btnclass("btn-info", "blue-soft") ?>">
-                                                            View Orders</a>
+                                                            <?= $strings["profiles_vieworders"]; ?></a>
                                                     <?php
                                                     }
                                                     ?>
@@ -326,7 +325,7 @@
 
             <a href="<?php echo $this->request->webroot; ?>profiles/delete/<?php echo $profile->id; ?><?php echo (isset($_GET['draft'])) ? "?draft" : ""; ?>"
                onclick="return confirm('Are you sure you want to delete <?= ucfirst(h($profile->username)) ?>?');"
-               class="<?= btnclass("DELETE") ?>">Delete</a>
+               class="<?= btnclass("DELETE") ?>"><?= $strings["dashboard_delete"] ?></a>
             </span>
         <?php
                                                     }
@@ -362,9 +361,9 @@
                             <div id="sample_2_paginate" class="dataTables_paginate paging_simple_numbers" align="right"
                                  style="margin-top:-10px;">
                                 <ul class="pagination sorting">
-                                    <?= $this->Paginator->prev('< ' . __('previous')); ?>
+                                    <?= $this->Paginator->prev('< ' . __($strings["dashboard_previous"])); ?>
                                     <?= $this->Paginator->numbers(); ?>
-                                    <?= $this->Paginator->next(__('next') . ' >'); ?>
+                                    <?= $this->Paginator->next(__($strings["dashboard_next"]) . ' >'); ?>
                                 </ul>
                             </div>
                             <?php } ?>
