@@ -8,6 +8,7 @@ if ($_SERVER['SERVER_NAME'] == "localhost" || $_SERVER['SERVER_NAME'] == "127.0.
 } else {
     include_once('subpages/api.php');
 }
+    $language = translate($this->requestAction('documents/translate'),$this->requestAction('documents/isdebugging'));
 ?>
 
 <!--[if IE 8]> <html lang="en" class="ie8 no-js"> <![endif]-->
@@ -212,7 +213,10 @@ if ($_SERVER['SERVER_NAME'] == "localhost" || $_SERVER['SERVER_NAME'] == "127.0.
 							<a href="<?php echo $this->request->webroot;?>profiles/edit/<?php echo $this->request->session()->read('Profile.id'); ?>" >
 							<i class="icon-user"></i> My Settings </a>
 						</li>
-
+                        <li>
+                            <a href="<?php echo $this->request->webroot;?>profiles/langswitch/<?php echo $this->request->session()->read('Profile.id'); ?>" >
+                                <i class="icon-user"></i> <?= gettext("langswitch"); ?> </a>
+                        </li>
 						<li class="divider">
 						</li>
 
@@ -263,6 +267,38 @@ if ($_SERVER['SERVER_NAME'] == "localhost" || $_SERVER['SERVER_NAME'] == "127.0.
 
 		<div class="page-content">
         <?= $this->Flash->render() ?>
+        <?php
+        if(!$this->request->session()->read('super'))
+        {
+            $logomain = $this->requestAction('/clients/getLogo');
+            if($logomain){
+         ?>   
+        <div class="mainlogo col-md-2" style="float: right;">
+            <?php 
+            //var_dump($logomain)
+            if(isset($logomain['client']) && $logomain['client'])
+            {
+                ?>
+                <img src="<?php echo $this->request->webroot;?>img/clients/<?php echo $logomain['client'];?>" width="180px;" />
+                <?php
+                
+            }
+            else
+            {
+                if(isset($logomain['setting']))
+                {
+                   ?>
+                   <img src="<?php echo $this->request->webroot;?>img/clients/<?php echo $logomain['setting'];?>" width="180px;" />
+                   <?php 
+                    
+                }
+            }
+            ?>
+        </div>
+        <div class="clearfix"></div>
+        <?php
+        }}
+        ?>
         <?= $this->fetch('content') ?>
 
 		</div>

@@ -216,9 +216,11 @@ function provinces($name){
                                         </a>
                                     </li>-->
                                     <?php
+
                                         function is_iterable($var) {
                                             return (is_array($var) || $var instanceof Traversable);
                                         }
+
 
                                         $doc = $doc_comp->getDocument('orders');
                                         $doc_ids = $this->requestAction('/clients/orders_doc/'.$cid.'/'.$_GET['order_type']);

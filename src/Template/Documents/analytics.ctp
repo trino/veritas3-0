@@ -323,7 +323,7 @@ function pluralize($text, $quantity){
     return $text . "s";
 }
 
-function newchart($color, $icon, $title, $chartid, $dates, $data, $start,$end, $isdraft){
+function newchart($color, $icon, $title, $chartid, $dates, $data, $start,$end, $isdraft, $profiletypes, $clienttypes){
 	echo '<P><div class="row"><div class="col-md-12">';
 		echo '<div class="portlet box ' . $color . '">';
 			echo '<div class="portlet-title">';
@@ -343,7 +343,7 @@ function newchart($color, $icon, $title, $chartid, $dates, $data, $start,$end, $
 						if (datecheck($key,$start,$end)){
 							$didit=true;
 							$rawdata.=todate($key) . ":\t" . $value . " " . pluralize(left(strtolower($title), strlen($title)-1), $value) . "\r\n";
-							$alldocs = enumsubdocs($data, $key, $chartid, $isdraft);
+							$alldocs = enumsubdocs($data, $key, $chartid, $isdraft, $profiletypes, $clienttypes);
 							foreach($alldocs as $key => $value){
 								$rawdata.="\t" . $value . ' ' . pluralize($key, $value) . "\r\n";
 							}
@@ -360,14 +360,20 @@ function newchart($color, $icon, $title, $chartid, $dates, $data, $start,$end, $
 				echo '</div></div></div></div></div>';
 }
 
-newchart("grey-salsa", "icon-globe", ucfirst($settings->client) . "s", "clients", $clientdates, $clients,$startdate,$enddate, $isdraft);
-newchart("green-haze", "icon-user", ucfirst($settings->profile) . "s", "profiles", $profiledates, $profiles,$startdate,$enddate, $isdraft);
-newchart("yellow-casablanca", "icon-doc", ucfirst($settings->document) . "s", "documents", $docdates, $documents ,$startdate,$enddate, $isdraft);
-newchart("yellow", "icon-docs", "Orders", "orders", $orderdates, $orders,$startdate,$enddate, $isdraft);
+newchart("grey-salsa", "icon-globe", ucfirst($settings->client) . "s", "clients", $clientdates, $clients,$startdate,$enddate, $isdraft, $profiletypes, $clienttypes);//new clients
+newchart("green-haze", "icon-user", ucfirst($settings->profile) . "s", "profiles", $profiledates, $profiles,$startdate,$enddate, $isdraft, $profiletypes, $clienttypes);//new users
+newchart("yellow-casablanca", "icon-doc", ucfirst($settings->document) . "s", "documents", $docdates, $documents ,$startdate,$enddate, $isdraft, $profiletypes, $clienttypes);//new documents
+newchart("yellow", "icon-docs", "Orders", "orders", $orderdates, $orders,$startdate,$enddate, $isdraft, $profiletypes, $clienttypes);//new orders
 
-newchart("blue-steel", "fa fa-graduation-cap", "Courses", "courses", $quizdates, $answers ,$startdate,$enddate, $isdraft);
+newchart("blue-steel", "fa fa-graduation-cap", "Courses", "courses", $quizdates, $answers ,$startdate,$enddate, $isdraft, $profiletypes, $clienttypes);//new quiz completions
+function FindIterator($ObjectArray, $FieldName, $FieldValue){
+    foreach($ObjectArray as $Object){
+        if ($Object->$FieldName == $FieldValue){return $Object;}
+    }
+    return false;
+}
 
-function enumsubdocs($thedocs, $date, $chartid, $isdraft){
+function enumsubdocs($thedocs, $date, $chartid, $isdraft, $profiletypes, $clienttypes){
 	$alldocs = array();
 	$unknown= "Not specified";
 	foreach($thedocs as $adoc){
@@ -387,8 +393,9 @@ function enumsubdocs($thedocs, $date, $chartid, $isdraft){
 				if ($chartid == "profiles") {
 					$doctype = $adoc->profile_type;
 					if (is_numeric($doctype)) {
-						$profiletypes = ['', 'Admin', 'Recruiter', 'External', 'Safety', 'Driver', 'Contact', 'Owner Operator', 'Owner Driver', 'Employee', 'Guest', 'Partner'];
-						$doctype = $profiletypes[$doctype];
+						//$profiletypes = ['', 'Admin', 'Recruiter', 'External', 'Safety', 'Driver', 'Contact', 'Owner Operator', 'Owner Driver', 'Employee', 'Guest', 'Partner'];
+						//$doctype = $profiletypes[$doctype];
+                        $doctype = FindIterator($profiletypes, "id", $doctype)->title;
 					} else {
 						$doctype = $unknown;
 					}
@@ -404,8 +411,9 @@ function enumsubdocs($thedocs, $date, $chartid, $isdraft){
 				if ($chartid == "clients") {
 					$doctype = $adoc->customer_type;
 					if (is_numeric($doctype)) {
-						$profiletypes = ['', 'Insurance', 'Fleet', 'Non Fleet'];
-						$doctype = $profiletypes[$doctype];
+						//$profiletypes = ['', 'Insurance', 'Fleet', 'Non Fleet'];
+						//$doctype = $profiletypes[$doctype];
+                        $doctype = FindIterator($clienttypes, "id", $doctype)->title;
 					} else {
 						$doctype = $unknown;
 					}
@@ -416,6 +424,9 @@ function enumsubdocs($thedocs, $date, $chartid, $isdraft){
 
 				//if (strlen($doctype )==0){$doctype = $adoc->customer_type; }
 				if (strlen($doctype) > 0) {
+                    if (substr($doctype,0,1)=='"') {$doctype = substr($doctype,1, strlen($doctype)-1);}
+                    if (substr($doctype,-1)=='"') {$doctype = substr($doctype,0, strlen($doctype)-1);}
+                    $doctype = ucfirst($doctype);
 					$quantity = 0;
 					if (array_key_exists($doctype, $alldocs)) {
 						$quantity = $alldocs[$doctype];
@@ -428,25 +439,4 @@ function enumsubdocs($thedocs, $date, $chartid, $isdraft){
 	return $alldocs;
 }
 
-//debug($clients);
-//echo Translate("test", "English", array("name" => "Jim Bob"))
-
-?>
-
-
-<?php
-//http://www.onlamp.com/pub/a/php/2002/06/13/php.html
-
-// I18N support information here
-$language = 'en_US';
-putenv("LANG=$language");
-putenv("LANGUAGE=de_DE");
-setlocale(LC_ALL, $language);
-
-// Set the text domain as 'messages'
-$domain = 'messages';
-bindtextdomain($domain, "/www/veritsa3-0/locale");
-textdomain($domain);
-
-echo gettext("testing");
 ?>

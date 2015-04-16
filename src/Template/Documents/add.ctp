@@ -41,7 +41,7 @@ if ($action == "Add") {
 if (isset($this->request->params['pass'][1])) {
     $id0 = $this->request->params['pass'][0];
     $id1 = $this->request->params['pass'][1];
-    $id2="";
+    $id2="?type=".$_GET['type'];
     if (isset($_GET['order_id'])) { $id2= '?order_id=' . $_GET['order_id']; }
 }
 ?>

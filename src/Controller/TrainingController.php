@@ -379,7 +379,7 @@ class TrainingController extends AppController {
             //$users = array($UserID, $this->whoenrolled($QuizID,$UserID ))
             $users = $this->enumsupers();
             $users[] = $UserID;
-            $this->email($users, "ISBMEE Course completion", $message);
+            $this->email($users, "Course completion", $message);
             //http://localhost/veritas3/training/certificate?quizid=1
             $this->Flash->success($answers . ' answers were saved');
         }
@@ -453,7 +453,7 @@ class TrainingController extends AppController {
             $EnrolledBy = $this->getuserid();
 
             $table = TableRegistry::get("training_enrollments");
-            $table->query()->insert(['QuizID', 'UserID'])->values(['QuizID' => $QuizID, 'UserID' => $UserID, 'EnrolledBy' => $EnrolledBy])->execute();
+            $table->query()->insert(['QuizID', 'UserID', 'EnrolledBy'])->values(['QuizID' => $QuizID, 'UserID' => $UserID, 'EnrolledBy' => $EnrolledBy])->execute();
 
             $table = TableRegistry::get('sidebar');
             $table->query()->update()->set(['training' => 1])->where(['user_id' => $UserID])->execute();

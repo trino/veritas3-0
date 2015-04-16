@@ -43,7 +43,7 @@
 
 
     <table class="table-condensed table-striped table-bordered table-hover dataTable no-footer">
-        <TR><Th>Client</Th><TD align="center"><?php echo $client->id;?></TD><TD><?php echo $client->company_name;?></TD></TR>
+        <TR><Th>Client</Th><TD align="center"><?php echo $client->id;?></TD><TD><?php echo $client->company_name;?></TD><td><?php if($client->date_start)echo $client->date_start;else echo "No date available.";?></td></TR>
     </table>
 
 <input type="hidden" class="document_type" name="document_type" value="Audits"/>

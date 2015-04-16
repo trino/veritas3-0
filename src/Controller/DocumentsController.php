@@ -6,10 +6,24 @@ use Cake\Event\Event;
 use Cake\Controller\Controller;
 use Cake\ORM\TableRegistry;
 
-include(APP . '../webroot/subpages/soap/nusoap.php');
+include_once(APP . '../webroot/subpages/soap/nusoap.php');
 if ($_SERVER['SERVER_NAME'] == "localhost" || $_SERVER['SERVER_NAME'] == "127.0.0.1") { include_once('/subpages/api.php'); } else { include_once('subpages/api.php'); }
 
 class DocumentsController extends AppController{
+    function translate(){////veritas3-0\webroot\Locale\[language]\LC_MESSAGES will need clearing of duplicate mo files
+        $language = $this->request->session()->read('Profile.language');
+        $acceptablelanguages = array("en_US", "fr_FR");
+        if (!in_array($language, $acceptablelanguages)) { $language = $acceptablelanguages[0]; }//default to english
+        $this->set("language", $language);
+        $this->response->body($language);
+        return $this->response;
+        die();
+    }
+    function isdebugging(){
+        $this->response->body($this->request->session()->read('debug'));
+        return $this->response;
+        die();
+    }
 
     public $paginate = [
         'limit' => 10,
@@ -941,6 +955,9 @@ class DocumentsController extends AppController{
         $answers = TableRegistry::get('training_answers');
         $ans =  $answers->find('all',array('group' => array('UserID', "QuizID")));
         $this->set('answers', $ans);
+
+        $this->set('profiletypes', TableRegistry::get('profile_types')->find()->select());
+        $this->set('clienttypes', TableRegistry::get('client_types')->find()->select());
     }
 
 
@@ -3003,7 +3020,7 @@ class DocumentsController extends AppController{
                 $attachments = $query->select()->where(['document_id' => $did])->all();
             }else{
                 $attachments = $query->select()->where(['order_id'=>$did,'sub_id'=>$sub])->all();
-                debug($attachments);
+                //debug($attachments);
             }
             $this->set('attachments',$attachments);
         }
@@ -3072,6 +3089,7 @@ class DocumentsController extends AppController{
         return $this->response;
         die;
     }
+
     public function aggregate($id)
     {
         $client =  TableRegistry::get('clients')->find()->where(['id'=>$id])->first();

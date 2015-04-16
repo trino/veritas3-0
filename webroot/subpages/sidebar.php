@@ -142,6 +142,35 @@
                 </li>
             <?php } ?>
 
+
+
+
+            <?php if ($sidebar->training == 1) { ?>
+                <li class="<?php echo ($this->request['controller'] == 'Training') ? 'active open' : ''; ?>">
+                    <a href="<?php echo $this->request->webroot; ?>training">
+                        <i class="fa fa-graduation-cap"></i>
+                        <span class="title">Training</span>
+                        <span class="selected"></span>
+                    </a>
+                    <ul class="sub-menu">
+                        <li <?php echo ($this->request['controller'] == 'Training' && $this->request['action'] == 'index') ? 'class="active"' : ''; ?>>
+                            <a href="<?php echo $this->request->webroot; ?>training">
+                                <i class="icon-plus"></i>
+                                Courses</a>
+                        </li>
+                        <?php if ($this->request->session()->read('Profile.super') or $this->request->session()->read('Profile.admin')) { ?>
+                            <li <?php echo ($this->request['controller'] == 'Training' && $this->request['action'] == 'users') ? 'class="active"' : ''; ?>>
+                                <a href="<?php echo $this->request->webroot; ?>training/users">
+                                    <i class="icon-plus"></i>
+                                    Quiz Results</a>
+                            </li>
+                        <?php } ?>
+                    </ul>
+                </li>
+            <?php } ?>
+
+
+
             <?php if ($sidebar->document == 1) { ?>
                 <li class="<?php echo (($this->request['controller'] == 'Documents' && ($this->request['action'] == "index" || $this->request['action'] == "add")) && !isset($_GET['draft'])) ? 'active open' : ''; ?>">
                     <a href="<?php echo $this->request->webroot; ?>documents/index">
@@ -185,7 +214,7 @@
             </li>
             <?php if ($sidebar->orders == 1) { ?>
 
-                <li class="<?php echo (($this->request['action'] == 'orderslist' || $this->request['action'] == 'addorder') && !isset($_GET['draft'])) ? 'active open' : ''; ?>">
+                <li class="<?php echo (($this->request['action'] == 'orderslist' || $this->request['action'] == 'addorder'|| $this->request['controller']=='Orders') && !isset($_GET['draft'])) ? 'active open' : ''; ?>">
                     <a href="<?php echo $this->request->webroot; ?>orders/orderslist">
                         <i class="icon-docs"></i>
                         <span class="title">Orders</span>
@@ -228,7 +257,11 @@
                                 }
                             } ?>
 
-
+                            <li <?php echo ($this->request['controller'] == 'Orders' && $this->request['action'] == 'invoice' && !isset($_GET['draft'])) ? 'class="active"' : ''; ?>>
+                                    <a href="<?php echo $this->request->webroot; ?>orders/invoice">
+                                        <i class="icon-list"></i>
+                                       Invoice</a>
+                            </li>
 
                         </ul>
                     <?php } ?>
@@ -282,29 +315,7 @@
                     </ul>
                 </li>
             <?php } ?>
-            <?php if ($sidebar->training == 1) { ?>
-                <li class="<?php echo ($this->request['controller'] == 'Training') ? 'active open' : ''; ?>">
-                    <a href="<?php echo $this->request->webroot; ?>training">
-                        <i class="fa fa-graduation-cap"></i>
-                        <span class="title">Training</span>
-                        <span class="selected"></span>
-                    </a>
-                    <ul class="sub-menu">
-                        <li <?php echo ($this->request['controller'] == 'Training' && $this->request['action'] == 'index') ? 'class="active"' : ''; ?>>
-                            <a href="<?php echo $this->request->webroot; ?>training">
-                                <i class="icon-plus"></i>
-                                Courses</a>
-                        </li>
-                        <?php if ($this->request->session()->read('Profile.super') or $this->request->session()->read('Profile.admin')) { ?>
-                            <li <?php echo ($this->request['controller'] == 'Training' && $this->request['action'] == 'users') ? 'class="active"' : ''; ?>>
-                                <a href="<?php echo $this->request->webroot; ?>training/users">
-                                    <i class="icon-plus"></i>
-                                    Quiz Results</a>
-                            </li>
-                        <?php } ?>
-                    </ul>
-                </li>
-            <?php } ?>
+
             <?php if ($sidebar->bulk == 1) { ?>
                 <li class="<?php echo ($this->request['controller'] == 'Profiles' && isset($_GET["all"])) ? 'active open' : ''; ?>">
                     <a href="<?php echo $this->request->webroot; ?>profiles?all">

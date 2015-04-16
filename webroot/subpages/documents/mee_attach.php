@@ -139,7 +139,7 @@ if (isset($mee_att['attach_doc']->id) && $mee_att['attach_doc']->id) {
 }
 
     $docsprinted=0;
-    if (printdivrequired($action, $forms, "attachments", $DriverProvince, iterator_count($mee_more) + count($attachment))) {
+    if (printdivrequired($action, $forms, "attachments", $DriverProvince, $morecount + count($attachment))) {
         $doit = false;
         $description = 'Upload BC, QU, SA Abstract Consent Form PDF';
         $docsprinted+=1;

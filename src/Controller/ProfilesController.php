@@ -1152,6 +1152,17 @@
             die();
         }
 
+    public function langswitch($id = null){
+        $id=$this->request->session()->read('Profile.id');
+        $language = $this->request->session()->read('Profile.language');
+        $acceptablelanguages = array("en_US", "fr_FR");
+        if (!in_array($language, $acceptablelanguages)) { $language = $acceptablelanguages[0]; }//default to english
+        $index=array_search($language,$acceptablelanguages)+1;
+        if ($index >= count($acceptablelanguages)){$index=0;}
+        $language=$acceptablelanguages[$index];
+        $this->request->session()->write('Profile.language', $language);
+        TableRegistry::get('profiles')->query()->update()->set(['language' => $language])->where(['id' => $id])->execute();
+    }
         /**
          * Edit method
          *
@@ -2159,7 +2170,7 @@
                             //  $from = array('info@' . $path => "ISB MEE");
                             $from = 'info@' . $path;
                             $to = $profile1->email;
-                            $sub = 'ISBMEE Order Completed';
+                            $sub = 'Order Completed';
                             $msg = 'Your order has been processed and ready for download.<br /><br /> Please login <a href="' . LOGIN . '">here</a> to retreive your reports.<br /><br /> Regards,<br /> The ISB MEE Team';
                             $this->Mailer->sendEmail($from, $to, $sub, $msg);
                         }
@@ -2194,7 +2205,7 @@
             $setting = $settings->find()->first();
             $from = array('info@' . $path => $setting->mee);
             $to = trim($email);
-            $sub = 'ISBMEE Tasks - Reminder';
+            $sub = 'Tasks Reminder';
             $msg = 'Domain: ' . getHost("isbmee.com") . ' <br /><br />Reminder, you have following task due:<br/><br/>Title: ' . $todo->title . '<br />Description: ' . $todo->description . '<br />Due By: ' . $todo->date . '<br /><br /> Regards,<br />The '.$setting->mee.' team';
             echo "<hR>From: " . $from . "<BR>To: " . $to . " " . $name . "<BR>Subject: " . $sub . "<BR>Message: " . $msg;
             $this->Mailer->sendEmail($from, $to, $sub, $msg);
@@ -2231,7 +2242,7 @@
                 if ($p->query()->update()->set(['password' => md5($new_pwd)])->where(['id' => $profile->id])->execute()) {
                     $from = array('info@' . $path => $setting->mee);
                     $to = $profile->email;
-                    $sub = 'New Password created successfully';
+                    $sub = 'Password reset successful';
                     $msg = 'Your password has been reset.<br /> Your login details are:<br /> Username: ' . $profile->username . '<br /> Password: ' . $new_pwd . '<br /> Please <a href="' . LOGIN . '">click here</a> to login.<br /> Regards,<br /> The '.$setting->mee.' Team';
                     $this->Mailer->sendEmail($from, $to, $sub, $msg);
                     echo "Password has been reset succesfully. Please check your email for the new password.";
@@ -2678,6 +2689,7 @@
             return $this->response;
 
         }
+
     }
 
 ?>

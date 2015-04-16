@@ -277,7 +277,21 @@ function printform($counting, $settings, $client, $dr_cl, $driver, $intable = fa
 
 <div class="row">
     <?php
-    $o_type = makeform($product->Acronym, $cols, $product->Color, $product->Name, $product->Description, $products, $product->Checked == 1, $counting, $settings, $client, $dr_cl, $driver, $_this, $product->Alias, false, $product->Blocked);
+
+    $o_type = makeform($product->Acronym, $cols, '', $product->Name, $product->Description, $products, $product->Checked == 1, $counting, $settings, $client, $dr_cl, $driver, $_this, $product->Alias, false, $product->Blocked);
+
+    /*
+    if ($ordertype == "MEE") {
+        $o_type = makeform("MEE", $cols, "red", "Order MEE", "The all in one package", $products, true, $counting, $settings, $client, $dr_cl, $driver, $_this);
+    }
+    if ($ordertype == "CAR") {
+        $o_type = makeform("CAR", $cols, "", "Order Products", "Place an Order A La Carte", $products, false, $counting, $settings, $client, $dr_cl, $driver, $_this);
+    }
+    if ($ordertype == "QUA") {
+        $o_type = makeform("QUA", $cols, "blue", "Requalify", "Requalify existing drivers", $products, false, $counting, $settings, $client, $dr_cl, $driver, $_this, "Requalification", false);
+    }
+    */
+
     ?>
 </div>
 

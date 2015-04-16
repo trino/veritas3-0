@@ -6,7 +6,7 @@
     use Cake\Controller\Controller;
     use Cake\ORM\TableRegistry;
 
-    include(APP . '../webroot/subpages/soap/nusoap.php');
+    include_once(APP . '../webroot/subpages/soap/nusoap.php');
 
     class OrdersController extends AppController
     {
@@ -1325,6 +1325,37 @@ echo 131231232113;
             return $this->response;
             die;
             
+        }
+        public function invoice()
+        {
+            
+            $query = TableRegistry::get('Clients');
+            $q = $query->find();
+            $u = $this->request->session()->read('Profile.id');
+            if ($this->request->session()->read('Profile.super'))
+                $q = $q->select();
+            else {
+                $q = $q->select()->where(['profile_id LIKE "' . $u . ',%" OR profile_id LIKE "%,' . $u . ',%" OR profile_id LIKE "%,' . $u . '" OR profile_id LIKE "' . $u . '" ']);
+
+            }
+            $this->set('clients', $q);
+            
+            if(isset($_GET))
+            {
+                $cond =[];
+                if(isset($_GET['from']))
+                    array_push($cond,["created >="=>$_GET['from']]);
+                if(isset($_GET['to']))
+                   array_push($cond,["created <="=>$_GET['to']]);
+                if(isset($_GET['client_id']))
+                   array_push($cond,["client_id"=>$_GET['client_id']]); 
+               
+               
+                $orders = TableRegistry::get('orders');
+                $order = $orders->find()->order(['orders.id' => 'DESC'])->where(['draft' => 0, $cond])->all();
+                $this->set('orders', $order);
+                
+            }
         }
     }
 

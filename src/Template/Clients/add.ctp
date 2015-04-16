@@ -119,7 +119,7 @@
                                 <li class="active">
                                     <a href="#tab_1_1" data-toggle="tab">Info</a>
                                 </li>
-                                <?php if ($this->request['action'] != "add" && !isset($_GET['view'])) {
+                                <?php if ($this->request['action'] != "add" && !isset($_GET['view'])  && $settings->mee == "MEE") {
                                     ?>
                                     <li>
                                         <a href="#tab_1_4" data-toggle="tab">Products Display</a>
@@ -320,17 +320,23 @@
 
 
                                                                 <div class="form-group col-md-4">
-                                                                    <label class="control-label">Contract Start
+                                                                    <label class="control-label">Start Date
                                                                         Date</label>
                                                                     <input type="text" class="form-control date-picker"
                                                                            name="date_start" <?php if (isset($client->date_start)) { ?> value="<?php echo $client->date_start; ?>" <?php } ?>/>
                                                                 </div>
                                                                 <div class="form-group col-md-4">
-                                                                    <label class="control-label">Contract End
+                                                                    <label class="control-label">End Date
                                                                         Date</label>
                                                                     <input type="text" class="form-control date-picker"
                                                                            name="date_end" <?php if (isset($client->date_end)) { ?> value="<?php echo $client->date_end; ?>" <?php } ?>/>
                                                                 </div>
+                                                                
+                                                                <!--div class="form-group col-md-4">
+                                                                    <label class="control-label">Date</label>
+                                                                    <input type="text" class="form-control date-picker"
+                                                                           name="client_date" <?php if (isset($client->client_date)) { ?> value="<?php echo $client->client_date; ?>" <?php } ?>/>
+                                                                </div-->
 
 
                                                                 <?php if ($settings->mee != "ASAP Secured Training" && $settings->mee != "Events Audit") { ?>
