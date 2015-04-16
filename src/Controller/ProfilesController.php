@@ -494,7 +494,7 @@
                 $this->Flash->success('Order saved successfully');
             }
             $this->set('products', TableRegistry::get('product_types')->find('all'));
-
+            $this->getsubdocument_topblocks($id, false);
             $this->loadModel("ProfileTypes");
             $this->set("ptypes", $this->ProfileTypes->find()->where(['enable' => '1'])->all());
             $this->set('uid', $id);
@@ -1201,7 +1201,7 @@
             } else {
                 $this->set('myuser', '1');
             }
-            //$this->getsubdocument_topblocks($id);//subdocument_topblocks
+            $this->getsubdocument_topblocks($id,  false);//subdocument_topblocks
             $this->loadModel("ProfileTypes");
             $this->set("ptypes", $this->ProfileTypes->find()->where(['enable' => '1'])->all());
             $this->loadModel("ClientTypes");
@@ -1406,7 +1406,36 @@
                 $article = $blocks->newEntity($_POST['block']);
                 $blocks->save($article);
             }
+
+            $this->getsubdocument_topblocks($user_id, true);
             die();
+        }
+
+        function getsubdocument_topblocks($UserID, $getpost=false){
+            $table = TableRegistry::get('order_products_topblocks');
+            if($getpost){//save
+                $table->deleteAll(array('UserID' => $UserID), false);
+                foreach($_POST['topblocks'] as $Key => $Value){
+                    if($Value==1) {
+                        $table->query()->insert(['UserID', 'ProductID'])->values(['UserID' => $UserID, 'ProductID' => $Key])->execute();
+                    }
+                }
+            } else {//load
+                $query = $table->find()->select()->where(['UserID' => $UserID])->order(['ProductID' => 'asc']);
+                $products = TableRegistry::get('order_products')->find('all');
+                foreach($products as $product){
+                    $product->TopBlock = 0;
+                    if(is_object($this->FindIterator($query, "ProductID", $product->number))) {$product->TopBlock = 1;}
+                }
+                $this->set("theproductlist", $products);
+            }
+        }
+
+        function FindIterator($ObjectArray, $FieldName, $FieldValue){
+            foreach($ObjectArray as $Object){
+                if ($Object->$FieldName == $FieldValue){return $Object;}
+            }
+            return false;
         }
 
         function getSub(){

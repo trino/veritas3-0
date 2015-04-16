@@ -430,7 +430,7 @@
                                                 printsubdocradio($is_disabled, $sub, $prosubdoc, 1, "View Only");
                                                 printsubdocradio($is_disabled, $sub, $prosubdoc, 2, "Create Only");
                                                 printsubdocradio($is_disabled, $sub, $prosubdoc, 3, "Both");
-                                                printsubdocradio($is_disabled, $sub, $prosubdoc, 1, "Top block", "Checkbox", "topblock", "Topblock");
+                                                //printsubdocradio($is_disabled, $sub, $prosubdoc, 1, "Top block", "Checkbox", "topblock", "Topblock");
                                             }
                                             function printsubdocradio($is_disabled, $sub, $prosubdoc, $Value, $Text, $Type="Radio", $Section = "profile", $Field='display'){
                                                 echo '<label class="uniform-inline"><input ' . $is_disabled . ' type="' . $Type . '" name="' . $Section . '[';
@@ -875,12 +875,12 @@
                     <?php if ($settings->mee == "MEE") { ?>
 
                         <?php
-                        function makeradio($is_disabled, $name, $value, $checked, $Label, $Type = "radio")
-                        {
+                        function makehr(){
+                            echo '<TR><TD COLSPAN="2" style="background: #f7f7f7;">&nbsp;</TD></TR>';
+                        }
+                        function makeradio($is_disabled, $name, $value, $checked, $Label, $Type = "radio"){
                             echo '<label class="uniform-inline"><input ' . $is_disabled . 'type="' . $Type . '" name="' . $name . '" value="' . $value . '" ';
-                            if ($checked) {
-                                echo "checked";
-                            }
+                            if ($checked) {echo "checked";}
                             echo '/> ' . $Label . '</label> ';
                         }
 
@@ -888,16 +888,26 @@
                             foreach ($products as $product) {
                                 if ($product->Blocks_Alias) {
                                     $alias = $product->Blocks_Alias;
-                                    echo '<TR><TD>' . $product->Name . '</TD><TD><label class="uniform-inline">';
+                                    echo '<TR><TD>' . $product->Name . '</TD><TD>';
                                     makeradio($is_disabled, "block[" . $product->Blocks_Alias . "]", 1, $block->$alias == 1, "Yes");
                                     makeradio($is_disabled, "block[" . $product->Blocks_Alias . "]", 0, $block->$alias == 0, "No");
                                     //$alias = $alias . "b";
                                     //makeradio($is_disabled, "block[" . $product->Blocks_Alias . "b]", 1, $block->$alias == 1, "Bypass product selection", "checkbox");
-                                    echo '</TR>';
+                                    echo '</TD></TR>';
                                 }
                             }
                         }
 
+                        makehr();
+                        foreach($theproductlist as $product){//title enable number TopBlock
+                               if($product->enable){
+                                   echo '<TR><TD>' . $product->title . '</TD><TD>';
+                                        makeradio($is_disabled, "topblocks[" . $product->number . "]", 1, $product->TopBlock == 1, "Yes");
+                                        makeradio($is_disabled, "topblocks[" . $product->number . "]", 0, $product->TopBlock == 0, "No");
+                                   echo  '</TD></TR>';
+                               }
+                        }
+                        makehr();
                     ?>
 
                     <tr>

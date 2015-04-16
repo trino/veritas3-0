@@ -190,17 +190,19 @@ function randomcolor(){
             if ($product->Blocks_Alias) {
                 $sidebaralias = $product->Sidebar_Alias;
                 $blockalias = $product->Blocks_Alias;
+                //$blockaliasbypass= $blockalias . "b";
                 if ($product->Acronym == "MEE"){$MEEname = $product->Name;}
                 if ($sidebar->$sidebaralias ==1 && $block->$blockalias =='1') {
                     $URL=$order_url . '&ordertype=' . $product->Acronym;//ie: http://localhost/veritas3-0/orders/productSelection?driver=0&ordertype=MEE
                     //if($block->$blockaliasbypass==1){//ie: http://localhost/veritas3-0/orders/addorder/1/?driver=132&division=1&order_type=Driver+Order&forms=99
-                    //    $URL="orders/addorder/999/?driver=" . $userid . "&order_type=" . $product->Name . "&forms=".$formlist;
-                    //}$blockaliasbypass= $blockalias . "b";
+                    //    $URL="orders/addorder/1/?driver=" . $userid . "&order_type=" . $product->Name . "&forms=".$formlist;
+                    //}
                     makeblock($this->request->webroot . $URL, $product->Name);
                 }
             }
         }
 
+        /*
         $subdoc = $this->requestAction('/profiles/getSub');
         $URL = "orders/addorder/1/?driver=" . $userid . "&order_type=" . $MEEname . "&forms=" . $formlist . "&onlyshow=";
         foreach ($subdoc as $sub) {
@@ -209,7 +211,13 @@ function randomcolor(){
                 makeblock($this->request->webroot . $URL . $sub->id, $sub->title);
             }
         }
-
+        */
+        foreach($theproductlist as $product){
+            if($product->enable == 1 && $product->TopBlock == 1) {
+                $URL="orders/addorder/1/?driver=" . $userid . "&division=9&order_type=Not+Applicable&forms=" . $product->number;
+                makeblock($this->request->webroot . $URL, $product->title);
+            }
+        }
     }
 
     $URL=$this->request->webroot . "orders/addorder/1/?driver=132&division=1&order_type=Order+Products&forms=72";

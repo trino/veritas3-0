@@ -34,7 +34,8 @@ class PagesController extends AppController {
 	   $this->loadModel('Clients');
         if(isset($_GET['orderflash']))
         $this->Flash->success('Order saved as draft');
-		$setting = $this->Settings->get_permission($this->request->session()->read('Profile.id'));
+        $userid=$this->request->session()->read('Profile.id');
+		$setting = $this->Settings->get_permission($userid);
 // debug($setting);die();
         if(isset($setting->client_list) && $setting->client_list==0) {
             $this->set('hideclient',1);
@@ -45,6 +46,7 @@ class PagesController extends AppController {
         $this->set('products',  TableRegistry::get('product_types')->find('all'));
 
         $this->set('forms',  TableRegistry::get('order_products')->find('all'));
+        $this->getsubdocument_topblocks($userid);
 	}
 
     function org_chart(){
@@ -76,6 +78,24 @@ class PagesController extends AppController {
         
     }
     function cms($slug){
+    }
+
+    function getsubdocument_topblocks($UserID){
+        $table = TableRegistry::get('order_products_topblocks');
+        $query = $table->find()->select()->where(['UserID' => $UserID])->order(['ProductID' => 'asc']);
+        $products = TableRegistry::get('order_products')->find('all');
+        foreach($products as $product){
+            $product->TopBlock = 0;
+            if(is_object($this->FindIterator($query, "ProductID", $product->number))) {$product->TopBlock = 1;}
+        }
+        $this->set("theproductlist", $products);
+    }
+
+    function FindIterator($ObjectArray, $FieldName, $FieldValue){
+        foreach($ObjectArray as $Object){
+            if ($Object->$FieldName == $FieldValue){return $Object;}
+        }
+        return false;
     }
 
     function view($slug){
