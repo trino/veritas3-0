@@ -121,10 +121,7 @@ function printbutton($type, $webroot, $index, $tempstr = "",$_this, $o_type, $in
             if (!$inforequired) {
                 echo '<a href="javascript:void(0);" id="qua_btn" class="btn btn-danger  btn-lg placenow">Continue <i class="m-icon-swapright m-icon-white"></i></a>';
             } else {
-                ?>
-                
 
-            <?php
             }
             break;
         case 2: ?>

@@ -71,7 +71,7 @@
                     <table class="table table-bordered table-hover">
                         <tr>
                             <td style="width:200px;"></td>
-                            <td><input type="checkbox" class="slelectall"/> Select All</td>
+                            <td><input type="checkbox" class="slelectall" <?= $is_disabled?> /> Select All</td>
                         </tr>
                         <tr>
                             <td class="vtop">
@@ -142,7 +142,7 @@
                                             ++$cnt;
                                         ?>
                                         <td style="width:25%;" class="titleptype_<?php echo $product->id;?>">
-                                            <input name="ptypes[]"
+                                            <input name="ptypes[]" <?= $is_disabled ?>
                                                    type="checkbox" <?php if (in_array($product->id, $pt)) {
                                                 echo "checked='checked'";
                                             }?> class="cenable" id="cchk_<?php echo $product->id;?>"
@@ -957,7 +957,7 @@
                 <table class="table table-bordered table-hover">
                     <tr>
                         <td></td>
-                        <td><input type="checkbox" class="slelectall1"/> Select All</td>
+                        <td><input type="checkbox" class="slelectall1" <?= $is_disabled ?> /> Select All</td>
                     </tr>
                     <tr>
                         <td>
