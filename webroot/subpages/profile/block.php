@@ -265,7 +265,8 @@
                             </td>
                         </tr>
 
-                        <?php if ($settings->mee != "ASAP Secured Training" && $settings->mee != "Events Audit") { ?>
+
+                        <?php if ($settings->mee == "MEE") { ?>
                             <tr>
                                 <td colspan="2" style="background: #f7f7f7;">&nbsp;</td>
                             </tr>
@@ -446,7 +447,7 @@
 
 
 
-                                            if ($settings->mee == "Events Audit") {
+                                            if ($settings->mee != "MEE") {
 //this code needs to be merged. There doesn't need to be a page of repeating code or 2 loops
                                                 foreach ($subdoc as $sub) {
                                                   //  echo $sub['title'];
@@ -574,7 +575,8 @@
                                             </tr-->
 
 
-<?php                        if ($settings->mee != "Events Audit") { ?>
+
+                        <?php if ($settings->mee == "MEE") { ?>
 
                         <tr>
                             <td class="vtop"> Enable Tasks</td>
@@ -757,7 +759,7 @@
                     </tr>
                     <tr>
                         <td>
-                            Add a <?= $settings->profile; ?>
+                            Add <?= $settings->profile; ?>
                         </td>
                         <td>
                             <label class="uniform-inline">
@@ -873,8 +875,13 @@
                                                         No </label>
                                                 </td>
                                             </tr>-->
-                    <?php
-                        function makeradio($is_disabled, $name, $value, $checked, $Label, $Type="radio"){
+
+
+                    <?php if ($settings->mee == "MEE") { ?>
+
+                        <?php
+                        function makeradio($is_disabled, $name, $value, $checked, $Label, $Type = "radio")
+                        {
                             echo '<label class="uniform-inline"><input ' . $is_disabled . 'type="' . $Type . '" name="' . $name . '" value="' . $value . '" ';
                             if ($checked) {
                                 echo "checked";
@@ -895,7 +902,9 @@
                                 }
                             }
                         }
+
                     ?>
+
                     <tr>
                         <td>
                             List Order
@@ -913,6 +922,7 @@
                                 No </label>
                         </td>
                     </tr>
+                    <?}?>
                     <!--<tr>
                                                 <td>
                                                     Order History
@@ -1033,6 +1043,10 @@
                                 No </label>
                         </td>
                     </tr>
+
+
+                    <?php if ($settings->mee == "MEE") { ?>
+
                     <tr>
                         <td>
                             Orders Drafts
@@ -1050,6 +1064,7 @@
                                 No </label>
                         </td>
                     </tr>
+                    <?}?>
                     <!-- <tr>
                                                 <td>
                                                     Tasks
@@ -1100,23 +1115,9 @@
                         </td>
                     </tr>
 
-                    <tr>
-                        <td>
-                            Intact Orders
-                        </td>
-                        <td>
-                            <label class="uniform-inline">
-                                <input <?php echo $is_disabled ?> type="radio"
-                                                                  name="block[orders_intact]"
-                                                                  value="1" <?php if (isset($block) && $block->orders_intact == 1) echo "checked"; ?>/>
-                                Yes </label>
-                            <label class="uniform-inline">
-                                <input <?php echo $is_disabled ?> type="radio"
-                                                                  name="block[orders_intact]"
-                                                                  value="0" <?php if (isset($block) && $block->orders_intact == 0) echo "checked"; ?>/>
-                                No </label>
-                        </td>
-                    </tr>
+
+                    <?php if ($settings->mee == "MEE") { ?>
+
                     <tr>
                         <td>
                             Bulk Order
@@ -1134,6 +1135,7 @@
                                 No </label>
                         </td>
                     </tr>
+                    <?}?>
                     <!--tr>
                                                 <td>
                                                     Master <?= $settings->client; ?>

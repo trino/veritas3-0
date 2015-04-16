@@ -118,6 +118,8 @@ if ($_SERVER['SERVER_NAME'] == "localhost" || $_SERVER['SERVER_NAME'] == "127.0.
                                 ?>
                             </select>
 
+                            <?php if ($settings->mee == "MEE") { ?>
+
                             <select class="form-control input-inline" name="submitted_for_id" style="">
                                 <option value="">Submitted for</option>
                                 <?php
@@ -135,7 +137,9 @@ if ($_SERVER['SERVER_NAME'] == "localhost" || $_SERVER['SERVER_NAME'] == "127.0.
 
 
 
-
+                            <?php
+                            }
+                            ?>
 
                             <?php
                                 $clients = $doc_comp->getAllClient();
@@ -181,15 +185,22 @@ if ($_SERVER['SERVER_NAME'] == "localhost" || $_SERVER['SERVER_NAME'] == "127.0.
                                 <th title="Document ID"><?= $this->Paginator->sort('id'); ?></th>
                                 <th><?= $this->Paginator->sort('document_type', ucfirst($settings->document) . ''); ?></th>
 
-                                <?php if ($settings->mee != "Events Audit") { ?>
+                                <?php if ($settings->mee == "MEE") { ?>
 
                                 <th title="Order ID" style="max-width: 58px;"><?= $this->Paginator->sort('oid', "Order ID"); ?></th>
                                 <?php } ?>
 
                                 <th><?= $this->Paginator->sort('user_id', 'Submitted by'); ?><?php if (isset($end)) echo $end;
                                         if (isset($start)) echo "//" . $start; ?></th>
+
+
+                                <?php if ($settings->mee == "MEE") { ?>
+
                                 <th><?= $this->Paginator->sort('uploaded_for', 'Submitted for'); ?><?php if (isset($end)) echo $end;
                                         if (isset($start)) echo "//" . $start; ?></th>
+
+                                <?php } ?>
+
                                 <th><?= $this->Paginator->sort('created', 'Created'); ?></th>
                                 <th><?= $this->Paginator->sort('client_id', ucfirst($settings->client)); ?></th>
                                 <th class="actions"><?= __('Actions') ?></th>
@@ -302,7 +313,7 @@ if ($_SERVER['SERVER_NAME'] == "localhost" || $_SERVER['SERVER_NAME'] == "127.0.
                     </td>
 
 
-                    <?php if ($settings->mee != "Events Audit") { ?>
+                    <?php if ($settings->mee == "MEE") { ?>
 
                     <td align=""><?php if ($orderID > 0) {
                             echo '<a href="'.$this->request->webroot.'orders/vieworder/'.$orderDetail->client_id.'/'.$orderDetail->id;if($orderDetail->order_type){echo '?order_type='.urlencode($orderDetail->order_type);if($orderDetail->forms)echo '&forms='.$orderDetail->forms;}echo '">'.$orderDetail->id;echo '</a>';
@@ -325,7 +336,13 @@ if ($_SERVER['SERVER_NAME'] == "localhost" || $_SERVER['SERVER_NAME'] == "127.0.
 
                             echo $user;
                         ?></td>
-                    <td><?php
+
+                    <?php if ($settings->mee == "MEE") { ?>
+
+                    <td>
+
+
+                        <?php
 
                             if (isset($uploaded_for->username)) {
                                 $user = '<a href="' . $this->request->webroot . 'profiles/view/' . $docs->uploaded_for . '" target="_blank">' . ucfirst(h($uploaded_for->username));
@@ -342,6 +359,8 @@ if ($_SERVER['SERVER_NAME'] == "localhost" || $_SERVER['SERVER_NAME'] == "127.0.
 
                             echo $user;
                         ?></td>
+
+                    <?}?>
                     <td><?= h($docs->created) ?></td>
                     <td>
                         <?php

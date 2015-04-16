@@ -2242,7 +2242,7 @@
                 if ($p->query()->update()->set(['password' => md5($new_pwd)])->where(['id' => $profile->id])->execute()) {
                     $from = array('info@' . $path => $setting->mee);
                     $to = $profile->email;
-                    $sub = 'New Password created successfully';
+                    $sub = 'Password reset successful';
                     $msg = 'Your password has been reset.<br /> Your login details are:<br /> Username: ' . $profile->username . '<br /> Password: ' . $new_pwd . '<br /> Please <a href="' . LOGIN . '">click here</a> to login.<br /> Regards,<br /> The '.$setting->mee.' Team';
                     $this->Mailer->sendEmail($from, $to, $sub, $msg);
                     echo "Password has been reset succesfully. Please check your email for the new password.";
