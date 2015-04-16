@@ -430,13 +430,14 @@
                                                 printsubdocradio($is_disabled, $sub, $prosubdoc, 1, "View Only");
                                                 printsubdocradio($is_disabled, $sub, $prosubdoc, 2, "Create Only");
                                                 printsubdocradio($is_disabled, $sub, $prosubdoc, 3, "Both");
+                                                printsubdocradio($is_disabled, $sub, $prosubdoc, 1, "Top block", "Checkbox", "topblock", "Topblock");
                                             }
-                                            function printsubdocradio($is_disabled, $sub, $prosubdoc, $Value, $Text){
-                                                echo '<label class="uniform-inline"><input ' . $is_disabled . ' type="radio" name="profile[' . $sub->id . ']"';
-                                                echo 'value="' . $Value . '" ';
-                                                if ($prosubdoc['display'] == $Value) { echo ' checked="checked"';}
+                                            function printsubdocradio($is_disabled, $sub, $prosubdoc, $Value, $Text, $Type="Radio", $Section = "profile", $Field='display'){
+                                                echo '<label class="uniform-inline"><input ' . $is_disabled . ' type="' . $Type . '" name="' . $Section . '[';
+                                                echo  $sub->id . ']" value="' . $Value . '" ';
+                                                if ($prosubdoc[$Field] == $Value) { echo ' checked="checked"';}
                                                 if($Value == '3') echo "class='documents'";
-                                                echo '/> ' . $Text . ' </label>';
+                                                echo '/> ' . $Text . ' </label> ';
                                             }
 
 
@@ -890,8 +891,8 @@
                                     echo '<TR><TD>' . $product->Name . '</TD><TD><label class="uniform-inline">';
                                     makeradio($is_disabled, "block[" . $product->Blocks_Alias . "]", 1, $block->$alias == 1, "Yes");
                                     makeradio($is_disabled, "block[" . $product->Blocks_Alias . "]", 0, $block->$alias == 0, "No");
-                                    $alias = $alias . "b";
-                                    makeradio($is_disabled, "block[" . $product->Blocks_Alias . "b]", 1, $block->$alias == 1, "Bypass product selection", "checkbox");
+                                    //$alias = $alias . "b";
+                                    //makeradio($is_disabled, "block[" . $product->Blocks_Alias . "b]", 1, $block->$alias == 1, "Bypass product selection", "checkbox");
                                     echo '</TR>';
                                 }
                             }

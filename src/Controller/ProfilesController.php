@@ -489,8 +489,7 @@
             die();
         }
 
-        public function view($id = null)
-        {
+        public function view($id = null){
             if (isset($_GET['success'])) {
                 $this->Flash->success('Order saved successfully');
             }
@@ -519,8 +518,7 @@
 
             $this->set('doc_comp', $this->Document);
             $orders = TableRegistry::get('orders');
-            $order = $orders
-                ->find()
+            $order = $orders->find()
                 ->where(['orders.uploaded_for' => $id, 'orders.draft' => 0])->order('orders.id DESC')->contain(['Profiles', 'Clients', 'RoadTest']);
 
             /*
@@ -1163,6 +1161,8 @@
         $this->request->session()->write('Profile.language', $language);
         TableRegistry::get('profiles')->query()->update()->set(['language' => $language])->where(['id' => $id])->execute();
     }
+
+
         /**
          * Edit method
          *
@@ -1170,8 +1170,7 @@
          * @return void
          * @throws \Cake\Network\Exception\NotFoundException
          */
-        public function edit($id = null)
-        {
+        public function edit($id = null){
             $this->set('doc_comp', $this->Document);
             $check_pro_id = $this->Settings->check_pro_id($id);
             if ($check_pro_id == 1) {
@@ -1202,6 +1201,7 @@
             } else {
                 $this->set('myuser', '1');
             }
+            //$this->getsubdocument_topblocks($id);//subdocument_topblocks
             $this->loadModel("ProfileTypes");
             $this->set("ptypes", $this->ProfileTypes->find()->where(['enable' => '1'])->all());
             $this->loadModel("ClientTypes");
@@ -1355,9 +1355,10 @@
                 //echo $k."=>".$v."<br/>";
                 $side[$k] = $v;
             }
+
             //die();
             if ($client == "") {
-                $sides = array('profile_list', 'profile_create', 'client_list', 'client_create', 'document_list', 'document_create', 'profile_edit', 'profile_delete', 'client_edit', 'client_delete', 'document_edit', 'document_delete', 'document_others', 'document_requalify', 'orders_list', 'orders_create', 'orders_delete', 'orders_requalify', 'orders_edit', 'orders_others', 'order_requalify', 'orders_mee', 'orders_products', 'order_intact', 'email_document', 'email_orders', 'email_profile','orders_emp','orders_GEM','orders_GDR','aggregate');
+                $sides = array('profile_list', 'profile_create', 'client_list', 'client_create', 'document_list', 'document_create', 'profile_edit', 'profile_delete', 'client_edit', 'client_delete', 'document_edit', 'document_delete', 'document_others', 'document_requalify', 'orders_list', 'orders_create', 'orders_delete', 'orders_requalify', 'orders_edit', 'orders_others', 'order_requalify', 'orders_mee', 'orders_products', 'order_intact', 'email_document', 'email_orders', 'email_profile','orders_emp','orders_GEM','orders_GDR','aggregate');//this should not be hardcoded
                 foreach ($sides as $s) {
                     if (!isset($_POST['side'][$s]))
                         $side[$s] = 0;
@@ -1389,7 +1390,6 @@
                 //$side['user_id'] = $_POST['side']['user_id'];
             }
             foreach ($_POST['block'] as $k => $v) {
-
                 $block[$k] = $v;
             }
             $blocks = TableRegistry::get('blocks');
@@ -1409,8 +1409,7 @@
             die();
         }
 
-        function getSub()
-        {
+        function getSub(){
             $sub = TableRegistry::get('Subdocuments');
             $query = $sub->find();
             $q = $query->select();
@@ -1420,8 +1419,7 @@
 
         }
 
-        function getProSubDoc($pro_id, $doc_id)
-        {
+        function getProSubDoc($pro_id, $doc_id){
             $sub = TableRegistry::get('Profilessubdocument');
             $query = $sub->find();
             $query->select()->where(['profile_id' => $pro_id, 'subdoc_id' => $doc_id]);
@@ -1442,8 +1440,10 @@
             foreach ($_POST['profile'] as $k2 => $v) {
                 $subp = TableRegistry::get('Profilessubdocument');
                 $query2 = $subp->query();
-                $query2->insert(['profile_id', 'subdoc_id', 'display'])
-                    ->values(['profile_id' => $id, 'subdoc_id' => $k2, 'display' => $_POST['profile'][$k2]])
+                $TopBlock=0;
+                if (isset($_POST['topblock'][$k2])){$TopBlock = $_POST['topblock'][$k2];}
+                $query2->insert(['profile_id', 'subdoc_id', 'display', 'Topblock'])
+                    ->values(['profile_id' => $id, 'subdoc_id' => $k2, 'display' => $_POST['profile'][$k2], 'Topblock' => $TopBlock])
                     ->execute();
                 unset($subp);
             }
