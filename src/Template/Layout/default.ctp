@@ -8,7 +8,7 @@ if ($_SERVER['SERVER_NAME'] == "localhost" || $_SERVER['SERVER_NAME'] == "127.0.
 } else {
     include_once('subpages/api.php');
 }
-    //$language = translate($this->requestAction('documents/translate'),$this->requestAction('documents/isdebugging'));
+    $language = $this->requestAction('documents/translate');
 ?>
 
 <!--[if IE 8]> <html lang="en" class="ie8 no-js"> <![endif]-->
@@ -213,10 +213,10 @@ if ($_SERVER['SERVER_NAME'] == "localhost" || $_SERVER['SERVER_NAME'] == "127.0.
 							<a href="<?php echo $this->request->webroot;?>profiles/edit/<?php echo $this->request->session()->read('Profile.id'); ?>" >
 							<i class="icon-user"></i> My Settings </a>
 						</li>
-                        <!--li>
+                        <li>
                             <a href="<?php echo $this->request->webroot;?>profiles/langswitch/<?php echo $this->request->session()->read('Profile.id'); ?>" >
-                                <i class="icon-user"></i> <?= gettext("langswitch"); ?> </a>
-                        </li-->
+                                <i class="icon-user"></i> <?= Translate("langswitch", $language); ?> </a>
+                        </li>
 						<li class="divider">
 						</li>
 

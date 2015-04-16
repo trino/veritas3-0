@@ -1,5 +1,5 @@
 <?php
-//use Cake\ORM\TableRegistry;
+use Cake\ORM\TableRegistry;
 
 $islocal=false;
 if ($_SERVER['SERVER_NAME'] == "localhost" || $_SERVER['SERVER_NAME'] == "127.0.0.1" || $_SERVER['SERVER_ADDR'] == "127.0.0.1") { $islocal=true;}
@@ -132,12 +132,14 @@ function getIterator($Objects, $Fieldname, $Value){
     }
     return false;
 }
-/*
+
+
 function Translate($ID, $Language, $Variables = ""){
     $table = TableRegistry::get('strings');
-    if (is_numeric($ID)) {$column = $ID;} else {$column = "Name";}
-    $query = $table->find()->select()->where([$column => $ID])->first()->$Language;
+    if (is_numeric($ID)) {$column = "ID";} else {$column = "Name";}
+    $query = $table->find()->select()->where([$column => $ID])->first();
     if ($query) {
+        $query = $query->$Language;
         if (is_array($Variables)) {
             foreach ($Variables as $Key => $Value) {
                 if (substr($Key, 0, 1) != "%") {$Key = "%" . $Key;}
@@ -150,7 +152,7 @@ function Translate($ID, $Language, $Variables = ""){
         return $ID . "." . $Language . " is missing a translation";
     }
 }
-*/
+
 
 /*
 function translate($language, $flushcache = false){

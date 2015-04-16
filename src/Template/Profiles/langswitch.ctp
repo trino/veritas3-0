@@ -4,6 +4,6 @@
     } else {
         include_once('subpages/api.php');
     }
-    //$language = translate($this->requestAction('documents/translate'),$this->requestAction('documents/isdebugging'));
-    echo " " . gettext("langswitched") . " (" . $language . ")";
+    $language = $this->requestAction('documents/translate');
+    echo Translate("langswitched", $language);
 ?>
