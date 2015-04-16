@@ -213,10 +213,10 @@ if ($_SERVER['SERVER_NAME'] == "localhost" || $_SERVER['SERVER_NAME'] == "127.0.
 							<a href="<?php echo $this->request->webroot;?>profiles/edit/<?php echo $this->request->session()->read('Profile.id'); ?>" >
 							<i class="icon-user"></i> My Settings </a>
 						</li>
-                        <li>
+                        <!--li>
                             <a href="<?php echo $this->request->webroot;?>profiles/langswitch/<?php echo $this->request->session()->read('Profile.id'); ?>" >
                                 <i class="icon-user"></i> <?= gettext("langswitch"); ?> </a>
-                        </li>
+                        </li-->
 						<li class="divider">
 						</li>
 
@@ -273,7 +273,7 @@ if ($_SERVER['SERVER_NAME'] == "localhost" || $_SERVER['SERVER_NAME'] == "127.0.
             $logomain = $this->requestAction('/clients/getLogo');
             if($logomain){
          ?>   
-        <div class="mainlogo col-md-2" style="float: right;">
+        <div class="mainlogo col-md-3" style="float: right;">
             <?php 
             //var_dump($logomain)
             if(isset($logomain['client']) && $logomain['client'])

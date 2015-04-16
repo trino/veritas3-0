@@ -321,13 +321,13 @@
 
                                                                 <div class="form-group col-md-4">
                                                                     <label class="control-label">Start Date
-                                                                        Date</label>
+                                                                        </label>
                                                                     <input type="text" class="form-control date-picker"
                                                                            name="date_start" <?php if (isset($client->date_start)) { ?> value="<?php echo $client->date_start; ?>" <?php } ?>/>
                                                                 </div>
                                                                 <div class="form-group col-md-4">
                                                                     <label class="control-label">End Date
-                                                                        Date</label>
+                                                                        </label>
                                                                     <input type="text" class="form-control date-picker"
                                                                            name="date_end" <?php if (isset($client->date_end)) { ?> value="<?php echo $client->date_end; ?>" <?php } ?>/>
                                                                 </div>

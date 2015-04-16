@@ -155,6 +155,8 @@ function Translate($ID, $Language, $Variables = ""){
 function translate($language, $flushcache = false){
     //veritas3-0\webroot\Locale\[language]\LC_MESSAGES will need clearing of duplicate mo files
     //$language="fr_CA";
+
+
     putenv("LANG=$language");
     putenv("LANGUAGE=$language");
     putenv("LC_ALL=$language");
