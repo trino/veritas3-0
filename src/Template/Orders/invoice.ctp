@@ -89,9 +89,9 @@
          <?php if(isset($_GET['client_id'])){
                 $client = $this->requestAction("/clients/getClient/".$_GET['client_id'])?>
             <img class="img-responsive" style="max-width:180px;" id="clientpic" alt=""
-             src="<?php if (isset($clients->image) && $clients->image)
+             src="<?php if (isset($client->image) && $client->image)
                  {
-                     echo $this->request->webroot; ?>img/jobs/<?php echo $clients->image . '"';
+                     echo $this->request->webroot; ?>img/jobs/<?php echo $client->image . '"';
                  }
                  else
                  {
