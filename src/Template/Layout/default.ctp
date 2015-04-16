@@ -279,7 +279,7 @@ if ($_SERVER['SERVER_NAME'] == "localhost" || $_SERVER['SERVER_NAME'] == "127.0.
             if(isset($logomain['client']) && $logomain['client'])
             {
                 ?>
-                <img src="<?php echo $this->request->webroot;?>img/clients/<?php echo $logomain['client'];?>" width="180px;" />
+                <img src="<?php echo $this->request->webroot;?>img/jobs/<?php echo $logomain['client'];?>" width="180px;" />
                 <?php
                 
             }
