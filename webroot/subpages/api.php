@@ -133,26 +133,51 @@ function getIterator($Objects, $Fieldname, $Value){
     return false;
 }
 
+function CacheTranslations($Language, $Text, $Variables = ""){
+    $data = array();
+    if (is_array($Text)){
+        $Text[] = "dashboard_%";//for all pages
+        $table = TableRegistry::get('strings');
+        $query="";
+        foreach($Text as $text){
+            if(strlen($query)>0){ $query.= " OR ";}
+            if (strpos($text, "%")){
+                $query .= "Name LIKE '" . $text . "'";
+            } else {
+                $query .= "Name = '" . $text . "'";
+            }
+        }
+        //echo "Query: " . $query;
+        $table = $table->find()->where(["(" . $query . ")"])->all();
+        foreach($table as $entry){
+            $data[$entry->Name] = ProcessVariables($entry->$Language, $Variables);
+        }
+    } else {
+        return CacheTranslations($Language, array($Text), $Variables);
+    }
+    return $data;
+}
 
 function Translate($ID, $Language, $Variables = ""){
     $table = TableRegistry::get('strings');
     if (is_numeric($ID)) {$column = "ID";} else {$column = "Name";}
     $query = $table->find()->select()->where([$column => $ID])->first();
     if ($query) {
-        $query = $query->$Language;
-        if (is_array($Variables)) {
-            foreach ($Variables as $Key => $Value) {
-                if (substr($Key, 0, 1) != "%") {$Key = "%" . $Key;}
-                if (substr($Key, -1) != "%") {$Key .= "%";}
-                $query = str_replace($Key, $Value, $query);
-            }
-        }
-        return $query;
+        return  ProcessVariables($query->$Language);
     } else {
         return $ID . "." . $Language . " is missing a translation";
     }
 }
-
+function ProcessVariables($Text, $Variables = ""){
+    if (is_array($Variables)) {
+        foreach ($Variables as $Key => $Value) {
+            if (substr($Key, 0, 1) != "%") {$Key = "%" . $Key;}
+            if (substr($Key, -1) != "%") {$Key .= "%";}
+            $Text = str_replace($Key, $Value, $Text);
+        }
+    }
+    return $Text;
+}
 
 /*
 function translate($language, $flushcache = false){

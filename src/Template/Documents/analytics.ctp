@@ -6,6 +6,10 @@ if ($_SERVER['SERVER_NAME'] == "localhost" || $_SERVER['SERVER_NAME'] == "127.0.
     include_once('subpages/api.php');
 }
 
+$language = $this->request->session()->read('Profile.language');
+$strings = CacheTranslations($language, "analytics_%");
+//print_r($strings);
+
 function left($text, $length){
 	return substr($text,0,$length)	;
 }
@@ -131,7 +135,7 @@ function enumdata($variable, $daysbackwards, $date = -1){ //* [10, 1], [17, -14]
 }
 ?>
 <h3 class="page-title">
-			MEE Analytics <small>Analytics of <?php echo ucfirst($settings->document);?>s, Orders and  Drivers</small>
+			<?= $strings["analytics_title"] ?> <small>Analytics of <?php echo ucfirst($settings->document);?>s, Orders and  Drivers</small>
 			</h3>
 
 			<div class="page-bar">
@@ -146,12 +150,12 @@ function enumdata($variable, $daysbackwards, $date = -1){ //* [10, 1], [17, -14]
                         <i class="fa fa-angle-right"></i>
 					</li>
                     <li>
-						<a href="">Analytics</a>
+						<a href="" onclick="return false;">Analytics</a>
                         
 					</li>
                     
 				</ul>
-                <a href="javascript:window.print();" class="floatright btn btn-info">Print</a>
+                <a href="javascript:window.print();" class="floatright btn btn-info"><?= $strings["dashboard_print"]; ?></a>
 			</div>
 
     <script src="<?php echo $this->request->webroot;?>assets/admin/pages/scripts/form-wizard.js"></script>
@@ -282,9 +286,9 @@ jQuery(document).ready(function() {
 										<div class="row">
 											<div class="col-md-11" align="right" style="margin-right:0;padding-right:0">
 												<div class="input-group input-large date-picker input-daterange" data-date="10/11/2012" data-date-format="mm/dd/yyyy">
-													<span class="input-group-addon"> Start </span>
+													<span class="input-group-addon"> <?= $strings["analytics_start"]; ?> </span>
 													<input type="text" class="form-control" name="from" value="<?php echo $enddate; ?>">
-													<span class="input-group-addon"> to </span>
+													<span class="input-group-addon"> <?= $strings["analytics_finish"]; ?> </span>
 													<input type="text" class="form-control" name="to" title="Leave blank to end at today" value="<?php echo get2("to", date("Y-m-d")); ?>">
                                                     <!--button type="submit" class="btn btn-primary" style="float">Search</button-->
 
@@ -294,7 +298,7 @@ jQuery(document).ready(function() {
 												<input type="checkbox" name="drafts" value="1" <?php if($isdraft){ echo "checked";}?> ><label class="control-label" for="drafts">Drafts</label>
 											</div-->
 											<div class="col-md-1" align="right" style="padding-left:0;margin-left:0">
-                                                <button type="submit" class="btn btn-primary">Search</button>
+                                                <button type="submit" class="btn btn-primary"><?= $strings["dashboard_search"]; ?></button>
 											</div>
 										</div>
 									</form></div>
