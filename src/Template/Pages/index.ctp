@@ -13,12 +13,68 @@ die();
 <script type="text/javascript" src="<?= $this->request->webroot;?>js/datetime.js"></script>
 <body onLoad="ajaxpage('schedules/timezone');">
 
+<div class="col-md-9" style="padding: 0;">
 <h3 class="page-title">
     <?php echo $settings->mee;?> Dashboard <?php if($settings->mee == 'MEE'){ ?><small>Driver Qualification System</small><?php } ?>
 
     <!--img src="<?php echo $this->request->webroot; ?>img/logos/challenger_logoright.jpg" style="float:right;"/-->
 
 </h3>
+</div>
+
+
+
+
+
+
+<?php
+    if(!$this->request->session()->read('super'))
+    {
+        $logomain = $this->requestAction('/clients/getLogo');
+        if($logomain){
+            ?>
+            <div class="mainlogo col-md-3" style="text-align: right;padding:0;">
+                <?php
+                    //var_dump($logomain)
+                    if(isset($logomain['client']) && $logomain['client'])
+                    {
+                        ?>
+                        <img src="<?php echo $this->request->webroot;?>img/jobs/<?php echo $logomain['client'];?>" width="180px;" />
+                    <?php
+
+                    }
+                    else
+                    {
+                        if(isset($logomain['setting']))
+                        {
+                            ?>
+                            <img src="<?php echo $this->request->webroot;?>img/clients/<?php echo $logomain['setting'];?>" width="180px;" />
+                        <?php
+
+                        }
+                    }
+                ?>
+            </div>
+            <div class="clearfix"></div>
+        <?php
+        }}
+?>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <div class="page-bar">
     <ul class="page-breadcrumb">
         <li>
