@@ -179,6 +179,12 @@ function randomcolor(){
             $formlist.=$form->number;
         }
 
+        function makeblock($URL, $Name, $Icon = "icon-docs", $Color= "bg-grey-cascade"){//tile
+            echo '<a href="' .  $URL . '" class="tile ' . $Color;
+            echo '" style="display: block;"><div class="tile-body"><i class="' . $Icon . '"></i></div><div class="tile-object">';
+            echo '<div class="name">' . $Name . '</div><div class="number"></div></div></a>';
+        }
+
         foreach($products as $product){
             if ($product->Blocks_Alias) {
                 $sidebaralias = $product->Sidebar_Alias;
@@ -186,16 +192,18 @@ function randomcolor(){
                 $blockaliasbypass= $blockalias . "b";
                 if ($sidebar->$sidebaralias ==1 && $block->$blockalias =='1') {
                     $URL=$order_url . '&ordertype=' . $product->Acronym;//ie: http://localhost/veritas3-0/orders/productSelection?driver=0&ordertype=MEE
-                    if($block->$blockaliasbypass==1){//ie: http://localhost/veritas3-0/orders/addorder/1/?driver=132&division=1&order_type=Driver+Order&forms=99
-                        $URL="orders/addorder/999/?driver=" . $userid . "&order_type=" . $product->Name . "&forms=".$formlist;
-                    }
-                    echo '<a href="' . $this->request->webroot . $URL . '" class="tile ' . $product->Block_Color;
-                    echo '" style="display: block;"><div class="tile-body"><i class="icon-docs"></i></div><div class="tile-object">';
-                    echo '<div class="name">' . $product->Name . '</div><div class="number"></div></div></a>';
+                    //if($block->$blockaliasbypass==1){//ie: http://localhost/veritas3-0/orders/addorder/1/?driver=132&division=1&order_type=Driver+Order&forms=99
+                    //    $URL="orders/addorder/999/?driver=" . $userid . "&order_type=" . $product->Name . "&forms=".$formlist;
+                    //}
+                    makeblock($this->request->webroot . $URL, $product->Name);
                 }
             }
         }
-    } ?>
+    }
+
+    makeblock($this->request->webroot . "orders/addorder/1/?driver=132&division=1&order_type=Order+Products&forms=72", "Social media search", "fa fa-search" );
+    makeblock("http://isbmee.ca/socialmedia/", "Social media investigation", "fa fa-twitter" );
+    ?>
 
     <?php if ($sidebar->orders_list ==1 && $block->document_draft =='1') { ?>
         <a class="tile bg-grey-cascade" href="<?php echo $this->request->webroot; ?>orders/orderslist?draft" style="display: block;">
