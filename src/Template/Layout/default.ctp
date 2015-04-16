@@ -8,7 +8,7 @@ if ($_SERVER['SERVER_NAME'] == "localhost" || $_SERVER['SERVER_NAME'] == "127.0.
 } else {
     include_once('subpages/api.php');
 }
-    $language = translate($this->requestAction('documents/translate'),$this->requestAction('documents/isdebugging'));
+    //$language = translate($this->requestAction('documents/translate'),$this->requestAction('documents/isdebugging'));
 ?>
 
 <!--[if IE 8]> <html lang="en" class="ie8 no-js"> <![endif]-->

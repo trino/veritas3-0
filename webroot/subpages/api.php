@@ -152,6 +152,7 @@ function Translate($ID, $Language, $Variables = ""){
 }
 */
 
+/*
 function translate($language, $flushcache = false){
     //veritas3-0\webroot\Locale\[language]\LC_MESSAGES will need clearing of duplicate mo files
     //$language="fr_CA";
@@ -180,4 +181,5 @@ function translate($language, $flushcache = false){
     }
     return $language;
 }
+*/
 ?>
