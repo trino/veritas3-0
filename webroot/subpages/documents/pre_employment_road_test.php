@@ -54,11 +54,11 @@
                 else
                 {
                     ?>                                      
-                    <input type="checkbox" name="c1" id="c1" value="1" <?php if(isset($pre_employment_road_test) && $pre_employment_road_test->c1 =='1')echo "checked='checked'";?>/>
+                    <input type="checkbox" name="c1" value="1" <?php if(isset($pre_employment_road_test) && $pre_employment_road_test->c1 =='1')echo "checked='checked'";?>/> 
                     <?php
                 }
              ?>
-            <label for="c1"><strong>Pre Trip Inspection performed as per GFS policy</strong></label>
+             <strong>Pre Trip Inspection performed as per GFS policy</strong>
         </div>
         <p>&nbsp;</p>
         <div class="col-md-12">
@@ -81,11 +81,11 @@
                 else
                 {
                     ?>                                      
-                    <input type="checkbox" name="c2" id="c2" value="1" <?php if(isset($pre_employment_road_test) && $pre_employment_road_test->c2 =='1')echo "checked='checked'";?>/>
+                    <input type="checkbox" name="c2" value="1" <?php if(isset($pre_employment_road_test) && $pre_employment_road_test->c2 =='1')echo "checked='checked'";?>/> 
                     <?php
                 }
              ?>
-             <label for="c2"><strong>Applies 4 steps to proper coupling</strong></label>
+             <strong>Applies 4 steps to proper coupling</strong>
         </div>
         <p>&nbsp;</p>
         <div class="col-md-12">
@@ -108,11 +108,11 @@
                 else
                 {
                     ?>                                      
-                    <input type="checkbox" name="c3" id="c3" value="1" <?php if(isset($pre_employment_road_test) && $pre_employment_road_test->c3 =='1')echo "checked='checked'";?>/>
+                    <input type="checkbox" name="c3" value="1" <?php if(isset($pre_employment_road_test) && $pre_employment_road_test->c3 =='1')echo "checked='checked'";?>/> 
                     <?php
                 }
              ?>
-             <label for="c3"><strong>Uses the 5 Keys to Defensive Driving</strong></label>
+             <strong>Uses the 5 Keys to Defensive Driving</strong>
         </div>
         <p>&nbsp;</p>
         <div class="col-md-12">
@@ -121,7 +121,7 @@
                         <tr>
                             <td>
                             
-                                    <?php //repeating code needs factoring, should use <label for=
+                                    <?php 
                                     if($this->request->params['action'] == 'vieworder'  || $this->request->params['action']== 'view')
                                     {
                                         if(isset($pre_employment_road_test) && $pre_employment_road_test->c4 =='1')
