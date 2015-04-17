@@ -5,7 +5,8 @@
       }
 $settings = $this->requestAction('settings/get_settings');
 $language = $this->request->session()->read('Profile.language');
-$strings = CacheTranslations($language, "profiles_%",s($settings));
+$registry = $this->requestAction('/settings/getRegistry');
+$strings = CacheTranslations($language, "profiles_%",s($settings),$registry);
 ?>
 
 <style>

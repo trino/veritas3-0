@@ -386,6 +386,12 @@ class SettingsController extends AppController {
          $this->response->body($this->request->webroot);
         return $this->response;
     }
+    function getRegistry()
+    {
+        $reg = TableRegistry::get('strings');
+        $this->response->body($reg);
+        return $this->response;
+    }
     
     
  }

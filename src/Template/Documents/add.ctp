@@ -2065,7 +2065,7 @@ if (isset($this->request->params['pass'][1])) {
 
     function fileUpload(ID) {
         // e.preventDefault();
-
+        
         var $type = $(".tab-pane.active").find("input[name='document_type']").val(),
             param = {
                 type: 'order',
@@ -2085,6 +2085,7 @@ if (isset($this->request->params['pass'][1])) {
                 param.subtype = 'Education';
             }
         }
+        
         var upload = new AjaxUpload("#" + ID, {
             action: "<?php echo $this->request->webroot;?>documents/fileUpload",
             enctype: 'multipart/form-data',

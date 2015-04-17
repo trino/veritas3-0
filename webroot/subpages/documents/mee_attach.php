@@ -380,7 +380,18 @@ if (isset($mee_att['attach_doc']->id) && $mee_att['attach_doc']->id) {
 
     nodocs($docsprinted);
     ?>
-
+    <div class="form-group row">
+    <div class="col-md-12">
+        <div class="col-md-4" align="right">Additional Attachment</div>
+            <div class="col-md-8">
+                <div class="mee_more">
+                <div><span><a style="margin-bottom:5px;" href="javascript:void(0)" class="btn btn-primary additional" id="mee_att_7">Browse</a> <span class="uploaded"></span></span>
+                    <input type="hidden" name="mee_attachments[]" class="mee_att_7" /></div>
+            </div>
+            <a href="javascript:void(0)" class="btn btn-success" id="mee_att_more">Add More</a>
+        </div>
+    </div>
+    </div>
     <div class="clearfix"></div>
 
 
@@ -403,8 +414,11 @@ if (isset($mee_att['attach_doc']->id) && $mee_att['attach_doc']->id) {
             var strings = '<div><span><a style="margin-bottom:5px;" href="javascript:void(0)" class="btn btn-primary additional" id="mee_att_'+last_id+'">Browse</a>&nbsp;<a style="margin-bottom:5px;" class="btn btn-danger" href="javascript:void(0);" onclick="$(this).parent().parent().remove();">Remove</a> <span class="uploaded"></span></span>'+
                 '<input type="hidden" name="mee_attachments[]" class="mee_att_'+last_id+'" /></div>';
 
-            $('.mee_more').append(strings);
-            fileUpload('mee_att_'+last_id);
+            $('.mee_more').append(strings,function(){
+            fileUpload('mee_att_'+last_id);    
+            });
+            
+            
 
         });
     })

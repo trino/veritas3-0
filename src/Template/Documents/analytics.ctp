@@ -7,7 +7,8 @@ if ($_SERVER['SERVER_NAME'] == "localhost" || $_SERVER['SERVER_NAME'] == "127.0.
 }
 
 $language = $this->request->session()->read('Profile.language');
-$strings = CacheTranslations($language, "analytics_%");
+$registry = $this->requestAction('/settings/getRegistry');
+$strings = CacheTranslations($language, "analytics_%","",$registry);
 //print_r($strings);
 
 function left($text, $length){

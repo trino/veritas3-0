@@ -148,14 +148,18 @@ function getIterator($Objects, $Fieldname, $Value){
     return false;
 }
 
-function CacheTranslations($Language, $Text, $Variables = ""){
+function CacheTranslations($Language='English', $Text, $Variables = "",$registry){
+    
     $data = array();
     if (!is_array($Text)){
         $Text = array($Text);
     }
     $Text[] = "dashboard_%";//for all pages
     $Text[] = "settings_%";//for all pages
-    $table = TableRegistry::get('strings');
+    
+    $table = $registry;
+    
+    
     $query="";
     foreach($Text as $text){
         if(strlen($query)>0){ $query.= " OR ";}
@@ -165,11 +169,18 @@ function CacheTranslations($Language, $Text, $Variables = ""){
             $query .= "Name = '" . $text . "'";
         }
     }
+    
     //echo "Query: " . $query;
     $table = $table->find()->where(["(" . $query . ")"])->all();
+    $data = array();
     foreach($table as $entry){
+        $Language = trim($Language);
+        if($Language != 'French')
+        $Language = 'English';
+        
         $data[$entry->Name] = ProcessVariables($entry->$Language, $Variables);
     }
+    
     return $data;
 }
 
