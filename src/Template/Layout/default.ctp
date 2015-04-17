@@ -8,7 +8,9 @@ if ($_SERVER['SERVER_NAME'] == "localhost" || $_SERVER['SERVER_NAME'] == "127.0.
 } else {
     include_once('subpages/api.php');
 }
-    $language = $this->requestAction('documents/translate');
+
+$language = $this->request->session()->read('Profile.language');
+$strings = CacheTranslations($language, "langswitch");
 ?>
 
 <!--[if IE 8]> <html lang="en" class="ie8 no-js"> <![endif]-->
@@ -211,11 +213,11 @@ if ($_SERVER['SERVER_NAME'] == "localhost" || $_SERVER['SERVER_NAME'] == "127.0.
 					<ul class="dropdown-menu dropdown-menu-default">
 						<li>
 							<a href="<?php echo $this->request->webroot;?>profiles/edit/<?php echo $this->request->session()->read('Profile.id'); ?>" >
-							<i class="icon-user"></i> My Settings </a>
+							<i class="icon-user"></i> <?= $strings["dashboard_mysettings"] ?> </a>
 						</li>
                         <li>
                             <a href="<?php echo $this->request->webroot;?>profiles/langswitch/<?php echo $this->request->session()->read('Profile.id'); ?>" >
-                                <i class="icon-user"></i> <?= Translate("langswitch", $language); ?> </a>
+                                <i class="icon-user"></i> <?= $strings["langswitch"]; ?> </a>
                         </li>
 						<li class="divider">
 						</li>

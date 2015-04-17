@@ -1280,19 +1280,14 @@ class DocumentsController extends AppController{
         }
 
     }
-    function audits($cid, $did)
-    {
+    function audits($cid, $did){
             $this->set('doc_comp',$this->Document);
            
             if (isset($_POST)) {
-                
-                if (isset($_GET['draft']) && $_GET['draft'])
-                {
+                if (isset($_GET['draft']) && $_GET['draft']) {
                     $arr['draft'] = 1;
                     $draft = '?draft';
-                }
-                else
-                {
+                } else {
                     $arr['draft'] = 0;
                     $draft = '';    
                 }
@@ -1310,29 +1305,24 @@ class DocumentsController extends AppController{
                     $doc = $docs->newEntity($arr);
 
                     if ($docs->save($doc)) {
-
                         $doczs = TableRegistry::get('audits');
                         if(!isset($_GET['order_id']) && !isset($_POST['oder_id']))
                         $ds['document_id'] = $doc->id;
                         $ds['date'] = $_POST['year']."-".$_POST['month'];
-                        foreach($_POST as $k=>$v)
-                        {
+                        foreach($_POST as $k=>$v) {
                             $ds[$k]=$v;
                         }
                         $docz = $doczs->newEntity($ds);
                         $doczs->save($docz);
                         $did = $doc->id;
-                        if(isset($_POST['attach_doc']))
-                        {
+                        if(isset($_POST['attach_doc'])) {
                             //var_dump($_POST['attach_doc']);die();
                             $model = $this->loadModel('doc_attachments');
                             $model->deleteAll(['document_id'=> $did]);
                             //$client_do = implode(',',$_POST['attach_doc']);
                             //$client_docs=explode(',',$client_do);
-                            foreach($_POST['attach_doc'] as $d)
-                            {
-                                if($d != "")
-                                {
+                            foreach($_POST['attach_doc'] as $d) {
+                                if($d != "") {
                                     $attach = TableRegistry::get('doc_attachments');
                                     $ds['document_id']= $did;
                                     $ds['attachment'] =$d;
@@ -1351,9 +1341,7 @@ class DocumentsController extends AppController{
                         $this->redirect(array('action' => 'index'.$draft));
                     }
 
-                } 
-                else 
-                {
+                } else {
                     $docs = TableRegistry::get('Documents');
                     $query2 = $docs->query();
                     $query2->update()
@@ -1365,22 +1353,18 @@ class DocumentsController extends AppController{
                         $doczs = TableRegistry::get('audits');
                         $ds['document_id'] = $did;
                         $ds['date'] = $_POST['year']."-".$_POST['month'];
-                        foreach($_POST as $k=>$v)
-                        {
+                        foreach($_POST as $k=>$v) {
                             $ds[$k]=$v;
                         }
                         $docz = $doczs->newEntity($ds);
                         $doczs->save($docz);
-                        if(isset($_POST['attach_doc']))
-                        {
+                        if(isset($_POST['attach_doc'])) {
                            
                             $model = $this->loadModel('doc_attachments');
                             $model->deleteAll(['document_id'=> $did]);
                             $client_docs = $_POST['attach_doc'];
-                            foreach($client_docs as $d)
-                            {
-                                if($d != "")
-                                {
+                            foreach($client_docs as $d) {
+                                if($d != "") {
                                     $attach = TableRegistry::get('doc_attachments');
                                     $ds['document_id']= $did;
                                     $ds['attachment'] =$d;
@@ -1394,21 +1378,20 @@ class DocumentsController extends AppController{
                     $this->Flash->success('Document Updated successfully.');
                     $this->redirect(array('action' => 'index'.$draft));
                 }
-                }
-                else
-                {
+                } else {
                     $arr['document_id'] = 0;                   
-                    if(!isset($_GET['order_id']))
-                    $arr['order_id'] = $did;
-                    else{
-                    $arr['order_id'] = $_GET['order_id'];
-                    $did = $_GET['order_id'];
+                    if(!isset($_GET['order_id'])) {
+                        $arr['order_id'] = $did;
+                    }else{
+                        $arr['order_id'] = $_GET['order_id'];
+                        $did = $_GET['order_id'];
                     }
                     $arr['document_id'] = 0;
-                    if (isset($_POST['uploaded_for']))
+                    if (isset($_POST['uploaded_for'])) {
                         $uploaded_for = $_POST['uploaded_for'];
-                    else
+                    }else {
                         $uploaded_for = '';
+                    }
                     $for_doc = array('document_type'=>'Audit','sub_doc_id'=>8,'order_id'=>$arr['order_id'],'user_id'=>'','uploaded_for'=>$uploaded_for);
                     $this->Document->saveDocForOrder($for_doc);
                     
@@ -1420,23 +1403,19 @@ class DocumentsController extends AppController{
                         $ds['document_id'] = 0;
                         $ds['date'] = $_POST['year']."-".$_POST['month'];
                         $doczs = TableRegistry::get('audits');
-                        foreach($_POST as $k=>$v)
-                        {
+                        foreach($_POST as $k=>$v) {
                             $ds[$k]=$v;
                         }
                         $docz = $doczs->newEntity($ds);
                         $doczs->save($docz);
                         unset($doczs);
-                        }
-                        else
-                        {
+                        } else {
                             $this->loadModel('Audits');
                           $this->Audits->deleteAll(['order_id' => $did]);
                             $doczs = TableRegistry::get('audits');
                             $ds['order_id'] = $did;
                             $ds['date'] = $_POST['year']."-".$_POST['month'];
-                            foreach($_POST as $k=>$v)
-                            {
+                            foreach($_POST as $k=>$v) {
                                 $ds[$k]=$v;
                             }
                             $docz = $doczs->newEntity($ds);
@@ -1622,19 +1601,13 @@ class DocumentsController extends AppController{
 
     }*/
 
-    function pre_employment_road_test($cid, $did)
-    {
+    function pre_employment_road_test($cid, $did){
         $this->set('doc_comp',$this->Document);
-
         if (isset($_POST)) {
-
-            if (isset($_GET['draft']) && $_GET['draft'])
-            {
+            if (isset($_GET['draft']) && $_GET['draft']) {
                 $arr['draft'] = 1;
                 $draft = '?draft';
-            }
-            else
-            {
+            } else {
                 $arr['draft'] = 0;
                 $draft = '';
             }
@@ -1645,19 +1618,16 @@ class DocumentsController extends AppController{
 
             if(!isset($_GET['order_id'])){
                 if (!$did || $did == '0') {
-
                     $arr['user_id'] = $this->request->session()->read('Profile.id');
                     $arr['created'] = date('Y-m-d H:i:s');
                     $docs = TableRegistry::get('Documents');
                     $doc = $docs->newEntity($arr);
 
                     if ($docs->save($doc)) {
-
                         $doczs = TableRegistry::get('pre_employment_road_test');
                         $ds['document_id'] = $doc->id;
 
-                        foreach($_POST as $k=>$v)
-                        {
+                        foreach($_POST as $k=>$v) {
                             $ds[$k]=$v;
                         }
                         $docz = $doczs->newEntity($ds);
@@ -1670,10 +1640,8 @@ class DocumentsController extends AppController{
                             $model->deleteAll(['document_id'=> $did]);
                             //$client_do = implode(',',$_POST['attach_doc']);
                             //$client_docs=explode(',',$client_do);
-                            foreach($_POST['attach_doc'] as $d)
-                            {
-                                if($d != "")
-                                {
+                            foreach($_POST['attach_doc'] as $d) {
+                                if($d != "") {
                                     $attach = TableRegistry::get('doc_attachments');
                                     $ds['document_id']= $did;
                                     $ds['attachment'] =$d;
@@ -1693,9 +1661,7 @@ class DocumentsController extends AppController{
                         $this->redirect(array('action' => 'index'.$draft));
                     }
 
-                }
-                else
-                {
+                } else {
                     $docs = TableRegistry::get('Documents');
                     $query2 = $docs->query();
                     $query2->update()
@@ -1707,22 +1673,17 @@ class DocumentsController extends AppController{
                     $doczs = TableRegistry::get('pre_employment_road_test');
                     $ds['document_id'] = $did;
 
-                    foreach($_POST as $k=>$v)
-                    {
+                    foreach($_POST as $k=>$v) {
                         $ds[$k]=$v;
                     }
                     $docz = $doczs->newEntity($ds);
                     $doczs->save($docz);
-                    if(isset($_POST['attach_doc']))
-                    {
-
+                    if(isset($_POST['attach_doc'])) {
                         $model = $this->loadModel('DocAttachments');
                         $model->deleteAll(['document_id'=> $did]);
                         $client_docs = $_POST['attach_doc'];
-                        foreach($client_docs as $d)
-                        {
-                            if($d != "")
-                            {
+                        foreach($client_docs as $d) {
+                            if($d != "") {
                                 $attach = TableRegistry::get('doc_attachments');
                                 $ds['document_id']= $did;
                                 $ds['attachment'] =$d;
@@ -1737,21 +1698,20 @@ class DocumentsController extends AppController{
                     $this->Flash->success('Document Updated successfully.');
                     $this->redirect(array('action' => 'index'.$draft));
                 }
-            }
-            else
-            {
+            } else {
                 $arr['document_id'] = 0;
-                if(!isset($_GET['order_id']))
+                if(!isset($_GET['order_id'])) {
                     $arr['order_id'] = $did;
-                else{
+                }else{
                     $arr['order_id'] = $_GET['order_id'];
                     $did = $_GET['order_id'];
                 }
                 $arr['document_id'] = 0;
-                if (isset($_POST['uploaded_for']))
+                if (isset($_POST['uploaded_for'])) {
                     $uploaded_for = $_POST['uploaded_for'];
-                else
+                }else {
                     $uploaded_for = '';
+                }
                 $for_doc = array('document_type'=>'pre_employment_road_test','sub_doc_id'=>17,'order_id'=>$arr['order_id'],'user_id'=>'','uploaded_for'=>$uploaded_for);
                 $this->Document->saveDocForOrder($for_doc);
 
@@ -1762,50 +1722,40 @@ class DocumentsController extends AppController{
                     $ds['order_id'] = $did;
                     $ds['document_id'] = 0;
                     $doczs = TableRegistry::get('pre_employment_road_test');
-                    foreach($_POST as $k=>$v)
-                    {
+                    foreach($_POST as $k=>$v) {
                         $ds[$k]=$v;
                     }
                     $docz = $doczs->newEntity($ds);
                     $doczs->save($docz);
                     unset($doczs);
-                }
-                else
-                {
+                } else {
                     $this->loadModel('pre_employment_road_test');
                     $this->pre_employment_road_test->deleteAll(['order_id' => $did]);
                     $doczs = TableRegistry::get('pre_employment_road_test');
                     $ds['order_id'] = $did;
 
-                    foreach($_POST as $k=>$v)
-                    {
+                    foreach($_POST as $k=>$v) {
                         $ds[$k]=$v;
                     }
                     $docz = $doczs->newEntity($ds);
                     $doczs->save($docz);
                     unset($doczs);
                 }
-
                 die();
             }
 
         }
 
     }
-    function basic_mee_platform($cid,$did)
-    {
+    function basic_mee_platform($cid,$did){
         // var_dump($_POST);die();
         $this->set('doc_comp',$this->Document);
 
         if (isset($_POST)) {
-
-            if (isset($_GET['draft']) && $_GET['draft'])
-            {
+            if (isset($_GET['draft']) && $_GET['draft']) {
                 $arr['draft'] = 1;
                 $draft = '?draft';
-            }
-            else
-            {
+            } else {
                 $arr['draft'] = 0;
                 $draft = '';
             }
@@ -1813,38 +1763,31 @@ class DocumentsController extends AppController{
             $arr['client_id'] = $cid;
             $arr['document_type'] = $_POST['document_type'];
 
-
             if(!isset($_GET['order_id'])){
                 if (!$did || $did == '0') {
-
                     $arr['user_id'] = $this->request->session()->read('Profile.id');
                     $arr['created'] = date('Y-m-d H:i:s');
                     $docs = TableRegistry::get('Documents');
                     $doc = $docs->newEntity($arr);
 
                     if ($docs->save($doc)) {
-
                         $doczs = TableRegistry::get('basic_mee_platform');
                         $ds['document_id'] = $doc->id;
 
-                        foreach($_POST as $k=>$v)
-                        {
+                        foreach($_POST as $k=>$v) {
                             $ds[$k]=$v;
                         }
                         $docz = $doczs->newEntity($ds);
                         $doczs->save($docz);
                         $did = $doc->id;
-                        if(isset($_POST['attach_doc']))
-                        {
+                        if(isset($_POST['attach_doc'])) {
                             //var_dump($_POST['attach_doc']);die();
                             $model = $this->loadModel('DocAttachments');
                             $model->deleteAll(['document_id'=> $did]);
                             //$client_do = implode(',',$_POST['attach_doc']);
                             //$client_docs=explode(',',$client_do);
-                            foreach($_POST['attach_doc'] as $d)
-                            {
-                                if($d != "")
-                                {
+                            foreach($_POST['attach_doc'] as $d) {
+                                if($d != "") {
                                     $attach = TableRegistry::get('doc_attachments');
                                     $ds['document_id']= $did;
                                     $ds['attachment'] =$d;
@@ -1864,9 +1807,7 @@ class DocumentsController extends AppController{
                         $this->redirect(array('action' => 'index'.$draft));
                     }
 
-                }
-                else
-                {
+                } else {
                     $docs = TableRegistry::get('Documents');
                     $query2 = $docs->query();
                     $query2->update()
@@ -1878,22 +1819,18 @@ class DocumentsController extends AppController{
                     $doczs = TableRegistry::get('basic_mee_platform');
                     $ds['document_id'] = $did;
 
-                    foreach($_POST as $k=>$v)
-                    {
+                    foreach($_POST as $k=>$v) {
                         $ds[$k]=$v;
                     }
                     $docz = $doczs->newEntity($ds);
                     $doczs->save($docz);
-                    if(isset($_POST['attach_doc']))
-                    {
+                    if(isset($_POST['attach_doc'])) {
 
                         $model = $this->loadModel('DocAttachments');
                         $model->deleteAll(['document_id'=> $did]);
                         $client_docs = $_POST['attach_doc'];
-                        foreach($client_docs as $d)
-                        {
-                            if($d != "")
-                            {
+                        foreach($client_docs as $d) {
+                            if($d != "") {
                                 $attach = TableRegistry::get('doc_attachments');
                                 $ds['document_id']= $did;
                                 $ds['attachment'] =$d;
@@ -1908,21 +1845,20 @@ class DocumentsController extends AppController{
                     $this->Flash->success('Document Updated successfully.');
                     $this->redirect(array('action' => 'index'.$draft));
                 }
-            }
-            else
-            {
+            } else {
                 $arr['document_id'] = 0;
-                if(!isset($_GET['order_id']))
+                if(!isset($_GET['order_id'])) {
                     $arr['order_id'] = $did;
-                else{
+                }else{
                     $arr['order_id'] = $_GET['order_id'];
                     $did = $_GET['order_id'];
                 }
                 $arr['document_id'] = 0;
-                if (isset($_POST['uploaded_for']))
+                if (isset($_POST['uploaded_for'])) {
                     $uploaded_for = $_POST['uploaded_for'];
-                else
+                } else {
                     $uploaded_for = '';
+                }
                 $for_doc = array('document_type'=>'basic_mee_platform','sub_doc_id'=>19,'order_id'=>$arr['order_id'],'user_id'=>'','uploaded_for'=>$uploaded_for);
                 $this->Document->saveDocForOrder($for_doc);
 
@@ -1933,48 +1869,37 @@ class DocumentsController extends AppController{
                     $ds['order_id'] = $did;
                     $ds['document_id'] = 0;
                     $doczs = TableRegistry::get('basic_mee_platform');
-                    foreach($_POST as $k=>$v)
-                    {
+                    foreach($_POST as $k=>$v) {
                         $ds[$k]=$v;
                     }
                     $docz = $doczs->newEntity($ds);
                     $doczs->save($docz);
                     unset($doczs);
-                }
-                else
-                {
+                } else {
                     $this->loadModel('basic_mee_platform');
                     $this->basic_mee_platform->deleteAll(['order_id' => $did]);
                     $doczs = TableRegistry::get('basic_mee_platform');
                     $ds['order_id'] = $did;
-
-                    foreach($_POST as $k=>$v)
-                    {
+                    foreach($_POST as $k=>$v) {
                         $ds[$k]=$v;
                     }
                     $docz = $doczs->newEntity($ds);
                     $doczs->save($docz);
                     unset($doczs);
                 }
-
                 die();
             }
 
         }
     }
-    function application_employment($cid, $did)
-    {
+    function application_employment($cid, $did){
         $this->set('doc_comp',$this->Document);
 
         if (isset($_POST)) {
-
-            if (isset($_GET['draft']) && $_GET['draft'])
-            {
+            if (isset($_GET['draft']) && $_GET['draft']) {
                 $arr['draft'] = 1;
                 $draft = '?draft';
-            }
-            else
-            {
+            } else {
                 $arr['draft'] = 0;
                 $draft = '';
             }
@@ -1985,35 +1910,29 @@ class DocumentsController extends AppController{
 
             if(!isset($_GET['order_id'])){
                 if (!$did || $did == '0') {
-
                     $arr['user_id'] = $this->request->session()->read('Profile.id');
                     $arr['created'] = date('Y-m-d H:i:s');
                     $docs = TableRegistry::get('Documents');
                     $doc = $docs->newEntity($arr);
 
                     if ($docs->save($doc)) {
-
                         $doczs = TableRegistry::get('application_for_employment_gfs');
                         $ds['document_id'] = $doc->id;
 
-                        foreach($_POST as $k=>$v)
-                        {
+                        foreach($_POST as $k=>$v) {
                             $ds[$k]=$v;
                         }
                         $docz = $doczs->newEntity($ds);
                         $doczs->save($docz);
                         $did = $doc->id;
-                        if(isset($_POST['attach_doc']))
-                        {
+                        if(isset($_POST['attach_doc'])) {
                             //var_dump($_POST['attach_doc']);die();
                             $model = $this->loadModel('DocAttachments');
                             $model->deleteAll(['document_id'=> $did]);
                             //$client_do = implode(',',$_POST['attach_doc']);
                             //$client_docs=explode(',',$client_do);
-                            foreach($_POST['attach_doc'] as $d)
-                            {
-                                if($d != "")
-                                {
+                            foreach($_POST['attach_doc'] as $d) {
+                                if($d != "") {
                                     $attach = TableRegistry::get('doc_attachments');
                                     $ds['document_id']= $did;
                                     $ds['attachment'] =$d;
@@ -2033,9 +1952,7 @@ class DocumentsController extends AppController{
                         $this->redirect(array('action' => 'index'.$draft));
                     }
 
-                }
-                else
-                {
+                } else {
                     $docs = TableRegistry::get('Documents');
                     $query2 = $docs->query();
                     $query2->update()
@@ -2047,22 +1964,17 @@ class DocumentsController extends AppController{
                     $doczs = TableRegistry::get('application_for_employment_gfs');
                     $ds['document_id'] = $did;
 
-                    foreach($_POST as $k=>$v)
-                    {
+                    foreach($_POST as $k=>$v) {
                         $ds[$k]=$v;
                     }
                     $docz = $doczs->newEntity($ds);
                     $doczs->save($docz);
-                    if(isset($_POST['attach_doc']))
-                    {
-
+                    if(isset($_POST['attach_doc'])) {
                         $model = $this->loadModel('DocAttachments');
                         $model->deleteAll(['document_id'=> $did]);
                         $client_docs = $_POST['attach_doc'];
-                        foreach($client_docs as $d)
-                        {
-                            if($d != "")
-                            {
+                        foreach($client_docs as $d) {
+                            if($d != "") {
                                 $attach = TableRegistry::get('doc_attachments');
                                 $ds['document_id']= $did;
                                 $ds['attachment'] =$d;
@@ -2077,21 +1989,20 @@ class DocumentsController extends AppController{
                     $this->Flash->success('Document Updated successfully.');
                     $this->redirect(array('action' => 'index'.$draft));
                 }
-            }
-            else
-            {
+            } else {
                 $arr['document_id'] = 0;
-                if(!isset($_GET['order_id']))
+                if (!isset($_GET['order_id'])) {
                     $arr['order_id'] = $did;
-                else{
+                } else {
                     $arr['order_id'] = $_GET['order_id'];
                     $did = $_GET['order_id'];
                 }
                 $arr['document_id'] = 0;
-                if (isset($_POST['uploaded_for']))
+                if (isset($_POST['uploaded_for'])){
                     $uploaded_for = $_POST['uploaded_for'];
-                else
+                }else{
                     $uploaded_for = '';
+                }
                 $for_doc = array('document_type'=>'application_for_employment_gfs','sub_doc_id'=>18,'order_id'=>$arr['order_id'],'user_id'=>'','uploaded_for'=>$uploaded_for);
                 $this->Document->saveDocForOrder($for_doc);
 
@@ -2102,50 +2013,38 @@ class DocumentsController extends AppController{
                     $ds['order_id'] = $did;
                     $ds['document_id'] = 0;
                     $doczs = TableRegistry::get('application_for_employment_gfs');
-                    foreach($_POST as $k=>$v)
-                    {
+                    foreach($_POST as $k=>$v) {
                         $ds[$k]=$v;
                     }
                     $docz = $doczs->newEntity($ds);
                     $doczs->save($docz);
                     unset($doczs);
-                }
-                else
-                {
+                } else {
                     $this->loadModel('application_for_employment_gfs');
                     $this->application_for_employment_gfs->deleteAll(['order_id' => $did]);
                     $doczs = TableRegistry::get('application_for_employment_gfs');
                     $ds['order_id'] = $did;
 
-                    foreach($_POST as $k=>$v)
-                    {
+                    foreach($_POST as $k=>$v) {
                         $ds[$k]=$v;
                     }
                     $docz = $doczs->newEntity($ds);
                     $doczs->save($docz);
                     unset($doczs);
                 }
-
                 die();
             }
-
         }
 
     }
 
-    function basic($cid, $did)
-    {
+    function basic($cid, $did){
         $this->set('doc_comp',$this->Document);
-
         if (isset($_POST)) {
-
-            if (isset($_GET['draft']) && $_GET['draft'])
-            {
+            if (isset($_GET['draft']) && $_GET['draft']) {
                 $arr['draft'] = 1;
                 $draft = '?draft';
-            }
-            else
-            {
+            } else {
                 $arr['draft'] = 0;
                 $draft = '';
             }
@@ -2156,35 +2055,29 @@ class DocumentsController extends AppController{
 
             if(!isset($_GET['order_id'])){
                 if (!$did || $did == '0') {
-
                     $arr['user_id'] = $this->request->session()->read('Profile.id');
                     $arr['created'] = date('Y-m-d H:i:s');
                     $docs = TableRegistry::get('Documents');
                     $doc = $docs->newEntity($arr);
 
                     if ($docs->save($doc)) {
-
                         $doczs = TableRegistry::get('generic_forms');
                         $ds['document_id'] = $doc->id;
 
-                        foreach($_POST as $k=>$v)
-                        {
+                        foreach($_POST as $k=>$v) {
                             $ds[$k]=$v;
                         }
                         $docz = $doczs->newEntity($ds);
                         $doczs->save($docz);
                         $did = $doc->id;
-                        if(isset($_POST['attach_doc']))
-                        {
+                        if(isset($_POST['attach_doc'])) {
                             //var_dump($_POST['attach_doc']);die();
                             $model = $this->loadModel('DocAttachments');
                             $model->deleteAll(['document_id'=> $did]);
                             //$client_do = implode(',',$_POST['attach_doc']);
                             //$client_docs=explode(',',$client_do);
-                            foreach($_POST['attach_doc'] as $d)
-                            {
-                                if($d != "")
-                                {
+                            foreach($_POST['attach_doc'] as $d) {
+                                if($d != "") {
                                     $attach = TableRegistry::get('doc_attachments');
                                     $ds['document_id']= $did;
                                     $ds['attachment'] =$d;
@@ -2204,9 +2097,7 @@ class DocumentsController extends AppController{
                         $this->redirect(array('action' => 'index'.$draft));
                     }
 
-                }
-                else
-                {
+                } else {
                     $docs = TableRegistry::get('Documents');
                     $query2 = $docs->query();
                     $query2->update()
@@ -2218,22 +2109,17 @@ class DocumentsController extends AppController{
                     $doczs = TableRegistry::get('generic_forms');
                     $ds['document_id'] = $did;
 
-                    foreach($_POST as $k=>$v)
-                    {
+                    foreach($_POST as $k=>$v) {
                         $ds[$k]=$v;
                     }
                     $docz = $doczs->newEntity($ds);
                     $doczs->save($docz);
-                    if(isset($_POST['attach_doc']))
-                    {
-
+                    if(isset($_POST['attach_doc'])) {
                         $model = $this->loadModel('DocAttachments');
                         $model->deleteAll(['document_id'=> $did]);
                         $client_docs = $_POST['attach_doc'];
-                        foreach($client_docs as $d)
-                        {
-                            if($d != "")
-                            {
+                        foreach($client_docs as $d) {
+                            if($d != "") {
                                 $attach = TableRegistry::get('doc_attachments');
                                 $ds['document_id']= $did;
                                 $ds['attachment'] =$d;
@@ -2248,21 +2134,20 @@ class DocumentsController extends AppController{
                     $this->Flash->success('Document Updated successfully.');
                     $this->redirect(array('action' => 'index'.$draft));
                 }
-            }
-            else
-            {
+            } else {
                 $arr['document_id'] = 0;
-                if(!isset($_GET['order_id']))
+                if(!isset($_GET['order_id'])) {
                     $arr['order_id'] = $did;
-                else{
+                } else{
                     $arr['order_id'] = $_GET['order_id'];
                     $did = $_GET['order_id'];
                 }
                 $arr['document_id'] = 0;
-                if (isset($_POST['uploaded_for']))
+                if (isset($_POST['uploaded_for'])) {
                     $uploaded_for = $_POST['uploaded_for'];
-                else
+                }else {
                     $uploaded_for = '';
+                }
                 $for_doc = array('document_type'=>'Audit','sub_doc_id'=>11,'order_id'=>$arr['order_id'],'user_id'=>'','uploaded_for'=>$uploaded_for);
                 $this->Document->saveDocForOrder($for_doc);
 
@@ -2273,23 +2158,18 @@ class DocumentsController extends AppController{
                     $ds['order_id'] = $did;
                     $ds['document_id'] = 0;
                     $doczs = TableRegistry::get('generic_forms');
-                    foreach($_POST as $k=>$v)
-                    {
+                    foreach($_POST as $k=>$v) {
                         $ds[$k]=$v;
                     }
                     $docz = $doczs->newEntity($ds);
                     $doczs->save($docz);
                     unset($doczs);
-                }
-                else
-                {
+                } else {
                     $this->loadModel('GenericForms');
                     $this->GenericForms->deleteAll(['order_id' => $did]);
                     $doczs = TableRegistry::get('generic_forms');
                     $ds['order_id'] = $did;
-
-                    foreach($_POST as $k=>$v)
-                    {
+                    foreach($_POST as $k=>$v) {
                         $ds[$k]=$v;
                     }
                     $docz = $doczs->newEntity($ds);
@@ -2303,19 +2183,14 @@ class DocumentsController extends AppController{
         }
 
     }
-    function addpastemployer($cid, $did)
-    {
+    function addpastemployer($cid, $did){
         $this->set('doc_comp',$this->Document);
 
         if (isset($_POST)) {
-
-            if (isset($_GET['draft']) && $_GET['draft'])
-            {
+            if (isset($_GET['draft']) && $_GET['draft']) {
                 $arr['draft'] = 1;
                 $draft = '?draft';
-            }
-            else
-            {
+            } else {
                 $arr['draft'] = 0;
                 $draft = '';
             }
@@ -2337,23 +2212,19 @@ class DocumentsController extends AppController{
                         $doczs = TableRegistry::get('past_employment_survey');
                         $ds['document_id'] = $doc->id;
 
-                        foreach($_POST as $k=>$v)
-                        {
+                        foreach($_POST as $k=>$v) {
                             $ds[$k]=$v;
                         }
                         $docz = $doczs->newEntity($ds);
                         $doczs->save($docz);
                         $did = $doc->id;
-                        if(isset($_POST['attach_doc']))
-                        {
+                        if(isset($_POST['attach_doc'])) {
                             $model = $this->loadModel('DocAttachments');
                             $model->deleteAll(['document_id'=> $did]);
                             //$client_do = implode(',',$_POST['attach_doc']);
                             //$client_docs=explode(',',$client_do);
-                            foreach($_POST['attach_doc'] as $d)
-                            {
-                                if($d != "")
-                                {
+                            foreach($_POST['attach_doc'] as $d) {
+                                if($d != "") {
                                     $attach = TableRegistry::get('doc_attachments');
                                     $ds['document_id']= $did;
                                     $ds['attachment'] =$d;
@@ -2373,9 +2244,7 @@ class DocumentsController extends AppController{
                         $this->redirect(array('action' => 'index'.$draft));
                     }
 
-                }
-                else
-                {
+                } else {
                     $docs = TableRegistry::get('Documents');
                     $query2 = $docs->query();
                     $query2->update()
@@ -2387,22 +2256,18 @@ class DocumentsController extends AppController{
                     $doczs = TableRegistry::get('past_employment_survey');
                     $ds['document_id'] = $did;
 
-                    foreach($_POST as $k=>$v)
-                    {
+                    foreach($_POST as $k=>$v) {
                         $ds[$k]=$v;
                     }
                     $docz = $doczs->newEntity($ds);
                     $doczs->save($docz);
-                    if(isset($_POST['attach_doc']))
-                    {
+                    if(isset($_POST['attach_doc'])) {
 
                         $model = $this->loadModel('DocAttachments');
                         $model->deleteAll(['document_id'=> $did]);
                         $client_docs = $_POST['attach_doc'];
-                        foreach($client_docs as $d)
-                        {
-                            if($d != "")
-                            {
+                        foreach($client_docs as $d) {
+                            if($d != "") {
                                 $attach = TableRegistry::get('doc_attachments');
                                 $ds['document_id']= $did;
                                 $ds['attachment'] =$d;
@@ -2417,75 +2282,63 @@ class DocumentsController extends AppController{
                     $this->Flash->success('Document Updated successfully.');
                     $this->redirect(array('action' => 'index'.$draft));
                 }
-            }
-            else
-            {
+            } else {
                 $arr['document_id'] = 0;
-                if(!isset($_GET['order_id']))
+                if (!isset($_GET['order_id'])){
                     $arr['order_id'] = $did;
-                else{
+                }else{
                     $arr['order_id'] = $_GET['order_id'];
                     $did = $_GET['order_id'];
                 }
                 $arr['document_id'] = 0;
-                if (isset($_POST['uploaded_for']))
+                if (isset($_POST['uploaded_for'])) {
                     $uploaded_for = $_POST['uploaded_for'];
-                else
+                } else {
                     $uploaded_for = '';
+                }
                 $for_doc = array('document_type'=>'Past Employment Survey','sub_doc_id'=>16,'order_id'=>$arr['order_id'],'user_id'=>'','uploaded_for'=>$uploaded_for);
                 $this->Document->saveDocForOrder($for_doc);
 
-                $doczs = TableRegistry::get('generic_forms');
+                $doczs = TableRegistry::get('PastEmploymentSurvey');
                 $check = $doczs->find()->where(['order_id'=>$did])->first();
                 unset($doczs);
                 if (!$check) {
                     $ds['order_id'] = $did;
                     $ds['document_id'] = 0;
-                    $doczs = TableRegistry::get('generic_forms');
-                    foreach($_POST as $k=>$v)
-                    {
+                    $doczs = TableRegistry::get('PastEmploymentSurvey');
+                    foreach($_POST as $k=>$v) {
                         $ds[$k]=$v;
                     }
                     $docz = $doczs->newEntity($ds);
                     $doczs->save($docz);
                     unset($doczs);
-                }
-                else
-                {
+                } else {
                     $this->loadModel('PastEmploymentSurvey');
                     $this->PastEmploymentSurvey->deleteAll(['order_id' => $did]);
                     $doczs = TableRegistry::get('PastEmploymentSurvey');
                     $ds['order_id'] = $did;
 
-                    foreach($_POST as $k=>$v)
-                    {
+                    foreach($_POST as $k=>$v) {
                         $ds[$k]=$v;
                     }
                     $docz = $doczs->newEntity($ds);
                     $doczs->save($docz);
                     unset($doczs);
                 }
-
                 die();
             }
-
         }
-
     }
 
-    function quebec($cid, $did)
-    {
+    function quebec($cid, $did){
         $this->set('doc_comp',$this->Document);
 
         if (isset($_POST)) {
 
-            if (isset($_GET['draft']) && $_GET['draft'])
-            {
+            if (isset($_GET['draft']) && $_GET['draft']) {
                 $arr['draft'] = 1;
                 $draft = '?draft';
-            }
-            else
-            {
+            } else {
                 $arr['draft'] = 0;
                 $draft = '';
             }
@@ -2503,28 +2356,23 @@ class DocumentsController extends AppController{
                     $doc = $docs->newEntity($arr);
 
                     if ($docs->save($doc)) {
-
                         $doczs = TableRegistry::get('quebec_forms');
                         $ds['document_id'] = $doc->id;
 
-                        foreach($_POST as $k=>$v)
-                        {
+                        foreach($_POST as $k=>$v) {
                             $ds[$k]=$v;
                         }
                         $docz = $doczs->newEntity($ds);
                         $doczs->save($docz);
                         $did = $doc->id;
-                        if(isset($_POST['attach_doc']))
-                        {
+                        if(isset($_POST['attach_doc'])) {
                             //var_dump($_POST['attach_doc']);die();
                             $model = $this->loadModel('DocAttachments');
                             $model->deleteAll(['document_id'=> $did]);
                             //$client_do = implode(',',$_POST['attach_doc']);
                             //$client_docs=explode(',',$client_do);
-                            foreach($_POST['attach_doc'] as $d)
-                            {
-                                if($d != "")
-                                {
+                            foreach($_POST['attach_doc'] as $d) {
+                                if($d != "") {
                                     $attach = TableRegistry::get('doc_attachments');
                                     $ds['document_id']= $did;
                                     $ds['attachment'] =$d;
@@ -2534,7 +2382,6 @@ class DocumentsController extends AppController{
                                     unset($att);
                                 }
                             }
-
                         }
                         unset($doczs);
                         $this->Flash->success('Document saved successfully.');
@@ -2543,10 +2390,7 @@ class DocumentsController extends AppController{
                         $this->Flash->error('Document could not be saved. Please try again.');
                         $this->redirect(array('action' => 'index'.$draft));
                     }
-
-                }
-                else
-                {
+                } else {
                     $docs = TableRegistry::get('Documents');
                     $query2 = $docs->query();
                     $query2->update()
@@ -2558,22 +2402,18 @@ class DocumentsController extends AppController{
                     $doczs = TableRegistry::get('quebec_forms');
                     $ds['document_id'] = $did;
 
-                    foreach($_POST as $k=>$v)
-                    {
+                    foreach($_POST as $k=>$v) {
                         $ds[$k]=$v;
                     }
                     $docz = $doczs->newEntity($ds);
                     $doczs->save($docz);
-                    if(isset($_POST['attach_doc']))
-                    {
+                    if(isset($_POST['attach_doc'])) {
 
                         $model = $this->loadModel('DocAttachments');
                         $model->deleteAll(['document_id'=> $did]);
                         $client_docs = $_POST['attach_doc'];
-                        foreach($client_docs as $d)
-                        {
-                            if($d != "")
-                            {
+                        foreach($client_docs as $d) {
+                            if($d != "") {
                                 $attach = TableRegistry::get('doc_attachments');
                                 $ds['document_id']= $did;
                                 $ds['attachment'] =$d;
@@ -2588,21 +2428,20 @@ class DocumentsController extends AppController{
                     $this->Flash->success('Document Updated successfully.');
                     $this->redirect(array('action' => 'index'.$draft));
                 }
-            }
-            else
-            {
+            } else {
                 $arr['document_id'] = 0;
-                if(!isset($_GET['order_id']))
+                if(!isset($_GET['order_id'])) {
                     $arr['order_id'] = $did;
-                else{
+                } else{
                     $arr['order_id'] = $_GET['order_id'];
                     $did = $_GET['order_id'];
                 }
                 $arr['document_id'] = 0;
-                if (isset($_POST['uploaded_for']))
+                if (isset($_POST['uploaded_for'])) {
                     $uploaded_for = $_POST['uploaded_for'];
-                else
+                } else {
                     $uploaded_for = '';
+                }
                 $for_doc = array('document_type'=>'Quebic','sub_doc_id'=>13,'order_id'=>$arr['order_id'],'user_id'=>'','uploaded_for'=>$uploaded_for);
                 $this->Document->saveDocForOrder($for_doc);
 
@@ -2613,49 +2452,37 @@ class DocumentsController extends AppController{
                     $ds['order_id'] = $did;
                     $ds['document_id'] = 0;
                     $doczs = TableRegistry::get('quebec_forms');
-                    foreach($_POST as $k=>$v)
-                    {
+                    foreach($_POST as $k=>$v) {
                         $ds[$k]=$v;
                     }
                     $docz = $doczs->newEntity($ds);
                     $doczs->save($docz);
                     unset($doczs);
-                }
-                else
-                {
+                } else {
                     $this->loadModel('QuebecForms');
                     $this->QuebecForms->deleteAll(['order_id' => $did]);
                     $doczs = TableRegistry::get('quebec_forms');
                     $ds['order_id'] = $did;
 
-                    foreach($_POST as $k=>$v)
-                    {
+                    foreach($_POST as $k=>$v) {
                         $ds[$k]=$v;
                     }
                     $docz = $doczs->newEntity($ds);
                     $doczs->save($docz);
                     unset($doczs);
                 }
-
                 die();
             }
-
         }
-
     }
-    function bc($cid, $did)
-    {
+
+    function bc($cid, $did){
         $this->set('doc_comp',$this->Document);
-
         if (isset($_POST)) {
-
-            if (isset($_GET['draft']) && $_GET['draft'])
-            {
+            if (isset($_GET['draft']) && $_GET['draft']) {
                 $arr['draft'] = 1;
                 $draft = '?draft';
-            }
-            else
-            {
+            } else {
                 $arr['draft'] = 0;
                 $draft = '';
             }
@@ -2677,24 +2504,20 @@ class DocumentsController extends AppController{
                         $doczs = TableRegistry::get('bc_forms');
                         $ds['document_id'] = $doc->id;
 
-                        foreach($_POST as $k=>$v)
-                        {
+                        foreach($_POST as $k=>$v) {
                             $ds[$k]=$v;
                         }
                         $docz = $doczs->newEntity($ds);
                         $doczs->save($docz);
                         $did = $doc->id;
-                        if(isset($_POST['attach_doc']))
-                        {
+                        if(isset($_POST['attach_doc'])) {
                             //var_dump($_POST['attach_doc']);die();
                             $model = $this->loadModel('DocAttachments');
                             $model->deleteAll(['document_id'=> $did]);
                             //$client_do = implode(',',$_POST['attach_doc']);
                             //$client_docs=explode(',',$client_do);
-                            foreach($_POST['attach_doc'] as $d)
-                            {
-                                if($d != "")
-                                {
+                            foreach($_POST['attach_doc'] as $d) {
+                                if($d != "") {
                                     $attach = TableRegistry::get('doc_attachments');
                                     $ds['document_id']= $did;
                                     $ds['attachment'] =$d;
@@ -2713,10 +2536,7 @@ class DocumentsController extends AppController{
                         $this->Flash->error('Document could not be saved. Please try again.');
                         $this->redirect(array('action' => 'index'.$draft));
                     }
-
-                }
-                else
-                {
+                } else {
                     $docs = TableRegistry::get('Documents');
                     $query2 = $docs->query();
                     $query2->update()
@@ -2728,22 +2548,17 @@ class DocumentsController extends AppController{
                     $doczs = TableRegistry::get('bc_forms');
                     $ds['document_id'] = $did;
 
-                    foreach($_POST as $k=>$v)
-                    {
+                    foreach($_POST as $k=>$v) {
                         $ds[$k]=$v;
                     }
                     $docz = $doczs->newEntity($ds);
                     $doczs->save($docz);
-                    if(isset($_POST['attach_doc']))
-                    {
-
+                    if(isset($_POST['attach_doc'])) {
                         $model = $this->loadModel('DocAttachments');
                         $model->deleteAll(['document_id'=> $did]);
                         $client_docs = $_POST['attach_doc'];
-                        foreach($client_docs as $d)
-                        {
-                            if($d != "")
-                            {
+                        foreach($client_docs as $d) {
+                            if($d != "") {
                                 $attach = TableRegistry::get('doc_attachments');
                                 $ds['document_id']= $did;
                                 $ds['attachment'] =$d;
@@ -2758,21 +2573,20 @@ class DocumentsController extends AppController{
                     $this->Flash->success('Document Updated successfully.');
                     $this->redirect(array('action' => 'index'.$draft));
                 }
-            }
-            else
-            {
+            } else {
                 $arr['document_id'] = 0;
-                if(!isset($_GET['order_id']))
+                if (!isset($_GET['order_id'])){
                     $arr['order_id'] = $did;
-                else{
+                }else{
                     $arr['order_id'] = $_GET['order_id'];
                     $did = $_GET['order_id'];
                 }
                 $arr['document_id'] = 0;
-                if (isset($_POST['uploaded_for']))
+                if (isset($_POST['uploaded_for'])) {
                     $uploaded_for = $_POST['uploaded_for'];
-                else
+                } else {
                     $uploaded_for = '';
+                }
                 $for_doc = array('document_type'=>'Quebic','sub_doc_id'=>14,'order_id'=>$arr['order_id'],'user_id'=>'','uploaded_for'=>$uploaded_for);
                 $this->Document->saveDocForOrder($for_doc);
 
@@ -2794,7 +2608,6 @@ class DocumentsController extends AppController{
                     $this->BcForms->deleteAll(['order_id' => $did]);
                     $doczs = TableRegistry::get('bc_forms');
                     $ds['order_id'] = $did;
-
                     foreach($_POST as $k=>$v) {
                         $ds[$k]=$v;
                     }
@@ -2802,7 +2615,6 @@ class DocumentsController extends AppController{
                     $doczs->save($docz);
                     unset($doczs);
                 }
-
                 die();
             }
 
@@ -2824,10 +2636,8 @@ class DocumentsController extends AppController{
             $arr['client_id'] = $cid;
             $arr['document_type'] = $_POST['document_type'];
 
-
             if(!isset($_GET['order_id'])){
                 if (!$did || $did == '0') {
-
                     $arr['user_id'] = $this->request->session()->read('Profile.id');
                     $arr['created'] = date('Y-m-d H:i:s');
                     $docs = TableRegistry::get('Documents');
@@ -2869,7 +2679,6 @@ class DocumentsController extends AppController{
                         $this->Flash->error('Document could not be saved. Please try again.');
                         $this->redirect(array('action' => 'index'.$draft));
                     }
-
                 } else {
                     $docs = TableRegistry::get('Documents');
                     $query2 = $docs->query();
@@ -3090,8 +2899,7 @@ class DocumentsController extends AppController{
         die;
     }
 
-    public function aggregate($id)
-    {
+    public function aggregate($id){
         $client =  TableRegistry::get('clients')->find()->where(['id'=>$id])->first();
         $audits = TableRegistry::get('audits')->find()->where(['document_id IN (SELECT id FROM documents WHERE draft = 0 AND sub_doc_id = 8 AND client_id = '.$id.')'])->all();
         $this->set('client',$client);
@@ -3100,13 +2908,13 @@ class DocumentsController extends AppController{
         $this->set('client_docs',$att);
         
     }
-    public function getProfileByDocument($id=0)
-    {
-        
-        if($id)
-        $products =  TableRegistry::get('profiles')->find()->where(['id IN (SELECT user_id FROM documents WHERE id = '.$id.')'])->first();
-        else
-        $products = false;
+
+    public function getProfileByDocument($id=0){
+        if($id) {
+            $products = TableRegistry::get('profiles')->find()->where(['id IN (SELECT user_id FROM documents WHERE id = ' . $id . ')'])->first();
+        } else {
+            $products = false;
+        }
         $this->response->body($products);
         return $this->response;
         

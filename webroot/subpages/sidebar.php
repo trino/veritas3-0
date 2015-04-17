@@ -33,7 +33,7 @@
 
                     <div class="input-group">
                         <input type="text" name="searchdoc" class="form-control"
-                               placeholder="<?php echo ucfirst($settings->document); ?> Search...">
+                               placeholder="<?= $strings["dashboard_documentsearch"]; ?>">
 							<span class="input-group-btn">
 							<a href="javascript:;" class="btn submit"><i class="icon-magnifier"></i></a>
 							</span>
@@ -329,7 +329,7 @@
             <?php if ($sidebar->logo == '1') { ?>
                 <li class="sidebar-toggler-wrapper">
                     <?php $logo1 = $this->requestAction('Logos/getlogo/1'); ?>
-                    <div class="whitecenterdiv">A service division of</div>
+                    <div class="whitecenterdiv"><?= $strings["dashboard_servicedivision"]; ?></div>
 
                     <img src="<?php echo $this->request->webroot . 'img/logos/' . $logo1; ?>" class="secondary_logo"/>
                 </li>
