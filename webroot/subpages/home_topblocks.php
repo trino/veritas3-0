@@ -116,28 +116,6 @@ function randomcolor(){
             </div>
         </a>
     <?php } ?>
-    <?php if ($sidebar->document_create ==1 && $block->submit_document =='1') { ?>
-        <a href="<?php echo $this->request->webroot.$document_url;?>" class="tile bg-grey-cascade" style="display: block;">
-            <div class="tile-body">
-                <i class="icon-doc"></i>
-            </div>
-            <div class="tile-object">
-                <div class="name">Create <?=$settings->document;?></div>
-                <div class="number"></div>
-            </div>
-        </a>
-    <?php } ?>
-    <?php if ($sidebar->document_list ==1 && $block->document_draft =='1') { ?>
-        <a class="tile bg-grey-cascade" href="<?php echo $this->request->webroot; ?>documents?draft" style="display: block;">
-            <div class="tile-body">
-                <i class="fa fa-pencil"></i>
-            </div>
-            <div class="tile-object">
-                <div class="name"> <?=$settings->document;?> Drafts</div>
-                <div class="number"></div>
-            </div>
-        </a>
-    <?php } ?>
 
     <?php if ($sidebar->orders_list ==1 && $block->list_order =='1') { ?>
         <a href="<?php echo $this->request->webroot; ?>orders/orderslist" style="display: block;" class="tile bg-grey-cascade">
@@ -219,12 +197,16 @@ function randomcolor(){
             }
         }
     }
-
+/*
     $URL=$this->request->webroot . "orders/addorder/1/?driver=132&division=1&order_type=Order+Products&forms=72";
     makeblock($URL, "Social media search", "fa fa-search" );
     makeblock($URL, "Social media investigation", "fa fa-twitter" );
     makeblock($URL, "Physical surveillance", "fa fa-search" );
+*/
     ?>
+
+
+
 
     <?php if ($sidebar->orders_list ==1 && $block->document_draft =='1') { ?>
         <a class="tile bg-grey-cascade" href="<?php echo $this->request->webroot; ?>orders/orderslist?draft" style="display: block;">
@@ -237,6 +219,35 @@ function randomcolor(){
             </div>
         </a>
     <?php } ?>
+
+
+
+
+    <?php if ($sidebar->document_create ==1 && $block->submit_document =='1') { ?>
+        <a href="<?php echo $this->request->webroot.$document_url;?>" class="tile bg-grey-cascade" style="display: block;">
+            <div class="tile-body">
+                <i class="icon-doc"></i>
+            </div>
+            <div class="tile-object">
+                <div class="name">Create <?=$settings->document;?></div>
+                <div class="number"></div>
+            </div>
+        </a>
+    <?php } ?>
+    <?php if ($sidebar->document_list ==1 && $block->document_draft =='1') { ?>
+        <a class="tile bg-grey-cascade" href="<?php echo $this->request->webroot; ?>documents?draft" style="display: block;">
+            <div class="tile-body">
+                <i class="fa fa-pencil"></i>
+            </div>
+            <div class="tile-object">
+                <div class="name"> <?=$settings->document;?> Drafts</div>
+                <div class="number"></div>
+            </div>
+        </a>
+    <?php } ?>
+
+
+
      <?php if ($sidebar->messages ==1 && $block->message =='1' && false) { ?>
         <a class="tile bg-green" href="<?php echo $this->request->webroot; ?>messages" style="display: block;">
             <div class="tile-body">

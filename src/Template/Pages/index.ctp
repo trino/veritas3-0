@@ -39,7 +39,7 @@ die();
                     if(isset($logomain['client']) && $logomain['client'])
                     {
                         ?>
-                        <img src="<?php echo $this->request->webroot;?>img/jobs/<?php echo $logomain['client'];?>" width="180px;" />
+                        <img src="<?php echo $this->request->webroot;?>img/jobs/<?php echo $logomain['client'];?>" height="50px;" />
                     <?php
 
                     }
@@ -48,7 +48,7 @@ die();
                         if(isset($logomain['setting']))
                         {
                             ?>
-                            <img src="<?php echo $this->request->webroot;?>img/clients/<?php echo $logomain['setting'];?>" width="180px;" />
+                            <img src="<?php echo $this->request->webroot;?>img/clients/<?php echo $logomain['setting'];?>" height="50px;" />
                         <?php
 
                         }

@@ -257,11 +257,11 @@
                                 }
                             } ?>
 
-                            <li <?php echo ($this->request['controller'] == 'Orders' && $this->request['action'] == 'invoice' && !isset($_GET['draft'])) ? 'class="active"' : ''; ?>>
+                            <!--li <?php echo ($this->request['controller'] == 'Orders' && $this->request['action'] == 'invoice' && !isset($_GET['draft'])) ? 'class="active"' : ''; ?>>
                                     <a href="<?php echo $this->request->webroot; ?>orders/invoice">
                                         <i class="icon-list"></i>
                                        Invoice</a>
-                            </li>
+                            </li-->
 
                         </ul>
                     <?php } ?>
