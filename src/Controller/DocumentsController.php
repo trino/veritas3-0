@@ -2299,13 +2299,13 @@ class DocumentsController extends AppController{
                 $for_doc = array('document_type'=>'Past Employment Survey','sub_doc_id'=>16,'order_id'=>$arr['order_id'],'user_id'=>'','uploaded_for'=>$uploaded_for);
                 $this->Document->saveDocForOrder($for_doc);
 
-                $doczs = TableRegistry::get('PastEmploymentSurvey');
+                $doczs = TableRegistry::get('generic_forms');
                 $check = $doczs->find()->where(['order_id'=>$did])->first();
                 unset($doczs);
                 if (!$check) {
                     $ds['order_id'] = $did;
                     $ds['document_id'] = 0;
-                    $doczs = TableRegistry::get('PastEmploymentSurvey');
+                    $doczs = TableRegistry::get('generic_forms');
                     foreach($_POST as $k=>$v) {
                         $ds[$k]=$v;
                     }
