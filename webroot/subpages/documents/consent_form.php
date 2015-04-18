@@ -54,7 +54,7 @@
 
 
             <div class="col-md-4"><label class="control-label">Drivers License Number: </label>
-                <input type="text" class="form-control required" name="driver_license_number"/>
+                <input type="text" class="form-control" name="driver_license_number"/>
             </div>
 
             <div class="col-md-4"><label class="control-label">Driver's License was issued in:</label>
