@@ -119,18 +119,19 @@
                                 <li class="active">
                                     <a href="#tab_1_1" data-toggle="tab">Info</a>
                                 </li>
-                                <?php if ($this->request['action'] != "add" && !isset($_GET['view'])  && $settings->mee == "MEE") {
+                                <?php if ($this->request['action'] != "add" && !isset($_GET['view']) && $settings->mee == "MEE") {
                                     ?>
                                     <li>
                                         <a href="#tab_1_4" data-toggle="tab">Products Display</a>
                                     </li>
+                                <?php
+
+                                } ?>
                                     <li>
                                         <a href="#tab_1_2" data-toggle="tab">Forms Display</a>
                                     </li>
 
-                                <?php
 
-                                } ?>
                                 <li>
                                     <a href="#tab_1_3"
                                        data-toggle="tab"><?php echo (!isset($_GET['view'])) ? "Assign to Profile" : "Assigned To"; ?></a>
@@ -321,17 +322,17 @@
 
                                                                 <div class="form-group col-md-4">
                                                                     <label class="control-label">Start Date
-                                                                        </label>
+                                                                    </label>
                                                                     <input type="text" class="form-control date-picker"
                                                                            name="date_start" <?php if (isset($client->date_start)) { ?> value="<?php echo $client->date_start; ?>" <?php } ?>/>
                                                                 </div>
                                                                 <div class="form-group col-md-4">
                                                                     <label class="control-label">End Date
-                                                                        </label>
+                                                                    </label>
                                                                     <input type="text" class="form-control date-picker"
                                                                            name="date_end" <?php if (isset($client->date_end)) { ?> value="<?php echo $client->date_end; ?>" <?php } ?>/>
                                                                 </div>
-                                                                
+
                                                                 <!--div class="form-group col-md-4">
                                                                     <label class="control-label">Date</label>
                                                                     <input type="text" class="form-control date-picker"
@@ -564,7 +565,9 @@
 
                                         <?php
                                             echo '<div';
-                                            if (isset($_GET["products"])) { echo " active";}
+                                            if (isset($_GET["products"])) {
+                                                echo " active";
+                                            }
                                             echo ' class="tab-pane" id="tab_1_4">';
                                             include('subpages/clients/products.php');
                                             echo "</DIV>";
@@ -612,9 +615,8 @@
 
                                                                 foreach ($subdoccli as $subcl) {
 
-
-                                                                        $u++;
-                                                                        $sub = $this->requestAction('/clients/getFirstSub/' . $subcl->sub_id);
+                                                                    $u++;
+                                                                    $sub = $this->requestAction('/clients/getFirstSub/' . $subcl->sub_id);
 
                                                                     if (strtolower($sub['title']) == "audit" || strtolower($sub['title']) == "attachment") {
 

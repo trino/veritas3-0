@@ -445,16 +445,12 @@
                                             if ($settings->mee != "MEE") {
 //this code needs to be merged. There doesn't need to be a page of repeating code or 2 loops
                                                 foreach ($subdoc as $sub) {
-                                                  //  echo $sub['title'];
+
                                                     if(strtolower($sub['title']) =="audit" || strtolower($sub['title'])=="attachment"){
-                                                    ?>
-                                                    <td class="">
-                                                        <!--<label class="uniform-inline">
-                                                                    <input <?php echo $is_disabled?> type="radio" name="profileP[<?php echo $sub->id;?>]" value="" onclick="$(this).closest('tr').next('tr').show();" <?php if ($prosubdoc['display'] != 0) { ?> checked="checked" <?php } ?> />
-                                                                    Yes </label>-->
-                                                                    <?php
-                                                       printsubdocradios($is_disabled, $sub, $prosubdoc);
-                                                    echo '</td></tr>';
+                                                        $prosubdoc = $this->requestAction('/settings/all_settings/0/0/profile/' . $id . '/' . $sub->id);
+                                                        echo '<tr><td>' . ucfirst($sub['title']) . '</td><td class="">';
+                                                        printsubdocradios($is_disabled, $sub, $prosubdoc);
+                                                        echo '</td></tr>';
                                                 }
                                                 }
                                             }else{
