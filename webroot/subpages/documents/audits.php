@@ -185,7 +185,7 @@ How many leads were generated?                                                  
  
                                                  <div class="form-group">
 <label class="col-md-3 control-label">
-Rate the leads - how many do you feel are “quality"? 
+Rate the leads - how many do you feel are "quality"? 
                                                         Provide a grade rating of 1 to 10 (10 is best) and provide details.                                                   </label>
 <div class="col-md-8">
 <textarea class="form-control" name="leads_rate" id="primary_objectives" <?php echo $is_disabled;?> rows="3"><?php if(isset($audits))echo $audits->leads_rate;?></textarea>
@@ -239,6 +239,12 @@ Rate the volume of booth traffic.
                                                         Provide a grade rating of 1 to 10 (10 is best) and provide details.
                     </label>
 <div class="col-md-8">
+<select name="boothrate" <?php echo $is_disabled;?> class="form-control member_type" style="margin-bottom: 5px;">
+                                                              <?php for($i=1; $i<=10; $i++):?>
+                                                              <option value="<?php echo $i;?>" <?php if(isset($audits)&& $audits->boothrate ==$i)echo "selected='selected'";?>><?php echo $i;?></option>
+                                                              <?php endfor;?>
+                                                            </select>
+
 <textarea class="form-control" name="rating" <?php echo $is_disabled;?> id="primary_objectives" rows="3"><?php if(isset($audits))echo $audits->rating;?></textarea>
 </div>
 </div> 
