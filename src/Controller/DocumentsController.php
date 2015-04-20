@@ -515,14 +515,14 @@ class DocumentsController extends AppController{
                 $this->set('document', $query);
                 if ($setting->document_edit == 0 || count($doc) == 0 || $cn == 0) {
                     $this->Flash->error('Sorry you don\'t have the required permissions to upload documents. Please contact the administrator to enable.');
-                    return $this->redirect("/");
+                    //return $this->redirect("/");
 
                 }
 
             } else {
                if ($setting->document_create == 0 || count($doc) == 0 || $cn == 0) {
                     $this->Flash->error('Sorry you don\'t have the required permissions to upload documents. Please contact the administrator to enable.');
-                    return $this->redirect("/");
+                    //return $this->redirect("/");
 
                 }
             }
