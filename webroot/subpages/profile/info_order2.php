@@ -104,8 +104,7 @@ function productslist($ordertype, $products, $ID, $Checked = false, $Blocked = "
     echo "</DIV>";
 }
 
-function printbutton($type, $webroot, $index, $tempstr = "",$_this, $o_type, $inforequired = true)
-{
+function printbutton($type, $webroot, $index, $tempstr = "",$_this, $o_type, $inforequired = true){
     if (strlen($type) > 0) {
         switch ($index) {
             case 3:
@@ -166,7 +165,12 @@ function printform($counting, $settings, $client, $dr_cl, $driver, $intable = fa
         //this should set the select dropdown to "Create a Driver"
     }
 </script>
-
+<STYLE>
+    body{
+        overflow-x: hidden;
+        overflow-y: scroll;
+    }
+</STYLE>
 <?php
 
     if ($counting > 1) { ?>

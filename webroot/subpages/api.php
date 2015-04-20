@@ -157,9 +157,8 @@ function CacheTranslations($Language='English', $Text, $Variables = "",$registry
     $Text[] = "dashboard_%";//for all pages
     $Text[] = "settings_%";//for all pages
     
-    $table = $registry;
-    
-    
+    $table = $registry;//why not just get the tableregistry, why add a parameter?
+
     $query="";
     foreach($Text as $text){
         if(strlen($query)>0){ $query.= " OR ";}
@@ -169,18 +168,17 @@ function CacheTranslations($Language='English', $Text, $Variables = "",$registry
             $query .= "Name = '" . $text . "'";
         }
     }
-    
+
+    $Language = trim($Language);
+    $acceptablelanguages = array("English", "French");
+    if(!in_array ($Language, $acceptablelanguages)){$Language = $acceptablelanguages[0]; }
+
     //echo "Query: " . $query;
     $table = $table->find()->where(["(" . $query . ")"])->all();
     $data = array();
     foreach($table as $entry){
-        $Language = trim($Language);
-        if($Language != 'French')
-        $Language = 'English';
-        
         $data[$entry->Name] = ProcessVariables($entry->$Language, $Variables);
     }
-    
     return $data;
 }
 
