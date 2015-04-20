@@ -84,12 +84,14 @@ foreach($ec as $k=>$v)
 if(isset($rati))
 {
     $avg=0;
+    $avco = 0;
 foreach($rati as $k=>$v)
 {
-    $avg= $avg+$v
+    $avco++;
+    $avg= $avg+$v;
 }
 ?>
-<p><strong><?php if(isset($prof)&& $prof[$k])echo $prof[$k];else echo "Unknown";?>: </strong> <?php echo $avg;?></p> 
+<p style="padding-top: 5px;"><strong><?php if(isset($prof)&& $prof[$k])echo $prof[$k];else echo "Unknown";?>: </strong> <?php echo ($avg/$avco);?></p> 
 <?php
 }?>
 
@@ -282,16 +284,20 @@ Rate the volume of booth traffic.
                                                         Provide a grade rating of 1 to 10 (10 is best) and provide details.
                     </label>
 <div class="col-md-8">
-<?php 
+                                                            <?php 
 if(isset($rat1))
+{
+    $avg=0;
+    $avco = 0;
 foreach($rat1 as $k=>$v)
 {
-    ?>
-
-    <p><strong><?php if(isset($prof)&& $prof[$k])echo $prof[$k];else echo "Unknown";?>: </strong> <?php echo $v;?></p> 
-    <?php
+    $avco++;
+    $avg= $avg+$v;
 }
 ?>
+<p style="padding-top: 5px;"><strong><?php if(isset($prof)&& $prof[$k])echo $prof[$k];else echo "Unknown";?>: </strong> <?php echo ($avg/$avco);?></p> 
+<?php
+}?>
 <?php 
 if(isset($rat))
 foreach($rat as $k=>$v)
