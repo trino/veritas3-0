@@ -424,7 +424,17 @@ if ($_SERVER['SERVER_NAME'] == "localhost" || $_SERVER['SERVER_NAME'] == "127.0.
                         ?>
 
                     </td>
-                    <td><?php  if($docs->draft == 1) echo '<span class="label label-sm label-warning" style="float:right;padding:4px;">draft</span>';else echo '<span class="label label-sm label-success" style="float:right;padding:4px;">saved</span>';?></td>
+                    <td align="right">
+                        <?php
+                            if($docs->draft == 1){
+                                $Color = "label-warning";
+                                $Label = "draft";
+                            } else {
+                                $Color = "label-success";
+                                $Label = "saved";
+                            }
+                            echo '<span class="label label-sm ' . $Color . '" style="padding:4px;">' . $Label . '</span>';
+                        ?></td>
                     </tr>
 
                     <!--TR><TD colspan="8"><!php print_r($docs); !></TD></TR-->

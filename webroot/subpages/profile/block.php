@@ -1226,21 +1226,21 @@
                                     ?>
 
                                     <tr>
-                                        <td>
-
-                                            <?php if (strlen($o->image) > 0) {
-                                                echo '<img height="32" src="' . $this->request->webroot . 'img/jobs/' . $o->image . '">';
-                                            } else {
-                                                echo '<img width="32" src="' . $this->request->webroot . 'img/logos/MEELogo.png">';
-                                            } ?>
-
+                                        <td width="1">
                                             <input
                                                 <?php if ($this->request->session()->read('Profile.profile_type') == 2 && $this->request->session()->read('Profile.id') == $id){ ?>disabled=""<?php } ?>
                                                 id="c_<?= $count ?>"
                                                 type="checkbox" value="<?php echo $o->id; ?>"
                                                 class="addclientz" <?php if (in_array($id, $pro_ids)) {
                                                 echo "checked";
-                                            } ?>  <?php echo $is_disabled ?> /><label
+                                            } ?>  <?php echo $is_disabled ?> />
+                                            </TD><TD width="50"> <?php if (strlen($o->image) > 0) {
+                                                echo '<img height="32" src="' . $this->request->webroot . 'img/jobs/' . $o->image . '">';
+                                            } else {
+                                                echo '<img width="32" src="' . $this->request->webroot . 'img/logos/MEELogo.png">';
+                                            } ?></TD><TD>
+
+                                            <label
                                                 for="c_<?= $count ?>"><?php echo $o->company_name; ?></label><span
                                                 class="msg_<?php echo $o->id; ?>"></span></td>
                                     </tr>
@@ -1273,19 +1273,28 @@
                             $clients = $this->requestAction('/clients/getAllClient/');
                             $count = 0;
                             if ($clients)
-                                foreach ($clients as $o) {
-                                    $pro_ids = explode(",", $o->profile_id);
+                                foreach ($clients as $client) {
+                                    $pro_ids = explode(",", $client->profile_id);
+
                                     ?>
 
                                     <tr>
-                                        <td><input  <?php echo $is_disabled ?>
+                                        <td width="1"><input  <?php echo $is_disabled ?>
                                                 id="c_<?= $count ?>"
                                                 type="checkbox" <?php if (in_array($id, $pro_ids)) {
                                                 echo "checked";
-                                            } ?>   value="<?php echo $o->id; ?>"
-                                                class="addclientz"/><label
-                                                for="c_<?= $count ?>"><?php echo $o->company_name; ?></label><span
-                                                class="msg_<?php echo $o->id; ?>"></span></td>
+                                            } ?>   value="<?php echo $client->id; ?>"
+                                                class="addclientz"/>
+                                           </TD><TD width="50"><IMG SRC="<?php
+                                                if($client->image) {
+                                                    echo $this->request->webroot . "img/jobs/" . $client->image;
+                                                } else {
+                                                    echo $this->request->webroot . "img/logos/MEELogo.png";
+                                                  }
+                                            ?>" style="max-width: 50px;"></TD><TD>
+                                            <label
+                                                for="c_<?= $count ?>"><?php echo $client->company_name; ?></label><span
+                                                class="msg_<?php echo $client->id; ?>"></span></td>
                                     </tr>
 
                                     <?php
@@ -1328,9 +1337,7 @@
             if ($(this).is(':checked')) {
                 $('#homeform input[type="radio"]').each(function () {
                     $(this).parent().removeClass('checked');
-                    
-                    if ($(this).val() == '1') 
-                    {
+                    if ($(this).val() == '1') {
                    
                         $(this).parent().addClass('checked');
                         $(this).attr('checked', 'checked');
@@ -1340,8 +1347,7 @@
                 });
 
 
-            }
-            else {
+            } else {
                 $('#homeform input[type="radio"]').each(function () {
                     $(this).parent().removeClass('checked');
                     if ($(this).val() == '0') {
@@ -1358,18 +1364,13 @@
             if ($(this).is(':checked')) {
                 $('#blockform input[type="radio"]').each(function () {
                     $(this).parent().removeClass('checked');
-                    if($(this).hasClass('documents'))
-                    {
+                    if($(this).hasClass('documents')) {
                       var intg = 3;  
-                    }
-                    else
-                    {
+                    } else {
                         var intg = 1;
                     }
                    
-                    if($(this).val()== intg)
-                    {
-                   
+                    if($(this).val()== intg) {
                         $(this).parent().addClass('checked');
                         $(this).attr('checked', 'checked');
                         $(this).click();
@@ -1442,10 +1443,12 @@
                 data: str,
                 type: 'post',
                 success: function (res) {
-                    if ($('.profile_enb').is(":checked"))
+                    if ($('.profile_enb').is(":checked")) {
                         $('#saveptype').click();
-                    if ($('.client_enb').is(":checked"))
+                    }
+                    if ($('.client_enb').is(":checked")) {
                         $('#savectype').click();
+                    }
                     $('#save_display').click();
                     //alert(res);
                     $('.res').text(res);

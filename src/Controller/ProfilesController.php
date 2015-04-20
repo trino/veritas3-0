@@ -1393,7 +1393,6 @@
             $s = $blocks->find()->where(['user_id' => $user_id])->count();
             //echo $s;die();
             if ($user_id != 0 && $s != 0) {
-
                 $query = $blocks->query();
                 $query->update()
                     ->set($block)
@@ -2009,20 +2008,14 @@
 
 
 /////////////////////////////////////////////////////////////////////////////////////process order
-/////////////////////////////////////////////////////////////////////////////////////process order
-/////////////////////////////////////////////////////////////////////////////////////process order
-/////////////////////////////////////////////////////////////////////////////////////process order
+        function cron(){//////////////////////////////////send out emails
+            if (isset($_GET["testemail"])){
+                $email = $this->request->session()->read('Profile.email');
+                echo "Test email sent<BR>" . $this->Mailer->sendEmail("", $email, "TEST EMAIL", "THIS IS A TEST AT: " . date_timestamp_get(date_create()));
+                die();
+            }
 
-        function cron()
-        {
-
-            //////////////////////////////////send out emails
-            //////////////////////////////////send out emails
-            //////////////////////////////////send out emails
-            //////////////////////////////////send out emails
-            //////////////////////////////////send out emails
             $path = $this->Document->getUrl();
-
             $q = TableRegistry::get('events');
             $que = $q->find();
             //$query = $que->select()->where(['(date LIKE "%' . $date . '%" OR date LIKE "%' . $date2 . '%")', 'sent' => 0])->limit(200);
@@ -2049,11 +2042,6 @@
             }
 
             //////////////////////////////////send out emails
-            //////////////////////////////////send out emails
-            //////////////////////////////////send out emails
-            //////////////////////////////////send out emails
-            //////////////////////////////////send out emails
-
             $orders = TableRegistry::get('orders');
             $order = $orders
                 ->find()
@@ -2130,7 +2118,6 @@
                     }
 
                     if ($o->bright_planet_html_binary) {
-
                         $this->create_files_from_binary($o->id, "bright_planet_html_binary", $o->bright_planet_html_binary);
 
                         $sendit = strip_tags(trim($this->get_mee_results_binary($o->bright_planet_html_binary, "Driver's Record Abstract")));

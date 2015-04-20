@@ -16,8 +16,7 @@ class TasksController extends AppController {
     
      public function initialize() {
         parent::initialize();
-        if(!$this->request->session()->read('Profile.id'))
-        {
+        if(!$this->request->session()->read('Profile.id')) {
                 $url = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
                 $this->redirect('/login?url='.urlencode($url));
         }
@@ -25,8 +24,7 @@ class TasksController extends AppController {
     }
     
 	public function index() {
-	   
-		
+
 	}
 
 

@@ -7,17 +7,14 @@
     use Cake\ORM\TableRegistry;
     use Cake\Network\Email\Email;
 
-    class ClientsController extends AppController
-    {
+    class ClientsController extends AppController{
 
         public $paginate = [
             'limit' => 10,
             'order' => ['id' => 'desc']
-
         ];
 
-        public function initialize()
-        {
+        public function initialize(){
             parent::initialize();
             $this->loadComponent('Settings');
             $this->loadComponent('Document');
@@ -30,8 +27,7 @@
 
         }
 
-        function upload_img($id = "")
-        {
+        function upload_img($id = ""){
             if (isset($_FILES['myfile']['name']) && $_FILES['myfile']['name']) {
                 $arr = explode('.', $_FILES['myfile']['name']);
                 $ext = end($arr);
@@ -61,8 +57,7 @@
             die();
         }
 
-        function upload_all($id = "")
-        {
+        function upload_all($id = ""){
             if (isset($_FILES['myfile']['name']) && $_FILES['myfile']['name']) {
                 $arr = explode('.', $_FILES['myfile']['name']);
                 $ext = end($arr);
@@ -104,8 +99,7 @@
             die();
         }
 
-        public function index()
-        {
+        public function index(){
             if (isset($_GET['flash'])) {
                 $setting = $this->Settings->get_permission($this->request->session()->read('Profile.id'));
 //           debug($setting);
@@ -116,36 +110,34 @@
             if ($setting->client_list == 0) {
                 $this->Flash->error('Sorry, you don\'t have the required permissions.');
                 return $this->redirect("/");
-
             }
-            if (isset($_GET['draft']))
+            if (isset($_GET['draft'])) {
                 $draft = 1;
-            else
+            }else {
                 $draft = 0;
+            }
             $querys = TableRegistry::get('Clients');
             $query = $querys->find()->where(['drafts'=>$draft]);
             $query = $querys->find();
             $this->set('client', $this->appendattachments($this->paginate($query)));
         }
 
-        function search()
-        {
+        function search(){
             $setting = $this->Settings->get_permission($this->request->session()->read('Profile.id'));
-
             if ($setting->client_list == 0) {
                 $this->Flash->error('Sorry, you don\'t have the required permissions.');
                 return $this->redirect("/");
-
             }
-            if (isset($_GET['draft']))
+            if (isset($_GET['draft'])) {
                 $draft = 1;
-            else
+            }else {
                 $draft = 0;
-
-            if (isset($_GET['search']))
+            }
+            if (isset($_GET['search'])) {
                 $search = $_GET['search'];
-            else
+            }else {
                 $search = "";
+            }
             $searchs = strtolower($search);
             $querys = TableRegistry::get('Clients');
             $query = $querys->find()
@@ -167,14 +159,12 @@
             $this->render('index');
         }
 
-        public function view($id = null)
-        {
+        public function view($id = null){
             $setting = $this->Settings->get_permission($this->request->session()->read('Profile.id'));
 
             if ($setting->client_list == 0) {
                 $this->Flash->error('Sorry, you don\'t have the required permissions.');
                 return $this->redirect("/");
-
             }
             $this->loadModel("ClientTypes");
             $this->set('client_types', $this->ClientTypes->find()->where(['enable' => '1'])->all());
@@ -191,8 +181,7 @@
          *
          * @return void
          */
-        public function assignContact($contact, $id, $status)
-        {
+        public function assignContact($contact, $id, $status){
             $querys = TableRegistry::get('Clients');
             $query = $querys->find()->where(['id' => $id])->first();
             if ($status == 'yes') {
@@ -211,10 +200,11 @@
                             if ($a == $contact) {
                                 continue;
                             } else {
-                                if ($arr['contact_id'] == '')
+                                if ($arr['contact_id'] == '') {
                                     $arr['contact_id'] = $a;
-                                else
+                                }else {
                                     $arr['contact_id'] = $arr['contact_id'] . ',' . $a;
+                                }
                             }
                         }
                     }
@@ -232,31 +222,32 @@
             die();
         }
 
-        public function assignProfile($profile, $id, $status)
-        {
+        public function assignProfile($profile, $id, $status){
             $querys = TableRegistry::get('Clients');
             $query = $querys->find()->where(['id' => $id])->first();
 
             if ($status == 'yes') {
                 if ($query->profile_id == '') {
                     $arr['profile_id'] = $profile;
-                } else
+                } else {
                     $arr['profile_id'] = $query->profile_id . ',' . $profile;
+                }
             } else {
                 $arr['profile_id'] = '';
-                if ($query->profile_id == '')
+                if ($query->profile_id == '') {
                     die();
-                else {
+                }else {
                     $array = explode(',', $query->profile_id);
                     if ($array) {
                         foreach ($array as $a) {
                             if ($a == $profile) {
                                 continue;
                             } else {
-                                if ($arr['profile_id'] == '')
+                                if ($arr['profile_id'] == '') {
                                     $arr['profile_id'] = $a;
-                                else
+                                }else {
                                     $arr['profile_id'] = $arr['profile_id'] . ',' . $a;
+                                }
                             }
                         }
                     }
@@ -277,8 +268,7 @@
             die();
         }
 
-        public function add()
-        {
+        public function add(){
             $setting = $this->Settings->get_permission($this->request->session()->read('Profile.id'));
             $settings = $this->Settings->get_settings();
             $this->set('settings', $settings);
@@ -295,10 +285,11 @@
             $count = 1;
             if (isset($_POST['recruiter_id'])) {
                 foreach ($_POST['recruiter_id'] as $ri) {
-                    if ($count == 1)
+                    if ($count == 1) {
                         $rec = $ri;
-                    else
+                    }else {
                         $rec = $rec . ',' . $ri;
+                    }
                     $count++;
 
                 }
@@ -308,10 +299,11 @@
 
             if (isset($_POST['contact_id'])) {
                 foreach ($_POST['contact_id'] as $ri) {
-                    if ($count == 1)
+                    if ($count == 1) {
                         $rec = $ri;
-                    else
+                    }else {
                         $rec = $rec . ',' . $ri;
+                    }
                     $count++;
 
                 }
@@ -323,13 +315,10 @@
             if ($this->request->is('post')) {
 
                 if ($clients->save($client)) {
-
-                    if (isset($_POST['division'])) {
-
-                    }
+                    //if (isset($_POST['division'])) {
+                    //}
                     $this->Flash->success('User saved successfully.');
                     return $this->redirect(['action' => 'edit', $client->id]);
-
                 } else {
                     $this->Flash->error('The user could not be saved. Please try again.');
                 }
@@ -341,9 +330,8 @@
             $this->render('add');
         }
 
-        public function saveClients($id = 0)
-        {
-             $settings = TableRegistry::get('settings');
+        public function saveClients($id = 0){
+            $settings = TableRegistry::get('settings');
             $setting = $settings->find()->first();
             $sub_sup = TableRegistry::get('subdocuments');
             $sub_sup_count = $sub_sup->find()->all();
@@ -371,10 +359,11 @@
             $count = 1;
             if (isset($_POST['contact_id'])) {
                 foreach ($_POST['contact_id'] as $ri) {
-                    if ($count == 1)
+                    if ($count == 1) {
                         $rec = $ri;
-                    else
+                    }else {
                         $rec = $rec . ',' . $ri;
+                    }
                     $count++;
 
                 }
@@ -441,9 +430,9 @@
                                     unset($doc);
                                 }
                             }
-                            if (isset($_POST['drafts']) && $_POST['drafts'] == '1')
+                            if (isset($_POST['drafts']) && $_POST['drafts'] == '1') {
                                 $this->Flash->success(ucfirst($settings->client) . ' saved as draft.');
-                            else {
+                            }else {
                                 $this->Flash->success(ucfirst($settings->client) . ' saved successfully.');
                             }
                             echo $client->id;
@@ -461,8 +450,8 @@
                                 $username = $uq->username;
                             }
                             else{
-                            $username = '';
-                            $ut = '';
+                                $username = '';
+                                $ut = '';
                             }
                             $from = array('info@'.$path => $setting->mee);
                             $to = $em;
@@ -477,8 +466,9 @@
                 }
             } else {
                 $cnt = 0;
-                if ($_POST['sig_email'] != "")
+                if ($_POST['sig_email'] != "") {
                     $cnt = $clients->find()->where(['sig_email' => $_POST['sig_email'], 'id<>' . $id])->count();
+                }
                 if ($cnt > 0) {
                     echo "email";
                 }
@@ -487,7 +477,6 @@
                     die();
                 } else {
                     foreach ($_POST as $k => $v) {
-
                         if ($k != "client_doc")
                             $edit[$k] = $v;
 
@@ -649,10 +638,8 @@
             $arr2 = explode(',', $client->contact_id);
 
             if ($this->request->is(['patch', 'post', 'put'])) {
-
                 $clients = $this->Clients->patchEntity($client, $this->request->data);
                 if ($this->Clients->save($clients)) {
-
                     $this->Flash->success('User saved successfully.');
                     return $this->redirect(['action' => 'index']);
                 } else {
@@ -750,37 +737,32 @@
         }
 
 
-        function getSubCli2($id, $type="")
-        {
-
+        function getSubCli2($id, $type=""){
             $sub = TableRegistry::get('client_sub_order');
             $query = $sub->find();
             //$q = $query->select()->where(['client_id'=>$id,'sub_id IN (SELECT id FROM subdocuments WHERE display = 1 AND orders = 1)','sub_id IN (SELECT sub_id FROM client_sub_order WHERE display_order > 0 AND client_id = '.$id.')'])->order(['display_order'=>'ASC']);
-            if($type=="")
-                $q = $query->select()->where(['client_id' => $id, 'sub_id IN (SELECT id FROM subdocuments WHERE display = 1 AND orders = 1)', 'sub_id IN (SELECT subdoc_id FROM clientssubdocument WHERE display_order = 1 AND client_id = ' . $id . ')','sub_id IN (SELECT subdoc_id FROM profilessubdocument WHERE profile_id = '.$this->request->session()->read('Profile.id').' AND (display = 3 OR display = 2))'])->order(['display_order' => 'ASC']);
-            elseif($type =='document')
-                $q = $query->select()->where(['client_id' => $id, 'sub_id IN (SELECT id FROM subdocuments WHERE display = 1 )', 'sub_id IN (SELECT subdoc_id FROM clientssubdocument WHERE display = 1 AND client_id = ' . $id . ')','sub_id IN (SELECT subdoc_id FROM profilessubdocument WHERE profile_id = '.$this->request->session()->read('Profile.id').' AND (display = 3 OR display = 2))'])->order(['display_order' => 'ASC']);
+            if($type=="") {
+                $q = $query->select()->where(['client_id' => $id, 'sub_id IN (SELECT id FROM subdocuments WHERE display = 1 AND orders = 1)', 'sub_id IN (SELECT subdoc_id FROM clientssubdocument WHERE display_order = 1 AND client_id = ' . $id . ')', 'sub_id IN (SELECT subdoc_id FROM profilessubdocument WHERE profile_id = ' . $this->request->session()->read('Profile.id') . ' AND (display = 3 OR display = 2))'])->order(['display_order' => 'ASC']);
+            }elseif($type =='document') {
+                $q = $query->select()->where(['client_id' => $id, 'sub_id IN (SELECT id FROM subdocuments WHERE display = 1 )', 'sub_id IN (SELECT subdoc_id FROM clientssubdocument WHERE display = 1 AND client_id = ' . $id . ')', 'sub_id IN (SELECT subdoc_id FROM profilessubdocument WHERE profile_id = ' . $this->request->session()->read('Profile.id') . ' AND (display = 3 OR display = 2))'])->order(['display_order' => 'ASC']);
+            }
             $this->response->body($q);
             return $this->response;
 
             die();
         }
-        function orders_doc($cid,$o_name)
-        {
-            
+        function orders_doc($cid,$o_name){
             $products = TableRegistry::get('product_types');
             $product = $products->find()->where(['Name'=>urldecode($o_name)])->first();
             $doc_ids= $product->doc_ids;
             //die($doc_ids);
-            if($doc_ids!="")
-            {
-                
+            if($doc_ids!="") {
                 $doc = TableRegistry::get('client_sub_order');
                 $query = $doc->find();
                 $q= $query->select()->where(['client_id' => $cid,'sub_id IN('.$doc_ids.')']);
+            } else {
+                $q = null;
             }
-            else
-            $q = null;
             $this->response->body($q);
             return $this->response;
             die; 
@@ -810,7 +792,6 @@
                         $check = $query->first();
 
                         if ($v2 == '1') {
-
                             if ($check) {
                                 $query2 = $subp->query();
                                 $query2->update()
@@ -818,7 +799,6 @@
                                     ->where(['client_id' => $id, 'subdoc_id' => $k2])
                                     ->execute();
                             } else {
-
                                 $query2 = $subp->query();
                                 $query2->insert(['client_id', 'subdoc_id', 'display'])
                                     ->values(['client_id' => $id, 'subdoc_id' => $k2, 'display' => $v2])
@@ -902,8 +882,7 @@
             die('here');
         }
 
-        function getProfile($id = null)
-        {
+        function getProfile($id = null){
             $profile = TableRegistry::get('Clients');
             $query = $profile->find()->where(['id' => $id]);
             $q = $query->first();
@@ -933,8 +912,7 @@
             return $this->response;
         }
 
-        function getContact($id = null)
-        {
+        function getContact($id = null){
             $contact = TableRegistry::get('Clients');
             $query = $contact->find()->where(['id' => $id]);
             $q = $query->first();
@@ -959,8 +937,7 @@
 
         }
 
-        function getDocCount($id = null)
-        {
+        function getDocCount($id = null){
             $doc = TableRegistry::get('Documents');
             $query = $doc->find();
             $count = $query->select()->where(['client_id' => $id]);
@@ -968,8 +945,7 @@
             return $this->response;
         }
 
-        function getOrderCount($id = null)
-        {
+        function getOrderCount($id = null){
             $doc = TableRegistry::get('Orders');
             $query = $doc->find();
             $count = $query->select()->where(['client_id' => $id]);
@@ -977,8 +953,7 @@
             return $this->response;
         }
 
-        function countClientDoc($id = null, $doc_type = null)
-        {
+        function countClientDoc($id = null, $doc_type = null){
             $query = TableRegistry::get('Documents');
             $q = $query->find();
             $q = $q->select()->where(['document_type' => $doc_type])->andWhere(['client_id' => $id]);
@@ -986,8 +961,7 @@
             return $this->response;
         }
 
-        function getClient($id = null)
-        {
+        function getClient($id = null){
             $contact = TableRegistry::get('Clients');
             $query = $contact->find()->where(['id' => $id]);
             $q = $query->first();
@@ -997,24 +971,21 @@
 
         }
 
-        function getAllClient()
-        {
+        function getAllClient(){
             $query = TableRegistry::get('Clients');
             $q = $query->find();
             $u = $this->request->session()->read('Profile.id');
-            if ($this->request->session()->read('Profile.super'))
+            if ($this->request->session()->read('Profile.super')) {
                 $q = $q->select();
-            else {
+            }else {
                 $q = $q->select()->where(['profile_id LIKE "' . $u . ',%" OR profile_id LIKE "%,' . $u . ',%" OR profile_id LIKE "%,' . $u . '" OR profile_id LIKE "' . $u . '" ']);
-
             }
 
             $this->response->body($q);
             return $this->response;
         }
 
-        function getAjaxClient($id = "")
-        {
+        function getAjaxClient($id = ""){
             $this->layout = 'blank';
             $key = $_GET['key'];
             $query = TableRegistry::get('Clients');
@@ -1031,8 +1002,7 @@
 
         }
 
-        function getdivision($cid)
-        {
+        function getdivision($cid){
             $query = TableRegistry::get('client_divison');
             $q = $query->find()->where(['client_id' => $cid])->all();
             $this->response->body($q);
@@ -1040,13 +1010,11 @@
 
         }
 
-        function dropdown()
-        {
+        function dropdown(){
             $this->layout = 'blank';
         }
 
-        function addprofile()
-        {
+        function addprofile(){
             $settings = $this->Settings->get_settings();
 
             $query = TableRegistry::get('clients');
@@ -1086,36 +1054,31 @@
             if ($query->query()->update()->set(['profile_id' => $p_ids])
                 ->where(['id' => $_POST['client_id']])
                 ->execute()
-            )
+            ) {
                 echo $flash;
-            else
+            }else {
                 echo ucfirst($settings->client) . " could not be added.";
+            }
             //echo $p_ids;
             die();
         }
 
-        function getdivisions($did = "")
-        {
+        function getdivisions($did = ""){
             $cid = $_POST['client_id'];
             $query = TableRegistry::get('client_divison');
             $q = $query->find()->where(['client_id' => $cid])->all();
             if (count($q) > 0) {
-                ?>
-                <select class='form-control' name='division'>
-                    <option value="">Divisions</option>
-            <?php
-            foreach ($q as $d) {
-                $sel = ($did == $d->id) ? "selected='selected'" : '';
-                echo "<option value='" . $d->id . "'" . $sel . " >" . $d->title . "</option>";
+                echo "<select class='form-control' name='division'><option value=''>Divisions</option>";
+                foreach ($q as $d) {
+                    $sel = ($did == $d->id) ? "selected='selected'" : '';
+                    echo "<option value='" . $d->id . "'" . $sel . " >" . $d->title . "</option>";
+                }
+                echo "</select>";
             }
-            echo "</select>";
-        }
             die();
-
         }
 
-        function divisionDropDown($cid)
-        {
+        function divisionDropDown($cid){
             $size = "xlarge";
             if (isset($_GET["istable"])) {
                 if ($_GET["istable"] == 1) {
@@ -1154,13 +1117,11 @@
             die();
         }
 
-        function charlie()
-        {
+        function charlie(){
             $this->layout = 'blank';
         }
 
-        function sendCEmail($from, $to, $subject, $message)
-        {
+        function sendCEmail($from, $to, $subject, $message){
             //from can be array with this structure array('email_address'=>'Sender name'));
             $email = new Email('default');
 
@@ -1171,8 +1132,7 @@
                 ->send($message);
         }
 
-        function forOrder()
-        {
+        function forOrder(){
             $sub_sup = TableRegistry::get('subdocuments');
             $sub_sup_count = $sub_sup->find()->count();
             $counter = $sub_sup_count + 1;
@@ -1192,8 +1152,7 @@
             die();
         }
 
-        function updateOrder($cid)
-        {
+        function updateOrder($cid){
             $ids = $_POST['tosend'];
             $arr = explode(',', $ids);
             $arr_s['client_id'] = $cid;
@@ -1210,9 +1169,7 @@
             die();
         }
 
-        function addsubdocs()
-        {
-
+        function addsubdocs(){
             $subname = $_GET['sub'];
             //$client_id = $_GET['client_id'];
             if ($this->request->session()->read('Profile.super')) {
@@ -1280,8 +1237,9 @@
                                         'display_order' => 0
                                     ])
                                     ->execute();
-                                if ($q2)
+                                if ($q2) {
                                     $checker_q2 = 1;
+                                }
                             }
                         }
 
@@ -1299,8 +1257,9 @@
                                         'display' => 0
                                     ])
                                     ->execute();
-                                if ($q3)
+                                if ($q3) {
                                     $checker_q3 = 1;
+                                }
                             }
                         }
 
@@ -1318,14 +1277,17 @@
                                         'display_order' => 0
                                     ])
                                     ->execute();
-                                if ($q4)
+                                if ($q4) {
                                     $checker_q4 = 1;
+                                }
                             }
                         }
 
                         if ($checker_q2 && $checker_q3 && $checker_q4) {
                             return $this->redirect("/profiles/settings/?activedisplay");
-                        } else return $this->redirect("/index");
+                        } else {
+                            return $this->redirect("/index");
+                        }
                     }
                 }
             } else {
@@ -1341,21 +1303,22 @@
             //$subname = strtolower($subname);
             $q = TableRegistry::get('subdocuments');
             $que = $q->find();
-            if ($subid != "")
+            if ($subid != "") {
                 $query = $que->select()->where(['id !=' => $subid, 'title' => $subname])->first();
-            else
+            }else {
                 $query = $que->select()->where(['title' => $subname])->first();
+            }
             //var_dump($query);
             //$query = $que->first();
-            if ($query)
+            if ($query) {
                 echo '1';
-            else
+            }else {
                 echo '0';
+            }
             die();
         }
 
-        public function getColorClass()
-        {
+        public function getColorClass(){
             $query = TableRegistry::get('color_class');
             $q = $query->find()->all();
             $this->response->body($q);
@@ -1363,16 +1326,14 @@
             die;
         }
 
-        public function appendattachments($query)
-        {
+        public function appendattachments($query){
             foreach ($query as $client) {
                 $client->hasattachments = $this->hasattachments($client->id);
             }
             return $query;
         }
 
-        public function hasattachments($id)
-        {
+        public function hasattachments($id){
             $docs = TableRegistry::get('client_docs');
             $query = $docs->find();
             $client_docs = $query->select()->where(['client_id' => $id])->first();
@@ -1381,17 +1342,14 @@
             }
         }
 
-        public function getLogo()
-        {
+        public function getLogo(){
             $id = $this->request->session()->read('Profile.id');
             $client = TableRegistry::get('clients')->find()->where(['profile_id LIKE "'.$id.',%" OR profile_id LIKE "%,'.$id.',%" OR profile_id LIKE "%,'.$id.'"'])->first();
             $image = array();
             if($client)
             $image['client'] = $client->image;
-            if(!$image['client'])
-            {
-                if($client)
-                {
+            if(!$image['client']) {
+                if($client) {
                     $cid = $client->id;
                     $setting = TableRegistry::get('settings')->find()->where(['id'=>1])->first();
                     $image['setting'] = $setting->client_img;
@@ -1400,8 +1358,6 @@
             }
             $this->response->body($image);
             return $this->response;
-
         }
     }
-
-    ?>
+?>
