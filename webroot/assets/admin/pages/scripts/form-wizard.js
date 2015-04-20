@@ -350,11 +350,23 @@ var FormWizard = function () {
                 },
                 onNext: function (tab, navigation, index) {
 
-                    if ($('.tabber.active').attr('class').replace('confirmation') != $('.tabber.active').attr('class')) {
+                    if ($('.tabber.active').attr('class').replace('confirmation') != $('.tabber.active').attr('class') || $('.tabber.active').attr('id') == 'tab19') {
                         //alert($('.tabber.active .touched_edit').val());
+                        if($('.tabber.active').attr('class').replace('confirmation') != $('.tabber.active').attr('class')){
                         if ($('.tabber.active .touched').val() != '1' && $('.tabber.active .touched_edit').val() != '1') {
                             alert('Please provide your signature to confirm.');
                             return false;
+                        }
+                        }
+                        else
+                        {
+                         if ($('.tabber.active .touched').val() != '1' && $('.tabber.active .touched_edit8').val() != '1') {
+                            alert('Please provide your signature to confirm.');
+                            $('html,body').animate({
+                                        scrollTop: $('#sig8').offset().top},
+                                    'slow');
+                            return false;
+                        }   
                         }
                     }
                     //alert(tab);

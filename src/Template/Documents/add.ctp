@@ -1611,7 +1611,20 @@ if (isset($this->request->params['pass'][1])) {
                     }
                     break;
             }
+            
             $(this).attr('disabled','disabled');
+            
+            if($('.sub_docs_id').val() == 18)
+            {
+                if ($('.touched').val() != '1' && $('.touched_edit8').val() != '1') {
+                            alert('Please provide your signature to confirm.');
+                            $('html,body').animate({
+                                        scrollTop: $('#sig8').offset().top},
+                                    'slow');
+                                     $(this).removeAttr('disabled');
+                            return false;
+                            }
+            }
             if($('.subform4 #subtab_2_1').attr('class')=='tab-pane active' && $('.subform4').attr('style')!='display: none;'){
                 //alert('tes');
                 var er = 0;
