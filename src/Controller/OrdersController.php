@@ -689,11 +689,14 @@
                     echo 'certification: '.$mq->certification.'<br/>';
                     $more_mee = TableRegistry::get('mee_attachments_more');
                     $more = $more_mee->find()->where(['mee_id'=>$mq->id]);
-                    if($more)
-                    {
-                        foreach($more as $m_mee)
-                        {
-                            echo 'ADDITIONAL: '.$m_mee->attachments.'<br/>';
+                    if($more) {
+                        $label="Additional consent form: ";
+                        foreach($more as $file) {
+                            $realpath = getcwd() . "/attachments/" . $file->attachments;
+                            if (file_exists($realpath)) {
+                                echo 'ADDITIONAL: ' . $file->attachments . '<br/>';
+                                $label = 'ADDITIONAL: ';
+                            }
                         }
                     }
                 }
