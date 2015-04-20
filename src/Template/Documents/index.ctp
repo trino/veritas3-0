@@ -258,7 +258,7 @@ if ($_SERVER['SERVER_NAME'] == "localhost" || $_SERVER['SERVER_NAME'] == "127.0.
                                 <td><?echo $this->Number->format($docs->id);
                                     if($docs->hasattachments) { echo '<BR><i  title="Has Attachment" class="fa fa-paperclip"></i>';} ?></td>
 
-                                <td style="width: 160px;">
+                                <td style="width: 190px;">
                                     <?php switch (1){//change the number to pick a style
                                         case 0://plain text
                                             echo  h($docs->document_type);

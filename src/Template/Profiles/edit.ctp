@@ -421,7 +421,6 @@
                                     <!--<li <?php if ($this->request['action'] == 'add' || $this->request['action'] == 'view' || (!isset($_GET['getprofilescore']) && (isset($Clientcount) && $Clientcount != 0))) { ?> class="active" <?php } ?> >
 -->
                                     <li  <?php activetab($activetab, "profile"); ?> >
-
                                         <a href="#tab_1_1" data-toggle="tab">Profile</a>
                                     </li>
                                     <?php

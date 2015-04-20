@@ -160,7 +160,7 @@ if (isset($this->request->params['pass'][1])) {
                     if($cid)
                     {
                         ?>
-                       
+
                     <div class="col-md-12 doc_select" style="margin: 10px 0;padding:0">
 
                         <select name="doctype" class="form-control select2me" data-placeholder="Select Document" onchange="window.location='<?php echo $this->request->webroot;?>documents/add/<?php echo $cid;?>?type='+$(this).val()" <?php if($this->request->params['action']=='view'){?>disabled="disabled"<?php }?>>
@@ -179,7 +179,7 @@ if (isset($this->request->params['pass'][1])) {
 
                                             $index+=1;
                                             $d = $this->requestAction('/clients/getFirstSub/'.$sd->sub_id);
-                                          ?>  
+                                          ?>
                                     <option value="<?php echo $d->id;?>" <?php if($_GET['type'] ==$d->id)echo "selected='selected'";?>><?php echo ucfirst(str_replace('_',' ',$d->title));?></option>
                                 <?php
                             }
@@ -269,9 +269,9 @@ if (isset($this->request->params['pass'][1])) {
                             }
                             echo "</div>";
                          }
-                            
+
                         ?>
-                        
+
                         <?php
                         if($_GET['type']==2)
                         {
@@ -350,7 +350,7 @@ if (isset($this->request->params['pass'][1])) {
                         </div>
                         <?php
                         }
-                            
+
                             if($_GET['type']==6)
                         {
                           $dx = $subdoc->find()->where(['id'=>$_GET['type']])->first();
@@ -423,7 +423,7 @@ if (isset($this->request->params['pass'][1])) {
                         </div>
                         <?php
                         }
-                            
+
                             if($_GET['type']==9)
                         {
                           $dx = $subdoc->find()->where(['id'=>$_GET['type']])->first();
@@ -451,14 +451,14 @@ if (isset($this->request->params['pass'][1])) {
                         {
                             //die($_GET['type']);
                             $dx = $subdoc->find()->where(['id'=>$_GET['type']])->first();
-                           
-                          
+
+
                         ?>
 
                         <div class="subform10">
                             <?php
                             if($controller == 'documents' ) {
-                                
+
                                 $colr = $this->requestAction('/documents/getColorId/10');
                                 if(!$colr) {$colr = $class[9];}
                                 makeportlet($did, $colr,"Education Verification");
@@ -474,7 +474,7 @@ if (isset($this->request->params['pass'][1])) {
                     </div>
                     <?php
                         }
-                          
+
                         ?>
                     <?php foreach($doc as $dx)
                     {
@@ -723,7 +723,7 @@ if (isset($this->request->params['pass'][1])) {
             '<input type="hidden" class="sub_docs_id" name="sub_doc_id" value="4"  />');
         }
 
-        
+
 
 
 
@@ -1448,7 +1448,7 @@ if (isset($this->request->params['pass'][1])) {
                     {
                     ?>
                     if(subdocid == <?php echo $dx->id;?>){
-                        
+
                         $('.addattachment<?php echo $dx->id;?>').load('<?php echo $this->request->webroot;?>documents/attach_doc/<?php echo $did."/".$view;?>', function(){
                             initiate_ajax_upload1('addMore1', 'doc');
                          });
@@ -1457,44 +1457,44 @@ if (isset($this->request->params['pass'][1])) {
                 }
         ?>
         if (subdocid == 5) {
-            
+
             $('.addattachment5').load('<?php echo $this->request->webroot;?>documents/attach_doc/<?php echo $did."/".$view;?>', function(){
                 initiate_ajax_upload1('addMore1', 'doc');
              });
         }
         if (subdocid == 6) {
-            
+
             $('.addattachment6').load('<?php echo $this->request->webroot;?>documents/attach_doc/<?php echo $did."/".$view;?>', function(){
                 initiate_ajax_upload1('addMore1', 'doc');
              });
         }
         if (subdocid == 7) {
-            
+
             $('.addattachment7').load('<?php echo $this->request->webroot;?>documents/attach_doc/<?php echo $did."/".$view;?>', function(){
                 initiate_ajax_upload1('addMore1', 'doc');
              });
         }
         if (subdocid == 8) {
-            
+
              $('.addattachment8').load('<?php echo $this->request->webroot;?>documents/attach_doc/<?php echo $did."/".$view;?>', function(){
                 initiate_ajax_upload1('addMore1', 'doc');
              });
 
         }
-        
+
         if (subdocid == 11) {
-           
+
             $('.addattachment11').load('<?php echo $this->request->webroot;?>documents/attach_doc/<?php echo $did."/".$view;?>', function(){
                 initiate_ajax_upload1('addMore1', 'doc');
              });
 
         }
-            
-            
+
+
             <?php
         }
         ?>
-        
+
         $('#changeclient').change(function(){
             var id = $(this).val();
             window.location ="<?php echo $this->request->webroot;?>documents/add/"+id;
@@ -1565,7 +1565,7 @@ if (isset($this->request->params['pass'][1])) {
             $('#form_tab' + h + ' input[type="submit"]').hide();
             $('.form-actions').hide();
         }*/
-        var h = '<?php echo $_GET['type'];?>'; 
+        var h = '<?php echo $_GET['type'];?>';
         $('#form_tab' + h + ' input').attr('disabled', 'disabled');
             $('#form_tab' + h + ' textarea').attr('disabled', 'disabled');
             $('#form_tab' + h + ' select').attr('disabled', 'disabled');
@@ -1729,7 +1729,7 @@ if (isset($this->request->params['pass'][1])) {
                 //beforeSend:saveSignature,
                 url: '<?php echo $this->request->webroot;?>documents/savedoc/<?php echo $cid;?>/' + doc_id + '/?document=' + type + '&draft=' + draft+'<?php if(isset($_GET['order_id'])){?>&order_id=<?php echo $_GET['order_id'];}?>',
                 success: function (res) {
-                   
+
                     $('#did').val(res);
                     //alert(type);return false;
                     //alert(type);return false;
@@ -1885,18 +1885,18 @@ if (isset($this->request->params['pass'][1])) {
                                     if(type == "<?php echo addslashes($dx->title);?>")
                                     {
                                         var act = $('#form_tab<?php echo $dx->id;?>').attr('action');
-            
+
                                         $('#form_tab<?php echo $dx->id;?>').attr('action', function (i, val) {
                                             return val + '?draft=' + draft;
                                         });
-            
+
                                         $('#form_tab<?php echo $dx->id;?>').submit();
                                     }
-            
+
                     <?php       }
                             }
                     ?>
-            
+
                     }
                 }
             });
@@ -1931,7 +1931,7 @@ if (isset($this->request->params['pass'][1])) {
                     window.location = '<?php echo $this->request->webroot?>documents/index?flash';
                 else
                     window.location = '<?php echo $this->request->webroot?>documents/index?flash';
-                
+
 
             }
         });
@@ -2078,7 +2078,7 @@ if (isset($this->request->params['pass'][1])) {
 
     function fileUpload(ID) {
         // e.preventDefault();
-        
+
         var $type = $(".tab-pane.active").find("input[name='document_type']").val(),
             param = {
                 type: 'order',
@@ -2098,7 +2098,7 @@ if (isset($this->request->params['pass'][1])) {
                 param.subtype = 'Education';
             }
         }
-        
+
         var upload = new AjaxUpload("#" + ID, {
             action: "<?php echo $this->request->webroot;?>documents/fileUpload",
             enctype: 'multipart/form-data',
