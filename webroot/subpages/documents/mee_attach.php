@@ -99,10 +99,12 @@
 
     $controller = $this->request->params['controller'];
     $controller = strtolower($controller);
+    include_once 'subpages/filelist.php';
+
     /*$controller = $this->request->params['controller'];
     $controller = strtolower($controller);
 
-    include_once 'subpages/filelist.php';
+
     printdocumentinfo($did);
     if( isset($pre_at)){  listfiles($pre_at['attach_doc'], "attachments/", "", false,3); }
     */
@@ -114,7 +116,41 @@
         }
     }
 
+    function countfiles($mee_more){
+        $files=0;
+        foreach($mee_more as $key => $file) {//id, mee_id, attachments
+            $realpath = getcwd() . "/attachments/" . $file->attachments;
+            if (file_exists($realpath)) { $files++;}
+        }
+        return $files;
+    }
 
+    function printfile($webroot, $cc, $file, $skip=false){
+        $path = $webroot . "attachments/" . $file->attachments;
+        $realpath = getcwd() . "/attachments/" . $file->attachments;
+        if (file_exists($realpath)) {//do not remove this check!
+            if($skip){
+                $skip=false;
+            } else {
+                ?>
+                <div>
+                                    <span><a style="margin-bottom:5px;" href="javascript:void(0)"
+                                             class="btn btn-primary additional" id="mee_att_<?php echo $cc;?>">Browse</a>&nbsp;
+                                          <a style="margin-bottom:5px;" class="btn btn-danger" href="javascript:void(0);"
+                                             onclick="$(this).parent().parent().remove();">Remove</a>
+                                          <span class="uploaded nohide">
+                                                <a class="dl nohide"
+                                                   href="<?php echo $path?>"><?php echo printanattachment($file->attachments) ;?></a>
+                                          </span>
+                                    </span>
+                    <input type="hidden" value="<?php echo $file->attachments;?>" name="mee_attachments[]"
+                           class="mee_att_<?php echo $cc;?>"/>
+                </div>
+                <?php
+            }
+            return true;
+        }
+    }
         //    if ($action != "View" && $action != "Vieworder") {
 
 ?>
@@ -140,8 +176,7 @@ $morecount=0;
 if (isset($mee_att['attach_doc']->id) && $mee_att['attach_doc']->id) {
     //echo $mee_att['attach_doc']->id;
     $mee_more = $meedocs->find()->where(['mee_id' => $mee_att['attach_doc']->id]);
-    $morecount=0;
-    if ($mee_more) {$morecount= iterator_count($mee_more);}
+    if ($mee_more) {$morecount= countfiles($mee_more);}
 }
 
     $docsprinted=0;
@@ -182,8 +217,17 @@ if (isset($mee_att['attach_doc']->id) && $mee_att['attach_doc']->id) {
         if ($doit && (count($attachment) > 0) || $morecount>0) {
             echo '<div class="col-md-4" align="right">' . $description . ': </div>';
             echo '<div class="col-md-8 mee_more">';
-
-makeBrowseButton(7, true, false);
+            if($action=="View"){
+                $skip=true;
+                $morecount = $morecount-1;
+                foreach($mee_more as $key => $file) {//id, mee_id, attachments
+                    if(printfile($this->request->webroot, 8, $file)) {
+                        break;
+                    }
+                }
+            } else {
+                makeBrowseButton(7, true, false);
+            }
         ?>
 
 
@@ -221,14 +265,14 @@ makeBrowseButton(7, true, false);
                     &nbsp;<span class="uploaded">
 
                     <?php if (isset($mee_att['attach_doc']) && $mee_att['attach_doc']->id_piece1) { ?>
-            &nbsp;<a class="dl"
-           href="<?php echo $this->request->webroot; ?>documents/download/<?php echo $mee_att['attach_doc']->id_piece1; ?>"><?php echo $mee_att['attach_doc']->id_piece1; ?></a><?php } ?></span>
+            <a class="dl"
+           href="<?php echo $this->request->webroot; ?>documents/download/<?php echo $mee_att['attach_doc']->id_piece1; ?>"><?php echo printanattachment($mee_att['attach_doc']->id_piece1); ?></a><?php } ?></span>
 
 
                </span>
                <span><a href="javascript:void(0)" class="btn btn-primary" id="mee_att_2">Browse</a>&nbsp;<span class="uploaded"><?php if (isset($mee_att['attach_doc']) && $mee_att['attach_doc']->id_piece1) { ?>
         <a class="dl"
-           href="<?php echo $this->request->webroot; ?>documents/download/<?php echo $mee_att['attach_doc']->id_piece2; ?>"><?php echo $mee_att['attach_doc']->id_piece2; ?></a><?php } ?></span>
+           href="<?php echo $this->request->webroot; ?>documents/download/<?php echo $mee_att['attach_doc']->id_piece2; ?>"><?php echo printanattachment($mee_att['attach_doc']->id_piece2); ?></a><?php } ?></span>
                </span>
 
                     <input type="hidden" name="id_piece1" class="mee_att_1" value="<?php if (isset($mee_att['attach_doc']) && $mee_att['attach_doc']->id_piece1) {
@@ -263,7 +307,7 @@ makeBrowseButton(7, true, false);
                 <div class="col-md-8">
                     <span><a href="javascript:void(0)" class="btn btn-primary" id="mee_att_3">Browse</a>&nbsp;<span class="uploaded"><?php if (isset($mee_att['attach_doc']) && $mee_att['attach_doc']->driver_record_abstract) { ?>
         <a class="dl"
-           href="<?php echo $this->request->webroot; ?>documents/download/<?php echo $mee_att['attach_doc']->driver_record_abstract; ?>"><?php echo $mee_att['attach_doc']->driver_record_abstract; ?></a><?php } ?></span></span>
+           href="<?php echo $this->request->webroot; ?>documents/download/<?php echo $mee_att['attach_doc']->driver_record_abstract; ?>"><?php echo  printanattachment($mee_att['attach_doc']->driver_record_abstract); ?></a><?php } ?></span></span>
                     <input type="hidden" name="driver_record_abstract" class="mee_att_3" value="<?php if (isset($mee_att['attach_doc']) && $mee_att['attach_doc']->driver_record_abstract) {
         echo $mee_att['attach_doc']->driver_record_abstract;
     } ?>" />
@@ -287,7 +331,7 @@ makeBrowseButton(7, true, false);
                 <div class="col-md-8">
                     <span><a href="javascript:void(0)" class="btn btn-primary" id="mee_att_4">Browse</a>&nbsp;<span class="uploaded"><?php if (isset($mee_att['attach_doc']) && $mee_att['attach_doc']->cvor) { ?>
         <a class="dl"
-           href="<?php echo $this->request->webroot; ?>documents/download/<?php echo $mee_att['attach_doc']->cvor; ?>"><?php echo $mee_att['attach_doc']->cvor; ?></a><?php } ?></span></span>
+           href="<?php echo $this->request->webroot; ?>documents/download/<?php echo $mee_att['attach_doc']->cvor; ?>"><?php echo printanattachment($mee_att['attach_doc']->cvor); ?></a><?php } ?></span></span>
                     <input type="hidden" name="cvor" class="mee_att_4" value="<?php if (isset($mee_att['attach_doc']) && $mee_att['attach_doc']->cvor) {
         echo $mee_att['attach_doc']->cvor;
     } ?>" />
@@ -311,7 +355,7 @@ makeBrowseButton(7, true, false);
                 <div class="col-md-8">
                     <span><a href="javascript:void(0)" class="btn btn-primary" id="mee_att_5">Browse</a>&nbsp;<span class="uploaded"><?php if (isset($mee_att['attach_doc']) && $mee_att['attach_doc']->resume) { ?>
             <a class="dl"
-               href="<?php echo $this->request->webroot; ?>documents/download/<?php echo $mee_att['attach_doc']->resume; ?>"><?php echo $mee_att['attach_doc']->resume; ?></a><?php } ?></span></span>
+               href="<?php echo $this->request->webroot; ?>documents/download/<?php echo $mee_att['attach_doc']->resume; ?>"><?php echo printanattachment($mee_att['attach_doc']->resume); ?></a><?php } ?></span></span>
                     <input type="hidden" name="resume" class="mee_att_5" value="<?php if (isset($mee_att['attach_doc']) && $mee_att['attach_doc']->resume) {
             echo $mee_att['attach_doc']->resume;
         } ?>" />
@@ -335,7 +379,7 @@ makeBrowseButton(7, true, false);
                 <div class="col-md-8">
                     <span><a href="javascript:void(0)" class="btn btn-primary" id="mee_att_6">Browse</a>&nbsp;<span class="uploaded"><?php if (isset($mee_att['attach_doc']) && $mee_att['attach_doc']->certification) { ?>
             <a class="dl"
-               href="<?php echo $this->request->webroot; ?>documents/download/<?php echo $mee_att['attach_doc']->certification; ?>"><?php echo $mee_att['attach_doc']->certification; ?></a><?php } ?></span></span>
+               href="<?php echo $this->request->webroot; ?>documents/download/<?php echo $mee_att['attach_doc']->certification; ?>"><?php echo printanattachment($mee_att['attach_doc']->certification); ?></a><?php } ?></span></span>
                     <input type="hidden" name="certification" class="mee_att_6" value="<?php if (isset($mee_att['attach_doc']) && $mee_att['attach_doc']->certification) {
             echo $mee_att['attach_doc']->certification;
         } ?>" />
@@ -356,19 +400,16 @@ makeBrowseButton(7, true, false);
     ?>
     <div class="form-group row">
     <div class="col-md-12">
-        <div class="col-md-4" align="right"><?php if($morecount>0 || $action!="View"){ echo "Additional Attachment";} ?></div>
+        <div class="col-md-4" align="right"><?php if($morecount>0 || $action!="View"){ echo "Additional Attachment(s): ";} ?></div>
             <div class="col-md-8">
                 <div class="mee_more">
                 <?php
                 $cc = 8;
                 if(isset($mee_more)) {
-                    foreach($mee_more as $mm) {
-                        ?>
-                    <div>
-                        <span><a style="margin-bottom:5px;" href="javascript:void(0)" class="btn btn-primary additional" id="mee_att_<?php echo $cc;?>">Browse</a>&nbsp;<a style="margin-bottom:5px;" class="btn btn-danger" href="javascript:void(0);" onclick="$(this).parent().parent().remove();">Remove</a> <span class="uploaded"><a class="dl" href="<?php echo $this->request->webroot;?>attachments/<?php echo $mm->attachments;?>"><?php echo $mm->attachments;?></a></span></span>
-                        <input type="hidden" value="<?php echo $mm->attachments;?>" name="mee_attachments[]" class="mee_att_<?php echo $cc;?>" />
-                    </div>
-                        <?php
+                    foreach($mee_more as $key => $file) {//id, mee_id, attachments
+                       if( printfile($this->request->webroot, $cc, $file, $skip)){
+                            $skip=false;
+                       }
                         $cc++;
                     }
                 }

@@ -583,8 +583,9 @@
             $count=0;
             foreach ($products as $p) {
                 if(!in_array($p->number, $Blocked) && $p->clientenabled) {
-                    echo '<li id="product_' . $p->number . '"><div class="col-xs-10"><i class="fa fa-file-text-o"></i> ' . $p->title . '</div>';
-                    echo '<div class="col-xs-2"><input type="checkbox" value="' . $p->number . '" id="form0"' . $Checked . '/></div>';
+                    echo '<li id="product_' . $p->number . '"><div class="col-xs-10"><i class="fa fa-file-text-o"></i> ';
+                    echo '<label for="form' . $count . '">' . $p->title . '</label></div>';
+                    echo '<div class="col-xs-2"><input type="checkbox" value="' . $p->number . '" id="form' . $count . '"' . $Checked . '/></div>';
                     echo '<div class="clearfix"></div></li>';
                     $count+=1;
                 }

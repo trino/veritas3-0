@@ -77,6 +77,56 @@ function printdocumentinfo($ID, $isOrder = false, $linktoOrder = false){
     }
 }
 
+function printanattachment($Filename){
+    if($Filename) {
+        $ret = geticon($Filename);
+        return "<i class='fa fa-" . $ret["icon"] . "'></i> " . $Filename;
+    }
+}
+
+function geticon($extension){
+    $ret = array();
+    if(strpos($extension, ".")) { $extension = getextension($extension);}
+    switch (TRUE) {//file-excel-o,,
+        case $extension == 'jpg' || $extension == 'jpeg' || $extension == 'png' || $extension == 'bmp' || $extension == 'gif';
+            $ret["type"] = "Image";
+            $ret["icon"] = 'file-image-o';
+            break;
+        case $extension == "pdf";
+            $ret["type"] = "Portable Document Format";
+            $ret["icon"] = 'file-pdf-o';
+            break;
+        case $extension == 'zip' || $extension == 'rar';
+            $ret["type"] = "File Archive";
+            $ret["icon"] = 'file-archive-o';
+            break;
+        case $extension == 'wav' || $extension == 'mp3';
+            $ret["type"] = "Audio Recording";
+            $ret["icon"] = 'file-audio-o';
+            break;
+        case $extension == 'docx' || $extension == 'doc';
+            $ret["type"] = "Microsoft Word Document";
+            $ret["icon"] = 'file-word-o';
+            break;
+        case $extension == 'mp4' || $extension == 'avi';
+            $ret["type"] = "Video";
+            $ret["icon"] = 'file-video-o';
+            break;
+        case $extension == 'php' || $extension == 'js' || $extension == 'ctp';
+            $ret["type"] = "Code Script";
+            $ret["icon"] = 'file-code-o';
+            break;
+        case $extension == 'ppt' || $extension == 'pps';
+            $ret["type"] = "Powerpoint Presentation";
+            $ret["icon"] = 'file-powerpoint-o';
+            break;
+        default:
+            $ret["type"] = "Unknown";
+            $ret["icon"] = 'paperclip';
+    }
+    return $ret;
+}
+
 function listfiles($client_docs, $dir, $field_name='client_doc',$delete, $method=1){
     $webroot=$GLOBALS['webroot'] ;
     if($method==2) {
@@ -103,43 +153,10 @@ function listfiles($client_docs, $dir, $field_name='client_doc',$delete, $method
                 $extension = getextension($file);
                 $filename = getextension($file, PATHINFO_FILENAME);
                 echo "<TR><TD width='29' align='center'><i class='fa fa-";
-                switch (TRUE) {//file-excel-o,,
-                    case $extension == 'jpg' || $extension == 'jpeg' || $extension == 'png' || $extension == 'bmp' || $extension == 'gif';
-                        $type = "Image";
-                        echo 'file-image-o';
-                        break;
-                    case $extension == "pdf";
-                        $type = "Portable Document Format";
-                        echo 'file-pdf-o';
-                        break;
-                    case $extension == 'zip' || $extension == 'rar';
-                        $type = "File Archive";
-                        echo 'file-archive-o';
-                        break;
-                    case $extension == 'wav' || $extension == 'mp3';
-                        $type = "Audio Recording";
-                        echo 'file-audio-o';
-                        break;
-                    case $extension == 'docx' || $extension == 'doc';
-                        $type = "Microsoft Word Document";
-                        echo 'file-word-o';
-                        break;
-                    case $extension == 'mp4' || $extension == 'avi';
-                        $type = "Video";
-                        echo 'file-video-o';
-                        break;
-                    case $extension == 'php' || $extension == 'js' || $extension == 'ctp';
-                        $type = "Code Script";
-                        echo 'file-code-o';
-                        break;
-                    case $extension == 'ppt' || $extension == 'pps';
-                        $type = "Powerpoint Presentation";
-                        echo 'file-powerpoint-o';
-                        break;
-                    default:
-                        $type = "Unknown";
-                        echo 'paperclip';
-                }
+                $ret=geticon($extension);
+                $type = $ret["type"];
+                echo $ret["icon"];
+
                 echo "' title='" . $type . "'></i></TD>";
                 echo "<TD><A class='nohide' HREF='" . $webroot . $dir . $file . "'>" . $filename . "</A>
                 <input type='hidden' value='".$file."' name='attach_doc[]' />

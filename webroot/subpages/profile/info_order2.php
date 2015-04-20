@@ -94,10 +94,12 @@ function productslist($ordertype, $products, $ID, $Checked = false, $Blocked = "
     echo '<DIV CLASS="PRODUCTLIST">';
     foreach ($products as $p) {
         if(showproduct($ordertype, $p, $Blocked)) {
-            echo '<li id="product_' . $p->number . '"><div class="col-xs-10"><i class="fa fa-file-text-o"></i> ' . $p->title . '</div>';
-            echo '<div class="col-xs-2"><input type="checkbox" value="' . $p->number . '" id="' . $ID . $index . '"' . $Checked . '/></div>';
+            $name=$ID . $index ;
+            echo '<li id="product_' . $p->number . '"><div class="col-xs-10"><i class="fa fa-file-text-o"></i> <label for="' . $name . '">'. $p->title . '</label></div>';
+            echo '<div class="col-xs-2"><input type="checkbox" value="' . $p->number . '" id="' . $name . '"' . $Checked . '/></div>';
             echo '<div class="clearfix"></div></li>';
         }
+        $index++;
     }
     echo "</DIV>";
 }
