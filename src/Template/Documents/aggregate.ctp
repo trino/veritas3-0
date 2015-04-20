@@ -91,7 +91,7 @@ foreach($rati as $k=>$v)
     $avg= $avg+$v;
 }
 ?>
-<p style="padding-top: 5px;"><strong><?php if(isset($prof)&& $prof[$k])echo $prof[$k];else echo "Unknown";?>: </strong> <?php echo ($avg/$avco);?></p> 
+<p style="padding-top: 5px;">Total Average (Out of 40): <?php echo round($avg/$avco,2); ?></p>
 <?php
 }?>
 
@@ -295,7 +295,7 @@ foreach($rat1 as $k=>$v)
     $avg= $avg+$v;
 }
 ?>
-<p style="padding-top: 5px;"><strong><?php if(isset($prof)&& $prof[$k])echo $prof[$k];else echo "Unknown";?>: </strong> <?php echo ($avg/$avco);?></p> 
+<p style="padding-top: 5px;">Total Average (Out of 10): <?php echo round($avg/$avco,2);?></p>
 <?php
 }?>
 <?php 

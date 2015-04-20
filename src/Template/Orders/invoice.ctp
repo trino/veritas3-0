@@ -140,23 +140,18 @@
 			<h3>Payment Details:</h3>
 			<ul class="list-unstyled">
 				<li>
-					<strong>V.A.T Reg #:</strong> 542554(DEMO)78
+					<strong>Company Name</strong>: <?php echo $client->company_name;?>
 				</li>
 				<li>
-					<strong>Account Name:</strong> FoodMaster Ltd
+					<strong>Company Address</strong>: <?php echo $client->company_address;?>
 				</li>
 				<li>
-					<strong>SWIFT code:</strong> 45454DEMO545DEMO
+					<strong>City</strong>:  <?php echo $client->city;?>
 				</li>
 				<li>
-					<strong>V.A.T Reg #:</strong> 542554(DEMO)78
+					<strong>Postal</strong>: <?php echo $client->postal;?>
 				</li>
-				<li>
-					<strong>Account Name:</strong> FoodMaster Ltd
-				</li>
-				<li>
-					<strong>SWIFT code:</strong> 45454DEMO545DEMO
-				</li>
+			
 			</ul>
 		</div>
         <?php }?>
