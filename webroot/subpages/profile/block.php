@@ -200,6 +200,8 @@
                                     <label class="uniform-inline">
                                         <input <?php echo $is_disabled ?> type="checkbox"
                                                                           name="side[client_create]"
+                                                                          onclick="selectall('ctypes[]', 'create2');"
+                                                                          class="create2"
                                                                           value="1" <?php if (isset($sidebar) && $sidebar->client_create == 1) echo "checked"; ?> />
                                         Create
                                     </label>
