@@ -674,6 +674,7 @@
                                                                             $csubdoc = $this->requestAction('/settings/all_settings/0/0/client/' . $id . '/' . $sub->id);
                                                                         ?>
                                                                         <td class="">
+
                                                                             <label class="uniform-inline">
                                                                                 <input <?php echo $is_disabled ?>
                                                                                     type="radio"
