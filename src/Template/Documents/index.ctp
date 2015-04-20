@@ -401,10 +401,11 @@ if ($_SERVER['SERVER_NAME'] == "localhost" || $_SERVER['SERVER_NAME'] == "127.0.
                                            href="<?php echo $this->request->webroot;?>documents/add/<?php echo $docs->client_id;?>/<?php echo $docs->id.'?type='.$docs->sub_doc_id?><?php if($docs->sub_doc_id==4)echo '&doc='.urlencode($docs->document_type);?>">Edit</a>
                                         <?php
                                     }else {
-                                        ?>
+                                        /*?>
                                         <a class="<?= btnclass("EDIT") ?>"
                                            href="<?php echo $this->request->webroot;?>documents/add/<?php echo $docs->client_id;?>/<?php echo $docs->id?>?order_id=<?php echo $docs->order_id.'&type='.$docs->sub_doc_id;?>">Edit</a>
                                     <?php
+                                    */
                                     }
                                 }
                             }

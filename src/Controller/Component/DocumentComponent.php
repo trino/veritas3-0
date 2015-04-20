@@ -1543,7 +1543,7 @@ class DocumentComponent extends Component
                 $profile_ids2 = str_replace(',,',',',$profile_ids2);
                 $profile_ids2 = str_replace(',,',',',$profile_ids2);
                 
-                $q = $model->find()->where(['id IN ('.$profile_ids2.')','(profile_type = 5 OR profile_type = 7 OR profile_type = 8 OR profile_type = 11)']);
+                $q = $model->find()->where(['id IN ('.$profile_ids2.')','(profile_type = 5 OR profile_type = 7 OR profile_type = 8 OR profile_type = 11)'])->order('fname');
                 
             }
             $profile_ids = '';
@@ -1572,19 +1572,20 @@ class DocumentComponent extends Component
                 {
                     
                     $model = TableRegistry::get('Profiles');
-                    $q = $model->find()->where(['(profile_type = 5 OR profile_type = 7 OR profile_type = 8 OR profile_type = 11)']);
+                    $q = $model->find()->where(['(profile_type = 5 OR profile_type = 7 OR profile_type = 8 OR profile_type = 11)'])->order('fname');
                     //var_dump($q);die();
-                } else {
+                } 
+                else 
+                {
                     $model = TableRegistry::get('Profiles');  
-                     
-                    $q = $model->find()->where(['(profile_type = 5 OR profile_type = 7 OR profile_type = 8 OR profile_type = 11)','id IN ('.$profile_ids.')']);
+                    $q = $model->find()->where(['(profile_type = 5 OR profile_type = 7 OR profile_type = 8 OR profile_type = 11)','id IN ('.$profile_ids.')'])->order('fname');
                 }  
                 
             }
             else
             if($driver!=0) {
                $model = TableRegistry::get('Profiles');
-               $q = $model->find()->where(['id' => $driver]); 
+               $q = $model->find()->where(['id' => $driver])->order('fname'); 
             }
             
             $dr_cl['driver'] = $q;

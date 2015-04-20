@@ -340,7 +340,21 @@
                         <tr>
                             <td colspan="2" style="background: #f7f7f7;">&nbsp;</td>
                         </tr>
-
+                        <tr>
+                            <td class="vtop"> Invoice</td>
+                            <td>
+                                <label class="uniform-inline">
+                                    <input <?php echo $is_disabled ?> type="radio"
+                                                                      name="side[invoice]"
+                                                                      value="1" <?php if (isset($sidebar) && $sidebar->invoice == 1) echo "checked"; ?>/>
+                                    Yes </label>
+                                <label class="uniform-inline">
+                                    <input <?php echo $is_disabled ?> type="radio"
+                                                                      name="side[invoice]"
+                                                                      value="0" <?php if (isset($sidebar) && $sidebar->invoice == 0) echo "checked"; ?>/>
+                                    No </label>
+                            </td>
+                        </tr>
 
                         <tr>
                             <td class="vtop">
@@ -413,6 +427,7 @@
                                 <div class="clearfix"></div>
                             </td>
                         </tr>
+                     
                         <tr class="doc_more" <?php if (isset($sidebar) && $sidebar->document == 0) {
                             echo "style='display:none;'";
                         } ?>>

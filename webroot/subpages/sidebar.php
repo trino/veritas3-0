@@ -256,14 +256,15 @@
                                     }
                                 }
                             } ?>
-
-                            <!--li <?php echo ($this->request['controller'] == 'Orders' && $this->request['action'] == 'invoice' && !isset($_GET['draft'])) ? 'class="active"' : ''; ?>>
+                            <?php if($sidebar->invoice=='1'){?>
+                            <li <?php echo ($this->request['controller'] == 'Orders' && $this->request['action'] == 'invoice' && !isset($_GET['draft'])) ? 'class="active"' : ''; ?>>
                                     <a href="<?php echo $this->request->webroot; ?>orders/invoice">
                                         <i class="icon-list"></i>
                                        Invoice</a>
-                            </li-->
+                            </li>
 
-                            <?php if ($sidebar->bulk == 1 && false) { ?>
+                            <?php }
+                             if ($sidebar->bulk == 1 && false) { ?>
                                 <li class="<?php echo ($this->request['controller'] == 'Profiles' && isset($_GET["all"])) ? 'active open' : ''; ?>">
                                     <a href="<?php echo $this->request->webroot; ?>profiles?all">
                                         <i class="fa fa-users"></i>

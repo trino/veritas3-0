@@ -72,7 +72,7 @@ if (isset($this->request->params['pass'][1])) {
     $sep = '?';
     else
     $sep = '&';}
-    if (isset($this->request->params['pass'][1])) { echo '<a href="../../' . $url . '/' . $id0 . "/" . $id1 . $id2 .$sep. 'type='.$_GET['type'].'" class="floatright btn btn-info btnspc">' . ucfirst($opposite) . '</a>'; }
+    if (isset($this->request->params['pass'][1])&& !isset($_GET['order_id'])) { echo '<a href="../../' . $url . '/' . $id0 . "/" . $id1 . $id2 .$sep. 'type='.$_GET['type'].'" class="floatright btn btn-info btnspc">' . ucfirst($opposite) . '</a>'; }
 
 
     function makeportlet($did, $color="", $Title=""){
