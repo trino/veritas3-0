@@ -126,7 +126,7 @@
 </ul>
 
 <?php
-    $id_count = 6;
+    $id_count = 7;
     $mand = "Optional";//isrequired($forms, $AttachmentName, $DriversProvince, $attachments = 0){
     if (count($attachment) > 0 || isrequired($forms, "id_piece", $DriverProvince, 0, True)) { $mand = "Mandatory"; }
     echo '<HR></div><div class="col-md-12"><strong>The following form(s) are ' . $mand . '</strong></div>';
@@ -388,15 +388,11 @@ if (isset($mee_att['attach_doc']->id) && $mee_att['attach_doc']->id) {
                 <div class="mee_more">
                 <?php
                 
-                if($id_count ==6)
+                if($id_count ==7)
                 {
                     ?>
-                    <div><span><a style="margin-bottom:5px;" href="javascript:void(0)" class="btn btn-primary additional" id="mee_att_7">Browse</a>&nbsp;<span class="uploaded"></span></span>
-                        <input type="hidden" name="mee_attachments[]" class="mee_att_7" /></div>
-                    <div style="display: none;">
-                        <span><a style="margin-bottom:5px;" href="javascript:void(0)" class="btn btn-primary additional" id="mee_att_8">Browse</a>&nbsp;<a style="margin-bottom:5px;" class="btn btn-danger" href="javascript:void(0);" onclick="$(this).parent().parent().remove();">Remove</a> <span class="uploaded"></span></span>
-                        <input type="hidden" name="mee_attachments[]" class="mee_att_8" />
-                    </div>
+                    <div><span><a style="margin-bottom:5px;" href="javascript:void(0)" class="btn btn-primary additional" id="mee_att_8">Browse</a>&nbsp;<span class="uploaded"></span></span>
+                        <input type="hidden" name="mee_attachments[]" class="mee_att_8" /></div>
                     <div style="display: none;">
                         <span><a style="margin-bottom:5px;" href="javascript:void(0)" class="btn btn-primary additional" id="mee_att_9">Browse</a>&nbsp;<a style="margin-bottom:5px;" class="btn btn-danger" href="javascript:void(0);" onclick="$(this).parent().parent().remove();">Remove</a> <span class="uploaded"></span></span>
                         <input type="hidden" name="mee_attachments[]" class="mee_att_9" />
@@ -404,6 +400,10 @@ if (isset($mee_att['attach_doc']->id) && $mee_att['attach_doc']->id) {
                     <div style="display: none;">
                         <span><a style="margin-bottom:5px;" href="javascript:void(0)" class="btn btn-primary additional" id="mee_att_10">Browse</a>&nbsp;<a style="margin-bottom:5px;" class="btn btn-danger" href="javascript:void(0);" onclick="$(this).parent().parent().remove();">Remove</a> <span class="uploaded"></span></span>
                         <input type="hidden" name="mee_attachments[]" class="mee_att_10" />
+                    </div>
+                    <div style="display: none;">
+                        <span><a style="margin-bottom:5px;" href="javascript:void(0)" class="btn btn-primary additional" id="mee_att_18">Browse</a>&nbsp;<a style="margin-bottom:5px;" class="btn btn-danger" href="javascript:void(0);" onclick="$(this).parent().parent().remove();">Remove</a> <span class="uploaded"></span></span>
+                        <input type="hidden" name="mee_attachments[]" class="mee_att_18" />
                     </div>
                     <div style="display: none;">
                         <span><a style="margin-bottom:5px;" href="javascript:void(0)" class="btn btn-primary additional" id="mee_att_11">Browse</a>&nbsp;<a style="margin-bottom:5px;" class="btn btn-danger" href="javascript:void(0);" onclick="$(this).parent().parent().remove();">Remove</a> <span class="uploaded"></span></span>
@@ -466,7 +466,7 @@ if (isset($mee_att['attach_doc']->id) && $mee_att['attach_doc']->id) {
     $(function(){
         <?php
         $lastid = $id_count+1;
-        if($lastid!= 7){
+        if($lastid!= 8){
             $lastid--;
         }
         ?>
@@ -479,7 +479,7 @@ if (isset($mee_att['attach_doc']->id) && $mee_att['attach_doc']->id) {
         });
         $('#mee_att_more').click(function(){
             last_id++;
-            if(last_id < 18)
+            if(last_id < 19)
             {
                 $('.mee_att_'+last_id).parent().show();
             }
