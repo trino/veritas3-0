@@ -41,7 +41,7 @@
     $productdetailsebs1627 = false;         //7  1627 LOE (Employment)
     $productdetails_CheckDL_72 = false;     //8  72   checkdl
 
-
+die();
 //whast is 79?
     debug($order_info);
 
