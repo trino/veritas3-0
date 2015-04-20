@@ -6,8 +6,10 @@
         <input type="hidden" name="sub_doc_id" value="<?php echo $dx->id;?>" class="sub_docs_id" id="af" />
         <div class="clearfix"></div>
         <hr/>
-        
-        <p>&nbsp;</p>
+
+
+    <?php if(false){?>
+
         <div class="col-md-12">
         <h3>Introduction</h3>
         </div>
@@ -547,9 +549,8 @@
         
         <p>&nbsp;</p>
         
-        
-        
-        <?php if(false){?>
+        <?}?>
+
         <div class="col-md-12">
         <h3>Basic Driver Application</h3>
         </div>
@@ -925,8 +926,6 @@
                     </div>
         </div>
 
-
-    <?php }?>
 
 
     <p>&nbsp;</p>

@@ -17,21 +17,21 @@ if(isset($disabled)){$is_disabled = 'disabled="disabled"';}
                                                 <div class="form-group">
 <label class="col-md-3 control-label">Company / Division: </label>
 <div class="col-md-4">
-<input type="text" name="company" class="form-control " <?php echo $is_disabled;?> placeholder="Enter text" value="<?php if(isset($audits))echo $audits->company;?>" />
+<input type="text" name="company" class="form-control " <?php echo $is_disabled;?> value="<?php if(isset($audits))echo $audits->company;?>" />
 </div>
 </div>
                                                 
 <div class="form-group">
 <label class="col-md-3 control-label">Conference Name: </label>
 <div class="col-md-4">
-<input type="text" name="conference_name"  class="form-control " <?php echo $is_disabled;?> placeholder="Enter text" value="<?php if(isset($audits))echo $audits->conference_name;?>" />
+<input type="text" name="conference_name"  class="form-control " <?php echo $is_disabled;?> value="<?php if(isset($audits))echo $audits->conference_name;?>" />
 </div>
 </div>
 
 <div class="form-group">
 <label class="col-md-3 control-label">Related Association: </label>
 <div class="col-md-4">
-<input type="text" name="association" class="form-control " <?php echo $is_disabled;?> placeholder="Enter text" value="<?php if(isset($audits))echo $audits->association;?>"/>	</div>
+<input type="text" name="association" class="form-control " <?php echo $is_disabled;?> value="<?php if(isset($audits))echo $audits->association;?>"/>	</div>
 </div>
                                                                                                 
 <div class="form-group">
@@ -115,7 +115,7 @@ if(isset($disabled)){$is_disabled = 'disabled="disabled"';}
                                                     </label>
                                                     
 <div class="col-md-4">
-<input type="text" name="total_cost" class="form-control " <?php echo $is_disabled;?> placeholder="Enter text" value="<?php if(isset($audits))echo $audits->total_cost;?>">
+<input type="text" name="total_cost" class="form-control " <?php echo $is_disabled;?> value="<?php if(isset($audits))echo $audits->total_cost;?>">
 </div>
 </div>                                                
 
@@ -239,12 +239,13 @@ Rate the volume of booth traffic.
                                                         Provide a grade rating of 1 to 10 (10 is best) and provide details.
                     </label>
 <div class="col-md-8">
+<div class="col-md-2" style="padding:0;">
 <select name="boothrate" <?php echo $is_disabled;?> class="form-control member_type" style="margin-bottom: 5px;">
                                                               <?php for($i=1; $i<=10; $i++):?>
                                                               <option value="<?php echo $i;?>" <?php if(isset($audits)&& $audits->boothrate ==$i)echo "selected='selected'";?>><?php echo $i;?></option>
                                                               <?php endfor;?>
                                                             </select>
-
+</div>
 <textarea class="form-control" name="rating" <?php echo $is_disabled;?> id="primary_objectives" rows="3"><?php if(isset($audits))echo $audits->rating;?></textarea>
 </div>
 </div> 

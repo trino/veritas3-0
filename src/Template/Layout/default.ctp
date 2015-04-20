@@ -216,10 +216,10 @@ $strings = CacheTranslations($language, "langswitch","",$registry);
 							<a href="<?php echo $this->request->webroot;?>profiles/edit/<?php echo $this->request->session()->read('Profile.id'); ?>" >
 							<i class="icon-user"></i> <?= $strings["dashboard_mysettings"] ?> </a>
 						</li>
-                        <li>
+                        <!--li>
                             <a href="<?php echo $this->request->webroot;?>profiles/langswitch/<?php echo $this->request->session()->read('Profile.id'); ?>" >
                                 <i class="icon-user"></i> <?= $strings["langswitch"]; ?> </a>
-                        </li>
+                        </li-->
 						<li class="divider">
 						</li>
 
@@ -322,13 +322,13 @@ $strings = CacheTranslations($language, "langswitch","",$registry);
         $isfirst = print_title($this->request->webroot, "pages/view/terms", "terms", $isfirst);
         if($this->request->session()->read('Profile.super')) {
             $isfirst = print_title($this->request->webroot, "pages/view/version_log", "version_log", $isfirst);
-            $isfirst = print_title($this->request->webroot, "profiles/settings", "Settings", $isfirst, true);
+
+            if ($_SERVER['SERVER_NAME'] == 'localhost') {
+                $isfirst = print_title($this->request->webroot, "profiles/settings", "Settings", $isfirst, true);
+            }
         }
         ?>
-
-
     </div>
-
 
     <div class="scroll-to-top">
 		<i class="icon-arrow-up"></i>

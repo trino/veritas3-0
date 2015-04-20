@@ -122,14 +122,18 @@
                                 <?php if ($this->request['action'] != "add" && !isset($_GET['view']) && $settings->mee == "MEE") {
                                     ?>
                                     <li>
-                                        <a href="#tab_1_4" data-toggle="tab">Products Display</a>
+                                        <a href="#tab_1_4" data-toggle="tab">Products</a>
                                     </li>
+
+                                    <li>
+                                        <a href="#tab_1_2" data-toggle="tab">Documents</a>
+                                    </li>
+
                                 <?php
 
+
+
                                 } ?>
-                                    <li>
-                                        <a href="#tab_1_2" data-toggle="tab">Forms Display</a>
-                                    </li>
 
 
                                 <li>

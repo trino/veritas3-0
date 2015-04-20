@@ -968,17 +968,14 @@
                                 '<br/>Created By: ' . $uq->username .
                                 '<br/>On: ' . date('Y-m-d') .
                                 '<br>Profile Type: ' . $protype .
-
-                                '<br/><br/>Username: ' . $_POST['username'];
-
-
+                                '<br/>Username: ' . $_POST['username'];
                             $this->Mailer->sendEmail($from, $to, $sub, $msg);
                             //$this->sendEmail($to, $sub, $msg);
                             if (isset($_POST["emailcreds"]) && $_POST["emailcreds"] == "on" && strlen(trim($_POST["email"])) > 0) {
 
                                 if ($password) {
                                     $msg .= "<br/>Password: " . $password;
-                                    $msg .= "<br /><br />Click <a href='" . LOGIN . "'>here</a> to login<br /><br /> Regards,<br /> The ".$settings->mee." Team";
+                                    $msg .= "<br />Click <a href='" . LOGIN . "'>here</a> to login<br /><br /> Regards,<br /> The ".$settings->mee." Team";
                                 }
 
                                 $this->Mailer->sendEmail($from, $_POST["email"], $sub, $msg);

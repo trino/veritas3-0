@@ -46,7 +46,8 @@
     $p = $forms_arr;
 ?>
 <div class="note note-success">
-    <h3 class="block col-md-12">MEE Order Confirmation</h3>
+    <h3 class="block col-md-12">MEE Order: <?php if(isset($_GET['order_type']))echo $_GET['order_type'];?> Confirmation
+    </h3>
 
     <div class="clearfix"></div>
 </div>
@@ -54,7 +55,7 @@
 <input type="hidden" id="confirmation" value="1"/>
 
 
-<div class="row col-md-6">
+<div class="row col-md-4">
 
     <div class="form-group">
         <label class="control-label col-md-12">Recruiter Name: </label>
@@ -82,74 +83,77 @@
                        echo date('Y-m-d');
                    } ?>"/>
         </div>
-        
-        <label class="control-label col-md-12" style="margin-top: 5px;">Order type:</label>
-
-        <div class="col-md-12">
-            <strong><?php if(isset($_GET['order_type']))echo $_GET['order_type'];?></strong>
-        </div>
-    </div>
-    <p>&nbsp;</p>
-
-    <div class="col-md-12"><label>Products Ordered:</label>
-
-        <div class="clearfix"></div>
-
-        <?php
-            $lineclass = "even";//set to "" for old list, even or odd to table
-
-
-            if ($lineclass == "") {
-            } else {
-                echo '<table class="table" style="margin-bottom: 0px;"><tbody>';
-            }
-
-            function PrintLine($lineclass, $name, $id, $cnt)
-            {
-                if ($cnt) {
-                    $check = "<input ";
-                    if ($cnt) {
-                        $check .= 'checked ';
-                    }
-                    $check .= 'disabled="disabled" type="checkbox" name="' . $id . '" value=""/>';
-
-                    if ($lineclass == "") {
-                        echo '<li><div class="col-md-10"><i class="fa fa-file-text-o"></i> ' . $name . '</div><div class="col-md-2">';
-                        echo $check . '</div><div class="clearfix"></div></li>';
-                        return "";
-                    }
-
-                    echo '<tr class="' . $lineclass . '" role="row"><td width="45"><i class="fa fa-file-text-o"></i></td>';
-                    echo '<td>' . $name . '</td><td>' . $check . '</td></tr>';
-                    if ($lineclass == "even") {
-                        return "odd";
-                    } else {
-                        return "even";
-                    }
-                }
-                return $lineclass;
-            }
-
-            if ($p) {
-                foreach ($p as $pp) {
-                    $title = $this->requestAction('/orders/getProductTitle/' . $pp);
-                    if (is_object($title)) {
-                        $lineclass = PrintLine($lineclass, $title->title, "prem_nat", $pp);
-                    }
-                }
-            }
-            if ($lineclass == "") {
-                // echo '</ul>';
-            } else {
-                echo '<TR><TD colspan="3"></TD></TR></tbody></table>';
-            }
-
-        ?>
 
     </div>
+
+
 </div>
 
-<div class="row col-md-6">
+
+<div class="col-md-4"><label>Products Ordered:</label>
+
+    <div class="clearfix"></div>
+
+    <?php
+        $lineclass = "even";//set to "" for old list, even or odd to table
+
+
+        if ($lineclass == "") {
+        } else {
+            echo '<table class="table" style="margin-bottom: 0px;"><tbody>';
+        }
+
+        function PrintLine($lineclass, $name, $id, $cnt)
+        {
+            if ($cnt) {
+                $check = "<input ";
+                if ($cnt) {
+                    $check .= 'checked ';
+                }
+                $check .= 'disabled="disabled" type="checkbox" name="' . $id . '" value=""/>';
+
+                if ($lineclass == "") {
+                    echo '<li><div class="col-md-10"><i class="fa fa-file-text-o"></i> ' . $name . '</div><div class="col-md-2">';
+                    echo $check . '</div><div class="clearfix"></div></li>';
+                    return "";
+                }
+
+                echo '<tr class="' . $lineclass . '" role="row"><td width="45"><i class="fa fa-file-text-o"></i></td>';
+                echo '<td>' . $name . '</td><td>' . $check . '</td></tr>';
+                if ($lineclass == "even") {
+                    return "odd";
+                } else {
+                    return "even";
+                }
+            }
+            return $lineclass;
+        }
+
+        if ($p) {
+            foreach ($p as $pp) {
+                $title = $this->requestAction('/orders/getProductTitle/' . $pp);
+                if (is_object($title)) {
+                    $lineclass = PrintLine($lineclass, $title->title, "prem_nat", $pp);
+                }
+            }
+        }
+        if ($lineclass == "") {
+            // echo '</ul>';
+        } else {
+            echo '<TR><TD colspan="3"></TD></TR></tbody></table>';
+        }
+
+    ?>
+
+</div>
+
+<div class="row col-md-12">
+
+<p>&nbsp;</p>
+</div>
+
+
+<div class="row col-md-12">
     <div class="form-group">
 
         <label class="control-label col-md-12">Please sign here to confirm your submission:</label>

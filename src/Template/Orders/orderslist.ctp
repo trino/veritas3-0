@@ -46,7 +46,7 @@ function getColor($products, $OrderType, $Default = "blue"){
         <?php }
 
 
-    if ($sidebar->orders_create == 1){
+    if ($sidebar->orders_create == 1  && false){
         foreach($products as $product){
             $alias = $product->Sidebar_Alias;
             if($sidebar->$alias ==1) {
@@ -219,7 +219,7 @@ function getColor($products, $OrderType, $Default = "blue"){
                                                 if ($order->hasattachments) {
                                                     echo '<BR><i  title="Has Attachment" class="fa fa-paperclip"></i>';
                                                 }  //echo $order->profile->title;      ?></td>
-                                        <td style="min-width: 125px;">
+                                        <td style="min-width: 145px;">
 
                                             <?php
 
@@ -380,16 +380,16 @@ echo $this->Html->link(__('Edit'), ['controller' => 'orders', 'action' => 'addor
                                                  <span class="label label-sm label-warning"
                                                           style="float:right;padding:4px;">draft</span>
                                                 <?php
-                                                
+
                                             }else
-                                                if ($order->complete == 0) { 
+                                                if ($order->complete == 0) {
                                                     ?>
-                                                
-                                                
-                                                
+
+
+
                                                     <span class="label label-sm label-primary"
                                                           style="float:right;padding:4px;">pending</span>
-                                                <?php 
+                                                <?php
 
                                             } else { ?>
                                                 <span class="label label-sm label-success"

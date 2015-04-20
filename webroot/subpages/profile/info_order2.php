@@ -256,7 +256,7 @@ function printform($counting, $settings, $client, $dr_cl, $driver, $intable = fa
     }
     ?>
     </select>
-    
+
     <input class="selecting_driver" type="hidden" value="<?php if ($driver) {
         echo $driver;
     }?>"/>
@@ -320,10 +320,10 @@ function printform($counting, $settings, $client, $dr_cl, $driver, $intable = fa
     }
 
     function check_driver_abstract(driver) {
-        
+
     }
     function check_cvor(driver) {
-        
+
     }
     function check_div() {
         //alert('test');

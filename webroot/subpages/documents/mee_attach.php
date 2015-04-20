@@ -142,7 +142,7 @@ if (isset($mee_att['attach_doc']->id) && $mee_att['attach_doc']->id) {
     $docsprinted=0;
     if (printdivrequired($action, $forms, "attachments", $DriverProvince, $morecount + count($attachment))) {
         $doit = false;
-        $description = 'Upload BC, QU, SA Abstract Consent Form PDF';
+        $description = '<strong>Step 2: </strong>Upload Abstract Consent Form (Above)';
         $docsprinted+=1;
         echo '</DIV>';
         if ($action == "View" || $action == "Vieworder") {
@@ -158,7 +158,7 @@ if (isset($mee_att['attach_doc']->id) && $mee_att['attach_doc']->id) {
             $doit = true;
             if (count($attachment) > 0) {
                 echo '<div class="form-group row"><div class="col-md-12">';
-                echo '<label class="control-label col-md-4">Please download, fill out, and upload these forms (Required): </label><div class="col-md-8">';
+                echo '<label class="control-label col-md-4" align="right"><strong>Step 1: </strong>Please download, fill out, and upload: </label><div class="col-md-8">';
                 foreach ($attachment as $name => $file) {//C:\wamp\www\veritas3-0\webroot\ http://localhost/veritas3-0/webroot/img/certificates/certificate71-1.pdf
                     echo '<A class="btn btn-info" DOWNLOAD="' . $name . '.pdf" HREF="' . $this->request->webroot . 'webroot/img/pdfs/' . $file . '">';
                     echo '<i class="fa fa-floppy-o"></i> ' . $name . ' </A> ';
@@ -243,13 +243,13 @@ if (isset($mee_att['attach_doc']->id) && $mee_att['attach_doc']->id) {
     if (printdivrequired($action, $forms, "id_piece", $DriverProvince, getattachment($mee_att, "id_piece1") . getattachment($mee_att, "id_piece2"))) {
         $docsprinted+=1; ?>
             <div class="col-md-12">
-                <div class="col-md-4" align="right"> Upload 2 pieces of ID: </div>
+                <div class="col-md-4" align="right">Upload 2 pieces of ID: </div>
                 <div class="col-md-8">
                     <span><a href="javascript:void(0)" class="btn btn-primary" id="mee_att_1">Browse</a>
                     &nbsp;<span class="uploaded">
 
                     <?php if (isset($mee_att['attach_doc']) && $mee_att['attach_doc']->id_piece1) { ?>
-        <a class="dl"
+            &nbsp;<a class="dl"
            href="<?php echo $this->request->webroot; ?>documents/download/<?php echo $mee_att['attach_doc']->id_piece1; ?>"><?php echo $mee_att['attach_doc']->id_piece1; ?></a><?php } ?></span>
 
 
@@ -391,7 +391,7 @@ if (isset($mee_att['attach_doc']->id) && $mee_att['attach_doc']->id) {
                 if($id_count ==6)
                 {
                     ?>
-                    <div><span><a style="margin-bottom:5px;" href="javascript:void(0)" class="btn btn-primary additional" id="mee_att_7">Browse</a> <span class="uploaded"></span></span>
+                    <div><span><a style="margin-bottom:5px;" href="javascript:void(0)" class="btn btn-primary additional" id="mee_att_7">Browse</a>&nbsp;<span class="uploaded"></span></span>
                         <input type="hidden" name="mee_attachments[]" class="mee_att_7" /></div>
                     <div style="display: none;">
                         <span><a style="margin-bottom:5px;" href="javascript:void(0)" class="btn btn-primary additional" id="mee_att_8">Browse</a>&nbsp;<a style="margin-bottom:5px;" class="btn btn-danger" href="javascript:void(0);" onclick="$(this).parent().parent().remove();">Remove</a> <span class="uploaded"></span></span>
@@ -485,7 +485,7 @@ if (isset($mee_att['attach_doc']->id) && $mee_att['attach_doc']->id) {
             }
             else
             {
-            var strings = '<div><span><a style="margin-bottom:5px;" href="javascript:void(0)" class="btn btn-primary additional" id="mee_att_'+last_id+'">Browse</a>&nbsp;<a style="margin-bottom:5px;" class="btn btn-danger" href="javascript:void(0);" onclick="$(this).parent().parent().remove();">Remove</a> <span class="uploaded"></span></span>'+
+            var strings = '<div><span><a style="margin-bottom:5px;" href="javascript:void(0)" class="btn btn-primary additional" id="mee_att_'+last_id+'">Browse</a>&nbsp;<a style="margin-bottom:5px;" class="btn btn-danger" href="javascript:void(0);" onclick="$(this).parent().parent().remove();">Remove</a>&nbsp;<span class="uploaded"></span></span>'+
                 '<input type="hidden" name="mee_attachments[]" class="mee_att_'+last_id+'" /></div>';
 
                 $('.mee_more').append(strings);
