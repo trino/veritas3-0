@@ -677,7 +677,7 @@
                                     No </label>
                             </td>
                         </tr>
-                        <tr>
+                        <!--<tr>
                             <td class="vtop"> Enable Bulk Order</td>
                             <td>
                                 <label class="uniform-inline">
@@ -691,7 +691,7 @@
                                                                       value="0" <?php if (isset($sidebar) && $sidebar->bulk == 0) echo "checked"; ?>/>
                                     No </label>
                             </td>
-                        </tr>
+                        </tr>-->
 <?php } ?>
 
                     </table>

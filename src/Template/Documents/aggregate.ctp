@@ -30,6 +30,7 @@
                     $ar[] = $aud->attendees_rate;
                     $int[] = $aud->interest;
                     $bl[] = $aud->booth_location;
+                    $rat1[] = $aud->boothrate;
                     $rat[] = $aud->rating;
                     $sugg[] = $aud->suggestions;
                     $prom[] = $aud->promotional;
@@ -73,7 +74,7 @@ foreach($ec as $k=>$v)
 </div>                                                
 
  	<div class="form-group">
-<label class="col-md-3 control-label">Rating Total
+<label class="col-md-3 control-label">Avg. Rating Total
                                                     <small class=" control-label">[Out of 40]</small>:
                                                     </label>
                                                     
@@ -81,13 +82,16 @@ foreach($ec as $k=>$v)
 
                                                             <?php 
 if(isset($rati))
+{
+    $avg=0;
 foreach($rati as $k=>$v)
 {
-    ?>
-    <p><strong><?php if(isset($prof)&& $prof[$k])echo $prof[$k];else echo "Unknown";?>: </strong> <?php echo $v;?></p> 
-    <?php
+    $avg= $avg+$v
 }
 ?>
+<p><strong><?php if(isset($prof)&& $prof[$k])echo $prof[$k];else echo "Unknown";?>: </strong> <?php echo $avg;?></p> 
+<?php
+}?>
 
                                 </div>
 </div>
@@ -279,10 +283,21 @@ Rate the volume of booth traffic.
                     </label>
 <div class="col-md-8">
 <?php 
+if(isset($rat1))
+foreach($rat1 as $k=>$v)
+{
+    ?>
+
+    <p><strong><?php if(isset($prof)&& $prof[$k])echo $prof[$k];else echo "Unknown";?>: </strong> <?php echo $v;?></p> 
+    <?php
+}
+?>
+<?php 
 if(isset($rat))
 foreach($rat as $k=>$v)
 {
     ?>
+
     <p><strong><?php if(isset($prof)&& $prof[$k])echo $prof[$k];else echo "Unknown";?>: </strong> <?php echo $v;?></p> 
     <?php
 }

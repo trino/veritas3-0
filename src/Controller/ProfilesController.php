@@ -1250,7 +1250,7 @@
             $this->set('id', $id);
             $this->set('uid', $id);
 
-            $this->set('products', TableRegistry::get('product_types')->find('all'));
+            $this->set('products', TableRegistry::get('product_types')->find()->where(['id <>'=>7]));
         }
 
         function changePass($id){
@@ -1355,10 +1355,10 @@
                 //echo $k."=>".$v."<br/>";
                 $side[$k] = $v;
             }
-
+            //var_dump($side);die();
             //die();
             if ($client == "") {
-                $sides = array('profile_list', 'profile_create', 'client_list', 'client_create', 'document_list', 'document_create', 'profile_edit', 'profile_delete', 'client_edit', 'client_delete', 'document_edit', 'document_delete', 'document_others', 'document_requalify', 'orders_list', 'orders_create', 'orders_delete', 'orders_requalify', 'orders_edit', 'orders_others', 'order_requalify', 'orders_mee', 'orders_products', 'order_intact', 'email_document', 'email_orders', 'email_profile','orders_emp','orders_GEM','orders_GDR','aggregate');//this should not be hardcoded
+                $sides = array('profile_list', 'profile_create', 'client_list', 'client_create', 'document_list', 'document_create', 'profile_edit', 'profile_delete', 'client_edit', 'client_delete', 'document_edit', 'document_delete', 'document_others', 'document_requalify', 'orders_list', 'orders_create', 'orders_delete', 'orders_requalify', 'orders_edit', 'orders_others', 'order_requalify', 'orders_mee', 'orders_products', 'order_intact', 'email_document', 'email_orders', 'email_profile','orders_emp','orders_GEM','orders_GDR','aggregate','bulk');//this should not be hardcoded
                 foreach ($sides as $s) {
                     if (!isset($_POST['side'][$s]))
                         $side[$s] = 0;
