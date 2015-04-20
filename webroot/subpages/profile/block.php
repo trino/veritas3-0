@@ -102,6 +102,8 @@
                                     <label class="uniform-inline">
                                         <input <?php echo $is_disabled ?> type="checkbox"
                                                                           name="side[profile_create]"
+                                                                          onclick="selectall('ptypes[]', 'create1');"
+                                                                          class="create1"
                                                                           value="1" <?php if (isset($sidebar) && $sidebar->profile_create == 1) echo "checked"; ?> />
                                         Create
                                     </label>
@@ -1332,6 +1334,33 @@
 <!-- put this back when the form is gone   </div>     </div>   -->
 
 <script>
+    function selectall(startswith, classname){
+        var checked = $('.' + classname).is(':checked');
+        $('#blockform input[type="checkbox"]').each(function () {
+            var name = $(this).attr("name");
+            if (typeof name  !== "undefined") {
+                if (name.substring(0, startswith.length) == startswith) {
+                    if (checked) {
+                        $(this).parent().addClass('checked')
+                        $(this).attr('checked', 'checked');
+                    } else {
+                        $(this).parent().removeClass('checked')
+                        $(this).removeAttr('checked');
+                    }
+                }
+            }
+        });
+
+    }
+
+
+    function simulateClick(name) {
+        var evt = document.createEvent("MouseEvents");
+        evt.initMouseEvent("click", true, true, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
+        var cb = document.getElementById(name);
+        var canceled = !cb.dispatchEvent(evt);
+    }
+
     $(function (){
         $('.slelectall1').click(function () {
             if ($(this).is(':checked')) {

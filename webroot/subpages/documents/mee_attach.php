@@ -218,7 +218,7 @@ if (isset($mee_att['attach_doc']->id) && $mee_att['attach_doc']->id) {
         if ($doit && (count($attachment) > 0) || $morecount>0) {
             echo '<div class="col-md-4" align="right">' . $description . ': </div>';
             echo '<div class="col-md-8 mee_more">';
-            if($action=="View"){
+            if($action=="View" || $action == "Vieworder" ){
                 $skip=true;
                 $morecount = $morecount-1;
                 foreach($mee_more as $key => $file) {//id, mee_id, attachments
