@@ -386,13 +386,13 @@ var FormWizard = function () {
                         var MissingData = ""; //use DriverProvince
                         for(var i = 0; i < Forms.length; i++){//loop through product numbers
                             if(Forms[i] == 1603) {//Premium National Criminal Record Check
-                                if ($('.mee_att_1').val().length == 0) {//first piece of ID
+                                if ($('.mee_att_1').val().length == 0 && $('.mee_att_2').val().length == 0) {//pieces of ID
                                     MissingData = "Missing the required piece of ID";
                                 }
                             }
 
                             if($('#mee_att_7').length>0){
-                                if ($('.mee_att_7').val().length == 0) {//first piece of ID
+                                if ($('.mee_att_7').val().length == 0) {//abstract form
                                     MissingData = "Missing the abstract consent form";
                                 }
                             }
