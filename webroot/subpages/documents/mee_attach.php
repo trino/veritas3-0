@@ -188,9 +188,10 @@ if (isset($mee_att['attach_doc']->id) && $mee_att['attach_doc']->id) {
         echo '</DIV>';
         if ($action == "View" || $action == "Vieworder") {
             if (count($attachment) > 0 && $morecount>0) {
+                $description="";
                 foreach ($attachment as $name => $file) {
                     if (strlen($description)>0){$description.=", ";}
-                    $description.= $name . "=" . $file;
+                    $description.= $name;
                 }
                 $doit=true;
             }
@@ -264,13 +265,14 @@ if (isset($mee_att['attach_doc']->id) && $mee_att['attach_doc']->id) {
                     <span><a href="javascript:void(0)" class="btn btn-primary" id="mee_att_1">Browse</a>
                     &nbsp;<span class="uploaded">
 
-                    <?php if (isset($mee_att['attach_doc']) && $mee_att['attach_doc']->id_piece1) { ?>
+                    <?php
+        if (isset($mee_att['attach_doc']) && $mee_att['attach_doc']->id_piece1) { ?>
             <a class="dl"
            href="<?php echo $this->request->webroot; ?>documents/download/<?php echo $mee_att['attach_doc']->id_piece1; ?>"><?php echo printanattachment($mee_att['attach_doc']->id_piece1); ?></a><?php } ?></span>
 
 
                </span>
-               <span><a href="javascript:void(0)" class="btn btn-primary" id="mee_att_2">Browse</a>&nbsp;<span class="uploaded"><?php if (isset($mee_att['attach_doc']) && $mee_att['attach_doc']->id_piece1) { ?>
+               <span><a href="javascript:void(0)" class="btn btn-primary" id="mee_att_2">Browse</a>&nbsp;<span class="uploaded"><?php if (isset($mee_att['attach_doc']) && $mee_att['attach_doc']->id_piece2) { ?>
         <a class="dl"
            href="<?php echo $this->request->webroot; ?>documents/download/<?php echo $mee_att['attach_doc']->id_piece2; ?>"><?php echo printanattachment($mee_att['attach_doc']->id_piece2); ?></a><?php } ?></span>
                </span>
