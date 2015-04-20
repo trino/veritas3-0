@@ -15,14 +15,16 @@
         include_once('subpages/api.php');
     }
 
-    class ProfilesController extends AppController{
+    class ProfilesController extends AppController
+    {
 
         public $paginate = [
             'limit' => 20,
             'order' => ['id' => 'DESC'],
         ];
 
-        public function initialize(){
+        public function initialize()
+        {
             parent::initialize();
             $this->loadComponent('Settings');
             $this->loadComponent('Mailer');
@@ -34,7 +36,8 @@
 
         }
 
-        function upload_img($id){
+        function upload_img($id)
+        {
             if (isset($_FILES['myfile']['name']) && $_FILES['myfile']['name']) {
                 $arr = explode('.', $_FILES['myfile']['name']);
                 $ext = end($arr);
@@ -63,7 +66,8 @@
             die();
         }
 
-        function client_default(){
+        function client_default()
+        {
             if (isset($_FILES['myfile']['name']) && $_FILES['myfile']['name']) {
                 $arr = explode('.', $_FILES['myfile']['name']);
                 $ext = end($arr);
@@ -83,8 +87,8 @@
                         ->set($_POST)
                         ->where(['id' => 1])
                         ->execute();
-                   
-                    @unlink(WWW_ROOT.'img/clients/'.$old_image);    
+
+                    @unlink(WWW_ROOT . 'img/clients/' . $old_image);
                     echo $rand;
 
                 } else {
@@ -94,7 +98,8 @@
             die();
         }
 
-        function upload_all($id = ""){
+        function upload_all($id = "")
+        {
             if (isset($_FILES['myfile']['name']) && $_FILES['myfile']['name']) {
                 $arr = explode('.', $_FILES['myfile']['name']);
                 $ext = end($arr);
@@ -125,7 +130,8 @@
             die();
         }
 
-        public function settings(){
+        public function settings()
+        {
             $this->loadModel('Logos');
             $this->loadModel('OrderProducts');
             $this->loadModel('ProfileTypes');
@@ -139,11 +145,14 @@
             $this->set('logos2', $this->paginate($this->Logos->find()->where(['secondary' => '2'])));
         }
 
-        public function products(){
+        public function products()
+        {
             if (isset($_POST["Type"])) {
                 $Value = 0;
                 if (isset($_POST['Value'])) {
-                    if (strtolower($_POST['Value']) == "true") {$Value = 1;}
+                    if (strtolower($_POST['Value']) == "true") {
+                        $Value = 1;
+                    }
                 }
                 $DocID = $_POST['DocID'];
                 switch ($_POST["Type"]) {
@@ -186,12 +195,14 @@
             }
         }
 
-        function enabledisableproduct($ID, $Value){
+        function enabledisableproduct($ID, $Value)
+        {
             $table = TableRegistry::get('order_products');
             $table->query()->update()->set(['enable' => $Value])->where(['number' => $ID])->execute();
         }
 
-        function isproductprovinceenabled($ProductID, $DocumentID, $Province){
+        function isproductprovinceenabled($ProductID, $DocumentID, $Province)
+        {
             $item = TableRegistry::get('order_provinces')->find()->where(['ProductID' => $ProductID, 'FormID' => $DocumentID, "Province" => $Province])->first();
             if ($item) {
                 return true;
@@ -200,7 +211,8 @@
             }
         }
 
-        function setproductprovince($ProductID, $DocumentID, $Province, $Value){
+        function setproductprovince($ProductID, $DocumentID, $Province, $Value)
+        {
             $table = TableRegistry::get('order_provinces');//ProductID, Province, FormID
             if ($Value == 1) {
                 $color = "green";
@@ -218,7 +230,8 @@
             return "<FONT COLOR='" . $color . "'>" . $DocumentID . $message . $ProductID . "." . $Province . "</FONT>";
         }
 
-        function generateproductHTML($Product){
+        function generateproductHTML($Product)
+        {
             //TableRegistry::get('order_provinces')->find()->where(['ProductID' => $Product])->all();
             $provincelist = $this->enumProvinces();
             $subdocuments = TableRegistry::get('subdocuments')->find('all');//subdocument type list (id, title, display, form, table_name, orders, color_id)
@@ -235,7 +248,8 @@
             echo '</TABLE>';
         }
 
-        function generateRowHTML($ID, $Title, $Product, $provincelist){
+        function generateRowHTML($ID, $Title, $Product, $provincelist)
+        {
             echo '<TR><TD>' . $ID . '</TD><TD><DIV ID="dn' . $ID . '">' . $this->ucfirst2($Title) . '</DIV></TD>';
             foreach ($provincelist as $acronym => $fullname) {
                 if ($this->isproductprovinceenabled($Product, $ID, $acronym)) {
@@ -248,11 +262,13 @@
             echo "</TR>";
         }
 
-        function enumProvinces(){
+        function enumProvinces()
+        {
             return array("ALL" => "All Provinces", "AB" => "Alberta", "BC" => "British Columbia", "MB" => "Manitoba", "NB" => "New Brunswick", "NL" => "Newfoundland and Labrador", "NT" => "Northwest Territories", "NS" => "Nova Scotia", "NU" => "Nunavut", "ON" => "Ontario", "PE" => "Prince Edward Island", "QC" => "Quebec", "SK" => "Saskatchewan", "YT" => "Yukon Territories");
         }
 
-        function ucfirst2($Text){
+        function ucfirst2($Text)
+        {
             $Words = explode(" ", $Text);
             $Words2 = array();//php forces me to make a copy
             foreach ($Words as $Word) {
@@ -261,21 +277,25 @@
             return implode(" ", $Words2);
         }
 
-        function ClearProduct($Number){
+        function ClearProduct($Number)
+        {
             TableRegistry::get("order_provinces")->deleteAll(array('ProductID' => $Number), false);
         }
 
-        function RenameProduct($Number, $NewName){
+        function RenameProduct($Number, $NewName)
+        {
             TableRegistry::get("order_products")->query()->update()->set(['title' => $NewName])->where(['number' => $Number])->execute();
         }
 
-        function DeleteProduct($Number){
+        function DeleteProduct($Number)
+        {
             $this->ClearProduct($Number);
             TableRegistry::get("order_products")->deleteAll(array('number' => $Number), false);
             //TableRegistry::get("order_provinces")->deleteAll(array('ProductID' => $Number), false);
         }
 
-        function AddProduct($Number, $Name){
+        function AddProduct($Number, $Name)
+        {
             $table = TableRegistry::get("order_products");
             $item = $table->find()->where(['number' => $Number])->first();
             if ($item) {
@@ -285,7 +305,8 @@
             return true;
         }
 
-        public function index(){
+        public function index()
+        {
             $this->loadModel('ProfileTypes');
             $this->set('ptypes', $this->ProfileTypes->find()->where(['enable' => '1']));
             $this->set('doc_comp', $this->Document);
@@ -348,7 +369,7 @@
                 }
                 if ($cond == '') {
                     $cond = $cond . ' (id IN (' . $profile_ids . '))';
-                }else {
+                } else {
                     $cond = $cond . ' AND (id IN (' . $profile_ids . '))';
                 }
             }
@@ -480,7 +501,8 @@
         }
 
         */
-        function removefiles($file){
+        function removefiles($file)
+        {
             if (isset($_POST['id']) && $_POST['id'] != 0) {
                 $this->loadModel("ProfileDocs");
                 $this->ProfileDocs->deleteAll(['id' => $_POST['id']]);
@@ -489,7 +511,8 @@
             die();
         }
 
-        public function view($id = null){
+        public function view($id = null)
+        {
             if (isset($_GET['success'])) {
                 $this->Flash->success('Order saved successfully');
             }
@@ -777,8 +800,8 @@
 
         function sendEmail($To, $Subject, $Message)
         {
-             $settings = TableRegistry::get('settings');
-              $setting = $settings->find()->first();
+            $settings = TableRegistry::get('settings');
+            $setting = $settings->find()->first();
             $path = $this->Document->getUrl();
             $replace = array("%PATH%" => $path, "%CRLF%" => "\r\n");//auto-replace these terms
             foreach ($replace as $key => $value) {
@@ -975,7 +998,7 @@
 
                                 if ($password) {
                                     $msg .= "<br/>Password: " . $password;
-                                    $msg .= "<br />Click <a href='" . LOGIN . "'>here</a> to login<br /><br /> Regards,<br /> The ".$settings->mee." Team";
+                                    $msg .= "<br />Click <a href='" . LOGIN . "'>here</a> to login<br /><br /> Regards,<br /> The " . $settings->mee . " Team";
                                 }
 
                                 $this->Mailer->sendEmail($from, $_POST["email"], $sub, $msg);
@@ -1085,9 +1108,9 @@
                             else
                                 if ($profile->profile_type == '8')
                                     $username = 'owner_driver_' . $profile->id;
-                                    else
-                                     if ($profile->profile_type == '11')
-                                    $username = 'employee_' . $profile->id;
+                                else
+                                    if ($profile->profile_type == '11')
+                                        $username = 'employee_' . $profile->id;
                         $queries = TableRegistry::get('Profiles');
                         $queries->query()->update()->set(['username' => $username])
                             ->where(['id' => $profile->id])
@@ -1147,18 +1170,22 @@
             die();
         }
 
-    public function langswitch($id = null){
-        $id=$this->request->session()->read('Profile.id');
-        $language = $this->request->session()->read('Profile.language');
-        $acceptablelanguages = array("English", "French");
-        if (!in_array($language, $acceptablelanguages)) { $language = $acceptablelanguages[0]; }//default to english
-        $index=array_search($language,$acceptablelanguages)+1;
-        if ($index >= count($acceptablelanguages)){$index=0;}
-        $language=$acceptablelanguages[$index];
-        $this->request->session()->write('Profile.language', $language);
-        TableRegistry::get('profiles')->query()->update()->set(['language' => $language])->where(['id' => $id])->execute();
-    }
-
+        public function langswitch($id = null)
+        {
+            $id = $this->request->session()->read('Profile.id');
+            $language = $this->request->session()->read('Profile.language');
+            $acceptablelanguages = array("English", "French");
+            if (!in_array($language, $acceptablelanguages)) {
+                $language = $acceptablelanguages[0];
+            }//default to english
+            $index = array_search($language, $acceptablelanguages) + 1;
+            if ($index >= count($acceptablelanguages)) {
+                $index = 0;
+            }
+            $language = $acceptablelanguages[$index];
+            $this->request->session()->write('Profile.language', $language);
+            TableRegistry::get('profiles')->query()->update()->set(['language' => $language])->where(['id' => $id])->execute();
+        }
 
         /**
          * Edit method
@@ -1167,7 +1194,8 @@
          * @return void
          * @throws \Cake\Network\Exception\NotFoundException
          */
-        public function edit($id = null){
+        public function edit($id = null)
+        {
             $this->set('doc_comp', $this->Document);
             $check_pro_id = $this->Settings->check_pro_id($id);
             if ($check_pro_id == 1) {
@@ -1198,7 +1226,7 @@
             } else {
                 $this->set('myuser', '1');
             }
-            $this->getsubdocument_topblocks($id,  false);//subdocument_topblocks
+            $this->getsubdocument_topblocks($id, false);//subdocument_topblocks
             $this->loadModel("ProfileTypes");
             $this->set("ptypes", $this->ProfileTypes->find()->where(['enable' => '1'])->all());
             $this->loadModel("ClientTypes");
@@ -1222,7 +1250,7 @@
                     //die('here');
                     $this->request->data['password'] = $profile->password;
                 }
-                if (isset($_POST['profile_type']) && $_POST['profile_type'] == 1){
+                if (isset($_POST['profile_type']) && $_POST['profile_type'] == 1) {
                     $this->request->data['admin'] = 1;
                 } else {
                     $this->request->data['admin'] = 0;
@@ -1247,10 +1275,11 @@
             $this->set('id', $id);
             $this->set('uid', $id);
 
-            $this->set('products', TableRegistry::get('product_types')->find()->where(['id <>'=>7]));
+            $this->set('products', TableRegistry::get('product_types')->find()->where(['id <>' => 7]));
         }
 
-        function changePass($id){
+        function changePass($id)
+        {
             $profile = $this->Profiles->get($id, [
                 'contain' => []
             ]);
@@ -1355,7 +1384,7 @@
             //var_dump($side);die();
             //die();
             if ($client == "") {
-                $sides = array('profile_list', 'profile_create', 'client_list', 'client_create', 'document_list', 'document_create', 'profile_edit', 'profile_delete', 'client_edit', 'client_delete', 'document_edit', 'document_delete', 'document_others', 'document_requalify', 'orders_list', 'orders_create', 'orders_delete', 'orders_requalify', 'orders_edit', 'orders_others', 'order_requalify', 'orders_mee', 'orders_products', 'order_intact', 'email_document', 'email_orders', 'email_profile','orders_emp','orders_GEM','orders_GDR','aggregate','bulk','invoice');//this should not be hardcoded
+                $sides = array('profile_list', 'profile_create', 'client_list', 'client_create', 'document_list', 'document_create', 'profile_edit', 'profile_delete', 'client_edit', 'client_delete', 'document_edit', 'document_delete', 'document_others', 'document_requalify', 'orders_list', 'orders_create', 'orders_delete', 'orders_requalify', 'orders_edit', 'orders_others', 'order_requalify', 'orders_mee', 'orders_products', 'order_intact', 'email_document', 'email_orders', 'email_profile', 'orders_emp', 'orders_GEM', 'orders_GDR', 'aggregate', 'bulk', 'invoice');//this should not be hardcoded
                 foreach ($sides as $s) {
                     if (!isset($_POST['side'][$s]))
                         $side[$s] = 0;
@@ -1407,34 +1436,41 @@
             die();
         }
 
-        function getsubdocument_topblocks($UserID, $getpost=false){
+        function getsubdocument_topblocks($UserID, $getpost = false)
+        {
             $table = TableRegistry::get('order_products_topblocks');
-            if($getpost){//save
+            if ($getpost) {//save
                 $table->deleteAll(array('UserID' => $UserID), false);
-                foreach($_POST['topblocks'] as $Key => $Value){
-                    if($Value==1) {
+                foreach ($_POST['topblocks'] as $Key => $Value) {
+                    if ($Value == 1) {
                         $table->query()->insert(['UserID', 'ProductID'])->values(['UserID' => $UserID, 'ProductID' => $Key])->execute();
                     }
                 }
             } else {//load
                 $query = $table->find()->select()->where(['UserID' => $UserID])->order(['ProductID' => 'asc']);
                 $products = TableRegistry::get('order_products')->find('all');
-                foreach($products as $product){
+                foreach ($products as $product) {
                     $product->TopBlock = 0;
-                    if(is_object($this->FindIterator($query, "ProductID", $product->number))) {$product->TopBlock = 1;}
+                    if (is_object($this->FindIterator($query, "ProductID", $product->number))) {
+                        $product->TopBlock = 1;
+                    }
                 }
                 $this->set("theproductlist", $products);
             }
         }
 
-        function FindIterator($ObjectArray, $FieldName, $FieldValue){
-            foreach($ObjectArray as $Object){
-                if ($Object->$FieldName == $FieldValue){return $Object;}
+        function FindIterator($ObjectArray, $FieldName, $FieldValue)
+        {
+            foreach ($ObjectArray as $Object) {
+                if ($Object->$FieldName == $FieldValue) {
+                    return $Object;
+                }
             }
             return false;
         }
 
-        function getSub(){
+        function getSub()
+        {
             $sub = TableRegistry::get('Subdocuments');
             $query = $sub->find();
             $q = $query->select();
@@ -1444,7 +1480,8 @@
 
         }
 
-        function getProSubDoc($pro_id, $doc_id){
+        function getProSubDoc($pro_id, $doc_id)
+        {
             $sub = TableRegistry::get('Profilessubdocument');
             $query = $sub->find();
             $query->select()->where(['profile_id' => $pro_id, 'subdoc_id' => $doc_id]);
@@ -1465,8 +1502,10 @@
             foreach ($_POST['profile'] as $k2 => $v) {
                 $subp = TableRegistry::get('Profilessubdocument');
                 $query2 = $subp->query();
-                $TopBlock=0;
-                if (isset($_POST['topblock'][$k2])){$TopBlock = $_POST['topblock'][$k2];}
+                $TopBlock = 0;
+                if (isset($_POST['topblock'][$k2])) {
+                    $TopBlock = $_POST['topblock'][$k2];
+                }
                 $query2->insert(['profile_id', 'subdoc_id', 'display', 'Topblock'])
                     ->values(['profile_id' => $id, 'subdoc_id' => $k2, 'display' => $_POST['profile'][$k2], 'Topblock' => $TopBlock])
                     ->execute();
@@ -2002,14 +2041,10 @@
             return $this->response;
         }
 
-
-
-
-
-
 /////////////////////////////////////////////////////////////////////////////////////process order
-        function cron(){//////////////////////////////////send out emails
-            if (isset($_GET["testemail"])){
+        function cron()
+        {//////////////////////////////////send out emails
+            if (isset($_GET["testemail"])) {
                 $email = $this->request->session()->read('Profile.email');
                 echo "Test email sent<BR>" . $this->Mailer->sendEmail("", $email, "TEST EMAIL", "THIS IS A TEST AT: " . date_timestamp_get(date_create()));
                 die();
@@ -2041,80 +2076,98 @@
                 $q->query()->update()->set(['sent' => 1, 'email_self' => 0])->where(['id' => $todo->id])->execute();
             }
 
-            //////////////////////////////////send out emails
+//////////////////////////////////send out emails
+
+////////////////////////////////////////////////////
+////////////////////////////////////////////////////
+////////////////////////////////////////////////////
+////////////////////////////////////////////////////
+
             $orders = TableRegistry::get('orders');
             $order = $orders
                 ->find()
                 ->where(['orders.draft' => 0])->order('orders.id DESC')->limit(1);
-            //  debug($order);
+
             foreach ($order as $o) {
-                // debug($o);
+
                 if ($o->complete == 0) {
 
                     $complete = 1;
-                    //   ECHO $o->ins_1_binary;
 
-                    if (!$o->ins_1_binary) {
+                    if ($o->ins_1 && $o->ins_1_binary == null) {
                         $complete = 0;
-                    } else {
+                        echo "ins 1 not complete<br>";
+                    } else if ($o->ins_1 && $o->ins_1_binary != "done") {
                         $this->create_files_from_binary($o->id, "1", $o->ins_1_binary);
-                        $this->save_bright_planet_grade($o->id, 'ins_1_binary', null);
-
+                        $this->save_bright_planet_grade($o->id, 'ins_1_binary', 'done');
+                        echo "ins 1 complete<br>";
                     }
 
-                    if (!$o->ins_14_binary) {
+                    if ($o->ins_14 && $o->ins_14_binary == null) {
                         $complete = 0;
-                    } else {
+                        echo "ins 14 not complete<br>";
+                    } else if ($o->ins_14 && $o->ins_14_binary != "done") {
                         $this->create_files_from_binary($o->id, "14", $o->ins_14_binary);
-                        $this->save_bright_planet_grade($o->id, 'ins_14_binary', null);
+                        $this->save_bright_planet_grade($o->id, 'ins_14_binary', 'done');
+                        echo "ins 14 complete<br>";
                     }
 
-                    if (!$o->ins_72_binary) {
+
+                    if ($o->ins_72 && $o->ins_72_binary == null) {
                         $complete = 0;
-                    } else {
+                        echo "ins 72 not complete<br>";
+                    } else if ($o->ins_72 && $o->ins_72_binary != "done") {
                         $this->create_files_from_binary($o->id, "72", $o->ins_72_binary);
-                        $this->save_bright_planet_grade($o->id, 'ins_72_binary', null);
-
+                        $this->save_bright_planet_grade($o->id, 'ins_72_binary', 'done');
+                        echo "ins 72 complete<br>";
                     }
 
-                    if (!$o->ins_77_binary) {
+                    if ($o->ins_77 && $o->ins_77_binary == null) {
                         $complete = 0;
-                    } else {
+                        echo "ins 77 not complete<br>";
+                    } else if ($o->ins_77 && $o->ins_77_binary != "done") {
                         $this->create_files_from_binary($o->id, "77", $o->ins_77_binary);
-                        $this->save_bright_planet_grade($o->id, 'ins_77_binary', null);
-
+                        $this->save_bright_planet_grade($o->id, 'ins_77_binary', 'done');
+                        echo "ins 77 complete<br>";
                     }
 
-                    if (!$o->ins_78_binary) {
+
+                    if ($o->ins_78 && $o->ins_78_binary == null) {
                         $complete = 0;
-                    } else {
+                        echo "ins 78 not complete<br>";
+                    } else if ($o->ins_78 && $o->ins_78_binary != "done") {
                         $this->create_files_from_binary($o->id, "78", $o->ins_78_binary);
-                        $this->save_bright_planet_grade($o->id, 'ins_78_binary', null);
-
+                        $this->save_bright_planet_grade($o->id, 'ins_78_binary', 'done');
+                        echo "ins 78 complete<br>";
                     }
 
-                    if (!$o->ebs_1603_binary) {
+                    if ($o->ebs_1603 && $o->ebs_1603_binary == null) {
                         $complete = 0;
-                    } else {
+                        echo "ebs 1603 not complete<br>";
+                    } else if ($o->ebs_1603 && $o->ebs_1603_binary != "done") {
                         $this->create_files_from_binary($o->id, "1603", $o->ebs_1603_binary);
-                        $this->save_bright_planet_grade($o->id, 'ebs_1603_binary', null);
-
+                        $this->save_bright_planet_grade($o->id, 'ebs_1603_binary', 'done');
+                        echo "ebs 1603 complete<br>";
                     }
 
-                    if (!$o->ebs_1627_binary) {
+
+                    if ($o->ebs_1627 && $o->ebs_1627_binary == null) {
                         $complete = 0;
-                    } else {
+                        echo "ebs 1627 not complete<br>";
+                    } else if ($o->ebs_1627 && $o->ebs_1627_binary != "done") {
                         $this->create_files_from_binary($o->id, "1627", $o->ebs_1627_binary);
-                        $this->save_bright_planet_grade($o->id, 'ebs_1627_binary', null);
-
+                        $this->save_bright_planet_grade($o->id, 'ebs_1627_binary', 'done');
+                        echo "ebs 1627 complete<br>";
                     }
 
-                    if (!$o->ebs_1650_binary) {
-                        $complete = 0;
-                    } else {
-                        $this->create_files_from_binary($o->id, "1650", $o->ebs_1650_binary);
-                        $this->save_bright_planet_grade($o->id, 'ebs_1650_binary', null);
 
+                    if ($o->ebs_1650 && $o->ebs_1650_binary == null) {
+                        $complete = 0;
+                        echo "ebs 1650 not complete<br>";
+                    } else if ($o->ebs_1650 && $o->ebs_1650_binary != "done") {
+                        $this->create_files_from_binary($o->id, "1650", $o->ebs_1650_binary);
+                        $this->save_bright_planet_grade($o->id, 'ebs_1650_binary', 'done');
+                        echo "ebs 1650 complete<br>";
                     }
 
                     if ($o->bright_planet_html_binary) {
@@ -2154,20 +2207,10 @@
                             $this->save_bright_planet_grade($o->id, 'ebs_1627', $sendit);
                         }
 
-                        /*
-                        $sendit = strip_tags(trim($this->get_mee_results_binary($o->bright_planet_html_binary, "Letter Of Experience")));
-                        if ($sendit) {
-
-                            $this->save_bright_planet_grade($o->id, 'ins_72', $sendit);
-                        }
-                        */
-
                         $this->save_bright_planet_grade($o->id, 'bright_planet_html_binary', null);
-
                     }
 
                     if ($complete == 1 && $o->complete == 0) {
-
                         $or = TableRegistry::get('orders');
                         $quer = $or->query();
                         $quer->update()
@@ -2179,24 +2222,16 @@
                         $profile1 = $table->find()->where(['id' => 71])->first();
 
                         if ($profile1->email) {
-                            $path = $this->Document->getUrl();
-                            //  $from = array('info@' . $path => "ISB MEE");
-                            $from = 'info@' . $path;
+                            $settings = TableRegistry::get('settings');
+                            $setting = $settings->find()->first();
+                            $from = array('info@' . $path => $setting->mee);
                             $to = $profile1->email;
                             $sub = 'Order Completed';
                             $msg = 'Your order has been processed and ready for download.<br /><br /> Please login <a href="' . LOGIN . '">here</a> to retreive your reports.<br /><br /> Regards,<br /> The ISB MEE Team';
                             $this->Mailer->sendEmail($from, $to, $sub, $msg);
                         }
-
-                        //send out emasil here
-                        //send out emasil here
-                        //send out emasil here
-                        //send out emasil here
-
                     }
-
                 }
-
             }
 
             die();
@@ -2219,7 +2254,7 @@
             $from = array('info@' . $path => $setting->mee);
             $to = trim($email);
             $sub = 'Tasks Reminder';
-            $msg = 'Domain: ' . getHost("isbmee.com") . ' <br /><br />Reminder, you have following task due:<br/><br/>Title: ' . $todo->title . '<br />Description: ' . $todo->description . '<br />Due By: ' . $todo->date . '<br /><br /> Regards,<br />The '.$setting->mee.' team';
+            $msg = 'Domain: ' . getHost("isbmee.com") . ' <br /><br />Reminder, you have following task due:<br/><br/>Title: ' . $todo->title . '<br />Description: ' . $todo->description . '<br />Due By: ' . $todo->date . '<br /><br /> Regards,<br />The ' . $setting->mee . ' team';
             echo "<hR>From: " . $from . "<BR>To: " . $to . " " . $name . "<BR>Subject: " . $sub . "<BR>Message: " . $msg;
             $this->Mailer->sendEmail($from, $to, $sub, $msg);
         }
@@ -2244,7 +2279,7 @@
         function forgetpassword()
         {
             $settings = TableRegistry::get('settings');
-            $setting = $settings->find()->first();   
+            $setting = $settings->find()->first();
             $path = $this->Document->getUrl();
             $email = str_replace(" ", "+", trim($_POST['email']));
             $profiles = TableRegistry::get('profiles');
@@ -2256,7 +2291,7 @@
                     $from = array('info@' . $path => $setting->mee);
                     $to = $profile->email;
                     $sub = 'Password reset successful';
-                    $msg = 'Your password has been reset.<br /> Your login details are:<br /> Username: ' . $profile->username . '<br /> Password: ' . $new_pwd . '<br /> Please <a href="' . LOGIN . '">click here</a> to login.<br /> Regards,<br /> The '.$setting->mee.' Team';
+                    $msg = 'Your password has been reset.<br /> Your login details are:<br /> Username: ' . $profile->username . '<br /> Password: ' . $new_pwd . '<br /> Please <a href="' . LOGIN . '">click here</a> to login.<br /> Regards,<br /> The ' . $setting->mee . ' Team';
                     $this->Mailer->sendEmail($from, $to, $sub, $msg);
                     echo "Password has been reset succesfully. Please check your email for the new password.";
                 }

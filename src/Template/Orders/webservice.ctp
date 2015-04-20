@@ -17,12 +17,10 @@
     } else {
         $user_id234 = '22552';
     }
-/*
-    if ($_SERVER['SERVER_NAME'] != "isbmeereports.com") {
+    if ($_SERVER['SERVER_NAME'] == "localhost") {
         $user_id234 = '22552';
     }
-*/  
-    echo $_SERVER['SERVER_NAME'];
+
 
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     $upload_additional_id = '';
@@ -43,9 +41,11 @@
     $productdetailsebs1627 = false;         //7  1627 LOE (Employment)
     $productdetails_CheckDL_72 = false;     //8  72   checkdl
 
-    echo $order_info->order_type;
 
-    if ($order_info->order_type == "Order MEE") {
+//whast is 79?
+    debug($order_info);
+
+    if ($order_info->order_type == "Driver Order") {
         $productdetails79 = true; // only TRUE if complete mee roders  - DONT CHANGE
 
         $productdetailsebs1603 = true;         // 1603 Premium check
@@ -62,7 +62,7 @@
         $productdetails79 = false; // only TRUE if complete mee roders  - DONT CHANGE
 
         $myArray = explode(',', $order_info->forms);
-        var_dump($myArray);
+     //   var_dump($myArray);
         foreach ($myArray as $splitArray) {
             switch ($splitArray) {
                 case 1603:

@@ -681,7 +681,7 @@
                 foreach($mee_query as $mq)
                 {
                     /* UNCOMMENT BELOW TO VIEW THE ATTACHMENTS OF MEE*/
-                    /*echo 'id_piece1: '.$mq->id_piece1.'<br/>';
+                    echo 'id_piece1: '.$mq->id_piece1.'<br/>';
                     echo 'id_piece2: '.$mq->id_piece2.'<br/>';
                     echo 'driver_record_abstract: '.$mq->driver_record_abstract.'<br/>';
                     echo 'cvor: '.$mq->cvor.'<br/>';
@@ -695,7 +695,7 @@
                         {
                             echo 'ADDITIONAL: '.$m_mee->attachments.'<br/>';
                         }
-                    }*/
+                    }
                 }
             }
             
@@ -725,17 +725,19 @@
             $this->set('order_info', $order_info);
 
             $order_attach = $all_attachments->find()->where(['order_id'=>$orderid]);
+
+            /*
             foreach($order_attach as $oa)
             {
-                echo "Attachment: " . $oa->attachment;
-                $sd = $subdocument->find()->where(['id'=>$oa->sub_id])->first();
+            echo "Attachment: " . $oa->attachment;
+            $sd = $subdocument->find()->where(['id'=>$oa->sub_id])->first();
 
-                if($sd){
-                    echo "<br/>";
+            if($sd){
+            echo "<br/>";
 
-                    echo "Sub Document: " . $sd->title;}
-                echo "<br/>";
-                echo "<br/>";
+            echo "Sub Document: " . $sd->title;}
+            echo "<br/>";
+            echo "<br/>";
             }
 
             $attachments = TableRegistry::get('mee_attachments')->find()->where(['order_id' => $orderid])->first();//use ->id to map to mee_attachments_more
@@ -743,10 +745,8 @@
             echo "<BR>" . $attachments_more->attachments . "<BR>" . $attachments->id_piece1 . "<BR>" . $attachments->id_piece2;
             echo "<BR>" . $attachments->driver_record_abstract . "<BR>" . $attachments->cvor . "<BR>" . $attachments->resume;
             echo "<BR>" . $attachments->certification;
+            */
 
-echo 131231232113;
-
-            die();
             $this->set('order_attach', $order_attach);
             $this->set('subdocument', TableRegistry::get('subdocuments'));
 
