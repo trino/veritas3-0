@@ -179,6 +179,8 @@ if (isset($mee_att['attach_doc']->id) && $mee_att['attach_doc']->id) {
         }
         echo '<div class="col-md-8 mee_more">';
 
+        /* FROM ROB : THIS IS THE CODE THAT I USED FOR ADDITIONAL DOCUMENTS, PLEASE DONT USE IT FOR OTHER DOCUMENTS, ITS CAUSING ISSUES DUE TO SAME ID AND NAME
+        
         if (!$morecount ) {
             if(count($attachment) > 0) {
                 ?>
@@ -211,10 +213,13 @@ if (isset($mee_att['attach_doc']->id) && $mee_att['attach_doc']->id) {
                                       echo $mm->attachments;
                                   } ?>"/>
                            <?php //echo printrequired($action, $forms, "attachments", $DriverProvince, count($attachment)) . "<br />";
-                           echo "</div>";
+                           ?>
+                           </div>
+                           <?php
                            }
                     }
         }
+        */
         ?>
                 </div>
                 <div class="clearfix"></div>
@@ -387,8 +392,22 @@ if (isset($mee_att['attach_doc']->id) && $mee_att['attach_doc']->id) {
             <div class="col-md-8">
                 <div class="mee_more">
                 <?php
-                
-                if($id_count ==7)
+                $cc = 8;
+                if(isset($mee_more))
+                {
+                    foreach($mee_more as $mm)
+                    {
+                        ?>
+                    <div>
+                        <span><a style="margin-bottom:5px;" href="javascript:void(0)" class="btn btn-primary additional" id="mee_att_<?php echo $cc;?>">Browse</a>&nbsp;<a style="margin-bottom:5px;" class="btn btn-danger" href="javascript:void(0);" onclick="$(this).parent().parent().remove();">Remove</a> <span class="uploaded"><a class="dl" href="<?php echo $this->request->webroot;?>attachments/<?php echo $mm->attachments;?>"><?php echo $mm->attachments;?></a></span></span>
+                        <input type="hidden" value="<?php echo $mm->attachments;?>" name="mee_attachments[]" class="mee_att_<?php echo $cc;?>" />
+                    </div>
+                        <?php
+                        $cc++;
+                    }
+                }
+                //echo $cc;
+                if($cc==8)
                 {
                     ?>
                     <div><span><a style="margin-bottom:5px;" href="javascript:void(0)" class="btn btn-primary additional" id="mee_att_8">Browse</a>&nbsp;<span class="uploaded"></span></span>
@@ -437,7 +456,7 @@ if (isset($mee_att['attach_doc']->id) && $mee_att['attach_doc']->id) {
                 }
                 else
                 {
-                    for($h=$id_count+1;$h<18;$h++)
+                    for($h=$cc;$h<18;$h++)
                     {
                         ?>
                         <div style="display: none;">
@@ -465,7 +484,7 @@ if (isset($mee_att['attach_doc']->id) && $mee_att['attach_doc']->id) {
 <script>
     $(function(){
         <?php
-        $lastid = $id_count+1;
+        $lastid = $cc;
         if($lastid!= 8){
             $lastid--;
         }
