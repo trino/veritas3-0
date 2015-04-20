@@ -488,7 +488,7 @@ class DocumentsController extends AppController{
         $meedocs = TableRegistry::get('mee_attachments_more');
         $this->set('meedocs',$meedocs);
         $clients = TableRegistry::get('Clients');
-        $c = $clients->find()->all();
+        $c = $clients->find()->order('company_name')->all();
         $this->set('clients', $c);
         if ($did) {
             $docs = TableRegistry::get('documents');
@@ -520,7 +520,7 @@ class DocumentsController extends AppController{
                 }
 
             } else {
-                if ($setting->document_create == 0 || count($doc) == 0 || $cn == 0) {
+               if ($setting->document_create == 0 || count($doc) == 0 || $cn == 0) {
                     $this->Flash->error('Sorry you don\'t have the required permissions to upload documents. Please contact the administrator to enable.');
                     return $this->redirect("/");
 
