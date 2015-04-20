@@ -11,7 +11,11 @@
         echo "<SCRIPT>alert('" . $Text . "');</SCRIPT>";
     }
 
-
+    function makeBrowseButton($ID, $Display, $Remove = true){
+        if(!$Display){$Display=' style="display: none;"';} else{ $Display="";}
+        echo '<div' . $Display . '><span><a style="margin-bottom:5px;" href="javascript:void(0)" class="btn btn-primary additional" id="mee_att_' . $ID . '">Browse</a>&nbsp';
+        if ($Remove) { echo '<a style="margin-bottom:5px;" class="btn btn-danger" href="javascript:void(0);" onclick="$(this).parent().parent().remove();">Remove</a>';}        echo '<span class="uploaded"></span></span><input type="hidden" name="mee_attachments[]" class="mee_att_' . $ID . '" /></div>';
+    }
 
     $action = ucfirst($param);
     if (!isset($mee_att)) {$mee_att = array();}
@@ -177,10 +181,14 @@ if (isset($mee_att['attach_doc']->id) && $mee_att['attach_doc']->id) {
         echo '<div class="col-md-12">';
         if ($doit && (count($attachment) > 0) || $morecount>0) {
             echo '<div class="col-md-4" align="right">' . $description . ': </div>';
-        }
-        echo '<div class="col-md-8 mee_more">';
+            echo '<div class="col-md-8 mee_more">';
+
+makeBrowseButton(7, true, false);
         ?>
+
+
                 </div>
+    <?php } ?>
                 <div class="clearfix"></div>
                 <!--p>&nbsp;</p>
                 <div class="col-md-4">&nbsp;</div><div class="col-md-8"><a href="javascript:void(0);" id="mee_att_more" class="btn btn-success">Add More</a></div-->
@@ -366,23 +374,25 @@ if (isset($mee_att['attach_doc']->id) && $mee_att['attach_doc']->id) {
                 }
                 //echo $cc;
                 if($cc==8) {
-                    function makeBrowseButton($ID, $Display){
-                        if(!$Display){$Display=' style="display: none;"';} else{ $Display="";}
-                        echo '<div' . $Display . '><span><a style="margin-bottom:5px;" href="javascript:void(0)" class="btn btn-primary additional" id="mee_att_' . $ID . '">Browse</a>&nbsp;<a style="margin-bottom:5px;" class="btn btn-danger" href="javascript:void(0);" onclick="$(this).parent().parent().remove();">Remove</a> <span class="uploaded"></span></span><input type="hidden" name="mee_attachments[]" class="mee_att_' . $ID . '" /></div>';
-                    }
                     for($temp=8; $temp<18; $temp+=1){
                         makeBrowseButton($temp, $temp==8);
                     }
                 } else {
-                    for($h=$cc;$h<18;$h++) {
-                        ?>
+                        for ($h = $cc; $h<18; $h++) {
+                            if ($h<>7){ ?>
                         <div style="display: none;">
-                            <span><a style="margin-bottom:5px;" href="javascript:void(0)" class="btn btn-primary additional" id="mee_att_<?php echo $h;?>">Browse</a>&nbsp;<a style="margin-bottom:5px;" class="btn btn-danger" href="javascript:void(0);" onclick="$(this).parent().parent().remove();">Remove</a> <span class="uploaded"></span></span>
-                            <input type="hidden" name="mee_attachments[]" class="mee_att_<?php echo $h;?>" />
+                            <span><a style="margin-bottom:5px;" href="javascript:void(0)" class="btn btn-primary additional"
+                                     id="mee_att_<?php echo $h; ?>">Browse</a>&nbsp;<a style="margin-bottom:5px;"
+                                                                                       class="btn btn-danger"
+                                                                                       href="javascript:void(0);"
+                                                                                       onclick="$(this).parent().parent().remove();">Remove</a> <span
+                                    class="uploaded"></span></span>
+                            <input type="hidden" name="mee_attachments[]" class="mee_att_<?php echo $h; ?>"/>
                         </div>
                         <?php
+                        }
+                      }
                     }
-                }
                 ?>
                 
             </div>
