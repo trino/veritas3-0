@@ -235,7 +235,7 @@ $strings = CacheTranslations($language, "profiles_%",s($settings));//,$registry)
                                         if($sidebar->bulk=='1' && ($profile->profile_type == 5 || $profile->profile_type == 7 || $profile->profile_type == 8 || $profile->profile_type == 11))
                                         {
                                         ?>
-                                            <input type="checkbox" class="form-control bulk_user" value="<?php echo $profile->id; ?>" id="checkbox_id_<?php echo $profile->id; ?>" >
+                                            <!--input type="checkbox" class="form-control bulk_user" value="<?php echo $profile->id; ?>" id="checkbox_id_<?php echo $profile->id; ?>" -->
                                         <?php
                                         }
                                         ?>
