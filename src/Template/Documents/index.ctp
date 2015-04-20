@@ -259,10 +259,17 @@ if ($_SERVER['SERVER_NAME'] == "localhost" || $_SERVER['SERVER_NAME'] == "127.0.
                                     if($docs->hasattachments) { echo '<BR><i  title="Has Attachment" class="fa fa-paperclip"></i>';} ?></td>
 
                                 <td style="width: 190px;">
-                                    <?php switch (1){//change the number to pick a style
-                                        case 0://plain text
-                                            echo  h($docs->document_type);
-                                            break;
+                                    <?php
+                                    $VIEWURL = $this->request->webroot . "documents/view/" . $docs->client_id . "/" . $docs->id . '?type=' . $docs->sub_doc_id;
+                                    if ($docs->sub_doc_id == 4) {$VIEWURL .= '&doc=' . urlencode($docs->document_type);}
+                                    if ($docs->order_id) {$VIEWURL.= "&order_id=" . $docs->order_id; }
+                                    $EDITURL = str_replace("/view/", "/add/", $VIEWURL);
+                                    if(isset($_GET["draft"])){$VIEWURL = $EDITURL;}
+                                    
+                                        switch (1){//change the number to pick a style
+                                            case 0://plain text
+                                                echo  h($docs->document_type);
+                                                break;
                                         case 1://top block
                                         echo '<div class="dashboard-stat ';
                                        // $colors = array("pre-screening" => "blue-madison", "survey" => "green", "driver application" => "red", "road test" => "yellow", "consent form" => "purple", "feedbacks" => "red-intense", "attachment" => "yellow-saffron", "audits" => "grey-cascade");
@@ -270,22 +277,28 @@ if ($_SERVER['SERVER_NAME'] == "localhost" || $_SERVER['SERVER_NAME'] == "127.0.
                                             echo $colors[strtolower($docs->document_type)];
                                         }
                                         */
-                                        if(isset($getColorId))
-                                        echo $getColorId;
-                                         else {
+                                        if(isset($getColorId)) {
+                                            echo $getColorId;
+                                        }else {
                                             echo "blue";
                                         }
                                     ?>">
 
                                     <a class="more"  id="sub_doc_click1"
-                                       href="<?php if ($sidebar->document_list == '1' && !isset($_GET["draft"])) {
+                                       href="<?php
+
+                                       echo $VIEWURL;
+                                       /*
+                                       if ($sidebar->document_list == '1' && !isset($_GET["draft"])) {
                                            if (!$docs->order_id){
                                                echo $this->request->webroot . 'documents/view/' . $docs->client_id . '/' . $docs->id.'?type='.$docs->sub_doc_id;if($docs->sub_doc_id==4)echo '&doc='.urlencode($docs->document_type);
-                                               }
-                                           else{
+                                           } else{
                                                echo $this->request->webroot . 'documents/view/' . $docs->client_id . '/' . $docs->id . '?order_id=' . $docs->order_id.'&type='.$docs->sub_doc_id;if($docs->sub_doc_id==4)echo '&doc='.urlencode($docs->document_type);
                                                }
-                                       } else { ?>javascript:;<?php } ?>">
+                                       } else { ?>javascript:;<?php }
+                                       */
+
+                                       ?>">
                                         <?=  h(str_replace('_',' ',$docs->document_type)); //it won't let me put it in the desc  ?>
 
                                         <i class="fa fa-copy"></i>
@@ -373,40 +386,14 @@ if ($_SERVER['SERVER_NAME'] == "localhost" || $_SERVER['SERVER_NAME'] == "127.0.
 
                     </td>
                     <td class="actions  util-btn-margin-bottom-5 ">
-
-                        <?php if ($sidebar->document_list == '1' && !isset($_GET["draft"])) {
-                            if (!$docs->order_id){
-                                //echo $this->Html->link(__('View'), ['action' => 'view', $docs->client_id, $docs->id], ['class' => btnclass("VIEW")]);
-                                ?>
-                                <a class="<?= btnclass("VIEW") ?>"
-                                   href="<?php echo $this->request->webroot;?>documents/view/<?php echo $docs->client_id;?>/<?php echo $docs->id.'?type='.$docs->sub_doc_id?><?php if($docs->sub_doc_id==4)echo '&doc='.urlencode($docs->document_type);?>">View</a>
-                                   <?php
-                                }
-                            else {
-                                ?>
-                                <a class="<?= btnclass("VIEW") ?>"
-                                   href="<?php echo $this->request->webroot;?>documents/view/<?php echo $docs->client_id;?>/<?php echo $docs->id?>?order_id=<?php echo $docs->order_id.'&type='.$docs->sub_doc_id;if($docs->sub_doc_id==4)echo '&doc='.urlencode($docs->document_type);?>">View</a>
-                            <?php
-                            }
+                        <?php
+                        if ($sidebar->document_list == '1' && !isset($_GET["draft"])) {
+                            //echo $this->Html->link(__('View'), ['action' => 'view', $docs->client_id, $docs->id], ['class' => btnclass("VIEW")]);
+                            echo '<a class="' . btnclass("VIEW") . '" href="' . $VIEWURL . '">View</a>';
                         } ?>
                         <?php
                             if ($sidebar->document_edit == '1' && ($this->request->session()->read('Profile.super')==1 || $this->request->session()->read('Profile.id')==$docs->user_id)) {
-                                if ($docs->document_type == 'feedbacks')
-                                    echo $this->Html->link(__('Edit'), ['controller' => 'feedbacks', 'action' => 'edit', $docs->id], ['class' => btnclass("EDIT")]);
-                                else {
-                                    if (!$docs->order_id){
-                                        //echo $this->Html->link(__('Edit'), ['action' => 'add', $docs->client_id, $docs->id], ['class' => btnclass("EDIT")]);
-                                        ?>
-                                        <a class="<?= btnclass("EDIT") ?>"
-                                           href="<?php echo $this->request->webroot;?>documents/add/<?php echo $docs->client_id;?>/<?php echo $docs->id.'?type='.$docs->sub_doc_id?><?php if($docs->sub_doc_id==4)echo '&doc='.urlencode($docs->document_type);?>">Edit</a>
-                                        <?php
-                                    }else {
-                                        ?>
-                                        <a class="<?= btnclass("EDIT") ?>"
-                                           href="<?php echo $this->request->webroot;?>documents/add/<?php echo $docs->client_id;?>/<?php echo $docs->id?>?order_id=<?php echo $docs->order_id.'&type='.$docs->sub_doc_id;?>">Edit</a>
-                                    <?php
-                                    }
-                                }
+                                echo '<a class="' . btnclass("EDIT") . '" href="' . $EDITURL .'">Edit</a>';
                             }
                         ?>
                         <?php if ($sidebar->document_delete == '1' && $docs->order_id == 0) {

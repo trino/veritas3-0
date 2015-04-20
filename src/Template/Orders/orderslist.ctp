@@ -200,7 +200,6 @@ function getColor($products, $OrderType, $Default = "blue"){
                                 }
 
                                 foreach ($orders as $order):
-
                                     if ($row_color_class == "even") {
                                         $row_color_class = "odd";
                                     } else {
@@ -213,6 +212,13 @@ function getColor($products, $OrderType, $Default = "blue"){
                                         $uploaded_for = $doc_comp->getUser($order->uploaded_for);
                                     }
                                     $client = $this->requestAction("clients/getClient/" . $order->client_id);
+
+                                    $EDITURL = $this->request->webroot . "orders/addorder/" . $order->client_id . "/" . $order->id;
+                                    if ($order->order_type) {
+                                        $EDITURL.= '?order_type=' . urlencode($order->order_type);
+                                        if ($order->forms) { $EDITURL.= '&forms=' . $order->forms; }
+                                    }
+
                                     ?>
                                     <tr class="<?= $row_color_class; ?>" role="row">
                                         <td><?= $this->Number->format($order->id);
@@ -246,14 +252,15 @@ function getColor($products, $OrderType, $Default = "blue"){
                                                         <div class="desc"></div>
                                                     </div-->
                                                     <a class="more" id="sub_doc_click1"
-                                                       href="<?php if ($sidebar->document_list == '1' && !isset($_GET["draft"])) {
-
+                                                       href="<?php
+                                                       if (isset($_GET["draft"])){
+                                                           echo $EDITURL;
+                                                       } else if ($sidebar->document_list == '1' && !isset($_GET["draft"])) {
                                                            echo $this->request->webroot . 'orders/vieworder/' . $order->client_id . '/' . $order->id;
                                                            if ($order->order_type) {
                                                                echo '?order_type=' . urlencode($order->order_type);
                                                                if ($order->forms) echo '&forms=' . $order->forms;
                                                            }
-
                                                        } else {
                                                            if ($sidebar->document_list == '1') {
                                                                echo $this->request->webroot . 'orders/addorder/' . $order->client_id . '/' . $order->id;
@@ -325,11 +332,7 @@ function getColor($products, $OrderType, $Default = "blue"){
                                                         if (!isset($_GET['table']) && $order->draft == 1) {
                                                             ?>
                                                             <a class="<?= btnclass("EDIT") ?>"
-                                                               href="<?php echo $this->request->webroot; ?>orders/addorder/<?php echo $order->client_id; ?>/<?php echo $order->id;
-                                                                   if ($order->order_type) {
-                                                                       echo '?order_type=' . urlencode($order->order_type);
-                                                                       if ($order->forms) echo '&forms=' . $order->forms;
-                                                                   } ?>">Edit</a>
+                                                               href="<?= $EDITURL ?>">Edit</a>
 <?php
 //echo $this->Html->link(__('Edit'), ['controller' => 'orders', 'action' => 'addorder', $order->client_id, $order->id], ['class' => 'btn btn-primary']);
                                                         } /*elseif (isset($_GET['table'])) {

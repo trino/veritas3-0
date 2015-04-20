@@ -3,8 +3,6 @@ namespace App\Controller;
 use Cake\ORM\TableRegistry;
 use App\Controller\AppController;
 
-
-
 /**
  * Logos Controller
  *
@@ -17,74 +15,62 @@ class SettingsController extends AppController {
  * @return void
  */
  
- public function intialize()
-    {
+    public function intialize(){
         parent::intialize();
-        if(!$this->request->session()->read('Profile.id'))
-        {
+        if(!$this->request->session()->read('Profile.id')) {
                 $url = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
                 $this->redirect('/login?url='.urlencode($url));
         }
-        
     }
+
 	public function index() {
-        
-     
+        //GNDN
     }
     
-   function get_settings()
-   {
-        $setting = TableRegistry::get('Settings');
-         $query = $setting->find();
-                 
-         $l = $query->first();
-         
-         $this->response->body(($l));
-            return $this->response;
-         die();
+   function get_settings(){
+       $setting = TableRegistry::get('Settings');
+       $query = $setting->find();
+       $l = $query->first();
+       $this->response->body(($l));
+       return $this->response;
+       die();
    }
    
-   function get_blocks($uid)
-   {
-        $setting = TableRegistry::get('blocks');
-         $query = $setting->find()->where(['user_id'=>$uid]);
-                 
-         $l = $query->first();
-         
-         $this->response->body(($l));
-            return $this->response;
-         die();
+   function get_blocks($uid){
+       $setting = TableRegistry::get('blocks');
+       $query = $setting->find()->where(['user_id'=>$uid]);
+       $l = $query->first();
+       $this->response->body(($l));
+       return $this->response;
+       die();
    }
-    function get_side($uid)
-   {
+
+    function get_side($uid){
         $setting = TableRegistry::get('sidebar');
-         $query = $setting->find()->where(['user_id'=>$uid]);
-                 
-         $l = $query->first();
-         
-         $this->response->body(($l));
-            return $this->response;
-         die();
+        $query = $setting->find()->where(['user_id'=>$uid]);
+        $l = $query->first();
+        $this->response->body(($l));
+        return $this->response;
+        die();
    }
-    function changebody()
-    {
+
+    function changebody(){
          $class = $_POST['class'];
-         if(isset($_POST['box']))
-            $box = $_POST['box'];
-         else
-            $box = 0;
+         if(isset($_POST['box'])) {
+             $box = $_POST['box'];
+         }else {
+             $box = 0;
+         }
          $setting = TableRegistry::get('Settings');
          $query = $setting->query();
                 $query->update()
                 ->set(['body' => $class,'sidebar'=>$_POST['side'],'box'=>$box])
                 ->where(['id' => 1])
                 ->execute();
-         
          die();
     }
     
-    function display()
-    {
+    function display(){
          $display = $_POST['display'];
          $setting = TableRegistry::get('Settings');
          $query = $setting->query();
@@ -92,13 +78,10 @@ class SettingsController extends AppController {
                 ->set(['display'=>$display])
                 ->where(['id' => 1])
                 ->execute();
-         
          die();
     }
     
-    function change_text()
-    {
-        
+    function change_text(){
         $setting = TableRegistry::get('Settings');
          $query = $setting->query();
                 $query->update()
@@ -109,8 +92,8 @@ class SettingsController extends AppController {
         die();
         //$this->redirect(['controller'=>'profiles','action'=>'edit',$this->request->session()->read("Profile.id")]);
     }
-    function change_clients()
-    {
+
+    function change_clients(){
         $setting = TableRegistry::get('Settings');
          $query = $setting->query();
                 $query->update()
@@ -120,8 +103,8 @@ class SettingsController extends AppController {
         echo "1";
         die();
     }
-    function getProSubDoc($pro_id,$doc_id)
-    {
+
+    function getProSubDoc($pro_id,$doc_id){
         $sub = TableRegistry::get('Profilessubdocument');
         $query = $sub->find();
         $query->select()->where(['profile_id'=>$pro_id, 'subdoc_id'=>$doc_id]);
@@ -129,8 +112,8 @@ class SettingsController extends AppController {
         $this->response->body($q);
         return $this->response;
     }
-    function getCSubDoc($c_id,$doc_id)
-    {
+
+    function getCSubDoc($c_id,$doc_id){
         $sub = TableRegistry::get('clientssubdocument');
         $query = $sub->find();
         $query->select()->where(['client_id'=>$c_id, 'subdoc_id'=>$doc_id]);
@@ -138,13 +121,12 @@ class SettingsController extends AppController {
         $this->response->body($q);
         return $this->response;
     }
-    function getCSubDocArray($cid_array,$doc_id)
-    {
+
+    function getCSubDocArray($cid_array,$doc_id){
         $cids = urldecode($cid_array);
         $c_arr = explode(",", $cids);
         $c_array = [];
-        foreach($c_arr as $v)
-        {
+        foreach($c_arr as $v) {
             array_push($c_array,['client_id'=>$v]);
         }
         //var_dump($c_array);die();
@@ -154,8 +136,7 @@ class SettingsController extends AppController {
         
         $q = $query->all();
         $d = 0;
-        foreach($q as $c)
-        {
+        foreach($q as $c) {
             if($c->display > $d)
             $d = $c->display;
             else
@@ -166,18 +147,15 @@ class SettingsController extends AppController {
         return $this->response;
     }
     
-    function all_settings($uid="", $type="", $scope="", $scope_id="", $doc_id="")
-    {
-
-        if($type != "" || $type !="0")
-        {
-            if($type =='sidebar')
+    function all_settings($uid="", $type="", $scope="", $scope_id="", $doc_id=""){
+        if($type != "" || $type !="0") {
+            if($type =='sidebar') {
                 return $this->get_side($uid);
-            elseif($type =='blocks')
+            }elseif($type =='blocks') {
                 return $this->get_blocks($uid);
+            }
         }
-        if($scope != "")
-        {
+        if($scope != "") {
             if($scope == 'profile')
                 return $this->getProSubDoc($scope_id,$doc_id);
             elseif($scope == 'client')
@@ -202,51 +180,40 @@ class SettingsController extends AppController {
         $u = $uid;
         $l ="";
         if(!$this->request->session()->read('Profile.super')){
-           
             $query = $setting->find()->where(['profile_id LIKE "'.$u.',%" OR profile_id LIKE "%,'.$u.',%" OR profile_id LIKE "%,'.$u.'" OR profile_id ="'.$u.'"'])->count();
-            
-            if($query>1)
-             {
+            if($query>1) {
                 //$l = "clients?flash";
                 $l = "documents/add";
-             }
-             else
-             {
+             } else {
                 if($query2 = $setting->find()->where(['profile_id LIKE "'.$u.',%" OR profile_id LIKE "%,'.$u.',%" OR profile_id LIKE "%,'.$u.'" OR profile_id ="'.$u.'"'])->first())
                     $l = "documents/addorder/".$query2->id;
              }
-        }
-        else
-        {
+        } else {
              $q = $setting->find()->all();
-             if(count($q)>1)
-             {
+             if(count($q)>1) {
                 //$l = "clients?flash";
                  $l = "documents/add";
-             }
-             else
-             {
+             } else {
                 $query3 = $setting->find()->first();
                 if (!is_null($query3)) {
                     $l = "documents/addorder/" . $query3->id;
                 }
              }
         }
-         if($type=='order')
-         {
+         if($type=='order') {
             $url = $l;
+         } else {
+             $url = str_replace('addorder', 'add', $l);
          }
-         else
-            $url = str_replace('addorder','add',$l);
          $this->response->body(($url));
-            return $this->response;
+    return $this->response;
     }
+
     function check_edit_permission($uid,$pid,$cby=""){ //uid is the user requesting the permission, id is the user that will be edited
         $user_profile = TableRegistry::get('profiles');
         $query = $user_profile->find()->where(['id'=>$uid]);
         $q1 = $query->first();
-        if($q1)
-        {
+        if($q1) {
             $profile = $user_profile->find()->select('profile_type')->where(['id'=>$pid]);
             $q2 = $profile->first();
             $usertype = $q1->profile_type;
@@ -297,16 +264,12 @@ class SettingsController extends AppController {
              }*/
              /*=================================================================================*/ 
              
-             if($setting->profile_edit=='1')//can edit profiles
-             {
-                if($q1->super == '1' || $uid == $pid)//is a super or the attempting to edit themselves
-                {
+             if($setting->profile_edit=='1'){//can edit profiles
+                if($q1->super == '1' || $uid == $pid){//is a super or the attempting to edit themselves{
                     $this->response->body('1');
                     return $this->response;
                     die();
-                }
-                else
-                {
+                } else {
                     /*if($q1->profile_type == '2')
                     {
                         if($q2->profile_type == '5' || $q2->profile_type == '7' || $q2->profile_type == '8' || $uid == $pid)
@@ -325,33 +288,24 @@ class SettingsController extends AppController {
                         $this->response->body('1');
                         return $this->response;
                         die();
-                    } 
-                    else 
-                    {
-                        if($uid==$cby)
-                        {
+                    } else {
+                        if($uid==$cby) {
                             $this->response->body('1');
                             return $this->response;
                             die();
-                        }
-                        else
-                        {   
+                        } else {
                             $this->response->body('0');
                             return $this->response;
                             die();
                         }
                     }
                 }
-             }
-             else
-             {
+             } else {
                $this->response->body('0');
                         return $this->response;
                         die(); 
              }  
-        }
-        else
-        {
+        } else {
              $this->response->body('0');
                         return $this->response;
                         die(); 
@@ -360,38 +314,33 @@ class SettingsController extends AppController {
         
     }
     
-    function getallclients($uid)
-    {
+    function getallclients($uid){
         $clients = TableRegistry::get('clients');
         $qs = $clients->find()->select('id')->where(['profile_id LIKE "'.$uid.',%" OR profile_id LIKE "%,'.$uid.',%" OR profile_id LIKE "%,'.$uid.'" OR profile_id ="'.$uid.'"'])->all();
        
         $client_ids ="";
-        if(count($qs)>0)
-        {
-            foreach($qs as $k=>$q)
-            {
-                if(count($qs)==$k+1)
+        if(count($qs)>0) {
+            foreach($qs as $k=>$q) {
+                if(count($qs)==$k+1) {
                     $client_ids .= $q->id;
-                else
-                    $client_ids .= $q->id.",";
+                }else {
+                    $client_ids .= $q->id . ",";
+                }
             }
         }
-             
         $this->response->body($client_ids);
         return $this->response;
     }
     
-    function get_webroot()
-    {
+    function get_webroot(){
          $this->response->body($this->request->webroot);
         return $this->response;
     }
-    function getRegistry()
-    {
+
+    function getRegistry(){//not needed
         $reg = TableRegistry::get('strings');
         $this->response->body($reg);
         return $this->response;
     }
-    
-    
+
  }

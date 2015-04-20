@@ -1,6 +1,6 @@
 <?php
     if ($this->request->session()->read('debug')) {
-        echo "<span style ='color:red;'>profile/block.php #INC116</span>";
+        echo "<span style ='color:red;'>subpages/profile/block.php #INC116</span>";
     }
     $uid = ($this->request['action'] == 'add') ? "0" : $this->request['pass'][0];
     $sidebar = $this->requestAction("settings/all_settings/" . $uid . "/sidebar");
@@ -71,7 +71,7 @@
                     <table class="table table-bordered table-hover">
                         <tr>
                             <td style="width:200px;"></td>
-                            <td><input type="checkbox" class="slelectall" <?= $is_disabled?> /> Select All</td>
+                            <td><input type="checkbox" class="slelectall" <?= $is_disabled?> id="sellall1"/><label for="sellall1"> Select All</label></td>
                         </tr>
                         <tr>
                             <td class="vtop">
@@ -746,7 +746,7 @@
                 <table class="table table-bordered table-hover">
                     <tr>
                         <td></td>
-                        <td><input type="checkbox" class="slelectall1" <?= $is_disabled ?> /> Select All</td>
+                        <td><input type="checkbox" class="slelectall1" <?= $is_disabled ?> id="sellall2"/><label for="sellall2"> Select All</label></td>
                     </tr>
                     <tr>
                         <td>

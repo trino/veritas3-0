@@ -148,7 +148,7 @@ function getIterator($Objects, $Fieldname, $Value){
     return false;
 }
 
-function CacheTranslations($Language='English', $Text, $Variables = "",$registry){
+function CacheTranslations($Language='English', $Text, $Variables = ""){
     
     $data = array();
     if (!is_array($Text)){
@@ -157,7 +157,7 @@ function CacheTranslations($Language='English', $Text, $Variables = "",$registry
     $Text[] = "dashboard_%";//for all pages
     $Text[] = "settings_%";//for all pages
     
-    $table = $registry;//why not just get the tableregistry, why add a parameter?
+    $table =  TableRegistry::get('strings');//why not just get the tableregistry, why add a parameter?
 
     $query="";
     foreach($Text as $text){
@@ -187,7 +187,7 @@ function Translate($ID, $Language, $Variables = ""){
     if (is_numeric($ID)) {$column = "ID";} else {$column = "Name";}
     $query = $table->find()->select()->where([$column => $ID])->first();
     if ($query) {
-        return  ProcessVariables($query->$Language);
+        return  ProcessVariables($query->$Language, $Variables);
     } else {
         return $ID . "." . $Language . " is missing a translation";
     }
