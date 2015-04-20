@@ -7,14 +7,15 @@
 
     <?php
 
+    $skip=false;
     function alert($Text){
         echo "<SCRIPT>alert('" . $Text . "');</SCRIPT>";
     }
 
-    function makeBrowseButton($ID, $Display, $Remove = true){
+    function makeBrowseButton($ID, $Display, $Remove = true, $text=""){
         if(!$Display){$Display=' style="display: none;"';} else{ $Display="";}
         echo '<div' . $Display . '><span><a style="margin-bottom:5px;" href="javascript:void(0)" class="btn btn-primary additional" id="mee_att_' . $ID . '">Browse</a>&nbsp';
-        if ($Remove) { echo '<a style="margin-bottom:5px;" class="btn btn-danger" href="javascript:void(0);" onclick="$(this).parent().parent().remove();">Remove</a>';}        echo '<span class="uploaded"></span></span><input type="hidden" name="mee_attachments[]" class="mee_att_' . $ID . '" /></div>';
+        if ($Remove) { echo '<a style="margin-bottom:5px;" class="btn btn-danger" href="javascript:void(0);" onclick="$(this).parent().parent().remove();">Remove</a>';}        echo '<span class="uploaded"></span></span><input type="hidden" name="mee_attachments[]" class="mee_att_' . $ID . '" /> ' . $text . '</div>';
     }
 
     $action = ucfirst($param);
@@ -206,7 +207,7 @@ if (isset($mee_att['attach_doc']->id) && $mee_att['attach_doc']->id) {
                 echo "</DIV></DIV></DIV>";
             }
         }
-        echo "<DIV>";
+        echo '<DIV>';
 
         if ($doit) {
             echo "<div class='form-group row'>";
@@ -226,7 +227,7 @@ if (isset($mee_att['attach_doc']->id) && $mee_att['attach_doc']->id) {
                     }
                 }
             } else {
-                makeBrowseButton(7, true, false);
+                makeBrowseButton(7, true, false, '<FONT COLOR="RED">* Required</FONT>');
             }
         ?>
 
@@ -400,7 +401,7 @@ if (isset($mee_att['attach_doc']->id) && $mee_att['attach_doc']->id) {
     ?>
     <div class="form-group row">
     <div class="col-md-12">
-        <div class="col-md-4" align="right"><?php if($morecount>0 || $action!="View"){ echo "Additional Attachment(s): ";} ?></div>
+        <div class="col-md-4" align="right"><?php if($morecount>0 ){ echo "Additional Attachment(s): ";} ?></div>
             <div class="col-md-8">
                 <div class="mee_more">
                 <?php
