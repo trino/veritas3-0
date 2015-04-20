@@ -30,11 +30,9 @@ if (isset($_GET['client'])) {$client = $_GET['client'];}
 
 $dr_cl = $doc_comp->getDriverClient($driver, $client);
 
-$counting = 0;
 $drcl_c = $dr_cl['client'];
-foreach ($drcl_c as $drclc) {
-    $counting++;
-}
+$counting = iterator_count ($drcl_c);
+
 
 function GET($name, $default = ""){
     if (isset($_GET[$name])) {
@@ -176,13 +174,14 @@ function printform($counting, $settings, $client, $dr_cl, $driver, $intable = fa
     if ($counting > 1) { ?>
         <select id="selecting_client" class="form-control input-<?= $size ?> select2me"
         onoldchange="reload(-1);"
+
         data-placeholder="Select <?php echo ucfirst($settings->client) . '" ';
         if ($client) { ?><?php } ?>>
                         <option>None Selected</option><?php
     } else { ?>
 
                     <select id="selecting_client" class="form-control input-<?= $size; ?> select2me"
-                            data-placeholder="Select <?php echo ucfirst($settings->client); ?>">
+                            data-placeholder="Select <?php echo ucfirst($settings->client); ?>" disabled>
                         <?php
     }
     foreach ($dr_cl['client'] as $dr) {

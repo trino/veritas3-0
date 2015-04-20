@@ -131,16 +131,17 @@
     if (count($attachment) > 0 || isrequired($forms, "id_piece", $DriverProvince, 0, True)) { $mand = "Mandatory"; }
     echo '<HR></div><div class="col-md-12"><strong>The following form(s) are ' . $mand . '</strong></div>';
 
-//printdivrequired needs to know if their are attachments BEFORE hand
+//printdivrequired needs to know if there are attachments BEFORE hand
 $morecount=0;
 if (isset($mee_att['attach_doc']->id) && $mee_att['attach_doc']->id) {
     //echo $mee_att['attach_doc']->id;
     $mee_more = $meedocs->find()->where(['mee_id' => $mee_att['attach_doc']->id]);
+    $morecount=0;
     if ($mee_more) {$morecount= iterator_count($mee_more);}
 }
 
     $docsprinted=0;
-    if (printdivrequired($action, $forms, "attachments", $DriverProvince, $morecount + count($attachment))) {
+    if (printdivrequired($action, $forms, "attachments", $DriverProvince, count($attachment))) {
         $doit = false;
         $description = '<strong>Step 2: </strong>Upload Abstract Consent Form (Above)';
         $docsprinted+=1;
@@ -178,48 +179,6 @@ if (isset($mee_att['attach_doc']->id) && $mee_att['attach_doc']->id) {
             echo '<div class="col-md-4" align="right">' . $description . ': </div>';
         }
         echo '<div class="col-md-8 mee_more">';
-
-        /* FROM ROB : THIS IS THE CODE THAT I USED FOR ADDITIONAL DOCUMENTS, PLEASE DONT USE IT FOR OTHER DOCUMENTS, ITS CAUSING ISSUES DUE TO SAME ID AND NAME
-        
-        if (!$morecount ) {
-            if(count($attachment) > 0) {
-                ?>
-
-                <span><a style="margin-bottom:5px;" href="javascript:void(0)" class="btn btn-primary additional"
-                         id="mee_att_7">Browse</a>&nbsp;<span class="uploaded"></span></span>
-                <input type="hidden" name="mee_attachments[]" class="mee_att_7"/><FONT COLOR="RED"> * Required</FONT>
-            <?php
-            }
-            //echo  printrequired($action, $forms, "attachments", $DriverProvince, count($attachment)) . "<br />";
-        } else {
-            
-            $directory = "attachments/";//"documents/download/"; //the download page crashes chrome!
-            foreach ($mee_more as $mm) {//what is this code?
-                $id_count++;
-                if (file_exists(realpath("attachments/" . $mm->attachments))) {//fixes ghost file issue
-                //rapid switching between PHP and HTML mode should not be used ?>
-                       <div>
-                                        <span><a style="margin-bottom:5px;" href="javascript:void(0)" class="btn btn-primary additional"
-                                                 id="mee_att_<?php echo $id_count; ?>">Browse</a>&nbsp;<a style="margin-bottom:5px;"
-                                                                                                          class="btn btn-danger"
-                                                                                                          href="javascript:void(0);"
-                                                                                                          onclick="$(this).parent().parent().remove();">Remove</a> <span
-                                                class="uploaded"><?php if (isset($mm->attachments) && $mm->attachments) { ?><a
-                                                    class="dl"
-                                                    href="<?php echo $this->request->webroot . $directory . $mm->attachments; ?>">
-                                                    <?php echo $mm->attachments; ?></a><?php } ?></span></span>
-                           <input type="hidden" name="mee_attachments[]" class="mee_att_<?php echo $id_count; ?>"
-                                  value="<?php if (isset($mm->attachments) && $mm->attachments) {
-                                      echo $mm->attachments;
-                                  } ?>"/>
-                           <?php //echo printrequired($action, $forms, "attachments", $DriverProvince, count($attachment)) . "<br />";
-                           ?>
-                           </div>
-                           <?php
-                           }
-                    }
-        }
-        */
         ?>
                 </div>
                 <div class="clearfix"></div>
@@ -383,20 +342,19 @@ if (isset($mee_att['attach_doc']->id) && $mee_att['attach_doc']->id) {
         });
         </script>
     <?php }
-
     nodocs($docsprinted);
+
+
     ?>
     <div class="form-group row">
     <div class="col-md-12">
-        <div class="col-md-4" align="right">Additional Attachment</div>
+        <div class="col-md-4" align="right"><?php if($morecount>0 || $action!="View"){ echo "Additional Attachment";} ?></div>
             <div class="col-md-8">
                 <div class="mee_more">
                 <?php
                 $cc = 8;
-                if(isset($mee_more))
-                {
-                    foreach($mee_more as $mm)
-                    {
+                if(isset($mee_more)) {
+                    foreach($mee_more as $mm) {
                         ?>
                     <div>
                         <span><a style="margin-bottom:5px;" href="javascript:void(0)" class="btn btn-primary additional" id="mee_att_<?php echo $cc;?>">Browse</a>&nbsp;<a style="margin-bottom:5px;" class="btn btn-danger" href="javascript:void(0);" onclick="$(this).parent().parent().remove();">Remove</a> <span class="uploaded"><a class="dl" href="<?php echo $this->request->webroot;?>attachments/<?php echo $mm->attachments;?>"><?php echo $mm->attachments;?></a></span></span>
@@ -407,57 +365,16 @@ if (isset($mee_att['attach_doc']->id) && $mee_att['attach_doc']->id) {
                     }
                 }
                 //echo $cc;
-                if($cc==8)
-                {
-                    ?>
-                    <div><span><a style="margin-bottom:5px;" href="javascript:void(0)" class="btn btn-primary additional" id="mee_att_8">Browse</a>&nbsp;<span class="uploaded"></span></span>
-                        <input type="hidden" name="mee_attachments[]" class="mee_att_8" /></div>
-                    <div style="display: none;">
-                        <span><a style="margin-bottom:5px;" href="javascript:void(0)" class="btn btn-primary additional" id="mee_att_9">Browse</a>&nbsp;<a style="margin-bottom:5px;" class="btn btn-danger" href="javascript:void(0);" onclick="$(this).parent().parent().remove();">Remove</a> <span class="uploaded"></span></span>
-                        <input type="hidden" name="mee_attachments[]" class="mee_att_9" />
-                    </div>
-                    <div style="display: none;">
-                        <span><a style="margin-bottom:5px;" href="javascript:void(0)" class="btn btn-primary additional" id="mee_att_10">Browse</a>&nbsp;<a style="margin-bottom:5px;" class="btn btn-danger" href="javascript:void(0);" onclick="$(this).parent().parent().remove();">Remove</a> <span class="uploaded"></span></span>
-                        <input type="hidden" name="mee_attachments[]" class="mee_att_10" />
-                    </div>
-                    <div style="display: none;">
-                        <span><a style="margin-bottom:5px;" href="javascript:void(0)" class="btn btn-primary additional" id="mee_att_18">Browse</a>&nbsp;<a style="margin-bottom:5px;" class="btn btn-danger" href="javascript:void(0);" onclick="$(this).parent().parent().remove();">Remove</a> <span class="uploaded"></span></span>
-                        <input type="hidden" name="mee_attachments[]" class="mee_att_18" />
-                    </div>
-                    <div style="display: none;">
-                        <span><a style="margin-bottom:5px;" href="javascript:void(0)" class="btn btn-primary additional" id="mee_att_11">Browse</a>&nbsp;<a style="margin-bottom:5px;" class="btn btn-danger" href="javascript:void(0);" onclick="$(this).parent().parent().remove();">Remove</a> <span class="uploaded"></span></span>
-                        <input type="hidden" name="mee_attachments[]" class="mee_att_11" />
-                    </div>
-                    <div style="display: none;">
-                        <span><a style="margin-bottom:5px;" href="javascript:void(0)" class="btn btn-primary additional" id="mee_att_12">Browse</a>&nbsp;<a style="margin-bottom:5px;" class="btn btn-danger" href="javascript:void(0);" onclick="$(this).parent().parent().remove();">Remove</a> <span class="uploaded"></span></span>
-                        <input type="hidden" name="mee_attachments[]" class="mee_att_12" />
-                    </div>
-                    <div style="display: none;">
-                        <span><a style="margin-bottom:5px;" href="javascript:void(0)" class="btn btn-primary additional" id="mee_att_13">Browse</a>&nbsp;<a style="margin-bottom:5px;" class="btn btn-danger" href="javascript:void(0);" onclick="$(this).parent().parent().remove();">Remove</a> <span class="uploaded"></span></span>
-                        <input type="hidden" name="mee_attachments[]" class="mee_att_13" />
-                    </div>
-                    <div style="display: none;">
-                        <span><a style="margin-bottom:5px;" href="javascript:void(0)" class="btn btn-primary additional" id="mee_att_14">Browse</a>&nbsp;<a style="margin-bottom:5px;" class="btn btn-danger" href="javascript:void(0);" onclick="$(this).parent().parent().remove();">Remove</a> <span class="uploaded"></span></span>
-                        <input type="hidden" name="mee_attachments[]" class="mee_att_14" />
-                    </div>
-                    <div style="display: none;">
-                        <span><a style="margin-bottom:5px;" href="javascript:void(0)" class="btn btn-primary additional" id="mee_att_15">Browse</a>&nbsp;<a style="margin-bottom:5px;" class="btn btn-danger" href="javascript:void(0);" onclick="$(this).parent().parent().remove();">Remove</a> <span class="uploaded"></span></span>
-                        <input type="hidden" name="mee_attachments[]" class="mee_att_15" />
-                    </div>
-                    <div style="display: none;">
-                        <span><a style="margin-bottom:5px;" href="javascript:void(0)" class="btn btn-primary additional" id="mee_att_16">Browse</a>&nbsp;<a style="margin-bottom:5px;" class="btn btn-danger" href="javascript:void(0);" onclick="$(this).parent().parent().remove();">Remove</a> <span class="uploaded"></span></span>
-                        <input type="hidden" name="mee_attachments[]" class="mee_att_16" />
-                    </div>
-                    <div style="display: none;">
-                        <span><a style="margin-bottom:5px;" href="javascript:void(0)" class="btn btn-primary additional" id="mee_att_17">Browse</a>&nbsp;<a style="margin-bottom:5px;" class="btn btn-danger" href="javascript:void(0);" onclick="$(this).parent().parent().remove();">Remove</a> <span class="uploaded"></span></span>
-                        <input type="hidden" name="mee_attachments[]" class="mee_att_17" />
-                    </div>
-                    <?php
-                }
-                else
-                {
-                    for($h=$cc;$h<18;$h++)
-                    {
+                if($cc==8) {
+                    function makeBrowseButton($ID, $Display){
+                        if(!$Display){$Display=' style="display: none;"';} else{ $Display="";}
+                        echo '<div' . $Display . '><span><a style="margin-bottom:5px;" href="javascript:void(0)" class="btn btn-primary additional" id="mee_att_' . $ID . '">Browse</a>&nbsp;<a style="margin-bottom:5px;" class="btn btn-danger" href="javascript:void(0);" onclick="$(this).parent().parent().remove();">Remove</a> <span class="uploaded"></span></span><input type="hidden" name="mee_attachments[]" class="mee_att_' . $ID . '" /></div>';
+                    }
+                    for($temp=8; $temp<18; $temp+=1){
+                        makeBrowseButton($temp, $temp==8);
+                    }
+                } else {
+                    for($h=$cc;$h<18;$h++) {
                         ?>
                         <div style="display: none;">
                             <span><a style="margin-bottom:5px;" href="javascript:void(0)" class="btn btn-primary additional" id="mee_att_<?php echo $h;?>">Browse</a>&nbsp;<a style="margin-bottom:5px;" class="btn btn-danger" href="javascript:void(0);" onclick="$(this).parent().parent().remove();">Remove</a> <span class="uploaded"></span></span>

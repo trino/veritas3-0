@@ -170,14 +170,18 @@ function CacheTranslations($Language='English', $Text, $Variables = ""){
     }
 
     $Language = trim($Language);
-    $acceptablelanguages = array("English", "French");
+    $acceptablelanguages = array("English", "French", "Debug");
     if(!in_array ($Language, $acceptablelanguages)){$Language = $acceptablelanguages[0]; }
 
     //echo "Query: " . $query;
     $table = $table->find()->where(["(" . $query . ")"])->all();
     $data = array();
     foreach($table as $entry){
-        $data[$entry->Name] = ProcessVariables($entry->$Language, $Variables);
+        if($Language=="Debug"){
+            $data[$entry->Name] = "[TRANS:" . $entry->Name . "." . $entry->$Language . "]";
+        } else {
+            $data[$entry->Name] = ProcessVariables($entry->Name, $entry->$Language, $Variables);
+        }
     }
     return $data;
 }
@@ -186,13 +190,13 @@ function Translate($ID, $Language, $Variables = ""){
     $table = TableRegistry::get('strings');
     if (is_numeric($ID)) {$column = "ID";} else {$column = "Name";}
     $query = $table->find()->select()->where([$column => $ID])->first();
-    if ($query) {
-        return  ProcessVariables($query->$Language, $Variables);
+    if ($query && $Language!="Debug") {
+        return  ProcessVariables($ID, $query->$Language, $Variables);
     } else {
         return $ID . "." . $Language . " is missing a translation";
     }
 }
-function ProcessVariables($Text, $Variables = ""){
+function ProcessVariables($ID, $Text, $Variables = ""){
     if (is_array($Variables)) {
         foreach ($Variables as $Key => $Value) {
             if (substr($Key, 0, 1) != "%") {$Key = "%" . $Key;}
@@ -200,7 +204,8 @@ function ProcessVariables($Text, $Variables = ""){
             $Text = str_replace($Key, $Value, $Text);
         }
     }
-    return $Text;
+    if($Text) {return $Text;}
+    return $ID;
 }
 
 /*

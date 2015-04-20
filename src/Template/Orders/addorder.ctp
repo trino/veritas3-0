@@ -1662,7 +1662,7 @@ function provinces($name){
         });
 
         $('#submit_dra').live('click', function () {
-            alert($(this).text());
+           // alert($(this).text());
 
 
                 $('.blockmsg').html('<h4 class="block">Your Order Has Been Saved As Draft!</h4>'+
