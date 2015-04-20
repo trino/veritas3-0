@@ -187,11 +187,10 @@ if (isset($mee_att['attach_doc']->id) && $mee_att['attach_doc']->id) {
         $docsprinted+=1;
         echo '</DIV>';
         if ($action == "View" || $action == "Vieworder") {
-            if (count($attachment) > 0) {
-                $description = "";
+            if (count($attachment) > 0 && $morecount>0) {
                 foreach ($attachment as $name => $file) {
                     if (strlen($description)>0){$description.=", ";}
-                    $description.= $name;
+                    $description.= $name . "=" . $file;
                 }
                 $doit=true;
             }
