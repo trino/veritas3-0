@@ -29,7 +29,7 @@
                 }
                 foreach($variable as $k=>$v) {
                     echo '<p><strong>';
-                    if(isset($prof)&& $prof[$k]) {echo $prof[$k];} else {echo "Unknown";}
+                    if(isset($prof)&& $prof[$k]) {echo $prof[$k] . ": ";} else {echo "Unknown";}
                     echo '</strong>' . $v . '</p>';
                 }
             }
