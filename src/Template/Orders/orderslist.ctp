@@ -253,7 +253,7 @@ function getColor($products, $OrderType, $Default = "blue"){
                                                     </div-->
                                                     <a class="more" id="sub_doc_click1"
                                                        href="<?php
-                                                       if (isset($_GET["draft"])){
+                                                       if ($order->draft == "1" or isset($_GET["draft"])){
                                                            echo $EDITURL;
                                                        } else if ($sidebar->document_list == '1' && !isset($_GET["draft"])) {
                                                            echo $this->request->webroot . 'orders/vieworder/' . $order->client_id . '/' . $order->id;

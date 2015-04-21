@@ -264,7 +264,7 @@ if ($_SERVER['SERVER_NAME'] == "localhost" || $_SERVER['SERVER_NAME'] == "127.0.
                                     if ($docs->sub_doc_id == 4) {$VIEWURL .= '&doc=' . urlencode($docs->document_type);}
                                     if ($docs->order_id) {$VIEWURL.= "&order_id=" . $docs->order_id; }
                                     $EDITURL = str_replace("/view/", "/add/", $VIEWURL);
-                                    if(isset($_GET["draft"])){$VIEWURL = $EDITURL;}
+                                    if($docs->draft == 1 || isset($_GET["draft"])){$VIEWURL = $EDITURL;}
                                     
                                         switch (1){//change the number to pick a style
                                             case 0://plain text
