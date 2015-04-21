@@ -23,7 +23,7 @@
                  return round($avg/$avco,2);
              }
 
-            function printall($variable, $variable2 = "", $Outof = 10){
+            function printall($prof, $variable, $variable2 = "", $Outof = 10){
                 if ($variable2 != ""){
                     echo '<p style="padding-top: 5px;">Total Average (Out of ' . $Outof . '): ' .  getaverage($variable2) . '</p>';
                 }
@@ -88,7 +88,7 @@
                                                     </label>
                                                     
 <div class="col-md-4">
-<?php if(isset($ec)){ printall($ec);} ?>
+<?php if(isset($ec)){ printall($prof, $ec);} ?>
 </div>
 </div>                                                
 
@@ -117,7 +117,7 @@ echo '<p style="padding-top: 5px;">Total Average (Out of 40): ' .  getaverage($r
                                                     </label>
 <div class="col-md-8">
 
-<?php if(isset($po)){ printall($po); }?>
+<?php if(isset($po)){ printall($prof, $po); }?>
 </div>
                                                     
                                                     
@@ -128,7 +128,7 @@ echo '<p style="padding-top: 5px;">Total Average (Out of 40): ' .  getaverage($r
                                                     Do you feel the objectives were achieved? Provide a grade rating of 1 to 10 (10 is best) and provide details.
                                                     </label>
 <div class="col-md-8">
-<?php  if(isset($ob)){ printall($ob, $rate_1);} ?>
+<?php  if(isset($ob)){ printall($prof, $ob, $rate_1);} ?>
 </div>
 </div>   
 
@@ -137,7 +137,7 @@ echo '<p style="padding-top: 5px;">Total Average (Out of 40): ' .  getaverage($r
                                                     Please provide suggestions for improvement.
                                                     </label>
 <div class="col-md-8">
-<?php  if(isset($imp)){ printall($imp);} ?>
+<?php  if(isset($imp)){ printall($prof, $imp);} ?>
 </div>
 </div> 
                                                 <h2> Leads </h2>
@@ -146,7 +146,7 @@ echo '<p style="padding-top: 5px;">Total Average (Out of 40): ' .  getaverage($r
                                                     Was the lead-collecting process in the booth effective (e.g. badge scanner, business card collecting)?
                                                     </label>
 <div class="col-md-8">
-<?php  if(isset($le)){ printall($le);} ?>
+<?php  if(isset($le)){ printall($prof, $le);} ?>
 </div>
 </div>
  
@@ -154,7 +154,7 @@ echo '<p style="padding-top: 5px;">Total Average (Out of 40): ' .  getaverage($r
 <label class="col-md-3 control-label">
 How many leads were generated?                                                    </label>
 <div class="col-md-8">
-<?php  if(isset($leads)){ printall($leads);} ?>
+<?php  if(isset($leads)){ printall($prof, $leads);} ?>
 </div>
 </div> 
  
@@ -163,7 +163,7 @@ How many leads were generated?                                                  
 Rate the leads - how many do you feel are "quality"? 
                                                         Provide a grade rating of 1 to 10 (10 is best) and provide details.                                                   </label>
 <div class="col-md-8">
-<?php if(isset($lr)){ printall($lr, $rate_2);} ?>
+<?php if(isset($lr)){ printall($prof, $lr, $rate_2);} ?>
 </div>
 </div>
 
@@ -172,7 +172,7 @@ Rate the leads - how many do you feel are "quality"?
 <label class="col-md-3 control-label">
 Please provide suggestions for improvement of the lead collection and handling process.                                                   </label>
 <div class="col-md-8">
-<?php  if(isset($hand)){ printall($hand);} ?>
+<?php  if(isset($hand)){ printall($prof, $hand);} ?>
 </div>
 </div>
                                                 
@@ -184,7 +184,7 @@ Rate the type of attendees at the show
                                                         (e.g. decision makers, decision influencers, general staff)?
                                                         Provide a grade rating of 1 to 10 (10 is best) and provide details.                                                   </label>
 <div class="col-md-8">
-<?php if(isset($ar)){ printall($ar, $rate_3);}?>
+<?php if(isset($ar)){ printall($prof, $ar, $rate_3);}?>
 </div>
 </div> 
                                                                                              
@@ -195,7 +195,7 @@ Rate the type of attendees at the show
 Which of our services/products we provide was of most interest?
                     </label>
 <div class="col-md-8">
-<?php if(isset($int)){ printall($int);} ?>
+<?php if(isset($int)){ printall($prof, $int);} ?>
 </div>
 </div>                                                   
  
@@ -204,7 +204,7 @@ Which of our services/products we provide was of most interest?
 How was the booth location? Provide details.
                     </label>
 <div class="col-md-8">
-<?php  if(isset($bl)) { printall($bl);} ?>
+<?php  if(isset($bl)) { printall($prof, $bl);} ?>
 </div>
 </div> 
  
@@ -219,7 +219,7 @@ if(isset($rat1)) {
     echo '<p style="padding-top: 5px;">Total Average (Out of 10): ' . getaverage($rat1) . '</p>';
 }
 
-if(isset($rat)) { printall($rat); }
+if(isset($rat)) { printall($prof, $rat); }
 ?>
 </div>
 </div> 
@@ -230,7 +230,7 @@ Please provide suggestions for improvement of the booth's appearance,
                                                         messaging, display, location, etc.
                     </label>
 <div class="col-md-8">
-<?php if(isset($sugg)){ printall($sugg); } ?>
+<?php if(isset($sugg)){ printall($prof, $sugg); } ?>
 </div>
 </div> 
  	
@@ -241,7 +241,7 @@ Please provide suggestions for improvement of the booth's appearance,
 How was the promotional giveaway received (if applicable)? Provide details.
                     </label>
 <div class="col-md-8">
-<?php if(isset($prom)){ printall($prom);} ?>
+<?php if(isset($prom)){ printall($prof, $prom);} ?>
 </div>
 </div>                                            
  
@@ -252,7 +252,7 @@ How was the promotional giveaway received (if applicable)? Provide details.
 Approximately how many attendees did you engage in conversation?
                     </label>
 <div class="col-md-8">
-<?php if(isset($att)) { printall($att); } ?>
+<?php if(isset($att)) { printall($prof, $att); } ?>
 </div>
 </div> 
 
@@ -261,7 +261,7 @@ Approximately how many attendees did you engage in conversation?
 Do you feel there was enough booth staff?
                     </label>
 <div class="col-md-8">
-<?php  if(isset($bs)) { printall($bs);} ?>
+<?php  if(isset($bs)) { printall($prof, $bs);} ?>
 </div>
 </div> 
  <?php
