@@ -116,7 +116,7 @@ echo '<p style="padding-top: 5px;">Total Average (Out of 40): ' .  getaverage($r
 
 <div class="form-group">
 <label class="col-md-3 control-label">
-                                                    What were the primary objectives at the show?
+                                                    What were the primary objectives at the show/event?
                                                     </label>
 <div class="col-md-8">
 
@@ -146,7 +146,7 @@ echo '<p style="padding-top: 5px;">Total Average (Out of 40): ' .  getaverage($r
                                                 <h2> Leads </h2>
                                                 <div class="form-group">
 <label class="col-md-3 control-label">
-                                                    Was the lead-collecting process in the booth effective (e.g. badge scanner, business card collecting)?
+                                                    Was the lead-collecting process at the booth/event effective (e.g. badge scanner, business card collecting)?
                                                     </label>
 <div class="col-md-8">
 <?php  if(isset($le)){ printall($prof, $le);} ?>
@@ -183,7 +183,7 @@ Please provide suggestions for improvement of the lead collection and handling p
    
                                                  <div class="form-group">
 <label class="col-md-3 control-label">
-Rate the type of attendees at the show 
+Rate the type of attendees at the show/event
                                                         (e.g. decision makers, decision influencers, general staff)?
                                                         Provide a grade rating of 1 to 10 (10 is best) and provide details.                                                   </label>
 <div class="col-md-8">
@@ -191,12 +191,12 @@ Rate the type of attendees at the show
 </div>
 </div> 
                                                                                              
-                                                <h2> Booth </h2>
+                                                <h2> Booth/Event </h2>
    
                                                  <div class="form-group">
 <label class="col-md-3 control-label">
-Which of our services/products we provide was of most interest?
-                    </label>
+    Which of our services/products we provide was of most interest?
+</label>
 <div class="col-md-8">
 <?php if(isset($int)){ printall($prof, $int);} ?>
 </div>
@@ -204,8 +204,8 @@ Which of our services/products we provide was of most interest?
  
                                                   <div class="form-group">
 <label class="col-md-3 control-label">
-How was the booth location? Provide details.
-                    </label>
+    How was the booth location on the trade show floor or the venue location if it was an event? Provide details.
+</label>
 <div class="col-md-8">
 <?php  if(isset($bl)) { printall($prof, $bl);} ?>
 </div>
@@ -213,8 +213,8 @@ How was the booth location? Provide details.
  
                                                    <div class="form-group">
 <label class="col-md-3 control-label">
-Rate the volume of booth traffic. 
-                                                        Provide a grade rating of 1 to 10 (10 is best) and provide details.
+    Rate the volume of booth traffic or attendance if it was event.
+    Provide a grade rating of 1 to 10 (10 is best) and provide details.
                     </label>
 <div class="col-md-8">
                                                             <?php 
@@ -229,8 +229,7 @@ if(isset($rat)) { printall($prof, $rat); }
  
                                                     <div class="form-group">
 <label class="col-md-3 control-label">
-Please provide suggestions for improvement of the booth's appearance, 
-                                                        messaging, display, location, etc.
+Please provide suggestions for improvement of the booth's appearance, messaging, display, location, or the event’s format, layout, etc.
                     </label>
 <div class="col-md-8">
 <?php if(isset($sugg)){ printall($prof, $sugg); } ?>
@@ -253,7 +252,7 @@ How was the promotional giveaway received (if applicable)? Provide details.
                                                 <div class="form-group">
 <label class="col-md-3 control-label">
 Approximately how many attendees did you engage in conversation?
-                    </label>
+</label>
 <div class="col-md-8">
 <?php if(isset($att)) { printall($prof, $att); } ?>
 </div>
@@ -261,8 +260,8 @@ Approximately how many attendees did you engage in conversation?
 
                                                 <div class="form-group">
 <label class="col-md-3 control-label">
-Do you feel there was enough booth staff?
-                    </label>
+    Do you feel there was enough booth/event staff?
+</label>
 <div class="col-md-8">
 <?php  if(isset($bs)) { printall($prof, $bs);} ?>
 </div>
