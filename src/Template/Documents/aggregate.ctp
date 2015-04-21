@@ -10,10 +10,33 @@
                                                     <div class="tab-content"><div class="portlet-body form">
                                                     
                                                      <?php
-             if($audits)
-             {
-                foreach($audits as $aud)
-                {
+             function getaverage($variable){
+                 $avg=0;
+                 $avco = 0;
+                 foreach($variable as $k=>$v) {
+                     if(is_numeric($v)) {
+                         $avco++;
+                         $avg = $avg + $v;
+                     }
+                 }
+                 if($avco==0){return 0;}
+                 return round($avg/$avco,2);
+             }
+
+            function printall($variable, $variable2 = "", $Outof = 10){
+                if ($variable2 != ""){
+                    echo '<p style="padding-top: 5px;">Total Average (Out of ' . $Outof . '): ' .  getaverage($variable2) . '</p>';
+                }
+                foreach($variable as $k=>$v) {
+                    echo '<p><strong>';
+                    if(isset($prof)&& $prof[$k]) {echo $prof[$k];} else {echo "Unknown";}
+                    echo '</strong>' . $v . '</p>';
+                }
+            }
+
+
+             if($audits) {
+                foreach($audits as $aud) {
                     $doid[] = $aud->document_id;
                     $pr = $this->requestAction('/documents/getProfileByDocument/'.$aud->document_id);
                     if($pr)
@@ -36,6 +59,10 @@
                     $prom[] = $aud->promotional;
                     $att[] = $aud->attendees;
                     $bs[] = $aud->booth_staff;
+
+                    $rate_1[] = $aud->rating_1;
+                    $rate_2[] = $aud->rating_2;
+                    $rate_3[] = $aud->rating_3;
                 }
              }
              ?> 
@@ -61,15 +88,7 @@
                                                     </label>
                                                     
 <div class="col-md-4">
-<?php 
-if(isset($ec))
-foreach($ec as $k=>$v)
-{
-    ?>
-    <p><strong><?php if(isset($prof)&& $prof[$k])echo $prof[$k];else echo "Unknown";?>: </strong> <?php echo $v;?></p> 
-    <?php
-}
-?>
+<?php if(isset($ec)){ printall($ec);} ?>
 </div>
 </div>                                                
 
@@ -80,19 +99,10 @@ foreach($ec as $k=>$v)
                                                     
 <div class="col-md-4">
 
-                                                            <?php 
-if(isset($rati))
-{
-    $avg=0;
-    $avco = 0;
-foreach($rati as $k=>$v)
-{
-    $avco++;
-    $avg= $avg+$v;
-}
-?>
-<p style="padding-top: 5px;">Total Average (Out of 40): <?php echo round($avg/$avco,2); ?></p>
-<?php
+                                                            <?php
+                                                            if(isset($rati)){
+echo '<p style="padding-top: 5px;">Total Average (Out of 40): ' .  getaverage($rati) . '</p>';
+
 }?>
 
                                 </div>
@@ -107,15 +117,7 @@ foreach($rati as $k=>$v)
                                                     </label>
 <div class="col-md-8">
 
-<?php 
-if(isset($po))
-foreach($po as $k=>$v)
-{
-    ?>
-    <p><strong><?php if(isset($prof)&& $prof[$k])echo $prof[$k];else echo "Unknown";?>: </strong> <?php echo $v;?></p> 
-    <?php
-}
-?>
+<?php if(isset($po)){ printall($po); }?>
 </div>
                                                     
                                                     
@@ -126,15 +128,7 @@ foreach($po as $k=>$v)
                                                     Do you feel the objectives were achieved? Provide a grade rating of 1 to 10 (10 is best) and provide details.
                                                     </label>
 <div class="col-md-8">
-<?php 
-if(isset($ob))
-foreach($ob as $k=>$v)
-{
-    ?>
-    <p><strong><?php if(isset($prof)&& $prof[$k])echo $prof[$k];else echo "Unknown";?>: </strong> <?php echo $v;?></p> 
-    <?php
-}
-?>
+<?php  if(isset($ob)){ printall($ob, $rate_1);} ?>
 </div>
 </div>   
 
@@ -143,15 +137,7 @@ foreach($ob as $k=>$v)
                                                     Please provide suggestions for improvement.
                                                     </label>
 <div class="col-md-8">
-<?php 
-if(isset($imp))
-foreach($imp as $k=>$v)
-{
-    ?>
-    <p><strong><?php if(isset($prof)&& $prof[$k])echo $prof[$k];else echo "Unknown";?>: </strong> <?php echo $v;?></p> 
-    <?php
-}
-?>
+<?php  if(isset($imp)){ printall($imp);} ?>
 </div>
 </div> 
                                                 <h2> Leads </h2>
@@ -160,15 +146,7 @@ foreach($imp as $k=>$v)
                                                     Was the lead-collecting process in the booth effective (e.g. badge scanner, business card collecting)?
                                                     </label>
 <div class="col-md-8">
-<?php 
-if(isset($le))
-foreach($le as $k=>$v)
-{
-    ?>
-    <p><strong><?php if(isset($prof)&& $prof[$k])echo $prof[$k];else echo "Unknown";?>: </strong> <?php echo $v;?></p> 
-    <?php
-}
-?>
+<?php  if(isset($le)){ printall($le);} ?>
 </div>
 </div>
  
@@ -176,15 +154,7 @@ foreach($le as $k=>$v)
 <label class="col-md-3 control-label">
 How many leads were generated?                                                    </label>
 <div class="col-md-8">
-<?php 
-if(isset($leads))
-foreach($leads as $k=>$v)
-{
-    ?>
-    <p><strong><?php if(isset($prof)&& $prof[$k])echo $prof[$k];else echo "Unknown";?>: </strong> <?php echo $v;?></p> 
-    <?php
-}
-?>
+<?php  if(isset($leads)){ printall($leads);} ?>
 </div>
 </div> 
  
@@ -193,15 +163,7 @@ foreach($leads as $k=>$v)
 Rate the leads - how many do you feel are "quality"? 
                                                         Provide a grade rating of 1 to 10 (10 is best) and provide details.                                                   </label>
 <div class="col-md-8">
-<?php 
-if(isset($lr))
-foreach($lr as $k=>$v)
-{
-    ?>
-    <p><strong><?php if(isset($prof)&& $prof[$k])echo $prof[$k];else echo "Unknown";?>: </strong> <?php echo $v;?></p> 
-    <?php
-}
-?>
+<?php if(isset($lr)){ printall($lr, $rate_2);} ?>
 </div>
 </div>
 
@@ -210,15 +172,7 @@ foreach($lr as $k=>$v)
 <label class="col-md-3 control-label">
 Please provide suggestions for improvement of the lead collection and handling process.                                                   </label>
 <div class="col-md-8">
-<?php 
-if(isset($hand))
-foreach($hand as $k=>$v)
-{
-    ?>
-    <p><strong><?php if(isset($prof)&& $prof[$k])echo $prof[$k];else echo "Unknown";?>: </strong> <?php echo $v;?></p> 
-    <?php
-}
-?>
+<?php  if(isset($hand)){ printall($hand);} ?>
 </div>
 </div>
                                                 
@@ -230,15 +184,7 @@ Rate the type of attendees at the show
                                                         (e.g. decision makers, decision influencers, general staff)?
                                                         Provide a grade rating of 1 to 10 (10 is best) and provide details.                                                   </label>
 <div class="col-md-8">
-<?php 
-if(isset($ar))
-foreach($ar as $k=>$v)
-{
-    ?>
-    <p><strong><?php if(isset($prof)&& $prof[$k])echo $prof[$k];else echo "Unknown";?>: </strong> <?php echo $v;?></p> 
-    <?php
-}
-?>
+<?php if(isset($ar)){ printall($ar, $rate_3);}?>
 </div>
 </div> 
                                                                                              
@@ -249,15 +195,7 @@ foreach($ar as $k=>$v)
 Which of our services/products we provide was of most interest?
                     </label>
 <div class="col-md-8">
-<?php 
-if(isset($int))
-foreach($int as $k=>$v)
-{
-    ?>
-    <p><strong><?php if(isset($prof)&& $prof[$k])echo $prof[$k];else echo "Unknown";?>: </strong> <?php echo $v;?></p> 
-    <?php
-}
-?>
+<?php if(isset($int)){ printall($int);} ?>
 </div>
 </div>                                                   
  
@@ -266,15 +204,7 @@ foreach($int as $k=>$v)
 How was the booth location? Provide details.
                     </label>
 <div class="col-md-8">
-<?php 
-if(isset($bl))
-foreach($bl as $k=>$v)
-{
-    ?>
-    <p><strong><?php if(isset($prof)&& $prof[$k])echo $prof[$k];else echo "Unknown";?>: </strong> <?php echo $v;?></p> 
-    <?php
-}
-?>
+<?php  if(isset($bl)) { printall($bl);} ?>
 </div>
 </div> 
  
@@ -285,28 +215,11 @@ Rate the volume of booth traffic.
                     </label>
 <div class="col-md-8">
                                                             <?php 
-if(isset($rat1))
-{
-    $avg=0;
-    $avco = 0;
-foreach($rat1 as $k=>$v)
-{
-    $avco++;
-    $avg= $avg+$v;
+if(isset($rat1)) {
+    echo '<p style="padding-top: 5px;">Total Average (Out of 10): ' . getaverage($rat1) . '</p>';
 }
-?>
-<p style="padding-top: 5px;">Total Average (Out of 10): <?php echo round($avg/$avco,2);?></p>
-<?php
-}?>
-<?php 
-if(isset($rat))
-foreach($rat as $k=>$v)
-{
-    ?>
 
-    <p><strong><?php if(isset($prof)&& $prof[$k])echo $prof[$k];else echo "Unknown";?>: </strong> <?php echo $v;?></p> 
-    <?php
-}
+if(isset($rat)) { printall($rat); }
 ?>
 </div>
 </div> 
@@ -317,15 +230,7 @@ Please provide suggestions for improvement of the booth's appearance,
                                                         messaging, display, location, etc.
                     </label>
 <div class="col-md-8">
-<?php 
-if(isset($sugg))
-foreach($sugg as $k=>$v)
-{
-    ?>
-    <p><strong><?php if(isset($prof)&& $prof[$k])echo $prof[$k];else echo "Unknown";?>: </strong> <?php echo $v;?></p> 
-    <?php
-}
-?>
+<?php if(isset($sugg)){ printall($sugg); } ?>
 </div>
 </div> 
  	
@@ -336,15 +241,7 @@ foreach($sugg as $k=>$v)
 How was the promotional giveaway received (if applicable)? Provide details.
                     </label>
 <div class="col-md-8">
-<?php 
-if(isset($prom))
-foreach($prom as $k=>$v)
-{
-    ?>
-    <p><strong><?php if(isset($prof)&& $prof[$k])echo $prof[$k];else echo "Unknown";?>: </strong> <?php echo $v;?></p> 
-    <?php
-}
-?>
+<?php if(isset($prom)){ printall($prom);} ?>
 </div>
 </div>                                            
  
@@ -355,15 +252,7 @@ foreach($prom as $k=>$v)
 Approximately how many attendees did you engage in conversation?
                     </label>
 <div class="col-md-8">
-<?php 
-if(isset($att))
-foreach($att as $k=>$v)
-{
-    ?>
-    <p><strong><?php if(isset($prof)&& $prof[$k])echo $prof[$k];else echo "Unknown";?>: </strong> <?php echo $v;?></p> 
-    <?php
-}
-?>
+<?php if(isset($att)) { printall($att); } ?>
 </div>
 </div> 
 
@@ -372,15 +261,7 @@ foreach($att as $k=>$v)
 Do you feel there was enough booth staff?
                     </label>
 <div class="col-md-8">
-<?php 
-if(isset($bs))
-foreach($bs as $k=>$v)
-{
-    ?>
-    <p><strong><?php if(isset($prof)&& $prof[$k])echo $prof[$k];else echo "Unknown";?>: </strong> <?php echo $v;?></p> 
-    <?php
-}
-?>
+<?php  if(isset($bs)) { printall($bs);} ?>
 </div>
 </div> 
  <?php
@@ -398,7 +279,7 @@ foreach ($client_docs as $k => $cd) {
             
                  $file = $cd->attachment;
             
-                
+                //include filelist and use the api from there!!!!!!
             if ($file) {//id, client_id
                 if ($count==1){ echo '<TR><TH colspan="5">Attachments</TH></TR>'; }
                 $path = "/attachments/" . $file;
