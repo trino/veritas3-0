@@ -1650,10 +1650,10 @@ function provinces($name){
                 $.ajax({
                 url: '<?php echo $this->request->webroot;?>orders/webservice/<?php echo $_GET['order_type'];?>/<?php echo $_GET['forms']; ?>/' + $('#did').val() +'/' + $('#uploaded_for').val(),
                 success:function(){
-            //     window.location = '<?php echo $this->request->webroot;?>profiles/view/'+$('#uploaded_for').val()+'?getprofilescore=1&success';
+                    window.location = '<?php echo $this->request->webroot;?>profiles/view/'+$('#uploaded_for').val()+'?getprofilescore=1&success';
                 },
                 error:function(){
-             //    window.location = '<?php echo $this->request->webroot;?>profiles/view/'+$('#uploaded_for').val()+'?getprofilescore=1&success';
+                window.location = '<?php echo $this->request->webroot;?>profiles/view/'+$('#uploaded_for').val()+'?getprofilescore=1&success';
                 }
             });
                 

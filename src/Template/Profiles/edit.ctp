@@ -313,27 +313,18 @@
                                 ?>
                                 <div class="profile-usertitle-job">
                                     <small>
-                                        ISB ID:
-
-
-
-                                        <?php echo $p->isb_id; ?>
-
+                                    ISB ID: <?php echo $p->isb_id; ?>
                                     </small>
                                 </div>
-
-
                             <?php }
                                 if (isset($p)) {
                                     if ($p->profile_type == 5 || $profile->profile_type == 7 || $profile->profile_type == 8 || $profile->profile_type == 11 && $settings->mee =="MEE") {
                                         ?>
-
                                         <label class="uniform-inline" style="margin-bottom:20px;">
                                             <input type="checkbox" name="stat" value="1"
                                                    id="<?php echo $profile->id; ?>"
                                                    class="checkhiredriver" <?php if ($p->is_hired == '1') echo "checked"; ?> />
                                             Was this driver hired? <span class="hired_msg"></span></label>
-
                                     <?php
                                     }
                                 }
@@ -347,7 +338,7 @@
                                                     echo '<br><a href="' . $this->request->webroot . 'orders/productSelection?driver=' . $profile->id;
                                                     echo '&ordertype=' . $product->Acronym . '"';
 
-                                                    echo ' class="blue-stripe btn floatleft ' . $product->ButtonColor . '" style="margin-top:2px;width:70%;">' . $product->Name;
+                                                    echo ' class="blue-stripe btn floatleft ' . $product->ButtonColor . '" style="margin-top:2px;width:75%;">' . $product->Name;
 
                                                     echo ' <i class="m-icon-swapright m-icon-white"></i></a>';
                                                 }
@@ -452,7 +443,7 @@
                                             <?php }
                                             $checker = $this->requestAction('/settings/check_edit_permission/' . $this->request->session()->read('Profile.id') . '/' . $profile->id."/".$profile->created_by);
                                             if($this->request->session()->read('Profile.super') == '1' || ($sidebar->profile_create == '1' && $sidebar->profile_edit=='1')){
-                                            //if ($this->request->session()->read('Profile.admin') || ($this->request->session()->read('Profile.id') != $id && $this->request->session()->read('Profile.profile_type') == '2')) {
+//if ($this->request->session()->read('Profile.admin') || ($this->request->session()->read('Profile.id') != $id && $this->request->session()->read('Profile.profile_type') == '2')) {
                                                 ?>
                                                 <li <?php activetab($activetab, "permissions"); ?>>
                                                     <a href="#tab_1_7" data-toggle="tab">Permissions</a>
