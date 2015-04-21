@@ -42,7 +42,7 @@
                     if($pr)
                     $prof[] = $pr->fname.' '.$pr->lname;
                     $ec[] = $aud->total_cost;
-                    $rati[] = $aud->total_rating;
+
                     $po[] = $aud->primary_objectives;
                     $ob[] = $aud->objectives;
                     $imp[] = $aud->improvement;
@@ -63,6 +63,9 @@
                     $rate_1[] = $aud->rating_1;
                     $rate_2[] = $aud->rating_2;
                     $rate_3[] = $aud->rating_3;
+
+                    $aud->total_rating = $aud->boothrate + $aud->rating_1 + $aud->rating_2 + $aud->rating_3;
+                    $rati[] = $aud->total_rating;
                 }
              }
              ?> 

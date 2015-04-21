@@ -153,22 +153,22 @@ function makeyeardropdown($is_disabled, $Name, $Value, $Language, $Count = 5, $S
 </div>
 </div>                                                
 
- 	<div class="form-group">
+ 	<!--div class="form-group">
 <label class="col-md-3 control-label">Rating Total
                                                     <small class=" control-label">[Out of 40]</small>:
                                                     </label>
                                                     
 <div class="col-md-4">
-                                <?php makeratingdropdown($is_disabled, "total_rating", $total_rating); ?>
+                                <?php /*makeratingdropdown($is_disabled, "total_rating", $total_rating);*/ ?>
 
                                 </div>
-</div>
+</div-->
                                                 
                                        	<h2> Objectives</h2>
 
 <div class="form-group">
 <label class="col-md-3 control-label">
-                                                    What were the primary objectives at the show?
+                                                    What were the primary objectives at the show/event?
                                                     </label>
 <div class="col-md-8">
 <textarea class="form-control" name="primary_objectives" id="primary_objectives" <?php echo $is_disabled;?> rows="3"><?php if(isset($audits))echo $audits->primary_objectives;?></textarea>
@@ -179,13 +179,17 @@ function makeyeardropdown($is_disabled, $Name, $Value, $Language, $Count = 5, $S
 
 <div class="form-group">
 <label class="col-md-3 control-label">
-                                                    Do you feel the objectives were achieved? Provide a grade rating of 1 to 10 (10 is best) and provide details.
+                                                    Do you feel the objectives were achieved? Provide a grade rating of 1 to 10 (10 is best)
                                                     </label>
 
     <div class="col-md-4">
         <?php makeratingdropdown($is_disabled, "rating_1", $rating_1, 10); ?><BR>
     </div>
-
+</div>
+    <div class="form-group">
+        <label class="col-md-3 control-label">
+            Provide details.
+        </label>
 <div class="col-md-8">
 <textarea class="form-control" name="objectives" id="primary_objectives" <?php echo $is_disabled;?> rows="3"><?php if(isset($audits))echo $audits->objectives;?></textarea>
 </div>
@@ -202,7 +206,7 @@ function makeyeardropdown($is_disabled, $Name, $Value, $Language, $Count = 5, $S
                                                 <h2> Leads </h2>
                                                 <div class="form-group">
 <label class="col-md-3 control-label">
-                                                    Was the lead-collecting process in the booth effective (e.g. badge scanner, business card collecting)?
+                                                    Was the lead-collecting process at the booth/event effective (e.g. badge scanner, business card collecting)?
                                                     </label>
 <div class="col-md-8">
 <textarea class="form-control" name="lead_effective" id="primary_objectives" <?php echo $is_disabled;?> rows="3"><?php if(isset($audits))echo $audits->lead_effective;?></textarea>
@@ -219,12 +223,15 @@ How many leads were generated?                                                  
  
                                                  <div class="form-group">
 <label class="col-md-3 control-label">
-Rate the leads - how many do you feel are "quality"? 
-                                                        Provide a grade rating of 1 to 10 (10 is best) and provide details.                                                   </label>
+Rate the leads - how many do you feel are "quality"? Provide a grade rating of 1 to 10 (10 is best)
+</label>
                                                      <div class="col-md-4">
                                                          <?php makeratingdropdown($is_disabled, "rating_2", $rating_2, 10); ?><BR>
                                                      </div>
-
+</div>
+    <div class="form-group">
+        <label class="col-md-3 control-label">
+            Provide details.                                                   </label>
 <div class="col-md-8">
 <textarea class="form-control" name="leads_rate" id="primary_objectives" <?php echo $is_disabled;?> rows="3"><?php if(isset($audits))echo $audits->leads_rate;?></textarea>
 </div>
@@ -243,18 +250,22 @@ Please provide suggestions for improvement of the lead collection and handling p
    
                                                  <div class="form-group">
 <label class="col-md-3 control-label">
-Rate the type of attendees at the show 
-                                                        (e.g. decision makers, decision influencers, general staff)?
-                                                        Provide a grade rating of 1 to 10 (10 is best) and provide details.                                                   </label>
+Rate the type of attendees at the show/event. Provide a grade rating of 1 to 10 (10 is best)
+</label>
                                                      <div class="col-md-4">
                                                          <?php makeratingdropdown($is_disabled, "rating_3", $rating_3, 10); ?><BR>
-                                                     </div>
+                                                     </div></div>
+
+    <div class="form-group">
+        <label class="col-md-3 control-label">
+            (e.g. decision makers, decision influencers, general staff)?
+            Provide details.                                                   </label>
 <div class="col-md-8">
 <textarea class="form-control" name="attendees_rate" <?php echo $is_disabled;?> id="" rows="3"><?php if(isset($audits))echo $audits->attendees_rate;?></textarea>
 </div>
 </div> 
                                                                                              
-                                                <h2> Booth </h2>
+                                                <h2> Booth/Event </h2>
    
                                                  <div class="form-group">
 <label class="col-md-3 control-label">
@@ -267,7 +278,7 @@ Which of our services/products we provide was of most interest?
  
                                                   <div class="form-group">
 <label class="col-md-3 control-label">
-How was the booth location? Provide details.
+How was the booth location on the trade show floor or the venue location if it was an event? Provide details.
                     </label>
 <div class="col-md-8">
 <textarea class="form-control" name="booth_location" <?php echo $is_disabled;?> id="primary_objectives" rows="3"><?php if(isset($audits))echo $audits->booth_location;?></textarea>
@@ -276,22 +287,26 @@ How was the booth location? Provide details.
  
                                                    <div class="form-group">
 <label class="col-md-3 control-label">
-Rate the volume of booth traffic. 
-                                                        Provide a grade rating of 1 to 10 (10 is best) and provide details.
-                    </label>
+    Rate the volume of booth traffic or attendance if it was event. Provide a grade rating of 1 to 10 (10 is best)
+</label>
 
     <div class="col-md-4">
         <?php makeratingdropdown($is_disabled, "boothrate", $boothrate, 10); ?><BR>
-    </div>
-                                                       <div class="col-md-8">
+    </div></div>
+
+
+    <div class="form-group">
+        <label class="col-md-3 control-label">
+            Provide details.
+        </label>
+    <div class="col-md-8">
 <textarea class="form-control" name="rating" <?php echo $is_disabled;?> id="primary_objectives" rows="3"><?php if(isset($audits))echo $audits->rating;?></textarea>
 </div>
-</div> 
- 
-                                                    <div class="form-group">
+</div>
+
+    <div class="form-group">
 <label class="col-md-3 control-label">
-Please provide suggestions for improvement of the booth's appearance, 
-                                                        messaging, display, location, etc.
+Please provide suggestions for improvement of the booth's appearance, messaging, display, location, or the event’s format, layout, etc.
                     </label>
 <div class="col-md-8">
 <textarea class="form-control" name="suggestions" <?php echo $is_disabled;?> id="primary_objectives" rows="3"><?php if(isset($audits))echo $audits->suggestions;?></textarea>
@@ -322,7 +337,7 @@ Approximately how many attendees did you engage in conversation?
 
                                                 <div class="form-group">
 <label class="col-md-3 control-label">
-Do you feel there was enough booth staff?
+Do you feel there was enough booth/event staff?
                     </label>
 <div class="col-md-8">
 <textarea class="form-control" name="booth_staff" <?php echo $is_disabled;?> id="primary_objectives" rows="3"><?php if(isset($audits))echo $audits->booth_staff;?></textarea>
