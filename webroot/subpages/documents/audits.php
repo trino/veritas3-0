@@ -36,40 +36,89 @@ if(isset($disabled)){$is_disabled = 'disabled="disabled"';}
                                                                                                 
 <div class="form-group">
 <label class="col-md-3 control-label">Date: </label>
-<?php if(isset($audits))
-{
+<?php if(isset($audits)) {
     $date = explode("-",$audits->date);
     $year = $date[0];
     $month = $date[1];
-}?>
+}
+
+function makeselect($is_disabled, $Name){
+    echo '<select class="form-control member_type" ' . $is_disabled . ' name="'. $Name . '" >';
+}
+function makedropdown($is_disabled, $Name, $TheValue, $Language, $EnglishValues, $FrenchValues = ""){
+    makeselect($is_disabled, $Name);
+    if ($FrenchValues == ""){ $Language = "English"; }
+    $variable = $Language . "Values";
+    foreach($$variable as $Key => $Value){
+        makedropdownoption($Key, $Value, $TheValue);
+    }
+    echo '</select>';
+}
+function makedropdownoption($Key, $Value, $TheValue){
+    echo '<option value="' . $Key . '"';
+    if($TheValue == $Key){echo "selected='selected'";}
+    echo '>' . $Value . '</option>';
+}
+
+$Language="English";
+if(isset($audits)) {
+    $province=$audits->province;
+    $total_rating = $audits->total_rating;
+    $boothrate=$audits->boothrate;
+    $rating_1=$audits->rating_1;
+    $rating_2=$audits->rating_2;
+    $rating_3=$audits->rating_3;
+} else{
+    $province="";
+    $month=0;
+    $year=0;
+    $total_rating=0;
+    $boothrate=0;
+    $rating_1=0;
+    $rating_2=0;
+    $rating_3=0;
+}
+
+function V2K($data){
+    $data2 = array();
+    foreach($data as $value){
+        $data2[$value] = $value;
+    }
+    return $data2;
+}
+
+function makemonthdropdown($is_disabled, $Name, $Value, $Language){
+    $EnglishValues = array("" => "Month", 1=> "January", 2=> "February", 3=> "March", 4 => "April", 5 => "May", 6 => "June", 7 => "July", 8 => "August", 9 => "September", 10 => "October", 11 => "November", 12 => "December");
+    makedropdown($is_disabled, $Name, $Value, $Language, $EnglishValues);
+}
+function makeprovincedropdown($is_disabled, $Name, $Value, $Language){
+    $EnglishValues = V2K(array("AB", "BC", "MB", "NB", "NL", "NT", "NS", "NU", "ON", "PE", "QC", "SK", "YT"));
+    makedropdown($is_disabled, $Name, $Value, $Language, $EnglishValues);
+}
+function makeratingdropdown($is_disabled, $Name, $Value, $Count = 40, $Start = 1){
+    makeselect($is_disabled, $Name);
+    $End = $Start+$Count-1;
+    for($i=$Start; $i<=$End; $i++){
+        makedropdownoption($i,$i,$Value);
+    }
+    echo '</select>';
+}
+function makeyeardropdown($is_disabled, $Name, $Value, $Language, $Count = 5, $Start = -1){
+    $Text = array("English" => "Year", "French" => "Année");
+    makeselect($is_disabled, $Name);
+    echo '<option value="">' . $Text[$Language] . '</option>';
+    if ($Start == -1){ $Start=date("Y");}
+    for($temp=$Start; $temp<=$Start+$Count; $temp++){
+        makedropdownoption($temp, $temp, $Value);
+    }
+    echo '</select>';
+}
+?>
                                                       <div class="col-md-3">
-                                                      <select class="form-control member_type" <?php echo $is_disabled;?> name="month" >
-                                                        <option value=""> Month </option>
-                                                        <option value="1" <?php if(isset($audits)&& $month ==1)echo "selected='selected'";?>>January</option>
-                                                        <option value="2" <?php if(isset($audits)&& $month ==2)echo "selected='selected'";?>>February</option>
-                                                        <option value="3" <?php if(isset($audits)&& $month ==3)echo "selected='selected'";?>>March</option>
-                                                        <option value="4" <?php if(isset($audits)&& $month ==4)echo "selected='selected'";?>>April</option>
-                                                        <option value="5" <?php if(isset($audits)&& $month ==5)echo "selected='selected'";?>>May</option>
-                                                        <option value="6" <?php if(isset($audits)&& $month ==6)echo "selected='selected'";?>>June</option>
-                                                        <option value="7" <?php if(isset($audits)&& $month ==7)echo "selected='selected'";?>>July</option>
-                                                        <option value="8" <?php if(isset($audits)&& $month ==8)echo "selected='selected'";?>>August</option>
-                                                        <option value="9" <?php if(isset($audits)&& $month ==9)echo "selected='selected'";?>>September</option>
-                                                        <option value="10" <?php if(isset($audits)&& $month ==10)echo "selected='selected'";?>>October</option>
-                                                        <option value="11" <?php if(isset($audits)&& $month ==11)echo "selected='selected'";?>>November</option>
-                                                        <option value="12" <?php if(isset($audits)&& $month ==12)echo "selected='selected'";?>>December</option>
-                                                    </select>             
+                                                          <?php makemonthdropdown($is_disabled, "month", $month, $Language); ?>
                                                       </div>
                                                       <div class="col-md-3">
-                                                        <select class=" form-control member_type" <?php echo $is_disabled;?> name="year" >
-                                                        <option value=""> Year </option>
-                                                        <option value="2015" <?php if(isset($audits)&& $year ==2015)echo "selected='selected'";?>> 2015 </option>
-                                                        <option value="2016" <?php if(isset($audits)&& $year ==2016)echo "selected='selected'";?>> 2016 </option>
-                                                        <option value="2017" <?php if(isset($audits)&& $year ==2017)echo "selected='selected'";?>> 2017 </option>
-                                                        <option value="2018" <?php if(isset($audits)&& $year ==2018)echo "selected='selected'";?>> 2018 </option>
-                                                        <option value="2019" <?php if(isset($audits)&& $year ==2019)echo "selected='selected'";?>> 2019 </option>
-                                                        <option value="2020" <?php if(isset($audits)&& $year ==2020)echo "selected='selected'";?>> 2020 </option>
-                                                        
-                                                    </select>
+                                                         <?php makeyeardropdown($is_disabled, "year", $year, $Language); ?>
                              	  </div>
 </div>
 
@@ -84,24 +133,9 @@ if(isset($disabled)){$is_disabled = 'disabled="disabled"';}
 
 
                                                     <div class="col-md-3">
+                                                            <?php makeprovincedropdown($is_disabled, "province", $province, $Language); ?>
+                                                    </div>
 
-                                                            <select name="province" <?php echo $is_disabled;?> class="form-control member_type">
-                                                                <option value="AB" <?php if(isset($audits)&& $audits->province =="AB")echo "selected='selected'";?>>AB</option>
-                                                                <option value="BC" <?php if(isset($audits)&& $audits->province =="BC")echo "selected='selected'";?>>BC</option>
-                                                                <option value="MB" <?php if(isset($audits)&& $audits->province =="MB")echo "selected='selected'";?>>MB</option>
-                                                                <option value="NB" <?php if(isset($audits)&& $audits->province =="NB")echo "selected='selected'";?>>NB</option>
-                                                                <option value="NL" <?php if(isset($audits)&& $audits->province =="NL")echo "selected='selected'";?>>NL</option>
-                                                                <option value="NT" <?php if(isset($audits)&& $audits->province =="NT")echo "selected='selected'";?>>NT</option>
-                                                                <option value="NS" <?php if(isset($audits)&& $audits->province =="NS")echo "selected='selected'";?>>NS</option>
-                                                                <option value="NU" <?php if(isset($audits)&& $audits->province =="NU")echo "selected='selected'";?>>NU</option>
-                                                                <option value="ON" <?php if(isset($audits)&& $audits->province =="ON")echo "selected='selected'";?>>ON</option>
-                                                                <option value="PE" <?php if(isset($audits)&& $audits->province =="PE")echo "selected='selected'";?>>PE</option>
-                                                                <option value="QC" <?php if(isset($audits)&& $audits->province =="QC")echo "selected='selected'";?>>QC</option>
-                                                                <option value="SK" <?php if(isset($audits)&& $audits->province =="SK")echo "selected='selected'";?>>SK</option>
-                                                                <option value="YT" <?php if(isset($audits)&& $audits->province =="YT")echo "selected='selected'";?>>YT</option>
-                                                            </select>
-
-                                </div>
                                                     <div class="col-md-3">
 <input type="text" name="country" class="form-control req_driver" <?php echo $is_disabled;?> value="Canada" value="<?php if(isset($audits))echo $audits->country;?>">
 </div>
@@ -125,12 +159,7 @@ if(isset($disabled)){$is_disabled = 'disabled="disabled"';}
                                                     </label>
                                                     
 <div class="col-md-4">
-
-                                                            <select name="total_rating" <?php echo $is_disabled;?> class="form-control member_type">
-                                                              <?php for($i=1; $i<=40; $i++):?>
-                                                              <option value="<?php echo $i;?>" <?php if(isset($audits)&& $audits->total_rating ==$i)echo "selected='selected'";?>><?php echo $i;?></option>
-                                                              <?php endfor;?>
-                                                            </select>
+                                <?php makeratingdropdown($is_disabled, "total_rating", $total_rating); ?>
 
                                 </div>
 </div>
@@ -152,6 +181,11 @@ if(isset($disabled)){$is_disabled = 'disabled="disabled"';}
 <label class="col-md-3 control-label">
                                                     Do you feel the objectives were achieved? Provide a grade rating of 1 to 10 (10 is best) and provide details.
                                                     </label>
+
+    <div class="col-md-4">
+        <?php makeratingdropdown($is_disabled, "rating_1", $rating_1, 10); ?><BR>
+    </div>
+
 <div class="col-md-8">
 <textarea class="form-control" name="objectives" id="primary_objectives" <?php echo $is_disabled;?> rows="3"><?php if(isset($audits))echo $audits->objectives;?></textarea>
 </div>
@@ -187,6 +221,10 @@ How many leads were generated?                                                  
 <label class="col-md-3 control-label">
 Rate the leads - how many do you feel are "quality"? 
                                                         Provide a grade rating of 1 to 10 (10 is best) and provide details.                                                   </label>
+                                                     <div class="col-md-4">
+                                                         <?php makeratingdropdown($is_disabled, "rating_2", $rating_2, 10); ?><BR>
+                                                     </div>
+
 <div class="col-md-8">
 <textarea class="form-control" name="leads_rate" id="primary_objectives" <?php echo $is_disabled;?> rows="3"><?php if(isset($audits))echo $audits->leads_rate;?></textarea>
 </div>
@@ -208,6 +246,9 @@ Please provide suggestions for improvement of the lead collection and handling p
 Rate the type of attendees at the show 
                                                         (e.g. decision makers, decision influencers, general staff)?
                                                         Provide a grade rating of 1 to 10 (10 is best) and provide details.                                                   </label>
+                                                     <div class="col-md-4">
+                                                         <?php makeratingdropdown($is_disabled, "rating_3", $rating_3, 10); ?><BR>
+                                                     </div>
 <div class="col-md-8">
 <textarea class="form-control" name="attendees_rate" <?php echo $is_disabled;?> id="" rows="3"><?php if(isset($audits))echo $audits->attendees_rate;?></textarea>
 </div>
@@ -238,14 +279,11 @@ How was the booth location? Provide details.
 Rate the volume of booth traffic. 
                                                         Provide a grade rating of 1 to 10 (10 is best) and provide details.
                     </label>
-<div class="col-md-8">
-<div class="col-md-2" style="padding:0;">
-<select name="boothrate" <?php echo $is_disabled;?> class="form-control member_type" style="margin-bottom: 5px;">
-                                                              <?php for($i=1; $i<=10; $i++):?>
-                                                              <option value="<?php echo $i;?>" <?php if(isset($audits)&& $audits->boothrate ==$i)echo "selected='selected'";?>><?php echo $i;?></option>
-                                                              <?php endfor;?>
-                                                            </select>
-</div>
+
+    <div class="col-md-4">
+        <?php makeratingdropdown($is_disabled, "boothrate", $boothrate, 10); ?><BR>
+    </div>
+                                                       <div class="col-md-8">
 <textarea class="form-control" name="rating" <?php echo $is_disabled;?> id="primary_objectives" rows="3"><?php if(isset($audits))echo $audits->rating;?></textarea>
 </div>
 </div> 
