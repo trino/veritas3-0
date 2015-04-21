@@ -8,6 +8,7 @@ if($this->request->session()->read('debug')) {
         background-color: white;
     }
 </STYLE>
+<form action="#" method="post" id="blockform">
 <table class='table table-condensed  table-striped table-bordered table-hover dataTable no-footer'  ID='myTable'>
     <thead>
         <TR>
@@ -25,21 +26,31 @@ if($this->request->session()->read('debug')) {
     </thead>
     <tbody>
 <?php //$action  = "Edit" (Not even shown otherwise)
+$global=true;
+$local=true;
 foreach($products as $product){
     echo '<TR><TD>' . $product->number . '</TD><TD><DIV ID="dn' . $product->number . '">' . $product->title . '</DIV></TD><TD>';
-    checkbox("global" . $product->number, $product->enable, "enable('global', -1, " .  $product->number . ");", false);
+    if(!checkbox("global" . $product->number, $product->enable, "enable('global', -1, " .  $product->number . ");", false)){$global = false;}
     echo "<TD>";
-    checkbox("local" . $product->number, $product->clientenabled, "enable('local', " .  $id . ", " . $product->number . ");", false);
+    if(!checkbox("local" . $product->number, $product->clientenabled, "enable('local', " .  $id . ", " . $product->number . ");", false)) {$local=false;}
     echo '</TD></TR>';
 }
 
 function checkbox($name, $status, $onclick, $disabled = false){
     if ($status) {$status = " CHECKED"; }
     if ($disabled) { $disabled = " DISABLED";}
-    echo '<INPUT TYPE="CHECKBOX" ONCLICK="' . $onclick . '" ID="' . $name . '" NAME="' . $name . '"' . $status . $disabled . '>';
+    echo '<INPUT TYPE="CHECKBOX" ONCLICK="' . $onclick . '" ID="' . $name . '" NAME="' . $name . '" CLASS="' . $name . '"' . $status . $disabled . '>';
+    if($status) return true;
 }
-?></tbody>
-<tfoot>
+
+
+echo "</tbody><tfoot><TR><TD></TD><TD>All</TD><TD>";
+checkbox("allglobal", $global, "selectall('global', 'allglobal', -1);");
+echo "</TD><TD>";
+checkbox("alllocal", $local, "selectall('local', 'alllocal', " . $id . ");");
+?>
+        </TD>
+    </TR>
     <TR>
         <TD colspan="4">
             A product needs to be enabled both globally and locally for it to show up for a client
@@ -73,4 +84,32 @@ function checkbox($name, $status, $onclick, $disabled = false){
             }
         })
     }
-</SCRIPT>
+
+    function selectall(startswith, classname, clientid){
+        var checked = $('.' + classname).is(':checked');
+        $('#blockform input[type="checkbox"]').each(function () {
+            var name = $(this).attr("name");
+            if (typeof name  !== "undefined") {
+                if (name.substring(0, startswith.length) == startswith) {
+                    var number = name.substring(startswith.length);
+                    if (checked) {
+                        $(this).parent().addClass('checked')
+                        $(this).attr('checked', 'checked');
+                    } else {
+                        $(this).parent().removeClass('checked')
+                        $(this).removeAttr('checked');
+                    }
+                    enable(startswith, clientid, number);
+                }
+            }
+        });
+    }
+
+
+    function simulateClick(name) {
+        var evt = document.createEvent("MouseEvents");
+        evt.initMouseEvent("click", true, true, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
+        var cb = document.getElementById(name);
+        var canceled = !cb.dispatchEvent(evt);
+    }
+</SCRIPT></form>

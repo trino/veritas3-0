@@ -296,6 +296,13 @@
                                         </label>
                                         <label class="uniform-inline">
                                             <input <?php echo $is_disabled ?> type="checkbox" name="side[orders_create]"
+                                                                              onclick="<?php //onclick="selectall('ptypes[]', 'create3');"
+                                                                              foreach ($products as $product) {
+                                                                                  $name="side[" . $product->Sidebar_Alias . "]";
+                                                                                  echo "selectall('" . $name . "', 'create3'); ";
+                                                                              }
+                                                                              ?>"
+                                                                              class="create3"
                                                                               value="1" <?php if (isset($sidebar) && $sidebar->orders_create == 1) echo "checked"; ?> />
                                             Create
                                         </label>
