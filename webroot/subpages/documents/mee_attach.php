@@ -11,7 +11,7 @@
     function alert($Text){
         echo "<SCRIPT>alert('" . $Text . "');</SCRIPT>";
     }
-    
+
     if($action == "View" && $controller == "documents") {
         $data = getdocumentinfo($did);
         $DriverProvince =$data->reciever->driver_province;

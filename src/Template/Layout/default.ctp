@@ -216,10 +216,10 @@ $strings = CacheTranslations($language, "langswitch","");//,$registry);
 							<a href="<?php echo $this->request->webroot;?>profiles/edit/<?php echo $this->request->session()->read('Profile.id'); ?>" >
 							<i class="icon-user"></i> <?= $strings["dashboard_mysettings"] ?> </a>
 						</li>
-                        <!--li>
+                        <li><!--stop commenting this out-->
                             <a href="<?php echo $this->request->webroot;?>profiles/langswitch/<?php echo $this->request->session()->read('Profile.id'); ?>" >
                                 <i class="icon-user"></i> <?= $strings["langswitch"]; ?> </a>
-                        </li-->
+                        </li>
 						<li class="divider">
 						</li>
 
