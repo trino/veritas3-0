@@ -1646,14 +1646,19 @@ function provinces($name){
         });
 
         $('#submit_ord').live('click', function () {
+            URL='<?php echo $this->request->webroot;?>profiles/view/'+$('#uploaded_for').val()+'?getprofilescore=1&success';
+            if($('#uploaded_for').val() ==0){
+                URL='<?php echo $this->request->webroot;?>orders/orderslist';
+            }
+
             setTimeout(function(){ 
                 $.ajax({
                 url: '<?php echo $this->request->webroot;?>orders/webservice/<?php echo $_GET['order_type'];?>/<?php echo $_GET['forms']; ?>/' + $('#did').val() +'/' + $('#uploaded_for').val(),
-                success:function(){
-                    window.location = '<?php echo $this->request->webroot;?>profiles/view/'+$('#uploaded_for').val()+'?getprofilescore=1&success';
+                success:function(){   
+                    window.location = URL;
                 },
                 error:function(){
-                window.location = '<?php echo $this->request->webroot;?>profiles/view/'+$('#uploaded_for').val()+'?getprofilescore=1&success';
+                    window.location = URL;
                 }
             });
                 
