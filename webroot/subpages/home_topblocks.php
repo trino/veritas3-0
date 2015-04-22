@@ -172,29 +172,33 @@ function randomcolor(){
 
         $AssignedClient = GetAssignedClients($userid, $clients, true);
         if($AssignedClient){$AssignedClient= $AssignedClient->id;} else {$AssignedClient="";}
-        $URL = "test?ClientID=" . $AssignedClient . "&UserID=".$userid;
-        makeblock($URL."&footprint", "Footprint", "fa icon-footprint", "bg-red");
-        makeblock($URL."&surveillance", "Surveillance", "fa icon-surveillance", "bg-red");
-        makeblock($URL."&physical", "Physical", "fa icon-physical", "bg-red");
 
         $MEEname="";
-        foreach($products as $product){
-            if ($product->Blocks_Alias) {
-                $sidebaralias = $product->Sidebar_Alias;
-                $blockalias = $product->Blocks_Alias;
-                //$blockaliasbypass= $blockalias . "b";
-                if ($product->Acronym == "MEE"){$MEEname = $product->Name;}
-                if ($sidebar->$sidebaralias ==1 && $block->$blockalias =='1') {
-                    $URL=$order_url . '&ordertype=' . $product->Acronym;//ie: http://localhost/veritas3-0/orders/productSelection?driver=0&ordertype=MEE
-                    //if($block->$blockaliasbypass==1){//ie: http://localhost/veritas3-0/orders/addorder/1/?driver=132&division=1&order_type=Driver+Order&forms=99
-                    //    $URL="orders/addorder/1/?driver=" . $userid . "&order_type=" . $product->Name . "&forms=".$formlist;
-                    //}
-                    makeblock($this->request->webroot . $URL, $product->Name);
+        if($AssignedClient) {
+            foreach($products as $product){
+                //http://localhost/veritas3-0/orders/productSelection?driver=0&ordertype=MEE
+
+                if ($product->Blocks_Alias) {
+                    $sidebaralias = $product->Sidebar_Alias;
+                    $blockalias = $product->Blocks_Alias;
+                    //$blockaliasbypass= $blockalias . "b";
+                    if ($product->Acronym == "MEE"){$MEEname = $product->Name;}
+                    if ($sidebar->$sidebaralias ==1 && $block->$blockalias =='1' && $product->Visible==1) {
+                        $URL="orders/productSelection?driver=0&ordertype=" . $product->Acronym;//ie: http://localhost/veritas3-0/orders/productSelection?driver=0&ordertype=MEE
+                        //if($block->$blockaliasbypass==1){//ie: http://localhost/veritas3-0/orders/addorder/1/?driver=132&division=1&order_type=Driver+Order&forms=99
+                        //    $URL="orders/addorder/1/?driver=" . $userid . "&order_type=" . $product->Name . "&forms=".$formlist;
+                        //}
+                        makeblock($URL, $product->Name);
+                    }
                 }
             }
-        }
 
-        if($AssignedClient) {
+            $URL="orders/addorder/" . $AssignedClient . "/?driver=0&order_type=Single+Product&forms=555&SpecificForm=";
+            makeblock($URL . "footprint", "Footprint", "fa icon-footprint", "bg-red");
+            makeblock($URL . "surveillance", "Surveillance", "fa icon-surveillance", "bg-red");
+            makeblock($URL . "physical", "Physical", "fa icon-physical", "bg-red");
+
+
             $subdoc = $this->requestAction('/profiles/getSub/' . $userid);
             //$URL = "orders/addorder/1/?driver=" . $userid . "&order_type=" . $MEEname . "&forms=" . $formlist . "&onlyshow=";
             $URL = "documents/add/" . $AssignedClient . "?type=";
@@ -215,7 +219,6 @@ function randomcolor(){
             }
         }
     }
-
 /*
     $URL=$this->request->webroot . "orders/addorder/1/?driver=132&division=1&order_type=Order+Products&forms=72";
     makeblock($URL, "Social media search", "fa fa-search" );

@@ -10,29 +10,20 @@
     $getProfileType = $this->requestAction('profiles/getProfileType/' . $this->Session->read('Profile.id'));
     $sidebar = $this->requestAction("settings/all_settings/" . $this->request->session()->read('Profile.id') . "/sidebar");
 
-    function printoption($option, $selected, $value = "")
-    {
+    function printoption($option, $selected, $value = ""){
         $tempstr = "";
-        if ($option == $selected) {
-            $tempstr = " selected";
-        }
-        if (strlen($value) > 0) {
-            $value = " value='" . $value . "'";
-        }
+        if ($option == $selected) {$tempstr = " selected";}
+        if (strlen($value) > 0) {$value = " value='" . $value . "'";}
         echo '<option' . $value . $tempstr . ">" . $option . "</option>";
     }
 
-    function printoption2($value, $selected = "", $option)
-    {
+    function printoption2($value, $selected = "", $option){
         $tempstr = "";
-        if ($option == $selected or $value == $selected) {
-            $tempstr = " selected";
-        }
+        if ($option == $selected or $value == $selected) {$tempstr = " selected";}
         echo '<OPTION VALUE="' . $value . '"' . $tempstr . ">" . $option . "</OPTION>";
     }
 
-    function printoptions($name, $valuearray, $selected = "", $optionarray, $isdisabled = "")
-    {
+    function printoptions($name, $valuearray, $selected = "", $optionarray, $isdisabled = ""){
         echo '<SELECT ' . $isdisabled . ' name="' . $name . '" class="form-control member_type" >';
         for ($temp = 0; $temp < count($valuearray); $temp += 1) {
             printoption2($valuearray[$temp], $selected, $optionarray[$temp]);
@@ -40,8 +31,7 @@
         echo '</SELECT>';
     }
 
-    function printprovinces($name, $selected = "", $isdisabled = "disabled='disabled'")
-    {
+    function printprovinces($name, $selected = "", $isdisabled = "disabled='disabled'"){
         printoptions($name, array("", "AB", "BC", "MB", "NB", "NL", "NT", "NS", "NU", "ON", "PE", "QC", "SK", "YT"), $selected, array("Select Province", "Alberta", "British Columbia", "Manitoba", "New Brunswick", "Newfoundland and Labrador", "Northwest Territories", "Nova Scotia", "Nunavut", "Ontario", "Prince Edward Island", "Quebec", "Saskatchewan", "Yukon Territories"), $isdisabled);
     }
 

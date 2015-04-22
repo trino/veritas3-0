@@ -49,16 +49,12 @@ function getColor($products, $OrderType, $Default = "blue"){
     if ($sidebar->orders_create == 1  && false){
         foreach($products as $product){
             $alias = $product->Sidebar_Alias;
-            if($sidebar->$alias ==1) {
-
+            if($sidebar->$alias ==1 && $product->Visible==1) {
                 if(strtolower($product->Acronym) !="bul") {
-
                     echo '<a href="' . $this->request->webroot . 'orders/productSelection?driver=0&ordertype=' . $product->Acronym . '"';
                     echo ' class="floatright btn ' . $product->ButtonColor . ' btnspc">' . $product->Name . "</a>";
                 }else{
-
                     echo '<a href="' . $this->request->webroot . 'profiles?all" class="floatright btn ' . $product->ButtonColor . ' btnspc">Bulk Order</a>';
-
                 }
             }
         }

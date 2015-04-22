@@ -244,7 +244,7 @@
                             <?php if ($sidebar->orders_create == 1) {
                                 foreach ($productlist as $product) {
                                     $alias = $product->Sidebar_Alias;
-                                    if ($sidebar->$alias == 1) {
+                                    if ($alias && $sidebar->$alias == 1 && $product->Visible==1) {
 
                                             echo "<LI ";
                                             if ($this->request['controller'] == 'Orders' && $this->request['action'] == 'productSelection' && $ordertype == $product->Acronym && !isset($_GET['draft'])) {
