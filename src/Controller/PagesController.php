@@ -31,6 +31,7 @@ class PagesController extends AppController {
 	public function index() {
 	   $this->loadComponent('Document');
        $this->set('doc_comp',$this->Document);
+        $this->getAllClient();
 	   $this->loadModel('Clients');
         if(isset($_GET['orderflash']))
         $this->Flash->success('Order saved as draft');
@@ -99,6 +100,11 @@ class PagesController extends AppController {
             if ($Object->$FieldName == $FieldValue){return $Object;}
         }
         return false;
+    }
+
+    function getAllClient(){
+        $query = TableRegistry::get('Clients')->find('all');
+        $this->set('clients', $query);
     }
 
     function view($slug){

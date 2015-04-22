@@ -6,7 +6,7 @@ if ($_SERVER['SERVER_NAME'] == "localhost" || $_SERVER['SERVER_NAME'] == "127.0.
 $GLOBALS["islocal"] =$islocal;
 $emailaddress= "info@" . getHost("isbmee.com");
 
-/*
+/* //this is the code to include it, for some reason the regular way won't work on the live
 if ($_SERVER['SERVER_NAME'] == "localhost" || $_SERVER['SERVER_NAME'] == "127.0.0.1") {
     include_once('/subpages/api.php');
 } else {
@@ -205,6 +205,13 @@ function ProcessVariables($ID, $Text, $Variables = ""){
     }
     if($Text) {return $Text;}
     return $ID;
+}
+
+function FindIterator($ObjectArray, $FieldName, $FieldValue){
+    foreach($ObjectArray as $Object){
+        if ($Object->$FieldName == $FieldValue){return $Object;}
+    }
+    return false;
 }
 
 function getFieldname($Fieldname, $Language){

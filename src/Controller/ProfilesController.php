@@ -1462,19 +1462,20 @@
             return false;
         }
 
-        function getSub()
-        {
+        function getProAllSubDoc($pro_id){
+            $sub = TableRegistry::get('Profilessubdocument')->find()->select()->where(['profile_id'=>$pro_id]);
+            return $sub;
+        }
+        function getSub($UserID = false){
             $sub = TableRegistry::get('Subdocuments');
             $query = $sub->find();
             $q = $query->select();
-
+            if ($UserID){ $q->Subdocs = $this->getProAllSubDoc($UserID);}
             $this->response->body($q);
             return $this->response;
-
         }
 
-        function getProSubDoc($pro_id, $doc_id)
-        {
+        function getProSubDoc($pro_id, $doc_id){
             $sub = TableRegistry::get('Profilessubdocument');
             $query = $sub->find();
             $query->select()->where(['profile_id' => $pro_id, 'subdoc_id' => $doc_id]);
