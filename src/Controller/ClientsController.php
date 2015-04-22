@@ -1069,7 +1069,7 @@
             $query = TableRegistry::get('client_divison');
             $q = $query->find()->where(['client_id' => $cid])->all();
             if (count($q) > 0) {
-                echo "<select class='form-control' name='division'><option value=''>Divisions</option>";
+                echo "<select class='form-control input-inline' name='division'><option value=''>Divisions</option>";
                 foreach ($q as $d) {
                     $sel = ($did == $d->id) ? "selected='selected'" : '';
                     echo "<option value='" . $d->id . "'" . $sel . " >" . $d->title . "</option>";

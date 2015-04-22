@@ -128,7 +128,7 @@ function getColor($products, $OrderType, $Default = "blue"){
 
                             </select>
 
-                            <div class=" divisions input-inline" style="">
+                            <div class="divisions input-inline" style="">
                                 <!-- Divisions section -->
                             </div>
 
