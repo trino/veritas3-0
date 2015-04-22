@@ -52,8 +52,31 @@
     $is_disabled = '';
     if (isset($disabled)) {$is_disabled = 'disabled="disabled"';}
     if (isset($profile)) {$p = $profile;}
+    $settings = $this->requestAction('settings/get_settings');
+
+function makeselect($is_disabled=false, $Name=""){
+    if($Name){
+        echo '<select class="form-control" ' . $is_disabled . ' id="'. $Name . '" >';
+    }else{
+        echo "</select>";
+    }
+}
+function makedropdown($is_disabled, $Name, $TheValue, $Language, $EnglishValues, $FrenchValues = ""){
+    makeselect($is_disabled, $Name);
+    if ($FrenchValues == ""){ $Language = "English"; }
+    $variable = $Language . "Values";
+    foreach($$variable as $Key => $Value){
+        makedropdownoption($Key, $Value, $TheValue);
+    }
+    echo '</select>';
+}
+function makedropdownoption($Key, $Value, $TheValue){
+    echo '<option value="' . $Key . '"';
+    if($TheValue == $Key){echo "selected='selected'";}
+    echo '>' . $Value . '</option>';
+}
+
 ?>
-<?php $settings = $this->requestAction('settings/get_settings'); ?>
 
 <div class="clearfix"></div>
 <!-- END PAGE HEADER-->
@@ -217,7 +240,7 @@
                             </tr>
                                 <?php
                                 foreach($subdoc as $sub) {
-                                    ?>
+                                ?>
                             <tr>
                                 <td>
                                     <span><?php echo ucfirst($sub['title']); ?></span>
@@ -226,37 +249,61 @@
                                     <span><?php echo ucfirst($sub['titleFrench']); ?></span>
                                 </td>
                                 <td>
-                                <a href="javascript:void(0)" class="btn-xs btn-success" onclick="$('#edit_sub_<?php echo $sub['id']; ?>').toggle(150);$('.msg').hide();">Edit</a>
+                                    <a href="javascript:void(0)" class="btn-xs btn-success"
+                                       onclick="$('#edit_sub_<?php echo $sub['id']; ?>').toggle(150);$('.msg').hide();">Edit</a>
                                 </td>
-                               <td>
-                                    <div class="col-md-12" id="edit_sub_<?php echo $sub['id']; ?>" style="display: none;margin:10px 0;padding:0">
+                                <td>
+                                    <div class="col-md-12" id="edit_sub_<?php echo $sub['id']; ?>"
+                                         style="display: none;margin:10px 0;padding:0">
                                         <div class="col-md-12" style="text-align: right;padding:0;">
-                                            <input type="text" id="editsubdocname_<?php echo $sub['id']; ?>" value="<?php echo ucfirst($sub['title']); ?>" placeholder="Sub-Document English title" class="form-control editsubdocname" />
-                                            <input type="text" id="editsubdocnameFrench_<?php echo $sub['id']; ?>" value="<?php echo ucfirst($sub['titleFrench']); ?>" placeholder="Sub-Document French title" class="form-control editsubdocname" />
+                                            <input type="text" id="editsubdocname_<?php echo $sub['id']; ?>"
+                                                   value="<?php echo ucfirst($sub['title']); ?>"
+                                                   placeholder="Sub-Document English title"
+                                                   class="form-control editsubdocname"/>
+                                            <input type="text" id="editsubdocnameFrench_<?php echo $sub['id']; ?>"
+                                                   value="<?php echo ucfirst($sub['titleFrench']); ?>"
+                                                   placeholder="Sub-Document French title"
+                                                   class="form-control editsubdocname"/>
                                             <span class="error" id="flasheditSub_<?php echo $sub['id']; ?>"
-                                              style="display: none;">Subdocument name already exists</span>
+                                                  style="display: none;">Subdocument name already exists</span>
                                             <span class="error" id="flasheditSub1_<?php echo $sub['id']; ?>"
-                                              style="display: none;">Please enter a subdocument name.</span>
+                                                  style="display: none;">Please enter a subdocument name.</span>
                                         </div>
-                                            <br /><br />
-                                          <div class="col-md-12" style="text-align: right;padding:0;">
-                                          <?php
-                                          $color = $this->requestAction('clients/getColorClass'); 
-                                          ?>
+                                        <br/><br/>
+
+                                        <div class="col-md-12" style="text-align: right;padding:0;">
                                             <select class="form-control" id="select_color_<?php echo $sub['id']; ?>">
-                                            <option value= "">Select a color class</option>
-                                            <?php
-                                             if($color) {
-                                                foreach($color as $c) {
-                                                    ?>
-                                                    <option value="<?php echo $c->id; ?>" <?php if(isset($sub['color_id']) && $sub['color_id'] == $c->id){?> selected="selected"<?php } ?> style="background: <?php echo $c->rgb; ?>;" ><?php echo $c->color; ?></option>
+                                                <option value="">Select a color class</option>
+                                                <?php
+                                                $color = $this->requestAction('clients/getColorClass');
+                                                if ($color) {
+                                                    foreach ($color as $c) {
+                                                        ?>
+                                                        <option
+                                                            value="<?php echo $c->id; ?>" <?php if (isset($sub['color_id']) && $sub['color_id'] == $c->id) { ?> selected="selected"<?php } ?>
+                                                            style="background: <?php echo $c->rgb; ?>;"><?php echo $c->color; ?></option>
                                                     <?php
+                                                    }
                                                 }
-                                             }
-                                            
+                                                makeselect();
+
+                                                makeselect($is_disabled, "select_icon_" . $sub['id']);
+                                                makedropdownoption("", "Default", $sub["icon"]);
+                                                makedropdownoption("fa icon-footprint", "Footprint", $sub["icon"]);
+                                                makedropdownoption("fa icon-surveillance", "Surveillance", $sub["icon"]);
+                                                makedropdownoption("fa icon-physical", "Physical", $sub["icon"]);
+                                                makeselect();
+
+                                                makeselect($is_disabled, "select_product_" . $sub['id']);
+                                                foreach ($products as $product){
+                                                    makedropdownoption($product->number, $product->title, $sub["ProductID"]);
+                                                }
+                                            makeselect();
                                              ?>
-                                                
-                                            </select>
+
+
+
+
                                             <span class="error" id="flashSelectColor_<?php echo $sub['id']; ?>"
                                               style="display: none; width: auto;">Please  select a color.</span>
                                           </div> <br /> <br />
@@ -393,9 +440,12 @@
         $('.editsubdoc').click(function(){
             $(this).html('Saving..'); 
             var id = $(this).attr('id').replace('subbtn','');
-           var subname = $('#editsubdocname_'+id).val();
+            var subname = $('#editsubdocname_'+id).val();
             var subnameFrench = $('#editsubdocnameFrench_'+id).val();
-           var color = $('#select_color_'+id).val();
+            var color = $('#select_color_'+id).val();
+            var icon = $('#select_icon_'+id).val();
+            var product = $('#select_product_'+id).val();
+
             var msg = '';
             var nameId = 'msg_'+id; //
             $('#flasheditSub1_'+id).hide();
@@ -483,12 +533,10 @@
 
                         return false;
                     } else {
-                         msg = '<span class="msg" style="color:#45B6AF">Saved</span>';
-                         if(color){
-                            var url = '<?php echo $this->request->webroot;?>clients/addsubdocs/?sub=' + subname + '&subFrench=' + subnameFrench + '&updatedoc_id=' + id + '&color=' + color;
-                         } else {
-                             var url = '<?php echo $this->request->webroot;?>clients/addsubdocs/?sub=' + subname + '&subFrench=' + subnameFrench + '&updatedoc_id=' + id;
-                         }
+                            msg = '<span class="msg" style="color:#45B6AF">Saved</span>';
+                            var url = '<?php echo $this->request->webroot;?>clients/addsubdocs/?sub=' + subname + '&subFrench=' + subnameFrench + '&updatedoc_id=' + id;
+                            url = url + "&icon=" + icon + "&productid=" + product;
+                            if(color){url = url + '&color=' + color;}
                     $.ajax({
                         url: url,success:function(){
                             $('#edit_sub_'+id).hide();

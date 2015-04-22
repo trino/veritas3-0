@@ -1176,14 +1176,11 @@
             //$client_id = $_GET['client_id'];
             if ($this->request->session()->read('Profile.super')) {
                 if (isset($_GET['updatedoc_id'])) {
-
-                    echo 1111;die();
                     $doc_id = $_GET['updatedoc_id'];
                     $up_que = TableRegistry::get('subdocuments');
                     $query = $up_que->query();
-                    $q_update = $query->update()
-                        ->set(['title' => $subname])
-                        ->set(['titleFrench' => $subnameFrench])
+                    $q_update = $query->update()////url = url + "&icon=" + icon + "&productid=" product;
+                        ->set(['title' => $subname, 'titleFrench' => $subnameFrench, 'ProductID' => $_GET["productid"], 'icon' => $_GET["icon"] ])
                         ->where(['id' => $doc_id])
                         ->execute();
                     if (isset($_GET['color'])) {

@@ -673,53 +673,54 @@
                                                                 foreach ($subdoccli as $subcl) {
                                                                     $u++;
                                                                     $sub = $this->requestAction('/clients/getFirstSub/' . $subcl->sub_id);
-                                                                    ?>
-                                                                    <tr id="subd_<?php echo $sub->id; ?>"
-                                                                        class="sublisting">
-                                                                        <td>
+                                                                    if ($sub) {
+                                                                        ?>
+                                                                        <tr id="subd_<?php echo $sub->id; ?>"
+                                                                            class="sublisting">
+                                                                            <td>
 
                             <span
                                 id="sub_<?php echo $sub['id']; ?>"><?php echo ucfirst($sub['title']); ?></span>
-                                                                        </td>
+                                                                            </td>
 
-                                                                        <?php
+                                                                            <?php
                                                                             $csubdoc = $this->requestAction('/settings/all_settings/0/0/client/' . $id . '/' . $sub->id);
-                                                                        ?>
-                                                                        <td class="">
+                                                                            ?>
+                                                                            <td class="">
 
-                                                                            <label class="uniform-inline">
-                                                                                <input <?php echo $is_disabled ?>
-                                                                                    type="radio"
-                                                                                    name="clientC[<?php echo $sub->id; ?>]"
-                                                                                    value="1"  <?php if ($csubdoc['display'] == 1) { ?> checked="checked" <?php } ?> />
-                                                                                Yes </label>
-                                                                            <label class="uniform-inline">
-                                                                                <input <?php echo $is_disabled ?>
-                                                                                    type="radio"
-                                                                                    name="clientC[<?php echo $sub->id; ?>]"
-                                                                                    value="0"  <?php if ($csubdoc['display'] == 0) { ?> checked="checked" <?php } ?> />
-                                                                                No </label>
-                                                                        </td>
-                                                                        <td>
-                                                                            <input <?php if ($csubdoc['display_order'] == 1) { ?> checked="checked" <?php } ?>
-                                                                                type="checkbox" id="check<?= $u ?>"
-                                                                                onclick="if($(this).is(':checked')){$(this).closest('td').find('.fororder').val('1');}else {$(this).closest('td').find('.fororder').val('0');}"/>
-                                                                            <label for="check<?= $u ?>">Show</label>
+                                                                                <label class="uniform-inline">
+                                                                                    <input <?php echo $is_disabled ?>
+                                                                                        type="radio"
+                                                                                        name="clientC[<?php echo $sub->id; ?>]"
+                                                                                        value="1"  <?php if ($csubdoc['display'] == 1) { ?> checked="checked" <?php } ?> />
+                                                                                    Yes </label>
+                                                                                <label class="uniform-inline">
+                                                                                    <input <?php echo $is_disabled ?>
+                                                                                        type="radio"
+                                                                                        name="clientC[<?php echo $sub->id; ?>]"
+                                                                                        value="0"  <?php if ($csubdoc['display'] == 0) { ?> checked="checked" <?php } ?> />
+                                                                                    No </label>
+                                                                            </td>
+                                                                            <td>
+                                                                                <input <?php if ($csubdoc['display_order'] == 1) { ?> checked="checked" <?php } ?>
+                                                                                    type="checkbox" id="check<?= $u ?>"
+                                                                                    onclick="if($(this).is(':checked')){$(this).closest('td').find('.fororder').val('1');}else {$(this).closest('td').find('.fororder').val('0');}"/>
+                                                                                <label for="check<?= $u ?>">Show</label>
 
-                                                                            <input class="fororder" type="hidden"
-                                                                                   value="<?php if ($csubdoc['display_order'] == 1) {
-                                                                                       echo '1';
-                                                                                   } else { ?>0<?php } ?>"
-                                                                                   name="clientO[<?php echo $sub->id; ?>]"/>
-                                                                        </td>
-                                                                        <td>
-                                                                            <?php echo $u; ?>
-                                                                        </td>
-                                                                    </tr>
+                                                                                <input class="fororder" type="hidden"
+                                                                                       value="<?php if ($csubdoc['display_order'] == 1) {
+                                                                                           echo '1';
+                                                                                       } else { ?>0<?php } ?>"
+                                                                                       name="clientO[<?php echo $sub->id; ?>]"/>
+                                                                            </td>
+                                                                            <td>
+                                                                                <?php echo $u; ?>
+                                                                            </td>
+                                                                        </tr>
 
-                                                                <?php
+                                                                    <?php
+                                                                    }
                                                                 }
-
                                                             }
 
 

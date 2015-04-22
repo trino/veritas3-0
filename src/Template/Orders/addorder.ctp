@@ -19,7 +19,7 @@ use Cake\ORM\TableRegistry;
 include_once 'subpages/filelist.php';
 $param = $this->request->params['action'];
 $view = 'nope';
-$debugging=false;
+$debugging=isset($_GET["debug"]);
 if($this->request->params['action'] == 'vieworder'){$view = 'view';}
 $action = ucfirst($param);
 if ($action == "Vieworder") { $action = "View";}
@@ -101,7 +101,7 @@ function provinces($name){
         }
         $_this = $this;
 
-    $DriverProvince = "";
+    $DriverProvince = "AB";
     $DriverID = $_GET["driver"];
     if ($DriverID>0 && is_object($p)){$DriverProvince = $p->driver_province;}
     echo "<SCRIPT>var DriverProvince = '" . $DriverProvince . "';</SCRIPT>";
