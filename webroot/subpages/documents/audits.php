@@ -61,14 +61,16 @@ function makedropdownoption($Key, $Value, $TheValue){
 }
 
 $Language="English";
-if(isset($audits)) {
-    $province=$audits->province;
-    $total_rating = $audits->total_rating;
-    $boothrate=$audits->boothrate;
-    $rating_1=$audits->rating_1;
-    $rating_2=$audits->rating_2;
-    $rating_3=$audits->rating_3;
-} else{
+    if(isset($audits)) {
+        $province=$audits->province;
+
+        $boothrate=$audits->boothrate;
+        $rating_1=$audits->rating_1;
+        $rating_2=$audits->rating_2;
+        $rating_3=$audits->rating_3;
+
+        $total_rating =$boothrate+$rating_1+$rating_2+$rating_3;
+    } else{
     $province="";
     $month=0;
     $year=0;
@@ -151,19 +153,22 @@ function makeyeardropdown($is_disabled, $Name, $Value, $Language, $Count = 5, $S
 <div class="col-md-4">
 <input type="text" name="total_cost" class="form-control " <?php echo $is_disabled;?> value="<?php if(isset($audits))echo $audits->total_cost;?>">
 </div>
-</div>                                                
-
- 	<!--div class="form-group">
+</div>
+    <?
+          $action = ucfirst($param);
+        if ($action != "Add") {
+    ?>
+ 	<div class="form-group">
 <label class="col-md-3 control-label">Rating Total
                                                     <small class=" control-label">[Out of 40]</small>:
                                                     </label>
                                                     
 <div class="col-md-4">
-                                <?php /*makeratingdropdown($is_disabled, "total_rating", $total_rating);*/ ?>
+                                <?php makeratingdropdown($is_disabled, "total_rating", $total_rating); ?>
 
                                 </div>
-</div-->
-                                                
+</div>
+                   <?}?>
                                        	<h2> Objectives</h2>
 
 <div class="form-group">
@@ -177,6 +182,8 @@ function makeyeardropdown($is_disabled, $Name, $Value, $Language, $Count = 5, $S
                                                     
 </div>                                                
 
+
+
 <div class="form-group">
 <label class="col-md-3 control-label">
                                                     Do you feel the objectives were achieved? Provide a grade rating of 1 to 10 (10 is best)
@@ -186,6 +193,8 @@ function makeyeardropdown($is_disabled, $Name, $Value, $Language, $Count = 5, $S
         <?php makeratingdropdown($is_disabled, "rating_1", $rating_1, 10); ?><BR>
     </div>
 </div>
+
+
     <div class="form-group">
         <label class="col-md-3 control-label">
             Provide details.
