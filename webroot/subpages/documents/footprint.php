@@ -215,6 +215,7 @@ if(isset($disabled)) { $is_disabled = 'disabled="disabled"'; }
 
 
             <div class="addattachment<?php echo $dx->id;?> form-group col-md-12"></div>
+            <div class="clearfix"></div>
     </form>
     <script type="text/javascript">
       $(function(){
