@@ -1488,9 +1488,8 @@
             $q = $query->select();
             if ($UserID){
                 foreach($q as $subdoc){
-                    if ($subdoc->ProductID>0) {
-                        $subdoc->forms = $this->getenabledprovinces($subdoc->ProductID);
-                    }
+                    $subdoc->forms = $subdoc->ProductID;// $this->getenabledprovinces($subdoc->ProductID);
+                    //if ($subdoc->ProductID>0) {//}
                 }
                 $q->Subdocs = $this->getProAllSubDoc($UserID);
             }

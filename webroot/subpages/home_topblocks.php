@@ -1,5 +1,6 @@
 <?php
-if($this->request->session()->read('debug'))
+$debug=$this->request->session()->read('debug');
+if($debug)
     echo "<span style ='color:red;'>home_topblocks.php #INC112</span>";
 
 ?>
@@ -164,7 +165,8 @@ function randomcolor(){
             $formlist.=$form->number;
         }
 
-        function makeblock($URL, $Name, $Icon = "icon-docs", $Color= "bg-grey-cascade"){//tile
+        function makeblock($debug, $URL, $Name, $Icon = "icon-docs", $Color= "bg-grey-cascade"){//tile
+            if(!$debug){$Color= "bg-grey-cascade";}
             echo '<a href="' .  $URL . '" class="tile ' . $Color;
             echo '" style="display: block;"><div class="tile-body"><i class="' . $Icon . '"></i></div><div class="tile-object">';
             echo '<div class="name">' . $Name . '</div><div class="number"></div></div></a>';
@@ -188,7 +190,7 @@ function randomcolor(){
                         //if($block->$blockaliasbypass==1){//ie: http://localhost/veritas3-0/orders/addorder/1/?driver=132&division=1&order_type=Driver+Order&forms=99
                         //    $URL="orders/addorder/1/?driver=" . $userid . "&order_type=" . $product->Name . "&forms=".$formlist;
                         //}
-                        makeblock($URL, $product->Name);
+                        makeblock($debug, $URL, $product->Name, "icon-docs", "bg-green");
                     }
                 }
             }
@@ -196,19 +198,19 @@ function randomcolor(){
 
 
             $URL="orders/addorder/" . $AssignedClient . "/?driver=0&order_type=Single+Product&forms=";
-            makeblock($URL . "501&SpecificForm=footprint", "Footprint", "fa icon-footprint", "bg-red");
-            //makeblock($URL . "surveillance", "Surveillance", "fa icon-surveillance", "bg-red");
-            //makeblock($URL . "physical", "Physical", "fa icon-physical", "bg-red");
-
+            //makeblock($debug, $URL . "501&SpecificForm=footprint", "Footprint", "fa icon-footprint", "bg-red");
+            //makeblock($debug, $URL . "surveillance", "Surveillance", "fa icon-surveillance", "bg-red");
+            //makeblock($debug, $URL . "physical", "Physical", "fa icon-physical", "bg-red");
+//makeblock($debug, $URL .  501, $sub->title, "icon-docs", "bg-blue");//$sub->id
 
             $subdoc = $this->requestAction('/profiles/getSub/' . $userid);
             //$URL = "orders/addorder/1/?driver=" . $userid . "&order_type=" . $MEEname . "&forms=" . $formlist . "&onlyshow=";
-            $URL = "documents/add/" . $AssignedClient . "?type=";
+            //$URL = "documents/add/" . $AssignedClient . "?type=";
             foreach ($subdoc as $sub) {
                 //$prosubdoc = $this->requestAction('/settings/all_settings/0/0/profile/' . $userid . '/' . $sub->id);
                 $prosubdoc = FindIterator($subdoc->Subdocs, "subdoc_id", $sub->id);
                 if ($prosubdoc->Topblock == 1) {
-                    makeblock($this->request->webroot . $URL . $sub->id, $sub->title, "icon-docs", "bg-blue");
+                    makeblock($debug, $this->request->webroot . $URL . $sub->forms, $sub->title, "icon-docs", "bg-blue");//$sub->id
                 }
             }
         }
@@ -218,15 +220,15 @@ function randomcolor(){
             if($product->enable == 1 && $product->TopBlock == 1) {
                 //$URL="orders/addorder/1/?driver=" . $userid . "&division=9&order_type=Not+Applicable&forms=" . $product->number;
                 $URL="documents/add/1?type=" . $product->number;
-                makeblock($this->request->webroot . $URL, $product->title, "icon-docs", "bg-yellow");
+                makeblock($debug, $this->request->webroot . $URL, $product->title, "icon-docs", "bg-yellow");
             }
         }
     }
 /*
     $URL=$this->request->webroot . "orders/addorder/1/?driver=132&division=1&order_type=Order+Products&forms=72";
-    makeblock($URL, "Social media search", "fa fa-search" );
-    makeblock($URL, "Social media investigation", "fa fa-twitter" );
-    makeblock($URL, "Physical surveillance", "fa fa-search" );
+    makeblock($debug, $URL, "Social media search", "fa fa-search" );
+    makeblock($debug, $URL, "Social media investigation", "fa fa-twitter" );
+    makeblock($debug, $URL, "Physical surveillance", "fa fa-search" );
 */
 
     function GetAssignedClients($UserID, $clients, $First = false){
