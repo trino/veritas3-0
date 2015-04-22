@@ -113,6 +113,8 @@ function getColor($products, $OrderType, $Default = "blue"){
                             </select>
 
                             <?php
+                            if($this->request->session()->read('Profile.super'))
+                            {
                                 $clients = $doc_comp->getAllClient();
                             ?>
                             <select class="form-control showdivision input-inline" name="client_id">
@@ -127,7 +129,7 @@ function getColor($products, $OrderType, $Default = "blue"){
                                 ?>
 
                             </select>
-
+                            <?php }?>
                             <div class="divisions input-inline" style="">
                                 <!-- Divisions section -->
                             </div>
