@@ -356,7 +356,7 @@
                                                                 </div-->
 
 
-                                                                <?php if ($settings->mee != "ASAP Secured Training" && $settings->mee != "Events Audit") { ?>
+                                                                <?php if ($settings->mee == "MEE") { ?>
 
 
                                                                     <div class="form-group col-md-4">

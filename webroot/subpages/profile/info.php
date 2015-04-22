@@ -588,7 +588,7 @@
 
 
 
-                      <?php if($settings->mee != "ASAP Secured Training" && $settings->mee != "Events Audit"){?>
+                      <?php if($settings->mee== "MEE"){?>
                             <div class="col-md-3">
                                 <div class="form-group">
 

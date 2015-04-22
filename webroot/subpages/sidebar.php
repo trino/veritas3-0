@@ -99,6 +99,9 @@
                         <?php } ?>
                     </li>
                 <?php } ?>
+
+
+
             <?php if ($sidebar->profile == 1) { ?>
                 <li class="<?php echo ($this->request['controller'] == 'Profiles' && !isset($_GET['draft']) && !isset($_GET["all"]) && $this->request['action'] != 'logo' && $this->request['action'] != 'todo') ? 'active open' : ''; ?>">
                     <a href="<?php echo $this->request->webroot; ?>profiles">
