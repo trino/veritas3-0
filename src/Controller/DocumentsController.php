@@ -2475,7 +2475,151 @@ class DocumentsController extends AppController{
             }
         }
     }
+        function footprint($cid, $did){
+        $this->set('doc_comp',$this->Document);
+        if (isset($_POST)) {
+            if (isset($_GET['draft']) && $_GET['draft']) {
+                $arr['draft'] = 1;
+                $draft = '?draft';
+            } else {
+                $arr['draft'] = 0;
+                $draft = '';
+            }
+            $arr['sub_doc_id'] = $_POST['sub_doc_id'];
+            $arr['client_id'] = $cid;
+            $arr['document_type'] = $_POST['document_type'];
 
+
+            if(!isset($_GET['order_id'])){
+                if (!$did || $did == '0') {
+
+                    $arr['user_id'] = $this->request->session()->read('Profile.id');
+                    $arr['created'] = date('Y-m-d H:i:s');
+                    $docs = TableRegistry::get('Documents');
+                    $doc = $docs->newEntity($arr);
+
+                    if ($docs->save($doc)) {
+
+                        $doczs = TableRegistry::get('footprint');
+                        $ds['document_id'] = $doc->id;
+
+                        foreach($_POST as $k=>$v) {
+                            $ds[$k]=$v;
+                        }
+                        $docz = $doczs->newEntity($ds);
+                        $doczs->save($docz);
+                        $did = $doc->id;
+                        if(isset($_POST['attach_doc'])) {
+                            //var_dump($_POST['attach_doc']);die();
+                            $model = $this->loadModel('DocAttachments');
+                            $model->deleteAll(['document_id'=> $did]);
+                            //$client_do = implode(',',$_POST['attach_doc']);
+                            //$client_docs=explode(',',$client_do);
+                            foreach($_POST['attach_doc'] as $d) {
+                                if($d != "") {
+                                    $attach = TableRegistry::get('doc_attachments');
+                                    $ds['document_id']= $did;
+                                    $ds['attachment'] =$d;
+                                    $ds['sub_id'] = $arr['sub_doc_id'];
+                                    $att = $attach->newEntity($ds);
+                                    $attach->save($att);
+                                    unset($att);
+                                }
+                            }
+
+                        }
+                        unset($doczs);
+                        $this->Flash->success('Document saved successfully.');
+                        $this->redirect(array('action' => 'index'.$draft));
+                    } else {
+                        $this->Flash->error('Document could not be saved. Please try again.');
+                        $this->redirect(array('action' => 'index'.$draft));
+                    }
+                } else {
+                    $docs = TableRegistry::get('Documents');
+                    $query2 = $docs->query();
+                    $query2->update()
+                        ->set($arr)
+                        ->where(['id' => $did])
+                        ->execute();
+                    $this->loadModel('footprint');
+                    $this->footprint->deleteAll(['document_id' => $did]);
+                    $doczs = TableRegistry::get('footprint');
+                    $ds['document_id'] = $did;
+
+                    foreach($_POST as $k=>$v) {
+                        $ds[$k]=$v;
+                    }
+                    $docz = $doczs->newEntity($ds);
+                    $doczs->save($docz);
+                    if(isset($_POST['attach_doc'])) {
+                        $model = $this->loadModel('DocAttachments');
+                        $model->deleteAll(['document_id'=> $did]);
+                        $client_docs = $_POST['attach_doc'];
+                        foreach($client_docs as $d) {
+                            if($d != "") {
+                                $attach = TableRegistry::get('doc_attachments');
+                                $ds['document_id']= $did;
+                                $ds['attachment'] =$d;
+                                $ds['sub_id'] = $arr['sub_doc_id'];
+                                $att = $attach->newEntity($ds);
+                                $attach->save($att);
+                                unset($att);
+                            }
+                        }
+                    }
+                    unset($doczs);
+                    $this->Flash->success('Document Updated successfully.');
+                    $this->redirect(array('action' => 'index'.$draft));
+                }
+            } else {
+                $arr['document_id'] = 0;
+                if (!isset($_GET['order_id'])){
+                    $arr['order_id'] = $did;
+                }else{
+                    $arr['order_id'] = $_GET['order_id'];
+                    $did = $_GET['order_id'];
+                }
+                $arr['document_id'] = 0;
+                if (isset($_POST['uploaded_for'])) {
+                    $uploaded_for = $_POST['uploaded_for'];
+                } else {
+                    $uploaded_for = '';
+                }
+                $for_doc = array('document_type'=>'Foot Print','sub_doc_id'=>22,'order_id'=>$arr['order_id'],'user_id'=>'','uploaded_for'=>$uploaded_for);
+                $this->Document->saveDocForOrder($for_doc);
+
+                $doczs = TableRegistry::get('footprint');
+                $check = $doczs->find()->where(['order_id'=>$did])->first();
+                unset($doczs);
+                if (!$check) {
+                    $ds['order_id'] = $did;
+                    $ds['document_id'] = 0;
+                    $doczs = TableRegistry::get('footprint');
+                    foreach($_POST as $k=>$v) {
+                        $ds[$k]=$v;
+                    }
+                    $docz = $doczs->newEntity($ds);
+                    $doczs->save($docz);
+                    unset($doczs);
+                } else {
+                    $this->loadModel('footprint');
+                    $this->footprint->deleteAll(['order_id' => $did]);
+                    $doczs = TableRegistry::get('footprint');
+                    $ds['order_id'] = $did;
+                    foreach($_POST as $k=>$v) {
+                        $ds[$k]=$v;
+                    }
+                    $docz = $doczs->newEntity($ds);
+                    $doczs->save($docz);
+                    unset($doczs);
+                }
+                die();
+            }
+
+        }
+
+    }
     function bc($cid, $did){
         $this->set('doc_comp',$this->Document);
         if (isset($_POST)) {
@@ -2590,13 +2734,13 @@ class DocumentsController extends AppController{
                 $for_doc = array('document_type'=>'Quebic','sub_doc_id'=>14,'order_id'=>$arr['order_id'],'user_id'=>'','uploaded_for'=>$uploaded_for);
                 $this->Document->saveDocForOrder($for_doc);
 
-                $doczs = TableRegistry::get('quebec_forms');
+                $doczs = TableRegistry::get('bc_forms');
                 $check = $doczs->find()->where(['order_id'=>$did])->first();
                 unset($doczs);
                 if (!$check) {
                     $ds['order_id'] = $did;
                     $ds['document_id'] = 0;
-                    $doczs = TableRegistry::get('quebec_forms');
+                    $doczs = TableRegistry::get('bc_forms');
                     foreach($_POST as $k=>$v) {
                         $ds[$k]=$v;
                     }
