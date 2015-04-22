@@ -80,4 +80,3 @@ webroot/royslog.txt
 src/Controller/logs/debug.log
 *.log
 *.php
-webroot/subpages/profile/block.php

@@ -7,7 +7,7 @@
     $order_url = $this->requestAction("settings/getclienturl/" . $profileID . "/order");
     $document_url = $this->requestAction("settings/getclienturl/" . $profileID . "/document");
     $ordertype = "MEE";
-
+//comment
     if (isset($_GET["ordertype"])) {
         $ordertype = strtoupper($_GET["ordertype"]);
     }
