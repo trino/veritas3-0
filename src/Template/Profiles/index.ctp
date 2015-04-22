@@ -5,8 +5,7 @@
       }
 $settings = $this->requestAction('settings/get_settings');
 $language = $this->request->session()->read('Profile.language');
-//$registry = $this->requestAction('/settings/getRegistry');
-$strings = CacheTranslations($language, "profiles_%",s($settings));//,$registry);
+$strings = CacheTranslations($language, "profiles_%",s($settings));//,$registry);//$registry = $this->requestAction('/settings/getRegistry');
 ?>
 
 <style>
@@ -114,6 +113,7 @@ $strings = CacheTranslations($language, "profiles_%",s($settings));//,$registry)
 
                                 <?php
                                     $isISB = (isset($sidebar) && $sidebar->client_option == 0);
+                                    $fieldname = getFieldname("title", $language);
                                     foreach($ptypes as $ProfileType){
                                         if($ProfileType->enable) {//id title enable ISB
                                             $doit = $ProfileType->ISB == 0;
@@ -123,7 +123,7 @@ $strings = CacheTranslations($language, "profiles_%",s($settings));//,$registry)
                                                 if (isset($return_profile_type) && $return_profile_type == $ProfileType->id) {
                                                     echo ' selected="selected"';
                                                 }
-                                                echo ">" . ucfirst($ProfileType->title) . "</option>";
+                                                echo ">" . ucfirst($ProfileType->$fieldname) . "</option>";
                                             }
                                         }
                                     }
@@ -178,7 +178,7 @@ $strings = CacheTranslations($language, "profiles_%",s($settings));//,$registry)
                                 <th><?= $this->Paginator->sort('username', $strings["profiles_username"]) ?></th>
                                 <!--th><?= $this->Paginator->sort('email') ?></th-->
                                 <th><?= $this->Paginator->sort('fname', $strings["profiles_name"]) ?></th>
-                                <th><?= $this->Paginator->sort('profile_type', ucfirst($settings->profile) . ' Type') ?></th>
+                                <th><?= $this->Paginator->sort('profile_type', $strings["profiles_profiletype"]) ?></th>
 
                                 <!--th><?= $this->Paginator->sort('lname', 'Last Name') ?></th-->
                                 <th><?= $strings["profiles_assignedto"] . " " . $settings->clients; ?></th>
@@ -255,7 +255,7 @@ $strings = CacheTranslations($language, "profiles_%",s($settings));//,$registry)
 
                                         <td><?php
                                                 if (strlen($profile->profile_type) > 0) {
-                                                    echo h($this->requestAction("profiles/getTypeTitle/".$profile->profile_type));
+                                                    echo h($this->requestAction("profiles/getTypeTitle/".$profile->profile_type . "/" . $language));
                                                     if ($profile->profile_type == 5) {//is a driver
                                                         $expires = strtotime($profile->expiry_date);
                                                         if ($expires) {

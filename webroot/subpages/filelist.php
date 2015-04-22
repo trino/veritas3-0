@@ -148,20 +148,26 @@ function listfiles($client_docs, $dir, $field_name='client_doc',$delete, $method
             }
                 
             if ($file) {//id, client_id
-                if ($count==1){ echo '<TR><TH colspan="5">Attachments</TH></TR>'; }
+                if ($count == 1) {
+                    echo '<TR><TH colspan="5">Attachments</TH></TR>';
+                }
                 $path = "/" . $dir . $file;
                 $extension = getextension($file);
                 $filename = getextension($file, PATHINFO_FILENAME);
                 echo "<TR><TD width='29' align='center'><i class='fa fa-";
-                $ret=geticon($extension);
+                $ret = geticon($extension);
                 $type = $ret["type"];
                 echo $ret["icon"];
 
                 echo "' title='" . $type . "'></i></TD>";
-                echo "<TD><A class='nohide' HREF='" . $webroot . $dir . $file . "'>" . $filename . "</A>
-                <input type='hidden' value='".$file."' name='attach_doc[]' />
-                </TD>";
-                echo "<TD>" . date('Y-m-d H:i:s', filemtime(getcwd() . $path)) . "</TD>";
+                if (file_exists(getcwd() . $path)) {
+                    echo "<TD><A class='nohide' HREF='" . $webroot . $dir . $file . "'>" . $filename . "</A>
+                        <input type='hidden' value='" . $file . "' name='attach_doc[]' /></TD>";
+                    echo "<TD>" . date('Y-m-d H:i:s', filemtime(getcwd() . $path)) . "</TD>";
+                } else {
+                    echo "<TD>" . $filename . "<input type='hidden' value='" . $file . "' name='attach_doc[]' /></TD>";
+                    echo "<TD>File Missing</TD>";
+                }
                 switch (TRUE) {
                     case isset($cd->client_id):
                         echo "<TD>" . loadclient($cd->client_id)->company_name . "</TD>";

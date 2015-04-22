@@ -78,7 +78,6 @@
             <ul class="nav nav-tabs">
                 <?php
                 if ($this->request['action'] != 'add') {
-
                     if ($this->request->session()->read('Profile.admin') && $this->request->session()->read('Profile.super')) {
                         ?>
                             <li <?php if(!isset($_GET['activedisplay'])){ ?> class="active" <?php } ?> >
@@ -100,16 +99,14 @@
                                 <a href="#tab_1_15" data-toggle="tab">Client Logo</a>
                             </li>
                              <?php
-                             if($_SERVER['SERVER_NAME'] =='localhost')
-                                   {
+                             if($_SERVER['SERVER_NAME'] =='localhost') {
                              ?>
                              <li>
                                 <a href="#tab_1_9" data-toggle="tab">Clear Data</a>
                             </li>
                             <?php
                             }
-                                if($this->request->session()->read('Profile.super'))
-                                {
+                                if($this->request->session()->read('Profile.super')) {
                             ?>
                             <li <?php if(isset($_GET['activedisplay'])){ ?> class="active" <?php } ?> >
                                     <a href="#tab_1_13" data-toggle="tab">Add/Edit Documents</a>
@@ -126,13 +123,9 @@
             <div class="tab-content">
                 <?php
                 if ($this->request['action'] != 'add') {
-                    
-                          if(!isset($_GET['activedisplay']))
-                          {
+                          if(!isset($_GET['activedisplay'])) {
                             echo '<div class="tab-pane active"  id="tab_1_5">';
-                          }
-                          else
-                          {
+                          } else {
                             echo '<div class="tab-pane"  id="tab_1_5">';
                           }
                            include('subpages/profile/logo.php');
@@ -174,8 +167,7 @@
                            </div>
                     </div>
                      <?php
-                     if($_SERVER['SERVER_NAME'] =='localhost')
-                           {
+                     if($_SERVER['SERVER_NAME'] =='localhost') {
                      ?>
                     <div class="tab-pane" id="tab_1_9">
                         <a href="javascript:void(0)" class="btn btn-danger" id="cleardata">Clear Data</a>
@@ -187,16 +179,12 @@
                     </div>
                     <?php
                     }
-                    if($this->request->session()->read('Profile.super'))
-                    {
-                          if(isset($_GET['activedisplay']))
-                          {
+                    if($this->request->session()->read('Profile.super')){
+                          if(isset($_GET['activedisplay'])){
                             ?>
                             <div class="tab-pane active"  id="tab_1_13">
                             <?php
-                          }
-                          else
-                          {
+                          }else{
                             ?>
                             <div class="tab-pane"  id="tab_1_13">
                           <?php
@@ -206,7 +194,8 @@
                                 <a href="#" class="btn btn-success"  style="margin:10px 0;" onclick="$('#sub_add').toggle(150);">Add New SubDocument</a>
                                 <div class="col-md-12" id="sub_add" style="display: none;margin:10px 0;padding:0">
                                     <div class="col-md-10" style="text-align: right;padding:0;">
-                                        <input type="text" placeholder="Sub-Document title" class="form-control subdocname" />
+                                        <input type="text" placeholder="Sub-Document English title" class="form-control subdocname" />
+                                        <input type="text" placeholder="Sub-Document French title" class="form-control subdocnameFrench" />
                                         <span class="error passerror flashSubDoc"
                                           style="display: none;">Subdocument name already exists</span>
                                         <span class="error passerror flashSubDoc1"
@@ -222,16 +211,19 @@
                     <?php $subdoc = $this->requestAction('/clients/getSub'); ?>
                         <table class="table table-light table-hover sortable">
                             <tr class="myclass">
-                                <th>Sub documents</th>
+                                <th>English Title</th>
+                                <th>French Title</th>
                                 <th class="" colspan="2">Action</th>
                             </tr>
                                 <?php
-                                foreach($subdoc as $sub)
-                                {
+                                foreach($subdoc as $sub) {
                                     ?>
                             <tr>
                                 <td>
-                                  <span><?php echo ucfirst($sub['title']); ?></span>  
+                                    <span><?php echo ucfirst($sub['title']); ?></span>
+                                </td>
+                                <td>
+                                    <span><?php echo ucfirst($sub['titleFrench']); ?></span>
                                 </td>
                                 <td>
                                 <a href="javascript:void(0)" class="btn-xs btn-success" onclick="$('#edit_sub_<?php echo $sub['id']; ?>').toggle(150);$('.msg').hide();">Edit</a>
@@ -239,7 +231,8 @@
                                <td>
                                     <div class="col-md-12" id="edit_sub_<?php echo $sub['id']; ?>" style="display: none;margin:10px 0;padding:0">
                                         <div class="col-md-12" style="text-align: right;padding:0;">
-                                            <input type="text" id="editsubdocname_<?php echo $sub['id']; ?>" value="<?php echo ucfirst($sub['title']); ?>" placeholder="Sub-Document title" class="form-control editsubdocname" />
+                                            <input type="text" id="editsubdocname_<?php echo $sub['id']; ?>" value="<?php echo ucfirst($sub['title']); ?>" placeholder="Sub-Document English title" class="form-control editsubdocname" />
+                                            <input type="text" id="editsubdocnameFrench_<?php echo $sub['id']; ?>" value="<?php echo ucfirst($sub['titleFrench']); ?>" placeholder="Sub-Document French title" class="form-control editsubdocname" />
                                             <span class="error" id="flasheditSub_<?php echo $sub['id']; ?>"
                                               style="display: none;">Subdocument name already exists</span>
                                             <span class="error" id="flasheditSub1_<?php echo $sub['id']; ?>"
@@ -253,10 +246,8 @@
                                             <select class="form-control" id="select_color_<?php echo $sub['id']; ?>">
                                             <option value= "">Select a color class</option>
                                             <?php
-                                             if($color)
-                                             {
-                                                foreach($color as $c)
-                                                {
+                                             if($color) {
+                                                foreach($color as $c) {
                                                     ?>
                                                     <option value="<?php echo $c->id; ?>" <?php if(isset($sub['color_id']) && $sub['color_id'] == $c->id){?> selected="selected"<?php } ?> style="background: <?php echo $c->rgb; ?>;" ><?php echo $c->color; ?></option>
                                                     <?php
@@ -299,10 +290,11 @@
 
 <script>
      function initiate_ajax_upload(button_id,type) {
-        if(type == 'logo')
+        if(type == 'logo') {
             var url = "<?php echo $this->request->webroot;?>profiles/upload_img/<?php if(isset($id))echo $id;?>";
-        else
+        }else {
             var url = "<?php echo $this->request->webroot;?>profiles/client_default";
+        }
         var button = $('#' + button_id), interval;
         new AjaxUpload(button, {
             action: url,
@@ -323,20 +315,17 @@
                 button.html('<i class="fa fa-image"></i> Add/Edit Image');
                 window.clearInterval(interval);
                 this.enable();
-                if(type == 'logo')
-                {
+                if(type == 'logo') {
                     $("#clientpic").attr("src", '<?php echo $this->request->webroot;?>img/profile/' + response);
                     $('#client_img').val(response);
-                }
-                else
-                {
+                } else {
                    //alert(response);
                     if(response != "error"){
                         $(".default_image").attr("src", '<?php echo $this->request->webroot;?>img/clients/' + response);
                         $('.flash').show();
-                    }
-                    else
+                    } else {
                         $('.flash1').show();
+                    }
                     //$('#client_img').val(response);
                 }
             }
@@ -364,8 +353,8 @@
         
         $('.addsubdoc').click(function(){
            var subname = $('.subdocname').val();
-           if(subname == ''  )
-           {
+           var subnameFrench = $('.subdocnameFrench').val();
+           if(subname == ''  ) {
                 $('.flashSubDoc1').show();
                 $('.flashSubDoc').hide();
                 $('.subdocname').focus();
@@ -375,12 +364,10 @@
                             'slow');
 
                         return false;
-           }
-           else
-           { 
+           } else {
             $.ajax({
                 url: '<?php echo $this->request->webroot;?>clients/check_document',
-                data: 'subdocumentname=' + subname,
+                data: 'subdocumentname=' + subname + '&subdocumentnameFrench=' + subnameFrench,
                 type: 'post',
                 success: function (res) {//alert(res);
                     if (res == '1') {
@@ -394,11 +381,8 @@
                             'slow');
 
                         return false;
-                    }
-                    else
-                    {
-                         window.location = '<?php echo $this->request->webroot;?>clients/addsubdocs/?sub='+subname;
-                    
+                    } else {
+                         window.location = '<?php echo $this->request->webroot;?>clients/addsubdocs/?sub=' + subname + "&subFrench=" + subnameFrench;
                     }
                 } 
             });
@@ -409,14 +393,14 @@
             $(this).html('Saving..'); 
             var id = $(this).attr('id').replace('subbtn','');
            var subname = $('#editsubdocname_'+id).val();
+            var subnameFrench = $('#editsubdocnameFrench_'+id).val();
            var color = $('#select_color_'+id).val();
             var msg = '';
             var nameId = 'msg_'+id; //
             $('#flasheditSub1_'+id).hide();
                 $('#flasheditSub_'+id).hide();
                 $('#flashSelectColor_'+id).hide();
-           if(!color && subname == '')
-           {
+           if(!color && subname == '' && subnameFrench =='') {
                 $('#flasheditSub1_'+id).show();
                 $('#flasheditSub_'+id).hide();
                 $('#flashSelectColor_'+id).show();
@@ -427,16 +411,14 @@
                             'slow');
             $('#subbtn'+id).html('Save');
                         return false;
-           }
-           else if(!color && subname != '' )
-           {
+           } else if(!color && subname != '' && subnameFrench != '') {
             
             /**************************************************************************************************/
             
             
             $.ajax({
                 url: '<?php echo $this->request->webroot;?>clients/check_document/'+id,
-                data: 'subdocumentname=' + subname,
+                data: 'subdocumentname=' + subname + '&subdocumentnameFrench=' + subnameFrench,
                 type: 'post',
                 success: function (res) {//alert(res);
                     if (res == '1') {
@@ -450,11 +432,8 @@
                             },
                             'slow');
             $('#subbtn'+id).html('Save');
-
                         return false;
-                    }
-                    else
-                    {
+                    } else {
                         $('#flasheditSub1_'+id).hide();
                         $('#flasheditSub_'+id).hide();
                         $('#flashSelectColor_'+id).show();
@@ -472,9 +451,7 @@
             
             /****************************************************************************************************/
                 
-           }
-           else if(color && subname == '' )
-           {
+           } else if(color && subname == '' && subnameFrench == '') {
                 $('#flasheditSub1_'+id).show();
                 $('#flasheditSub_'+id).hide();
                 $('#flashSelectColor_'+id).hide();
@@ -485,12 +462,10 @@
                             'slow');
             $('#subbtn'+id).html('Save');
                         return false;
-           }
-           else if(color && subname != '' )
-           {
+           } else if(color && subname != '' ) {
             $.ajax({
                 url: '<?php echo $this->request->webroot;?>clients/check_document/'+id,
-                data: 'subdocumentname=' + subname,
+                data: 'subdocumentname=' + subname+ '&subdocumentnameFrench' + subnameFrench,
                 type: 'post',
                 success: function (res) {//alert(res);
                     if (res == '1') {
@@ -506,16 +481,13 @@
             $('#subbtn'+id).html('Save');
 
                         return false;
-                    }
-                    else
-                    {
+                    } else {
                          msg = '<span class="msg" style="color:#45B6AF">Saved</span>';
                          if(color){
-                            var url = '<?php echo $this->request->webroot;?>clients/addsubdocs/?sub='+subname+'&updatedoc_id='+id+'&color='+color;
+                            var url = '<?php echo $this->request->webroot;?>clients/addsubdocs/?sub=' + subname + '&subFrench=' + subnameFrench + '&updatedoc_id=' + id + '&color=' + color;
+                         } else {
+                             var url = '<?php echo $this->request->webroot;?>clients/addsubdocs/?sub=' + subname + '&subFrench=' + subnameFrench + '&updatedoc_id=' + id;
                          }
-                         else
-                        var url = '<?php echo $this->request->webroot;?>clients/addsubdocs/?sub='+subname+'&updatedoc_id='+id;
-                        
                     $.ajax({
                         url: url,success:function(){
                             $('#edit_sub_'+id).hide();

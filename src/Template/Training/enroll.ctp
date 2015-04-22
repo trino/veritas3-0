@@ -8,6 +8,8 @@ if (!isset($_GET["new"])) {
         include_once('subpages/api.php');
     }
 }
+$language = $this->request->session()->read('Profile.language');
+$strings = CacheTranslations($language, "training_%",s($settings));//,$registry);//$registry = $this->requestAction('/settings/getRegistry');
 ?>
 
 
@@ -238,7 +240,7 @@ if (isset($_GET["new"])){
 
                                     <td><?php
                                         if (strlen($profile->profile_type) > 0) {
-                                            echo h($this->requestAction("profiles/getTypeTitle/".$profile->profile_type));
+                                            echo h($this->requestAction("profiles/getTypeTitle/".$profile->profile_type . "/" . $language));
                                             if ($profile->profile_type == 5) {//is a driver
                                                 $expires = strtotime($profile->expiry_date);
                                                 if ($expires) {

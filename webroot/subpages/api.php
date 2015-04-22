@@ -149,7 +149,6 @@ function getIterator($Objects, $Fieldname, $Value){
 }
 
 function CacheTranslations($Language='English', $Text, $Variables = ""){
-    
     $data = array();
     if (!is_array($Text)){
         $Text = array($Text);
@@ -157,7 +156,7 @@ function CacheTranslations($Language='English', $Text, $Variables = ""){
     $Text[] = "dashboard_%";//for all pages
     $Text[] = "settings_%";//for all pages
     
-    $table =  TableRegistry::get('strings');//why not just get the tableregistry, why add a parameter?
+    $table =  TableRegistry::get('strings');
 
     $query="";
     foreach($Text as $text){
@@ -206,6 +205,19 @@ function ProcessVariables($ID, $Text, $Variables = ""){
     }
     if($Text) {return $Text;}
     return $ID;
+}
+
+function getFieldname($Fieldname, $Language){
+    if($Language == "English" || $Language == "Debug"){ return $Fieldname; }
+    return $Fieldname . $Language;
+}
+function getField($Object, $Fieldname, $Language){
+    if($Language!="English") {
+        $newField = $Fieldname . $Language;
+        if ($Object->$newField){return $Object->$newField;}
+        return "[" . $Object->$Fieldname . "]";//untranslated notifier
+    }
+    return $Object->$Fieldname;
 }
 
 /*

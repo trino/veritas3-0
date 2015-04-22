@@ -1298,7 +1298,8 @@ class DocumentComponent extends Component
         $query = $sub->find();
         $query->select()->where(['profile_id'=>$pro_id, 'subdoc_id'=>$doc_id]);
         $q = $query->first();
-        return $q->display;
+        if (is_object(($q))) {return $q->display;}
+        return $pro_id . "." . $doc_id . " is not set";
     }
 
         function getDocType($UserID = -1){

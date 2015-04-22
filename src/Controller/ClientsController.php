@@ -1172,6 +1172,7 @@
 
         function addsubdocs(){
             $subname = $_GET['sub'];
+            $subnameFrench = $_GET['subFrench'];
             //$client_id = $_GET['client_id'];
             if ($this->request->session()->read('Profile.super')) {
                 if (isset($_GET['updatedoc_id'])) {
@@ -1180,6 +1181,7 @@
                     $query = $up_que->query();
                     $q_update = $query->update()
                         ->set(['title' => $subname])
+                        ->set(['titleFrench' => $subnameFrench])
                         ->where(['id' => $doc_id])
                         ->execute();
                     if (isset($_GET['color'])) {
@@ -1207,6 +1209,7 @@
                     //$col_q = $col_q->select(['id'])->where(['order' => 'rand()', 'limit' => 1])->execute();
                     $q = $que->newEntity([
                         'title' => $subname,
+                        'titleFrench' => $subnameFrench,
                         'display' => 1,
                         'table_name' => $subname,
                         'orders' => 1,
@@ -1297,21 +1300,23 @@
             }
         }
 
-        public function check_document($subid = '')
-        {
-            if (isset($_POST['subdocumentname']) && $_POST['subdocumentname'])
-                $subname = $_POST['subdocumentname'];
+        public function check_document($subid = ''){
+            if (isset($_POST['subdocumentname']) && $_POST['subdocumentname']){$subname = $_POST['subdocumentname'];}
+            if (isset($_POST['subdocumentnameFrench']) && $_POST['subdocumentnameFrench']){$subnameFrench = $_POST['subdocumentnameFrench'];}
+
             //$subname = strtolower($subname);
             $q = TableRegistry::get('subdocuments');
             $que = $q->find();
             if ($subid != "") {
                 $query = $que->select()->where(['id !=' => $subid, 'title' => $subname])->first();
+                $query2 = $que->select()->where(['id !=' => $subid, 'titleFrench' => $subnameFrench])->first();
             }else {
                 $query = $que->select()->where(['title' => $subname])->first();
+                $query2 = $que->select()->where(['titleFrench' => $subnameFrench])->first();
             }
             //var_dump($query);
             //$query = $que->first();
-            if ($query) {
+            if ($query || $query2) {
                 echo '1';
             }else {
                 echo '0';
