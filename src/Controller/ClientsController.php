@@ -1349,6 +1349,8 @@
             $image = array();
             if($client)
             $image['client'] = $client->image;
+            else
+            $image['client'] = false;
             if(!$image['client']) {
                 if($client) {
                     $cid = $client->id;

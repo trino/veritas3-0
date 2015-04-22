@@ -28,7 +28,7 @@ die();
 
 
 <?php
-    if(!$this->request->session()->read('super'))
+    if(!$this->request->session()->read('Profile.super'))
     {
         $logomain = $this->requestAction('/clients/getLogo');
         if($logomain){
@@ -55,11 +55,11 @@ die();
                     }
                 ?>
             </div>
-            <div class="clearfix"></div>
+            
         <?php
         }}
 ?>
-
+<div class="clearfix"></div>
 
 
 
