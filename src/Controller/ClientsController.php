@@ -1176,6 +1176,8 @@
             //$client_id = $_GET['client_id'];
             if ($this->request->session()->read('Profile.super')) {
                 if (isset($_GET['updatedoc_id'])) {
+
+                    echo 1111;die();
                     $doc_id = $_GET['updatedoc_id'];
                     $up_que = TableRegistry::get('subdocuments');
                     $query = $up_que->query();
@@ -1201,6 +1203,7 @@
                     if ($q_update) return $this->redirect("/profiles/settings/?activedisplay");
 
                 } else {
+
                     $que = TableRegistry::get('subdocuments');
                     //$que = $queries->query();
                     $col_query = TableRegistry::get('color_class');
@@ -1290,7 +1293,7 @@
                         if ($checker_q2 && $checker_q3 && $checker_q4) {
                             return $this->redirect("/profiles/settings/?activedisplay");
                         } else {
-                            return $this->redirect("/index");
+                            return $this->redirect("/");
                         }
                     }
                 }

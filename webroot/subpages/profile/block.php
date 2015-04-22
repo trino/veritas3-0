@@ -264,7 +264,7 @@
                         </tr>
 
 
-                        <?php if ($settings->mee == "MEE") { ?>
+                        <?php if (true) { ?>
                             <tr>
                                 <td colspan="2" style="background: #f7f7f7;">&nbsp;</td>
                             </tr>
@@ -468,24 +468,14 @@
 
 
 
-                                            if ($settings->mee != "MEE") {
-                                                //this code needs to be merged. There doesn't need to be a page of repeating code or 2 loops
-                                                foreach ($subdoc as $sub) {
-                                                    if(strtolower($sub['title']) =="audit" || strtolower($sub['title'])=="attachment"){
-                                                        $prosubdoc = $this->requestAction('/settings/all_settings/0/0/profile/' . $id . '/' . $sub->id);
-                                                        echo '<tr><td>' . ucfirst($sub['title']) . '</td><td class="">';
-                                                        printsubdocradios($is_disabled, $sub, $prosubdoc);
-                                                        echo '</td></tr>';
-                                                    }
-                                                }
-                                            }else{
+
                                                 foreach ($subdoc as $sub) {
                                                     $prosubdoc = $this->requestAction('/settings/all_settings/0/0/profile/' . $id . '/' . $sub->id);
                                                     echo '<tr><td>' . ucfirst($sub['title']) . '</td><td class="">';
                                                     printsubdocradios($is_disabled, $sub, $prosubdoc);
                                                     echo '</td></tr>';
                                                 }
-                                            }
+
                                         ?>
                                     </table>
 
@@ -592,7 +582,7 @@
 
 
 
-                        <?php if ($settings->mee == "MEE") { ?>
+                        <?php if (true) { ?>
 
                             <tr>
                                 <td class="vtop"> Enable Tasks</td>
@@ -893,7 +883,7 @@
                                             </tr>-->
 
 
-                    <?php if ($settings->mee == "MEE") { ?>
+                    <?php if (true) { ?>
 
                         <?php
                         function makehr(){
@@ -1071,7 +1061,7 @@
                     </tr>
 
 
-                    <?php if ($settings->mee == "MEE") { ?>
+                    <?php if (true) { ?>
 
                         <tr>
                             <td>
@@ -1142,7 +1132,7 @@
                     </tr>
 
 
-                    <?php if ($settings->mee == "MEE") { ?>
+                    <?php if (true) { ?>
 
                         <tr>
                             <td>

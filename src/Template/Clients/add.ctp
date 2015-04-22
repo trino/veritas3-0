@@ -128,7 +128,7 @@
                                 <li class="active">
                                     <a href="#tab_1_1" data-toggle="tab">Info</a>
                                 </li>
-                                <?php if ($this->request['action'] != "add" && !isset($_GET['view']) && $settings->mee == "MEE") {
+                                <?php if ($this->request['action'] != "add" && !isset($_GET['view'])) {
                                     ?>
                                     <li>
                                         <a href="#tab_1_4" data-toggle="tab">Products</a>
