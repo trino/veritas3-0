@@ -42,7 +42,7 @@
                 <!-- END RESPONSIVE QUICK SEARCH FORM -->
             </li>
             <li class="start <?php echo ($this->request['controller'] == 'Dashboard') ? 'active open' : ''; ?>">
-                <a href="<?php echo WEB_ROOT; ?>">
+                <a href="<?php echo $this->request->webroot; ?>">
                     <i class="icon-home"></i>
                     <span class="title">Dashboard </span>
                     <span class="selected"></span>
@@ -56,7 +56,7 @@
                 if (($sidebar->client == 1 && $this->request->session()->read('Profile.super')) || ($sidebar->client == 1 && $settings->mee == "Events Audit")) { ?>
 
                     <li class="<?php echo ($this->request['controller'] == 'Clients' && !isset($_GET['draft']) && $this->request['action'] != 'quickcontact') ? 'active open' : ''; ?>">
-                        <a href="<?php echo WEB_ROOT; ?>clients">
+                        <a href="<?php echo $this->request->webroot; ?>clients">
                             <i class="icon-globe"></i>
                             <span class="title"><?php echo ucfirst($settings->client); ?>s</span>
                             <?php echo ($this->request['controller'] == 'Clients') ? '<span class="selected"></span>' : ''; ?>
@@ -66,7 +66,7 @@
                             <ul class="sub-menu">
                                 <?php if ($sidebar->client_list == 1) { ?>
                                     <li <?php echo ($this->request['controller'] == 'Clients' && $this->request['action'] == 'index' && !isset($_GET["draft"])) ? 'class="active"' : ''; ?>>
-                                        <a href="<?php echo WEB_ROOT; ?>clients">
+                                        <a href="<?php echo $this->request->webroot; ?>clients">
                                             <i class="icon-list"></i>
                                             List <?php echo ucfirst($settings->client); ?>s</a>
                                     </li>
@@ -76,7 +76,7 @@
                                         ?>
 
                                         <li <?php echo ($this->request['controller'] == 'Clients' && $this->request['action'] == 'add') ? 'class="active"' : ''; ?>>
-                                            <a href="<?php echo WEB_ROOT; ?>clients/add">
+                                            <a href="<?php echo $this->request->webroot; ?>clients/add">
                                                 <i class="icon-plus"></i>
                                                 Create <?php echo ucfirst($settings->client); ?></a>
                                         </li>
@@ -101,7 +101,7 @@
                 <?php } ?>
             <?php if ($sidebar->profile == 1) { ?>
                 <li class="<?php echo ($this->request['controller'] == 'Profiles' && !isset($_GET['draft']) && !isset($_GET["all"]) && $this->request['action'] != 'logo' && $this->request['action'] != 'todo') ? 'active open' : ''; ?>">
-                    <a href="<?php echo WEB_ROOT; ?>profiles">
+                    <a href="<?php echo $this->request->webroot; ?>profiles">
                         <i class="icon-user"></i>
                         <span class="title"><?php echo ucfirst($settings->profile); ?>s</span>
                         <?php echo ($this->request['controller'] == 'Profiles'  && !isset($_GET["all"])) ? '<span class="selected"></span>' : ''; ?>
@@ -112,27 +112,27 @@
                         <ul class="sub-menu">
                             <?php if ($sidebar->profile_list == 1) { ?>
                                 <li <?php echo ($this->request['controller'] == 'Profiles' && $this->request['action'] == 'index' && !isset($_GET["draft"])) ? 'class="active"' : ''; ?>>
-                                    <a href="<?php echo WEB_ROOT; ?>profiles">
+                                    <a href="<?php echo $this->request->webroot; ?>profiles">
                                         <i class="icon-list"></i>
                                         List <?php echo ucfirst($settings->profile); ?>s</a>
                                 </li>
 
                                 <!--li <?php echo ($this->request['controller'] == 'Profiles' && $this->request['action'] == 'index' && !isset($_GET["draft"])) ? 'class="active"' : ''; ?>>
-                                    <a href="<?php echo WEB_ROOT; ?>profiles?all">
+                                    <a href="<?php echo $this->request->webroot; ?>profiles?all">
                                         <i class="icon-list"></i>
                                         List All <?php echo ucfirst($settings->profile); ?>s</a>
                                 </li-->
                             <?php } ?>
                             <?php if ($sidebar->profile_create == 1) { ?>
                                 <li <?php echo ($this->request['controller'] == 'Profiles' && $this->request['action'] == 'add') ? 'class="active"' : ''; ?>>
-                                    <a href="<?php echo WEB_ROOT; ?>profiles/add">
+                                    <a href="<?php echo $this->request->webroot; ?>profiles/add">
                                         <i class="icon-plus"></i>
                                         Create <?php echo ucfirst($settings->profile); ?></a>
                                 </li>
                             <?php } ?>
                             <?php if ($sidebar->profile_create == 1 && 1 + 1 == 3) { ?>
                                 <li <?php echo ($this->request['controller'] == 'Profiles' && $this->request['action'] == 'index' && isset($_GET["draft"])) ? 'class="active"' : ''; ?>>
-                                    <a href="<?php echo WEB_ROOT; ?>profiles/index?draft">
+                                    <a href="<?php echo $this->request->webroot; ?>profiles/index?draft">
                                         <i class="fa fa-pencil"></i>
                                         <?php echo ucfirst($settings->profile); ?> Drafts</a>
                                 </li>
