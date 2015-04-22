@@ -343,4 +343,112 @@ class SettingsController extends AppController {
         return $this->response;
     }
 
+    function fixorders(){
+        $products = TableRegistry::get('order_products')->find('all');
+        $table =  TableRegistry::get('orders');
+        $orders = $table->find('all');
+
+        $Data="";
+        foreach($orders as $order){
+            if($order->forms) {
+                $max = 0;
+                $newforms = array();
+                $forms = explode(",", $order->forms);
+                foreach($forms as $number){
+                    if($number>$max){$max=$number;}
+                }
+                if($max<9) {
+                    $isboolean = $max < 2 && count($forms) == 8;
+                    $index = 0;
+                    foreach ($forms as $number) {
+                        $index++;
+                        if ($number > 0) {
+                            if ($isboolean) {
+                                $newforms[] = $this->FindIterator($products, "id", $index)->number;
+                            } else {
+                                $newforms[] = $this->FindIterator($products, "id", $number)->number;
+                            }
+                        }
+                    }
+                    $table->query()->update()->set(['forms' => implode(",", $newforms)])->where(['id' => $order->id])->execute();
+                    $Data .= "<BR>" . $order->id . " = " . $order->forms . " isbool: " . $isboolean . " newforms: " . implode(",", $newforms);
+                } else {
+                    $Data .= "<BR>"  . $order->id . " is valid";
+                }
+            } else {
+                $table->query()->update()->set(['forms' => "1603,1,14,77,78,1650,1627,72"])->where(['id' => $order->id])->execute();
+            }
+        }
+        $this->set("data", $Data);
+    }
+
+    function FindIterator($ObjectArray, $FieldName, $FieldValue){
+        foreach($ObjectArray as $Object){
+            if ($Object->$FieldName == $FieldValue){return $Object;}
+        }
+        return false;
+    }
+
+    function translate(){
+        if (isset($_GET["fixorders"])){
+            $this->fixorders();
+            return;
+        }
+
+        $Table = TableRegistry::get('strings');
+        $Page = "";
+        $Language="English";
+        $Data = "";
+        $CRLF = "\r\n";
+        $ditit=0;
+        if (isset($_POST["data"])){
+            $variables = explode($CRLF, $_POST["data"]);
+            $CRLF="<BR>";
+            foreach($variables as $line){
+                if(trim($line)) {
+                    $columns = explode("=", $line);
+                    switch (strtolower($columns[0])){
+                        case "page":
+                            $Page=$columns[1];
+                            if (substr($Page,-1) != "_") { $Page.="_";}
+                            $Data.=$CRLF . "Page set to: " . $Page;
+                            break;
+                        case "language":
+                            $Language=$columns[1];
+                            $Data.=$CRLF . "Language set to: " . $Language;
+                            break;
+                        default:
+                            foreach($columns as $column){
+                                $column = trim($column);
+                            }
+                            $ditit++;
+                            if(count($columns)==2) {
+                                if(tablehaskey($Table, 'Name', $Page . $columns[0])){
+                                    $Table->query()->update()->set([$Language =>  $columns[1]])->where(['Name' => $Page . $columns[0]])->execute();
+                                    $Data .= $CRLF . $ditit . ") update " . $Page . $columns[0] . " (" . $Language . ") = " . $columns[1];
+                                } else {
+                                    $Table->query()->insert(['Name', $Language])->values(['Name' => $Page . $columns[0], $Language => $columns[1]])->execute();
+                                    $Data .= $CRLF . $ditit . ") insert " . $Page . $columns[0] . " (" . $Language . ") = " . $columns[1];
+                                }
+                            } else {
+                                $Table->query()->insert(['Name', 'English', 'French'])->values(['Name' => $Page . $columns[0], 'English' => $columns[1], 'French' => $columns[2]])->execute();
+                                $Data.=$CRLF . $ditit . ") insert " . $Page . $columns[0] . " (English) = '" . $columns[1] . "' (French) = '" . $columns[2] . "'";
+                            }
+                    }
+                }
+            }
+            if($ditit==0){
+                $Data.=$CRLF . "No strings added";
+            }
+        }
+        $this->set('language', $Language);
+        $this->set('page', $Page);
+        $this->set("data", $Data);
+    }
+
+    public function tablehaskey($table, $Key, $Value){
+        $results = $table->find('all', array('conditions' => array($Key=>$Value)))->first();
+        if ($results) { return true; }
+        return false;
+    }
  }

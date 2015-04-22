@@ -58,7 +58,9 @@ class PagesController extends AppController {
     
     function edit($slug){
         $con['title'] = $_POST['title'];
+        $con['titleFrench'] = $_POST['titleFrench'];
         $con['`desc`'] = $_POST['editor1'];//die();
+        $con['`descFrench`'] = $_POST['editor2'];//die();
         $pages = TableRegistry::get("contents");
         $query = $pages->query();
                     $query->update()
@@ -68,14 +70,15 @@ class PagesController extends AppController {
          $this->Flash->success('Page saved successfully.');
         $this->redirect('/profiles/edit/'.$this->request->session()->read('Profile.id'));
     }
+
     function get_content($slug){
         $content = TableRegistry::get("contents");
         //$query = $content->query();
-          $l =  $content->find()->where(['slug'=>$slug])->first(); 
-         $this->response->body(($l));
-            return $this->response;
-         die();
-        
+        $l =  $content->find()->where(['slug'=>$slug])->first();
+        $this->response->body(($l));
+        return $this->response;
+        die();
+
     }
     function cms($slug){
     }

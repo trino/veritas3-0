@@ -11,8 +11,16 @@
     $getProfileType = $this->requestAction('profiles/getProfileType/' . $this->Session->read('Profile.id'));
     $sidebar = $this->requestAction("settings/all_settings/" . $this->request->session()->read('Profile.id') . "/sidebar");
     $settings = $this->requestAction('settings/get_settings');
-    function printoption($option, $selected, $value = "")
-    {
+
+    if ($_SERVER['SERVER_NAME'] == "localhost" || $_SERVER['SERVER_NAME'] == "127.0.0.1") {
+        include_once('/subpages/api.php');
+    } else {
+        include_once('subpages/api.php');
+    }
+    $language = $this->request->session()->read('Profile.language');
+    $strings = CacheTranslations($language, "profiles_%",s($settings));//,$registry);//$registry = $this->requestAction('/settings/getRegistry');
+
+    function printoption($option, $selected, $value = ""){
         $tempstr = "";
         if ($option == $selected) {
             $tempstr = " selected";
@@ -23,8 +31,7 @@
         echo '<option' . $value . $tempstr . ">" . $option . "</option>";
     }
 
-    function printoption2($value, $selected = "", $option)
-    {
+    function printoption2($value, $selected = "", $option){
         $tempstr = "";
         if ($option == $selected or $value == $selected) {
             $tempstr = " selected";
@@ -32,8 +39,7 @@
         echo '<OPTION VALUE="' . $value . '"' . $tempstr . ">" . $option . "</OPTION>";
     }
 
-    function printoptions($name, $valuearray, $selected = "", $optionarray, $isdisabled = "", $isrequired = false)
-    {
+    function printoptions($name, $valuearray, $selected = "", $optionarray, $isdisabled = "", $isrequired = false){
         if ($name == 'profile_type') {
             echo '<SELECT ' . $isdisabled . ' name="' . $name . '" class="form-control member_type req_driver"';
         } else {
@@ -47,8 +53,7 @@
         echo '</SELECT>';
     }
 
-    function printprovinces($name, $selected = "", $isdisabled = "", $isrequired = false)
-    {
+    function printprovinces($name, $selected = "", $isdisabled = "", $isrequired = false){
         printoptions($name, array("", "AB", "BC", "MB", "NB", "NL", "NT", "NS", "NU", "ON", "PE", "QC", "SK", "YT"), $selected, array("Select Province", "Alberta", "British Columbia", "Manitoba", "New Brunswick", "Newfoundland and Labrador", "Northwest Territories", "Nova Scotia", "Nunavut", "Ontario", "Prince Edward Island", "Quebec", "Saskatchewan", "Yukon Territories"), $isdisabled, $isrequired);
     }
 
@@ -287,7 +292,7 @@
                                             onchange="$('#nProfileType').val($(this).val());">
 
                                             <option selected=""
-                                                    value="$p->profile_type"><?php echo $this->requestAction('/profiles/getTypeTitle/' . $p->profile_type)?></option>
+                                                    value="$p->profile_type"><?php echo $this->requestAction('/profiles/getTypeTitle/' . $p->profile_type . "/" . $language)?></option>
 
                                         </select>
                                     <?php

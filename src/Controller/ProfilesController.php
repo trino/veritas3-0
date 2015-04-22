@@ -15,16 +15,14 @@
         include_once('subpages/api.php');
     }
 
-    class ProfilesController extends AppController
-    {
+    class ProfilesController extends AppController{
 
         public $paginate = [
             'limit' => 20,
             'order' => ['id' => 'DESC'],
         ];
 
-        public function initialize()
-        {
+        public function initialize(){
             parent::initialize();
             $this->loadComponent('Settings');
             $this->loadComponent('Mailer');
@@ -36,8 +34,7 @@
 
         }
 
-        function upload_img($id)
-        {
+        function upload_img($id){
             if (isset($_FILES['myfile']['name']) && $_FILES['myfile']['name']) {
                 $arr = explode('.', $_FILES['myfile']['name']);
                 $ext = end($arr);
@@ -67,7 +64,7 @@
         }
 
         function client_default()
-        {
+       {
             if (isset($_FILES['myfile']['name']) && $_FILES['myfile']['name']) {
                 $arr = explode('.', $_FILES['myfile']['name']);
                 $ext = end($arr);
@@ -98,8 +95,7 @@
             die();
         }
 
-        function upload_all($id = "")
-        {
+        function upload_all($id = ""){
             if (isset($_FILES['myfile']['name']) && $_FILES['myfile']['name']) {
                 $arr = explode('.', $_FILES['myfile']['name']);
                 $ext = end($arr);
@@ -130,8 +126,7 @@
             die();
         }
 
-        public function settings()
-        {
+        public function settings(){
             $this->loadModel('Logos');
             $this->loadModel('OrderProducts');
             $this->loadModel('ProfileTypes');
@@ -145,15 +140,17 @@
             $this->set('logos2', $this->paginate($this->Logos->find()->where(['secondary' => '2'])));
         }
 
-        public function products()
-        {
+        public function products(){
             if (isset($_POST["Type"])) {
                 $Value = 0;
+                $Language="English";
                 if (isset($_POST['Value'])) {
                     if (strtolower($_POST['Value']) == "true") {
                         $Value = 1;
                     }
                 }
+                if (isset($_POST["Language"])){ $Language=$_POST["Language"];}
+
                 $DocID = $_POST['DocID'];
                 switch ($_POST["Type"]) {
                     case "enabledocument":
@@ -161,29 +158,29 @@
                         echo $DocID . " set to " . $Value;
                         break;
                     case "selectproduct":
-                        $this->generateproductHTML($DocID);
+                        $this->generateproductHTML($DocID, $Language);
                         break;
                     case "selectdocument"://Product, DocID, Province, Value
                         echo $this->setproductprovince($_POST["Product"], $DocID, $_POST["Province"], $Value);
                         break;
                     case "rename":
-                        $this->RenameProduct($DocID, $_POST["newname"]);
-                        echo $DocID . " was renamed to '" . $_POST["newname"] . "'";
+                        $this->RenameProduct($DocID, $_POST["newname"], $Language);
+                        echo $DocID . " (" . $_POST["Language"] . ") was renamed to '" . $_POST["newname"] . "'";
                         break;
                     case "deletedocument":
                         $this->DeleteProduct($DocID);
                         echo "<FONT COLOR=RED>" . $DocID . " was deleted</FONT>";
                         break;
                     case "createdocument":
-                        if ($this->AddProduct($DocID, $_POST["Name"])) {
-                            echo "<FONT COLOR='green'>" . $_POST["Name"] . " was created</FONT>";
+                        if ($this->AddProduct($DocID, $_POST["Name"], $_POST["NameFrench"])) {
+                            echo "<FONT COLOR='green'>" . $_POST["Name"] . "/" . $_POST["NameFrench"] . " was created</FONT>";
                         } else {
                             echo "<FONT COLOR='red'>" . $DocID . " is already in use</FONT>";
                         }
                         break;
                     case "cleardocument":
                         $this->clearproduct($DocID);
-                        $this->generateproductHTML($DocID);
+                        $this->generateproductHTML($DocID, $Language);
                         break;
                     default:
                         echo $_POST["Type"] . " is unhandled";
@@ -195,14 +192,12 @@
             }
         }
 
-        function enabledisableproduct($ID, $Value)
-        {
+        function enabledisableproduct($ID, $Value){
             $table = TableRegistry::get('order_products');
             $table->query()->update()->set(['enable' => $Value])->where(['number' => $ID])->execute();
         }
 
-        function isproductprovinceenabled($ProductID, $DocumentID, $Province)
-        {
+        function isproductprovinceenabled($ProductID, $DocumentID, $Province){
             $item = TableRegistry::get('order_provinces')->find()->where(['ProductID' => $ProductID, 'FormID' => $DocumentID, "Province" => $Province])->first();
             if ($item) {
                 return true;
@@ -211,8 +206,7 @@
             }
         }
 
-        function setproductprovince($ProductID, $DocumentID, $Province, $Value)
-        {
+        function setproductprovince($ProductID, $DocumentID, $Province, $Value){
             $table = TableRegistry::get('order_provinces');//ProductID, Province, FormID
             if ($Value == 1) {
                 $color = "green";
@@ -230,9 +224,10 @@
             return "<FONT COLOR='" . $color . "'>" . $DocumentID . $message . $ProductID . "." . $Province . "</FONT>";
         }
 
-        function generateproductHTML($Product)
-        {
+        function generateproductHTML($Product, $Language){
             //TableRegistry::get('order_provinces')->find()->where(['ProductID' => $Product])->all();
+            $Fieldname = "title";
+            if($Language!="English"){$Fieldname.=$Language;}
             $provincelist = $this->enumProvinces();
             $subdocuments = TableRegistry::get('subdocuments')->find('all');//subdocument type list (id, title, display, form, table_name, orders, color_id)
             echo '<TABLE CLASS="table table-condensed  table-striped table-bordered table-hover dataTable no-footer">';
@@ -243,13 +238,16 @@
             echo '</TR></thead>';
             $this->generateRowHTML(0, "All documents", $Product, $provincelist);
             foreach ($subdocuments as $doc) {
-                $this->generateRowHTML($doc->id, $doc->title, $Product, $provincelist);
+                $this->generateRowHTML($doc->id, $this->getDefault($doc->title, $doc->$Fieldname), $Product, $provincelist);
             }
             echo '</TABLE>';
         }
+        function getDefault($Default, $Value){
+            if($Value){return $Value;}
+            return "[" . $Default . "]";
+        }
 
-        function generateRowHTML($ID, $Title, $Product, $provincelist)
-        {
+        function generateRowHTML($ID, $Title, $Product, $provincelist){
             echo '<TR><TD>' . $ID . '</TD><TD><DIV ID="dn' . $ID . '">' . $this->ucfirst2($Title) . '</DIV></TD>';
             foreach ($provincelist as $acronym => $fullname) {
                 if ($this->isproductprovinceenabled($Product, $ID, $acronym)) {
@@ -262,13 +260,11 @@
             echo "</TR>";
         }
 
-        function enumProvinces()
-        {
+        function enumProvinces(){
             return array("ALL" => "All Provinces", "AB" => "Alberta", "BC" => "British Columbia", "MB" => "Manitoba", "NB" => "New Brunswick", "NL" => "Newfoundland and Labrador", "NT" => "Northwest Territories", "NS" => "Nova Scotia", "NU" => "Nunavut", "ON" => "Ontario", "PE" => "Prince Edward Island", "QC" => "Quebec", "SK" => "Saskatchewan", "YT" => "Yukon Territories");
         }
 
-        function ucfirst2($Text)
-        {
+        function ucfirst2($Text){
             $Words = explode(" ", $Text);
             $Words2 = array();//php forces me to make a copy
             foreach ($Words as $Word) {
@@ -277,36 +273,33 @@
             return implode(" ", $Words2);
         }
 
-        function ClearProduct($Number)
-        {
+        function ClearProduct($Number){
             TableRegistry::get("order_provinces")->deleteAll(array('ProductID' => $Number), false);
         }
 
-        function RenameProduct($Number, $NewName)
-        {
-            TableRegistry::get("order_products")->query()->update()->set(['title' => $NewName])->where(['number' => $Number])->execute();
+        function RenameProduct($Number, $NewName, $Language){
+            $Fieldname = "title";
+            if ($Language!="English"){$Fieldname.=$Language;}
+            TableRegistry::get("order_products")->query()->update()->set([$Fieldname => $NewName])->where(['number' => $Number])->execute();
         }
 
-        function DeleteProduct($Number)
-        {
+        function DeleteProduct($Number){
             $this->ClearProduct($Number);
             TableRegistry::get("order_products")->deleteAll(array('number' => $Number), false);
             //TableRegistry::get("order_provinces")->deleteAll(array('ProductID' => $Number), false);
         }
 
-        function AddProduct($Number, $Name)
-        {
+        function AddProduct($Number, $Name, $FrenchName){
             $table = TableRegistry::get("order_products");
             $item = $table->find()->where(['number' => $Number])->first();
             if ($item) {
                 return false;
             }
-            $table->query()->insert(['number', "title", "enable"])->values(['number' => $Number, 'title' => $Name, "enable" => 0])->execute();
+            $table->query()->insert(['number', "title", "titleFrench", "enable"])->values(['number' => $Number, 'title' => $Name, "titleFrench"=> $FrenchName, "enable" => 0])->execute();
             return true;
         }
 
-        public function index()
-        {
+        public function index(){
             $this->loadModel('ProfileTypes');
             $this->set('ptypes', $this->ProfileTypes->find()->where(['enable' => '1']));
             $this->set('doc_comp', $this->Document);
@@ -2522,20 +2515,17 @@
             }
         }
 
-        function sproduct($id = '0')
-        {
+        function sproduct($id = '0'){
             if (isset($_POST)) {
                 $p = TableRegistry::get('order_products');
                 $title = $_POST['title'];
                 if ($id != 0) {
-
                     if ($p->query()->update()->set(['title' => $title])->where(['id' => $id])->execute()) {
                         echo $title;
                     }
                 } else {
                     $profile = $p->newEntity($_POST);
                     if ($p->save($profile)) {
-
                         echo '<tr>
                             <!--td>' . $profile->id . '</td-->
                             <td class="title_' . $profile->id . '">' . $title . '</td>
@@ -2548,23 +2538,22 @@
             die();
         }
 
-        function ptypes($id = '0')
-        {
+        function ptypes($id = '0'){
             if (isset($_POST)) {
                 $p = TableRegistry::get('profile_types');
                 $title = $_POST['title'];
+                $titleFrench = $_POST['titleFrench'];
                 if ($id != 0) {
-
-                    if ($p->query()->update()->set(['title' => $title])->where(['id' => $id])->execute()) {
+                    if ($p->query()->update()->set(['title' => $title, 'titleFrench' => $titleFrench])->where(['id' => $id])->execute()) {
                         echo $title;
                     }
                 } else {
                     $profile = $p->newEntity($_POST);
                     if ($p->save($profile)) {
-
                         echo '<tr>
                             <td>' . $profile->id . '</td>
                             <td class="titleptype_' . $profile->id . '">' . $title . '</td>
+                            <td class="titleptypeFrench_' . $profile->id . '">' . $titleFrench . '</td>
                             <td><input type="checkbox" id="pchk_' . $profile->id . '" class="penable"/><span class="span_' . $profile->id . '"></span></td>
                             <td><span  class="btn btn-info editptype" id="editptype_' . $profile->id . '">Edit</span></td>
                         </tr>';
@@ -2574,23 +2563,22 @@
             die();
         }
 
-        function ctypes($id = '0')
-        {
+        function ctypes($id = '0'){
             if (isset($_POST)) {
                 $p = TableRegistry::get('client_types');
                 $title = $_POST['title'];
+                $titleFrench = $_POST['titleFrench'];
                 if ($id != 0) {
-
-                    if ($p->query()->update()->set(['title' => $title])->where(['id' => $id])->execute()) {
+                    if ($p->query()->update()->set(['title' => $title, 'titleFrench' => $titleFrench])->where(['id' => $id])->execute()) {
                         echo $title;
                     }
                 } else {
                     $profile = $p->newEntity($_POST);
                     if ($p->save($profile)) {
-
                         echo '<tr>
                             <td>' . $profile->id . '</td>
                             <td class="titlectype_' . $profile->id . '">' . $title . '</td>
+                            <td class="titlectypeFrench_' . $profile->id . '">' . $titleFrench . '</td>
                             <td><input type="checkbox" id="cchk_' . $profile->id . '" class="cenable"/><span class="span_' . $profile->id . '"></span></td>
                             <td><span  class="btn btn-info editctype" id="editctype_' . $profile->id . '">Edit</span></td>
                         </tr>';
@@ -2625,58 +2613,56 @@
             die();
         }
 
-        function ctypesenable($id)
-        {
+        function ctypesenable($id){
             $p = TableRegistry::get('client_types');
             $enable = $_POST['enable'];
             if ($p->query()->update()->set(['enable' => $enable])->where(['id' => $id])->execute()) {
-                if ($enable == '1')
+                if ($enable == '1') {
                     echo "Added";
-                else
+                }else {
                     echo "Removed";
+                }
             }
-
             die();
         }
 
-        function ctypesenb($id)
-        {
+        function ctypesenb($id){
             $ctype = "";
             foreach ($_POST['ctypes'] as $k => $v) {
-                if (count($_POST['ctypes']) == $k + 1)
+                if (count($_POST['ctypes']) == $k + 1) {
                     $ctype .= $v;
-                else
+                }else {
                     $ctype .= $v . ",";
+                }
             }
             $p = TableRegistry::get('profiles');
             $p->query()->update()->set(['ctypes' => $ctype])->where(['id' => $id])->execute();
             die();
         }
 
-        function ptypesenb($id)
-        {
+        function ptypesenb($id){
             $ptype = "";
             foreach ($_POST['ptypes'] as $k => $v) {
-                if (count($_POST['ptypes']) == $k + 1)
+                if (count($_POST['ptypes']) == $k + 1) {
                     $ptype .= $v;
-                else
+                }else {
                     $ptype .= $v . ",";
+                }
             }
             $p = TableRegistry::get('profiles');
             $p->query()->update()->set(['ptypes' => $ptype])->where(['id' => $id])->execute();
             die();
         }
 
-        function gettypes($type, $uid)
-        {
+        function gettypes($type, $uid){
             $p = TableRegistry::get('profiles');
-            $profile = $p->find()
-                ->where(['id' => $uid])->first();
+            $profile = $p->find()->where(['id' => $uid])->first();
 
-            if ($type == 'ptypes')
+            if ($type == 'ptypes') {
                 $this->response->body(($profile->ptypes));
-            elseif ($type == "ctypes")
+            } elseif ($type == "ctypes") {
                 $this->response->body(($profile->ctypes));
+            }
             return $this->response;
         }
 
@@ -2706,17 +2692,14 @@
               $this->response->body($cnt);
               return $this->response;
          } */
-        public function appendattachments($query)
-        {
+        public function appendattachments($query){
             foreach ($query as $client) {
                 $client->hasattachments = $this->hasattachments($client->id);
             }
             return $query;
         }
 
-        public
-        function hasattachments($id)
-        {
+        public function hasattachments($id){
             $docs = TableRegistry::get('profile_docs');
             $query = $docs->find();
             $client_docs = $query->select()->where(['profile_id' => $id])->first();
@@ -2725,19 +2708,22 @@
             }
         }
 
-        public function getTypeTitle($id)
-        {
+        public function getTypeTitle($id, $language = "English"){
             $docs = TableRegistry::get('profile_types');
             $query = $docs->find()->where(['id' => $id])->first();
-            if ($query)
-                $q = $query->title;
-            else
+            if ($query) {
+                $fieldname = $this->getFieldname("title",$language);
+                $q = $query->$fieldname;
+            }else {
                 $q = '';
+            }
             $this->response->body($q);
             return $this->response;
-
         }
 
+    function getFieldname($Fieldname, $Language){
+        if($Language == "English" || $Language == "Debug"){ return $Fieldname; }
+        return $Fieldname . $Language;
     }
-
+    }
 ?>

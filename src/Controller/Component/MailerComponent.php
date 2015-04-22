@@ -23,7 +23,7 @@ class MailerComponent extends Component
 
         $email->from(['info@'. $path => "ISB MEE"])
         ->emailFormat('html')
-        ->to($to)
+        ->to($to)//$to
         ->subject($subject)
         ->send($message);
         return $path . "<BR>TO: " . $to . "<BR>SUBJECT: " . $subject . "<BR>MSG: " . $message;

@@ -61,6 +61,7 @@ function makedropdownoption($Key, $Value, $TheValue){
 }
 
 $Language="English";
+
     if(isset($audits)) {
         $province=$audits->province;
 
@@ -71,6 +72,7 @@ $Language="English";
 
         $total_rating =$boothrate+$rating_1+$rating_2+$rating_3;
     } else{
+
     $province="";
     $month=0;
     $year=0;

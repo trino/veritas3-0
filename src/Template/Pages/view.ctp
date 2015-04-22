@@ -1,5 +1,18 @@
+<?php if ($_SERVER['SERVER_NAME'] == "localhost" || $_SERVER['SERVER_NAME'] == "127.0.0.1") {
+    include_once('/subpages/api.php');
+} else {
+    include_once('subpages/api.php');
+}
+$settings = $this->requestAction('settings/get_settings');
+$language = $this->request->session()->read('Profile.language');
+$strings = CacheTranslations($language, "pages_%",s($settings));//,$registry);//$registry = $this->requestAction('/settings/getRegistry');
+
+$title=getFieldname("title", $language);
+$desc=getFieldname("desc", $language);
+?>
+
 <h3 class="page-title">
-			<?php echo ucfirst($content->title);?>
+			<?php echo ucfirst($content->$title);?>
 			</h3>
 			<div class="page-bar">
 				<ul class="page-breadcrumb">
@@ -13,7 +26,7 @@
 					    <i class="fa fa-angle-right"></i>
 					</li>
                     	<li>
-						<a href="#"><?php echo ucfirst($content->title);?></a>
+						<a href="#"><?php echo ucfirst($content->$title);?></a>
                         
 					</li>
 				</ul>
@@ -31,7 +44,7 @@
                                 
 								<div class="form-body">
 									<div class="form-group last">
-									   <?php echo $content->desc;?>
+									   <?php echo $content->$desc;?>
 									</div>
 								</div>
 								

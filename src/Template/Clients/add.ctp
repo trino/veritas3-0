@@ -4,6 +4,15 @@
 <!-- END PAGE LEVEL STYLES -->
 
 <?php
+    if ($_SERVER['SERVER_NAME'] == "localhost" || $_SERVER['SERVER_NAME'] == "127.0.0.1") {
+        include_once('/subpages/api.php');
+    } else {
+        include_once('subpages/api.php');
+    }
+    $settings = $this->requestAction('settings/get_settings');
+    $language = $this->request->session()->read('Profile.language');
+    $strings = CacheTranslations($language, "clients_%",s($settings));//,$registry);//$registry = $this->requestAction('/settings/getRegistry');
+
     include_once 'subpages/filelist.php';
     $delete = isset($disabled);
     $is_disabled = '';
@@ -179,8 +188,11 @@
                                                                         <option value="">Select</option>
                                                                         <?php
                                                                             $ctyp = $this->requestAction('profiles/gettypes/ctypes/' . $this->request->session()->read('Profile.id'));
-                                                                            if ($ctyp != "")
+                                                                            if ($ctyp != "") {
                                                                                 $cts = explode(",", $ctyp);
+                                                                            }
+                                                                            $fieldname = getFieldname("title", $language);
+
                                                                             foreach ($client_types as $ct) {
                                                                                 if (isset($cts)) {
                                                                                     if (in_array($ct->id, $cts)) {
@@ -188,7 +200,7 @@
                                                                                         <option
                                                                                             value="<?php echo $ct->id; ?>"
                                                                                             <?php if (isset($client->customer_type) && $client->customer_type == $ct->id) { ?>selected="selected"<?php } ?>>
-                                                                                            <?php echo $ct->title; ?>
+                                                                                            <?php echo $ct->$fieldname; ?>
                                                                                         </option>
                                                                                     <?php
                                                                                     }
@@ -197,7 +209,7 @@
                                                                                     <option
                                                                                         value="<?php echo $ct->id; ?>"
                                                                                         <?php if (isset($client->customer_type) && $client->customer_type == $ct->id) { ?>selected="selected"<?php } ?>>
-                                                                                        <?php echo $ct->title; ?>
+                                                                                        <?php echo $ct->$fieldname; ?>
                                                                                     </option>
                                                                                 <?php
                                                                                 }
