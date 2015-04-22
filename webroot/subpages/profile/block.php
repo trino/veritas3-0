@@ -456,7 +456,7 @@
                                                 printsubdocradio($is_disabled, $sub, $prosubdoc, 1, "View Only");
                                                 printsubdocradio($is_disabled, $sub, $prosubdoc, 2, "Create Only");
                                                 printsubdocradio($is_disabled, $sub, $prosubdoc, 3, "Both");
-                                                //printsubdocradio($is_disabled, $sub, $prosubdoc, 1, "Top block", "Checkbox", "topblock", "Topblock");
+                                                printsubdocradio($is_disabled, $sub, $prosubdoc, 1, "Top block", "Checkbox", "topblock", "Topblock");
                                             }
                                             function printsubdocradio($is_disabled, $sub, $prosubdoc, $Value, $Text, $Type="Radio", $Section = "profile", $Field='display'){
                                                 echo '<label class="uniform-inline"><input ' . $is_disabled . ' type="' . $Type . '" name="' . $Section . '[';
@@ -469,15 +469,14 @@
 
 
                                             if ($settings->mee != "MEE") {
-//this code needs to be merged. There doesn't need to be a page of repeating code or 2 loops
+                                        //this code needs to be merged. There doesn't need to be a page of repeating code or 2 loops
                                                 foreach ($subdoc as $sub) {
-
                                                     if(strtolower($sub['title']) =="audit" || strtolower($sub['title'])=="attachment"){
                                                         $prosubdoc = $this->requestAction('/settings/all_settings/0/0/profile/' . $id . '/' . $sub->id);
                                                         echo '<tr><td>' . ucfirst($sub['title']) . '</td><td class="">';
                                                         printsubdocradios($is_disabled, $sub, $prosubdoc);
                                                         echo '</td></tr>';
-                                                }
+                                                    }
                                                 }
                                             }else{
                                                 foreach ($subdoc as $sub) {

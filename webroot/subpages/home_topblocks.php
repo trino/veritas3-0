@@ -150,6 +150,13 @@ function randomcolor(){
                 <div class="number"></div>
             </div>
         </a>-->
+        <STYLE>
+            .icon-footprint:before { content: url('assets/global/img/footprint.png'); }
+            .icon-surveillance:before { content: url('assets/global/img/surveillance.png'); }
+            .icon-physical:before { content: url('assets/global/img/physical.png'); }
+        </STYLE>
+
+
     <?php
         $formlist="";
         foreach($forms as $form){
@@ -162,6 +169,13 @@ function randomcolor(){
             echo '" style="display: block;"><div class="tile-body"><i class="' . $Icon . '"></i></div><div class="tile-object">';
             echo '<div class="name">' . $Name . '</div><div class="number"></div></div></a>';
         }
+
+        $AssignedClient = GetAssignedClients($userid, $clients, true);
+        if($AssignedClient){$AssignedClient= $AssignedClient->id;} else {$AssignedClient="";}
+        $URL = "test?ClientID=" . $AssignedClient . "&UserID=".$userid;
+        makeblock($URL."&footprint", "Footprint", "fa icon-footprint", "bg-red");
+        makeblock($URL."&surveillance", "Surveillance", "fa icon-surveillance", "bg-red");
+        makeblock($URL."&physical", "Physical", "fa icon-physical", "bg-red");
 
         $MEEname="";
         foreach($products as $product){
@@ -180,19 +194,23 @@ function randomcolor(){
             }
         }
 
-        /*
-        $subdoc = $this->requestAction('/profiles/getSub');
-        $URL = "orders/addorder/1/?driver=" . $userid . "&order_type=" . $MEEname . "&forms=" . $formlist . "&onlyshow=";
-        foreach ($subdoc as $sub) {
-            $prosubdoc = $this->requestAction('/settings/all_settings/0/0/profile/' . $userid . '/' . $sub->id);
-            if ($prosubdoc->Topblock == 1){
-                makeblock($this->request->webroot . $URL . $sub->id, $sub->title);
+        if($AssignedClient) {
+            $subdoc = $this->requestAction('/profiles/getSub/' . $userid);
+            //$URL = "orders/addorder/1/?driver=" . $userid . "&order_type=" . $MEEname . "&forms=" . $formlist . "&onlyshow=";
+            $URL = "documents/add/" . $AssignedClient . "?type=";
+            foreach ($subdoc as $sub) {
+                //$prosubdoc = $this->requestAction('/settings/all_settings/0/0/profile/' . $userid . '/' . $sub->id);
+                $prosubdoc = FindIterator($subdoc->Subdocs, "subdoc_id", $sub->id);
+                if ($prosubdoc->Topblock == 1) {
+                    makeblock($this->request->webroot . $URL . $sub->id, $sub->title, "icon-docs", "bg-blue");
+                }
             }
         }
-        */
+
         foreach($theproductlist as $product){
             if($product->enable == 1 && $product->TopBlock == 1) {
-                $URL="orders/addorder/1/?driver=" . $userid . "&division=9&order_type=Not+Applicable&forms=" . $product->number;
+                //$URL="orders/addorder/1/?driver=" . $userid . "&division=9&order_type=Not+Applicable&forms=" . $product->number;
+                $URL="documents/add/1?type=" . $product->number;
                 makeblock($this->request->webroot . $URL, $product->title);
             }
         }
@@ -205,6 +223,20 @@ function randomcolor(){
     makeblock($URL, "Physical surveillance", "fa fa-search" );
 */
 
+    function GetAssignedClients($UserID, $clients, $First = false){
+        //$clients = $this->requestAction('/clients/getAllClient/');
+        $clientlist = array();
+        if ($clients) {
+            foreach ($clients as $client) {
+                $pro_ids = explode(",", $client->profile_id);
+                if (in_array($UserID, $pro_ids)) {
+                    if ($First){return $client;}
+                    $clientlist[] = $client;
+                }
+            }
+        }
+        if(count($clientlist)>0){return $clientlist;}
+    }
     ?>
 
 

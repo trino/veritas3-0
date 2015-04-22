@@ -299,8 +299,12 @@ $strings = CacheTranslations($language, "langswitch","");//,$registry);
 
         <?php
         if(!function_exists('get_title')){
+            $content = TableRegistry::get("contents")->find('all');
+
             function get_title($content, $slug, $language="English") {
-                $l =  $content->find()->where(['slug'=>$slug])->first();
+                //$l =  $content->find()->where(['slug'=>$slug])->first();
+                $l = FindIterator($content, "slug", $slug);
+
                 $title = "title";
                 $desc = "desc";
                 if($language!="English"){
@@ -310,8 +314,8 @@ $strings = CacheTranslations($language, "langswitch","");//,$registry);
                 if(isset($l->$title) && strlen($l->$desc)>0) { return ucfirst($l->$title);}
             }
             $isfirst = true;
-            function print_title($webroot, $URL, $slug, $isfirst, $Bypass=false, $language="English"){
-                $content = TableRegistry::get("contents");
+            function print_title($content, $webroot, $URL, $slug, $isfirst, $Bypass=false, $language="English"){
+                //$content = TableRegistry::get("contents");
                 if (!$Bypass) {$slug = get_title($content, $slug, $language);}
                 if ($slug) {
                     if (!$isfirst) {echo " / ";}
@@ -321,16 +325,16 @@ $strings = CacheTranslations($language, "langswitch","");//,$registry);
                 return $isfirst;
             }
         }
-        $isfirst = print_title($this->request->webroot, "pages/view/product_example", "product_example", $isfirst, false, $language);
-        $isfirst = print_title($this->request->webroot, "pages/view/help", "help", $isfirst, false, $language);
-        $isfirst = print_title($this->request->webroot, "pages/view/faq", "faq", $isfirst, false, $language);
-        $isfirst = print_title($this->request->webroot, "pages/view/privacy_code", "privacy_code", $isfirst, false, $language);
-        $isfirst = print_title($this->request->webroot, "pages/view/terms", "terms", $isfirst, false, $language);
+        $isfirst = print_title($content, $this->request->webroot, "pages/view/product_example", "product_example", $isfirst, false, $language);
+        $isfirst = print_title($content, $this->request->webroot, "pages/view/help", "help", $isfirst, false, $language);
+        $isfirst = print_title($content, $this->request->webroot, "pages/view/faq", "faq", $isfirst, false, $language);
+        $isfirst = print_title($content, $this->request->webroot, "pages/view/privacy_code", "privacy_code", $isfirst, false, $language);
+        $isfirst = print_title($content, $this->request->webroot, "pages/view/terms", "terms", $isfirst, false, $language);
         if($this->request->session()->read('Profile.super')) {
-            $isfirst = print_title($this->request->webroot, "pages/view/version_log", "version_log", $isfirst, false, $language);
+            $isfirst = print_title($content, $this->request->webroot, "pages/view/version_log", "version_log", $isfirst, false, $language);
 
             if ($_SERVER['SERVER_NAME'] == 'localhost') {
-                $isfirst = print_title($this->request->webroot, "profiles/settings", $strings["dashboard_settings"], $isfirst, true, $language);
+                $isfirst = print_title($content, $this->request->webroot, "profiles/settings", $strings["dashboard_settings"], $isfirst, true, $language);
             }
         }
         ?>
