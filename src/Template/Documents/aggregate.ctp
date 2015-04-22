@@ -104,7 +104,7 @@
 
                                                             <?php
                                                             if(isset($rati)){
-echo '<p style="padding-top: 5px;">Total Average (Out of 40): ' .  getaverage($rati) . '</p>';
+echo '<p style="padding-top: 5px;"> ' .  getaverage($rati) . '</p>';
 
 }?>
 
