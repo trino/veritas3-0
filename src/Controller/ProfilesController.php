@@ -204,6 +204,15 @@
             $table->query()->update()->set(['enable' => $Value])->where(['number' => $ID])->execute();
         }
 
+        function getenabledprovinces($ProductID, $Province = "ALL"){
+            $forms = array();
+            $items = TableRegistry::get('order_provinces')->find("all")->where(['ProductID' => $ProductID, "Province" => $Province]);
+            foreach($items as $item){
+                $forms[] = $item->ProductID;
+            }
+            return implode(",", $forms);
+        }
+
         function isproductprovinceenabled($ProductID, $DocumentID, $Province){
             $item = TableRegistry::get('order_provinces')->find()->where(['ProductID' => $ProductID, 'FormID' => $DocumentID, "Province" => $Province])->first();
             if ($item) {
@@ -1477,7 +1486,14 @@
             $sub = TableRegistry::get('Subdocuments');
             $query = $sub->find();
             $q = $query->select();
-            if ($UserID){ $q->Subdocs = $this->getProAllSubDoc($UserID);}
+            if ($UserID){
+                foreach($q as $subdoc){
+                    if ($subdoc->ProductID>0) {
+                        $subdoc->forms = $this->getenabledprovinces($subdoc->ProductID);
+                    }
+                }
+                $q->Subdocs = $this->getProAllSubDoc($UserID);
+            }
             $this->response->body($q);
             return $this->response;
         }
