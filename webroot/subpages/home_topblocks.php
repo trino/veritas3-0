@@ -167,6 +167,7 @@ function randomcolor(){
 
         function makeblock($debug, $URL, $Name, $Icon = "icon-docs", $Color= "bg-grey-cascade"){//tile
             if(!$debug){$Color= "bg-grey-cascade";}
+            if(!$Icon){$Icon = "icon-docs";}
             echo '<a href="' .  $URL . '" class="tile ' . $Color;
             echo '" style="display: block;"><div class="tile-body"><i class="' . $Icon . '"></i></div><div class="tile-object">';
             echo '<div class="name">' . $Name . '</div><div class="number"></div></div></a>';
@@ -210,7 +211,7 @@ function randomcolor(){
                 //$prosubdoc = $this->requestAction('/settings/all_settings/0/0/profile/' . $userid . '/' . $sub->id);
                 $prosubdoc = FindIterator($subdoc->Subdocs, "subdoc_id", $sub->id);
                 if ($prosubdoc->Topblock == 1) {
-                    makeblock($debug, $this->request->webroot . $URL . $sub->forms, $sub->title, "icon-docs", "bg-blue");//$sub->id
+                    makeblock($debug, $this->request->webroot . $URL . $sub->forms, $sub->title, $sub->icon, "bg-blue");//$sub->id
                 }
             }
         }
