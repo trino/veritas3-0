@@ -126,7 +126,14 @@
             die();
         }
 
+        public function DeleteSubdocument($id){
+            TableRegistry::get('subdocuments')->deleteAll(array('id' => $id));
+        }
         public function settings(){
+            if(isset($_GET["DeleteDoc"])){
+                $this->DeleteSubdocument($_GET["DeleteDoc"]);
+                $this->Flash->success('Subdocument created successfully.');
+            }
             $this->loadModel('Logos');
             $this->loadModel('OrderProducts');
             $this->loadModel('ProfileTypes');

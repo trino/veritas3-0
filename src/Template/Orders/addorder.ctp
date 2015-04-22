@@ -129,8 +129,8 @@ function provinces($name){
         $name = strtolower($name);
         if(isset($_GET['order_type'])) {
             switch ($theproduct->Acronym){
-                case "SIN":
-                    return $name == strtolower($_GET["SpecificForm"]);
+                //case "SIN":
+                //    return $name == strtolower($_GET["SpecificForm"]);
                 case "MEE":
                     return true;
                     break;

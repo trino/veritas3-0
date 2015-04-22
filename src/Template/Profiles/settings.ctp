@@ -262,6 +262,7 @@
                                           </div> <br /> <br />
                                         <div class="col-md-12" style="text-align: right;padding:0;">
                                             <a class="btn-xs btn-primary editsubdoc" id="subbtn<?php echo $sub['id']; ?>" href="javascript:void(0)">Save</a>
+                                            <a href="?DeleteDoc=<?php echo $sub['id']; ?>" class="btn-xs btn-danger deletesubdoc" id="delsubbtn" onclick="return confirm('Are you sure you want to delete <?= $sub['title'] ?>?');">Delete</a>
                                         </div>
                                         <div class="clearfix"></div>
                                     </div>

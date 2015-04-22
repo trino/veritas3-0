@@ -193,10 +193,12 @@ function randomcolor(){
                 }
             }
 
-            $URL="orders/addorder/" . $AssignedClient . "/?driver=0&order_type=Single+Product&forms=555&SpecificForm=";
-            makeblock($URL . "footprint", "Footprint", "fa icon-footprint", "bg-red");
-            makeblock($URL . "surveillance", "Surveillance", "fa icon-surveillance", "bg-red");
-            makeblock($URL . "physical", "Physical", "fa icon-physical", "bg-red");
+
+
+            $URL="orders/addorder/" . $AssignedClient . "/?driver=0&order_type=Single+Product&forms=";
+            makeblock($URL . "501&SpecificForm=footprint", "Footprint", "fa icon-footprint", "bg-red");
+            //makeblock($URL . "surveillance", "Surveillance", "fa icon-surveillance", "bg-red");
+            //makeblock($URL . "physical", "Physical", "fa icon-physical", "bg-red");
 
 
             $subdoc = $this->requestAction('/profiles/getSub/' . $userid);
@@ -211,11 +213,12 @@ function randomcolor(){
             }
         }
 
+
         foreach($theproductlist as $product){
             if($product->enable == 1 && $product->TopBlock == 1) {
                 //$URL="orders/addorder/1/?driver=" . $userid . "&division=9&order_type=Not+Applicable&forms=" . $product->number;
                 $URL="documents/add/1?type=" . $product->number;
-                makeblock($this->request->webroot . $URL, $product->title);
+                makeblock($this->request->webroot . $URL, $product->title, "icon-docs", "bg-yellow");
             }
         }
     }
