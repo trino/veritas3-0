@@ -1293,7 +1293,7 @@
             }
 
             if (isset($_GET["order_type"])){
-                $prod = TableRegistry::get('product_types')->find()->where(['Name'=> $_GET["order_type"]])->first();
+                $prod = TableRegistry::get('product_types')->find()->where(['LOWER(Name)'=> strtolower($_GET["order_type"])])->first();
                 $this->set('theproduct', $prod);
             }
             $this->set('thedocuments',  $return);

@@ -102,16 +102,9 @@ function provinces($name){
         $_this = $this;
 
     $DriverProvince = "";
-    if (is_object($p)){$DriverProvince = $p->driver_province;}
+    $DriverID = $_GET["driver"];
+    if ($DriverID>0 && is_object($p)){$DriverProvince = $p->driver_province;}
     echo "<SCRIPT>var DriverProvince = '" . $DriverProvince . "';</SCRIPT>";
-
-    function FindIterator($ObjectArray, $FieldName, $FieldValue){
-        foreach($ObjectArray as $Object){
-            if ($Object->$FieldName == $FieldValue){return $Object;}
-        }
-        return false;
-    }
-
     if($theproduct->doc_ids){
         $forms = explode(",", $theproduct->doc_ids);
         $theproduct->BypassForms = array();
@@ -136,6 +129,8 @@ function provinces($name){
         $name = strtolower($name);
         if(isset($_GET['order_type'])) {
             switch ($theproduct->Acronym){
+                case "SIN":
+                    return $name == strtolower($_GET["SpecificForm"]);
                 case "MEE":
                     return true;
                     break;
@@ -196,9 +191,12 @@ function provinces($name){
 
                             if ($param != 'view') {
                                 $tab = 'tab-pane';
+                                $i = 1;
                                 ?>
 
                                 <ul class="nav nav-pills nav-justified steps">
+                                   <?php if ($DriverID>0){
+                                       $i++;?>
                                     <li>
                                         <a href="#tab1" data-toggle="tab" class="step">
 												<span class="number">
@@ -207,6 +205,7 @@ function provinces($name){
 												<i class="fa fa-check"  align="center"></i> Applicant </span>
                                         </a>
                                     </li>
+                                    <?php }?>
                                      <!--<li>
                                         <a href="#tab2" data-toggle="tab" class="step">
 												<span class="number">
@@ -233,7 +232,6 @@ function provinces($name){
                                         }
                                         $subdoccli2 = $subdoccli;
                                         $doc2 = $doc;
-                                        $i = 2;
                                         $end = 0;
                                         $k_c=0;
                                         $index=0;
@@ -419,16 +417,18 @@ function provinces($name){
                         }
                     ?>
                         <div class="clearfix"></div>
+
+                            <?php if($DriverID>0){?>
                         <div class="tabber <?php echo $tab; ?> <?php if (!($table)) {
                             if ($tab == 'tab-pane') { ?>active<?php }
                         } else {
                             if ($table == $d->table_name) { ?>active changeactive<?php }
                         } ?>" id="tab1">
                             <?php
-
                                 include('subpages/profile/info_order.php');
                             ?>
                         </div>
+                            <?php } ?>
 
                         <!--<div class="tabber <?php echo $tab; ?>"  id="tab2">
                             <?php //include('subpages/documents/products.php'); ?>
