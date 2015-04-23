@@ -196,7 +196,8 @@ function randomcolor(){
                         //http://localhost/veritas3-0/orders/addorder/1/?driver=0&order_type=Single+Product&forms=31
                         if($product->Bypass==1) {//change to ->Bypass When the parameter exists
                             $URL = "orders/addorder/" . $AssignedClient . "/?driver=0&order_type=" . $product->Acronym . "&forms=" . $product->doc_ids;
-                            $color=$product->Block_Color;
+                            $color=$product->ButtonColor;
+                            if(substr($color, 0,3)!= "bg-"){$color = "bg-" . $color;}
                         }
                         makeblock($debug, $URL, $product->Name, $product->Icon, $color);
                         //makeblock($debug, $URL, $product->Name, $product->Icon, "bg-red");
