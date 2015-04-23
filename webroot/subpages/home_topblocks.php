@@ -216,7 +216,7 @@ function randomcolor(){
                 //$prosubdoc = $this->requestAction('/settings/all_settings/0/0/profile/' . $userid . '/' . $sub->id);
                 $prosubdoc = FindIterator($subdoc->Subdocs, "subdoc_id", $sub->id);
                 if ($prosubdoc->Topblock == 1) {
-                    makeblock($debug, $this->request->webroot . $URL . $sub->forms, $sub->title, $sub->icon, "bg-blue");//$sub->id
+                    //makeblock($debug, $this->request->webroot . $URL . $sub->forms, $sub->title, $sub->icon, "bg-blue");//$sub->id
                 }
             }
         }
