@@ -548,6 +548,10 @@ if (isset($this->request->params['pass'][1])) {
     client_id = '<?=$cid?>',
         doc_id = '<?=$did?>';
     $(function(){
+        if(doc_id && doc_id != '0')
+        {
+            showforms('<?php $subdet = $this->requestAction('/orders/getSubDetail/'.$_GET['type']); echo $subdet->form."?doc_id=".$subdet->id;?>');
+        }
         if (!doc_id || doc_id=='0') {
 
             $('#selecting_driver').change(function () {
@@ -620,6 +624,7 @@ if (isset($this->request->params['pass'][1])) {
     }
     //showforms(doc_type);
     function showforms(form_type) {
+        
         $('.moredocxs').show();
         $('.btndocs').show();
         $('.clients_select').hide();
@@ -764,6 +769,7 @@ if (isset($this->request->params['pass'][1])) {
                 // debugger;
                 var url = '<?php echo $this->request->webroot;?>documents/getOrderData/' + client_id + '/' + doc_id + '/?document=1<?php if(isset($_GET['order_id'])){?>&order_id=<?php echo $_GET['order_id'];}?>',
                     param = {form_type: ftype};
+                    
                 //alert(url);
                 $.getJSON(url, param, function (res) {
                     if (res) {
