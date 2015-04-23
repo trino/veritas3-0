@@ -324,13 +324,13 @@ class DocumentsController extends AppController{
                 if(!isset($_GET['order_id']))
                     $ps_detail = TableRegistry::get('pre_screening')->find()->where(['document_id' => $did])->first();
                 else
-                    $ps_detail = TableRegistry::get('pre_screening')->find()->where(['order_id' => $did])->first();
+                    $ps_detail = TableRegistry::get('pre_screening')->find()->where(['order_id' => $_GET['order_id']])->first();
                 $this->set('ps_detail',$ps_detail);
 
                 if(!isset($_GET['order_id']))
                     $deval_detail = TableRegistry::get('road_test')->find()->where(['document_id' => $did])->first();
                 else
-                    $deval_detail = TableRegistry::get('road_test')->find()->where(['order_id' => $did])->first();
+                    $deval_detail = TableRegistry::get('road_test')->find()->where(['order_id' => $_GET['order_id']])->first();
                 $this->set('deval_detail',$deval_detail);
 
 
@@ -724,13 +724,13 @@ class DocumentsController extends AppController{
             if(!isset($_GET['order_id']))
                 $ps_detail = TableRegistry::get('pre_screening')->find()->where(['document_id' => $did])->first();
             else
-                $ps_detail = TableRegistry::get('pre_screening')->find()->where(['order_id' => $did])->first();
+                $ps_detail = TableRegistry::get('pre_screening')->find()->where(['order_id' => $_GET['order_id']])->first();
             $this->set('ps_detail',$ps_detail);
 
             if(!isset($_GET['order_id']))
                 $deval_detail = TableRegistry::get('road_test')->find()->where(['document_id' => $did])->first();
             else
-                $deval_detail = TableRegistry::get('road_test')->find()->where(['order_id' => $did])->first();
+                $deval_detail = TableRegistry::get('road_test')->find()->where(['order_id' => $_GET['order_id']])->first();
             $this->set('deval_detail',$deval_detail);
 
 

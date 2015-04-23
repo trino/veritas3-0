@@ -769,7 +769,7 @@ if (isset($this->request->params['pass'][1])) {
                 // debugger;
                 var url = '<?php echo $this->request->webroot;?>documents/getOrderData/' + client_id + '/' + doc_id + '/?document=1<?php if(isset($_GET['order_id'])){?>&order_id=<?php echo $_GET['order_id'];}?>',
                     param = {form_type: ftype};
-                    
+                    //alert(ftype);
                 //alert(url);
                 $.getJSON(url, param, function (res) {
                     if (res) {
@@ -949,6 +949,7 @@ if (isset($this->request->params['pass'][1])) {
                             }
 
                         } else if (ftype == "driver_evaluation_form.php") {
+                            
                             $('#form_tab3').form('load', res);
 
                             if (res.transmission_manual_shift == 1) {
@@ -978,6 +979,7 @@ if (isset($this->request->params['pass'][1])) {
                             }
 
                             if (res.fuel_tank == 1) {
+                                //alert('test');
                                 $('#form_tab3').find('input[name="fuel_tank"]').closest('span').addClass('checked')
                             }
                             if (res.all_gauges == 1) {
