@@ -183,6 +183,25 @@
                 $sur_att = TableRegistry::get('doc_attachments');
                 $sub6['att'] = $sur_att->find()->where(['order_id' => $did, 'sub_id' => 6])->all();
                 $this->set('sub6', $sub6);
+                $docuu = TableRegistry::get('Documents');
+
+            $queryy = $docuu->find()->where(['order_id' => $did])->first();
+            $sub_doc = TableRegistry::get('Subdocuments');
+            $sd = $sub_doc->find()->all();
+
+            foreach($sd as $s)
+            {
+                if($s->id >20)
+                {
+                    if ($queryy->sub_doc_id == $s->id)
+                    {
+                        $mods = TableRegistry::get($s->table_name);
+                        
+                            $mod = $mods->find()->where(['order_id' => $did])->first();
+                        $this->set($s->table_name, $mod);
+                    }
+                }
+            }
             }
             $this->render('addorder');
         }
@@ -342,6 +361,26 @@
                 $edu_att = TableRegistry::get('doc_attachments');
                 $sub4['att'] = $edu_att->find()->where(['order_id' => $did, 'sub_id' => 42])->all();
                 $this->set('sub4', $sub4);
+                
+                $docuu = TableRegistry::get('Documents');
+
+            $queryy = $docuu->find()->where(['order_id' => $did])->first();
+            $sub_doc = TableRegistry::get('Subdocuments');
+            $sd = $sub_doc->find()->all();
+
+            foreach($sd as $s)
+            {
+                if($s->id >20)
+                {
+                    if ($queryy->sub_doc_id == $s->id)
+                    {
+                        $mods = TableRegistry::get($s->table_name);
+                        
+                            $mod = $mods->find()->where(['order_id' => $did])->first();
+                        $this->set($s->table_name, $mod);
+                    }
+                }
+            }
             }
 
             $this->LoadSubDocs($_GET["forms"]);
@@ -1298,6 +1337,7 @@
                 $prod = $Table->find('all', array('conditions' => array("OR" => array( array('LOWER(Acronym)' => $ordertype),array('LOWER(Name)' => $ordertype)))));
                 $this->set('theproduct', $prod->first());
             }
+
             $this->set('thedocuments',  $return);
             return $return;
         }

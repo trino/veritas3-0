@@ -621,13 +621,16 @@ function provinces($name){
                         $.ajax({
                             url: '<?php echo $this->request->webroot;?>profiles/getProfileById/' + prof_id + '/1',
                             success: function (res2) {
+
+                                if (res2) {
+
                                 var response = JSON.parse(res2);
                                 //alert(res2);
 
-                                var app_name = res2.replace('{"applicant_phone_number":"','');
-                                var app_name = app_name.replace('","aplicant_name":"',',');
-                                var app_name = app_name.replace('","applicant_email":"',',');
-                                var app_name = app_name.replace('"}','');
+                                var app_name = res2.replace('{"applicant_phone_number":"', '');
+                                var app_name = app_name.replace('","aplicant_name":"', ',');
+                                var app_name = app_name.replace('","applicant_email":"', ',');
+                                var app_name = app_name.replace('"}', '');
                                 var app_name_arr = app_name.split(',');
                                 app_name = app_name_arr[1];
                                 //app_name = app_name.replace('","applicant_email":"ttt@ttt.com"}','');
@@ -645,7 +648,7 @@ function provinces($name){
 
                                     }
                                 });
-
+                            }
 
                             }
                         });
@@ -799,7 +802,11 @@ function provinces($name){
                         $.ajax({
                             url: '<?php echo $this->request->webroot;?>profiles/getProfileById/' + prof_id + '/2',
                             success: function (res2) {
-                                var response = JSON.parse(res2);
+
+
+                                if (res2) {
+
+                                    var response = JSON.parse(res2);
 
                                 $('#form_tab2').find(':input').each(function () {
                                     var name_attr = $(this).attr('name');
@@ -813,7 +820,7 @@ function provinces($name){
                                     }
 
                                 });
-                            }
+                            }}
                         });
                     }
 
@@ -1172,20 +1179,24 @@ function provinces($name){
                         $.ajax({
                             url: '<?php echo $this->request->webroot;?>profiles/getProfileById/' + prof_id + '/3',
                             success: function (res2) {
-                                var response = JSON.parse(res2);
-                                $('#form_tab3').find(':input').each(function () {
-                                    var name_attr = $(this).attr('name');
 
-                                    //alert(name_attr);
-                                    if (response[name_attr]) {
+                                if (res2) {
 
-                                        $(this).val(response[name_attr]);
-                                        $(this).attr('disabled', 'disabled');
+                                    var response = JSON.parse(res2);
+                                    $('#form_tab3').find(':input').each(function () {
+                                        var name_attr = $(this).attr('name');
+
+                                        //alert(name_attr);
+                                        if (response[name_attr]) {
+
+                                            $(this).val(response[name_attr]);
+                                            $(this).attr('disabled', 'disabled');
 
 
-                                    }
+                                        }
 
-                                });
+                                    });
+                                }
                             }
                         });
                     }
@@ -1214,20 +1225,23 @@ function provinces($name){
                         $.ajax({
                             url: '<?php echo $this->request->webroot;?>profiles/getProfileById/' + prof_id + '/4',
                             success: function (res2) {
-                                var response = JSON.parse(res2);
-                                $('#form_consent').find(':input').each(function () {
-                                    var name_attr = $(this).attr('name');
 
-                                    //alert(name_attr);
-                                    if (response[name_attr]) {
+                                if (res2) {
 
-                                        $(this).val(response[name_attr]);
-                                        $(this).attr('disabled', 'disabled');
+                                    var response = JSON.parse(res2);
+                                    $('#form_consent').find(':input').each(function () {
+                                        var name_attr = $(this).attr('name');
 
-                                    }
+                                        //alert(name_attr);
+                                        if (response[name_attr]) {
 
-                                });
+                                            $(this).val(response[name_attr]);
+                                            $(this).attr('disabled', 'disabled');
 
+                                        }
+
+                                    });
+                                }
                             }
                         });
                     }

@@ -1847,47 +1847,49 @@
 
         function getProfileById($id, $sub)
         {
-            $q = TableRegistry::get('Profiles');
-            $query = $q->find();
-            $que = $query->select()->where(['id' => $id])->first();
+            if($id) {
+                $q = TableRegistry::get('Profiles');
+                $query = $q->find();
+                $que = $query->select()->where(['id' => $id])->first();
 
-            if ($sub == 1) {
-                $arr['applicant_phone_number'] = $que->phone;
-                $arr['aplicant_name'] = $que->fname . ' ' . $que->lname;
-                $arr['applicant_email'] = $que->email;
-            }
-            if ($sub == 2) {
-                $arr['street_address'] = $que->street;
-                $arr['city'] = $que->city;
-                $arr['state_province'] = $que->province;
-                $arr['postal_code'] = $que->postal;
-                $arr['last_name'] = $que->lname;
-                $arr['first_name'] = $que->fname;
-                $arr['phone'] = $que->phone;
-                $arr['email'] = $que->email;
-            }
-            if ($sub == 3) {
-                $arr['driver_name'] = $que->fname . ' ' . $que->lname;
-                $arr['d_l'] = $que->driver_license_no;
-            }
-            if ($sub == 4) {
-                $arr['last_name'] = $que->lname;
-                $arr['first_name'] = $que->fname;
-                $arr['mid_name'] = $que->mname;
-                $arr['sex'] = $que->gender;
-                $arr['birth_date'] = $que->dob;
-                $arr['phone'] = $que->phone;
-                $arr['current_city'] = $que->city;
-                $arr['current_province'] = $que->province;
-                $arr['current_postal_code'] = $que->postal;
-                $arr['driver_license_number'] = $que->driver_license_no;
-                $arr['driver_license_issued'] = $que->driver_province;
-                $arr['current_street_address'] = $que->street;
-                $arr['applicants_email'] = $que->email;
-            }
+                if ($sub == 1) {
+                    $arr['applicant_phone_number'] = $que->phone;
+                    $arr['aplicant_name'] = $que->fname . ' ' . $que->lname;
+                    $arr['applicant_email'] = $que->email;
+                }
+                if ($sub == 2) {
+                    $arr['street_address'] = $que->street;
+                    $arr['city'] = $que->city;
+                    $arr['state_province'] = $que->province;
+                    $arr['postal_code'] = $que->postal;
+                    $arr['last_name'] = $que->lname;
+                    $arr['first_name'] = $que->fname;
+                    $arr['phone'] = $que->phone;
+                    $arr['email'] = $que->email;
+                }
+                if ($sub == 3) {
+                    $arr['driver_name'] = $que->fname . ' ' . $que->lname;
+                    $arr['d_l'] = $que->driver_license_no;
+                }
+                if ($sub == 4) {
+                    $arr['last_name'] = $que->lname;
+                    $arr['first_name'] = $que->fname;
+                    $arr['mid_name'] = $que->mname;
+                    $arr['sex'] = $que->gender;
+                    $arr['birth_date'] = $que->dob;
+                    $arr['phone'] = $que->phone;
+                    $arr['current_city'] = $que->city;
+                    $arr['current_province'] = $que->province;
+                    $arr['current_postal_code'] = $que->postal;
+                    $arr['driver_license_number'] = $que->driver_license_no;
+                    $arr['driver_license_issued'] = $que->driver_province;
+                    $arr['current_street_address'] = $que->street;
+                    $arr['applicants_email'] = $que->email;
+                }
 
-            echo json_encode($arr);
-            die;
+                echo json_encode($arr);
+                die;
+            }else{die();}
         }
 
         public
