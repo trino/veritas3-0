@@ -166,7 +166,7 @@ function randomcolor(){
         }
 
         function makeblock($debug, $URL, $Name, $Icon = "icon-docs", $Color= "bg-grey-cascade"){//tile
-            if(!$debug){$Color= "bg-grey-cascade";}
+         //   if(!$debug){$Color= "bg-grey-cascade";}
             if(!$Icon){$Icon = "icon-docs";}
             echo '<a href="' .  $URL . '" class="tile ' . $Color;
             echo '" style="display: block;"><div class="tile-body"><i class="' . $Icon . '"></i></div><div class="tile-object">';
@@ -196,7 +196,7 @@ function randomcolor(){
                         if($product->Bypass==1) {//change to ->Bypass When the parameter exists
                             $URL = "orders/addorder/" . $AssignedClient . "/?driver=0&order_type=" . $product->Acronym . "&forms=" . $product->doc_ids;
                         }
-                        makeblock($debug, $URL, $product->Name, $product->Icon, "bg-green");
+                        makeblock($debug, $URL, $product->Name, $product->Icon, "bg-red");
                     }
                 }
             }

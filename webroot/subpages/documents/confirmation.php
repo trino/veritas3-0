@@ -67,12 +67,12 @@
         </div>
 
 
-        <label class="control-label col-md-12" style="margin-top: 5px;">Driver Name: </label>
+        <!--label class="control-label col-md-12" style="margin-top: 5px;">Driver Name: </label>
 
         <div class="col-md-12">
             <input type="text" class="form-control" name="conf_driver_name" id="conf_driver_name"
                    value="<?php if (isset($modal->conf_driver_name)) echo $modal->conf_driver_name; ?>"/>
-        </div>
+        </div-->
 
 
         <label class="control-label col-md-12" style="margin-top: 5px;">Date: </label>

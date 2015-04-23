@@ -1332,9 +1332,12 @@
             }
 
             if (isset($_GET["order_type"])){
-                $prod = TableRegistry::get('product_types')->find()->where(['LOWER(Name)'=> strtolower($_GET["order_type"])])->first();
-                $this->set('theproduct', $prod);
+                $Table = TableRegistry::get('product_types');//->find()->where(['LOWER(Name)'=> strtolower($_GET["order_type"])])->first();
+                $ordertype=strtolower(urldecode($_GET["order_type"]));
+                $prod = $Table->find('all', array('conditions' => array("OR" => array( array('LOWER(Acronym)' => $ordertype),array('LOWER(Name)' => $ordertype)))));
+                $this->set('theproduct', $prod->first());
             }
+
             $this->set('thedocuments',  $return);
             return $return;
         }
