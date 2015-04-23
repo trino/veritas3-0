@@ -2778,8 +2778,41 @@
     }
 
     function producteditor(){
+        if(isset($_GET["Name"])){
+            $this->SaveFields('product_types', $_GET, "Acronym");
+        }
+
         $this->set("producttypes",  TableRegistry::get('product_types')->find('all') );
         $this->set("colors", TableRegistry::get('color_class')->find('all') );
+
+        $this->set("blockscols", $this->getColumnNames('blocks'));
+        $this->set("sidebarcols", $this->getColumnNames('sidebar'));
+
+        $this->set("order_products",  TableRegistry::get('order_products')->find('all') );
+        $this->set("subdocuments", TableRegistry::get('subdocuments')->find('all') );
+    }
+
+    function SaveFields($Table, $Data, $PrimaryKey){
+        $Table = TableRegistry::get($Table);
+        $exists =  $Table->find('all', array('conditions' => array([$PrimaryKey => $Data[$PrimaryKey]])))->first();
+        unset($Data['submit']);
+        if($exists){
+            $Table->query()->update()->set($Data)->where([$PrimaryKey => $Data[$PrimaryKey]])->execute();
+            $this->Flash->success($Data[$PrimaryKey] . ' has been updated.');
+        } else {
+            $Table->query()->insert(array_keys($Data))->values($Data)->execute();
+            $this->Flash->success($Data[$PrimaryKey] . ' has been created.');
+        }
+    }
+    function getColumnNames($Table){
+        $Columns = TableRegistry::get($Table)->find('all')->first();
+        $Data = $this->getProtectedValue($Columns, "_properties");
+        return array_keys($Data);
+    }
+    function getProtectedValue($obj,$name) {
+        $array = (array)$obj;
+        $prefix = chr(0).'*'.chr(0);
+        return $array[$prefix.$name];
     }
 
 

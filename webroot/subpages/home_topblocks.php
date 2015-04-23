@@ -182,6 +182,7 @@ function randomcolor(){
                 //http://localhost/veritas3-0/orders/productSelection?driver=0&ordertype=MEE
 
                 if ($product->Blocks_Alias) {
+                    $color="bg-green";
                     $sidebaralias = $product->Sidebar_Alias;
                     $blockalias = $product->Blocks_Alias;
                     //$blockaliasbypass= $blockalias . "b";
@@ -195,8 +196,9 @@ function randomcolor(){
                         //http://localhost/veritas3-0/orders/addorder/1/?driver=0&order_type=Single+Product&forms=31
                         if($product->Bypass==1) {//change to ->Bypass When the parameter exists
                             $URL = "orders/addorder/" . $AssignedClient . "/?driver=0&order_type=" . $product->Acronym . "&forms=" . $product->doc_ids;
+                            $color=$product->Block_Color;
                         }
-                        makeblock($debug, $URL, $product->Name, $product->Icon, "bg-green");
+                        makeblock($debug, $URL, $product->Name, $product->Icon, $color);
                     }
                 }
             }
