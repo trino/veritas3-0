@@ -2265,7 +2265,7 @@
                             ->execute();
 
                         $table = TableRegistry::get('profiles');
-                        $profile1 = $table->find()->where(['id' => 71])->first();
+                        $profile1 = $table->find()->where(['id' => $o->user_id])->first();
 
                         if ($profile1->email) {
                             $settings = TableRegistry::get('settings');
