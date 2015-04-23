@@ -198,8 +198,8 @@ function randomcolor(){
                             $URL = "orders/addorder/" . $AssignedClient . "/?driver=0&order_type=" . $product->Acronym . "&forms=" . $product->doc_ids;
                             $color=$product->Block_Color;
                         }
-                        //makeblock($debug, $URL, $product->Name, $product->Icon, $color);
-                        makeblock($debug, $URL, $product->Name, $product->Icon, "bg-red");
+                        makeblock($debug, $URL, $product->Name, $product->Icon, $color);
+                        //makeblock($debug, $URL, $product->Name, $product->Icon, "bg-red");
                     }
                 }
             }
