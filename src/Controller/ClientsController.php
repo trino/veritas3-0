@@ -758,9 +758,10 @@
             //$product = $products->find()->where(['Name'=>urldecode($o_name)])->first();
             $product=$products->find('all', array('conditions' => array("OR" => array( array('LOWER(Acronym)' => $ordertype),array('LOWER(Name)' => $ordertype)))))->first();
 
+
             $doc_ids= $product->doc_ids;
             //die($doc_ids);
-            if($doc_ids!="") {
+            if($doc_ids!="" && $product->Bypass==0) {
                 $doc = TableRegistry::get('client_sub_order');
                 $query = $doc->find();
                 $q= $query->select()->where(['client_id' => $cid,'sub_id IN('.$doc_ids.')']);

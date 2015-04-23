@@ -186,11 +186,16 @@ function randomcolor(){
                     $blockalias = $product->Blocks_Alias;
                     //$blockaliasbypass= $blockalias . "b";
                     if ($product->Acronym == "MEE"){$MEEname = $product->Name;}
-                    if ($sidebar->$sidebaralias ==1 && $block->$blockalias =='1' && $product->Visible==1) {
+                    if ($blockalias && $block->$blockalias =='1' && $product->Visible==1) {
                         $URL="orders/productSelection?driver=0&ordertype=" . $product->Acronym;//ie: http://localhost/veritas3-0/orders/productSelection?driver=0&ordertype=MEE
                         //if($block->$blockaliasbypass==1){//ie: http://localhost/veritas3-0/orders/addorder/1/?driver=132&division=1&order_type=Driver+Order&forms=99
                         //    $URL="orders/addorder/1/?driver=" . $userid . "&order_type=" . $product->Name . "&forms=".$formlist;
                         //}
+
+                        //http://localhost/veritas3-0/orders/addorder/1/?driver=0&order_type=Single+Product&forms=31
+                        if($product->Bypass==1) {//change to ->Bypass When the parameter exists
+                            $URL = "orders/addorder/" . $AssignedClient . "/?driver=0&order_type=" . $product->Acronym . "&forms=" . $product->doc_ids;
+                        }
                         makeblock($debug, $URL, $product->Name, "icon-docs", "bg-green");
                     }
                 }

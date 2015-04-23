@@ -44,11 +44,25 @@ class PagesController extends AppController {
         else
         $this->set('hideclient',0);
 		$this->set('client', $this->paginate($this->Clients));
-        $this->set('products',  TableRegistry::get('product_types')->find('all'));
+
+        $this->loadproducts();
 
         $this->set('forms',  TableRegistry::get('order_products')->find('all'));
         $this->getsubdocument_topblocks($userid);
 	}
+
+    function loadproducts($VariableName = 'products'){
+        $products = TableRegistry::get('product_types')->find('all');
+        $this->set($VariableName,  $products);
+    }
+    function getenabledprovinces($ProductID, $Province = "ALL"){
+        $forms = array();
+        $items = TableRegistry::get('order_provinces')->find("all")->where(['ProductID' => $ProductID, "Province" => $Province]);
+        foreach($items as $item){
+            $forms[] = $item->ProductID;
+        }
+        return implode(",", $forms);
+    }
 
     function org_chart(){
     }

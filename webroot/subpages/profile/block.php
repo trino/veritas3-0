@@ -334,7 +334,7 @@
                                     <div class="clearfix"></div>
                                     <div class="col-md-12 nopad martop yesno">
                                         <?php foreach ($products as $product) {
-                                            if($product->Visible==1) {
+                                            if($product->Visible==1 && $product->Sidebar_Alias) {
                                                 echo '<label class="uniform-inline">';
                                                 $alias = $product->Sidebar_Alias;
                                                 echo "<input " . $is_disabled . ' type="checkbox" name="side[' . $alias . ']" value="1" ';
@@ -457,7 +457,7 @@
                                                 printsubdocradio($is_disabled, $sub, $prosubdoc, 1, "View Only");
                                                 printsubdocradio($is_disabled, $sub, $prosubdoc, 2, "Create Only");
                                                 printsubdocradio($is_disabled, $sub, $prosubdoc, 3, "Both");
-                                                printsubdocradio($is_disabled, $sub, $prosubdoc, 1, "Top block", "Checkbox", "topblock", "Topblock");
+                                                //printsubdocradio($is_disabled, $sub, $prosubdoc, 1, "Top block", "Checkbox", "topblock", "Topblock");
                                             }
                                             function printsubdocradio($is_disabled, $sub, $prosubdoc, $Value, $Text, $Type="Radio", $Section = "profile", $Field='display'){
                                                 echo '<label class="uniform-inline"><input ' . $is_disabled . ' type="' . $Type . '" name="' . $Section . '[';

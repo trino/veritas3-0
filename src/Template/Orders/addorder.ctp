@@ -105,7 +105,7 @@ function provinces($name){
     $DriverID = $_GET["driver"];
     if ($DriverID>0 && is_object($p)){$DriverProvince = $p->driver_province;}
     echo "<SCRIPT>var DriverProvince = '" . $DriverProvince . "';</SCRIPT>";
-    if($theproduct->doc_ids){
+    if($theproduct->doc_ids && $theproduct->Bypass==0){
         $forms = explode(",", $theproduct->doc_ids);
         $theproduct->BypassForms = array();
         foreach($forms as $form){
