@@ -1709,10 +1709,10 @@ function provinces($name){
                                 recruiter_signature: $('#recruiter_signature').val()
                             },
                             success:function(){
-                                window.location = base_url+'orders/orderslist?flash';
+                           //     window.location = base_url+'orders/orderslist?flash';
                             },
                             error:function(){
-                                window.location = base_url+'orders/orderslist?flash';
+                             //   window.location = base_url+'orders/orderslist?flash';
                             }
                         });
                     }
