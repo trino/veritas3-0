@@ -754,7 +754,10 @@
         }
         function orders_doc($cid,$o_name){
             $products = TableRegistry::get('product_types');
-            $product = $products->find()->where(['Name'=>urldecode($o_name)])->first();
+            $ordertype=strtolower(urldecode($o_name));
+            //$product = $products->find()->where(['Name'=>urldecode($o_name)])->first();
+            $product=$products->find('all', array('conditions' => array("OR" => array( array('LOWER(Acronym)' => $ordertype),array('LOWER(Name)' => $ordertype)))))->first();
+
             $doc_ids= $product->doc_ids;
             //die($doc_ids);
             if($doc_ids!="") {

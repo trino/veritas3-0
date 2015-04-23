@@ -334,12 +334,13 @@
                                     <div class="clearfix"></div>
                                     <div class="col-md-12 nopad martop yesno">
                                         <?php foreach ($products as $product) {
-                                            echo '<label class="uniform-inline">';
-                                            $alias = $product->Sidebar_Alias;
-                                            echo "<input " . $is_disabled . ' type="checkbox" name="side[' . $alias . ']" value="1" ';
-                                            if (isset($sidebar) && $sidebar->$alias == 1) echo "checked";
-                                            echo "/>" . $product->Name . "</label> ";
-                                        } ?>
+                                            if($product->Visible==1) {
+                                                echo '<label class="uniform-inline">';
+                                                $alias = $product->Sidebar_Alias;
+                                                echo "<input " . $is_disabled . ' type="checkbox" name="side[' . $alias . ']" value="1" ';
+                                                if ($alias && isset($sidebar) && $sidebar->$alias == 1) echo "checked";
+                                                echo "/>" . $product->Name . "</label> ";
+                                            }} ?>
                                     </div>
                                 </td>
                             </tr>

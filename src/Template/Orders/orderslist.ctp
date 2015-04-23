@@ -181,8 +181,7 @@ function getColor($products, $OrderType, $Default = "blue"){
                             <?php
                                 $row_color_class = "odd";
 
-                                function hasget($name)
-                                {
+                                function hasget($name){
                                     if (isset($_GET[$name])) {
                                         return strlen($_GET[$name]) > 0;
                                     }
@@ -226,10 +225,7 @@ function getColor($products, $OrderType, $Default = "blue"){
                                         <td style="min-width: 145px;">
 
                                             <?php
-
-
-
-                                                if ($order->order_type) {
+                                            if ($order->order_type) {
                                                     echo '<div style="" class="dashboard-stat ';
                                                     /*
                                                     $colors = array("Order_Products" => "green-haze", "Order_MEE" => "red-intense", "ReQualify" => "blue-madison");
@@ -239,7 +235,9 @@ function getColor($products, $OrderType, $Default = "blue"){
                                                         echo "blue";
                                                     }
                                                     */
-                                                    echo getColor($products, $order->order_type );
+                                                    //echo getColor($products, $order->order_type );
+                                                    $ordertype = FindIterator($products, "Acronym", $order->order_type);
+                                                    echo $ordertype->ButtonColor;
                                                     ?>">
                                                     <!--div class="whiteCorner"></div-->
                                                     <!--div class="visual" style="height: 40px;">
@@ -273,7 +271,7 @@ function getColor($products, $OrderType, $Default = "blue"){
 
 
 
-                                                        <?= h($order->order_type); //it won't let me put it in the desc   ?>
+                                                        <?= h(getField($ordertype, "Name", "English")); //it won't let me put it in the desc   ?>
                                                     </a>
                                                     <?php echo "</div>";
                                                 } else {

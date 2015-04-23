@@ -114,7 +114,7 @@ function provinces($name){
     }
 
     if($debugging){
-        echo "<BR>";
+        echo "<BR>The Product:";
         debug($theproduct);
     }
 
@@ -1654,7 +1654,7 @@ function provinces($name){
             setTimeout(function(){ 
                 $.ajax({
                 url: '<?php echo $this->request->webroot;?>orders/webservice/<?php echo $_GET['order_type'];?>/<?php echo $_GET['forms']; ?>/' + $('#did').val() +'/' + $('#uploaded_for').val(),
-                success:function(){   
+                success:function(){
                     window.location = URL;
                 },
                 error:function(){

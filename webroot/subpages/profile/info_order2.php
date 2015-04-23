@@ -66,7 +66,7 @@ function makeform($ordertype, $cols, $color, $Title, $Description, $products, $D
     printbutton($ordertype, $_this->request->webroot, 3, $tempstr,$_this, $Otype, $inforequired);
 
     echo '</div></div></div>';
-    return $Otype;
+    return $ordertype;//$Otype;
 }
 
 function showproduct($ordertype, $product, $Blocked){
