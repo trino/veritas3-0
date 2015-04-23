@@ -1737,10 +1737,15 @@ class DocumentComponent extends Component
             return $email_arr;
         }
         
+       
         function getEmail($id){
             $query = TableRegistry::get('Profiles');
             $pro = $query->find()->where(['id'=>$id])->first();
+			if($pro){
             return $pro->email;
+			}else{
+				return "";
+			}
         }
         
         function getUrl(){
