@@ -196,7 +196,7 @@ function randomcolor(){
                         if($product->Bypass==1) {//change to ->Bypass When the parameter exists
                             $URL = "orders/addorder/" . $AssignedClient . "/?driver=0&order_type=" . $product->Acronym . "&forms=" . $product->doc_ids;
                         }
-                        makeblock($debug, $URL, $product->Name, "icon-docs", "bg-green");
+                        makeblock($debug, $URL, $product->Name, $product->Icon, "bg-green");
                     }
                 }
             }

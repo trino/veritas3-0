@@ -2776,5 +2776,12 @@
         if($Language == "English" || $Language == "Debug"){ return $Fieldname; }
         return $Fieldname . $Language;
     }
+
+    function producteditor(){
+        $this->set("producttypes",  TableRegistry::get('product_types')->find('all') );
+        $this->set("colors", TableRegistry::get('color_class')->find('all') );
+    }
+
+
     }
 ?>

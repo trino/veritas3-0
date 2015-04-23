@@ -134,6 +134,9 @@ function makedropdownoption($Key, $Value, $TheValue){
                             <li <?php if(isset($_GET['activedisplay'])){ ?> class="active" <?php } ?> >
                                     <a href="#tab_1_13" data-toggle="tab">Add/Edit Documents</a>
                             </li>
+                            <LI>
+                                <A HREF="producteditor">Product Types</A>
+                            </LI>
                             <?php
                             }
                         }
