@@ -93,7 +93,7 @@ if(isset($disabled)) { $is_disabled = 'disabled="disabled"'; }
   <div class="clearfix"></div>
 </div>
 <div class="clearfix"></div>
-<div class="social-icons col-md-12"> <label class="control-label">Known Social Media Information (Twitter, Facebook, Blog, LinkedIn, etc.)</label></div>
+<div class=" col-md-12"> <label class="control-label">Known Social Media Information (Twitter, Facebook, Blog, LinkedIn, etc.)</label></div>
 
 <div class="col-md-12" style="padding: 0px;">
   <div class="col-md-4"><label for="Twitter" class="control-label">  Twitter: </label>

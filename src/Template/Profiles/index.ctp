@@ -73,7 +73,7 @@ $strings = CacheTranslations($language, "profiles_%",s($settings));//,$registry)
     <a href="javascript:window.print();" class="floatright btn btn-info"><?= $strings["dashboard_print"] ?></a>
 
     <?php if ($sidebar->profile_create == 1) { ?>
-        <a href="<?php echo WEB_ROOT; ?>profiles/add" class="floatright btn btn-primary btnspc">
+        <a href="<?php echo $this->request->webroot; ?>profiles/add" class="floatright btn btn-primary btnspc">
            <?= $strings["profiles_createprofile"]; ?></a>
     <?php } ?>
 

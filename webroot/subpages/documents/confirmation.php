@@ -58,7 +58,7 @@
 <div class="row col-md-4">
 
     <div class="form-group">
-        <label class="control-label col-md-12">Recruiter Name: </label>
+        <label class="control-label col-md-12">Submitted By: </label>
 
         <div class="col-md-12">
             <input disabled="disabled" type="text" class="form-control" name="conf_recruiter_name"

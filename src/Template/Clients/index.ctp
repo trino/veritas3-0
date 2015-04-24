@@ -18,7 +18,7 @@
 			<a href="javascript:window.print();" class="floatright btn btn-info">Print</a>
 
         <?php  if ($sidebar->client_create == 1) {  ?>
-             <a href="<?php echo WEB_ROOT;?>clients/add" class="floatright btn btn-primary btnspc">
+             <a href="<?php echo $this->request->webroot; ?>clients/add" class="floatright btn btn-primary btnspc">
                 Create <?php echo ucfirst($settings->client);?></a>
         <?php } ?>
 

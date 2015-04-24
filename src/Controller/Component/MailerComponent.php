@@ -21,7 +21,7 @@ class MailerComponent extends Component
         $email = new Email('default');
         //file_put_contents("royslog.txt", "\r\n" . $path, FILE_APPEND);
 
-        $email->from(['info@'. $path => "ISB MEE"])
+        $email->from(['info@'. $path => $path])
         ->emailFormat('html')
         ->to($to)//$to
         ->subject($subject)

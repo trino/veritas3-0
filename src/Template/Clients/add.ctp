@@ -178,9 +178,10 @@
                                                         <input type="hidden" name="drafts" id="client_drafts"
                                                                value="0"/>
 
+
                                                         <div class="row">
                                                             <input type="hidden" name="image" id="client_img"/>
-                                                            <?php if ($settings->client_option == 0) { ?>
+                                                            <?php if ($settings->client_option == 0 && $settings->mee != "AFIMAC SMI") { ?>
                                                                 <div class="form-group col-md-4">
                                                                     <label class="control-label">Customer Type</label>
                                                                     <select class="form-control" name="customer_type"
@@ -216,21 +217,9 @@
                                                                             }
                                                                         ?>
 
-                                                                        <!--
-                                                        <option value="1"
-                                                                <?php if (isset($client->customer_type) && $client->customer_type == 1) { ?>selected="selected"<?php } ?>>
-                                                            Insurance
-                                                        </option>
-                                                        <option value="2"
-                                                                <?php if (isset($client->customer_type) && $client->customer_type == 2) { ?>selected="selected"<?php } ?>>
-                                                            Fleet
-                                                        </option>
-                                                        <option value="3"
-                                                                <?php if (isset($client->customer_type) && $client->customer_type == 3) { ?>selected="selected"<?php } ?>>
-                                                            Non Fleet
-                                                        </option>-->
                                                                     </select>
                                                                 </div>
+
                                                             <?php } ?>
                                                             <div class="form-group col-md-4">
                                                                 <label

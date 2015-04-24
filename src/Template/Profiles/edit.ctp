@@ -308,7 +308,7 @@
                                 <?php if (isset($p->fname)) echo ucwords($p->fname . ' ' . $p->lname); ?>
                             </div>
 
-                            <?php if (isset($p->isb_id) && ($p->isb_id != "")) {
+                            <?php if (isset($p->isb_id) && ($p->isb_id != "") && ( $settings->mee =="MEE")) {
                                 ?>
                                 <div class="profile-usertitle-job">
                                     <small>

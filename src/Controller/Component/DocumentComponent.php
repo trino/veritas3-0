@@ -75,7 +75,11 @@ class DocumentComponent extends Component
                 if (isset($_POST['division']))
                     $arr['division'] = urldecode($_POST['division']);
                 $arr['conf_recruiter_name'] = urldecode($_POST['conf_recruiter_name']);
-                $arr['conf_driver_name'] = urldecode($_POST['conf_driver_name']);
+                if(isset($_POST['conf_driver_name'])) {
+                    $arr['conf_driver_name'] = urldecode($_POST['conf_driver_name']);
+                }else{
+                    $arr['conf_driver_name'] ="";
+                }
                 $arr['conf_date'] = urldecode($_POST['conf_date']);
                 //$arr['order_type'] = $_POST['sub_doc_id'];
                 if(!$did || $did == '0')

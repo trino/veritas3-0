@@ -20,11 +20,11 @@
 	</div>
 
 
-                <?php 
+                <?php
 
                 $class = array('blue-madison','red','yellow','purple','green', 'red-intense','yellow-saffron','grey-cascade','blue-steel','blue');
 
-                
+
                 $doc = $this->requestAction('/documents/getDocument');
                 $i=0;
                 if($doc){
@@ -46,7 +46,7 @@
 
     					<div class="dashboard-stat <?php echo $class[$i]; ?>">
                             <div class="whiteCorner"></div>
-    
+
                             <div class="visual">
     							<i class="fa fa-copy"></i>
     						</div>
@@ -56,22 +56,22 @@
     								 <?php echo ucfirst($d->title); ?>
     							</div>
     						</div>
-                          
+
     					       <a class="more" href="<?php echo $this->request->webroot;?>documents/type/<?php echo ($d->id);?>">
     						View more <i class="m-icon-swapright m-icon-white"></i>
     						</a>
-                           
-                            
+
+
     					</div>
                         <div class="dusk"></div>
-    
+
                     </div>
                         <?php
                         }
                         $i++;
                     }
-                    
+
                 }
                  ?>
-		
+
 			</div>

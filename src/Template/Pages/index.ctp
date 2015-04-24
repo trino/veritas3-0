@@ -13,7 +13,7 @@ die();
 <script type="text/javascript" src="<?= $this->request->webroot;?>js/datetime.js"></script>
 <body onLoad="ajaxpage('schedules/timezone');">
 
-<div class="col-md-9" style="padding: 0;">
+<div class="col-md-8" style="padding: 0;">
 <h3 class="page-title">
     <?php echo $settings->mee;?> Dashboard <?php if($settings->mee == 'MEE'){ ?><small>Driver Qualification System</small><?php } ?>
 
@@ -33,7 +33,7 @@ die();
         $logomain = $this->requestAction('/clients/getLogo');
         if($logomain){
             ?>
-            <div class="mainlogo col-md-3" style="text-align: right;padding:0;">
+            <div class="mainlogo col-md-4" style="text-align: right;padding:0;">
                 <?php
                     //var_dump($logomain)
                     if(isset($logomain['client']) && $logomain['client'])
@@ -92,10 +92,12 @@ die();
 <div class="clearfix"></div>
 
 <?php include('subpages/home_topblocks.php'); ?>
+
+
+<? if ($settings->mee !="AFIMAC SMI"){ ?>
 <div class="clearfix"></div>
-
 <?php include('subpages/home_blocks.php'); ?>
-
+<?}?>
 <div class="clearfix"></div>
 
 <?php
