@@ -31,6 +31,7 @@
         </div> 
         <div class="clearfix"></div>
         <p>&nbsp;</p>
+        <div class="table-scrollable">
         <table class="table table-bordered">
         <tr>
             <td>
@@ -278,6 +279,7 @@
                  </td>
                 </tr>
                 </table>
+                </div>
             </div>
         </div>
         <p>&nbsp;</p>

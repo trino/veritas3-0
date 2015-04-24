@@ -546,11 +546,14 @@ if (isset($this->request->params['pass'][1])) {
 
 
     client_id = '<?=$cid?>',
-        doc_id = '<?=$did?>';
+    doc_id = '<?=$did?>';
     $(function(){
         if(doc_id && doc_id != '0')
         {
+            <?php if(isset($_GET['type'])){ ?>
+            
             showforms('<?php $subdet = $this->requestAction('/orders/getSubDetail/'.$_GET['type']); echo $subdet->form."?doc_id=".$subdet->id;?>');
+            <?php }?>
         }
         if (!doc_id || doc_id=='0') {
 

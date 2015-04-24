@@ -14,14 +14,25 @@ class MailerComponent extends Component
         $email_from = $url;
         return $email_from;
     }
+    
+    function get_settings()
+   {
+         $settings = TableRegistry::get('settings');
+         $query = $settings->find();
+                 
+         $l = $query->first();
+         return $l;
+   }
 
     function sendEmail($from,$to,$subject,$message){
         //from can be array with this structure array('email_address'=>'Sender name'));
         $path = $this->getUrl();
+        $n =  $this->get_setting();
+        $name = $n->mee;
         $email = new Email('default');
         //file_put_contents("royslog.txt", "\r\n" . $path, FILE_APPEND);
 
-        $email->from(['info@'. $path => $path])
+        $email->from(['info@'. $name => $path])
         ->emailFormat('html')
         ->to($to)//$to
         ->subject($subject)

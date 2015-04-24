@@ -371,7 +371,7 @@ newchart("yellow-casablanca", "icon-doc", ucfirst($settings->document) . "s", "d
 newchart("yellow", "icon-docs", "Orders", "orders", $orderdates, $orders,$startdate,$enddate, $isdraft, $profiletypes, $clienttypes);//new orders
 
 newchart("blue-steel", "fa fa-graduation-cap", "Courses", "courses", $quizdates, $answers ,$startdate,$enddate, $isdraft, $profiletypes, $clienttypes);//new quiz completions
-function FindIterator($ObjectArray, $FieldName, $FieldValue){
+function FindIterator1($ObjectArray, $FieldName, $FieldValue){
     foreach($ObjectArray as $Object){
         if ($Object->$FieldName == $FieldValue){return $Object;}
     }
@@ -400,7 +400,7 @@ function enumsubdocs($thedocs, $date, $chartid, $isdraft, $profiletypes, $client
 					if (is_numeric($doctype)) {
 						//$profiletypes = ['', 'Admin', 'Recruiter', 'External', 'Safety', 'Driver', 'Contact', 'Owner Operator', 'Owner Driver', 'Employee', 'Guest', 'Partner'];
 						//$doctype = $profiletypes[$doctype];
-                        $doctype = FindIterator($profiletypes, "id", $doctype)->title;
+                        $doctype = FindIterator1($profiletypes, "id", $doctype)->title;
 					} else {
 						$doctype = $unknown;
 					}
@@ -418,7 +418,7 @@ function enumsubdocs($thedocs, $date, $chartid, $isdraft, $profiletypes, $client
 					if (is_numeric($doctype)) {
 						//$profiletypes = ['', 'Insurance', 'Fleet', 'Non Fleet'];
 						//$doctype = $profiletypes[$doctype];
-                        $doctype = FindIterator($clienttypes, "id", $doctype)->title;
+                        $doctype = FindIterator1($clienttypes, "id", $doctype)->title;
 					} else {
 						$doctype = $unknown;
 					}

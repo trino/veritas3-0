@@ -51,6 +51,7 @@
         </div>
         <p>&nbsp;</p>
         <div class="col-md-12">
+        <div class="table-scrollable">
             <table class="table table-bordered">
                 <thead>
                     <tr>
@@ -1603,6 +1604,7 @@
                     </tr>
                 </tbody>
             </table>
+            </div>
         </div>
            <div class="addattachment<?php echo $dx->id;?> form-group col-md-12"></div> 
       

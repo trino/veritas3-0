@@ -410,3 +410,10 @@ orange Pricing table
 .dashboard-stat{
 
 }
+
+/* Landscape phones and down */
+@media (max-width: 480px) { 
+    canvas {
+        width:100%;
+    }
+}

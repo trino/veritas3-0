@@ -247,6 +247,7 @@
             <h3>Education</h3>
         </div>
         <div class="col-md-12">
+        <div class="table-scrollable">
             <table class="table table-bordered">
                 <thead>
                     <tr>
@@ -289,6 +290,7 @@
                     </tr>
                 </tbody>
             </table>
+        </div>
         </div>
         
             <p>&nbsp;</p>
@@ -484,6 +486,7 @@
               <p>Collision record for the past three (3) years (attach sheet if more space is needed).</p>
               </div>
               <div class="col-md-12">
+              <div class="table-scrollable">
             <table class="table table-bordered">
                 <thead>
                     <tr>
@@ -516,6 +519,7 @@
                 </tbody>
             </table>
         </div> 
+        </div>
         
         <div class="clearfix"></div>
             <hr />
