@@ -189,15 +189,11 @@
             $sub_doc = TableRegistry::get('Subdocuments');
             $sd = $sub_doc->find()->all();
 
-            foreach($sd as $s)
-            {
-                if($s->id >20)
-                {
-                    if ($queryy->sub_doc_id == $s->id)
-                    {
+            foreach($sd as $s) {
+                if($s->id >20 && is_object($queryy)) {
+                    if ($queryy->sub_doc_id == $s->id) {
                         $mods = TableRegistry::get($s->table_name);
-                        
-                            $mod = $mods->find()->where(['order_id' => $did])->first();
+                        $mod = $mods->find()->where(['order_id' => $did])->first();
                         $this->set($s->table_name, $mod);
                     }
                 }
