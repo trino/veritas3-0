@@ -24,7 +24,7 @@
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     $upload_additional_id = '';
 
-    $startorder1 = true;
+    $startorder1 = false;
     $upload_additional = true; //additional are all attachments in all forms
 
     $uploadbinaryconsent_1603 = true;

@@ -174,7 +174,7 @@
 
 
 
-            <?php if ($sidebar->document == 1) { ?>
+            <?php if ($sidebar->document == 1 &&  $settings->mee != "AFIMAC SMI") { ?>
                 <li class="<?php echo (($this->request['controller'] == 'Documents' && ($this->request['action'] == "index" || $this->request['action'] == "add")) && !isset($_GET['draft'])) ? 'active open' : ''; ?>">
                     <a href="<?php echo $this->request->webroot; ?>documents/index">
                         <i class="icon-doc"></i>

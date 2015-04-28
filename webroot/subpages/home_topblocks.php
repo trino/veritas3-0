@@ -182,7 +182,7 @@ function randomcolor(){
                 //http://localhost/veritas3-0/orders/productSelection?driver=0&ordertype=MEE
 
                 if ($product->Blocks_Alias) {
-                    $color="bg-green";
+                    $color="bg-grey-cascade";
                     $sidebaralias = $product->Sidebar_Alias;
                     $blockalias = $product->Blocks_Alias;
                     //$blockaliasbypass= $blockalias . "b";
@@ -217,8 +217,9 @@ function randomcolor(){
             //$URL = "orders/addorder/1/?driver=" . $userid . "&order_type=" . $MEEname . "&forms=" . $formlist . "&onlyshow=";
             //$URL = "documents/add/" . $AssignedClient . "?type=";
             foreach ($subdoc as $sub) {
+
                 //$prosubdoc = $this->requestAction('/settings/all_settings/0/0/profile/' . $userid . '/' . $sub->id);
-                $prosubdoc = FindIterator($subdoc->Subdocs, "subdoc_id", $sub->id);
+                $prosubdoc = FindIterator($subdoc->Subdocs , "subdoc_id", $sub->id);
                 if ($prosubdoc->Topblock == 1) {
                     //makeblock($debug, $this->request->webroot . $URL . $sub->forms, $sub->title, $sub->icon, "bg-blue");//$sub->id
                 }
@@ -435,9 +436,9 @@ function randomcolor(){
 </div>
 <script>
 $(function(){
-    
+
     $('.date-picker1').datepicker({
-        
+
     })
     //Listen for the change even on the input
     .change(dateChanged)

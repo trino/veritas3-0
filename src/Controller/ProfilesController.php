@@ -1244,7 +1244,7 @@
             $clientcount = $this->Settings->getClientCountByProfile($id);
             $this->set('Clientcount', $clientcount);
             if (isset($_GET['clientflash']) || $clientcount == 0) {
-                $this->Flash->success('Profile created successfully! Please assign profile to at least one client to start placing orders.');
+                $this->Flash->success('Profile created successfully! Please assign profile to at least one client.');
             }
 
             $pr = TableRegistry::get('profiles');
