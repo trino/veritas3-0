@@ -266,7 +266,7 @@
         echo '<INPUT STYLE="float: right" TYPE="BUTTON" NAME="delete" ONCLICK="return deleteproduct();" CLASS="btn btn-danger btnspc" VALUE="Delete">';
     }
 
-    tr("Blocked Products", 6);//order_products
+    tr("Blocked Products", 6, "Select which products will be blocked from the selection list");//order_products
     input("text", "Blocked", getvalue($selectedproduct, "Blocked"));
 
     tr("Product/Document IDs", 6, "If Bypass is enabled: Which products will show when a topblock is clicked. Otherwise it's which forms will show when placing an order");

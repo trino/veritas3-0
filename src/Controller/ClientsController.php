@@ -400,12 +400,11 @@
                                 $sc = $sub_c->newEntity($arr_s);
                                 $sub_c->save($sc);
                             }
-                            if ($_POST['division'] != "") {
-                                $division = nl2br($_POST['division']);
+                            if ($_POST['division'] != "") {//create new division list
+                                $division = nl2br(str_replace(",", "<br />", $_POST['division']));
                                 $division = str_replace(',', '<br />', $division);
                                 $dd = explode("<br />", $division);
                                 $divisions['client_id'] = $client->id;
-
                                 foreach ($dd as $d) {
                                     $divisions['title'] = trim($d);
                                     $divs = TableRegistry::get('client_divison');
@@ -488,7 +487,10 @@
                         ->where(['id' => $id])
                         ->execute();
                     $this->Flash->success(ucfirst($settings->client) . ' saved successfully.');
-                    if ($_POST['division'] != "") {
+                    //if ($_POST['division'] != "") {
+                        $this->overwritedivisions($id, $_POST['division']);
+
+                        /*
                         $division = nl2br($_POST['division']);
                         $dd = explode("<br />", $division);
                         $divisions['client_id'] = $id;
@@ -500,11 +502,11 @@
                             $div = $divs->newEntity($divisions);
                             $divs->save($div);
                             unset($div);
-                        }
+                        }*/
 
                         //die();
 
-                    }
+                    //}
                     $this->loadModel('ClientDocs');
                     $this->ClientDocs->deleteAll(['client_id' => $id]);
                     $client_docs = array_unique($_POST['client_doc']);
@@ -523,6 +525,47 @@
                 }
             }
             die();
+        }
+
+        function overwritedivisions($id, $Divisions){
+            $Table = TableRegistry::get('client_divison');
+            $division = trim(nl2br(str_replace(",", "<br />", $Divisions)));
+            if(!$division){//is empty, delete them all
+                $Table->deleteAll(array('client_id' => $id));
+            } else {//isn't empty
+                $dd = explode("<br />", $division);
+                $ddcount = count($dd);
+                $currentdivision = 0;
+
+                //overwrite existing divisions
+                $divisionlist = $Table->find()->where(['client_id' => $id]);
+                foreach ($divisionlist as $div) {
+                    $dd[$currentdivision]=trim($dd[$currentdivision]);
+                    if($currentdivision < $ddcount){//has a division of this index, use it
+                        $Table->query()->update()->set(['title' => $dd[$currentdivision]])->where([id => $div->id])->execute();
+                    } else {//doesn't have a new division of this index, delete it
+                        $Table->deleteAll(array("id" => $div->id));
+                    }
+                    $currentdivision++;
+                }
+                //there are more new divisions than existing divisions, save the new ones
+                for($temp=$currentdivision; $temp<$ddcount; $temp++){
+                    $dd[$currentdivision]=trim($dd[$currentdivision]);
+                    $Table->query()->insert(['client_id', 'title'])->values(['client_id' => $id, 'title' => $dd[$temp]])->execute();
+                }
+
+                /*
+                $client_division = TableRegistry::get('client_divison');
+                $client_division->deleteAll(array('client_id' => $id));
+                foreach ($dd as $d) {
+                    $divisions['title'] = trim($d);
+                    $divs = TableRegistry::get('client_divison');
+                    $div = $divs->newEntity($divisions);
+                    $divs->save($div);
+                    unset($div);
+                }
+                */
+            }
         }
 
         function HandleAJAX(){
