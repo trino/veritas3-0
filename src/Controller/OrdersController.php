@@ -243,16 +243,20 @@
                         $dr = 0;
                         $this->Flash->success('Your order has been submitted');
                         //die();
-                    } else
+                    } else {
                         $dr = 1;
-                } else
+                    }
+                } else {
                     $dr = 1;
-            } else
+                }
+            } else {
                 $dr = 1;
+            }
             $this->set('dr', $dr);
             //$did= $document_id->id;
-            if (isset($order_id))
+            if (isset($order_id)) {
                 $this->set('modal', $order_id);
+            }
             $this->set('cid', $cid);
             $this->set('did', $did);
             if ($did) {
@@ -364,12 +368,9 @@
             $sub_doc = TableRegistry::get('Subdocuments');
             $sd = $sub_doc->find()->all();
 
-            foreach($sd as $s)
-            {
-                if($s->id >20)
-                {
-                    if ($queryy->sub_doc_id == $s->id)
-                    {
+            foreach($sd as $s) {
+                if($s->id >20) {
+                    if ($queryy->sub_doc_id == $s->id) {
                         $mods = TableRegistry::get($s->table_name);
                         
                             $mod = $mods->find()->where(['order_id' => $did])->first();
@@ -382,15 +383,13 @@
             $this->LoadSubDocs($_GET["forms"]);
         }
 
-        public function savedoc($cid = 0, $did = 0)
-        {
+        public function savedoc($cid = 0, $did = 0){
             //$this->set('doc_comp',$this->Document);
             $this->Document->savedoc($cid, $did);
             die();
         }
 
-        public function savePrescreening()
-        {
+        public function savePrescreening(){
             $this->Document->savePrescreening();
             die;
         }
@@ -398,8 +397,7 @@
         /**
          * saving driver application data
          */
-        public function savedDriverApp($document_id = 0, $cid = 0)
-        {
+        public function savedDriverApp($document_id = 0, $cid = 0){
             $this->Document->savedDriverApp($document_id, $cid);
 
             die;
@@ -408,8 +406,7 @@
         /**
          * saving driver application data
          */
-        public function savedDriverEvaluation($document_id = 0, $cid = 0)
-        {
+        public function savedDriverEvaluation($document_id = 0, $cid = 0){
             $this->Document->savedDriverEvaluation($document_id, $cid);
             die();
         }
@@ -417,29 +414,25 @@
         /**
          * saving driver application data
          */
-        public function savedMeeOrder($document_id = 0, $cid = 0)
-        {
+        public function savedMeeOrder($document_id = 0, $cid = 0){
             $this->Document->savedMeeOrder($document_id, $cid);
             die();
         }
 
-        function saveEmployment($document_id = 0, $cid = 0)
-        {
+        function saveEmployment($document_id = 0, $cid = 0){
             $this->Document->saveEmployment($document_id, $cid);
             die();
         }
 
-        function saveEducation($document_id = 0, $cid = 0)
-        {
+        function saveEducation($document_id = 0, $cid = 0){
             $this->Document->saveEducation($document_id, $cid);
             die();
         }
 
-        public function deleteOrder($id, $draft = '')
-        {
-            if (isset($_GET['draft']))
+        public function deleteOrder($id, $draft = ''){
+            if (isset($_GET['draft'])) {
                 $draft = 1;
-
+            }
             $setting = $this->Settings->get_permission($this->request->session()->read('Profile.id'));
             if ($setting->orders_delete == 0) {
                 $this->Flash->error('Sorry, you don\'t have the required permissions.');
@@ -452,10 +445,11 @@
             $this->loadModel('Documents');
             $this->Documents->deleteAll(array('order_id' => $id));
             $this->Flash->success('The order has been deleted.');
-            if ($draft)
+            if ($draft) {
                 $this->redirect('/orders/orderslist?draft');
-            else
+            }else {
                 $this->redirect('/orders/orderslist');
+            }
         }
 
         public function subpages($filename)
@@ -465,17 +459,17 @@
             $this->set("filename", $filename);
         }
 
-        public function index()
-        {
+        public function index(){
             $this->redirect(array('controller'=>'orders','action'=>'orderslist'));
             
             $this->set('doc_comp', $this->Document);
             if (isset($_GET['draft']) && isset($_GET['flash'])) {
                 $this->Flash->success('Order saved as draft');
-            } else
+            } else {
                 if (isset($_GET['flash'])) {
                     $this->Flash->success('Order submitted successfully.');
                 }
+            }
             $setting = $this->Settings->get_permission($this->request->session()->read('Profile.id'));
             $doc = $this->Document->getDocumentcount();
             $cn = $this->Document->getUserDocumentcount();
@@ -483,8 +477,8 @@
             if ($setting->orders_list == 0 || count($doc) == 0 || $cn == 0) {
                 $this->Flash->error('Sorry, you don\'t have the required permissions.');
                 return $this->redirect("/");
-
             }
+
             $orders = TableRegistry::get('orders');
             $order = $orders->find();
             //$order = $order->order(['orders.id' => 'DESC']);
@@ -495,11 +489,11 @@
 
                 $setting = $this->Settings->get_permission($u);
                 if ($setting->document_others == 0) {
-                    if ($cond == '')
+                    if ($cond == '') {
                         $cond = $cond . ' user_id = ' . $u;
-                    else
+                    }else {
                         $cond = $cond . ' AND user_id = ' . $u;
-
+                    }
                 }
 
             }
@@ -507,34 +501,39 @@
                 $cond = $cond . ' (orders.title LIKE "%' . $_GET['searchdoc'] . '%" OR orders.description LIKE "%' . $_GET['searchdoc'] . '%")';
             }
             if (isset($_GET['table']) && $_GET['table']) {
-                if ($cond == '')
+                if ($cond == '') {
                     $cond = $cond . ' orders.id IN (SELECT order_id FROM ' . $_GET['table'] . ')';
-                else
+                }else {
                     $cond = $cond . ' AND orders.id IN (SELECT order_id FROM ' . $_GET['table'] . ')';
+                }
             }
             if (!$this->request->session()->read('Profile.admin') && $setting->orders_others == 0) {
-                if ($cond == '')
+                if ($cond == '') {
                     $cond = $cond . ' orders.user_id = ' . $this->request->session()->read('Profile.id');
-                else
+                }else {
                     $cond = $cond . ' AND orders.user_id = ' . $this->request->session()->read('Profile.id');
+                }
             }
             if (isset($_GET['submitted_by_id']) && $_GET['submitted_by_id']) {
-                if ($cond == '')
+                if ($cond == '') {
                     $cond = $cond . ' orders.user_id = ' . $_GET['submitted_by_id'];
-                else
+                }else {
                     $cond = $cond . ' AND orders.user_id = ' . $_GET['submitted_by_id'];
+                }
             }
             if (isset($_GET['client_id']) && $_GET['client_id']) {
-                if ($cond == '')
+                if ($cond == '') {
                     $cond = $cond . ' orders.client_id = ' . $_GET['client_id'];
-                else
+                }else {
                     $cond = $cond . ' AND orders.client_id = ' . $_GET['client_id'];
+                }
             }
             if (isset($_GET['division']) && $_GET['division']) {
-                if ($cond == '')
+                if ($cond == '') {
                     $cond = $cond . ' division = "' . $_GET['division'] . '"';
-                else
+                }else {
                     $cond = $cond . ' AND division = "' . $_GET['division'] . '"';
+                }
             }
             /*if (isset($_GET['draft'])) {
                 if ($cond == '')
@@ -568,8 +567,7 @@
 
         }
 
-        function get_orderscount($type, $c_id = "")
-        {
+        function get_orderscount($type, $c_id = ""){
 
             $u = $this->request->session()->read('Profile.id');
 
@@ -578,12 +576,12 @@
                 //var_dump($setting);
                 if ($setting->document_others == 0) {
                     $u_cond = "Orders.user_id=$u";
-                } else
+                } else {
                     $u_cond = "";
-
-            } else
+                }
+            } else {
                 $u_cond = "";
-
+            }
             $model = TableRegistry::get($type);
 
             if ($c_id != "") {
@@ -602,8 +600,7 @@
             die();
         }
 
-        public function StartOrderSave($orderid = null, $response = null)
-        {
+        public function StartOrderSave($orderid = null, $response = null){
             $this->set('doc_comp', $this->Document);
             echo '!!!!!!';
             echo $response;
@@ -749,7 +746,7 @@
             $this->set('orderid', $orderid);
             $this->set('driverinfo', $driverinfo);
 
-            if ($order_type == "Requalification") {
+            if ($order_type == "Requalification") {//what is this?
                 $ordertype1 = "MEE-REQ";
             } else if ($order_type == "Order Products") {
                 $ordertype1 = "MEE-IND";
@@ -1001,15 +998,15 @@
             $this->set('doc_comp', $this->Document);
         }
 
-        public function orderslist()
-        {
+        public function orderslist(){
             $this->set('doc_comp', $this->Document);
             if (isset($_GET['draft']) && isset($_GET['flash'])) {
                 $this->Flash->success('Order saved as draft');
-            } else
+            } else {
                 if (isset($_GET['flash'])) {
                     $this->Flash->success('Order saved successfully');
                 }
+            }
             $setting = $this->Settings->get_permission($this->request->session()->read('Profile.id'));
             $doc = $this->Document->getDocumentcount();
             $cn = $this->Document->getUserDocumentcount();

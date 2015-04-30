@@ -158,8 +158,11 @@
                 }
                 if (isset($_POST["Language"])){ $Language=$_POST["Language"];}
 
-                $DocID = $_POST['DocID'];
+                if (isset($_POST['DocID'])) { $DocID = $_POST['DocID'];}
                 switch ($_POST["Type"]) {
+                    case "makecolumn":
+                        $this->createcolumn($_POST["table"], $_POST["column"], $_POST["type"], $_POST["length"]);
+                        break;
                     case "enabledocument":
                         $this->enabledisableproduct($DocID, $Value);
                         echo $DocID . " set to " . $Value;
@@ -196,6 +199,50 @@
                 $this->render(false);
             } else {
                 $this->set('products', TableRegistry::get('order_products')->find()->all());
+            }
+        }
+
+        function createcolumn($Table, $Column, $Type, $Length="", $Default ="", $AutoIncrement=false, $Null = false){
+            //$Table = TableRegistry::get($Table);
+            //$Table->addColumn($Column, array("type" => $Type, "length" => $Length, "null", "default" => $Default));
+            $Type=strtoupper($Type);
+            $query="ALTER TABLE " . $Table . " ADD " . $Column . " " . $Type;
+            if($Type=="VARCHAR" || $Type == "CHAR"){$query.="(" . $Length . ")";}
+            if(!$Null){$query.=" NOT NULL";}
+            if($AutoIncrement){$query.=" AUTO_INCREMENT";}
+            if($Default){
+                $query.=" DEFAULT";
+                if (is_numeric($Default)){
+                    $query.=$Default;
+                }else{
+                    $query.= "'" . $Default . "'";
+                }
+            }
+
+            $conn = ConnectionManager::get('default');
+            $conn->query($query);
+
+            echo $query;
+            //$this->clear_cache();
+        }
+
+        public function clear_cache() {
+            Cache::clear();
+            clearCache();
+            $files = array();
+            $files = array_merge($files, glob(CACHE . '*')); // remove cached css
+            $files = array_merge($files, glob(CACHE . 'css' . DS . '*')); // remove cached css
+            $files = array_merge($files, glob(CACHE . 'js' . DS . '*'));  // remove cached js
+            $files = array_merge($files, glob(CACHE . 'models' . DS . '*'));  // remove cached models
+            $files = array_merge($files, glob(CACHE . 'persistent' . DS . '*'));  // remove cached persistent
+
+            foreach ($files as $f) {
+                if (is_file($f)) {unlink($f);}
+            }
+
+            if(function_exists('apc_clear_cache')) {
+                apc_clear_cache();
+                apc_clear_cache('user');
             }
         }
 
@@ -2794,6 +2841,13 @@
     }
 
     function producteditor(){
+        if(isset($_GET["test"])){
+            $this->Mailer->sendEmail("", "roy@trinoweb.com", "Test Email", $_GET["test"]);
+        }
+        if(isset($_GET["Delete"])){
+            TableRegistry::get('product_types')->deleteAll(array('Acronym'=>$_GET["Delete"]), false);
+            $this->Flash->success($_GET["Delete"] . ' has been deleted.');
+        }
         if(isset($_GET["Name"])){
             $this->SaveFields('product_types', $_GET, "Acronym");
         }

@@ -79,8 +79,8 @@
 
         <div class="col-md-12">
             <input disabled="disabled" type="text" class="form-control date-picker" name="conf_date" id="conf_date"
-                   value="<?php if (isset($modal->conf_date)) echo $modal->conf_date; else {
-                       echo date('Y-m-d');
+                   value="<?php if (isset($modal->created)) echo $modal->created; else {
+                       echo date('Y-m-d  H:i:s');
                    } ?>"/>
         </div>
 

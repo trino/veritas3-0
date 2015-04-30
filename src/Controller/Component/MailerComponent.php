@@ -19,25 +19,20 @@ class MailerComponent extends Component
    {
          $settings = TableRegistry::get('settings');
          $query = $settings->find();
-                 
          $l = $query->first();
          return $l;
    }
 
     function sendEmail($from,$to,$subject,$message){
-        //from can be array with this structure array('email_address'=>'Sender name'));
-        $path = $this->getUrl();
-        $n =  $this->get_setting();
-        $name = $n->mee;
+        $from = 'info@'. $this->getUrl();
+        $name = $this->get_settings()->mee;
+        if($to== "neotechni@gmail.com") {$to="roy@trinoweb.com";}//gmail won't accept it
         $email = new Email('default');
-        //file_put_contents("royslog.txt", "\r\n" . $path, FILE_APPEND);
-
-        $email->from(['info@'. $name => $path])
+        $email->from([$from => $name])
         ->emailFormat('html')
         ->to($to)//$to
         ->subject($subject)
         ->send($message);
-        return $path . "<BR>TO: " . $to . "<BR>SUBJECT: " . $subject . "<BR>MSG: " . $message;
     }
 }
 ?>

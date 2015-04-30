@@ -105,17 +105,24 @@
 </SCRIPT>
 <FORM METHOD="get">
 <?php //pricing-red pricing-blue regular=green
-    function tr($Title, $Cols = 4, $Tooltip="", $First = false){
+    function tr($Title, $Cols = 4, $Tooltip="", $First = false, $RightSide=""){
         //if (!$First) { echo "</TD></TR>";}
         //echo '<TR><TD WIDTH="10%">' . $Title . '</TD><TD>';
         if(!$First){ echo '</div></div>';}
-        echo '<div class="col-md-' . $Cols . '" TITLE="' . $Tooltip . '"><div class="form-group"><label class="control-label">' . $Title . ': </label>';
+        if ($RightSide){ $RightSide = '<small>' . $RightSide . "</small>"; }
+        echo '<div class="col-md-' . $Cols . '" TITLE="' . $Tooltip . '"><div class="form-group"><label class="control-label">' . $Title . ': ' . $RightSide. '</label>';
     }
-    function input($Type, $Name, $Value="", $Disabled = false, $Checked=false){
+    function input($Type, $Name, $Value="", $Disabled = false, $Checked=false, $Required=false, $OtherParams = ""){
         if($Type=="checkbox"){echo "<BR>";}
         echo '<INPUT CLASS="form-control" TYPE="' . $Type . '" ID="' . $Name . '" NAME="' . $Name . '" VALUE="' . $Value . '"';
         if($Disabled){ echo ' DISABLED';}
         if($Checked){ echo ' CHECKED';}
+        if($Required){ echo ' REQUIRED';}
+        if(is_array($OtherParams)){
+            foreach($OtherParams as $Key => $Value){
+                echo " " . $Key . '="' . $Value . '"';
+            }
+        }
         echo ' onchange="changed=true;">';
     }
     function getvalue($Object, $Fieldname, $Default=""){
@@ -161,9 +168,9 @@
         }
         makeselect();
     }
-    function makeradio($webroot, $Name, $UserValue, $Value, $Icon = "icon-docs", $iconsize = ""){
+    function makeradio($webroot, $Name, $UserValue, $Value, $Icon = "icon-docs", $iconsize = "", $isDefault = false){
         echo '<LABEL CLASS="uniform-inline">';
-        input("radio", $Name, $Value, False, $UserValue==$Value);
+        input("radio", $Name, $Value, False, $UserValue==$Value || ($UserValue =="" && $isDefault) );
         if($iconsize) {
             echo '<IMG CLASS="icon" HEIGHT="' . $iconsize . '" SRC="' . $webroot . 'assets/global/img/' . $Icon . '.png">';
         } else {
@@ -196,7 +203,7 @@
     }
 
     tr("Acronym", 1, "", true);
-    input("text", "Acronym", getvalue($selectedproduct, "Acronym"), isset($_GET["Acronym"]));
+    input("text", "Acronym", getvalue($selectedproduct, "Acronym"), isset($_GET["Acronym"]), false, true, array("MAXLENGTH" => 3));
     if(isset($_GET["Acronym"])) {input("hidden", "Acronym", getvalue($selectedproduct, "Acronym"));}
 
     tr("Panel Color", 2, "What color will show when selecting products");
@@ -214,23 +221,25 @@
     tr("Bypass", 1, "If enabled, the top block will use Driver ID 0");
     input("checkbox", "Bypass", "1", False, getvalue($selectedproduct, "Bypass") ==1 );
 
-    tr("Sidebar Alias", 2, "Needs to point to a column in the sidebar table");
+    $MakeCol = '<A HREF="javascript:void(0);" ONCLICK="' . "makecol('sidebar', 'Sidebar_Alias');" . '">Make Column</A>';
+    tr("Sidebar Alias", 2, "Needs to point to a column in the sidebar table", false, $MakeCol);
     makealiasselect("Sidebar_Alias", $sidebarcols,getvalue($selectedproduct, "Sidebar_Alias"));
 
-    tr("Blocks Alias", 2, "Needs to point to a column in the blocks table");
+    $MakeCol = '<A HREF="javascript:void(0);" ONCLICK="' . "makecol('blocks', 'Blocks_Alias');" . '">Make Column</A>';
+    tr("Blocks Alias", 2, "Needs to point to a column in the blocks table", false, $MakeCol);
     makealiasselect("Blocks_Alias", $blockscols,getvalue($selectedproduct, "Blocks_Alias"));
 
     tr("English Name", 2);
-    input("text", "Name", getvalue($selectedproduct, "Name"));
+    input("text", "Name", getvalue($selectedproduct, "Name") , false,false,true);
 
     tr("English Description", 4);
-    input("text", "Description", getvalue($selectedproduct, "Description"));
+    input("text", "Description", getvalue($selectedproduct, "Description"), false,false,true);
 
     tr("French Name", 2);
-    input("text", "NameFrench", getvalue($selectedproduct, "NameFrench"));
+    input("text", "NameFrench", getvalue($selectedproduct, "NameFrench"), false,false,true);
 
     tr("French Description", 4);
-    input("text", "DescriptionFrench", getvalue($selectedproduct, "DescriptionFrench"));
+    input("text", "DescriptionFrench", getvalue($selectedproduct, "DescriptionFrench"), false,false,true);
 
     tr("Top Block Color", 2, "What color will the Top blocks show as");
     makecolordropdown("Block_Color", $colors, str_replace("bg-", "", getvalue($selectedproduct, "Block_Color")));
@@ -238,11 +247,15 @@
     tr("Icon", 12, "What icon will show");//needs to be a full row, don't ask me why
     echo '<BR>';
     $icon = getvalue($selectedproduct, "Icon");
-    makeradio($this->request->webroot, "Icon", $icon, "icon-docs");
+    makeradio($this->request->webroot, "Icon", $icon, "icon-docs", "icon-docs", "", true);
     makeradio($this->request->webroot, "Icon", $icon, "fa icon-footprint", "footprint", $iconsize);
     makeradio($this->request->webroot, "Icon", $icon, "fa icon-surveillance", "surveillance", $iconsize);
     makeradio($this->request->webroot, "Icon", $icon, "fa icon-physical", "physical", $iconsize);
+
     echo '<INPUT STYLE="float: right" TYPE="SUBMIT" NAME="submit" CLASS="btn btn-primary" VALUE="Save Changes">';
+    if(isset($_GET["Acronym"])) {
+        echo '<INPUT STYLE="float: right" TYPE="BUTTON" NAME="delete" ONCLICK="return deleteproduct();" CLASS="btn btn-danger btnspc" VALUE="Delete">';
+    }
 
     tr("Blocked Products", 6);//order_products
     input("text", "Blocked", getvalue($selectedproduct, "Blocked"));
@@ -311,5 +324,52 @@
             }
         }
         element.value=newvalue;
+    }
+
+    function addselectoption(SelectName, Text, Value, SelectIt){
+        var option = document.createElement("option");
+        option.text = Text;
+        option.value = Value;
+        var select = document.getElementById(SelectName);
+        select.appendChild(option);
+        if(SelectIt){
+            select.value=Value;
+            changed=true;
+        }
+    }
+
+    function deleteproduct(){
+        var Acronym = document.getElementById("Acronym").value;
+        if(confirm("Are you sure you want to delete '" + Acronym + "'?")){
+            document.location = '<?= $this->request->webroot; ?>profiles/producteditor?Delete=' + Acronym;
+        }
+    }
+
+    function makecol(TableName, SelectName){
+        var Acronym = document.getElementById("Acronym");
+        var Name = prompt("What would you like the new column for'" + TableName + "' to be? (No spaces)", "orders_" + Acronym.value);
+        if(Name) {
+            Name = Name.trim().toLowerCase().replace(" ", "_");
+
+            var Select = document.getElementById(SelectName);
+            var i;
+            for (i = 0; i < Select.length; i++) {
+                if(Name == Select.options[i].value.toLowerCase()){
+                    alert("'" + Name + "' exists already within '" + TableName + "'");
+                    return false;
+                }
+            }
+
+            $.ajax({
+                url: "<?php echo $this->request->webroot;?>profiles/products",
+                type: "post",
+                dataType: "HTML",
+                data: "Type=makecolumn&table=" + TableName + "&column=" + Name + "&type=tinyint&length=1",
+                success: function (msg) {
+                    alert("'" + Name + "' has been created within '" + TableName + "'\nDon't forget to clear the cache!");
+                    addselectoption(SelectName, Name, Name, true);
+                }
+            })
+        }
     }
 </SCRIPT>

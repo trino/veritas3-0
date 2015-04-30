@@ -396,9 +396,7 @@ class TrainingController extends AppController {
                 $to=$profile->email;
             }
             if ($to) {
-                if($to== "neotechni@gmail.com") {$to="roy@trinoweb.com";}
-                $from = array('info@' . getHost("isbmee.com") => "ISB MEE");
-                $this->Mailer->sendEmail($from, $to, $subject, $message);
+                $this->Mailer->sendEmail("", $to, $subject, $message);
             }
         }
     }
