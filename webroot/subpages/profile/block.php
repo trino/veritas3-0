@@ -450,7 +450,7 @@
                                     <table class="">
 
                                         <?php
-                                            $subdoc = $this->requestAction('/profiles/getSub');
+                                            $subdoc = $this->requestAction('/profiles/getSub/' . $id . '/true');
 
                                             function printsubdocradios($is_disabled, $sub, $prosubdoc){
                                                 printsubdocradio($is_disabled, $sub, $prosubdoc, 0, "None");
@@ -467,11 +467,9 @@
                                                 echo '/> ' . $Text . ' </label> ';
                                             }
 
-
-
-
+                                        
                                                 foreach ($subdoc as $sub) {
-                                                    $prosubdoc = $this->requestAction('/settings/all_settings/0/0/profile/' . $id . '/' . $sub->id);
+                                                    $prosubdoc = $sub['subdoc'];//$this->requestAction('/settings/all_settings/0/0/profile/' . $id . '/' . $sub->id);
                                                     echo '<tr><td>' . ucfirst($sub['title']) . '</td><td class="">';
                                                     printsubdocradios($is_disabled, $sub, $prosubdoc);
                                                     echo '</td></tr>';

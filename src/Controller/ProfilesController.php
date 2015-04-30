@@ -1510,19 +1510,33 @@
             $sub = TableRegistry::get('Profilessubdocument')->find()->select()->where(['profile_id'=>$pro_id]);
             return $sub;
         }
-        function getSub($UserID = false){
+
+        function getSub($UserID = false, $sortByTitle=false){
             $sub = TableRegistry::get('Subdocuments');
             $query = $sub->find();
             $q = $query->select();
             if ($UserID){
+                $table = TableRegistry::get('Profilessubdocument');
+                if($sortByTitle){$subdoc2=array();}
                 foreach($q as $subdoc){
                     $subdoc->forms = $subdoc->ProductID;// $this->getenabledprovinces($subdoc->ProductID);
-                    //if ($subdoc->ProductID>0) {//}
+                    //if ($subdoc->ProductID>0) {//}                THIS DOESN'T LOOK RIGHT!!!
+                    $subdoc->subdoc = $table->find()->select()->where(['profile_id'=>$UserID, 'subdoc_id'=>$subdoc->id])->first();
+                    if($sortByTitle){$subdoc2[]=$subdoc;}
                 }
                 $q->Subdocs = $this->getProAllSubDoc($UserID);
             }
-            $this->response->body($q);
+            if($sortByTitle){
+                usort($subdoc2, array($this,'sortByOrder'));
+                $this->response->body($subdoc2);
+            }else {
+                $this->response->body($q);
+            }
             return $this->response;
+        }
+
+        function sortByOrder($a, $b) {
+            return strcmp($a['title'], $b['title']);
         }
 
         function getProSubDoc($pro_id, $doc_id){
