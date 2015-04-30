@@ -25,6 +25,7 @@
             <TH>Blocks Alias</TH>
 
             <TH>Button Color</TH>
+            <TH>Block Color</TH>
             <TH>Blocked</TH>
             <TH>Doc IDs</TH>
 
@@ -34,7 +35,7 @@
     </thead>
     <tbody>
         <TR ONCLICK="productclick('');">
-            <TD COLSPAN="14" ALIGN="CENTER" <?php if(!isset($_GET["Acronym"])){echo 'CLASS="selected"';}?>>
+            <TD COLSPAN="15" ALIGN="CENTER" <?php if(!isset($_GET["Acronym"])){echo 'CLASS="selected"';}?>>
                 Create new product type
             </TD>
         </TR>
@@ -70,12 +71,14 @@
                     td($producttype->NameFrench);
 
                     td($producttype->Color, False, "green");
+
                     td($producttype->Checked, True);
 
                     td($producttype->Sidebar_Alias);
                     td($producttype->Blocks_Alias);
 
                     td($producttype->ButtonColor);
+                    td($producttype->Block_Color, False, "grey-cascade");
                     td($producttype->Blocked);
                     td($producttype->doc_ids);
 
@@ -199,7 +202,7 @@
     tr("Panel Color", 2, "What color will show when selecting products");
     makedropdown("", "Color", getvalue($selectedproduct, "Color"), "English", array("" => "Green", "red" => "Red", "blue" => "Blue") );
 
-    tr("Button/Top block Color", 2, "What color will the buttons/Top blocks show as");
+    tr("Button Color", 2, "What color will the buttons show as");
     makecolordropdown("ButtonColor", $colors,  getvalue($selectedproduct, "ButtonColor"));
 
     tr("Checked", 1 , "If enabled, all products will be selected and the user cannot pick");
@@ -229,7 +232,10 @@
     tr("French Description", 4);
     input("text", "DescriptionFrench", getvalue($selectedproduct, "DescriptionFrench"));
 
-    tr("Icon", 12, "What icon will show");
+    tr("Top Block Color", 2, "What color will the Top blocks show as");
+    makecolordropdown("Block_Color", $colors, str_replace("bg-", "", getvalue($selectedproduct, "Block_Color")));
+
+    tr("Icon", 12, "What icon will show");//needs to be a full row, don't ask me why
     echo '<BR>';
     $icon = getvalue($selectedproduct, "Icon");
     makeradio($this->request->webroot, "Icon", $icon, "icon-docs");
@@ -244,14 +250,14 @@
     tr("Product/Document IDs", 6, "If Bypass is enabled: Which products will show when a topblock is clicked. Otherwise it's which forms will show when placing an order");
     input("text", "doc_ids", getvalue($selectedproduct, "doc_ids"));
 
-    echo '</DIV></DIV><TABLE><TR><TD WIDTH="50%" STYLE="vertical-align: top;">';
+    echo '</DIV></DIV><TABLE width="100%" style="margin-left: 15px;margin-right: 150px;"><TR><TD WIDTH="50%" STYLE="vertical-align: top;">';
     makelist("Products (1)", "addblocked", isolatefield($order_products, "number", "title"));
     echo '</TD><TD WIDTH="25%" STYLE="vertical-align: top;">';
     makelist("Products (2)", "addblocked2", isolatefield($order_products, "number", "title"));
     echo '</TD><TD WIDTH="25%" STYLE="vertical-align: top;">';
     makelist("Documents", "addblocked3", isolatefield($subdocuments, "id", "title"));
-?>
-    </TD></TR></TABLE></FORM>
+?></TD></TR></TABLE></FORM>
+
 <SCRIPT>
     function addblocked(ID){
         addID("Blocked", ID);

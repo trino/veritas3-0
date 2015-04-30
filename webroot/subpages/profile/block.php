@@ -467,7 +467,7 @@
                                                 echo '/> ' . $Text . ' </label> ';
                                             }
 
-                                        
+
                                                 foreach ($subdoc as $sub) {
                                                     $prosubdoc = $sub['subdoc'];//$this->requestAction('/settings/all_settings/0/0/profile/' . $id . '/' . $sub->id);
                                                     echo '<tr><td>' . ucfirst($sub['title']) . '</td><td class="">';

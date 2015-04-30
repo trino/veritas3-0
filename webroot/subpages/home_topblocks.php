@@ -192,11 +192,11 @@ function randomcolor(){
                         //if($block->$blockaliasbypass==1){//ie: http://localhost/veritas3-0/orders/addorder/1/?driver=132&division=1&order_type=Driver+Order&forms=99
                         //    $URL="orders/addorder/1/?driver=" . $userid . "&order_type=" . $product->Name . "&forms=".$formlist;
                         //}
-
+                        $color= "bg-" . str_replace("bg-", "", $product->Block_Color);
                         //http://localhost/veritas3-0/orders/addorder/1/?driver=0&order_type=Single+Product&forms=31
                         if($product->Bypass==1) {//change to ->Bypass When the parameter exists
                             $URL = "orders/addorder/" . $AssignedClient . "/?driver=0&order_type=" . $product->Acronym . "&forms=" . $product->doc_ids;
-                            $color=$product->ButtonColor;
+                            //$color=$product->ButtonColor;
                             if(substr($color, 0,3)!= "bg-"){$color = "bg-" . $color;}
                         }
                         makeblock($debug, $URL, $product->Name, $product->Icon, $color);
