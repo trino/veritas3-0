@@ -1,4 +1,8 @@
-<?php $settings = $this->requestAction('settings/get_settings');
+<?php
+$settings = $this->requestAction('settings/get_settings');
+$profileID = $this->Session->read('Profile.id');
+$sidebar = $this->requestAction("settings/all_settings/" . $profileID . "/sidebar");
+
 //* Date format= 2015-02-05  "Y-m-d" http://www.flotcharts.org/flot/examples/
 if ($_SERVER['SERVER_NAME'] == "localhost" || $_SERVER['SERVER_NAME'] == "127.0.0.1") {
     include_once('/subpages/api.php');
@@ -365,12 +369,26 @@ function newchart($color, $icon, $title, $chartid, $dates, $data, $start,$end, $
 				echo '</div></div></div></div></div>';
 }
 
-newchart("grey-salsa", "icon-globe", ucfirst($settings->client) . "s", "clients", $clientdates, $clients,$startdate,$enddate, $isdraft, $profiletypes, $clienttypes);//new clients
-newchart("green-haze", "icon-user", ucfirst($settings->profile) . "s", "profiles", $profiledates, $profiles,$startdate,$enddate, $isdraft, $profiletypes, $clienttypes);//new users
-newchart("yellow-casablanca", "icon-doc", ucfirst($settings->document) . "s", "documents", $docdates, $documents ,$startdate,$enddate, $isdraft, $profiletypes, $clienttypes);//new documents
-newchart("yellow", "icon-docs", "Orders", "orders", $orderdates, $orders,$startdate,$enddate, $isdraft, $profiletypes, $clienttypes);//new orders
+if($sidebar->client_list==1) {
+    newchart("grey-salsa", "icon-globe", ucfirst($settings->client) . "s", "clients", $clientdates, $clients, $startdate, $enddate, $isdraft, $profiletypes, $clienttypes);//new clients
+}
 
-newchart("blue-steel", "fa fa-graduation-cap", "Courses", "courses", $quizdates, $answers ,$startdate,$enddate, $isdraft, $profiletypes, $clienttypes);//new quiz completions
+if($sidebar->profile_list==1) {
+    newchart("green-haze", "icon-user", ucfirst($settings->profile) . "s", "profiles", $profiledates, $profiles, $startdate, $enddate, $isdraft, $profiletypes, $clienttypes);//new users
+}
+
+if($sidebar->document_list==1) {
+    newchart("yellow-casablanca", "icon-doc", ucfirst($settings->document) . "s", "documents", $docdates, $documents, $startdate, $enddate, $isdraft, $profiletypes, $clienttypes);//new documents
+}
+
+if($sidebar->orders_list==1) {
+    newchart("yellow", "icon-docs", "Orders", "orders", $orderdates, $orders, $startdate, $enddate, $isdraft, $profiletypes, $clienttypes);//new orders
+}
+
+if($sidebar->training==1) {
+    newchart("blue-steel", "fa fa-graduation-cap", "Courses", "courses", $quizdates, $answers, $startdate, $enddate, $isdraft, $profiletypes, $clienttypes);//new quiz completions
+}
+
 function FindIterator1($ObjectArray, $FieldName, $FieldValue){
     foreach($ObjectArray as $Object){
         if ($Object->$FieldName == $FieldValue){return $Object;}
