@@ -36,7 +36,7 @@
     <tbody>
         <TR ONCLICK="productclick('');">
             <TD COLSPAN="15" ALIGN="CENTER" <?php if(!isset($_GET["Acronym"])){echo 'CLASS="selected"';}?>>
-                Create new product type
+                <A HREF="javascript:void(0)" CLASS="btn default btn-info">Create new product type</A>
             </TD>
         </TR>
         <?php
@@ -124,6 +124,7 @@
             }
         }
         echo ' onchange="changed=true;">';
+        return $Checked;
     }
     function getvalue($Object, $Fieldname, $Default=""){
         if(is_object($Object)){
@@ -182,15 +183,21 @@
         makeselect(False, $Name);
         makedropdownoption("","Select a column",$UserValue);
         foreach ($Columns as $key => $value) {
-            makedropdownoption($value,$value,$UserValue);
+            if($value!="id") {
+                makedropdownoption($value, $value, $UserValue);
+            }
         }
         makeselect();
     }
 
-    function makelist($Title, $Name, $Values){
-        echo '<table class="table table-light table-hover"><TH COLSPAN="2">' . $Title . '</TH>';
+    function makelist($Title, $Name, $Values, $Items=""){
+        echo '<table class="table table-light table-hover"><TH COLSPAN="3">' . $Title . '</TH>';
+        if(!is_array($Items)){$Items=explode(",", $Items);}
         foreach($Values as $Key => $Value){
-            echo '<TR ONCLICK="' . $Name . "('" . $Key . "'" . ');"><TD>' . $Key . "</TD><TD>" . $Value . '</TD></TR>';
+            $onclick=' ONCLICK="' . $Name . "('" . $Key . "'" . ');"';
+            echo '<TR><TD width="30" STYLE="height: 30px;">';
+            input("Checkbox", $Name . "." . $Key, $Value, True, in_array($Key, $Items), false, array("STYLE" => "height: 20px;"));
+            echo '</TD><TD' . $onclick . '>' . $Key . "</TD><TD" . $onclick. ">" . $Value . '</TD></TR>';
         }
         echo '</TABLE>';
     }
@@ -209,17 +216,18 @@
     tr("Panel Color", 2, "What color will show when selecting products");
     makedropdown("", "Color", getvalue($selectedproduct, "Color"), "English", array("" => "Green", "red" => "Red", "blue" => "Blue") );
 
-    tr("Button Color", 2, "What color will the buttons show as");
+    tr("Button Color", 2, "What color the buttons will show as");
     makecolordropdown("ButtonColor", $colors,  getvalue($selectedproduct, "ButtonColor"));
 
-    tr("Checked", 1 , "If enabled, all products will be selected and the user cannot pick");
+    tr("Checked", 1 , "If enabled, all products will be selected and the user cannot pick any packages");
     input("checkbox", "Checked", "1", False, getvalue($selectedproduct, "Checked") ==1 );
 
     tr("Visible", 1, "If disabled, it will not show in the sidebar or settings");
     input("checkbox", "Visible", "1", False, getvalue($selectedproduct, "Visible") ==1 );
 
-    tr("Bypass", 1, "If enabled, the top block will use Driver ID 0");
-    input("checkbox", "Bypass", "1", False, getvalue($selectedproduct, "Bypass") ==1 );
+    $MakeCol = "cleardocs();";
+    tr("Bypass", 1, "If enabled, the top block will use Driver ID 0 and skip the driver/client selection screen");
+    $Bypass = input("checkbox", "Bypass", "1", False, getvalue($selectedproduct, "Bypass") ==1, false, array("onclick" => $MakeCol) );
 
     $MakeCol = '<A HREF="javascript:void(0);" ONCLICK="' . "makecol('sidebar', 'Sidebar_Alias');" . '">Make Column</A>';
     tr("Sidebar Alias", 2, "Needs to point to a column in the sidebar table", false, $MakeCol);
@@ -254,6 +262,7 @@
 
     echo '<INPUT STYLE="float: right" TYPE="SUBMIT" NAME="submit" CLASS="btn btn-primary" VALUE="Save Changes">';
     if(isset($_GET["Acronym"])) {
+        echo '<INPUT STYLE="float: right" TYPE="BUTTON" NAME="discard" ONCLICK="return discardprod();" CLASS="btn btn-warning btnspc" VALUE="Discard Changes">';
         echo '<INPUT STYLE="float: right" TYPE="BUTTON" NAME="delete" ONCLICK="return deleteproduct();" CLASS="btn btn-danger btnspc" VALUE="Delete">';
     }
 
@@ -263,30 +272,42 @@
     tr("Product/Document IDs", 6, "If Bypass is enabled: Which products will show when a topblock is clicked. Otherwise it's which forms will show when placing an order");
     input("text", "doc_ids", getvalue($selectedproduct, "doc_ids"));
 
-    echo '</DIV></DIV><TABLE width="100%" style="margin-left: 15px;margin-right: 150px;"><TR><TD WIDTH="50%" STYLE="vertical-align: top;">';
-    makelist("Products (1)", "addblocked", isolatefield($order_products, "number", "title"));
+    echo '</DIV></DIV></FORM><TABLE width="100%" style="margin-left: 15px;margin-right: 150px;"><TR><TD WIDTH="50%" STYLE="vertical-align: top;">';
+    echo '<FORM id="formlists1">';
+    makelist("Products (1)", "addblocked", isolatefield($order_products, "number", "title"), getvalue($selectedproduct, "Blocked"));
+    echo '</FORM><FORM id="formlists"></TD><TD WIDTH="25%" STYLE="vertical-align: top;">';
+    makelist("Products (2)", "addblocked2", isolatefield($order_products, "number", "title"), getvalue($selectedproduct, "doc_ids"));
     echo '</TD><TD WIDTH="25%" STYLE="vertical-align: top;">';
-    makelist("Products (2)", "addblocked2", isolatefield($order_products, "number", "title"));
-    echo '</TD><TD WIDTH="25%" STYLE="vertical-align: top;">';
-    makelist("Documents", "addblocked3", isolatefield($subdocuments, "id", "title"));
-?></TD></TR></TABLE></FORM>
+    makelist("Documents", "addblocked3", isolatefield($subdocuments, "id", "title"), getvalue($selectedproduct, "doc_ids"));
+?></TD></TR></TABLE>
 
 <SCRIPT>
+    var BypassMode = <?php if($Bypass){ echo "true";} else {echo "false";} ?>;
+
     function addblocked(ID){
-        addID("Blocked", ID);
+        var added = addID("Blocked", ID);
+        checkbox("addblocked." + ID, added);
     }
+
     function addblocked2(ID){
         if(getChecked("Bypass")) {
-            addID("doc_ids", ID);
+            if(!BypassMode){clear("doc_ids");}
+            var added = addID("doc_ids", ID);
+            checkbox("addblocked2." + ID, added);
+            BypassMode=true;
         }else{
             alert("Bypass is not enabled, use 'Documents' instead");
         }
     }
+
     function addblocked3(ID){
         if(getChecked("Bypass")) {
             alert("Bypass is not enabled, use 'Products (2)' instead");
         }else{
-            addID("doc_ids", ID);
+            if(BypassMode){clear("doc_ids");}
+            var added = addID("doc_ids", ID);
+            checkbox("addblocked3." + ID, added);
+            BypassMode=false;
         }
     }
 
@@ -294,9 +315,32 @@
         return document.getElementById(ElementName).checked;
     }
 
+    function cleardocs(){
+        var Checked = document.getElementById("Bypass").checked;
+        var name;
+        var element;
+
+        clear("doc_ids");//clear the text box
+        //clear all checkboxes from products(2) and documents lists
+        var form = document.getElementById("formlists");
+        for (var i = 0; i < form.elements.length; i++ ) {
+            if (form.elements[i].type == 'checkbox') {
+                if (form.elements[i].checked == true) {
+                    name = form.elements[i].name;
+                    checkbox(name,false);
+                }
+            }
+        }
+
+    }
+
+    function clear(ElementName){
+        var element = document.getElementById(ElementName);
+        element.value = "";
+    }
 
     function addID(ElementName, ID){
-        element = document.getElementById(ElementName);
+        var element = document.getElementById(ElementName);
         if(element.value){
             var values = element.value.split(",");
             for (temp = 0; temp< values.length; temp++){
@@ -309,7 +353,9 @@
         } else {
             element.value = ID;
         }
+        return true;
     }
+
     function removeID(ElementName, ID){
         element = document.getElementById(ElementName);
         var values = element.value.split(",");
@@ -338,6 +384,19 @@
         }
     }
 
+    function discardprod(){
+        if(changed) {
+            if (confirm("Are you sure you want to discard your changes?")) {
+                changed = false;
+            }
+            if (!changed) {
+                var Acronym = document.getElementById("Acronym").value;
+                document.location = '<?= $this->request->webroot; ?>profiles/producteditor?Acronym=' + Acronym;
+            }
+        } else {
+            alert("You haven't made any changes yet");
+        }
+    }
     function deleteproduct(){
         var Acronym = document.getElementById("Acronym").value;
         if(confirm("Are you sure you want to delete '" + Acronym + "'?")){
@@ -372,4 +431,11 @@
             })
         }
     }
-</SCRIPT>
+
+    function checkbox(name, checked){
+        var evt = document.createEvent("MouseEvents");
+        evt.initMouseEvent("click", true, true, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
+        var cb = document.getElementById(name);
+        var canceled = !cb.dispatchEvent(evt);
+    }
+</SCRIPT></form>
