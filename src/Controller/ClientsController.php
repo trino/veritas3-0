@@ -718,14 +718,17 @@
             die();
         }
 
-        function getFirstSub($id){
+        function getFirstSub($id, $ReturnAsResponse = true){
             //echo $id;die();
             $sub = TableRegistry::get('subdocuments');
             $query = $sub->find();
             $q = $query->select()->where(['id' => $id])->first();
-            $this->response->body($q);
-            return $this->response;
-            die();
+            if($ReturnAsResponse) {
+                $this->response->body($q);
+                return $this->response;
+                die();
+            }
+            return $q;
         }
 
         function getSubCli($id){
@@ -738,7 +741,7 @@
         }
 
 
-        function getSubCli2($id, $type=""){
+        function getSubCli2($id, $type="", $getTitle=false, $SortByTitle=false){
             $sub = TableRegistry::get('client_sub_order');
             $query = $sub->find();
             //$q = $query->select()->where(['client_id'=>$id,'sub_id IN (SELECT id FROM subdocuments WHERE display = 1 AND orders = 1)','sub_id IN (SELECT sub_id FROM client_sub_order WHERE display_order > 0 AND client_id = '.$id.')'])->order(['display_order'=>'ASC']);
@@ -747,11 +750,26 @@
             }elseif($type =='document') {
                 $q = $query->select()->where(['client_id' => $id, 'sub_id IN (SELECT id FROM subdocuments WHERE display = 1 )', 'sub_id IN (SELECT subdoc_id FROM clientssubdocument WHERE display = 1 AND client_id = ' . $id . ')', 'sub_id IN (SELECT subdoc_id FROM profilessubdocument WHERE profile_id = ' . $this->request->session()->read('Profile.id') . ' AND (display = 3 OR display = 2))'])->order(['display_order' => 'ASC']);
             }
-            $this->response->body($q);
+            if($getTitle){
+                $q2=array();
+                foreach($q as $document){
+                    $document->test="Hello";
+                    $document->subtype = $this->getFirstSub($document->sub_id, false);
+                    $document->title = $document->subtype->title;
+                    $q2[] = $document;
+                }
+                if($SortByTitle){usort($q2, array($this,"cmp"));}
+                $this->response->body($q2);
+            } else {
+                $this->response->body($q);
+            }
             return $this->response;
-
             die();
         }
+        function cmp($a, $b){
+            return strcmp($a->subtype->title, $b->subtype->title);
+        }
+
         function orders_doc($cid,$o_name){
             $products = TableRegistry::get('product_types');
             $ordertype=strtolower(urldecode($o_name));

@@ -1,3 +1,39 @@
+<?php
+if ($_SERVER['SERVER_NAME'] == "localhost" || $_SERVER['SERVER_NAME'] == "127.0.0.1") {
+    include_once('/subpages/api.php');
+} else {
+    include_once('subpages/api.php');
+}
+
+$language = $this->request->session()->read('Profile.language');
+//$registry = $this->requestAction('/settings/getRegistry');
+$strings = CacheTranslations($language, "aggregate_%","");//,$registry);
+?>
+
+<h3 class="page-title">
+    Aggregate <small>Aggregate Audits</small>
+</h3>
+
+<div class="page-bar">
+    <ul class="page-breadcrumb">
+        <li>
+            <i class="fa fa-home"></i>
+            <a href="<?php echo $this->request->webroot;?>">Dashboard</a>
+            <i class="fa fa-angle-right"></i>
+        </li>
+        <li>
+            <a href="<?php echo $this->request->webroot;?>documents/index">Documents</a>
+            <i class="fa fa-angle-right"></i>
+        </li>
+        <li>
+            <a href="" onclick="return false;">Aggregate</a>
+
+        </li>
+
+    </ul>
+    <a href="javascript:window.print();" class="floatright btn btn-info"><?= $strings["dashboard_print"]; ?></a>
+</div>
+
 <div class="portlet box blue">
 
                                     <div class="portlet-title">
