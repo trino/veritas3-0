@@ -1060,7 +1060,8 @@
                  ?>
             }
 
-            if ($(this).val() == '2') {
+            var profile_type = $(this).val();
+            if (profile_type == '1' || profile_type == '2') {
                 $('#isb_id').show();
                 $('.req_driver').removeProp('required');
                 //$('.un').removeProp('required');
@@ -1114,7 +1115,7 @@
                  ?>
             }
 
-            if (mem_type == '2') {
+            if (mem_type == '1' || mem_type == '2') {
                 $('#isb_id').show();
                 $('.req_driver').removeProp('required');
                 //$('.un').removeProp('required');

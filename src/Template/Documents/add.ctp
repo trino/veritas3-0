@@ -167,7 +167,7 @@ if (isset($this->request->params['pass'][1])) {
                             <option value="0">Select Document</option>
                             <?php
                              $doc = $doc_comp->getDocument('document');
-                                        $subdoccli = $this->requestAction('/clients/getSubCli2/'.$cid.'/document');
+                             $subdoccli = $this->requestAction('/clients/getSubCli2/'.$cid.'/document/true/true');
 
                                         $subdoccli2 = $subdoccli;
                                         //$doc2 = $doc;
@@ -175,10 +175,10 @@ if (isset($this->request->params['pass'][1])) {
                                         $end = 0;
                                         $k_c=0;
                                         $index=0;
-                                        foreach ($subdoccli as $sd) {
 
+                                        foreach ($subdoccli as $sd) {
                                             $index+=1;
-                                            $d = $this->requestAction('/clients/getFirstSub/'.$sd->sub_id);
+                                            $d = $sd->subtype;//$this->requestAction('/clients/getFirstSub/'.$sd->sub_id);
                                           ?>
                                     <option value="<?php echo $d->id;?>" <?php if($_GET['type'] ==$d->id)echo "selected='selected'";?>><?php echo ucfirst(str_replace('_',' ',$d->title));?></option>
                                 <?php

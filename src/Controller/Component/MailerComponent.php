@@ -33,11 +33,12 @@ class MailerComponent extends Component
         //file_put_contents("royslog.txt", "\r\n" . $path, FILE_APPEND);
 
         $email->from(['info@'.$path  => $name])
+
+
         ->emailFormat('html')
         ->to($to)//$to
         ->subject($subject)
         ->send($message);
-        return $path . "<BR>TO: " . $to . "<BR>SUBJECT: " . $subject . "<BR>MSG: " . $message;
     }
 }
 ?>

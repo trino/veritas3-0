@@ -1650,9 +1650,8 @@ function provinces($name){
             
                     }
 
-                        if(saving_draft==1)
-                        {
-                            window.location = base_url+'orders/orderslist?flash';
+                        if(saving_draft==1) {
+                            window.location = base_url+'orders/orderslist?flash&draft';
                         }
                     }
                 });
@@ -1662,7 +1661,7 @@ function provinces($name){
         $('#submit_ord').live('click', function () {
             URL='<?php echo $this->request->webroot;?>profiles/view/'+$('#uploaded_for').val()+'?getprofilescore=1&success';
             if($('#uploaded_for').val() ==0){
-                URL='<?php echo $this->request->webroot;?>orders/orderslist';
+                URL='<?php echo $this->request->webroot;?>orders/orderslist?flash';
             }
 
             setTimeout(function(){ 
