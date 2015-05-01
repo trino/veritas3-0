@@ -1024,7 +1024,7 @@
                             $to = $em;
 
                             $sub = 'Profile Created: ' . $_POST['username'];
-                            $msg = 'Domain:' . $path .
+                            $msg = 'Domain: ' . $path .
                                 '<br/>Created By: ' . $uq->username .
                                 '<br/>On: ' . date('Y-m-d') .
                                 '<br>Profile Type: ' . $protype .
