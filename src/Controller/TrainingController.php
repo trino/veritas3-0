@@ -458,22 +458,29 @@ class TrainingController extends AppController {
         echo json_encode($response_array);
     }
 
-    public function enrolluser($QuizID, $UserID){
+    public function enrolluser($QuizID, $UserID, $Enabled = True){
+        $this->loadComponent('Mailer');
         if(!$this->isuserenrolled($QuizID, $UserID)){
             $EnrolledBy = $this->getuserid();
-
-            $table = TableRegistry::get("training_enrollments");
-            $table->query()->insert(['QuizID', 'UserID', 'EnrolledBy'])->values(['QuizID' => $QuizID, 'UserID' => $UserID, 'EnrolledBy' => $EnrolledBy])->execute();
-
+            if($Enabled) {
+                $table = TableRegistry::get("training_enrollments");
+                $table->query()->insert(['QuizID', 'UserID', 'EnrolledBy'])->values(['QuizID' => $QuizID, 'UserID' => $UserID, 'EnrolledBy' => $EnrolledBy])->execute();
+            }
             $table = TableRegistry::get('sidebar');
             $table->query()->update()->set(['training' => 1])->where(['user_id' => $UserID])->execute();
+
+            $profile = $this->getprofile($UserID, false);
+            $msg = '<A HREF="' . LOGIN .'training/quiz?quizid=' . $QuizID . '">Click here to take the quiz</A>';
+            $this->email($profile->email, "You have been enrolled in a quiz", $msg);
             return true;
         }
     }
+
     public function unenrolluser($QuizID, $UserID){
         $table = TableRegistry::get("training_enrollments");
         $table->deleteAll(array('QuizID' => $QuizID, 'UserID' => $UserID), false);
     }
+
     public function enumenrolledusers($QuizID){
         $table = TableRegistry::get("training_enrollments");
         $results = $table->find('all', array('conditions' => array('QuizID'=>$QuizID)))->contain("profiles");
