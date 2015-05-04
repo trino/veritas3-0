@@ -1039,7 +1039,7 @@
                             //          $this->sendEmail($from,$to,$sub,$msg);
                         }
                         if (isset($_POST['drafts']) && ($_POST['drafts'] == '1')) {
-                            $this->Flash->success('Profile Saved as draft Successfully . ');
+                            $this->Flash->success('Profile Saved as draft Successfully. ');
                         } else {
                             $pro_query = TableRegistry::get('Profiles');
                             $email_query = $pro_query->find()->where(['super' => 1])->first();
@@ -1090,7 +1090,7 @@
                                 // $this->sendEmail($_POST["email"], $sub, $msg);
                                 //file_put_contents("royslog.txt",$to . " " .  $_POST["email"] . ": " .  $sub . " - " . $msg, FILE_APPEND);
                             }
-                            $this->Flash->success('Profile Saved Successfully . ');
+                            $this->Flash->success('Profile Saved Successfully. ');
 
                         }
                         echo $profile->id;
@@ -1137,9 +1137,9 @@
                         }
                         echo $profile->id;
                         if (isset($_POST['drafts']) && ($_POST['drafts'] == '1')) {
-                            $this->Flash->success('Profile Saved as draft . ');
+                            $this->Flash->success('Profile Saved as draft. ');
                         } else {
-                            $this->Flash->success('Profile Saved Successfully . ');
+                            $this->Flash->success('Profile Saved Successfully. ');
                         }
                     } else {
                         echo "0";
@@ -1283,7 +1283,7 @@
             $this->set('doc_comp', $this->Document);
             $check_pro_id = $this->Settings->check_pro_id($id);
             if ($check_pro_id == 1) {
-                $this->Flash->error('The record does not exist . ');
+                $this->Flash->error('The record does not exist. ');
                 return $this->redirect("/profiles/index");
                 //die();
             }
