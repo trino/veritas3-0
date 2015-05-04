@@ -2888,10 +2888,18 @@
         $this->set("subdocuments", TableRegistry::get('subdocuments')->find('all') );
     }
 
-    function SaveFields($Table, $Data, $PrimaryKey){
+    function SaveFields($Table, $Data, $PrimaryKey, $Default = "0", $Ignore = "ID"){
+        //detect unchecked checkboxes
+        $Columns = $this->getColumnNames($Table, $Ignore);
+        foreach($Columns as $Column){
+            if (!isset($Data[$Column])){
+                $Data[$Column] = $Default;
+            }
+        }
         $Table = TableRegistry::get($Table);
         $exists =  $Table->find('all', array('conditions' => array([$PrimaryKey => $Data[$PrimaryKey]])))->first();
         unset($Data['submit']);
+
         if($exists){
             $Table->query()->update()->set($Data)->where([$PrimaryKey => $Data[$PrimaryKey]])->execute();
             $this->Flash->success($Data[$PrimaryKey] . ' has been updated.');
@@ -2900,6 +2908,7 @@
             $this->Flash->success($Data[$PrimaryKey] . ' has been created.');
         }
     }
+
     function getColumnNames($Table, $ignore = ""){
         $Columns = TableRegistry::get($Table)->find('all')->first();
         $Data = $this->getProtectedValue($Columns, "_properties");
