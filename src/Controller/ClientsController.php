@@ -554,7 +554,7 @@
                     $Table->query()->insert(['client_id', 'title'])->values(['client_id' => $id, 'title' => $dd[$temp]])->execute();
                 }
 
-                /*
+                /* this is the old, brute-force code
                 $client_division = TableRegistry::get('client_divison');
                 $client_division->deleteAll(array('client_id' => $id));
                 foreach ($dd as $d) {

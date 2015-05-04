@@ -134,6 +134,17 @@
                 $this->DeleteSubdocument($_GET["DeleteDoc"]);
                 $this->Flash->success('Subdocument created successfully.');
             }
+            if(isset($_GET["toggledebug"])) {
+                $filename = $_SERVER["DOCUMENT_ROOT"] . "debugmode.txt";
+                if (file_exists($filename)) {
+                    unlink($filename);
+                    $this->Flash->success('Debug mode: Deactivated');
+                } else {
+                    file_put_contents ($filename, "true");
+                    $this->Flash->success('Debug mode: Activated');
+                }
+            }
+
             $this->loadModel('Logos');
             $this->loadModel('OrderProducts');
             $this->loadModel('ProfileTypes');
