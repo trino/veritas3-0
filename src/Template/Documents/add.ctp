@@ -139,7 +139,7 @@ if (isset($this->request->params['pass'][1])) {
 
                     <div class="col-md-12 clients_select" style="margin: 10px 0;padding:0">
 
-                        <select name="clients" class="form-control select2me" data-placeholder="<?=$settings->client?>" id="changeclient" <?php if($this->request->params['action']=='view'){?>disabled="disabled"<?php }?>>
+                        <select name="clients" class="form-control select2me" data-placeholder="<?=$settings->client?>" id="changeclient" <?php if($this->request->params['action']=='view'){?>disabled="disabled"<?php }?> onchange="changeclient_onchange();">
                             <option value="0">Select <?=$settings->client?></option>
                             <?php
                             $profile_id = $this->request->session()->read('Profile.id');
@@ -1431,6 +1431,7 @@ if (isset($this->request->params['pass'][1])) {
     ///////////////////////////////////////////////////////
 
 
+
     function subform(form_type) {
         var filename = form_type.replace(/\W/g, '_');
         var filename = filename.toLowerCase();
@@ -1507,8 +1508,7 @@ if (isset($this->request->params['pass'][1])) {
         ?>
 
         $('#changeclient').change(function(){
-            var id = $(this).val();
-            window.location ="<?php echo $this->request->webroot;?>documents/add/"+id;
+            changeclient_onchange();
         });
         $('.dashboard-stat .more').click(function(){
             var moreid = $(this).attr('id');
@@ -2141,6 +2141,10 @@ if (isset($this->request->params['pass'][1])) {
     }
 </script>
 <script>
+    function changeclient_onchange(){
+        var id = $('#changeclient').val();
+        window.location ="<?php echo $this->request->webroot;?>documents/add/"+id;
+    }
     <?php
         if (!isset($disabled)) {
     ?>
