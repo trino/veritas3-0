@@ -86,7 +86,7 @@ function makeBulk(){
 
                         <td>
                         <span><input class="profile_client" type="checkbox" id="p_<?= $i ?>"
-                                     onchange="addProfile(<?= $i ?>);"
+                                     onchange="addProfile(<?= $r->id ?>);"
                                      value="<?php echo $r->id; ?>"/></span>
                             <span><label for="p_<?= $i ?>"><?php echo $username; ?></span> <?php if($r->profile_type!=""){ echo $profiletype;}?> </span></label>&nbsp;
                             <span class="msg_<?php echo $r->id; ?>"></span>

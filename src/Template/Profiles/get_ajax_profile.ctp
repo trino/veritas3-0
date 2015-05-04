@@ -32,7 +32,7 @@ foreach($profiles as $r) {
     if($mode==0) {
         echo "if($(this).is(':checked')){assignProfile($(this).val(),'" .  $cid . "','yes');}else{assignProfile($(this).val(),'" .  $cid . "','no');}";
     } else {
-        echo $sub . "(" . $cid . ")";
+        echo $sub . "(" . $r->id . ")";
     }
         ?>" type="checkbox" <?php if($mode ==0 && in_array($r->id,$profile)){ echo 'checked="checked"'; }?> value="<?php echo $r->id; ?>"/></span>
 <span><label for="p_<?= $i ?>"><?php echo $username; ?> <?php if($r->profile_type!=""){echo $profiletype;}?> </span></label>
