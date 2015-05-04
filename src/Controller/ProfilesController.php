@@ -1479,7 +1479,8 @@
             //var_dump($side);die();
             //die();
             if ($client == "") {
-                $sides = array('profile_list', 'profile_create', 'client_list', 'client_create', 'document_list', 'document_create', 'profile_edit', 'profile_delete', 'client_edit', 'client_delete', 'document_edit', 'document_delete', 'document_others', 'document_requalify', 'orders_list', 'orders_create', 'orders_delete', 'orders_requalify', 'orders_edit', 'orders_others', 'order_requalify', 'orders_mee', 'orders_products', 'order_intact', 'email_document', 'email_orders', 'email_profile', 'orders_emp', 'orders_GEM', 'orders_GDR', 'aggregate', 'bulk', 'invoice');//this should not be hardcoded
+                $sides = $this->getColumnNames("sidebar", "id");//why does this use sidebar columns instead of block?
+                //array('profile_list', 'profile_create', 'client_list', 'client_create', 'document_list', 'document_create', 'profile_edit', 'profile_delete', 'client_edit', 'client_delete', 'document_edit', 'document_delete', 'document_others', 'document_requalify', 'orders_list', 'orders_create', 'orders_delete', 'orders_requalify', 'orders_edit', 'orders_others', 'order_requalify', 'orders_mee', 'orders_products', 'order_intact', 'email_document', 'email_orders', 'email_profile', 'orders_emp', 'orders_GEM', 'orders_GDR', 'aggregate', 'bulk', 'invoice');//this should not be hardcoded
                 foreach ($sides as $s) {
                     if (!isset($_POST['side'][$s]))
                         $side[$s] = 0;
@@ -1727,8 +1728,21 @@
             die();
         }
 
-        function getAjaxProfile($id = 0)
-        {
+
+        function getProfileTypes($Language = "English") {
+            $rec = TableRegistry::get('profile_types')->find();
+            $query = array();
+            $column="title";
+            if($Language != "English"){$column.=$Language;}
+            foreach($rec as $Ptype){//id title enable ISB titleFrench
+                $query[$Ptype->id] = $Ptype->$column;
+            }
+            $this->response->body($query);
+            return $this->response;
+            die();
+        }
+
+        function getAjaxProfile($id = 0, $mode = 0) {
             $this->layout = 'blank';
             if ($id) {
                 $this->loadModel('Clients');
@@ -1759,6 +1773,7 @@
                 ->andWhere(['super'=>0,'(fname LIKE "%'.$key.'%" OR lname LIKE "%'.$key.'%" OR username LIKE "%'.$key.'%")']);
              if(!$super)
               $query = $query->orWhere(['created_by'=>$u]);*/
+            $query->mode = $mode;
             $this->set('profiles', $query);
             $this->set('cid', $id);
 
@@ -2885,9 +2900,10 @@
             $this->Flash->success($Data[$PrimaryKey] . ' has been created.');
         }
     }
-    function getColumnNames($Table){
+    function getColumnNames($Table, $ignore = ""){
         $Columns = TableRegistry::get($Table)->find('all')->first();
         $Data = $this->getProtectedValue($Columns, "_properties");
+        if($ignore){unset($Data[$ignore]);}
         return array_keys($Data);
     }
     function getProtectedValue($obj,$name) {

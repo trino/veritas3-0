@@ -3,15 +3,11 @@ $profiles = $this->requestAction('/profiles/getProfile');
 $contact = $this->requestAction('/profiles/getContact');
 //include("subpages/profileslisting.php");
 $viewmode = isset($_GET["view"]);
-$pType = ['','Admin','Recruiter','External','Safety','Driver','Contact'];
+$pType = $this->requestAction('/profiles/getProfileTypes');// ['','Admin','Recruiter','External','Safety','Driver','Contact'];
 $id = $_GET["quizid"];
 
 if (!$viewmode){
     ?>
-
-
-
-
     <div class="scrolldiv" style="margin-bottom: 15px;">
         <input type="text" id="searchProfile" onkeyup="searchProfile()" class="form-control" placeholder="Search <?php echo ucfirst($settings->profile); ?>s"/>
         <table class="table table-striped table-bordered table-advance table-hover recruiters">
@@ -24,8 +20,6 @@ if (!$viewmode){
             <?php
             $i = 0;
             foreach ($profiles as $r) {
-                //echo $r->username;continue;
-                //if ($i % 2 == 0) {
                 $username = "[NO NAME]";
                 if (strlen(trim($r->username))>0) {
                     $username = $r->username;
@@ -39,7 +33,6 @@ if (!$viewmode){
                 if ($profiletype == "()") {$profiletype = "(Draft)"; }
                 ?>
                 <tr>
-
                     <td>
                     <span><input class="profile_client" type="checkbox" id="p_<?= $i ?>"
                                  <?php if(isset($profile)){ if (in_array($r->id, $profile)){ ?>checked="checked"<?php }}?>
@@ -47,27 +40,17 @@ if (!$viewmode){
                         <span><label for="p_<?= $i ?>"><?php echo $username; ?></label></span> <?php if($r->profile_type!=""){ echo $profiletype;}?> </span>&nbsp;
                         <span class="msg_<?php echo $r->id; ?>"></span>
                     </td>
-                    <?php
-
-                    // if (($i + 1) % 2 == 0) {
-                    ?>
                 </tr>
                 <?php
-                //}
-
                 $i++;
             }
-            //if (($i + 1) % 2 != 0) {
-            //echo "</td></tr>";
-            //}
             ?>
             </tbody>
         </table>
     </div>
 
 
-<?php } ?>
-<?php
+<?php }
 /*if ($this->request->params['action'] == 'edit')
     include('subpages/clients/recruiter_contact_table.php');*/
 if (isset($_GET['view'])) {

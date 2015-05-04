@@ -1,3 +1,24 @@
+<h3 class="page-title">
+    Product Editor
+</h3>
+
+<div class="page-bar">
+    <ul class="page-breadcrumb">
+        <li>
+            <i class="fa fa-home"></i>
+            <a href="<?php echo $this->request->webroot; ?>">Dashboard</a>
+            <i class="fa fa-angle-right"></i>
+        </li>
+        <li>
+            <a href="<?php echo $this->request->webroot; ?>profiles/settings">Settings</a>
+            <i class="fa fa-angle-right"></i>
+        </li>
+        <li>
+            <a href="" onclick="return false;">Product Editor</a>
+        </li>
+    </ul>
+</div>
+
 <STYLE>
     .icon-footprint:before { content: url('assets/global/img/footprint.png'); }
     .icon-surveillance:before { content: url('assets/global/img/surveillance.png'); }

@@ -1,8 +1,15 @@
 <?php
 $i=0;
-$pType = ['','Admin','Recruiter','External','Safety','Driver','Contact'];
-foreach($profiles as $r)
-{
+$pType = $this->requestAction('/profiles/getProfileTypes');// ['','Admin','Recruiter','External','Safety','Driver','Contact'];
+
+$mode = $profiles->mode;
+switch ($mode){
+    case 1://bulk order
+        $sub = "addProfile";
+        break;
+}
+
+foreach($profiles as $r) {
      $username = "[NO NAME]";
     if (strlen(trim($r->username)>0)) {
         $username = $r->username;
@@ -21,8 +28,14 @@ foreach($profiles as $r)
 ?>
 
 <td>
-<span><input id="p_<?= $i ?>" class="profile_client" onchange="if($(this).is(':checked')){assignProfile($(this).val(),'<?php echo $cid;?>','yes');}else{assignProfile($(this).val(),'<?php echo $cid;?>','no');}" type="checkbox" <?php if(in_array($r->id,$profile)){?>checked="checked"<?php }?> value="<?php echo $r->id; ?>"/></span>
-<span><label for="p_<?= $i ?>"><?php echo $username; ?></label> <?php if($r->profile_type!=""){echo $profiletype;}?> </span>
+<span><input id="p_<?= $i ?>" class="profile_client" onchange="<?php
+    if($mode==0) {
+        echo "if($(this).is(':checked')){assignProfile($(this).val(),'" .  $cid . "','yes');}else{assignProfile($(this).val(),'" .  $cid . "','no');}";
+    } else {
+        echo $sub . "(" . $cid . ")";
+    }
+        ?>" type="checkbox" <?php if($mode ==0 && in_array($r->id,$profile)){ echo 'checked="checked"'; }?> value="<?php echo $r->id; ?>"/></span>
+<span><label for="p_<?= $i ?>"><?php echo $username; ?> <?php if($r->profile_type!=""){echo $profiletype;}?> </span></label>
 <span class="msg_<?php echo $r->id; ?>"></span>
 </td>
 <?php
@@ -41,33 +54,23 @@ $i++;
 //                                                    echo "</td></tr>";
 //                                                }
 ?>
+
 <script>
+    function assignProfile(profile,client,status) {
+        if(status=='yes') {
+            var url= '<?php echo $this->request->webroot;?>clients/assignProfile/'+profile+'/'+client+'/yes';
+        } else {
+            var url= '<?php echo $this->request->webroot;?>clients/assignProfile/'+profile+'/'+client+'/no';
+        }
+        $.ajax({url:url});
+    }
 
-
-function assignProfile(profile,client,status)
-{
-if(status=='yes')
-{
-var url= '<?php echo $this->request->webroot;?>clients/assignProfile/'+profile+'/'+client+'/yes';
-}
-else
-{
-var url= '<?php echo $this->request->webroot;?>clients/assignProfile/'+profile+'/'+client+'/no';
-}
-$.ajax({url:url});
-}
-function assignClient(profile,client,status)
-{
-if(status=='yes')
-{
-var url= '<?php echo $this->request->webroot;?>clients/assignClient/'+profile+'/'+client+'/yes';
-}
-else
-{
-var url= '<?php echo $this->request->webroot;?>clients/assignClient/'+profile+'/'+client+'/no';
-}
-$.ajax({url:url});
-}
-
-
+    function assignClient(profile,client,status) {
+        if(status=='yes') {
+            var url= '<?php echo $this->request->webroot;?>clients/assignClient/'+profile+'/'+client+'/yes';
+        } else {
+            var url= '<?php echo $this->request->webroot;?>clients/assignClient/'+profile+'/'+client+'/no';
+        }
+        $.ajax({url:url});
+    }
 </script>

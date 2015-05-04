@@ -43,12 +43,88 @@ function GET($name, $default = ""){
 
 $ordertype = substr(strtoupper(GET("ordertype")), 0, 3);
 
+$GLOBALS['profiles'] = $this->requestAction('/profiles/getProfile');
+//$GLOBALS['contact']= $this->requestAction('/profiles/getContact');
+$GLOBALS['pType'] = $this->requestAction('/profiles/getProfileTypes');// ['','Admin','Recruiter','External','Safety','Driver','Contact'];
+$GLOBALS['settings'] = $this->requestAction('settings/get_settings');
+
+function makeBulk(){
+    $profiles = $GLOBALS['profiles'];
+//    $contact = $GLOBALS['contact'];
+    $pType = $GLOBALS['pType'];
+    $settings = $GLOBALS['settings'];
+
+    echo '<div class="col-xs-4">';
+        ?>
+        <div class="scrolldiv" style="margin-bottom: 15px;">
+            <input type="text" id="searchProfile" onkeyup="searchProfile()" class="form-control" placeholder="Search <?php echo ucfirst($settings->profile); ?>s"/>
+            <table class="table table-striped table-bordered table-advance table-hover recruiters">
+                <thead>
+                <tr>
+                    <th colspan="2">Add <?php echo ucfirst($settings->profile); ?></th>
+                </tr>
+                </thead>
+                <tbody id="profileTable">
+                <?php
+                $i = 0;
+                foreach ($profiles as $r) {
+                    //echo $r->username;continue;
+                    //if ($i % 2 == 0) {
+                    $username = "[NO NAME]";
+                    if (strlen(trim($r->username))>0) {
+                        $username = $r->username;
+                    } elseif(strlen(trim($r->fname . $r->lname))>0) {
+                        $username = $r->fname . " " . $r->lname;
+                    }
+                    if(isset($pType[$r->profile_type]))
+                        $profiletype = "(" . $pType[$r->profile_type] . ")";
+                    else
+                        $profiletype = "";
+                    if ($profiletype == "()") {$profiletype = "(Draft)"; }
+                    ?>
+                    <tr>
+
+                        <td>
+                        <span><input class="profile_client" type="checkbox" id="p_<?= $i ?>"
+                                     onchange="addProfile(<?= $i ?>);"
+                                     value="<?php echo $r->id; ?>"/></span>
+                            <span><label for="p_<?= $i ?>"><?php echo $username; ?></span> <?php if($r->profile_type!=""){ echo $profiletype;}?> </span></label>&nbsp;
+                            <span class="msg_<?php echo $r->id; ?>"></span>
+                        </td>
+                    </tr>
+                    <?php
+                    //}
+
+                    $i++;
+                }
+                //if (($i + 1) % 2 != 0) {
+                //echo "</td></tr>";
+                //}
+                ?>
+                </tbody>
+            </table>
+        </div>
+
+
+        <?php
+    echo '</DIV>';
+    return '';
+}
+
+
+
+
+
+
 function makeform($ordertype, $cols, $color, $Title, $Description, $products, $Disabled, $counting, $settings, $client, $dr_cl, $driver, $_this, $Otype ="", $inforequired = false, $Blocked = ""){
     if (strlen($Otype)==0) { $Otype = $Title; }
     if (strlen($color)>0){ $color = "-" . $color;}
     $color=""; //color is disabled for now
 
-    echo '<div class="col-xs-' . $cols . ' col-xs-offset-2">';
+    $offset = ' col-xs-offset-2';
+    if($ordertype=="BUL"){$offset = makeBulk();}
+    echo '<div class="col-xs-' . $cols . $offset . '">';
+
     echo '<div class="pricing' . $color . ' hover-effect">';
     echo '<div class="pricing' . $color . '-head pricing-head-active">';
     echo '<h3>' . $Title . '<span>' . $Description . '</span></h3>';
@@ -225,53 +301,57 @@ function printform($counting, $settings, $client, $dr_cl, $driver, $intable = fa
 
     <?php
     echo '<div class="col-xs-3 control-label"  align="right" style="margin-top: 6px;">Driver</div><div class="col-xs-6" >';
-    ?>
+    if($_GET["ordertype"] == "BUL"){
+        echo '<INPUT TYPE="TEXT" NAME="selecting_driver" id="selecting_driver" class="form-control input-' . $size . '" VALUE="" DISABLED></DIV></DIV>';
+    } else {
+        ?>
 
     <select class="form-control input-<?= $size ?> select2me"
-            <?php if (!isset($_GET['ordertype']) || (isset($_GET['ordertype']) && $_GET['ordertype'] != "QUA")) { ?>data-placeholder="Create New Driver"<?php }?>
+            <?php if (!isset($_GET['ordertype']) || (isset($_GET['ordertype']) && $_GET['ordertype'] != "QUA")) { ?>data-placeholder="Create New Driver"<?php } ?>
             id="selecting_driver" <?php if ($driver) { ?>disabled="disabled"<?php } ?>>
         <?php if (!isset($_GET['ordertype']) || (isset($_GET['ordertype']) && $_GET['ordertype'] != "QUA")) { ?>
-    <option <? if ($driver == '0') {
-        echo 'selected';
-    } ?>>Select Driver
-        </option><?php } else {
-        ?>
         <option <? if ($driver == '0') {
             echo 'selected';
         } ?>>Select Driver
-        </option>
-    <?php
-    }
-    ?>
-    <?php
-    $counting = 0;
-    $drcl_d = $dr_cl['driver'];
-    foreach ($drcl_d as $drcld) {
-
-        $counting++;
-    }
-
-    foreach ($dr_cl['driver'] as $dr) {
-
-        $driver_id = $dr->id;
+            </option><?php } else {
+            ?>
+            <option <? if ($driver == '0') {
+                echo 'selected';
+            } ?>>Select Driver
+            </option>
+        <?php
+        }
         ?>
-        <option value="<?php echo $dr->id; ?>"
-                <?php if ($dr->id == $driver || $counting == 1 && $driver != '0'){ ?>selected="selected"<?php } ?>><?php echo $dr->fname . ' ' . $dr->mname . ' ' . $dr->lname ?></option>
-    <?php
-    }
-    ?>
+        <?php
+        $counting = 0;
+        $drcl_d = $dr_cl['driver'];
+        foreach ($drcl_d as $drcld) {
+
+            $counting++;
+        }
+
+        foreach ($dr_cl['driver'] as $dr) {
+
+            $driver_id = $dr->id;
+            ?>
+            <option value="<?php echo $dr->id; ?>"
+                    <?php if ($dr->id == $driver || $counting == 1 && $driver != '0'){ ?>selected="selected"<?php } ?>><?php echo $dr->fname . ' ' . $dr->mname . ' ' . $dr->lname ?></option>
+        <?php
+        }
+        ?>
     </select>
 
     <input class="selecting_driver" type="hidden" value="<?php if ($driver) {
-        echo $driver;
-    }?>"/>
+            echo $driver;
+        } ?>"/>
     </div>
     <?php
 
-    if ($settings->profile_create == '1') echo "<div class='col-xs-3 ' style='margin-left: -20px;'>or&nbsp;&nbsp;<a href='" . $_this->request->webroot . "profiles/add' class='btn grey-steel '>Add Driver</a></div>";?>
+        if ($settings->profile_create == '1') echo "<div class='col-xs-3 ' style='margin-left: -20px;'>or&nbsp;&nbsp;<a href='" . $_this->request->webroot . "profiles/add' class='btn grey-steel '>Add Driver</a></div>"; ?>
 
     </div>
     <?php
+    }
     if ($intable) {
         echo "</div>";
     }
@@ -379,6 +459,10 @@ function printform($counting, $settings, $client, $dr_cl, $driver, $intable = fa
             }
             if ($('.selecting_client').val()) {
                 <?php if(!isset($_GET['profiles'])){?>
+                    Driver = $('.selecting_driver').val();
+                    if(typeof Driver === "undefined"){
+                        Driver = Drivers();
+                    }
                     if ($('.selecting_driver').val() == '') {
                         alert('Please select driver.');
                         $('#s2id_selecting_driver .select2-choice').attr('style', 'border:1px solid red;');
@@ -386,7 +470,7 @@ function printform($counting, $settings, $client, $dr_cl, $driver, $intable = fa
                         return false;
                     } else {
                         var tempstr = getcheckboxes();
-                        window.location = '<?php echo $this->request->webroot; ?>orders/addorder/' + $('.selecting_client').val() + '/?driver=' + $('.selecting_driver').val() + '&division=' + division + '&order_type=<?php echo urlencode($o_type);?>&forms=' + tempstr;
+                        window.location = '<?php echo $this->request->webroot; ?>orders/addorder/' + $('.selecting_client').val() + '/?driver=' + Driver + '&division=' + division + '&order_type=<?php echo urlencode($o_type);?>&forms=' + tempstr;
                     }
                 <?php } else {?>
                 var tempstr = getcheckboxes();
@@ -494,3 +578,61 @@ function printform($counting, $settings, $client, $dr_cl, $driver, $intable = fa
         });
     });
 </script>
+<SCRIPT>
+    function clientID(){
+        var client = document.getElementById("selecting_client").value;
+        if(isNaN(client)) {return 0;} else {return client;}
+    }
+    function Drivers(){
+        return document.getElementById("selecting_driver").value;
+    }
+
+    function searchProfile() {
+        var key = $('#searchProfile').val();
+        $('#profileTable').html('<tbody><tr><td><img src="<?php echo $this->request->webroot;?>assets/admin/layout/img/ajax-loading.gif"/></td></tr></tbody>');
+        $.ajax({
+            url: '<?php echo $this->request->webroot;?>profiles/getAjaxProfile/' + clientID() + '/1',
+            data: 'key=' + key,
+            type: 'get',
+            success: function (res) {
+                $('#profileTable').html(res);
+            }
+        });
+    }
+    function addProfile(ID){
+        addID("selecting_driver", ID);
+    }
+
+    function addID(ElementName, ID){
+        var element = document.getElementById(ElementName);
+        if(element.value){
+            var values = element.value.split(",");
+            for (temp = 0; temp< values.length; temp++){
+                if(values[temp]== ID ) {
+                    removeID(ElementName, ID);
+                    return false;
+                }
+            }
+            element.value = element.value + "," + ID;
+        } else {
+            element.value = ID;
+        }
+        return true;
+    }
+
+    function removeID(ElementName, ID){
+        element = document.getElementById(ElementName);
+        var values = element.value.split(",");
+        var newvalue = "";
+        for (temp = 0; temp< values.length; temp++){
+            if(values[temp] != ID ) {
+                if(newvalue){
+                    newvalue=newvalue + "," + values[temp];
+                }else{
+                    newvalue=values[temp];
+                }
+            }
+        }
+        element.value=newvalue;
+    }
+</SCRIPT>

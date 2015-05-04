@@ -175,7 +175,7 @@
 <div class="portlet box green-haze">
     <div class="portlet-title">
         <div class="caption">
-            <i class="fa fa-briefcase"></i>Products
+            <i class="fa fa-briefcase"></i>Packages
         </div>
     </div>
     <div class="portlet-body">
@@ -192,7 +192,7 @@ function getDefault($Default, $Value){
 }
 
 echo "<table class='table table-condensed  table-striped table-bordered table-hover dataTable no-footer'  ID='myTable'>";
-echo "<THEAD><TH>ID</TH><TH>Product</TH><TH TITLE='Enabled'>EN</TH></THEAD><TBODY>";
+echo "<THEAD><TH>ID</TH><TH>Package</TH><TH TITLE='Enabled'>EN</TH></THEAD><TBODY>";
 
 $fieldname = "title";
 if(($language!="English")){$fieldname.=$language;}
@@ -207,7 +207,7 @@ foreach($products as $product){
                     <a class="btn btn-xs btn-primary" id="delete" onclick="clearproduct();">Clear</a>
                     <a class="btn btn-xs btn-danger" id="delete" onclick="deleteproduct();">Delete</a>
                 </TD></TR>
-    <TR><TH COLSPAN="3">Add Product:</TH></TR>
+    <TR><TH COLSPAN="3">Add Package:</TH></TR>
         <TR><TD>
                 <input type="text" id="newnum" style="width: 50px" placeholder="ID#"><BR>
                 <a class="btn btn-xs btn-info" id="add" onclick="addproduct();" style="float: right; width: 50px; margin-top: 3px;">Add</a>
@@ -221,7 +221,7 @@ foreach($products as $product){
             </TD>
             <TD valign="top"><DIV CLASS="tablespot">
                 <H2>Instructions:</H2>
-                    Select a product on the left, then choose which documents are displayed based on the province the driver's license was issued in.<BR>
+                    Select a package on the left, then choose which documents are displayed based on the province the driver's license was issued in.<BR>
                     By enabling "ALL" for a province, the form will be shown for all provinces<BR>
                     Instead of enabling all documents one at a time, you can enable the "All Documents" row<BR>
                     Any text inside these [brackets] is missing a translation for <?= $language ?>

@@ -6,7 +6,7 @@
     $contact = $this->requestAction('/profiles/getContact');
     //include("subpages/profileslisting.php");
     $viewmode = isset($_GET["view"]);
-    $pType = ['','Admin','Recruiter','External','Safety','Driver','Contact'];
+    $pType = $this->requestAction('/profiles/getProfileTypes');// ['','Admin','Recruiter','External','Safety','Driver','Contact'];
 if (!$viewmode){
 ?>
 
