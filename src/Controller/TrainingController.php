@@ -34,6 +34,7 @@ class TrainingController extends AppController {
 
     public function edit(){
         $this->set('canedit', $this->canedit());
+
         if (isset($_GET["action"])){
             if($this->canedit()) {
                 switch ($_GET["action"]) {
@@ -103,13 +104,15 @@ class TrainingController extends AppController {
 
     public function editquestion(){
         if ($this->canedit()){
-            switch($_GET["action"]){
-                case "save":
-                    $this->savequestion($_POST);
-                    break;
-                case "delete":
-                    $this->deletequestion($_GET["quizid"], $_GET["QuestionID"]);
-                    break;
+            if(isset($_GET["action"])) {
+                switch ($_GET["action"]) {
+                    case "save":
+                        $this->savequestion($_POST);
+                        break;
+                    case "delete":
+                        $this->deletequestion($_GET["quizid"], $_GET["QuestionID"]);
+                        break;
+                }
             }
             if (isset($_GET["QuestionID"])) {
                 //echo "quizID= " . $_GET["quizid"] . " questionid=" . $_GET["QuestionID"];
@@ -211,15 +214,19 @@ class TrainingController extends AppController {
         $table->deleteAll(array('QuizID' => $QuizID, 'QuestionID' => $QuestionID), false);
         $this->Flash->success('The question was deleted.');
     }
+
     public function savequiz($post){//ID Name Description Attachments image
         $table = TableRegistry::get('training_list');
         $post=$this->i2($post);
-        if (isset($post["ID"])){
+        $ID = str_replace('"', "", $post["ID"]);
+
+        if (isset($ID)){
             $table->query()->update()->set(['Name' => $post["Name"], 'Description' =>  $post["Description"], 'Attachments' => $post['Attachments'], 'image' => $post['image']])
-                ->where(['ID' => $post["ID"]])
+                ->where(['ID' => $ID])
                 ->execute();
+
             $this->Flash->success('The quiz was edited');
-            return -1;
+            return $ID;
         } else { //new
             $table->query()->insert(['Name', 'Description', 'Attachments', 'image'])
              ->values(['Name' => $post["Name"], 'Description' => $post["Description"], 'Attachments' => $post['Attachments'], 'image' => $post['image']])->execute();
@@ -244,7 +251,6 @@ class TrainingController extends AppController {
                 ->execute();
             $this->Flash->success('The question was created');
         }else{
-            print_r($post);
             $table->query()->update()->set(['Question' => $post["Question"], 'Answer' => $post['answer'], 'Choice0' => $post['Choice0'], 'Choice1' => $post['Choice1'], 'Choice2' => $post['Choice2'], 'Choice3' => $post['Choice3'], 'Choice4' => $post['Choice4'], 'Choice5' => $post['Choice5'], 'Picture' => $post['Picture']])
                 ->where(['QuizID' => $post['QuizID'], 'QuestionID' => $post['QuestionID']])->execute();
             $this->Flash->success('The question was saved');
@@ -349,18 +355,24 @@ class TrainingController extends AppController {
         foreach($Quiz as $question){//QuizID QuestionID
             $QuizID=$question->QuizID;
             $QuestionName = $question->QuizID . ":" . $question->QuestionID;
-            $Answer = $Post[$QuestionName . "_answer"];
-            $Flagged = false;
-            if (isset($Post[$QuestionName . "_flaggedcheckbox"])){ $Flagged = $Post[$QuestionName . "_flaggedcheckbox"] == 1;}
+            if(isset($Post[$QuestionName . "_answer"])) {
+                $Answer = $Post[$QuestionName . "_answer"];
+                $Flagged = false;
+                if (isset($Post[$QuestionName . "_flaggedcheckbox"])) {
+                    $Flagged = $Post[$QuestionName . "_flaggedcheckbox"] == 1;
+                }
 
-            //echo "<P></P><BR>UserID: " . $UserID;
-            //echo "<BR>Quiz ID: " . $question->QuizID;
-            //echo "<BR>Question ID: " . $question->QuestionID;
-            //echo "<BR>Answer: " . $Answer;
-            //echo "<BR>Flagged: " . $Flagged ;
-            if($question->Answer == $Answer){ $correct++;}
-            $this->saveanswer($UserID, $question->QuizID, $question->QuestionID, $Answer, $Flagged);
-            $answers+=1;
+                //echo "<P></P><BR>UserID: " . $UserID;
+                //echo "<BR>Quiz ID: " . $question->QuizID;
+                //echo "<BR>Question ID: " . $question->QuestionID;
+                //echo "<BR>Answer: " . $Answer;
+                //echo "<BR>Flagged: " . $Flagged ;
+                if ($question->Answer == $Answer) {
+                    $correct++;
+                }
+                $this->saveanswer($UserID, $question->QuizID, $question->QuestionID, $Answer, $Flagged);
+                $answers += 1;
+            }
         }
         if($answers>0) {
             $profile=$this->getprofile($UserID);

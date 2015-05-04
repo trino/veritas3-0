@@ -218,15 +218,14 @@
                                                     }
                                                     $attachmentJS .= "document.getElementById('chk" . $id . "').checked";
                                                     $download = '" target="_blank"';
-                                                    $name = "";
-                                                    switch (strtolower(pathinfo($attachment, PATHINFO_EXTENSION))) {
-                                                        case "mp4":
-                                                            $name = "Video";
-                                                            break;
-                                                        case "pdf":
-                                                            $name = "Handout";
-                                                            break;
+                                                    $name = strtolower(pathinfo($attachment, PATHINFO_EXTENSION));
+                                                    $Names = array("mp4" => "Video", "pdf" => "Handout", "docx" => "Handout");
+                                                    if (isset($Names[$name])) {
+                                                        $name = $Names[$name];
+                                                    }else{
+                                                        $name = "Attachment";
                                                     }
+
                                                     if (!strpos($attachment, "/")) {
                                                         $attachment = "webroot/assets/global/" . $attachment;
                                                         $download .= ' download="' . basename($attachment) . '" TITLE="Internet Explorer users need to right-click, then click Save Target As"';
