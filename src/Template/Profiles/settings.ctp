@@ -113,7 +113,7 @@ function makedropdownoption($Key, $Value, $TheValue){
                                 <a href="#tab_1_8" data-toggle="tab">Display</a>
                             </li>
                              <li>
-                                <a href="#tab_1_10" data-toggle="tab">Products</a>
+                                <a href="#tab_1_10" data-toggle="tab">Packages</a>
                             </li>
                             <li>
                                 <a href="#tab_1_14" data-toggle="tab">Configuration</a>

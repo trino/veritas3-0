@@ -181,7 +181,21 @@ class DocumentsController extends AppController{
         }
         $this->set('documents', $this->appendattachments($this->paginate($doc)));
         if (isset($_GET['flash'])) {
-            $this->Flash->success('Document saved successfully.');
+            $this->success(true, "", false);//I don't know why it doesn't redirect.
+        }
+    }
+
+    function success($Success=true, $draft = "", $redirect = true, $DID = ""){
+        $Document = $this->Settings->get_settings()->document;
+        $saved = "saved";
+        if($DID){$saved = "updated";}
+        if($Success) {
+            $this->Flash->success($Document . ' ' . $saved . ' successfully.');
+        }else{
+            $this->Flash->error($Document . ' could not be ' . $saved . '. Please try again.');
+        }
+        if($redirect){
+            $this->redirect(array('action' => 'index'.$draft));
         }
     }
 
@@ -1053,25 +1067,18 @@ class DocumentsController extends AppController{
 
 
 
-    function survey()
-    {
+    function survey(){
         $this->render('survey');
     }
 
 
 
-    function addattachment($cid, $did)
-    {
-
+    function addattachment($cid, $did){
         if (isset($_POST) && isset($_GET['draft'])) {
-
-            if (isset($_GET['draft']) && $_GET['draft'])
-            {
+            if (isset($_GET['draft']) && $_GET['draft']) {
                 $arr['draft'] = 1;
                 $draft = '?draft';
-            }
-            else
-            {
+            } else {
                 $arr['draft'] = 0;
                 $draft = '';
             }
@@ -1095,16 +1102,13 @@ class DocumentsController extends AppController{
                         $ds['title'] = $_POST['title'];
                         $docz = $doczs->newEntity($ds);
                         $doczs->save($docz);
-                        if(isset($_POST['attach_doc']))
-                        {
+                        if(isset($_POST['attach_doc'])) {
                             $model = $this->loadModel('DocAttachments');
                             $model->deleteAll(['document_id'=> $doc->id]);
 
                             $client_docs = $_POST['attach_doc'];
-                            foreach($client_docs as $d)
-                            {
-                                if($d != "")
-                                {
+                            foreach($client_docs as $d) {
+                                if($d != "") {
                                     $attach = TableRegistry::get('doc_attachments');
                                     $ds['document_id']= $doc->id;
                                     $ds['attachment'] =$d;
@@ -1128,11 +1132,13 @@ class DocumentsController extends AppController{
                             }
                         }*/
                         //die('1');
-                        $this->Flash->success('Document saved successfully.');
-                        $this->redirect(array('action' => 'index'.$draft));
+                        $this->success(True, $draft);
+                        //$this->Flash->success('Document saved successfully.');
+                        //$this->redirect(array('action' => 'index'.$draft));
                     } else {
-                        $this->Flash->error('Document could not be saved. Please try again.');
-                        $this->redirect(array('action' => 'index'.$draft));
+                        $this->success(False, $draft);
+                        //$this->Flash->error('Document could not be saved. Please try again.');
+                        //$this->redirect(array('action' => 'index'.$draft));
                     }
 
                 } else {
@@ -1150,16 +1156,13 @@ class DocumentsController extends AppController{
                     $docz = $doczs->newEntity($ds);
                     $doczs->save($docz);
                     //var_dump($_POST); die();
-                    if(isset($_POST['attach_doc']))
-                    {
+                    if(isset($_POST['attach_doc'])) {
 
                         $model = $this->loadModel('DocAttachments');
                         $model->deleteAll(['document_id'=> $did]);
                         $client_docs = $_POST['attach_doc'];
-                        foreach($client_docs as $d)
-                        {
-                            if($d != "")
-                            {
+                        foreach($client_docs as $d) {
+                            if($d != "") {
                                 $attach = TableRegistry::get('doc_attachments');
                                 $ds['document_id']= $did;
                                 $ds['attachment'] =$d;
@@ -1193,8 +1196,9 @@ class DocumentsController extends AppController{
                         }
                     }
                     */
-                    $this->Flash->success('Document Updated successfully.');
-                    $this->redirect(array('action' => 'index'.$draft));
+                    //$this->Flash->success('Document Updated successfully.');
+                    //$this->redirect(array('action' => 'index'.$draft));
+                    $this->success(True, $draft);
                 }
             }
             else
@@ -1334,11 +1338,13 @@ class DocumentsController extends AppController{
                             
                         }
                         unset($doczs);
-                        $this->Flash->success('Document saved successfully.');
-                        $this->redirect(array('action' => 'index'.$draft));
+                        //$this->Flash->success('Document saved successfully.');//shouldn't this use the settings variable for document?
+                        //$this->redirect(array('action' => 'index'.$draft));
+                        $this->success(True, $draft);
                     } else {
-                        $this->Flash->error('Document could not be saved. Please try again.');
-                        $this->redirect(array('action' => 'index'.$draft));
+                        //$this->Flash->error('Document could not be saved. Please try again.');
+                        //$this->redirect(array('action' => 'index'.$draft));
+                        $this->success(False, $draft);
                     }
 
                 } else {
@@ -1375,8 +1381,9 @@ class DocumentsController extends AppController{
                             }
                         }
                         unset($doczs);
-                    $this->Flash->success('Document Updated successfully.');
-                    $this->redirect(array('action' => 'index'.$draft));
+                    //$this->Flash->success('Document Updated successfully.');//NOTE: Shouldn't this use settings?
+                    //$this->redirect(array('action' => 'index'.$draft));
+                    $this->success(True, $draft, True, $did);
                 }
                 } else {
                     $arr['document_id'] = 0;                   
@@ -1654,11 +1661,13 @@ class DocumentsController extends AppController{
 
                         }
                         unset($doczs);
-                        $this->Flash->success('Document saved successfully.');
-                        $this->redirect(array('action' => 'index'.$draft));
+                        //$this->Flash->success('Document saved successfully.');
+                        //$this->redirect(array('action' => 'index'.$draft));
+                        $this->success(True, $draft);
                     } else {
-                        $this->Flash->error('Document could not be saved. Please try again.');
-                        $this->redirect(array('action' => 'index'.$draft));
+                        //$this->Flash->error('Document could not be saved. Please try again.');
+                        //$this->redirect(array('action' => 'index'.$draft));
+                        $this->success(False, $draft);
                     }
 
                 } else {
@@ -1695,8 +1704,9 @@ class DocumentsController extends AppController{
                         }
                     }
                     unset($doczs);
-                    $this->Flash->success('Document Updated successfully.');
-                    $this->redirect(array('action' => 'index'.$draft));
+                    $this->success(True, $draft, True, $did);
+                    //$this->Flash->success('Document Updated successfully.');//NOTE: Shouldn't this use settings
+                    //$this->redirect(array('action' => 'index'.$draft));
                 }
             } else {
                 $arr['document_id'] = 0;
@@ -1800,11 +1810,13 @@ class DocumentsController extends AppController{
 
                         }
                         unset($doczs);
-                        $this->Flash->success('Document saved successfully.');
-                        $this->redirect(array('action' => 'index'.$draft));
+                        $this->success(True, $draft);
+                        //$this->Flash->success('Document saved successfully.');
+                        //$this->redirect(array('action' => 'index'.$draft));
                     } else {
-                        $this->Flash->error('Document could not be saved. Please try again.');
-                        $this->redirect(array('action' => 'index'.$draft));
+                        //$this->Flash->error('Document could not be saved. Please try again.');
+                        //$this->redirect(array('action' => 'index'.$draft));
+                        $this->success(False, $draft);
                     }
 
                 } else {
@@ -1842,8 +1854,9 @@ class DocumentsController extends AppController{
                         }
                     }
                     unset($doczs);
-                    $this->Flash->success('Document Updated successfully.');
-                    $this->redirect(array('action' => 'index'.$draft));
+                    //$this->Flash->success('Document Updated successfully.');
+                    //$this->redirect(array('action' => 'index'.$draft));
+                    $this->success(True, $draft, True, $did);
                 }
             } else {
                 $arr['document_id'] = 0;
@@ -1945,11 +1958,13 @@ class DocumentsController extends AppController{
 
                         }
                         unset($doczs);
-                        $this->Flash->success('Document saved successfully.');
-                        $this->redirect(array('action' => 'index'.$draft));
+                        //$this->Flash->success('Document saved successfully.');
+                        //$this->redirect(array('action' => 'index'.$draft));
+                        $this->success(True, $draft);
                     } else {
-                        $this->Flash->error('Document could not be saved. Please try again.');
-                        $this->redirect(array('action' => 'index'.$draft));
+                        //$this->Flash->error('Document could not be saved. Please try again.');
+                        //$this->redirect(array('action' => 'index'.$draft));
+                        $this->success(False, $draft);
                     }
 
                 } else {
@@ -1986,8 +2001,9 @@ class DocumentsController extends AppController{
                         }
                     }
                     unset($doczs);
-                    $this->Flash->success('Document Updated successfully.');
-                    $this->redirect(array('action' => 'index'.$draft));
+                    //$this->Flash->success('Document Updated successfully.');
+                    //$this->redirect(array('action' => 'index'.$draft));
+                    $this->success(True, $draft, True, $did);
                 }
             } else {
                 $arr['document_id'] = 0;
@@ -2090,11 +2106,13 @@ class DocumentsController extends AppController{
 
                         }
                         unset($doczs);
-                        $this->Flash->success('Document saved successfully.');
-                        $this->redirect(array('action' => 'index'.$draft));
+                        //$this->Flash->success('Document saved successfully.');
+                        //$this->redirect(array('action' => 'index'.$draft));
+                        $this->success(True, $draft);
                     } else {
-                        $this->Flash->error('Document could not be saved. Please try again.');
-                        $this->redirect(array('action' => 'index'.$draft));
+                        //$this->Flash->error('Document could not be saved. Please try again.');
+                        //$this->redirect(array('action' => 'index'.$draft));
+                        $this->success(False, $draft);
                     }
 
                 } else {
@@ -2131,8 +2149,9 @@ class DocumentsController extends AppController{
                         }
                     }
                     unset($doczs);
-                    $this->Flash->success('Document Updated successfully.');
-                    $this->redirect(array('action' => 'index'.$draft));
+                    //$this->Flash->success('Document Updated successfully.');
+                    //$this->redirect(array('action' => 'index'.$draft));
+                    $this->success(True, $draft, True, $did);
                 }
             } else {
                 $arr['document_id'] = 0;
@@ -2237,11 +2256,13 @@ class DocumentsController extends AppController{
 
                         }
                         unset($doczs);
-                        $this->Flash->success('Document saved successfully.');
-                        $this->redirect(array('action' => 'index'.$draft));
+                        //$this->Flash->success('Document saved successfully.');
+                        //$this->redirect(array('action' => 'index'.$draft));
+                        $this->success(True, $draft);
                     } else {
-                        $this->Flash->error('Document could not be saved. Please try again.');
-                        $this->redirect(array('action' => 'index'.$draft));
+                        //$this->Flash->error('Document could not be saved. Please try again.');
+                        //$this->redirect(array('action' => 'index'.$draft));
+                        $this->success(False, $draft);
                     }
 
                 } else {
@@ -2279,8 +2300,9 @@ class DocumentsController extends AppController{
                         }
                     }
                     unset($doczs);
-                    $this->Flash->success('Document Updated successfully.');
-                    $this->redirect(array('action' => 'index'.$draft));
+                    //$this->Flash->success('Document Updated successfully.');
+                    //$this->redirect(array('action' => 'index'.$draft));
+                    $this->success(True, $draft, True, $did);
                 }
             } else {
                 $arr['document_id'] = 0;
@@ -2384,11 +2406,13 @@ class DocumentsController extends AppController{
                             }
                         }
                         unset($doczs);
-                        $this->Flash->success('Document saved successfully.');
-                        $this->redirect(array('action' => 'index'.$draft));
+                        //$this->Flash->success('Document saved successfully.');
+                        //$this->redirect(array('action' => 'index'.$draft));
+                        $this->success(True, $draft);
                     } else {
-                        $this->Flash->error('Document could not be saved. Please try again.');
-                        $this->redirect(array('action' => 'index'.$draft));
+                        //$this->Flash->error('Document could not be saved. Please try again.');
+                        //$this->redirect(array('action' => 'index'.$draft));
+                        $this->success(False, $draft);
                     }
                 } else {
                     $docs = TableRegistry::get('Documents');
@@ -2425,8 +2449,9 @@ class DocumentsController extends AppController{
                         }
                     }
                     unset($doczs);
-                    $this->Flash->success('Document Updated successfully.');
-                    $this->redirect(array('action' => 'index'.$draft));
+                    //$this->Flash->success('Document Updated successfully.');
+                    //$this->redirect(array('action' => 'index'.$draft));
+                    $this->success(True, $draft, True, $did);
                 }
             } else {
                 $arr['document_id'] = 0;
@@ -2529,11 +2554,13 @@ class DocumentsController extends AppController{
 
                         }
                         unset($doczs);
-                        $this->Flash->success('Document saved successfully.');
-                        $this->redirect(array('action' => 'index'.$draft));
+                        //$this->Flash->success('Document saved successfully.');
+                        //$this->redirect(array('action' => 'index'.$draft));
+                        $this->success(True, $draft);
                     } else {
-                        $this->Flash->error('Document could not be saved. Please try again.');
-                        $this->redirect(array('action' => 'index'.$draft));
+                        //$this->Flash->error('Document could not be saved. Please try again.');
+                        //$this->redirect(array('action' => 'index'.$draft));
+                        $this->success(False, $draft);
                     }
                 } else {
                     $docs = TableRegistry::get('Documents');
@@ -2569,8 +2596,9 @@ class DocumentsController extends AppController{
                         }
                     }
                     unset($doczs);
-                    $this->Flash->success('Document Updated successfully.');
-                    $this->redirect(array('action' => 'index'.$draft));
+                    //$this->Flash->success('Document Updated successfully.');
+                    //$this->redirect(array('action' => 'index'.$draft));
+                    $this->success(True, $draft, True, $did);
                 }
             } else {
                 $arr['document_id'] = 0;
@@ -2674,11 +2702,13 @@ class DocumentsController extends AppController{
 
                         }
                         unset($doczs);
-                        $this->Flash->success('Document saved successfully.');
-                        $this->redirect(array('action' => 'index'.$draft));
+                        //$this->Flash->success('Document saved successfully.');
+                        //$this->redirect(array('action' => 'index'.$draft));
+                        $this->success(True, $draft);
                     } else {
-                        $this->Flash->error('Document could not be saved. Please try again.');
-                        $this->redirect(array('action' => 'index'.$draft));
+                        //$this->Flash->error('Document could not be saved. Please try again.');
+                        //$this->redirect(array('action' => 'index'.$draft));
+                        $this->success(False, $draft);
                     }
                 } else {
                     $docs = TableRegistry::get('Documents');
@@ -2714,8 +2744,9 @@ class DocumentsController extends AppController{
                         }
                     }
                     unset($doczs);
-                    $this->Flash->success('Document Updated successfully.');
-                    $this->redirect(array('action' => 'index'.$draft));
+                    //$this->Flash->success('Document Updated successfully.');
+                    //$this->redirect(array('action' => 'index'.$draft));
+                    $this->success(True, $draft, True, $did);
                 }
             } else {
                 $arr['document_id'] = 0;
@@ -2819,11 +2850,12 @@ class DocumentsController extends AppController{
 
                         }
                         unset($doczs);
-                        $this->Flash->success('Document saved successfully.');
-                        $this->redirect(array('action' => 'index'.$draft));
+                        //$this->Flash->success('Document saved successfully.');
+                        //$this->redirect(array('action' => 'index'.$draft));
                     } else {
-                        $this->Flash->error('Document could not be saved. Please try again.');
-                        $this->redirect(array('action' => 'index'.$draft));
+                        //$this->Flash->error('Document could not be saved. Please try again.');
+                        //$this->redirect(array('action' => 'index'.$draft));
+                        $this->success(False, $draft);
                     }
                 } else {
                     $docs = TableRegistry::get('Documents');
@@ -2859,8 +2891,9 @@ class DocumentsController extends AppController{
                         }
                     }
                     unset($doczs);
-                    $this->Flash->success('Document Updated successfully.');
-                    $this->redirect(array('action' => 'index'.$draft));
+                    //$this->Flash->success('Document Updated successfully.');
+                    //$this->redirect(array('action' => 'index'.$draft));
+                    $this->success(True, $draft, True, $did);
                 }
             } else {
                 $arr['document_id'] = 0;
@@ -2962,11 +2995,13 @@ class DocumentsController extends AppController{
 
                         }
                         unset($doczs);
-                        $this->Flash->success('Document saved successfully.');
-                        $this->redirect(array('action' => 'index'.$draft));
+                        //$this->Flash->success('Document saved successfully.');
+                        //$this->redirect(array('action' => 'index'.$draft));
+                        $this->success(True, $draft);
                     } else {
-                        $this->Flash->error('Document could not be saved. Please try again.');
-                        $this->redirect(array('action' => 'index'.$draft));
+                        //$this->Flash->error('Document could not be saved. Please try again.');
+                        //$this->redirect(array('action' => 'index'.$draft));
+                        $this->success(False, $draft);
                     }
                 } else {
                     $docs = TableRegistry::get('Documents');
@@ -3002,8 +3037,9 @@ class DocumentsController extends AppController{
                         }
                     }
                     unset($doczs);
-                    $this->Flash->success('Document Updated successfully.');
-                    $this->redirect(array('action' => 'index'.$draft));
+                    //$this->Flash->success('Document Updated successfully.');
+                    //$this->redirect(array('action' => 'index'.$draft));
+                    $this->success(True, $draft, True, $did);
                 }
             } else {
                 $arr['document_id'] = 0;
