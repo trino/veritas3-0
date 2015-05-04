@@ -302,7 +302,7 @@ function printform($counting, $settings, $client, $dr_cl, $driver, $intable = fa
     <?php
     echo '<div class="col-xs-3 control-label"  align="right" style="margin-top: 6px;">Driver</div><div class="col-xs-6" >';
     if($_GET["ordertype"] == "BUL"){
-        echo '<INPUT TYPE="TEXT" NAME="selecting_driver" id="selecting_driver" class="form-control input-' . $size . '" VALUE="" DISABLED></DIV></DIV>';
+        echo '<INPUT TYPE="TEXT" NAME="selecting_driver" id="selecting_driver" class="form-control input-' . $size . '" VALUE="" REQUIRED DISABLED></DIV></DIV>';
     } else {
         ?>
 
@@ -462,6 +462,12 @@ function printform($counting, $settings, $client, $dr_cl, $driver, $intable = fa
                     Driver = $('.selecting_driver').val();
                     if(typeof Driver === "undefined"){
                         Driver = Drivers();
+                        if (Driver.length == 0){
+                            alert('Please select at least one driver');
+                            return;
+                        }
+                        window.location = '<?php echo $this->request->webroot; ?>orders/orderslist?flash=Bulk Order bypass';
+                        return;
                     }
                     if ($('.selecting_driver').val() == '') {
                         alert('Please select driver.');

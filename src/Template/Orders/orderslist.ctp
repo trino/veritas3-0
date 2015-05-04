@@ -225,7 +225,7 @@ function getColor($products, $OrderType, $Default = "blue"){
                                         <td style="min-width: 145px;">
 
                                             <?php
-                                            if ($order->order_type) {
+                                            if (is_object($order) && $order->order_type) {
                                                     echo '<div style="" class="dashboard-stat ';
                                                     /*
                                                     $colors = array("Order_Products" => "green-haze", "Order_MEE" => "red-intense", "ReQualify" => "blue-madison");
@@ -237,7 +237,11 @@ function getColor($products, $OrderType, $Default = "blue"){
                                                     */
                                                     //echo getColor($products, $order->order_type );
                                                     $ordertype = FindIterator($products, "Acronym", $order->order_type);
-                                                    echo $ordertype->ButtonColor;
+                                                    if (is_object($ordertype)) {
+                                                        echo $ordertype->ButtonColor;
+                                                    } else {
+                                                        echo "grey";
+                                                    }
                                                     ?>">
                                                     <!--div class="whiteCorner"></div-->
                                                     <!--div class="visual" style="height: 40px;">

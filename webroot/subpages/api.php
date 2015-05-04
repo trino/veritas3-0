@@ -218,13 +218,16 @@ function getFieldname($Fieldname, $Language){
     if($Language == "English" || $Language == "Debug"){ return $Fieldname; }
     return $Fieldname . $Language;
 }
+
 function getField($Object, $Fieldname, $Language){
     if($Language!="English") {
         $newField = $Fieldname . $Language;
         if ($Object->$newField){return $Object->$newField;}
         return "[" . $Object->$Fieldname . "]";//untranslated notifier
     }
-    return $Object->$Fieldname;
+    if(is_object($Object)) {
+        return $Object->$Fieldname;
+    }
 }
 
 /*
