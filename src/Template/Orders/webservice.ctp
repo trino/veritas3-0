@@ -96,6 +96,8 @@
     echo '<br>1650 Certification (Education) ' . $productdetailsebs1650;             // 1650 Certification (Education)
     echo '<br>1627 LOE (Employment) ' . $productdetailsebs1627;                      // 1627 LOE (Employment)
     echo '<br>72   checkDL ' . $productdetails_CheckDL_72;                           // 72   checkdl
+    echo '<br>72   checkDL ' . $productdetails_SMS_32_INS;                           // 72   checkdl
+    echo '<br>72   checkDL ' . $productdetails_CreditCheck_31_INS;                           // 72   checkdl
 
     /*
         echo 'driver_record_abstract: '.$mq->driver_record_abstract.'<br/>';
@@ -168,7 +170,7 @@
 
 
 
-    if (false) {
+    if (true) {
 
         $soap_xml = '<?xml version="1.0" encoding="utf-8"?>
 <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
@@ -189,9 +191,43 @@
        $upload_additional_id = '79';
   */
 
-        echo '999ins_32';
-        echo '999ins_32';
+
+        echo '999ins_32222222222222222222222222222222222222222222222222';
+        echo '999ins_32222222222222222222222222222222222222222222222222';
         var_dump($result);
+    }
+
+
+
+    if (true) {
+
+        $soap_xml = '<?xml version="1.0" encoding="utf-8"?>
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+<soap:Body><ProductDetails xmlns="http://tempuri.org/">' .
+
+            '<UID>' . $ins_id . '</UID><productdetails>&lt;ProductData&gt;&lt;dupe_date&gt;' . date("Y-m-d") . '&lt;/dupe_date&gt;&lt;firstNameNotInsured&gt;' . $driverinfo->fname . '&lt;/firstNameNotInsured&gt;&lt;lastNameNotInsured&gt;' . $driverinfo->lname . '&lt;/lastNameNotInsured&gt;&lt;isb_Gender&gt;' . $driverinfo->gender . '&lt;/isb_Gender&gt;&lt;address&gt;' . $driverinfo->street . '&lt;/address&gt;&lt;city&gt;' . $driverinfo->city . '&lt;/city&gt;&lt;provToSearch&gt;' . $driverinfo->province . '&lt;/provToSearch&gt;&lt;PostalCode&gt;' . $driverinfo->postal . '&lt;/PostalCode&gt;&lt;isb_USDOT_MC&gt;11&lt;/isb_USDOT_MC&gt;&lt;/ProductData&gt;'
+            . '</productdetails><productID>31</productID><tp>INS</tp><prod>true</prod></ProductDetails></soap:Body></soap:Envelope>';
+        $result = $client->call('ProductDetails', $soap_xml);
+        /*
+                $r = explode('[', $result['ProductDetailsResult']);
+                if (isset($r[1])) {
+                    $r = explode(']', $r[1]);
+                }
+                $pdi = $r[0];
+
+
+              $this->requestAction('orders/save_pdi/' . $orderid . '/' . $pdi . '/ins_79');
+               $upload_additional_id = '79';
+          */
+
+        echo '999ins_31111111111111111111111111111111111111111111111';
+        echo '999ins_31111111111111111111111111111111111111111111111111';
+        var_dump($result);
+
+
+        echo 'afterafterafterafterafterafterafterafterafterafterafterafterafterafterafterafterafterafterafter';
+
+
     }
 
 
