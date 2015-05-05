@@ -542,7 +542,7 @@
                 foreach ($divisionlist as $div) {
                     $dd[$currentdivision]=trim($dd[$currentdivision]);
                     if($currentdivision < $ddcount){//has a division of this index, use it
-                        $Table->query()->update()->set(['title' => $dd[$currentdivision]])->where([id => $div->id])->execute();
+                        $Table->query()->update()->set(['title' => $dd[$currentdivision]])->where(['id' => $div->id])->execute();
                     } else {//doesn't have a new division of this index, delete it
                         $Table->deleteAll(array("id" => $div->id));
                     }
@@ -646,6 +646,7 @@
          * @throws \Cake\Network\Exception\NotFoundException
          */
         function edit($id = null){
+            if(!is_numeric($id)){die("ID should be a number, but it is: " . $id);}
             $check_client_id = $this->Settings->check_client_id($id);
             if ($check_client_id == 1) {
                 $this->Flash->error('The record does not exist.');
