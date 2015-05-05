@@ -47,7 +47,7 @@
 
             <TH>Button Color</TH>
             <TH>Block Color</TH>
-            <TH>Blocked</TH>
+            <TH>Show Packages</TH>
             <TH>Doc IDs</TH>
 
             <TH>Visible</TH>
@@ -287,7 +287,7 @@
         echo '<INPUT STYLE="float: right" TYPE="BUTTON" NAME="delete" ONCLICK="return deleteproduct();" CLASS="btn btn-danger btnspc" VALUE="Delete">';
     }
 
-    tr("Blocked Products", 6, "Select which products will be blocked from the selection list");//order_products
+    tr("Show only these packages", 6, "If this is not blank, only these packages will be shown");//order_products
     input("text", "Blocked", getvalue($selectedproduct, "Blocked"));
 
     tr("Product/Document IDs", 6, "If Bypass is enabled: Which products will show when a topblock is clicked. Otherwise it's which forms will show when placing an order");

@@ -34,6 +34,7 @@ $drcl_c = $dr_cl['client'];
 $counting = iterator_count ($drcl_c);
 $clientID=0;
 if($counting == 1) {
+    $GLOBALS['profiles'] = $this->requestAction('/profiles/getProfile/' . $clientID);
     foreach($dr_cl['client'] as $dr) {
         if($clientID==0){$clientID=$dr->id;}
     }
@@ -49,16 +50,19 @@ function GET($name, $default = ""){
 $ordertype = substr(strtoupper(GET("ordertype")), 0, 3);
 
 //'<?php echo $this->request->webroot; //profiles/getAjaxProfile/' + clientID() + '/1',
-$GLOBALS['profiles'] = $this->requestAction('/profiles/getProfile/' . $clientID);
 //$GLOBALS['contact']= $this->requestAction('/profiles/getContact');
 $GLOBALS['pType'] = $this->requestAction('/profiles/getProfileTypes');// ['','Admin','Recruiter','External','Safety','Driver','Contact'];
 $GLOBALS['settings'] = $this->requestAction('settings/get_settings');
+$GLOBALS['counting'] = $counting;
 
 function makeBulk(){
-    $profiles = $GLOBALS['profiles'];
 //    $contact = $GLOBALS['contact'];
     $pType = $GLOBALS['pType'];
     $settings = $GLOBALS['settings'];
+    $counting = $GLOBALS['counting'];
+    if($counting==1){
+        $profiles = $GLOBALS['profiles'];
+    }
 
   //  echo '<div class="col-xs-4">';
         ?>
@@ -73,24 +77,29 @@ function makeBulk(){
                 <tbody id="profileTable">
                 <?php
                 $i = 0;
-                $fulllist="";
-                foreach ($profiles as $r) {
-                    //echo $r->username;continue;
-                    //if ($i % 2 == 0) {
-                    if(isset($pType[$r->profile_type]))
-                        $profiletype = "(" . $pType[$r->profile_type] . ")";
-                    else
-                        $profiletype = "";
-                    if ($profiletype == "()") {$profiletype = "(Draft)"; }
-                    if($fulllist){
-                        $fulllist.="," . $r->id;
-                    }else{
-                        $fulllist = $r->id;
-                    }
-                    //}
-                    print1profile($i, $r, $profiletype);
+                if($counting==1) {
+                    $fulllist = "";
+                    foreach ($profiles as $r) {
+                        //echo $r->username;continue;
+                        //if ($i % 2 == 0) {
+                        if (isset($pType[$r->profile_type])){
+                            $profiletype = "(" . $pType[$r->profile_type] . ")";
+                        }else{
+                            $profiletype = "";
+                        }
+                        if ($profiletype == "()") {
+                            $profiletype = "(Draft)";
+                        }
+                        if ($fulllist) {
+                            $fulllist .= "," . $r->id;
+                        } else {
+                            $fulllist = $r->id;
+                        }
+                        //}
+                        print1profile($i, $r, $profiletype);
 
-                    $i++;
+                        $i++;
+                    }
                 }
                 if($i>1){
                     $fulllist="'" . $fulllist . "'";
@@ -535,6 +544,8 @@ function printform($counting, $settings, $client, $dr_cl, $driver, $intable = fa
         });
 
         $('#selecting_client').change(function () {
+            clearall();
+            $('#profileTable').html("");
             $('s2id_selecting_client.select2-choice').removeAttr('style');
             <?php
                 echo 'var ordertype = "' . $_GET['ordertype']. '";';
@@ -610,16 +621,20 @@ function printform($counting, $settings, $client, $dr_cl, $driver, $intable = fa
     }
 
     function searchProfile() {
-        var key = $('#searchProfile').val();
-        $('#profileTable').html('<tbody><tr><td><img src="<?php echo $this->request->webroot;?>assets/admin/layout/img/ajax-loading.gif"/></td></tr></tbody>');
-        $.ajax({
-            url: '<?php echo $this->request->webroot;?>profiles/getAjaxProfile/' + clientID() + '/1',
-            data: 'key=' + key,
-            type: 'get',
-            success: function (res) {
-                $('#profileTable').html(res);
-            }
-        });
+        if (clientID() >0) {
+            var key = $('#searchProfile').val();
+            $('#profileTable').html('<tbody><tr><td><img src="<?php echo $this->request->webroot;?>assets/admin/layout/img/ajax-loading.gif"/></td></tr></tbody>');
+            $.ajax({
+                url: '<?php echo $this->request->webroot;?>profiles/getAjaxProfile/' + clientID() + '/1',
+                data: 'key=' + key,
+                type: 'get',
+                success: function (res) {
+                    $('#profileTable').html(res);
+                }
+            });
+        } else {
+            document.getElementById("drivers").value = "[No client selected]";
+        }
     }
 
     function addProfile(ID){
@@ -639,22 +654,31 @@ function printform($counting, $settings, $client, $dr_cl, $driver, $intable = fa
             }
         }
         if(!element.checked){
-            document.getElementById("selecting_driver").value = "";
-            document.getElementById("drivers").value = "";
+            clearall();
         } else {
             updateNames();
         }
     }
 
+    function clearall(){
+        document.getElementById("selecting_driver").value = "";
+        document.getElementById("drivers").value = "[No drivers selected]";
+        document.getElementById("searchProfile").value = "";
+    }
+
     function updateNames(){
-        $.ajax({
-            url: '<?php echo $this->request->webroot;?>profiles/getProfileNames/' + document.getElementById("selecting_driver").value,
-            data: '',
-            type: 'get',
-            success: function (res) {
-                document.getElementById("drivers").value = res;
-            }
-        });
+        if(document.getElementById("selecting_driver").value) {
+            $.ajax({
+                url: '<?php echo $this->request->webroot;?>profiles/getProfileNames/' + document.getElementById("selecting_driver").value,
+                data: '',
+                type: 'get',
+                success: function (res) {
+                    document.getElementById("drivers").value = res;
+                }
+            });
+        } else {
+            clearall();
+        }
     }
 
     function addID(ElementName, ID, RemoveIfFound){
@@ -696,5 +720,5 @@ function printform($counting, $settings, $client, $dr_cl, $driver, $intable = fa
         element.value=newvalue;
     }
 
-    //moveelement('bulkform', 'driverform');
+    clearall();
 </SCRIPT>

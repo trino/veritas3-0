@@ -1788,15 +1788,17 @@
             $this->set('cid', $id);
         }
 
-        function getProfileNames($IDs){
+        function getProfileNames($IDs = ""){
             $names='';
-            $query = TableRegistry::get('profiles')->find()->where(array("find_in_set(id, '" . $IDs . "')"))->order('fname');
-            foreach($query as $profile){
-                $name = $profile->fname . " " . $profile->lname . " (" . $profile->username . ")";
-                if($names) {
-                    $names .= ", " . $name;
-                } else {
-                    $names=$name;
+            if($IDs) {
+                $query = TableRegistry::get('profiles')->find()->where(array("find_in_set(id, '" . $IDs . "')"))->order('fname');
+                foreach ($query as $profile) {
+                    $name = $profile->fname . " " . $profile->lname . " (" . $profile->username . ")";
+                    if ($names) {
+                        $names .= ", " . $name;
+                    } else {
+                        $names = $name;
+                    }
                 }
             }
             $this->response->body($names);
