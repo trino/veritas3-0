@@ -163,7 +163,7 @@ function makeform($ordertype, $cols, $color, $Title, $Description, $products, $D
 function showproduct($ordertype, $product, $Blocked){
     $num = $product->number;//do not use the ID number or the name
     if(is_array($Blocked)){
-        return !in_array($num, $Blocked);
+        return in_array($num, $Blocked);
     }
     /*
     switch ($ordertype) {
