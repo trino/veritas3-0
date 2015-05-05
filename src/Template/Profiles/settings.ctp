@@ -137,6 +137,9 @@ function makedropdownoption($Key, $Value, $TheValue){
                             <LI>
                                 <A HREF="producteditor">Product Types</A>
                             </LI>
+                            <li>
+                                <a href="#tab_1_14" data-toggle="tab">Profiles Import</a>
+                            </li>
                             <?php
                             }
                         }
@@ -170,6 +173,9 @@ function makedropdownoption($Key, $Value, $TheValue){
                     </div>
                     <div class="tab-pane" id="tab_1_15">
                         <?php include('subpages/client_logo.php'); ?>
+                    </div>
+                     <div class="tab-pane" id="tab_1_14">
+                        <?php include('subpages/import.php'); ?>
                     </div>
                     <div class="tab-pane" id="tab_1_14">
                         <div class="tabbable tabbable-custom">
