@@ -621,11 +621,13 @@
             //function productslist($ordertype, $products, $ID, $Checked = false, $Blocked = ""){
             $Product =  TableRegistry::get('product_types')->find()->where(['Acronym' => $ordertype])->first();
             if ($Product->Checked == 1) { $Checked = ' checked disabled';} else { $Checked = "";}
-            $Blocked = explode(",", $Product->Blocked);
+            if( $Product->Blocked) {$Blocked = explode(",", $Product->Blocked);}else {$Blocked = "";}
             $products = $this->getproductlist($ClientID);
             $count=0;
             foreach ($products as $p) {
-                if(in_array($p->number, $Blocked) && $p->clientenabled) {
+                $isfound=true;
+                if(is_array($Blocked)){$isfound=in_array($p->number, $Blocked);}
+                if($isfound && $p->clientenabled) {
                     echo '<li id="product_' . $p->number . '"><div class="col-xs-10"><i class="fa fa-file-text-o"></i> ';
                     echo '<label for="form' . $count . '">' . $p->title . '</label></div>';
                     echo '<div class="col-xs-2"><input type="checkbox" value="' . $p->number . '" id="form' . $count . '"' . $Checked . '/></div>';

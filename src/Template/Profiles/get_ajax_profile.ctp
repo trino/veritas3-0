@@ -6,6 +6,7 @@ $mode = $profiles->mode;
 switch ($mode){
     case 1://bulk order
         $sub = "addProfile";
+        $selected = explode(",", $profiles->selected);
         break;
 }
 
@@ -34,13 +35,18 @@ foreach($profiles as $r) {
 ?>
 
 <td>
-<span><input id="p_<?= $i ?>" class="profile_client" onchange="<?php
+<span><input id="p_<?= $i ?>" name="p_<?= $r->id ?>" class="profile_client" onchange="<?php
+    $checked = "";
     if($mode==0) {
         echo "if($(this).is(':checked')){assignProfile($(this).val(),'" .  $cid . "','yes');}else{assignProfile($(this).val(),'" .  $cid . "','no');}";
+        $checked = in_array($r->id,$profile);
     } else {
-        echo $sub . "(" . $r->id . ")";
+        echo $sub . "(" . $r->id . ");";
+        $checked = in_array($r->id, $selected);
     }
-        ?>" type="checkbox" <?php if($mode ==0 && in_array($r->id,$profile)){ echo 'checked="checked"'; }?> value="<?php echo $r->id; ?>"/></span>
+    if($checked){$checked ='checked="checked"';}
+
+        ?>" type="checkbox" <?= $checked; ?> value="<?php echo $r->id; ?>"/></span>
 <span><label for="p_<?= $i ?>"><?php echo $username; ?> <?php if($r->profile_type!=""){echo $profiletype;}?> </span></label>
 <span class="msg_<?php echo $r->id; ?>"></span>
 </td>

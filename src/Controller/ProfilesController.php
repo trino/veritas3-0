@@ -1828,6 +1828,11 @@
              if(!$super)
               $query = $query->orWhere(['created_by'=>$u]);*/
             $query->mode = $mode;
+            if($mode==1) {
+                foreach($_GET as $Key => $Value) {
+                    $query->$Key = $Value;
+                }
+            }
             $this->set('profiles', $query);
             $this->set('cid', $id);
         }

@@ -116,7 +116,7 @@ function print1profile($index, $profile, $profiletype){//$index = $i
     } elseif(strlen(trim($profile->fname . $profile->lname))>0) {
         $username = $profile->fname . " " . $profile->lname;
     }
-    echo '<tr><td><span><input class="profile_client" type="checkbox" id="p_' . $index . '"
+    echo '<tr><td><span><input class="profile_client" type="checkbox" id="p_' . $index . '" name="p_' . $profile->id . '"
                 onchange="addProfile(' . $profile->id . ');"
                 value="' . $profile->id . '"/></span>
                 <span><label for="p_' .  $index . '">' . $username . '</span> ';
@@ -162,8 +162,10 @@ function makeform($ordertype, $cols, $color, $Title, $Description, $products, $D
 
 function showproduct($ordertype, $product, $Blocked){
     $num = $product->number;//do not use the ID number or the name
-    if(is_array($Blocked)){
-        return in_array($num, $Blocked);
+    if($Blocked) {
+        if (is_array($Blocked)) {
+            return in_array($num, $Blocked);
+        }
     }
     /*
     switch ($ordertype) {
@@ -606,6 +608,8 @@ function printform($counting, $settings, $client, $dr_cl, $driver, $intable = fa
     });
 </script>
 <SCRIPT>
+    var UpdatesEnabled = true;
+
     function moveelement(SRCelement, DESTelement){
         SRCelement = document.getElementById(SRCelement);
         document.getElementById(DESTelement).appendChild(SRCelement);
@@ -626,7 +630,7 @@ function printform($counting, $settings, $client, $dr_cl, $driver, $intable = fa
             $('#profileTable').html('<tbody><tr><td><img src="<?php echo $this->request->webroot;?>assets/admin/layout/img/ajax-loading.gif"/></td></tr></tbody>');
             $.ajax({
                 url: '<?php echo $this->request->webroot;?>profiles/getAjaxProfile/' + clientID() + '/1',
-                data: 'key=' + key,
+                data: 'key=' + key + '&selected=' +  document.getElementById("selecting_driver").value,
                 type: 'get',
                 success: function (res) {
                     $('#profileTable').html(res);
@@ -642,17 +646,48 @@ function printform($counting, $settings, $client, $dr_cl, $driver, $intable = fa
         updateNames();
     }
 
+    function Check(ElementName, State, isID){
+        if (isID){
+            ElementName = "#" + ElementName;
+        } else {
+            ElementName= 'input[name=' + ElementName + ']';
+        }
+        if(State) {
+            $(ElementName).parent().addClass('checked');
+            $(ElementName).attr('checked', 'checked');
+        } else {
+            $(ElementName).parent().removeClass('checked')
+            $(ElementName).removeAttr('checked');
+        }
+        //$(ElementName).click();
+    }
+
     function selectall(IDs){
         var element = document.getElementById("selectall");
+        var temp = 0;
+        var ID = 0;
         IDs = IDs.split(",");
+        UpdatesEnabled=false;//only needs to update the last one
         for(temp=0; temp<IDs.length; temp++){
             ID = IDs[temp];
+            /*
             if(element.checked){
                 addID("selecting_driver", ID, false);
             }else {
             //    removeID("selecting_driver", ID);//chrome refuses to run this code!
             }
+            */
+            //alert(ID + " " + temp);
+            //if(document.getElementsByName("p_" + ID)[0].checked!=element.checked) {
+                Check("p_" + ID, element.checked, false);
+            //}
+            if(element.checked) {
+                addID("selecting_driver", ID, false);
+            } else {
+                removeID("selecting_driver", ID);
+            }
         }
+        UpdatesEnabled=true;
         if(!element.checked){
             clearall();
         } else {
@@ -667,17 +702,19 @@ function printform($counting, $settings, $client, $dr_cl, $driver, $intable = fa
     }
 
     function updateNames(){
-        if(document.getElementById("selecting_driver").value) {
-            $.ajax({
-                url: '<?php echo $this->request->webroot;?>profiles/getProfileNames/' + document.getElementById("selecting_driver").value,
-                data: '',
-                type: 'get',
-                success: function (res) {
-                    document.getElementById("drivers").value = res;
-                }
-            });
-        } else {
-            clearall();
+        if (UpdatesEnabled) {
+            if (document.getElementById("selecting_driver").value) {
+                $.ajax({
+                    url: '<?php echo $this->request->webroot;?>profiles/getProfileNames/' + document.getElementById("selecting_driver").value,
+                    data: '',
+                    type: 'get',
+                    success: function (res) {
+                        document.getElementById("drivers").value = res;
+                    }
+                });
+            } else {
+                clearall();
+            }
         }
     }
 
@@ -685,6 +722,7 @@ function printform($counting, $settings, $client, $dr_cl, $driver, $intable = fa
         var element = document.getElementById(ElementName);
         if(element.value){
             var values = element.value.split(",");
+            var temp=0;
             for (temp = 0; temp< values.length; temp++){
                 if(values[temp]== ID) {
                     if(RemoveIfFound) {removeID(ElementName, ID);}
@@ -701,6 +739,7 @@ function printform($counting, $settings, $client, $dr_cl, $driver, $intable = fa
     function removeID(ElementName, ID){
         element = document.getElementById(ElementName);
         var newvalue = "";
+        var temp=0;
         if(element.value.indexOf(",")==-1) {
             if (element.value != ID){
                 newvalue = element.value;
