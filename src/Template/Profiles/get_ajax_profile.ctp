@@ -9,12 +9,18 @@ switch ($mode){
         break;
 }
 
+$fulllist="";
 foreach($profiles as $r) {
      $username = "[NO NAME]";
     if (strlen(trim($r->username)>0)) {
         $username = $r->username;
     } elseif(strlen(trim($r->fname . $r->lname))>0) {
         $username = $r->fname . " " . $r->lname;
+    }
+    if($fulllist){
+        $fulllist.="," . $r->id;
+    }else{
+        $fulllist = $r->id;
     }
     $profiletype = "(" . $pType[$r->profile_type] . ")";
     if ($profiletype == "()") {$profiletype = "(Draft)"; }
@@ -38,17 +44,20 @@ foreach($profiles as $r) {
 <span><label for="p_<?= $i ?>"><?php echo $username; ?> <?php if($r->profile_type!=""){echo $profiletype;}?> </span></label>
 <span class="msg_<?php echo $r->id; ?>"></span>
 </td>
-<?php
-
-//if(($i+1)%2==0)
-//                                                {
-?>
 </tr>
 <?php
 // }
 
 $i++;
 }
+if($mode==1){
+    if($i>1){
+        $fulllist="'" . $fulllist . "'";
+        echo '<TR><TD><SPAN><INPUT TYPE="CHECKBOX" ID="selectall" ONCHANGE="selectall(' . $fulllist . ');"></SPAN> <SPAN><LABEL FOR="selectall">Select All</LABEL></SPAN></TD></TR>';
+    }
+}
+
+
 //if(($i+1)%2!=0)
 //                                                {
 //                                                    echo "</td></tr>";

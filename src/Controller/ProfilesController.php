@@ -1702,18 +1702,22 @@
             die();
         }
 
-        function getProfile()
+        function getProfile($ClientID = 0)
         {
             $rec = TableRegistry::get('Profiles');
             $query = $rec->find();
             $u = $this->request->session()->read('Profile.id');
             $super = $this->request->session()->read('Profile.super');
 
-            if ($super) {
-                $query = $rec->find()->where(['super <>' => 1, 'drafts' => 0])->order('fname');
-            } else {
-                $query = $rec->find()->where(['super <>' => 1, 'drafts' => 0, 'created_by' => $u])->order('fname');
+            $conditions = array('super <>' => 1, 'drafts' => 0);
+
+            if($ClientID>0) {//SET @profiles = (
+                $conditions2 = '(SELECT profile_id FROM clients WHERE id = ' . $ClientID . ")";
+                $conditions[] = 'find_in_set(id, ' . $conditions2 . ')';
+            } else if (!$super) {
+                $conditions['created_by'] = $u;
             }
+            $query = $rec->find()->where($conditions)->order('fname');
 
             /*$cond = $this->Settings->getprofilebyclient($u,$super);
 
@@ -1744,16 +1748,19 @@
 
         function getAjaxProfile($id = 0, $mode = 0) {
             $this->layout = 'blank';
-            if ($id) {
-                $this->loadModel('Clients');
-                $profile = $this->Clients->get($id, [
-                    'contain' => []
-                ]);
-                $arr = explode(',', $profile->profile_id);
-                $this->set('profile', $arr);
-            } else {
-                $this->set('profile', array());
+            if($mode==0) {
+                if ($id) {
+                    $this->loadModel('Clients');
+                    $profile = $this->Clients->get($id, [
+                        'contain' => []
+                    ]);
+                    $arr = explode(',', $profile->profile_id);
+                    $this->set('profile', $arr);
+                } else {
+                    $this->set('profile', array());
+                }
             }
+
             $key = $_GET['key'];
             $rec = TableRegistry::get('Profiles');
             $query = $rec->find();
@@ -1761,11 +1768,14 @@
             $super = $this->request->session()->read('Profile.admin');
             $cond = $this->Settings->getprofilebyclient($u, $super);
 
-            if ($super) {
-                $query = $rec->find()->where(['super <>' => 1, 'drafts' => 0, '(fname LIKE "%' . $key . '%" OR lname LIKE "%' . $key . '%" OR username LIKE "%' . $key . '%")'])->order('fname');
-            } else {
-                $query = $rec->find()->where(['super <>' => 1, 'drafts' => 0, 'created_by' => $u, '(fname LIKE "%' . $key . '%" OR lname LIKE "%' . $key . '%" OR username LIKE "%' . $key . '%")'])->order('fname');
+            $conditions=array('super <>' => 1, 'drafts' => 0, '(fname LIKE "%' . $key . '%" OR lname LIKE "%' . $key . '%" OR username LIKE "%' . $key . '%")');
+            if($mode==1 && $id>0) {//search by client
+                $conditions[] = 'find_in_set(id, (SELECT profile_id FROM clients WHERE id = ' . $id . '))';
+            } else if (!$super) {
+                $conditions['created_by'] = $u;
             }
+
+            $query = $rec->find()->where($conditions)->order('fname');
 
             //$query = $query->select()->where(['super'=>0]);
 
@@ -1776,7 +1786,22 @@
             $query->mode = $mode;
             $this->set('profiles', $query);
             $this->set('cid', $id);
+        }
 
+        function getProfileNames($IDs){
+            $names='';
+            $query = TableRegistry::get('profiles')->find()->where(array("find_in_set(id, '" . $IDs . "')"))->order('fname');
+            foreach($query as $profile){
+                $name = $profile->fname . " " . $profile->lname . " (" . $profile->username . ")";
+                if($names) {
+                    $names .= ", " . $name;
+                } else {
+                    $names=$name;
+                }
+            }
+            $this->response->body($names);
+            return $this->response;
+            die();
         }
 
         function getAjaxContact($id = 0)

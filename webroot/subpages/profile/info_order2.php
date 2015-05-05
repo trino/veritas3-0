@@ -32,7 +32,12 @@ $dr_cl = $doc_comp->getDriverClient($driver, $client);
 
 $drcl_c = $dr_cl['client'];
 $counting = iterator_count ($drcl_c);
-
+$clientID=0;
+if($counting == 1) {
+    foreach($dr_cl['client'] as $dr) {
+        if($clientID==0){$clientID=$dr->id;}
+    }
+}
 
 function GET($name, $default = ""){
     if (isset($_GET[$name])) {
@@ -43,7 +48,8 @@ function GET($name, $default = ""){
 
 $ordertype = substr(strtoupper(GET("ordertype")), 0, 3);
 
-$GLOBALS['profiles'] = $this->requestAction('/profiles/getProfile');
+//'<?php echo $this->request->webroot; //profiles/getAjaxProfile/' + clientID() + '/1',
+$GLOBALS['profiles'] = $this->requestAction('/profiles/getProfile/' . $clientID);
 //$GLOBALS['contact']= $this->requestAction('/profiles/getContact');
 $GLOBALS['pType'] = $this->requestAction('/profiles/getProfileTypes');// ['','Admin','Recruiter','External','Safety','Driver','Contact'];
 $GLOBALS['settings'] = $this->requestAction('settings/get_settings');
@@ -54,9 +60,9 @@ function makeBulk(){
     $pType = $GLOBALS['pType'];
     $settings = $GLOBALS['settings'];
 
-    echo '<div class="col-xs-4">';
+  //  echo '<div class="col-xs-4">';
         ?>
-        <div class="scrolldiv" style="margin-bottom: 15px;">
+        <div class="scrolldiv" style="margin-bottom: 15px;" ID="bulkform">
             <input type="text" id="searchProfile" onkeyup="searchProfile()" class="form-control" placeholder="Search <?php echo ucfirst($settings->profile); ?>s"/>
             <table class="table table-striped table-bordered table-advance table-hover recruiters">
                 <thead>
@@ -67,50 +73,50 @@ function makeBulk(){
                 <tbody id="profileTable">
                 <?php
                 $i = 0;
+                $fulllist="";
                 foreach ($profiles as $r) {
                     //echo $r->username;continue;
                     //if ($i % 2 == 0) {
-                    $username = "[NO NAME]";
-                    if (strlen(trim($r->username))>0) {
-                        $username = $r->username;
-                    } elseif(strlen(trim($r->fname . $r->lname))>0) {
-                        $username = $r->fname . " " . $r->lname;
-                    }
                     if(isset($pType[$r->profile_type]))
                         $profiletype = "(" . $pType[$r->profile_type] . ")";
                     else
                         $profiletype = "";
                     if ($profiletype == "()") {$profiletype = "(Draft)"; }
-                    ?>
-                    <tr>
-
-                        <td>
-                        <span><input class="profile_client" type="checkbox" id="p_<?= $i ?>"
-                                     onchange="addProfile(<?= $r->id ?>);"
-                                     value="<?php echo $r->id; ?>"/></span>
-                            <span><label for="p_<?= $i ?>"><?php echo $username; ?></span> <?php if($r->profile_type!=""){ echo $profiletype;}?> </span></label>&nbsp;
-                            <span class="msg_<?php echo $r->id; ?>"></span>
-                        </td>
-                    </tr>
-                    <?php
+                    if($fulllist){
+                        $fulllist.="," . $r->id;
+                    }else{
+                        $fulllist = $r->id;
+                    }
                     //}
+                    print1profile($i, $r, $profiletype);
 
                     $i++;
                 }
-                //if (($i + 1) % 2 != 0) {
-                //echo "</td></tr>";
-                //}
-                ?>
-                </tbody>
-            </table>
-        </div>
-
-
-        <?php
-    echo '</DIV>';
-    return '';
+                if($i>1){
+                    $fulllist="'" . $fulllist . "'";
+                    echo '<TR><TD><SPAN><INPUT TYPE="CHECKBOX" ID="selectall" ONCHANGE="selectall(' . $fulllist . ');"></SPAN> <SPAN><LABEL FOR="selectall">Select All</LABEL></SPAN></TD></TR>';
+                }
+                echo "</tbody></table></div>";//</DIV>
+    return "";
 }
 
+function print1profile($index, $profile, $profiletype){//$index = $i
+    $username = "[NO NAME]";
+    if (strlen(trim($profile->username))>0) {
+        $username = $profile->username;
+    } elseif(strlen(trim($profile->fname . $profile->lname))>0) {
+        $username = $profile->fname . " " . $profile->lname;
+    }
+    echo '<tr><td><span><input class="profile_client" type="checkbox" id="p_' . $index . '"
+                onchange="addProfile(' . $profile->id . ');"
+                value="' . $profile->id . '"/></span>
+                <span><label for="p_' .  $index . '">' . $username . '</span> ';
+    if($profile->profile_type){ echo $profiletype;}
+    echo ' </span>&nbsp;
+                <span class="msg_' . $profile->id . '"></span></label>
+                </td>
+                </tr>';
+}
 
 
 
@@ -122,7 +128,7 @@ function makeform($ordertype, $cols, $color, $Title, $Description, $products, $D
     $color=""; //color is disabled for now
 
     $offset = ' col-xs-offset-2';
-    if($ordertype=="BUL"){$offset = makeBulk();}
+    //if($ordertype=="BUL"){$offset = makeBulk();}
     echo '<div class="col-xs-' . $cols . $offset . '">';
 
     echo '<div class="pricing' . $color . ' hover-effect">';
@@ -300,9 +306,14 @@ function printform($counting, $settings, $client, $dr_cl, $driver, $intable = fa
 <div class="form-group ">
 
     <?php
-    echo '<div class="col-xs-3 control-label"  align="right" style="margin-top: 6px;">Driver</div><div class="col-xs-6" >';
+    echo '<div class="col-xs-3 control-label"  align="right" style="margin-top: 6px;">Driver';
+        if($_GET["ordertype"] == "BUL"){ echo '(s)';}
+    echo '</div><div class="col-xs-6" ID="driverform">';
     if($_GET["ordertype"] == "BUL"){
-        echo '<INPUT TYPE="TEXT" NAME="selecting_driver" id="selecting_driver" class="form-control input-' . $size . '" VALUE="" REQUIRED DISABLED></DIV></DIV>';
+        echo '<INPUT TYPE="HIDDEN" NAME="selecting_driver" id="selecting_driver" class="form-control input-' . $size . '" VALUE="">';
+        echo '<INPUT TYPE="TEXT" NAME="drivers" id="drivers" class="form-control input-' . $size . '" VALUE="" READONLY>';
+        if($_GET['ordertype']=="BUL"){makeBulk();}
+        echo '</DIV></DIV>';
     } else {
         ?>
 
@@ -326,7 +337,6 @@ function printform($counting, $settings, $client, $dr_cl, $driver, $intable = fa
         $counting = 0;
         $drcl_d = $dr_cl['driver'];
         foreach ($drcl_d as $drcld) {
-
             $counting++;
         }
 
@@ -585,10 +595,16 @@ function printform($counting, $settings, $client, $dr_cl, $driver, $intable = fa
     });
 </script>
 <SCRIPT>
+    function moveelement(SRCelement, DESTelement){
+        SRCelement = document.getElementById(SRCelement);
+        document.getElementById(DESTelement).appendChild(SRCelement);
+    }
+
     function clientID(){
         var client = document.getElementById("selecting_client").value;
         if(isNaN(client)) {return 0;} else {return client;}
     }
+
     function Drivers(){
         return document.getElementById("selecting_driver").value;
     }
@@ -605,17 +621,49 @@ function printform($counting, $settings, $client, $dr_cl, $driver, $intable = fa
             }
         });
     }
+
     function addProfile(ID){
-        addID("selecting_driver", ID);
+        addID("selecting_driver", ID, true);
+        updateNames();
     }
 
-    function addID(ElementName, ID){
+    function selectall(IDs){
+        var element = document.getElementById("selectall");
+        IDs = IDs.split(",");
+        for(temp=0; temp<IDs.length; temp++){
+            ID = IDs[temp];
+            if(element.checked){
+                addID("selecting_driver", ID, false);
+            }else {
+            //    removeID("selecting_driver", ID);//chrome refuses to run this code!
+            }
+        }
+        if(!element.checked){
+            document.getElementById("selecting_driver").value = "";
+            document.getElementById("drivers").value = "";
+        } else {
+            updateNames();
+        }
+    }
+
+    function updateNames(){
+        $.ajax({
+            url: '<?php echo $this->request->webroot;?>profiles/getProfileNames/' + document.getElementById("selecting_driver").value,
+            data: '',
+            type: 'get',
+            success: function (res) {
+                document.getElementById("drivers").value = res;
+            }
+        });
+    }
+
+    function addID(ElementName, ID, RemoveIfFound){
         var element = document.getElementById(ElementName);
         if(element.value){
             var values = element.value.split(",");
             for (temp = 0; temp< values.length; temp++){
-                if(values[temp]== ID ) {
-                    removeID(ElementName, ID);
+                if(values[temp]== ID) {
+                    if(RemoveIfFound) {removeID(ElementName, ID);}
                     return false;
                 }
             }
@@ -628,17 +676,25 @@ function printform($counting, $settings, $client, $dr_cl, $driver, $intable = fa
 
     function removeID(ElementName, ID){
         element = document.getElementById(ElementName);
-        var values = element.value.split(",");
         var newvalue = "";
-        for (temp = 0; temp< values.length; temp++){
-            if(values[temp] != ID ) {
-                if(newvalue){
-                    newvalue=newvalue + "," + values[temp];
-                }else{
-                    newvalue=values[temp];
+        if(element.value.indexOf(",")==-1) {
+            if (element.value != ID){
+                newvalue = element.value;
+            }
+        } else {
+            var values = element.value.split(",");
+            for (temp = 0; temp < values.length; temp++) {
+                if (values[temp] != ID) {
+                    if (newvalue) {
+                        newvalue = newvalue + "," + values[temp];
+                    } else {
+                        newvalue = values[temp];
+                    }
                 }
             }
         }
         element.value=newvalue;
     }
+
+    //moveelement('bulkform', 'driverform');
 </SCRIPT>
