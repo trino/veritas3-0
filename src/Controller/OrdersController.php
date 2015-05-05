@@ -753,7 +753,7 @@
             echo '<br><br>order id '.$orderid . '<br><br>';
 
             $model = TableRegistry::get('profiles');
-            $driverinfo = $model->find()->where(['id' => $driverid])->first();
+            $driverinfo = $model->find()->where(['id' => $driverid])->first(); //$conditions[] = 'find_in_set(id, ' . $conditions2 . ')'
 
             $this->set('orderid', $orderid);
             $this->set('driverinfo', $driverinfo);
