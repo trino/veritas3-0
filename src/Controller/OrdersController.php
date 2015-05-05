@@ -690,7 +690,12 @@
                 case "ins_72":
                     $arr['ins_72'] = $id;
                     break;
-
+                case "ins_31":
+                    $arr['ins_31'] = $id;
+                    break;
+                case "ins_32":
+                    $arr['ins_32'] = $id;
+                    break;
                 default:
                     $nothing = '111';
             }
