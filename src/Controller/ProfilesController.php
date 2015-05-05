@@ -875,14 +875,14 @@
                  while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
                     if($i!=0){
                         $query2 = $profile->query();
-                            $query2->insert(['profile_type','driver','username','title','fname','mname','lname','phone','gender','placeofbirth','dob','address',
+                            $query2->insert(['profile_type','driver','username','title','fname','mname','lname','phone','gender','placeofbirth','dob','street',
                                             'city','province','postal','country','driver_license_no','driver_province','expiry_date','email'])
                                 ->values(['profile_type'=>addslashes($data[0]),'driver'=>addslashes($data[1]),
                                 'username'=>addslashes($data[2]),'title'=>addslashes($data[3]),'fname'=>addslashes($data[4]),'mname'=>addslashes($data[5]),
-                                'lname'=>addslashes($data[6]),'phone'=>addslashes($data[7]),'gender'=>addslashes($data[8]),'placeofbirth'=>addslashes($data[9]),
-                                'dob'=>addslashes($data[10]),'address'=>addslashes($data[11]),'city'=>addslashes($data[12]),'province'=>addslashes($data[13]),
+                                'lname'=>addslashes($data[6]),'phone'=>addslashes($data[7]),'gender'=>addslashes($data[8]),'placeofbirth'=>date("Y-m-d",strtotime(addslashes($data[9]))),
+                                'dob'=>date('Y-m-d',strtotime(addslashes($data[10]))),'street'=>addslashes($data[11]),'city'=>addslashes($data[12]),'province'=>addslashes($data[13]),
                                 'postal'=>addslashes($data[14]),'country'=>addslashes($data[15]),'driver_license_no'=>addslashes($data[16]),'driver_province'=>addslashes($data[17]),
-                                'expiry_date'=>addslashes($data[18]),'email'=>addslashes($data[19])])
+                                'expiry_date'=>date("Y-m-d",strtotime(addslashes($data[18]))),'email'=>addslashes($data[19])])
                                 ->execute();
                             unset($query2);
                     }
