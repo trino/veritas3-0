@@ -10,8 +10,8 @@ $company_name="Unknown";
 
 function connectdb(){
     global $con;
-    $con = mysqli_connect("localhost:3306", "root", "","mee") or die("Error " . mysqli_error($con));
-    return $con;
+    $con = mysqli_connect("localhost:3306", "root", "","mee") or die("Error " . mysqli_error($con$con = mysqli_connect("localhost:3306", "root", "","v3") or die("Error " . mysqli_error($con));
+
 }
 
 function first($query){
@@ -29,11 +29,12 @@ if(isset($_GET["client"])) {
         $logo = "img/jobs/" . $row["image"];
         $company_name = $row["company_name"];
     }
-    if(isset($_GET["username"])) {
-        //INSERT CODE TO SAVE TO THE TABLE, HERE!
-    }
+   
 }
-
+$sql = "SELECT * FROM clients";
+ global $con;
+    $result1 = $con->query($sql);
+ 
 if(!$logo){
     $logo = "";
 }
@@ -118,8 +119,12 @@ function printprovinces($name, $selected = "", $isdisabled = "", $isrequired = f
     <script src="<?= $webroot; ?>assets/global/plugins/respond.min.js"></script>
     <script src="<?= $webroot; ?>assets/global/plugins/excanvas.min.js"></script>
     <![endif]-->
+    <link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css" rel="stylesheet" type="text/css"/>
+    
+        
     <script src="<?= $webroot; ?>assets/global/plugins/jquery.min.js" type="text/javascript"></script>
     <script src="<?= $webroot; ?>assets/global/plugins/jquery-migrate.min.js" type="text/javascript"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js" type="text/javascript"></script>
     <script src="<?= $webroot; ?>assets/global/plugins/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
     <script src="<?= $webroot; ?>assets/global/plugins/jquery.blockui.min.js" type="text/javascript"></script>
     <script src="<?= $webroot; ?>assets/global/plugins/uniform/jquery.uniform.min.js" type="text/javascript"></script>
@@ -136,7 +141,7 @@ function printprovinces($name, $selected = "", $isdisabled = "", $isrequired = f
     <script src="<?= $webroot; ?>assets/admin/pages/scripts/login.js" type="text/javascript"></script>
     <!-- END PAGE LEVEL SCRIPTS -->
     <script>
-        jQuery(document).ready(function() {
+        $(document).ready(function() {
             Metronic.init(); // init metronic core components
             Layout.init(); // init current layout
             Login.init();
@@ -172,7 +177,7 @@ function printprovinces($name, $selected = "", $isdisabled = "", $isrequired = f
 <div class="content">
     <center>
         <img src="<?= $webroot . $logo;?>"  style="max-width: 100%;"/></center>
-        <form class="login-form" action="<?php echo $webroot; ?>application/makedriver.php" method="get">
+        <form class="login-form" action="<?php echo $webroot; ?>profiles/rapidadd" method="post">
             <h3 class="form-title">Create a new driver</h3>
             <?php
                 if (isset($_GET["username"])){
@@ -180,33 +185,51 @@ function printprovinces($name, $selected = "", $isdisabled = "", $isrequired = f
                         <button class="close" data-close="alert"></button>
                         User "' . $_GET["username"] . '" has been created.</div>';
                 }
+                if(isset($_GET['error']))
+                {
+                    echo '<div class="alert alert-error display-hide" style="display: block;">
+                        <button class="close" data-close="alert"></button>
+                        User "' . $_GET["username"] . '" was not created.</div>';
+                }
+                
             ?>
-            <div class="form-group">
+            <div class="form-group col-md-6 col-sm-6">
                 <label class="control-label visible-ie8 visible-ie9">Client</label>
                 <div class="input-icon">
                     <i class="fa fa-building"></i>
-                    <input class="form-control placeholder-no-fix" type="text" autocomplete="off" placeholder="Client" name="clientname" required="required" DISABLED VALUE="<?= $company_name; ?>"/>
-                    <input type="hidden" value="<?php if(isset($_GET["client"])) {echo $_GET["client"];} ?>" name="client">
+                    <select name="client_ids" class="form-control placeholder-no-fix clients" required="required">
+                        <option value="">Select Client</option>
+                    <?php while($row = mysqli_fetch_array($result1)) {
+                    
+                    ?>
+                        <option value="<?php echo $row['id'];?>" <?php if(isset($_GET['client'])&& $_GET['client']==$row['id'])echo "selected='selected'"; ?>><?php echo $row['company_name'];?></option>
+                    <?php
+                    }
+                    ?>
+                    </select>
+                    <!--<input class="form-control placeholder-no-fix" type="text" autocomplete="off" placeholder="Client" name="clientname" required="required" DISABLED VALUE="<?= $company_name; ?>"/>
+                    <input type="hidden" value="<?php if(isset($_GET["client"])) {echo $_GET["client"];} ?>" name="client_ids">-->
                 </div>
             </div>
 
-            <div class="form-group">
+            <div class="form-group col-md-6 col-sm-6">
                 <label class="control-label visible-ie8 visible-ie9">Username</label>
                 <div class="input-icon">
                     <i class="fa fa-user"></i>
-                    <input class="form-control placeholder-no-fix" type="text" autocomplete="off" placeholder="Username" name="username" required="required" />
+                    <input class="uname form-control placeholder-no-fix" type="text" autocomplete="off" placeholder="Username" name="username" required="required" />
                 </div>
             </div>
+            <div class="clearfix"></div>
 
-            <div class="form-group">
+            <div class="form-group col-md-6 col-sm-6">
                 <label class="control-label visible-ie8 visible-ie9">Email</label>
                 <div class="input-icon">
                     <i class="fa fa-envelope"></i>
-                    <input class="form-control placeholder-no-fix" type="email" autocomplete="off" placeholder="Email" name="email" required="required" />
+                    <input class="email form-control placeholder-no-fix" type="email" autocomplete="off" placeholder="Email" name="email" required="required" />
                 </div>
             </div>
 
-            <div class="form-group">
+            <div class="form-group col-md-6 col-sm-6">
                 <label class="control-label visible-ie8 visible-ie9">Title</label>
                 <div class="input-icon">
                     <i class="fa fa-child"></i>
@@ -220,8 +243,9 @@ function printprovinces($name, $selected = "", $isdisabled = "", $isrequired = f
                     </SELECT>
                 </div>
             </div>
+            <div class="clearfix"></div>
 
-            <div class="form-group">
+            <div class="form-group col-md-6 col-sm-6">
                 <label class="control-label visible-ie8 visible-ie9">Name</label>
                 <div class="input-icon">
                     <i class="fa fa-user"></i>
@@ -233,14 +257,14 @@ function printprovinces($name, $selected = "", $isdisabled = "", $isrequired = f
                 </div>
             </div>
 
-            <div class="form-group">
+            <div class="form-group col-md-6 col-sm-6">
                 <label class="control-label visible-ie8 visible-ie9">Phone Number</label>
                 <div class="input-icon">
                     <i class="fa fa-phone"></i>
                     <input class="form-control placeholder-no-fix" type="text" autocomplete="off" placeholder="Phone Number" name="phone" required="required" />
                 </div>
             </div>
-
+            <div class="clearfix"></div>
             <!--div class="form-group">     JUST BASE IT OFF THE TITLE!
                 <label class="control-label visible-ie8 visible-ie9">Gender</label>
                 <div class="input-icon">
@@ -255,7 +279,7 @@ function printprovinces($name, $selected = "", $isdisabled = "", $isrequired = f
                 </div>
             </div-->
 
-            <div class="form-group">
+            <div class="form-group col-md-6 col-sm-6">
                 <label class="control-label visible-ie8 visible-ie9">Place of Birth</label>
                 <div class="input-icon">
                     <i class="fa fa-globe"></i>
@@ -263,11 +287,11 @@ function printprovinces($name, $selected = "", $isdisabled = "", $isrequired = f
                 </div>
             </div>
 
-            <div class="form-group">
+            <div class="form-group col-md-6 col-sm-6">
                 <label class="control-label visible-ie8 visible-ie9">Date of Birth</label>
                 <div class="input-icon">
                     <i class="fa fa-calendar"></i>
-                    <INPUT TYPE="Text" NAME="dob" size=10 MAXLENGTH="10" id="datepicker" placeholder="Date of Birth" CLASS="form-control placeholder-no-fix">
+                    <INPUT TYPE="Text" NAME="dob" size=10 MAXLENGTH="10" placeholder="Date of Birth" CLASS="datepicker form-control placeholder-no-fix">
 
                     <!--SELECT CLASS="form-control placeholder-no-fix" placeholder="Title" name="dobY" required="required" />
                         <?php
@@ -304,8 +328,9 @@ function printprovinces($name, $selected = "", $isdisabled = "", $isrequired = f
                     </SELECT-->
                 </div>
             </div>
+            <div class="clearfix"></div>
 
-            <div class="form-group">
+            <div class="form-group col-md-6 col-sm-6">
                 <label class="control-label">Address</label>
                 <div class="input-icon">
                     <i class="fa fa-globe"></i>
@@ -321,44 +346,109 @@ function printprovinces($name, $selected = "", $isdisabled = "", $isrequired = f
                 </div>
             </div>
 
-            <div class="form-group">
+            <div class="form-group col-md-6 col-sm-6">
                 <label class="control-label ">Driver's License</label>
                 <div class="input-icon">
                     <i class="fa fa-credit-card"></i>
                     <input class="form-control placeholder-no-fix" type="text" autocomplete="off" placeholder="Driver's License #" name="driver_license_no" required="required" />
 
                     <i class="fa fa-calendar"></i>
-                    <INPUT TYPE="Text" NAME="dob" size=10 MAXLENGTH="10" id="datepicker" placeholder="Expiry Date" CLASS="form-control placeholder-no-fix">
+                    <INPUT TYPE="Text" NAME="dob" size=10 MAXLENGTH="10" placeholder="Expiry Date" CLASS="datepicker form-control placeholder-no-fix">
 
                     <i class="fa fa-globe"></i>
                     <?php printprovinces("driver_province", "", "", false, "Province Issued"); ?>
 
                 </div>
             </div>
-
+            <div class="clearfix"></div>
+        
             <div class="form-actions">
-                <button type="submit" class="btn green-haze pull-right" >
+                <a href="javascript:void(0);" class="btn green-haze pull-right" onclick="return check_username();" >
                     Create <i class="m-icon-swapright m-icon-white"></i>
-                </button>
+                </a>
             </div>
-
+            <input type="submit" id="hiddensub" style="display: none;"/>
         </form>
 
-    <link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css" rel="stylesheet" type="text/css"/>
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js" type="text/javascript"></script>
-    <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js" type="text/javascript"></script>
+    
 
-    <script type="text/javascript">
-        $(document).ready(function() {
+    <script>
+        function check_username() {
+       
+
+            var client_id = $('.client_profile_id').val();
+            if (client_id == "") {
+
+            }
+            var un = $('.uname').val();
+
+            $.ajax({
+                url: '<?php echo $webroot;?>profiles/check_user',
+                data: 'username=' + $('.uname').val(),
+                type: 'post',
+                success: function (res) {
+                    res = res.trim();
+                    if (res == '1') {
+                        //alert(res);
+                        alert('Username already exists');
+
+                        $('.uname').focus();
+                        $('html,body').animate({
+                                scrollTop: $('.login-form').offset().top
+                            },
+                            'slow');
+
+                        return false;
+                    } else {
+                        $('.flashUser').hide();
+                        if ($('.email').val() != '') {
+                            var un = $('.email').val();
+                            $.ajax({
+                                url: '<?php echo $webroot;?>profiles/check_email',
+                                data: 'email=' + $('.email').val(),
+                                type: 'post',
+                                success: function (res) {
+                                    res = res.trim();
+                                    if (res == '1') {
+                                        $('.email').focus();
+                                        alert('Email already exists');
+                                        $('html,body').animate({
+                                                scrollTop: $('.login-form').offset().top
+                                            },
+                                            'slow');
+
+                                        return false;
+                                    } else {
+                                        $(this).attr('disabled', 'disabled');
+                                        $('#hiddensub').click();
+                                    }
+                                }
+                            });
+                        } else {
+                            $('#hiddensub').click();
+                        }
+                    }
+                }
+            });
+
+
+    }
+   
             $(function() {
-                $( "#datepicker" ).datepicker({
+                $(".datepicker" ).datepicker({
                     changeMonth: true,
                     changeYear: true,
                     yearRange: '1980:2020',
                     dateFormat: 'yy-mm-dd'
                 });
+                $('.clients').change(function(){
+                    var cid = $(this).val();
+                    if(cid!="")
+                    window.location="<?php echo $webroot;?>application/makedriver.php?client="+cid;
+                })
+                 
             });
-        });
+   
     </script>
 
 </body>

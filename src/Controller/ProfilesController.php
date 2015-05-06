@@ -865,17 +865,99 @@
 
             $this->render("edit");
         }
-        
+           public function rapidadd()
+        {
+            $this->set('uid', '0');
+            $this->set('id', '0');
+            
+            $profiles = TableRegistry::get('Profiles');
+
+            $_POST['created'] = date('Y-m-d');
+            //var_dump($profile);die();
+            
+            if ($this->request->is('post')) {
+
+                if (isset($_POST['profile_type']) && $_POST['profile_type'] == 1)
+                    $_POST['admin'] = 1;
+
+                $_POST['dob'] = $_POST['dob'];
+                //debug($_POST);die();
+                $profile = $profiles->newEntity($_POST);
+                if ($profiles->save($profile)) {
+
+                    if ($_POST['client_ids'] != "") {
+                        $client_id = explode(",", $_POST['client_ids']);
+                        foreach ($client_id as $cid) {
+                            $query = TableRegistry::get('clients');
+                            $q = $query->find()->where(['id' => $cid])->first();
+                            $profile_id = $q->profile_id;
+                            $pros = explode(",", $profile_id);
+
+                            $p_ids = "";
+
+                            array_push($pros, $profile->id);
+                            $pro_id = array_unique($pros);
+
+                            foreach ($pro_id as $k => $p) {
+                                if (count($pro_id) == $k + 1)
+                                    $p_ids .= $p;
+                                else
+                                    $p_ids .= $p . ",";
+                            }
+
+                            $query->query()->update()->set(['profile_id' => $p_ids])
+                                ->where(['id' => $cid])
+                                ->execute();
+                        }
+                    }
+                    //die();
+                    $blocks = TableRegistry::get('Blocks');
+                    $query2 = $blocks->query();
+                    $query2->insert(['user_id'])
+                        ->values(['user_id' => $profile->id])
+                        ->execute();
+                    $side = TableRegistry::get('Sidebar');
+                    $query2 = $side->query();
+                    $create_que = $query2->insert(['user_id'])
+                        ->values(['user_id' => $profile->id])
+                        ->execute();
+                    
+
+                    
+                    return $this->redirect('/application/makedriver.php?username='.$_POST['username']);
+                } else {
+                     return $this->redirect('/application/makedriver.php?error='.$_POST['username']);
+                }
+            }
+            die();
+        }
         function csv()
         {
               $profile = TableRegistry::get('profiles');
+              $arr = explode('.', $_FILES['csv']['name']);
+              $ext = end($arr);
+              
+              $allowed = array( 'csv');
+              $check = strtolower($ext);
+              if (in_array($check, $allowed)) {
                if ($_FILES['csv']['size'] > 0) {
                  $handle = fopen($_FILES['csv']['tmp_name'], "r");
                  $i=0;
                  while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
                     if($i!=0){
-                        $query2 = $profile->query();
-                            $query2->insert(['profile_type','driver','username','title','fname','mname','lname','phone','gender','placeofbirth','dob','street',
+                        $pro = (['profile_type'=>addslashes($data[0]),'driver'=>addslashes($data[1]),
+                                'username'=>addslashes($data[2]),'title'=>addslashes($data[3]),'fname'=>addslashes($data[4]),'mname'=>addslashes($data[5]),
+                                'lname'=>addslashes($data[6]),'phone'=>addslashes($data[7]),'gender'=>addslashes($data[8]),'placeofbirth'=>date("Y-m-d",strtotime(addslashes($data[9]))),
+                                'dob'=>date('Y-m-d',strtotime(addslashes($data[10]))),'street'=>addslashes($data[11]),'city'=>addslashes($data[12]),'province'=>addslashes($data[13]),
+                                'postal'=>addslashes($data[14]),'country'=>addslashes($data[15]),'driver_license_no'=>addslashes($data[16]),'driver_province'=>addslashes($data[17]),
+                                'expiry_date'=>date("Y-m-d",strtotime(addslashes($data[18]))),'email'=>addslashes($data[19])]);
+                        $pros = $profile->newEntity($pro);
+                        if($profile->save($pros))
+                        {
+                             
+                        
+                        /*$query2 = $profile->query();
+                        $user = $query2->insert(['profile_type','driver','username','title','fname','mname','lname','phone','gender','placeofbirth','dob','street',
                                             'city','province','postal','country','driver_license_no','driver_province','expiry_date','email'])
                                 ->values(['profile_type'=>addslashes($data[0]),'driver'=>addslashes($data[1]),
                                 'username'=>addslashes($data[2]),'title'=>addslashes($data[3]),'fname'=>addslashes($data[4]),'mname'=>addslashes($data[5]),
@@ -884,7 +966,33 @@
                                 'postal'=>addslashes($data[14]),'country'=>addslashes($data[15]),'driver_license_no'=>addslashes($data[16]),'driver_province'=>addslashes($data[17]),
                                 'expiry_date'=>date("Y-m-d",strtotime(addslashes($data[18]))),'email'=>addslashes($data[19])])
                                 ->execute();
+                                if($user)
+                            */    
+                            $uid = $pros->id; 
+                            $jid = $data[20];
+                            
+                            $client =  TableRegistry::get('clients');
+                            $query = $client->find()->where(['id'=>$jid])->first();
+                            if($query){
+                                $profile_id = $query->profile_id;
+                                $new_ids = $profile_id.",".$uid;
+                                $client->query()->update()->set(['profile_id'=>$new_ids])
+                                ->where(['id' => $query->id])
+                                ->execute();
+                            }
+                            $blocks = TableRegistry::get('Blocks');
+                            $query3 = $blocks->query();
+                            $query3->insert(['user_id'])
+                                ->values(['user_id' => $profile->id])
+                                ->execute();
+                            $side = TableRegistry::get('Sidebar');
+                            $query4 = $side->query();
+                            $create_que = $query4->insert(['user_id'])
+                                ->values(['user_id' => $profile->id])
+                                ->execute();
+                                                         
                             unset($query2);
+                    }
                     }
                     $i++;
                 
@@ -904,9 +1012,16 @@
                         }
                     } while ($data = fgetcsv($handle,1000,",","'"));*/
             }
+          
             
-            $this->Flash->success('Profile Successfully Imported. ');       
-            $this->redirect('/profiles/settings');
+                $this->Flash->success('Profile Successfully Imported. ');       
+                $this->redirect('/profiles/settings');
+          }
+          else
+          {
+                $this->Flash->error('Invaild Csv file. ');       
+                $this->redirect('/profiles/settings');
+          }
         }
         
         
@@ -2440,6 +2555,32 @@
                             $this->Mailer->sendEmail($from, $to, $sub, $msg);
                         }
                     }
+                }
+            }
+            /* for automatic survey email */
+            $table = TableRegistry::get('profiles');
+            $automatic = $table->find()->where(['automatic_email <>'=>'0','automatic_sent'=>'0']);
+            if($automatic)
+            {
+                foreach($automatic as $auto)
+                {
+                    //$today = date('Y-m-d');
+                    $thirty = date('Y-m-d', strtotime('-30 days'));
+                    $sixty = date('Y-m-d', strtotime('-60 days'));
+                    if($auto->automatic_email == '30' && $auto->created==$thirty && $auto->email){
+                            $from = array('info@' . $path => $setting->mee);
+                            $to = $auto->email;
+                            $sub = 'Complete your survey';
+                            $msg = 'Click <a href="' . LOGIN . 'documents/survey">here</a> to complete your survey.<br /><br /> Regards';
+                            $this->Mailer->sendEmail($from, $to, $sub, $msg);
+                            }
+                    if($auto->automatic_email == '60' && $auto->created==$sixty && $auto->email){
+                            $from = array('info@' . $path => $setting->mee);
+                            $to = $auto->email;
+                            $sub = 'Complete your survey';
+                            $msg = 'Click <a href="' . LOGIN . 'documents/survey">here</a> to complete your survey.<br /><br /> Regards';
+                            $this->Mailer->sendEmail($from, $to, $sub, $msg);
+                            }
                 }
             }
 

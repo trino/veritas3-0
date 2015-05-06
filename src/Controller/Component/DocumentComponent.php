@@ -1140,6 +1140,9 @@ class DocumentComponent extends Component
                 if (isset($_POST['date_time'][$i])) {
                     $arr2['date_time'] = urldecode($_POST['date_time'][$i]);
                 }
+                if (isset($_POST['performance_issue'][$i])) {
+                    $arr2['performance_issue'] = urldecode($_POST['performance_issue'][$i]);
+                }
 
                 $save2 = $education->newEntity($arr2);
                 $education->save($save2);

@@ -226,6 +226,12 @@
                                            value="<?php echo $emp->last_school_attended;?>"/>
                                 </div>
                             </div>
+                            <div class="form-group row">
+                                <label class="col-md-3 control-label">Did the employee have any safety or performance issues?</label>
+                                <div class="col-md-6">
+                                    <textarea class="form-control" name="performance_issue[]" ><?php echo $emp->performance_issue;?></textarea>
+                                </div>
+                            </div>
 
                             <div class="form-group row">
                                 <label class="col-md-3 control-label">Date:</label>
@@ -406,7 +412,12 @@
                                 <input type="text" class="form-control" name="last_school_attended[]"/>
                             </div>
                         </div>
-
+                        <div class="form-group row">
+                            <label class="col-md-3 control-label">Did the employee have any safety or performance issues?</label>
+                            <div class="col-md-6">
+                                <textarea class="form-control" name="performance_issue[]" ></textarea>
+                            </div>
+                        </div>
                         <div class="form-group row">
                             <label class="col-md-3 control-label">Date: </label>
 
