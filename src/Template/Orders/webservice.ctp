@@ -23,7 +23,7 @@
 
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    $startorder1 = true;
+    $startorder1 = false;
     $driver_order_79 = false; //only for full mee order (driver order)
 
     $uploadbinaryconsent_1603 = true; //if true
