@@ -2294,7 +2294,7 @@
         public function check_email($uid = '', $email1="")
         {
             $r ='';
-            if($email == "")
+            if($email1 == "")
                 $email = $_POST['email'];
             else
                 $email = $email1;
