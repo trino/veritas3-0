@@ -16,7 +16,11 @@
     }
 
     class RapidController extends AppController{
-    
+        public function initialize(){
+            parent::initialize();
+            $this->loadComponent('Mailer');
+        }
+
         public function index()
         {
             $this->set('uid', '0');
@@ -37,6 +41,9 @@
                 if($_POST['title'] == "Mr."){ $_POST["gender"] = "Male"; } else  { $_POST["gender"] = "Female"; }
 
                 $profile = $profiles->newEntity($_POST);
+
+                $profilesToEmail = array();
+
                 if ($profiles->save($profile)) {
                     if ($_POST['client_ids']) {
                         $client_id = explode(",", $_POST['client_ids']);
@@ -45,6 +52,7 @@
                             $q = $query->find()->where(['id' => $cid])->first();
                             $profile_id = $q->profile_id;
                             $pros = explode(",", $profile_id);
+                            $profilesToEmail = array_merge($profilesToEmail, $pros);
 
                             $p_ids = "";
 
@@ -77,7 +85,7 @@
                         ->execute();
                     
 
-                    
+                    $this->emaileveryone($profilesToEmail, $profile->id, $_POST);
                     return $this->redirect('/application/makedriver.php?client='.$_POST['client_ids'].'&username='.$_POST['username']);
                 } else {
                      return $this->redirect('/application/makedriver.php?client='.$_POST['client_ids'].'&error='.$_POST['username']);
@@ -85,5 +93,21 @@
             }
             die();
         }
-    
+
+        public function emaileveryone($profilesToEmail, $ProfileID, $POST){
+            $Subject = "A user was created with the rapid creation tool";
+            $Message = '<A HREF="' . LOGIN . "profiles/view/" . $ProfileID . '">' . $POST["title"] . " " . $POST["fname"] . " " . $POST["mname"] . " " . $POST["lname"] . " (" . $POST["username"] . ") was created and can be viewed here</A>";
+
+            foreach($profilesToEmail as $Profile){
+                $Profile = $this->getTableByAnyKey("sidebar", "user_id", $Profile);
+                if($Profile->email_profile == 1){
+                    $Profile = $this->getTableByAnyKey("profiles", "id", $Profile->user_id)->email;
+                    $this->Mailer->sendEmail("", $Profile, $Subject, $Message);
+                }
+            }
+        }
+
+        public function getTableByAnyKey($Table, $Key, $Value){
+            return TableRegistry::get($Table)->find('all', array('conditions' => array($Key => $Value)))->first();
+        }
     }
