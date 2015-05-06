@@ -696,9 +696,11 @@ function printform($counting, $settings, $client, $dr_cl, $driver, $intable = fa
     }
 
     function clearall(){
-        document.getElementById("selecting_driver").value = "";
-        document.getElementById("drivers").value = "[No drivers selected]";
-        document.getElementById("searchProfile").value = "";
+        if('<?= $_GET["ordertype"] ?>' == 'BUL'){
+            document.getElementById("selecting_driver").value = "";
+            document.getElementById("drivers").value = "[No drivers selected]";
+            document.getElementById("searchProfile").value = "";
+        }
     }
 
     function updateNames(){
