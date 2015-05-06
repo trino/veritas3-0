@@ -264,7 +264,7 @@ if (isset($mee_att['attach_doc']->id) && $mee_att['attach_doc']->id) {
 
     if (printdivrequired($action, $forms, "id_piece", $DriverProvince, getattachment($mee_att, "id_piece1") . getattachment($mee_att, "id_piece2"))) {
         $docsprinted+=1; ?>
-            <div class="col-md-12">
+            <div class="col-md-12" style="margin-top: 15px;">
                 <div class="col-md-4" align="right">Upload 2 pieces of ID: </div>
                 <div class="col-md-8">
                     <span><a href="javascript:void(0)" class="btn btn-primary" id="mee_att_1">Browse</a>
