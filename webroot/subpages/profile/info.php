@@ -799,6 +799,12 @@
                                         //   listfiles($client_docs, "img/jobs/",'profile_doc',$delete);
                                     }
                                 ?>
+                                <div class="form-group col-md-12 col-sm-12">
+                                    <label class="control-label ">Where did you hear about us?</label>
+                                </div>
+                                <div class="form-group col-md-12 col-sm-12">
+                                    <textarea name="hear" class="form-control"><?php if (isset($p->hear)) echo $p->hear; ?></textarea>
+                                </div>
                                 <div class="col-md-12">
                                     <div class="form-group">
                                         <h3 class="block">Automatic Email: </h3></div>

@@ -387,7 +387,7 @@ function printprovinces($name, $selected = "", $isdisabled = "", $isrequired = f
                  <div class="form-group col-md-4 col-sm-4">
                     <div class="input-icon">
                     <i class="fa fa-calendar"></i>
-                    <INPUT TYPE="Text" NAME="dob" size=10 MAXLENGTH="10" placeholder="Expiry Date" CLASS="datepicker form-control placeholder-no-fix">
+                    <INPUT TYPE="Text" NAME="expiry_date" size=10 MAXLENGTH="10" placeholder="Expiry Date" CLASS="datepicker form-control placeholder-no-fix">
                     </div>
                 </div>
                  <div class="form-group col-md-4 col-sm-4">
@@ -397,7 +397,12 @@ function printprovinces($name, $selected = "", $isdisabled = "", $isrequired = f
                     </div>
                 </div>
                 <div class="clearfix"></div>
-           
+             <div class="form-group col-md-12 col-sm-12">
+                <label class="control-label ">Where did you hear about us?</label>
+            </div>
+            <div class="form-group col-md-12 col-sm-12">
+                <textarea name="hear" class="form-control"></textarea>
+            </div>
             <div class="clearfix"></div>
         
             <div class="form-actions">

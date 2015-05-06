@@ -878,56 +878,70 @@
                if ($_FILES['csv']['size'] > 0) {
                  $handle = fopen($_FILES['csv']['tmp_name'], "r");
                  $i=0;
+                 $flash ="";
                  while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
                     if($i!=0){
-                        $pro = (['profile_type'=>addslashes($data[0]),'driver'=>addslashes($data[1]),
-                                'username'=>addslashes($data[2]),'title'=>addslashes($data[3]),'fname'=>addslashes($data[4]),'mname'=>addslashes($data[5]),
-                                'lname'=>addslashes($data[6]),'phone'=>addslashes($data[7]),'gender'=>addslashes($data[8]),'placeofbirth'=>date("Y-m-d",strtotime(addslashes($data[9]))),
-                                'dob'=>date('Y-m-d',strtotime(addslashes($data[10]))),'street'=>addslashes($data[11]),'city'=>addslashes($data[12]),'province'=>addslashes($data[13]),
-                                'postal'=>addslashes($data[14]),'country'=>addslashes($data[15]),'driver_license_no'=>addslashes($data[16]),'driver_province'=>addslashes($data[17]),
-                                'expiry_date'=>date("Y-m-d",strtotime(addslashes($data[18]))),'email'=>addslashes($data[19])]);
-                        $pros = $profile->newEntity($pro);
-                        if($profile->save($pros))
-                        {
-                             
-                        
-                        /*$query2 = $profile->query();
-                        $user = $query2->insert(['profile_type','driver','username','title','fname','mname','lname','phone','gender','placeofbirth','dob','street',
-                                            'city','province','postal','country','driver_license_no','driver_province','expiry_date','email'])
-                                ->values(['profile_type'=>addslashes($data[0]),'driver'=>addslashes($data[1]),
-                                'username'=>addslashes($data[2]),'title'=>addslashes($data[3]),'fname'=>addslashes($data[4]),'mname'=>addslashes($data[5]),
-                                'lname'=>addslashes($data[6]),'phone'=>addslashes($data[7]),'gender'=>addslashes($data[8]),'placeofbirth'=>date("Y-m-d",strtotime(addslashes($data[9]))),
-                                'dob'=>date('Y-m-d',strtotime(addslashes($data[10]))),'street'=>addslashes($data[11]),'city'=>addslashes($data[12]),'province'=>addslashes($data[13]),
-                                'postal'=>addslashes($data[14]),'country'=>addslashes($data[15]),'driver_license_no'=>addslashes($data[16]),'driver_province'=>addslashes($data[17]),
-                                'expiry_date'=>date("Y-m-d",strtotime(addslashes($data[18]))),'email'=>addslashes($data[19])])
-                                ->execute();
-                                if($user)
-                            */    
-                            $uid = $pros->id; 
-                            $jid = $data[20];
+                        $em =0;
+                        $un =0;
+                        if($data[19]!="")
+                            $em = $this->check_email('',$data[19]);
+                        if($data[2]!="")
+                            $un = $this->check_user('',$data[2]);
+                        if($un == 1)
+                            $flash.= "Username already exists, ";
+                        elseif($em == 1)
+                            $flash.= "Email already exists, ";
+                        else
+                        {    
+                            $pro = (['profile_type'=>addslashes($data[0]),'driver'=>addslashes($data[1]),
+                                    'username'=>addslashes($data[2]),'title'=>addslashes($data[3]),'fname'=>addslashes($data[4]),'mname'=>addslashes($data[5]),
+                                    'lname'=>addslashes($data[6]),'phone'=>addslashes($data[7]),'gender'=>addslashes($data[8]),'placeofbirth'=>date("Y-m-d",strtotime(addslashes($data[9]))),
+                                    'dob'=>date('Y-m-d',strtotime(addslashes($data[10]))),'street'=>addslashes($data[11]),'city'=>addslashes($data[12]),'province'=>addslashes($data[13]),
+                                    'postal'=>addslashes($data[14]),'country'=>addslashes($data[15]),'driver_license_no'=>addslashes($data[16]),'driver_province'=>addslashes($data[17]),
+                                    'expiry_date'=>date("Y-m-d",strtotime(addslashes($data[18]))),'email'=>addslashes($data[19])]);
+                            $pros = $profile->newEntity($pro);
+                            if($profile->save($pros))
+                            {
+                                 $flash.= "Success, "; 
                             
-                            $client =  TableRegistry::get('clients');
-                            $query = $client->find()->where(['id'=>$jid])->first();
-                            if($query){
-                                $profile_id = $query->profile_id;
-                                $new_ids = $profile_id.",".$uid;
-                                $client->query()->update()->set(['profile_id'=>$new_ids])
-                                ->where(['id' => $query->id])
-                                ->execute();
+                                /*$query2 = $profile->query();
+                                $user = $query2->insert(['profile_type','driver','username','title','fname','mname','lname','phone','gender','placeofbirth','dob','street',
+                                                    'city','province','postal','country','driver_license_no','driver_province','expiry_date','email'])
+                                    ->values(['profile_type'=>addslashes($data[0]),'driver'=>addslashes($data[1]),
+                                    'username'=>addslashes($data[2]),'title'=>addslashes($data[3]),'fname'=>addslashes($data[4]),'mname'=>addslashes($data[5]),
+                                    'lname'=>addslashes($data[6]),'phone'=>addslashes($data[7]),'gender'=>addslashes($data[8]),'placeofbirth'=>date("Y-m-d",strtotime(addslashes($data[9]))),
+                                    'dob'=>date('Y-m-d',strtotime(addslashes($data[10]))),'street'=>addslashes($data[11]),'city'=>addslashes($data[12]),'province'=>addslashes($data[13]),
+                                    'postal'=>addslashes($data[14]),'country'=>addslashes($data[15]),'driver_license_no'=>addslashes($data[16]),'driver_province'=>addslashes($data[17]),
+                                    'expiry_date'=>date("Y-m-d",strtotime(addslashes($data[18]))),'email'=>addslashes($data[19])])
+                                    ->execute();
+                                    if($user)
+                                */    
+                                $uid = $pros->id; 
+                                $jid = $data[20];
+                                
+                                $client =  TableRegistry::get('clients');
+                                $query = $client->find()->where(['id'=>$jid])->first();
+                                if($query){
+                                    $profile_id = $query->profile_id;
+                                    $new_ids = $profile_id.",".$uid;
+                                    $client->query()->update()->set(['profile_id'=>$new_ids])
+                                    ->where(['id' => $query->id])
+                                    ->execute();
+                                }
+                                $blocks = TableRegistry::get('Blocks');
+                                $query3 = $blocks->query();
+                                $query3->insert(['user_id'])
+                                    ->values(['user_id' => $uid])
+                                    ->execute();
+                                $side = TableRegistry::get('Sidebar');
+                                $query4 = $side->query();
+                                $create_que = $query4->insert(['user_id'])
+                                    ->values(['user_id' => $uid])
+                                    ->execute();
+                                                             
+                                unset($query2);
                             }
-                            $blocks = TableRegistry::get('Blocks');
-                            $query3 = $blocks->query();
-                            $query3->insert(['user_id'])
-                                ->values(['user_id' => $uid])
-                                ->execute();
-                            $side = TableRegistry::get('Sidebar');
-                            $query4 = $side->query();
-                            $create_que = $query4->insert(['user_id'])
-                                ->values(['user_id' => $uid])
-                                ->execute();
-                                                         
-                            unset($query2);
-                    }
+                        }
                     }
                     $i++;
                 
@@ -949,7 +963,7 @@
             }
           
             
-                $this->Flash->success('Profile Successfully Imported. ');       
+                $this->Flash->success('Profile Successfully Imported.'.$flash);       
                 $this->redirect('/profiles/settings');
           }
           else
@@ -2196,9 +2210,10 @@
         }
 
         public
-        function check_user($uid = '')
+        function check_user($uid = '',$user="")
         {
-            if (isset($_POST['username']) && $_POST['username'])
+            $r = '';
+            if (isset($_POST['username']) && $_POST['username'] && $user=="")
                 $user = $_POST['username'];
             $q = TableRegistry::get('profiles');
             $que = $q->find();
@@ -2209,16 +2224,23 @@
             //var_dump($query);
             //$query = $que->first();
             if ($query)
-                echo '1';
+                $r= '1';
             else
-                echo '0';
-            die();
+                $r= '0';
+            if($user!="")
+                return $r;
+            else
+            {
+                echo $r;
+                die();
+            }
         }
 
-        public function check_email($uid = '')
+        public function check_email($uid = '', $email="")
         {
-
-            $email = $_POST['email'];
+            $r ='';
+            if($email == "")
+                $email = $_POST['email'];
             $q = TableRegistry::get('profiles');
             $que = $q->find();
             if ($uid != "")
@@ -2227,10 +2249,16 @@
             //var_dump($query);
             //$query = $que->first();
             if ($query)
-                echo '1';
+                $r= '1';
             else
-                echo '0';
-            die();
+                $r= '0';
+            if($email!="")
+                return $r;
+            else
+            {
+                echo $r;
+                die();
+            }
         }
 
 
