@@ -2217,6 +2217,7 @@
                 $user = $_POST['username'];
             $q = TableRegistry::get('profiles');
             $que = $q->find();
+            
             if ($uid != "")
                 $query = $que->select()->where(['id !=' => $uid, 'username' => $user])->first();
             else
