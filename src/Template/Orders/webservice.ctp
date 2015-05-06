@@ -23,20 +23,24 @@
 
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    $startorder1 = false;
+    $startorder1 = true;
+    $driver_order_79 = false; //only for full mee order (driver order)
 
     $uploadbinaryconsent_1603 = true; //if true
     $uploadbinaryemployment_1627 = true;
     $uploadbinaryeducation_1650 = true;
 
-    $premium_national_ebs_1603 = false;                    //1  1603 Premium check EBS
+    $premium_national_ebs_1603 = false;                     //1  1603 Premium check EBS
     $mvr_driversrecordabstract_ins_1 = false;               //2  1    MVR Driver's Record Abstract INS
-    $cvor_ins_14 = false;                                    //3  14   CVOR INS
-    $preemploymentscreening_ins_77 = false;                //4  77   Pre-employment Screening Program Report INS
-    $transclick_ins_78 = false;                            //5  78   Transclick INS
-    $education_certification_ebs_1650 = false;                //6  1650 Certification (Education) EBS
-    $loe_employment_ebs_1627 = false;                        //7  1627 LOE (Employment) EBS
+    $cvor_ins_14 = false;                                   //3  14   CVOR INS
+    $preemploymentscreening_ins_77 = false;                 //4  77   Pre-employment Screening Program Report INS
+    $transclick_ins_78 = false;                             //5  78   Transclick INS
+    $education_certification_ebs_1650 = false;              //6  1650 Certification (Education) EBS
+    $loe_employment_ebs_1627 = false;                       //7  1627 LOE (Employment) EBS
     $checkdl_ins_72 = false;                                //8  72   checkdl INS
+    $sms_ins_32 = false;                                    // 32   social media search
+    $creditcheck_ins_31 = false;                            // 31 Credit Check
+
 
     if ($order_info->order_type == "Driver Order") {
         $driver_order_79 = true; // only TRUE if complete mee orders  - DONT CHANGE
@@ -455,7 +459,7 @@
 
         }
     }
-    die('12312313123123123123');
+
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
