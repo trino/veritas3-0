@@ -1,8 +1,8 @@
 <?php
 $debug=$this->request->session()->read('debug');
-if($debug)
+if($debug) {
     echo "<span style ='color:red;'>home_topblocks.php #INC112</span>";
-
+}
 ?>
 <?php
     $userid=$this->Session->read('Profile.id');

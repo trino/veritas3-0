@@ -881,6 +881,7 @@
                  $flash ="";
                  while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
                     if($i!=0){
+
                         $em =0;
                         $un =0;
                         if($data[19]!="")
@@ -893,12 +894,26 @@
                             $flash.= "Email already exists, ";
                         else
                         {    
-                            $pro = (['profile_type'=>addslashes($data[0]),'driver'=>addslashes($data[1]),
-                                    'username'=>addslashes($data[2]),'title'=>addslashes($data[3]),'fname'=>addslashes($data[4]),'mname'=>addslashes($data[5]),
-                                    'lname'=>addslashes($data[6]),'phone'=>addslashes($data[7]),'gender'=>addslashes($data[8]),'placeofbirth'=>date("Y-m-d",strtotime(addslashes($data[9]))),
-                                    'dob'=>date('Y-m-d',strtotime(addslashes($data[10]))),'street'=>addslashes($data[11]),'city'=>addslashes($data[12]),'province'=>addslashes($data[13]),
-                                    'postal'=>addslashes($data[14]),'country'=>addslashes($data[15]),'driver_license_no'=>addslashes($data[16]),'driver_province'=>addslashes($data[17]),
-                                    'expiry_date'=>date("Y-m-d",strtotime(addslashes($data[18]))),'email'=>addslashes($data[19])]);
+                            $pro = (['profile_type'     =>  addslashes($data[0]),
+                                'driver'            =>  addslashes($data[1]),
+                                'username'          =>  ucfirst(addslashes($data[2])),
+                                'title'             =>  ucfirst(addslashes($data[3] . ".")),
+                                'fname'             =>  ucfirst(addslashes($data[4])),
+                                'mname'             =>  ucfirst(addslashes($data[5])),
+                                'lname'             =>  ucfirst(addslashes($data[6])),
+                                'phone'             =>  addslashes($data[7]),
+                                'gender'            =>  ucfirst(addslashes($data[8])),
+                                'placeofbirth'      =>  addslashes($data[9]),
+                                'dob'               =>  date('Y-m-d',strtotime(addslashes($data[10]))),
+                                'street'            =>  addslashes($data[11]),
+                                'city'              =>  addslashes($data[12]),
+                                'province'          =>  strtoupper(addslashes($data[13])),
+                                'postal'            =>  addslashes($data[14]),
+                                'country'           =>  "Canada",
+                                'driver_license_no' =>  addslashes($data[16]),
+                                'driver_province'   =>  addslashes($data[17]),
+                                'expiry_date'       =>  date("Y-m-d",strtotime(addslashes($data[18]))),
+                                'email'             =>  addslashes($data[19])]);
                             $pros = $profile->newEntity($pro);
                             if($profile->save($pros))
                             {
@@ -927,6 +942,7 @@
                                     $client->query()->update()->set(['profile_id'=>$new_ids])
                                     ->where(['id' => $query->id])
                                     ->execute();
+
                                 }
                                 $blocks = TableRegistry::get('Blocks');
                                 $query3 = $blocks->query();
@@ -938,8 +954,7 @@
                                 $create_que = $query4->insert(['user_id'])
                                     ->values(['user_id' => $uid])
                                     ->execute();
-                                                             
-                                unset($query2);
+                                  unset($query2);
                             }
                         }
                     }
@@ -965,10 +980,8 @@
             
                 $this->Flash->success('Profile Successfully Imported.'.$flash);       
                 $this->redirect('/profiles/settings');
-          }
-          else
-          {
-                $this->Flash->error('Invaild Csv file. ');       
+          } else {
+                $this->Flash->error('Invaild CSV file. ');
                 $this->redirect('/profiles/settings');
           }
         }
@@ -1255,6 +1268,41 @@
                             }
                         }
                         echo $profile->id;
+                        if (isset($_POST['profile_type']) && $_POST['profile_type'] == 5) {
+                             $username = 'driver_' . $profile->id;
+                             $queries = TableRegistry::get('Profiles');
+                             $queries->query()->update()->set(['username' => $username])
+                                 ->where(['id' => $profile->id])
+                                 ->execute();
+                         } else {
+                            if(isset($_POST['profile_type']))
+                            {
+                                
+                                if ($_POST['profile_type'] == '7'){
+                                    $username = 'owner_operator_' . $profile->id;
+                                    $queries = TableRegistry::get('Profiles');
+                                     $queries->query()->update()->set(['username' => $username])
+                                         ->where(['id' => $profile->id])
+                                         ->execute();
+                                    }
+                                else
+                                if ($_POST['profile_type'] == '8'){
+                                    $username = 'owner_driver_' . $profile->id;
+                                    $queries = TableRegistry::get('Profiles');
+                                     $queries->query()->update()->set(['username' => $username])
+                                         ->where(['id' => $profile->id])
+                                         ->execute();
+                                    }
+                                else
+                                    if ($_POST['profile_type'] == '11'){
+                                        $username = 'employee_' . $profile->id;
+                                        $queries = TableRegistry::get('Profiles');
+                                     $queries->query()->update()->set(['username' => $username])
+                                         ->where(['id' => $profile->id])
+                                         ->execute();
+                                        }
+                            }
+                         }
                         if (isset($_POST['drafts']) && ($_POST['drafts'] == '1')) {
                             $this->Flash->success('Profile Saved as draft. ');
                         } else {
@@ -2072,6 +2120,10 @@
             die();
         }
 
+        function getProfileByAnyKey($Key, $Value){
+            return TableRegistry::get('Profiles')->find()->select()->where([$Key => $Value])->first();
+        }
+
         function getProfileById($id, $sub)
         {
             if($id) {
@@ -2537,6 +2589,10 @@
                             $sub = 'Complete your survey';
                             $msg = 'Click <a href="' . LOGIN . 'documents/survey">here</a> to complete your survey.<br /><br /> Regards';
                             $this->Mailer->sendEmail($from, $to, $sub, $msg);
+                            $queries = TableRegistry::get('Profiles');
+                             $queries->query()->update()->set(['automatic_sent' => '1'])
+                                 ->where(['id' => $auto->id])
+                                 ->execute();
                             }
                     if($auto->automatic_email == '60' && $auto->created==$sixty && $auto->email){
                             $from = array('info@' . $path => $setting->mee);
@@ -2544,6 +2600,10 @@
                             $sub = 'Complete your survey';
                             $msg = 'Click <a href="' . LOGIN . 'documents/survey">here</a> to complete your survey.<br /><br /> Regards';
                             $this->Mailer->sendEmail($from, $to, $sub, $msg);
+                            $queries = TableRegistry::get('Profiles');
+                             $queries->query()->update()->set(['automatic_sent' => '1'])
+                                 ->where(['id' => $auto->id])
+                                 ->execute();
                             }
                 }
             }

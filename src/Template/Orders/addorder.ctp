@@ -28,11 +28,11 @@ if ($action == "Addorder") {
     if ($did>0){ $action = "Edit";}
 }
 
-    $doc_ext = array('pdf', 'doc', 'docx', 'txt', 'csv', 'xls', 'xlsx');
-    $img_ext = array('jpg', 'jpeg', 'png', 'bmp', 'gif');
-    if($did) {
-       $_GET['driver'] = $ooo->uploaded_for;
-    }
+$doc_ext = array('pdf', 'doc', 'docx', 'txt', 'csv', 'xls', 'xlsx');
+$img_ext = array('jpg', 'jpeg', 'png', 'bmp', 'gif');
+if($did) {
+    $_GET['driver'] = $ooo->uploaded_for;
+}
 
 function provinces($name){
     echo '<SELECT class="form-control" name="' . $name . '">';
@@ -53,9 +53,9 @@ function provinces($name){
     echo '</SELECT>';
 }
 
-    $is_disabled = '';
-    if (isset($disabled)){ $is_disabled = 'disabled="disabled"';}
-    $settings = $this->requestAction('settings/get_settings');
+$is_disabled = '';
+if (isset($disabled)){ $is_disabled = 'disabled="disabled"';}
+$settings = $this->requestAction('settings/get_settings');
 ?>
 <input type="hidden" id="tablename" value="<?php echo $table; ?>"/>
 
@@ -78,28 +78,28 @@ function provinces($name){
     </ul>
     <?php
 
-        $forms=array();
-        if (isset($_GET["forms"])){
-            $forms = explode(",", $_GET["forms"]);
+    $forms=array();
+    if (isset($_GET["forms"])){
+        $forms = explode(",", $_GET["forms"]);
+    } else {
+        $forms = $this->requestAction('/orders/getProNum');
+    }
+
+    //returns: boolean, if this form should be displayed
+    //parameters:
+    //  $forms  -   pass in the $forms variable since globals don't seem to work
+    //  $id     -   the ID/index number of the form to check
+    function isallone($forms){
+
+        if(count($forms)<7) {
+            return false;
+        } else if(count($forms)=='7' && urldecode($_GET['order_type'])!='Order MEE') {
+            return false;
         } else {
-            $forms = $this->requestAction('/orders/getProNum');
+            return true;
         }
-
-        //returns: boolean, if this form should be displayed
-        //parameters:
-        //  $forms  -   pass in the $forms variable since globals don't seem to work
-        //  $id     -   the ID/index number of the form to check
-        function isallone($forms){
-
-            if(count($forms)<7) {
-                return false;
-            } else if(count($forms)=='7' && urldecode($_GET['order_type'])!='Order MEE') {
-                return false;
-            } else {
-                return true;
-            }
-        }
-        $_this = $this;
+    }
+    $_this = $this;
 
     $DriverProvince = "AB";
     $DriverID = $_GET["driver"];
@@ -147,12 +147,12 @@ function provinces($name){
         return isset($thedocuments[$name][$DriverProvince]);
     }
 
-        if (isset($disabled)) { ?>
-            <a href="javascript:window.print();" class="floatright btn btn-primary">Print</a>
+    if (isset($disabled)) { ?>
+        <a href="javascript:window.print();" class="floatright btn btn-primary">Print</a>
 
-            <!--a href="" class="floatright btn btn-success">Re-Qualify</a>
-            <a href="" class="floatright btn btn-info">Add to Task List</a-->
-        <?php } ?>
+        <!--a href="" class="floatright btn btn-success">Re-Qualify</a>
+        <a href="" class="floatright btn btn-info">Add to Task List</a-->
+    <?php } ?>
 
 </div>
 
@@ -163,20 +163,20 @@ function provinces($name){
         <div class="portlet box blue" id="form_wizard_1">
             <div class="portlet-title">
                 <?php
-                    $param = $this->request->params['action'];
-                    if(strtolower($param) == 'vieworder')
-                    {
-                        ?>
-                        <input type="hidden" id="viewingorder" value="1" />
-                        <?php
-                    }
-                    else
-                    {
-                        ?>
-                        <input type="hidden" id="viewingorder" value="0" />
-                        <?php
-                    }
-                    $tab = 'nodisplay';
+                $param = $this->request->params['action'];
+                if(strtolower($param) == 'vieworder')
+                {
+                    ?>
+                    <input type="hidden" id="viewingorder" value="1" />
+                <?php
+                }
+                else
+                {
+                    ?>
+                    <input type="hidden" id="viewingorder" value="0" />
+                <?php
+                }
+                $tab = 'nodisplay';
                 ?>
                 <div class="caption">
                     <i class="fa fa-clipboard"></i>Order Forms
@@ -189,14 +189,14 @@ function provinces($name){
                     <div class="form-body" style="position: relative;">
                         <?php
 
-                            if ($param != 'view') {
-                                $tab = 'tab-pane';
-                                $i = 1;
-                                ?>
+                        if ($param != 'view') {
+                            $tab = 'tab-pane';
+                            $i = 1;
+                            ?>
 
-                                <ul class="nav nav-pills nav-justified steps">
-                                   <?php if ($DriverID>0){
-                                       $i++;?>
+                            <ul class="nav nav-pills nav-justified steps">
+                                <?php if ($DriverID>0){
+                                    $i++;?>
                                     <li>
                                         <a href="#tab1" data-toggle="tab" class="step">
 												<span class="number">
@@ -205,119 +205,119 @@ function provinces($name){
 												<i class="fa fa-check"  align="center"></i> Applicant </span>
                                         </a>
                                     </li>
-                                    <?php }?>
-                                     <!--<li>
-                                        <a href="#tab2" data-toggle="tab" class="step">
-												<span class="number">
-												2</span><br/>
-												<span class="desc">
-												<i class="fa fa-check"></i> Products </span>
-                                        </a>
-                                    </li>-->
-                                    <?php
+                                <?php }?>
+                                <!--<li>
+                                   <a href="#tab2" data-toggle="tab" class="step">
+                                           <span class="number">
+                                           2</span><br/>
+                                           <span class="desc">
+                                           <i class="fa fa-check"></i> Products </span>
+                                   </a>
+                               </li>-->
+                                <?php
 
-                                        function is_iterable($var) {
-                                            return (is_array($var) || $var instanceof Traversable);
+                                function is_iterable($var) {
+                                    return (is_array($var) || $var instanceof Traversable);
+                                }
+
+
+                                $doc = $doc_comp->getDocument('orders');
+                                $doc_ids = $this->requestAction('/clients/orders_doc/'.$cid.'/'.$_GET['order_type']);
+                                if(is_iterable($doc_ids)) {
+                                    $subdoccli = $doc_ids;
+                                    if($debugging) {echo "Source: orders_doc";}
+                                } else {
+                                    $subdoccli = $this->requestAction('/clients/getSubCli2/' . $cid);
+                                    if($debugging) {echo "Source: getSubCli2";}
+                                }
+                                $subdoccli2 = $subdoccli;
+                                $doc2 = $doc;
+                                $end = 0;
+                                $k_c=0;
+                                $index=0;
+                                //client permissions
+                                //http://localhost/veritas3-0/clients/edit/1
+                                //user permissions
+                                //http://localhost/veritas3-0/profiles/edit/118
+                                //product settings
+                                //http://localhost/veritas3-0/profiles/settings
+
+                                foreach ($subdoccli as $sd) {
+                                    $index+=1;
+                                    $d = $this->requestAction('/clients/getFirstSub/'.$sd->sub_id);
+
+                                    if($debugging) {
+                                        echo "<BR>Displayform: " . displayform2($DriverProvince, $thedocuments, $d->title, $theproduct);
+                                        $thedocuments[strtolower($d->title)]["IsSet"] = true;
+                                        debug($d);
+                                    }
+
+                                    if (displayform2($DriverProvince,$thedocuments,$d->title, $theproduct)){//(displayform($DriverProvince, $provinces, $forms, $d->title,$_this)){
+
+                                        $index+=1;
+                                        $act = 0;
+                                        if ($d->table_name == $table) {
+                                            $act = 1;
+                                            $end = 1;
                                         }
 
+                                        $prosubdoc = $this->requestAction('/settings/all_settings/0/0/profile/' . $this->Session->read('Profile.id') . '/' . $d->id);
 
-                                        $doc = $doc_comp->getDocument('orders');
-                                        $doc_ids = $this->requestAction('/clients/orders_doc/'.$cid.'/'.$_GET['order_type']);
-                                        if(is_iterable($doc_ids)) {
-                                            $subdoccli = $doc_ids;
-                                            if($debugging) {echo "Source: orders_doc";}
-                                        } else {
-                                            $subdoccli = $this->requestAction('/clients/getSubCli2/' . $cid);
-                                            if($debugging) {echo "Source: getSubCli2";}
-                                        }
-                                        $subdoccli2 = $subdoccli;
-                                        $doc2 = $doc;
-                                        $end = 0;
-                                        $k_c=0;
-                                        $index=0;
-                                        //client permissions
-                                        //http://localhost/veritas3-0/clients/edit/1
-                                        //user permissions
-                                        //http://localhost/veritas3-0/profiles/edit/118
-                                        //product settings
-                                        //http://localhost/veritas3-0/profiles/settings
+                                        if (true){ //($prosubdoc['display'] != 0 && $d->display == 1) {
 
-                                        foreach ($subdoccli as $sd) {
-                                            $index+=1;
-                                            $d = $this->requestAction('/clients/getFirstSub/'.$sd->sub_id);
-
-                                            if($debugging) {
-                                                echo "<BR>Displayform: " . displayform2($DriverProvince, $thedocuments, $d->title, $theproduct);
-                                                $thedocuments[strtolower($d->title)]["IsSet"] = true;
-                                                debug($d);
+                                            $k_c++;
+                                            $j = $d->id;
+                                            $j = $j + 1;
+                                            if($k_c==1) {
+                                                $k_cou = $j;
+                                            } else if($k_cou<$j) {
+                                                $k_cou=$j;
                                             }
-
-                                            if (displayform2($DriverProvince,$thedocuments,$d->title, $theproduct)){//(displayform($DriverProvince, $provinces, $forms, $d->title,$_this)){
-
-                                                $index+=1;
-                                                $act = 0;
-                                                if ($d->table_name == $table) {
-                                                    $act = 1;
-                                                    $end = 1;
-                                                }
-
-                                                $prosubdoc = $this->requestAction('/settings/all_settings/0/0/profile/' . $this->Session->read('Profile.id') . '/' . $d->id);
-
-                                                 if (true){ //($prosubdoc['display'] != 0 && $d->display == 1) {
-
-                                                    $k_c++;
-                                                    $j = $d->id;
-                                                    $j = $j + 1;
-                                                    if($k_c==1) {
-                                                        $k_cou = $j;
-                                                    } else if($k_cou<$j) {
-                                                        $k_cou=$j;
-                                                    }
-                                                    ?>
-                                                    <li <?php if ($table && $end == 0) echo "class = 'done'";
-                                                        if ($act == 1) {
-                                                            echo 'class="active"';
-                                                        } ?>>
-                                                        <a href="#tab<?php echo $j; ?>" data-toggle="tab" class="step">
+                                            ?>
+                                            <li <?php if ($table && $end == 0) echo "class = 'done'";
+                                            if ($act == 1) {
+                                                echo 'class="active"';
+                                            } ?>>
+                                                <a href="#tab<?php echo $j; ?>" data-toggle="tab" class="step">
                                                         <span class="number">
                                                         <?php echo $i; ?> </span><br/>
                                                         <span class="desc">
                                                         <i class="fa fa-check"></i> <?php echo ucfirst($d->title); ?> </span>
-                                                        </a>
-                                                    </li>
-                                                    <?php
+                                                </a>
+                                            </li>
+                                            <?php
 
-                                                    $i++;
-                                                }}
-                                        }
-                                        if($debugging) { debug($thedocuments);}
-                                        if(!isset($k_cou)){ $k_cou = 1; }
-                                    ?>
+                                            $i++;
+                                        }}
+                                }
+                                if($debugging) { debug($thedocuments);}
+                                if(!isset($k_cou)){ $k_cou = 1; }
+                                ?>
 
-                                    <li>
-                                        <a href="#tab100000x" data-toggle="tab" class="step confirmations">
+                                <li>
+                                    <a href="#tab100000x" data-toggle="tab" class="step confirmations">
 												<span class="number">
 												<?php echo $i++;?></span><br/>
 												<span class="desc">
 												<i class="fa fa-check"></i> Confirmation </span>
-                                        </a>
-                                    </li>
-                                    <li style="display: none;">
-                                        <a href="#tab100001x" data-toggle="tab" class="step">
+                                    </a>
+                                </li>
+                                <li style="display: none;">
+                                    <a href="#tab100001x" data-toggle="tab" class="step">
 												<span class="number">
 												<?php echo $i++;?></span><br/>
 												<span class="desc">
 												<i class="fa fa-check"></i> Success </span>
-                                        </a>
-                                    </li>
+                                    </a>
+                                </li>
 
-                                </ul>
-                                <div id="bar" class="progress progress-striped" role="progressbar">
-                                    <div class="progress-bar progress-bar-info">
-                                    </div>
+                            </ul>
+                            <div id="bar" class="progress progress-striped" role="progressbar">
+                                <div class="progress-bar progress-bar-info">
                                 </div>
-                                <div
-                                    style="
+                            </div>
+                            <div
+                                style="
   opacity:0.5;
     background-color:#dadada;
                                     position:fixed;
@@ -327,21 +327,21 @@ function provinces($name){
     left:0px;
     z-index:1000;
     display:none;"
-                                    id="loading5">
-                                    <center><br/>
-                                        <br/>
-                                        <br/>
-                                        <br/>
-                                        <br/>
-                                        <strong style="color: #111;font-size: 36px;">Please wait...</strong>
-                                        <br/><br/>
+                                id="loading5">
+                                <center><br/>
+                                    <br/>
+                                    <br/>
+                                    <br/>
+                                    <br/>
+                                    <strong style="color: #111;font-size: 36px;">Please wait...</strong>
+                                    <br/><br/>
 
-                                        <img
-                                            src="<?php echo $this->request->webroot;?>assets/admin/layout/img/ajax-loading.gif"/>
-                                    </center>
-                                </div>
-                            <?php
-                            }
+                                    <img
+                                        src="<?php echo $this->request->webroot;?>assets/admin/layout/img/ajax-loading.gif"/>
+                                </center>
+                            </div>
+                        <?php
+                        }
                         ?>
                         <div class="form-actions <?php if ($tab == 'nodisplay') echo $tab; ?>">
                             <div class="row">
@@ -354,7 +354,7 @@ function provinces($name){
                                        onclick="$('#skip').val('1');">
                                         Skip <i class="m-icon-swapdown m-icon-white"></i>
                                     </a>
-                                    
+
                                     <input type="hidden" id="skip" value="0"/>
                                     <a href="javascript:;" class="btn blue button-next cont"
                                        onclick="$('#skip').val('0');">
@@ -383,136 +383,136 @@ function provinces($name){
                                 <input type="hidden" name="did" value="<?php echo $did; ?>" id="did"/>
                                 <input type="hidden" name="uploaded_for" id="uploaded_for"
                                        value="<?php if (isset($modal) && $modal) echo $modal->uploaded_for;else{if(isset($_GET['driver']) && is_numeric($_GET['driver']))echo $_GET['driver'];} ?>"/>
-                                       <input type="hidden" id="division" value="<?php if(isset($_GET['division']))echo $_GET['division'];?>" />
+                                <input type="hidden" id="division" value="<?php if(isset($_GET['division']))echo $_GET['division'];?>" />
                                 <?php
-                                    if (!$did) {
-                                        ?>
-                                        <input type="hidden" name="user_id"
-                                               value="<?php $this->request->session()->read('Profile.id');?>"
-                                               id="user_id"/>
+                                if (!$did) {
+                                    ?>
+                                    <input type="hidden" name="user_id"
+                                           value="<?php $this->request->session()->read('Profile.id');?>"
+                                           id="user_id"/>
 
-                                    <?php
-                                    } else {
-                                        ?>
-                                        <input type="hidden" name="user_id"
-                                               value="<?php if (isset($modal) && $modal) echo $modal->user_id;?>"
-                                               id="user_id"/>
-                                    <?php
-                                    }
+                                <?php
+                                } else {
+                                    ?>
+                                    <input type="hidden" name="user_id"
+                                           value="<?php if (isset($modal) && $modal) echo $modal->user_id;?>"
+                                           id="user_id"/>
+                                <?php
+                                }
                                 ?>
 
                             </div>
                             <?php $division = $this->requestAction("clients/getdivision/" . $cid);
-                                if (count($division) > 0){
+                            if (count($division) > 0){
 
-                            ?>
-                            <input type="hidden" id="check_div" value="1"/>
+                                ?>
+                                <input type="hidden" id="check_div" value="1"/>
 
-                    <?php
-                        }
-                        else {
+                            <?php
+                            }
+                            else {
+                                ?>
+                                <input type="hidden" id="check_div" value="0"/>
+                            <?php
+                            }
                             ?>
-                            <input type="hidden" id="check_div" value="0"/>
-                        <?php
-                        }
-                    ?>
-                        <div class="clearfix"></div>
+                            <div class="clearfix"></div>
 
                             <?php if($DriverID>0){?>
-                        <div class="tabber <?php echo $tab; ?> <?php if (!($table)) {
-                            if ($tab == 'tab-pane') { ?>active<?php }
-                        } else {
-                            if ($table == $d->table_name) { ?>active changeactive<?php }
-                        } ?>" id="tab1">
-                            <?php
-                                include('subpages/profile/info_order.php');
-                            ?>
-                        </div>
+                                <div class="tabber <?php echo $tab; ?> <?php if (!($table)) {
+                                    if ($tab == 'tab-pane') { ?>active<?php }
+                                } else {
+                                    if ($table == $d->table_name) { ?>active changeactive<?php }
+                                } ?>" id="tab1">
+                                    <?php
+                                    include('subpages/profile/info_order.php');
+                                    ?>
+                                </div>
                             <?php } ?>
 
-                        <!--<div class="tabber <?php echo $tab; ?>"  id="tab2">
+                            <!--<div class="tabber <?php echo $tab; ?>"  id="tab2">
                             <?php //include('subpages/documents/products.php'); ?>
                         </div>-->
 
-                        <?php
-                        $k_c = 0;
-                        if(!isset($show_all2))
-                                                {
-                                                    $show_all2='all';
-                                                }
-                        foreach ($subdoccli as $sd) {
-                            $d = $this->requestAction('/clients/getFirstSub/'.$sd->sub_id);
-                            $dx = $this->requestAction('/orders/getSubDetail/'.$sd->sub_id);
-                           // debug($d);
-                           
-                            if (displayform2($DriverProvince,$thedocuments,$d->title, $theproduct)){
-                                //if (displayform($DriverProvince, $provinces, $forms, $d->title,$_this)){
-                                $prosubdoc = $this->requestAction('/settings/all_settings/0/0/profile/' . $this->Session->read('Profile.id') . '/' . $d->id);
-                                if (true){ //($prosubdoc['display'] != 0 && $d->display == 1) {
-                                $k_c++;
+                            <?php
+                            $k_c = 0;
+                            if(!isset($show_all2))
+                            {
+                                $show_all2='all';
+                            }
+                            foreach ($subdoccli as $sd) {
+                                $d = $this->requestAction('/clients/getFirstSub/'.$sd->sub_id);
+                                $dx = $this->requestAction('/orders/getSubDetail/'.$sd->sub_id);
+                                // debug($d);
 
-                                $tab_count = $d->id;
+                                if (displayform2($DriverProvince,$thedocuments,$d->title, $theproduct)){
+                                    //if (displayform($DriverProvince, $provinces, $forms, $d->title,$_this)){
+                                    $prosubdoc = $this->requestAction('/settings/all_settings/0/0/profile/' . $this->Session->read('Profile.id') . '/' . $d->id);
+                                    if (true){ //($prosubdoc['display'] != 0 && $d->display == 1) {
+                                        $k_c++;
 
-                                $tab_count = $tab_count + 1;
-                                if($k_c==1) {
-                                    $k_co = $tab_count;
-                                } else {
-                                    if($k_co<$tab_count)
-                                    $k_co = $tab_count;
-                                }
-                                ?>
-                                <div class="tabber <?php echo $tab; ?>" id="tab<?php echo $tab_count; ?>">
-                                    <?php
-                                    if ($action == "View") {printdocumentinfo($d->id);}
-                                    include('subpages/documents/' . $d->form); ?>
-                                </div>
-                        <?php }}}
-                        if(!isset($k_co)) {$k_co=1;} ?>
+                                        $tab_count = $d->id;
 
-                        <div class="tabber <?php echo $tab; ?> confirmations2" id="tab100000x">
-                            <?php include('subpages/documents/confirmation.php'); ?>
-                        </div>
-                        <div class="tabber <?php echo $tab; ?>" id="tab100001x">
-                            <?php include('subpages/documents/success.php'); //include('subpages/documents/forview.php'); ?>
-                        </div>
-                        <?php if ($tab == 'nodisplay') { // For view action only ?>
+                                        $tab_count = $tab_count + 1;
+                                        if($k_c==1) {
+                                            $k_co = $tab_count;
+                                        } else {
+                                            if($k_co<$tab_count)
+                                                $k_co = $tab_count;
+                                        }
+                                        ?>
+                                        <div class="tabber <?php echo $tab; ?>" id="tab<?php echo $tab_count; ?>">
+                                            <?php
+                                            if ($action == "View") {printdocumentinfo($d->id);}
+                                            include('subpages/documents/' . $d->form); ?>
+                                        </div>
+                                    <?php }}}
+                            if(!isset($k_co)) {$k_co=1;} ?>
 
-                            <div class="forview <?php if ($tab == 'tab-pane') echo 'nodisplay';?>">
-                                <?php include('subpages/documents/forview.php');?>
+                            <div class="tabber <?php echo $tab; ?> confirmations2" id="tab100000x">
+                                <?php include('subpages/documents/confirmation.php'); ?>
                             </div>
+                            <div class="tabber <?php echo $tab; ?>" id="tab100001x">
+                                <?php include('subpages/documents/success.php'); //include('subpages/documents/forview.php'); ?>
+                            </div>
+                            <?php if ($tab == 'nodisplay') { // For view action only ?>
 
-                        <?php } ?>
+                                <div class="forview <?php if ($tab == 'tab-pane') echo 'nodisplay';?>">
+                                    <?php include('subpages/documents/forview.php');?>
+                                </div>
 
+                            <?php } ?>
+
+                        </div>
                     </div>
-                </div>
-                <div class="form-actions <?php if ($tab == 'nodisplay') echo $tab; ?>" id="bottomact">
-                    <div class="row">
-                        <div class="col-md-offset-3 col-md-9">
-                            <a href="javascript:;" class="btn default button-previous" onclick="$('#skip').val('0');">
-                                <i class="m-icon-swapleft"></i> Back </a>
+                    <div class="form-actions <?php if ($tab == 'nodisplay') echo $tab; ?>" id="bottomact">
+                        <div class="row">
+                            <div class="col-md-offset-3 col-md-9">
+                                <a href="javascript:;" class="btn default button-previous" onclick="$('#skip').val('0');">
+                                    <i class="m-icon-swapleft"></i> Back </a>
 
-                            <a href="javascript:;" class="btn red button-next skip cont" onclick="$('#skip').val('1');">
-                                Skip <i class="m-icon-swapdown m-icon-white"></i>
-                            </a>
-                            <!--<a href="javascript:;" class="btn red skip" id="submit_dra"
-                                       onclick="$('#skip').val('1');" style="display: inline-block;">
-                                        Save as draft <i class="m-icon-swapdown m-icon-white"></i>
-                                    </a>-->
+                                <a href="javascript:;" class="btn red button-next skip cont" onclick="$('#skip').val('1');">
+                                    Skip <i class="m-icon-swapdown m-icon-white"></i>
+                                </a>
+                                <!--<a href="javascript:;" class="btn red skip" id="submit_dra"
+                                           onclick="$('#skip').val('1');" style="display: inline-block;">
+                                            Save as draft <i class="m-icon-swapdown m-icon-white"></i>
+                                        </a>-->
 
-                            <a href="javascript:;" class="btn blue button-next cont" onclick="$('#skip').val('0');">
-                                Save & Continue <i class="m-icon-swapright m-icon-white"></i>
-                            </a>
+                                <a href="javascript:;" class="btn blue button-next cont" onclick="$('#skip').val('0');">
+                                    Save & Continue <i class="m-icon-swapright m-icon-white"></i>
+                                </a>
 
 
-                            <a href="javascript:window.print();" class="btn btn-info button-submit">Print</a>
+                                <a href="javascript:window.print();" class="btn btn-info button-submit">Print</a>
+                            </div>
                         </div>
                     </div>
                 </div>
+                <!--</form> -->
             </div>
-            <!--</form> -->
         </div>
     </div>
-</div>
 </div>
 <script>
 
@@ -547,7 +547,7 @@ function provinces($name){
         //alert(form_type);
         if (form_type != "") {
             $('.subform').load('<?php echo $this->request->webroot;?>documents/subpages/' + form_type);
-            
+
             var url = '<?php echo $this->request->webroot;?>orders/getOrderData/' + client_id + '/' + doc_id,
                 param = {form_type: form_type};
             $.getJSON(url, param, function (res) {
@@ -624,31 +624,31 @@ function provinces($name){
 
                                 if (res2) {
 
-                                var response = JSON.parse(res2);
-                                //alert(res2);
+                                    var response = JSON.parse(res2);
+                                    //alert(res2);
 
-                                var app_name = res2.replace('{"applicant_phone_number":"', '');
-                                var app_name = app_name.replace('","aplicant_name":"', ',');
-                                var app_name = app_name.replace('","applicant_email":"', ',');
-                                var app_name = app_name.replace('"}', '');
-                                var app_name_arr = app_name.split(',');
-                                app_name = app_name_arr[1];
-                                //app_name = app_name.replace('","applicant_email":"ttt@ttt.com"}','');
-                                $('#conf_driver_name').val(app_name);
-                                $('#conf_driver_name').attr('disabled', 'disabled');
-                                $('#form_tab1').find(':input').each(function () {
-                                    var name_attr = $(this).attr('name');
+                                    var app_name = res2.replace('{"applicant_phone_number":"', '');
+                                    var app_name = app_name.replace('","aplicant_name":"', ',');
+                                    var app_name = app_name.replace('","applicant_email":"', ',');
+                                    var app_name = app_name.replace('"}', '');
+                                    var app_name_arr = app_name.split(',');
+                                    app_name = app_name_arr[1];
+                                    //app_name = app_name.replace('","applicant_email":"ttt@ttt.com"}','');
+                                    $('#conf_driver_name').val(app_name);
+                                    $('#conf_driver_name').attr('disabled', 'disabled');
+                                    $('#form_tab1').find(':input').each(function () {
+                                        var name_attr = $(this).attr('name');
 
-                                    //alert(name_attr);
-                                    if (response[name_attr]) {
+                                        //alert(name_attr);
+                                        if (response[name_attr]) {
 
-                                        $(this).val(response[name_attr]);
+                                            $(this).val(response[name_attr]);
 
-                                        $(this).attr('disabled', 'disabled');
+                                            $(this).attr('disabled', 'disabled');
 
-                                    }
-                                });
-                            }
+                                        }
+                                    });
+                                }
 
                             }
                         });
@@ -808,19 +808,19 @@ function provinces($name){
 
                                     var response = JSON.parse(res2);
 
-                                $('#form_tab2').find(':input').each(function () {
-                                    var name_attr = $(this).attr('name');
+                                    $('#form_tab2').find(':input').each(function () {
+                                        var name_attr = $(this).attr('name');
 
-                                    //alert(name_attr);
-                                    if (response[name_attr]) {
+                                        //alert(name_attr);
+                                        if (response[name_attr]) {
 
-                                        $(this).val(response[name_attr]);
+                                            $(this).val(response[name_attr]);
 
-                                        $(this).attr('disabled', 'disabled');
-                                    }
+                                            $(this).attr('disabled', 'disabled');
+                                        }
 
-                                });
-                            }}
+                                    });
+                                }}
                         });
                     }
 
@@ -1209,14 +1209,14 @@ function provinces($name){
                     if (res) {
                         $('#form_consent').find(':input').each(function () {
                             if($(this).attr('class')!='touched' && $(this).attr('class')!='touched_edit3' && $(this).attr('class')!='touched_edit1' && $(this).attr('class')!='touched_edit2' && $(this).attr('class')!='touched_edit4'){
-                            var $name = $(this).attr('name');
+                                var $name = $(this).attr('name');
 
-                            if ($name != 'offence[]' && $name != 'date_of_sentence[]' && $name != 'location[]' && $name != 'attach_doc[]') {
-                                if (doc_id)
-                                    $(this).val(res[$name]);
+                                if ($name != 'offence[]' && $name != 'date_of_sentence[]' && $name != 'location[]' && $name != 'attach_doc[]') {
+                                    if (doc_id)
+                                        $(this).val(res[$name]);
 
 
-                            }
+                                }
                             }
                         });
                     }
@@ -1283,23 +1283,23 @@ function provinces($name){
         $('.subform').load('<?php echo $this->request->webroot;?>documents/subpages/' + filename);
     }
     jQuery(document).ready(function () {
-        
-            
-        
-        
+
+
+
+
         if($('.tabber.active').attr('id')=='tab1')
         {
             $('.skip').hide();
         }
-        
+
 
         <?php if(isset($_GET['driver']) && is_numeric($_GET['driver'])){?>
 
-            showforms('company_pre_screen_question.php');
-            showforms('driver_application.php');
-            showforms('driver_evaluation_form.php');
-            showforms('document_tab_3.php');
-            <?php }?>
+        showforms('company_pre_screen_question.php');
+        showforms('driver_application.php');
+        showforms('driver_evaluation_form.php');
+        showforms('document_tab_3.php');
+        <?php }?>
 
         $('.button-next').click(function () {
             $('.cont').removeAttr('disabled');
@@ -1440,7 +1440,7 @@ function provinces($name){
         var saving_draft = 0;
         $(document.body).on('click', '.cont', function () {
 
-            
+
             //$('.submit_dra').attr('style','display:inline-block');
 
             if ($(this).attr('id') == 'draft') {
@@ -1448,22 +1448,22 @@ function provinces($name){
             }
             else{
                 if($(this).attr('id') == 'submit_dra'){
-                draft = 1;
-                saving_draft = 1;
-                $('#loading5').show();
+                    draft = 1;
+                    saving_draft = 1;
+                    $('#loading5').show();
                 }
                 else
-                draft = 0;
-                }
+                    draft = 0;
+            }
             if(draft==1)
             {
                 $('.blockmsg').html('<h4 class="block">Your Order Has Been Saved As Draft!</h4>'+
-    '<p>You can edit your order anytime.</p>')
+                '<p>You can edit your order anytime.</p>')
             }
             else
             {
                 $('.blockmsg').html('<h4 class="block">Your Order Has Been Submitted!</h4>'+
-    '<p>You will be notified once it\'s processed.</p>')
+                '<p>You will be notified once it\'s processed.</p>')
             }
 
             var type = $(".tabber.active").prev('.tabber').find("input[name='document_type']").val();
@@ -1555,100 +1555,100 @@ function provinces($name){
                             saveEducation(url, order_id, cid);
                         }
                         else if (sid == "6") {
-                        var order_id = $('#did').val(),
-                            cid = '<?php echo $cid;?>',
-                            url = '<?php echo $this->request->webroot;?>feedbacks/add/' + order_id + '/' + cid;
-                        var param = $('#form_tab6').serialize()+'&order_id='+order_id;
-                        $.ajax({
-                            url: url,
-                            data: param,
-                            type: 'POST'
-                        });
+                            var order_id = $('#did').val(),
+                                cid = '<?php echo $cid;?>',
+                                url = '<?php echo $this->request->webroot;?>feedbacks/add/' + order_id + '/' + cid;
+                            var param = $('#form_tab6').serialize()+'&order_id='+order_id;
+                            $.ajax({
+                                url: url,
+                                data: param,
+                                type: 'POST'
+                            });
 
-                    }
-                    else if (sid == "5") {
-                        var order_id = $('#did').val(),
-                            cid = '<?php echo $cid;?>',
-                            url = '<?php echo $this->request->webroot;?>feedbacks/addsurvey/' + order_id + '/' + cid;
-                        var param = $('#form_tab5').serialize()+'&order_id='+order_id;
-                        $.ajax({
-                            url: url,
-                            data: param,
-                            type: 'POST'
-                        });
+                        }
+                        else if (sid == "5") {
+                            var order_id = $('#did').val(),
+                                cid = '<?php echo $cid;?>',
+                                url = '<?php echo $this->request->webroot;?>feedbacks/addsurvey/' + order_id + '/' + cid;
+                            var param = $('#form_tab5').serialize()+'&order_id='+order_id;
+                            $.ajax({
+                                url: url,
+                                data: param,
+                                type: 'POST'
+                            });
 
-                    }
-                    else if (sid == "7") {
+                        }
+                        else if (sid == "7") {
 
-                        var order_id = $('#did').val(),
-                            cid = '<?php echo $cid;?>',
-                            url = '<?php echo $this->request->webroot;?>documents/addattachment/' + cid + '/' + order_id+ '?draft=' + draft;
-                        var param = $('#form_tab7').serialize()+'&order_id='+order_id;
-                        $.ajax({
-                            url: url,
-                            data: param,
-                            type: 'POST'
-                        });
+                            var order_id = $('#did').val(),
+                                cid = '<?php echo $cid;?>',
+                                url = '<?php echo $this->request->webroot;?>documents/addattachment/' + cid + '/' + order_id+ '?draft=' + draft;
+                            var param = $('#form_tab7').serialize()+'&order_id='+order_id;
+                            $.ajax({
+                                url: url,
+                                data: param,
+                                type: 'POST'
+                            });
 
 
-                    }
-                    else if (sid == "8") {
-                         var order_id = $('#did').val(),
-                            cid = '<?php echo $cid;?>',
-                            url = '<?php echo $this->request->webroot;?>documents/audits/' + cid + '/' + order_id+ '?draft=' + draft;
-                        var param = $('#form_tab8').serialize()+'&order_id='+order_id;
-                        $.ajax({
-                            url: url,
-                            data: param,
-                            type: 'POST'
-                        });
+                        }
+                        else if (sid == "8") {
+                            var order_id = $('#did').val(),
+                                cid = '<?php echo $cid;?>',
+                                url = '<?php echo $this->request->webroot;?>documents/audits/' + cid + '/' + order_id+ '?draft=' + draft;
+                            var param = $('#form_tab8').serialize()+'&order_id='+order_id;
+                            $.ajax({
+                                url: url,
+                                data: param,
+                                type: 'POST'
+                            });
 
-                    }
-                    else if (sid == "15") {
-                         var order_id = $('#did').val(),
-                            cid = '<?php echo $cid;?>',
-                            url = '<?php echo $this->request->webroot;?>documents/mee_attach/' + order_id + '/' + cid+ '?draft=' + draft;
-                        var param = $('#form_tab15').serialize()+'&order_id='+order_id;
-                        $.ajax({
-                            url: url,
-                            data: param,
-                            type: 'POST'
-                        });
+                        }
+                        else if (sid == "15") {
+                            var order_id = $('#did').val(),
+                                cid = '<?php echo $cid;?>',
+                                url = '<?php echo $this->request->webroot;?>documents/mee_attach/' + order_id + '/' + cid+ '?draft=' + draft;
+                            var param = $('#form_tab15').serialize()+'&order_id='+order_id;
+                            $.ajax({
+                                url: url,
+                                data: param,
+                                type: 'POST'
+                            });
 
-                    }
-                    else{
-                    <?php foreach($doc as $dx)
-                            {
-                                if($dx->id >15 || $dx->id==11)
-                                {
-                                    
-                                ?>
-                                    //alert(type);
-                                    if(type == "<?php echo addslashes($dx->title);?>")
+                        }
+                        else{
+                            <?php foreach($doc as $dx)
                                     {
-                                       
-                                         var order_id = $('#did').val();
-                                        $('#form_tab<?php echo $dx->id;?>').attr('action', function (i, val) {
-                                            return val + '?order_id='+order_id+'&draft=' + draft;
-                                        });
-                                         var act = $('#form_tab<?php echo $dx->id;?>').attr('action');                                        
-                                        
-                                       
-                                          var  cid = '<?php echo $cid;?>';
-                                          var  url = act;
-                                        var param = $('#form_tab<?php echo $dx->id;?>').serialize()+'&order_id='+order_id;
-                                        $.ajax({
-                                            url: url,
-                                            data: param,
-                                            type: 'POST'
-                                        });
-                                    }
-            
-                    <?php       }
+                                        if($dx->id >15 || $dx->id==11)
+                                        {
+
+                                        ?>
+                            //alert(type);
+                            if(type == "<?php echo addslashes($dx->title);?>")
+                            {
+
+                                var order_id = $('#did').val();
+                                $('#form_tab<?php echo $dx->id;?>').attr('action', function (i, val) {
+                                    return val + '?order_id='+order_id+'&draft=' + draft;
+                                });
+                                var act = $('#form_tab<?php echo $dx->id;?>').attr('action');
+
+
+                                var  cid = '<?php echo $cid;?>';
+                                var  url = act;
+                                var param = $('#form_tab<?php echo $dx->id;?>').serialize()+'&order_id='+order_id;
+                                $.ajax({
+                                    url: url,
+                                    data: param,
+                                    type: 'POST'
+                                });
                             }
-                    ?>
-            
-                    }
+
+                            <?php       }
+                                    }
+                            ?>
+
+                        }
 
                         if(saving_draft==1) {
                             window.location = base_url+'orders/orderslist?flash&draft';
@@ -1664,27 +1664,27 @@ function provinces($name){
                 URL='<?php echo $this->request->webroot;?>orders/orderslist?flash';
             }
 
-            setTimeout(function(){ 
+            setTimeout(function(){
                 $.ajax({
-                url: '<?php echo $this->request->webroot;?>orders/webservice/<?php echo $_GET['order_type'];?>/<?php echo $_GET['forms']; ?>/' + $('#did').val() +'/' + $('#uploaded_for').val(),
-                success:function(){
-                //    window.location = URL;
-                },
-                error:function(){
-                 //   window.location = URL;
-                }
-            });
-                
+                    url: '<?php echo $this->request->webroot;?>orders/webservice/<?php echo $_GET['order_type'];?>/<?php echo $_GET['forms']; ?>/' +  $('#uploaded_for').val() +'/' +  $('#did').val(),
+                    success:function(){
+                        //    window.location = URL;
+                    },
+                    error:function(){
+                        //   window.location = URL;
+                    }
+                });
+
             }, 1000);
-            
+
         });
 
         $('#submit_dra').live('click', function () {
-           // alert($(this).text());
+            // alert($(this).text());
 
 
-                $('.blockmsg').html('<h4 class="block">Your Order Has Been Saved As Draft!</h4>'+
-    '<p>You can edit your order anytime.</p>')
+            $('.blockmsg').html('<h4 class="block">Your Order Has Been Saved As Draft!</h4>'+
+            '<p>You can edit your order anytime.</p>')
 
             var type = $(".tab-pane.active").prev('.tab-pane').find("input[name='document_type']").val();
             var tabid = $(".tab-pane.active").prev('.tab-pane').find("#confirmation").val();
@@ -1722,10 +1722,10 @@ function provinces($name){
                                 recruiter_signature: $('#recruiter_signature').val()
                             },
                             success:function(){
-                           //     window.location = base_url+'orders/orderslist?flash';
+                                //     window.location = base_url+'orders/orderslist?flash';
                             },
                             error:function(){
-                             //   window.location = base_url+'orders/orderslist?flash';
+                                //   window.location = base_url+'orders/orderslist?flash';
                             }
                         });
                     }
@@ -1742,12 +1742,12 @@ function provinces($name){
             save_signature('4');
             save_signature('5');
             save_signature('6');
-           
+
         }
         else
         if($(".tabber.active").prev('.tabber').attr('id') == 'tab19')
         {
-             save_signature('8');
+            save_signature('8');
         }
         /*if($(".tab-pane.active").prev('.tab-pane').find("input[name='document_type']").val()=='Driver Application')
          {    if(!$('#confirm_check').is(':checked'))
@@ -1899,21 +1899,21 @@ function provinces($name){
 
                 //employment
                 /*var url = '<?php echo $this->request->webroot;?>documents/saveEmployment/' + order_id + '/' + cid;
-                var fields = $('#form_employment').serialize();
-                $(':disabled[name]', '#form_employment').each(function () {
-                    fields = fields + '&' + $(this).attr('name') + '=' + $(this).val();
-                });
-                var employment = fields
-                saveEmployment(url, employment);
+                 var fields = $('#form_employment').serialize();
+                 $(':disabled[name]', '#form_employment').each(function () {
+                 fields = fields + '&' + $(this).attr('name') + '=' + $(this).val();
+                 });
+                 var employment = fields
+                 saveEmployment(url, employment);
 
-                //education
-                url = '<?php echo $this->request->webroot;?>documents/saveEducation/' + order_id + '/' + cid;
-                var fields = $('#form_education').serialize();
-                $(':disabled[name]', '#form_education').each(function () {
-                    fields = fields + '&' + $(this).attr('name') + '=' + $(this).val();
-                });
-                var education = fields
-                saveEducation(url, education);*/
+                 //education
+                 url = '<?php echo $this->request->webroot;?>documents/saveEducation/' + order_id + '/' + cid;
+                 var fields = $('#form_education').serialize();
+                 $(':disabled[name]', '#form_education').each(function () {
+                 fields = fields + '&' + $(this).attr('name') + '=' + $(this).val();
+                 });
+                 var education = fields
+                 saveEducation(url, education);*/
             }
         });
     }
@@ -1921,10 +1921,10 @@ function provinces($name){
     function saveEmployment(url, order_id, cid) {
         $('#loading5').show();
         var fields = $('#form_employment').serialize();
-                $(':disabled[name]', '#form_employment').each(function () {
-                    fields = fields + '&' + $(this).attr('name') + '=' + $(this).val();
-                });
-                var param = fields
+        $(':disabled[name]', '#form_employment').each(function () {
+            fields = fields + '&' + $(this).attr('name') + '=' + $(this).val();
+        });
+        var param = fields
         $.ajax({
             url: url,
             data: param,
@@ -1944,10 +1944,10 @@ function provinces($name){
     function saveEducation(url, order_id, cid) {
         $('#loading5').show();
         var fields = $('#form_education').serialize();
-                $(':disabled[name]', '#form_education').each(function () {
-                    fields = fields + '&' + $(this).attr('name') + '=' + $(this).val();
-                });
-                var param = fields
+        $(':disabled[name]', '#form_education').each(function () {
+            fields = fields + '&' + $(this).attr('name') + '=' + $(this).val();
+        });
+        var param = fields
         $.ajax({
             url: url,
             data: param,
@@ -1991,45 +1991,45 @@ function provinces($name){
     function addmoredoc(idname)
     {
         var total_count = $('.'+idname).data('count');
-            $('.'+idname).data('count', parseInt(total_count) + 1);
-            total_count = $('.'+idname).data('count');
-            var input_field = '<div  class="form-group col-md-12" style="padding-left:0;"><div class="col-md-12"><a href="javascript:void(0);" id="'+idname + total_count + '" class="btn btn-primary">Browse</a><input type="hidden" name="attach_doc[]" value="" class="'+idname + total_count + '_doc moredocs" /> <a href="javascript:void(0);" class = "btn btn-danger img_delete" id="delete_'+idname + total_count + '" title ="">Delete</a><span></span></div></div>';
-            $('.'+idname).append(input_field);
-            initiate_ajax_upload1(idname + total_count, 'doc');
+        $('.'+idname).data('count', parseInt(total_count) + 1);
+        total_count = $('.'+idname).data('count');
+        var input_field = '<div  class="form-group col-md-12" style="padding-left:0;"><div class="col-md-12"><a href="javascript:void(0);" id="'+idname + total_count + '" class="btn btn-primary">Browse</a><input type="hidden" name="attach_doc[]" value="" class="'+idname + total_count + '_doc moredocs" /> <a href="javascript:void(0);" class = "btn btn-danger img_delete" id="delete_'+idname + total_count + '" title ="">Delete</a><span></span></div></div>';
+        $('.'+idname).append(input_field);
+        initiate_ajax_upload1(idname + total_count, 'doc');
     }
     $(function () {
 
 
         $('.addattachment5').load('<?php echo $this->request->webroot;?>documents/attach_doc/<?php echo $did."/".$view.'/attachfive_1/5';?>', function(){
-                if($('#attachfive_1').length)
+            if($('#attachfive_1').length)
                 initiate_ajax_upload1('attachfive_1', 'doc');
-             });
-             
-             $('.addattachment6').load('<?php echo $this->request->webroot;?>documents/attach_doc/<?php echo $did."/".$view.'/attachsix_1/6';?>', function(){
-                if($('#attachsix_1').length)
+        });
+
+        $('.addattachment6').load('<?php echo $this->request->webroot;?>documents/attach_doc/<?php echo $did."/".$view.'/attachsix_1/6';?>', function(){
+            if($('#attachsix_1').length)
                 initiate_ajax_upload1('attachsix_1', 'doc');
-             });
-             
-             $('.addattachment7').load('<?php echo $this->request->webroot;?>documents/attach_doc/<?php echo $did."/".$view.'/attachseven_1/7';?>', function(){
-                if($('#attachseven_1').length)
+        });
+
+        $('.addattachment7').load('<?php echo $this->request->webroot;?>documents/attach_doc/<?php echo $did."/".$view.'/attachseven_1/7';?>', function(){
+            if($('#attachseven_1').length)
                 initiate_ajax_upload1('attachseven_1', 'doc');
-             });
-             
-             $('.addattachment8').load('<?php echo $this->request->webroot;?>documents/attach_doc/<?php echo $did."/".$view.'/attacheight_1/8';?>', function(){
-                if($('#attacheight_1').length)
+        });
+
+        $('.addattachment8').load('<?php echo $this->request->webroot;?>documents/attach_doc/<?php echo $did."/".$view.'/attacheight_1/8';?>', function(){
+            if($('#attacheight_1').length)
                 initiate_ajax_upload1('attacheight_1', 'doc');
-             });
-             
-             $('.addattachment12').load('<?php echo $this->request->webroot;?>documents/attach_doc/<?php echo $did."/".$view.'/attachtwelve_1/12';?>', function(){
-                if($('#attachtwelve_1').length)
+        });
+
+        $('.addattachment12').load('<?php echo $this->request->webroot;?>documents/attach_doc/<?php echo $did."/".$view.'/attachtwelve_1/12';?>', function(){
+            if($('#attachtwelve_1').length)
                 initiate_ajax_upload1('attachtwelve_1', 'doc');
-             });
-             
-             $('.addattachment11').load('<?php echo $this->request->webroot;?>documents/attach_doc/<?php echo $did."/".$view.'/attacheleven_1/11';?>', function(){
-                if($('#attacheleven_1').length)
+        });
+
+        $('.addattachment11').load('<?php echo $this->request->webroot;?>documents/attach_doc/<?php echo $did."/".$view.'/attacheleven_1/11';?>', function(){
+            if($('#attacheleven_1').length)
                 initiate_ajax_upload1('attacheleven_1', 'doc');
-             });
-             
+        });
+
         $('.img_delete').live('click', function () {
             var file = $(this).attr('title');
             if (file == file.replace("&", " ")) {
@@ -2104,7 +2104,7 @@ function provinces($name){
         });
     }
     function fileUpload(ID) {
-       // alert(ID);
+        // alert(ID);
         // e.preventDefault();
 
         var $type = $(".tabber.active").find("input[name='document_type']").val(),

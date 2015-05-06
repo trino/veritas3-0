@@ -4,14 +4,17 @@ $webroot = $_SERVER["REQUEST_URI"];
 $start = strpos($webroot, "/", 1)+1;
 $webroot = substr($webroot,0,$start);
 
+error_reporting(E_ERROR | E_PARSE);//suppress warnings
+include("../config/app.php");
+error_reporting(E_ALL);//re-enable warnings
+
 $con = "";
 $logo = 'img/logos/';
-$company_name="Unknown";
+$company_name="";
 
 function connectdb(){
-    global $con;
-    $con = mysqli_connect("localhost:3306", "root", "","v3") or die("Error " . mysqli_error($con));
-
+    global $con, $config;
+    $con = mysqli_connect("localhost:3306", $config['Datasources']['default']['username'], $config['Datasources']['default']['password'],$config['Datasources']['default']['database']) or die("Error " . mysqli_error($con));
     return $con;
 }
 
@@ -35,7 +38,7 @@ if(isset($_GET["client"])) {
 }
 
 if(!$logo){
-    $logo = "";
+    $logo = "";//default logo here
 }
 
 
@@ -175,7 +178,7 @@ function printprovinces($name, $selected = "", $isdisabled = "", $isrequired = f
 
 <div class="content" style="width:80%">
     <center>
-        <img src="<?= $webroot . $logo;?>"  style="max-width: 100%;"/></center>
+        <img src="<?= $webroot . $logo;?>"  style="max-width: 33%; max-height: 100px;"/></center>
         <form class="login-form" action="<?php echo $webroot; ?>rapid" method="post">
             <h3 class="form-title">Create a new driver</h3>
             <?php
@@ -196,17 +199,21 @@ function printprovinces($name, $selected = "", $isdisabled = "", $isrequired = f
                 <label class="control-label visible-ie8 visible-ie9">Client</label>
                 <div class="input-icon">
                     <i class="fa fa-building"></i>
-                    <!--<select name="client_ids" class="form-control placeholder-no-fix clients" required="required">
-                        <option value="">Select Client</option>
-                    <?php /*while($row = mysqli_fetch_array($result1)) {
-                    
-                    ?>
-                        <option value="<?php echo $row['id'];?>" <?php if(isset($_GET['client'])&& $_GET['client']==$row['id'])echo "selected='selected'"; ?>><?php echo $row['company_name'];?></option>
                     <?php
-                    }*/
+                        if($company_name) {
+                            echo '<input class="form-control placeholder-no-fix" type="text" autocomplete="off" placeholder="Client" name="clientname" required="required" DISABLED VALUE="' . $company_name . '"/>';
+                        }else {
+                            echo '<select name="client_ids" class="form-control placeholder-no-fix clients" required="required">';
+                            echo '<option value="">Select Client</option>';
+                            $result = $con->query("SELECT * FROM clients");
+                            while($row = mysqli_fetch_array($result)) {
+                                echo '<option value="' . $row['id'] . '">' . $row['company_name'] . '</option>';
+                            }
+                            echo '</select>';
+                        }
                     ?>
-                    </select>-->
-                    <input class="form-control placeholder-no-fix" type="text" autocomplete="off" placeholder="Client" name="clientname" required="required" DISABLED VALUE="<?= $company_name; ?>"/>
+
+
                     <input type="hidden" value="<?php if(isset($_GET["client"])) {echo $_GET["client"];} ?>" name="client_ids">
                 </div>
             </div>

@@ -138,7 +138,7 @@ function makedropdownoption($Key, $Value, $TheValue){
                                 <A HREF="producteditor">Product Types</A>
                             </LI>
                             <li>
-                                <a href="#tab_1_14" data-toggle="tab">Profiles Import</a>
+                                <a href="#tab_1_14" data-toggle="tab">Profile Importer</a>
                             </li>
                             <?php
                             }
