@@ -599,11 +599,11 @@ function makedropdownoption($Key, $Value, $TheValue){
                 var msg = '';
                 $('.addclientz').each(function () {
                     if ($(this).is(':checked')) {
-                        msg = '<span class="msg" style="color:#45B6AF">Added</span>';
+                        msg = '<span class="msg" style="color:#45B6AF"> Added</span>';
                         client_id = client_id + "," + $(this).val();
                     }
                     else {
-                        msg = '<span class="msg" style="color:red">Removed</span>';
+                        msg = '<span class="msg" style="color:red"> Removed</span>';
                     }
                 });
     

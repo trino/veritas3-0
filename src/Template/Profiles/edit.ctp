@@ -582,11 +582,11 @@
             var nameId = 'msg_' + $(this).val();
             if ($(this).is(':checked')) {
                 addclient = '1';
-                msg = '<span class="msg" style="color:#45B6AF">Added</span>';
+                msg = '<span class="msg" style="color:#45B6AF"> Added</span>';
             }
             else {
                 addclient = '0';
-                msg = '<span class="msg" style="color:red">Removed</span>';
+                msg = '<span class="msg" style="color:red"> Removed</span>';
             }
 
             $.ajax({
@@ -608,11 +608,11 @@
             var msg = '';
             $('.addclientz').each(function () {
                 if ($(this).is(':checked')) {
-                    msg = '<span class="msg" style="color:#45B6AF">Added</span>';
+                    msg = '<span class="msg" style="color:#45B6AF"> Added</span>';
                     client_id = client_id + "," + $(this).val();
                 }
                 else {
-                    msg = '<span class="msg" style="color:red">Removed</span>';
+                    msg = '<span class="msg" style="color:red"> Removed</span>';
                 }
             });
 
@@ -659,11 +659,11 @@
             var msgs = '';
             if ($(this).is(":checked")) {
                 var hired = 1;
-                msg = '<span class="msg" style="color:#45B6AF">Added</span>';
+                msg = '<span class="msg" style="color:#45B6AF"> Added</span>';
             }
             else {
                 var hired = 0;
-                msg = '<span class="msg" style="color:red">Removed</span>';
+                msg = '<span class="msg" style="color:red"> Removed</span>';
             }
 
             $.ajax({
@@ -680,7 +680,7 @@
          var msg = '';
          var nameId = 'msg_'+$(this).val();
          if ($(this).is(':checked')) {
-         msg = '<span class="msg" style="color:#45B6AF">Added</span>';
+         msg = '<span class="msg" style="color:#45B6AF"> Added</span>';
 
          var url = '
         <?php echo $this->request->webroot;?>clients/assignProfile/' + $(this).val() + '/

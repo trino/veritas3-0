@@ -884,17 +884,18 @@
 
                         $em =0;
                         $un =0;
-                        if($data[19]!="")
-                            $em = $this->check_email('',$data[19]);
-                        if($data[2]!="")
-                            $un = $this->check_user('',$data[2]);
-                        if($un == 1)
-                            $flash.= "Username already exists, ";
-                        elseif($em == 1)
-                            $flash.= "Email already exists, ";
-                        else
-                        {    
-                            $pro = (['profile_type'     =>  addslashes($data[0]),
+                        if($data[19]!="") {
+                            $em = $this->check_email('', $data[19]);
+                        }
+                        if($data[2]!="") {
+                            $un = $this->check_user('', $data[2]);
+                        }
+                        if($un == 1) {
+                            $flash .= "Username '" . $data[2] . "' already exists, ";
+                        }elseif($em == 1) {
+                            $flash .= "Email '" . $data[19] . "' already exists, ";
+                        } else {
+                            $pro = (['profile_type' =>  addslashes($data[0]),
                                 'driver'            =>  addslashes($data[1]),
                                 'username'          =>  ucfirst(addslashes($data[2])),
                                 'title'             =>  ucfirst(addslashes($data[3] . ".")),
@@ -915,8 +916,7 @@
                                 'expiry_date'       =>  date("Y-m-d",strtotime(addslashes($data[18]))),
                                 'email'             =>  addslashes($data[19])]);
                             $pros = $profile->newEntity($pro);
-                            if($profile->save($pros))
-                            {
+                            if($profile->save($pros)) {
                                  $flash.= "Success, "; 
                             
                                 /*$query2 = $profile->query();
@@ -978,10 +978,10 @@
             }
           
             
-                $this->Flash->success('Profile Successfully Imported.'.$flash);       
-                $this->redirect('/profiles/settings');
+                $this->Flash->success('Profiles Successfully Imported. '.$flash);
+                $this->redirect('/profiles');
           } else {
-                $this->Flash->error('Invaild CSV file. ');
+                $this->Flash->error('Invaild CSV file.');
                 $this->redirect('/profiles/settings');
           }
         }

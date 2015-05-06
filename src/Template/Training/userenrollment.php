@@ -210,7 +210,7 @@ foreach ($contact as $r) {
             var msg = '';
             var nameId = 'msg_'+$(this).val();
             if ($(this).is(':checked')) {
-                msg = '<span class="msg" style="color:#45B6AF">Added</span>';
+                msg = '<span class="msg" style="color:#45B6AF"> Added</span>';
 
                 var url = '<?php echo $this->request->webroot;?>training/assignProfile/' + $(this).val() + '/<?php if(isset($id) && $id)echo $id;else echo '0'?>/yes';
             }
