@@ -1,8 +1,7 @@
 <IfModule mod_rewrite.c>
     RewriteEngine on
- RewriteRule ^(application|application)($|/) - [L]
- RewriteRule ^(application|application)($|/) - [L]
- RewriteCond %{REQUEST_URI} !^/(application|application/.*)$ 
+	RewriteRule ^(application|application)($|/) - [L]
+	RewriteCond %{REQUEST_URI} !^/(application|application/.*)$ 
     RewriteRule    ^$    webroot/    [L]
     RewriteRule    (.*) webroot/$1    [L]
 </IfModule>
