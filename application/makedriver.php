@@ -14,9 +14,7 @@ $company_name="Unknown";
 
 function connectdb(){
     global $con, $config;
-
     $con = mysqli_connect("localhost:3306", $config['Datasources']['default']['username'], $config['Datasources']['default']['password'],$config['Datasources']['default']['database']) or die("Error " . mysqli_error($con));
-
     return $con;
 }
 
