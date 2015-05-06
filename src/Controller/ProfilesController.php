@@ -2543,6 +2543,10 @@
                             $sub = 'Complete your survey';
                             $msg = 'Click <a href="' . LOGIN . 'documents/survey">here</a> to complete your survey.<br /><br /> Regards';
                             $this->Mailer->sendEmail($from, $to, $sub, $msg);
+                            $queries = TableRegistry::get('Profiles');
+                             $queries->query()->update()->set(['automatic_sent' => '1'])
+                                 ->where(['id' => $auto->id])
+                                 ->execute();
                             }
                     if($auto->automatic_email == '60' && $auto->created==$sixty && $auto->email){
                             $from = array('info@' . $path => $setting->mee);
@@ -2550,6 +2554,10 @@
                             $sub = 'Complete your survey';
                             $msg = 'Click <a href="' . LOGIN . 'documents/survey">here</a> to complete your survey.<br /><br /> Regards';
                             $this->Mailer->sendEmail($from, $to, $sub, $msg);
+                            $queries = TableRegistry::get('Profiles');
+                             $queries->query()->update()->set(['automatic_sent' => '1'])
+                                 ->where(['id' => $auto->id])
+                                 ->execute();
                             }
                 }
             }
