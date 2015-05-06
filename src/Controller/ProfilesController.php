@@ -2262,11 +2262,13 @@
         }
 
         public
-        function check_user($uid = '',$user="")
+        function check_user($uid = '',$user1="")
         {
             $r = '';
-            if (isset($_POST['username']) && $_POST['username'] && $user=="")
+            if (isset($_POST['username']) && $_POST['username'] && $user1=="")
                 $user = $_POST['username'];
+            else
+                $user = $user1;
             $q = TableRegistry::get('profiles');
             $que = $q->find();
             
@@ -2280,7 +2282,7 @@
                 $r= '1';
             else
                 $r= '0';
-            if($user!="")
+            if($user1!="")
                 return $r;
             else
             {
@@ -2289,11 +2291,13 @@
             }
         }
 
-        public function check_email($uid = '', $email="")
+        public function check_email($uid = '', $email1="")
         {
             $r ='';
             if($email == "")
                 $email = $_POST['email'];
+            else
+                $email = $email1;
             $q = TableRegistry::get('profiles');
             $que = $q->find();
             if ($uid != "")
@@ -2305,7 +2309,7 @@
                 $r= '1';
             else
                 $r= '0';
-            if($email!="")
+            if($email1!="")
                 return $r;
             else
             {
