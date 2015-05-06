@@ -869,13 +869,30 @@
         function csv()
         {
               $profile = TableRegistry::get('profiles');
+              $arr = explode('.', $_FILES['csv']['name']);
+              $ext = end($arr);
+              
+              $allowed = array( 'csv');
+              $check = strtolower($ext);
+              if (in_array($check, $allowed)) {
                if ($_FILES['csv']['size'] > 0) {
                  $handle = fopen($_FILES['csv']['tmp_name'], "r");
                  $i=0;
                  while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
                     if($i!=0){
-                        $query2 = $profile->query();
-                            $query2->insert(['profile_type','driver','username','title','fname','mname','lname','phone','gender','placeofbirth','dob','street',
+                        $pro = (['profile_type'=>addslashes($data[0]),'driver'=>addslashes($data[1]),
+                                'username'=>addslashes($data[2]),'title'=>addslashes($data[3]),'fname'=>addslashes($data[4]),'mname'=>addslashes($data[5]),
+                                'lname'=>addslashes($data[6]),'phone'=>addslashes($data[7]),'gender'=>addslashes($data[8]),'placeofbirth'=>date("Y-m-d",strtotime(addslashes($data[9]))),
+                                'dob'=>date('Y-m-d',strtotime(addslashes($data[10]))),'street'=>addslashes($data[11]),'city'=>addslashes($data[12]),'province'=>addslashes($data[13]),
+                                'postal'=>addslashes($data[14]),'country'=>addslashes($data[15]),'driver_license_no'=>addslashes($data[16]),'driver_province'=>addslashes($data[17]),
+                                'expiry_date'=>date("Y-m-d",strtotime(addslashes($data[18]))),'email'=>addslashes($data[19])]);
+                        $pros = $profile->newEntity($pro);
+                        if($profile->save($pros))
+                        {
+                             
+                        
+                        /*$query2 = $profile->query();
+                        $user = $query2->insert(['profile_type','driver','username','title','fname','mname','lname','phone','gender','placeofbirth','dob','street',
                                             'city','province','postal','country','driver_license_no','driver_province','expiry_date','email'])
                                 ->values(['profile_type'=>addslashes($data[0]),'driver'=>addslashes($data[1]),
                                 'username'=>addslashes($data[2]),'title'=>addslashes($data[3]),'fname'=>addslashes($data[4]),'mname'=>addslashes($data[5]),
@@ -884,7 +901,23 @@
                                 'postal'=>addslashes($data[14]),'country'=>addslashes($data[15]),'driver_license_no'=>addslashes($data[16]),'driver_province'=>addslashes($data[17]),
                                 'expiry_date'=>date("Y-m-d",strtotime(addslashes($data[18]))),'email'=>addslashes($data[19])])
                                 ->execute();
+                                if($user)
+                            */    
+                            $uid = $pros->id; 
+                            $jid = $data[20];
+                            
+                            $client =  TableRegistry::get('clients');
+                            $query = $client->find()->where(['id'=>$jid])->first();
+                            if($query){
+                                $profile_id = $query->profile_id;
+                                $new_ids = $profile_id.",".$uid;
+                                $client->query()->update()->set(['profile_id'=>$new_ids])
+                                ->where(['id' => $query->id])
+                                ->execute();
+                            }
+                                                 
                             unset($query2);
+                    }
                     }
                     $i++;
                 
@@ -904,9 +937,16 @@
                         }
                     } while ($data = fgetcsv($handle,1000,",","'"));*/
             }
+          
             
-            $this->Flash->success('Profile Successfully Imported. ');       
-            $this->redirect('/profiles/settings');
+                $this->Flash->success('Profile Successfully Imported. ');       
+                $this->redirect('/profiles/settings');
+          }
+          else
+          {
+                $this->Flash->error('Invaild Csv file. ');       
+                $this->redirect('/profiles/settings');
+          }
         }
         
         
