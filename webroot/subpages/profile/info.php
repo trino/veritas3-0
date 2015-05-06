@@ -785,6 +785,7 @@
 
                                     </div>
                                 </div>
+                                
                                 <?php }
                                     else { ?>
                                         <input type="hidden" name="doby" value="0000"/>
@@ -798,7 +799,38 @@
                                         //   listfiles($client_docs, "img/jobs/",'profile_doc',$delete);
                                     }
                                 ?>
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <h3 class="block">Automatic Email: </h3></div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label class="control-label">Don't Send: </label>
+                                        <input <?php echo $is_disabled ?> name="automatic_email" type="radio"
+                                                                          class="form-control" <?php if (isset($p->automatic_email) && $p->automatic_email=='0') { ?>
+                                            checked="checked" <?php } ?> value="0" />
+                                    </div>
+                                </div>
 
+
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label class="control-label">Send after 30 days: </label>
+                                        <input <?php echo $is_disabled ?> name="automatic_email" type="radio"
+                                                                          class="form-control" <?php if (isset($p->automatic_email) && $p->automatic_email=='30') { ?>
+                                            checked="checked" <?php } ?> value="30" />
+                                    </div>
+                                </div>
+
+
+                               <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label class="control-label">Send after 60 days: </label>
+                                        <input <?php echo $is_disabled ?> name="automatic_email" type="radio"
+                                                                          class="form-control" <?php if (isset($p->automatic_email) && $p->automatic_email=='60') { ?>
+                                            checked="checked" <?php } ?> value="60" />
+                                    </div>
+                                </div>
 
                                 <?php
                                     //if (!isset($disabled)) {

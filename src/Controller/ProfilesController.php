@@ -2482,6 +2482,32 @@
                     }
                 }
             }
+            /* for automatic survey email */
+            $table = TableRegistry::get('profiles');
+            $automatic = $table->find()->where(['automatic_email <>'=>'0','automatic_sent'=>'0']);
+            if($automatic)
+            {
+                foreach($automatic as $auto)
+                {
+                    //$today = date('Y-m-d');
+                    $thirty = date('Y-m-d', strtotime('-30 days'));
+                    $sixty = date('Y-m-d', strtotime('-60 days'));
+                    if($auto->automatic_email == '30' && $auto->created==$thirty && $auto->email){
+                            $from = array('info@' . $path => $setting->mee);
+                            $to = $auto->email;
+                            $sub = 'Complete your survey';
+                            $msg = 'Click <a href="' . LOGIN . 'documents/survey">here</a> to complete your survey.<br /><br /> Regards';
+                            $this->Mailer->sendEmail($from, $to, $sub, $msg);
+                            }
+                    if($auto->automatic_email == '60' && $auto->created==$sixty && $auto->email){
+                            $from = array('info@' . $path => $setting->mee);
+                            $to = $auto->email;
+                            $sub = 'Complete your survey';
+                            $msg = 'Click <a href="' . LOGIN . 'documents/survey">here</a> to complete your survey.<br /><br /> Regards';
+                            $this->Mailer->sendEmail($from, $to, $sub, $msg);
+                            }
+                }
+            }
 
             die();
         }
