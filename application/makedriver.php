@@ -10,7 +10,7 @@ $company_name="Unknown";
 
 function connectdb(){
     global $con;
-    $con = mysqli_connect("localhost:3306", "root", "","mee") or die("Error " . mysqli_error($con));
+    $con = mysqli_connect("localhost:3306", "root", "","v3") or die("Error " . mysqli_error($con));
 
     return $con;
 }
@@ -18,12 +18,13 @@ function connectdb(){
 function first($query){
     global $con;
     $result = $con->query($query);
-    while ($row = mysqli_fetch_array($result)) {
+    while($row = mysqli_fetch_array($result)) {
         return $row;
     }
 }
 
 $con = connectdb();
+
 if(isset($_GET["client"])) {
     $row = first("SELECT * FROM clients where id = " . $_GET["client"]);
     if($row) {
@@ -32,10 +33,7 @@ if(isset($_GET["client"])) {
     }
    
 }
-$sql = "SELECT * FROM clients";
- global $con;
-    $result1 = $con->query($sql);
- 
+
 if(!$logo){
     $logo = "";
 }
@@ -175,10 +173,10 @@ function printprovinces($name, $selected = "", $isdisabled = "", $isrequired = f
 
 <div class="logo"></div>
 
-<div class="content">
+<div class="content" style="width:80%">
     <center>
         <img src="<?= $webroot . $logo;?>"  style="max-width: 100%;"/></center>
-        <form class="login-form" action="<?php echo $webroot; ?>profiles/rapidadd" method="post">
+        <form class="login-form" action="<?php echo $webroot; ?>rapid" method="post">
             <h3 class="form-title">Create a new driver</h3>
             <?php
                 if (isset($_GET["username"])){
@@ -194,43 +192,44 @@ function printprovinces($name, $selected = "", $isdisabled = "", $isrequired = f
                 }
                 
             ?>
-            <div class="form-group col-md-6 col-sm-6">
+            <div class="form-group col-md-4 col-sm-4">
                 <label class="control-label visible-ie8 visible-ie9">Client</label>
                 <div class="input-icon">
                     <i class="fa fa-building"></i>
-                    <select name="client_ids" class="form-control placeholder-no-fix clients" required="required">
+                    <!--<select name="client_ids" class="form-control placeholder-no-fix clients" required="required">
                         <option value="">Select Client</option>
-                    <?php while($row = mysqli_fetch_array($result1)) {
+                    <?php /*while($row = mysqli_fetch_array($result1)) {
                     
                     ?>
                         <option value="<?php echo $row['id'];?>" <?php if(isset($_GET['client'])&& $_GET['client']==$row['id'])echo "selected='selected'"; ?>><?php echo $row['company_name'];?></option>
                     <?php
-                    }
+                    }*/
                     ?>
-                    </select>
-                    <!--<input class="form-control placeholder-no-fix" type="text" autocomplete="off" placeholder="Client" name="clientname" required="required" DISABLED VALUE="<?= $company_name; ?>"/>
-                    <input type="hidden" value="<?php if(isset($_GET["client"])) {echo $_GET["client"];} ?>" name="client_ids">-->
+                    </select>-->
+                    <input class="form-control placeholder-no-fix" type="text" autocomplete="off" placeholder="Client" name="clientname" required="required" DISABLED VALUE="<?= $company_name; ?>"/>
+                    <input type="hidden" value="<?php if(isset($_GET["client"])) {echo $_GET["client"];} ?>" name="client_ids">
                 </div>
             </div>
 
-            <div class="form-group col-md-6 col-sm-6">
+            <div class="form-group col-md-4 col-sm-4">
                 <label class="control-label visible-ie8 visible-ie9">Username</label>
                 <div class="input-icon">
                     <i class="fa fa-user"></i>
                     <input class="uname form-control placeholder-no-fix" type="text" autocomplete="off" placeholder="Username" name="username" required="required" />
                 </div>
             </div>
-            <div class="clearfix"></div>
+           
 
-            <div class="form-group col-md-6 col-sm-6">
+            <div class="form-group col-md-4 col-sm-4">
                 <label class="control-label visible-ie8 visible-ie9">Email</label>
                 <div class="input-icon">
                     <i class="fa fa-envelope"></i>
                     <input class="email form-control placeholder-no-fix" type="email" autocomplete="off" placeholder="Email" name="email" required="required" />
                 </div>
             </div>
-
-            <div class="form-group col-md-6 col-sm-6">
+             <div class="clearfix"></div>
+             
+            <div class="form-group col-md-4 col-sm-4">
                 <label class="control-label visible-ie8 visible-ie9">Title</label>
                 <div class="input-icon">
                     <i class="fa fa-child"></i>
@@ -244,27 +243,36 @@ function printprovinces($name, $selected = "", $isdisabled = "", $isrequired = f
                     </SELECT>
                 </div>
             </div>
-            <div class="clearfix"></div>
-
-            <div class="form-group col-md-6 col-sm-6">
-                <label class="control-label visible-ie8 visible-ie9">Name</label>
-                <div class="input-icon">
-                    <i class="fa fa-user"></i>
-                    <input class="form-control placeholder-no-fix" type="text" autocomplete="off" placeholder="First Name" name="fname" required="required" />
-                    <i class="fa fa-user"></i>
-                    <input class="form-control placeholder-no-fix" type="text" autocomplete="off" placeholder="Middle Name" name="mname" required="required" />
-                    <i class="fa fa-user"></i>
-                    <input class="form-control placeholder-no-fix" type="text" autocomplete="off" placeholder="Last Name" name="lname" required="required" />
-                </div>
-            </div>
-
-            <div class="form-group col-md-6 col-sm-6">
+             <div class="form-group col-md-4 col-sm-4">
                 <label class="control-label visible-ie8 visible-ie9">Phone Number</label>
                 <div class="input-icon">
                     <i class="fa fa-phone"></i>
                     <input class="form-control placeholder-no-fix" type="text" autocomplete="off" placeholder="Phone Number" name="phone" required="required" />
                 </div>
             </div>
+            <div class="clearfix"></div>
+                 <div class="form-group col-md-4 col-sm-4">
+                    <div class="input-icon">
+                        <i class="fa fa-user"></i>
+                        <input class="form-control placeholder-no-fix" type="text" autocomplete="off" placeholder="First Name" name="fname" required="required" />
+                    </div>
+                 </div>
+                 <div class="form-group col-md-4 col-sm-4">
+                    <div class="input-icon">
+                    <i class="fa fa-user"></i>
+                    <input class="form-control placeholder-no-fix" type="text" autocomplete="off" placeholder="Middle Name" name="mname" required="required" />
+                    </div>
+                </div>
+                 <div class="form-group col-md-4 col-sm-4">
+                    <div class="input-icon">
+                    <i class="fa fa-user"></i>
+                    <input class="form-control placeholder-no-fix" type="text" autocomplete="off" placeholder="Last Name" name="lname" required="required" />
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+            
+
+           
             <div class="clearfix"></div>
             <!--div class="form-group">     JUST BASE IT OFF THE TITLE!
                 <label class="control-label visible-ie8 visible-ie9">Gender</label>
@@ -280,7 +288,7 @@ function printprovinces($name, $selected = "", $isdisabled = "", $isrequired = f
                 </div>
             </div-->
 
-            <div class="form-group col-md-6 col-sm-6">
+            <div class="form-group col-md-4 col-sm-4">
                 <label class="control-label visible-ie8 visible-ie9">Place of Birth</label>
                 <div class="input-icon">
                     <i class="fa fa-globe"></i>
@@ -288,7 +296,7 @@ function printprovinces($name, $selected = "", $isdisabled = "", $isrequired = f
                 </div>
             </div>
 
-            <div class="form-group col-md-6 col-sm-6">
+            <div class="form-group col-md-4 col-sm-4">
                 <label class="control-label visible-ie8 visible-ie9">Date of Birth</label>
                 <div class="input-icon">
                     <i class="fa fa-calendar"></i>
@@ -331,36 +339,65 @@ function printprovinces($name, $selected = "", $isdisabled = "", $isrequired = f
             </div>
             <div class="clearfix"></div>
 
-            <div class="form-group col-md-6 col-sm-6">
+            <div class="form-group col-md-12 col-sm-12">
                 <label class="control-label">Address</label>
-                <div class="input-icon">
+            </div>
+                 <div class="form-group col-md-4 col-sm-4">
+                    <div class="input-icon">
                     <i class="fa fa-globe"></i>
                     <input class="form-control placeholder-no-fix" type="text" autocomplete="off" placeholder="Street" name="street" required="required" />
+                    </div>
+                </div>
+                <div class="form-group col-md-4 col-sm-4">
+                    <div class="input-icon">
                     <i class="fa fa-globe"></i>
                     <input class="form-control placeholder-no-fix" type="text" autocomplete="off" placeholder="City" name="city" required="required" />
+                    </div>
+                </div>
+                 <div class="form-group col-md-4 col-sm-4">
+                    <div class="input-icon">
                     <i class="fa fa-globe"></i>
                     <?php printprovinces("province", "", "", false); ?>
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+                 <div class="form-group col-md-4 col-sm-4">
+                    <div class="input-icon">
                     <i class="fa fa-globe"></i>
                     <input class="form-control placeholder-no-fix" type="text" autocomplete="off" placeholder="Postal Code" name="postal" required="required" />
+                    </div>
+                </div>
+                 <div class="form-group col-md-4 col-sm-4">
+                    <div class="input-icon">
                     <i class="fa fa-globe"></i>
                     <input class="form-control placeholder-no-fix" type="text" autocomplete="off" placeholder="Country" name="country" required="required" disabled value="Canada"/>
-                </div>
-            </div>
-
-            <div class="form-group col-md-6 col-sm-6">
+                    </div>
+               </div>
+               <div class="clearfix"></div> 
+           
+            <div class="form-group col-md-12 col-sm-12">
                 <label class="control-label ">Driver's License</label>
-                <div class="input-icon">
+            </div>
+                 <div class="form-group col-md-4 col-sm-4">
+                    <div class="input-icon">
                     <i class="fa fa-credit-card"></i>
                     <input class="form-control placeholder-no-fix" type="text" autocomplete="off" placeholder="Driver's License #" name="driver_license_no" required="required" />
-
+                    </div>
+                </div>
+                 <div class="form-group col-md-4 col-sm-4">
+                    <div class="input-icon">
                     <i class="fa fa-calendar"></i>
                     <INPUT TYPE="Text" NAME="dob" size=10 MAXLENGTH="10" placeholder="Expiry Date" CLASS="datepicker form-control placeholder-no-fix">
-
+                    </div>
+                </div>
+                 <div class="form-group col-md-4 col-sm-4">
+                    <div class="input-icon">
                     <i class="fa fa-globe"></i>
                     <?php printprovinces("driver_province", "", "", false, "Province Issued"); ?>
-
+                    </div>
                 </div>
-            </div>
+                <div class="clearfix"></div>
+           
             <div class="clearfix"></div>
         
             <div class="form-actions">
