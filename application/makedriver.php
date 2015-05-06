@@ -180,7 +180,7 @@ function printprovinces($name, $selected = "", $isdisabled = "", $isrequired = f
     <center>
         <img src="<?= $webroot . $logo;?>"  style="max-width: 33%; max-height: 100px;"/></center>
         <form class="login-form" action="<?php echo $webroot; ?>rapid" method="post">
-            <h3 class="form-title">Create a new driver</h3>
+            <h3 class="form-title">Create Account</h3>
             <?php
                 if (isset($_GET["username"])){
                     echo '<div class="alert alert-info display-hide" style="display: block;">
@@ -414,7 +414,7 @@ function printprovinces($name, $selected = "", $isdisabled = "", $isrequired = f
         
             <div class="form-actions">
                 <a href="javascript:void(0);" class="btn green-haze pull-right" onclick="return check_username();" >
-                    Create <i class="m-icon-swapright m-icon-white"></i>
+                    Submit <i class="m-icon-swapright m-icon-white"></i>
                 </a>
             </div>
             <input type="submit" id="hiddensub" style="display: none;"/>

@@ -6,6 +6,8 @@
 $settings = $this->requestAction('settings/get_settings');
 $language = $this->request->session()->read('Profile.language');
 $strings = CacheTranslations($language, "profiles_%",s($settings));//,$registry);//$registry = $this->requestAction('/settings/getRegistry');
+
+$NULL = "Applicant";
 ?>
 
 <style>
@@ -127,6 +129,9 @@ $strings = CacheTranslations($language, "profiles_%",s($settings));//,$registry)
                                             }
                                         }
                                     }
+                                    echo '<option value="NULL"';
+                                    if (isset($return_profile_type) && $return_profile_type == "NULL") {echo ' selected="selected"';}
+                                    echo '>' . $NULL . '</option>';
                                 ?>
                             </select>
 
@@ -265,7 +270,7 @@ $strings = CacheTranslations($language, "profiles_%",s($settings));//,$registry)
                                                         }
                                                     }
                                                 } else {
-                                                    echo "Draft";
+                                                    echo $NULL;
                                                 }
                                             ?></td>
 
