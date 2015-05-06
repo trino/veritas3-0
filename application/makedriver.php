@@ -4,13 +4,18 @@ $webroot = $_SERVER["REQUEST_URI"];
 $start = strpos($webroot, "/", 1)+1;
 $webroot = substr($webroot,0,$start);
 
+error_reporting(E_ERROR | E_PARSE);//suppress warnings
+include("../config/app.php");
+error_reporting(E_ALL);//re-enable warnings
+
 $con = "";
 $logo = 'img/logos/';
 $company_name="Unknown";
 
 function connectdb(){
-    global $con;
-    $con = mysqli_connect("localhost:3306", "root", "","v3") or die("Error " . mysqli_error($con));
+    global $con, $config;
+
+    $con = mysqli_connect("localhost:3306", $config['Datasources']['default']['username'], $config['Datasources']['default']['password'],$config['Datasources']['default']['database']) or die("Error " . mysqli_error($con));
 
     return $con;
 }
@@ -175,7 +180,7 @@ function printprovinces($name, $selected = "", $isdisabled = "", $isrequired = f
 
 <div class="content" style="width:80%">
     <center>
-        <img src="<?= $webroot . $logo;?>"  style="max-width: 100%;"/></center>
+        <img src="<?= $webroot . $logo;?>"  style="max-width: 33%; max-height: 100px;"/></center>
         <form class="login-form" action="<?php echo $webroot; ?>rapid" method="post">
             <h3 class="form-title">Create a new driver</h3>
             <?php
