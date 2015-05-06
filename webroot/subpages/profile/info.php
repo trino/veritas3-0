@@ -807,7 +807,7 @@
                                 </div>
                                 <div class="col-md-12">
                                     <div class="form-group">
-                                        <h3 class="block">Automatic Email: </h3></div>
+                                        <h3 class="block">Automatic Survey Email: </h3></div>
                                 </div>
                                 <div class="col-md-4">
                                     <div class="form-group">
