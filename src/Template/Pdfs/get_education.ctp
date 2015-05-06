@@ -21,6 +21,7 @@ if($education)
     <td><strong>Last School attended</strong> : <?php echo $edu->last_school_attended;?></td></tr>
     <tr><td><strong>College</strong> : <?php echo $edu->college;?></td>
     <td><strong>High School</strong> : <?php echo $edu->high_school;?></td></tr>
+    <td><strong>Did the employee have any safety or performance issues?</strong> : <?php echo $edu->performance_issue;?></td></tr>
     <tr><td><strong>Signature</strong> : <?php echo $edu->signature;?></td>
     <td><strong>Date</strong> : <?php echo $edu->date_time;?></td></tr>
     <?php
