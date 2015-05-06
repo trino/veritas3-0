@@ -865,7 +865,72 @@
 
             $this->render("edit");
         }
-        
+           public function rapidadd()
+        {
+            $this->set('uid', '0');
+            $this->set('id', '0');
+            
+            $profiles = TableRegistry::get('Profiles');
+
+            $_POST['created'] = date('Y-m-d');
+            //var_dump($profile);die();
+            
+            if ($this->request->is('post')) {
+
+                if (isset($_POST['profile_type']) && $_POST['profile_type'] == 1)
+                    $_POST['admin'] = 1;
+
+                $_POST['dob'] = $_POST['dob'];
+                //debug($_POST);die();
+                $profile = $profiles->newEntity($_POST);
+                if ($profiles->save($profile)) {
+
+                    if ($_POST['client_ids'] != "") {
+                        $client_id = explode(",", $_POST['client_ids']);
+                        foreach ($client_id as $cid) {
+                            $query = TableRegistry::get('clients');
+                            $q = $query->find()->where(['id' => $cid])->first();
+                            $profile_id = $q->profile_id;
+                            $pros = explode(",", $profile_id);
+
+                            $p_ids = "";
+
+                            array_push($pros, $profile->id);
+                            $pro_id = array_unique($pros);
+
+                            foreach ($pro_id as $k => $p) {
+                                if (count($pro_id) == $k + 1)
+                                    $p_ids .= $p;
+                                else
+                                    $p_ids .= $p . ",";
+                            }
+
+                            $query->query()->update()->set(['profile_id' => $p_ids])
+                                ->where(['id' => $cid])
+                                ->execute();
+                        }
+                    }
+                    //die();
+                    $blocks = TableRegistry::get('Blocks');
+                    $query2 = $blocks->query();
+                    $query2->insert(['user_id'])
+                        ->values(['user_id' => $profile->id])
+                        ->execute();
+                    $side = TableRegistry::get('Sidebar');
+                    $query2 = $side->query();
+                    $create_que = $query2->insert(['user_id'])
+                        ->values(['user_id' => $profile->id])
+                        ->execute();
+                    
+
+                    
+                    return $this->redirect('/application/makedriver.php?username='.$_POST['username']);
+                } else {
+                     return $this->redirect('/application/makedriver.php?error='.$_POST['username']);
+                }
+            }
+            die();
+        }
         function csv()
         {
               $profile = TableRegistry::get('profiles');
@@ -915,7 +980,17 @@
                                 ->where(['id' => $query->id])
                                 ->execute();
                             }
-                                                 
+                            $blocks = TableRegistry::get('Blocks');
+                            $query3 = $blocks->query();
+                            $query3->insert(['user_id'])
+                                ->values(['user_id' => $profile->id])
+                                ->execute();
+                            $side = TableRegistry::get('Sidebar');
+                            $query4 = $side->query();
+                            $create_que = $query4->insert(['user_id'])
+                                ->values(['user_id' => $profile->id])
+                                ->execute();
+                                                         
                             unset($query2);
                     }
                     }
