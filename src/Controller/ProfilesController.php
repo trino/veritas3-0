@@ -2261,57 +2261,59 @@
             }
         }
 
-        public
-        function check_user($uid = '',$user="")
-        {
+        public function check_user($uid = '',$user="", $Key = "username") {
             $r = '';
-            if (isset($_POST['username']) && $_POST['username'] && $user=="")
-                $user = $_POST['username'];
+            if (isset($_POST[$Key]) && $_POST[$Key] && $user=="") {
+                $user = $_POST[$Key];
+            }
             $q = TableRegistry::get('profiles');
             $que = $q->find();
             
-            if ($uid != "")
-                $query = $que->select()->where(['id !=' => $uid, 'username' => $user])->first();
-            else
-                $query = $que->select()->where(['username' => $user])->first();
+            if ($uid != "") {
+                $query = $que->select()->where(['id !=' => $uid, $Key => $user])->first();
+            }else {
+                $query = $que->select()->where([$Key => $user])->first();
+            }
             //var_dump($query);
             //$query = $que->first();
-            if ($query)
-                $r= '1';
-            else
-                $r= '0';
-            if($user!="")
+            $r = '0';
+            if ($query) {$r = '1';}
+            if($user!="") {
                 return $r;
-            else
-            {
+            }else {
                 echo $r;
                 die();
             }
         }
 
-        public function check_email($uid = '', $email="")
-        {
+        public function check_email($uid = '', $email="") {
+            return $this->check_user($uid, $email, "email");
+            /* redundant code
             $r ='';
-            if($email == "")
+            if($email == "") {
                 $email = $_POST['email'];
+            }
             $q = TableRegistry::get('profiles');
             $que = $q->find();
-            if ($uid != "")
+            if ($uid != "") {
                 $query = $que->select()->where(['id !=' => $uid, 'email' => $email])->first();
-            else $query = $que->select()->where(['email' => $email])->first();
+            } else {
+                $query = $que->select()->where(['email' => $email])->first();
+            }
             //var_dump($query);
             //$query = $que->first();
-            if ($query)
-                $r= '1';
-            else
-                $r= '0';
-            if($email!="")
+            if ($query) {
+                $r = '1';
+            }else {
+                $r = '0';
+            }
+            if($email!="") {
                 return $r;
-            else
-            {
+            } else {
                 echo $r;
                 die();
             }
+            */
         }
 
 
