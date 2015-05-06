@@ -8,8 +8,15 @@
     if ($this->request->session()->read('debug')) {
         echo "<span style ='color:red;'>subpages/profile/info.php #INC117</span>";
     }
-    $getProfileType = $this->requestAction('profiles/getProfileType/' . $this->Session->read('Profile.id'));
-    $sidebar = $this->requestAction("settings/all_settings/" . $this->request->session()->read('Profile.id') . "/sidebar");
+
+
+    $userID = $this->Session->read('Profile.id');
+    if(!$userID && isset($_GET["client"])){
+        $userID = 0;
+    }
+
+    $getProfileType = $this->requestAction('profiles/getProfileType/' . $userID);
+    $sidebar = $this->requestAction("settings/all_settings/" . $userID . "/sidebar");
     $settings = $this->requestAction('settings/get_settings');
 
     if ($_SERVER['SERVER_NAME'] == "localhost" || $_SERVER['SERVER_NAME'] == "127.0.0.1") {
@@ -19,6 +26,7 @@
     }
     $language = $this->request->session()->read('Profile.language');
     $strings = CacheTranslations($language, "profiles_%",s($settings));//,$registry);//$registry = $this->requestAction('/settings/getRegistry');
+
 
     function printoption($option, $selected, $value = ""){
         $tempstr = "";
@@ -107,6 +115,7 @@
                                             <option value="">Select</option>
 
                                             <?php
+
                                                 $isISB = (isset($sidebar) && $settings->client_option == 0);
                                                 $ptyp = $this->requestAction('profiles/gettypes/ptypes/' . $this->request->session()->read('Profile.id'));
                                                 if ($ptyp != "")
@@ -194,6 +203,7 @@
                                                 }
                                             ?>
                                             <?php
+
                                                 /*
                                                 if ($this->request->session()->read('Profile.super')) {
                                                     ?>
@@ -287,7 +297,7 @@
                                         <select  <?php echo $is_disabled ?>
                                             name="<?php if (!isset($p)) {
                                                 echo 'profile_type';
-                                            } ?>" <?php if ((isset($id) && $this->request->session()->read('Profile.id') == $id)/* || ($this->request->session()->read('Profile.profile_type') == '2')*/) echo "disabled='disabled'"; ?>
+                                            } ?>" <?php if ((isset($id) && $userID == $id)/* || ($this->request->session()->read('Profile.profile_type') == '2')*/) echo "disabled='disabled'"; ?>
                                             class="form-control member_type" required='required'
                                             onchange="$('#nProfileType').val($(this).val());">
 
@@ -420,9 +430,11 @@
                                     <label class="control-label">Username: </label>
                                     <input <?php echo $is_disabled ?> id="username_field" name="username" type="text"
                                                                       class="form-control req_driver req_rec uname" <?php if (isset($p->username)) { ?> value="<?php echo $p->username; ?>" <?php } ?>
-                                        <?php if (($this->request->session()->read('Profile.super') != '1' && ($this->request->params['action'] == 'edit'))) {
+                                        <?php
+                                        if ($userID>0 && ($this->request->session()->read('Profile.super') != '1' && ($this->request->params['action'] == 'edit'))) {
                                             echo 'disabled="disabled"';
-                                        } ?>/>
+                                        }
+                                       ?>/>
                             <span class="error passerror flashUser"
                                   style="display: none;">Username already exists</span>
                             <span class="error passerror flashUser1"
@@ -447,8 +459,8 @@
                             <?php
 
 
-                                if ($this->request->session()->read('Profile.profile_type') != '2') { ?>
-                                    <?php if (strlen($is_disabled) == 0) {
+                                if ($this->request->session()->read('Profile.profile_type') != '2') {
+                                    if (strlen($is_disabled) == 0) {
 
                                         ?>
                                         <div class="col-md-4">
@@ -497,7 +509,6 @@
 
                                     <?php }
                                 }
-
 ?>
                             <div class="col-md-4">
                                 <div class="form-group">
@@ -1173,5 +1184,4 @@
 </script>
 
 </div>
-
 <!-- </div> END PORTLET-->

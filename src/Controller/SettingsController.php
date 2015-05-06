@@ -47,7 +47,10 @@ class SettingsController extends AppController {
 
     function get_side($uid){
         $setting = TableRegistry::get('sidebar');
-        $query = $setting->find()->where(['user_id'=>$uid]);
+        if($uid==0) {
+            $uid = TableRegistry::get('profiles')->find()->where(['super' => 1])->first()->id;
+        }
+        $query = $setting->find()->where(['user_id' => $uid]);
         $l = $query->first();
         $this->response->body(($l));
         return $this->response;
@@ -151,19 +154,19 @@ class SettingsController extends AppController {
         if($type != "" || $type !="0") {
             if($type =='sidebar') {
                 return $this->get_side($uid);
+                die("DIDIT!");
             }elseif($type =='blocks') {
                 return $this->get_blocks($uid);
             }
         }
         if($scope != "") {
-            if($scope == 'profile')
-                return $this->getProSubDoc($scope_id,$doc_id);
-            elseif($scope == 'client')
-                return $this->getCSubDoc($scope_id,$doc_id);
-            
+            if($scope == 'profile') {
+                return $this->getProSubDoc($scope_id, $doc_id);
+            }elseif($scope == 'client') {
+                return $this->getCSubDoc($scope_id, $doc_id);
+            }
         }
-        die();
-            
+        die("");
     }
 
     function getproductlist(){//DO NOT REMOVE CODE!!!

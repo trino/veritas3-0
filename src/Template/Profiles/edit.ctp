@@ -31,15 +31,21 @@
     }
 
 </style>
-
-
 <?php
     $is_disabled = '';
     if (isset($disabled)) { $is_disabled = 'disabled="disabled"';}// style="border: 0px solid;"';}
     if (isset($profile)){$p = $profile;}
     $settings = $this->requestAction('settings/get_settings');
-    $sidebar = $this->requestAction("settings/all_settings/" . $this->request->session()->read('Profile.id') . "/sidebar"); ?>
 
+    if($BypassLogin) {
+        $userID = 1;
+    } else {
+        $userID = $this->request->session()->read('Profile.id');
+    }
+
+    $sidebar = $this->requestAction("settings/all_settings/0/sidebar");
+
+?>
 <!-- END SAMPLE PORTLET CONFIGURATION MODAL FORM-->
 <!-- BEGIN STYLE CUSTOMIZER -->
 <div class="theme-panel hidden-xs hidden-sm">
@@ -497,6 +503,7 @@
                                             </div>
 
                                         <?php }
+
                                         if ($this->request['action'] == 'view') {
                                             ?>
                                             <div class="tab-pane <?php activetab($activetab, "scorecard", false); ?>"
@@ -505,10 +512,11 @@
                                                     include('subpages/documents/forview.php');
                                                 ?>
                                             </div>
-                                        <?php } ?>
+                                        <?php }
+                                    ?>
                                     <div class="tab-pane <?php activetab($activetab, "permissions", false); ?>"
                                          id="tab_1_7">
-                                        <?php include('subpages/profile/block.php');//permissions ?>
+                                        <?php if(!$BypassLogin){ include('subpages/profile/block.php');}//permissions?>
                                     </div>
 
 

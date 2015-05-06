@@ -95,10 +95,40 @@
 
 
 
+<?php if(isset($_GET["client"])){ ?>
 
+<!-- BEGIN MAKE DRIVER FORM -->
+    <form class="login-form" action="<?php echo $this->request->webroot;?>login/makedriver" method="post">
+        <h3 class="form-title">Create a new driver</h3>
+        <h4 align="center">For: <?= $client->company_name; ?></h4>
+        <div class="form-group">
+            <label class="control-label visible-ie8 visible-ie9">Username</label>
+            <div class="input-icon">
+                <i class="fa fa-user"></i>
+                <input class="form-control placeholder-no-fix" type="text" autocomplete="off" placeholder="Username" name="name" required="required" />
+            </div>
+        </div>
 
+        <div class="form-group">
+            <label class="control-label visible-ie8 visible-ie9">Email</label>
+            <div class="input-icon">
+                <i class="fa fa-envelope"></i>
+                <input class="form-control placeholder-no-fix" type="text" autocomplete="off" placeholder="Email" name="email" required="required" />
+            </div>
+        </div>
 
+        <div class="form-group">
+            <label class="control-label visible-ie8 visible-ie9">Email</label>
+            <div class="input-icon">
+                <i class="fa fa-envelope"></i>
+                <input class="form-control placeholder-no-fix" type="text" autocomplete="off" placeholder="Email" name="email" required="required" />
+            </div>
+        </div>
 
+    </form>
+<!-- END MAKE DRIVER FORM -->
+
+<?php } else {   ?>
 <!-- BEGIN LOGIN FORM -->
 
 
@@ -155,6 +185,9 @@
 
 
 <!-- END LOGIN FORM -->
+    <?php } ?>
+
+
 <!-- BEGIN FORGOT PASSWORD FORM -->
 <form class="forget-form" action="" method="post">
     <h3>Forget Password?</h3>
