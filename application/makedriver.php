@@ -10,8 +10,9 @@ $company_name="Unknown";
 
 function connectdb(){
     global $con;
-    $con = mysqli_connect("localhost:3306", "root", "","mee") or die("Error " . mysqli_error($con$con = mysqli_connect("localhost:3306", "root", "","v3") or die("Error " . mysqli_error($con));
+    $con = mysqli_connect("localhost:3306", "root", "","mee") or die("Error " . mysqli_error($con));
 
+    return $con;
 }
 
 function first($query){
