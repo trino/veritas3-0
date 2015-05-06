@@ -1241,6 +1241,41 @@
                             }
                         }
                         echo $profile->id;
+                        if (isset($_POST['profile_type']) && $_POST['profile_type'] == 5) {
+                             $username = 'driver_' . $profile->id;
+                             $queries = TableRegistry::get('Profiles');
+                             $queries->query()->update()->set(['username' => $username])
+                                 ->where(['id' => $profile->id])
+                                 ->execute();
+                         } else {
+                            if(isset($_POST['profile_type']))
+                            {
+                                
+                                if ($_POST['profile_type'] == '7'){
+                                    $username = 'owner_operator_' . $profile->id;
+                                    $queries = TableRegistry::get('Profiles');
+                                     $queries->query()->update()->set(['username' => $username])
+                                         ->where(['id' => $profile->id])
+                                         ->execute();
+                                    }
+                                else
+                                if ($_POST['profile_type'] == '8'){
+                                    $username = 'owner_driver_' . $profile->id;
+                                    $queries = TableRegistry::get('Profiles');
+                                     $queries->query()->update()->set(['username' => $username])
+                                         ->where(['id' => $profile->id])
+                                         ->execute();
+                                    }
+                                else
+                                    if ($_POST['profile_type'] == '11'){
+                                        $username = 'employee_' . $profile->id;
+                                        $queries = TableRegistry::get('Profiles');
+                                     $queries->query()->update()->set(['username' => $username])
+                                         ->where(['id' => $profile->id])
+                                         ->execute();
+                                        }
+                            }
+                         }
                         if (isset($_POST['drafts']) && ($_POST['drafts'] == '1')) {
                             $this->Flash->success('Profile Saved as draft. ');
                         } else {
