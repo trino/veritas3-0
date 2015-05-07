@@ -15,7 +15,7 @@ if($LastUpdate < $UpdateFile){
         $db = ConnectionManager::get('default');
         $db->execute("TRUNCATE TABLE strings;");
         $db->execute($SQLfile);
-        $Table->query()->update()->set(['English' => time()])->where(['Name'=>"Date"])->execute();
+        $Table->query()->update()->set(['English' => $UpdateFile])->where(['Name'=>"Date"])->execute();
     }
 }
 
