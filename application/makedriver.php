@@ -424,7 +424,6 @@ function printprovinces($name, $selected = "", $isdisabled = "", $isrequired = f
 
     <script>
         function check_username() {
-       
 
             var client_id = $('.client_profile_id').val();
             if (client_id == "") {
