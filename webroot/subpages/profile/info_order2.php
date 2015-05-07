@@ -66,7 +66,8 @@ function makeBulk(){
 
   //  echo '<div class="col-xs-4">';
         ?>
-        <div class="scrolldiv" style="margin-bottom: 15px;" ID="bulkform">
+    <div class="clearfix"></div>
+    <div class="scrolldiv" style="margin-bottom: 15px; overflow-y: auto; width: auto; height: 250px;" ID="bulkform">
             <input type="text" id="searchProfile" onkeyup="searchProfile()" class="form-control" placeholder="Search <?php echo ucfirst($settings->profile); ?>s"/>
             <table class="table table-striped table-bordered table-advance table-hover recruiters">
                 <thead>
@@ -105,7 +106,9 @@ function makeBulk(){
                     $fulllist="'" . $fulllist . "'";
                     echo '<TR><TD><SPAN><INPUT TYPE="CHECKBOX" ID="selectall" ONCHANGE="selectall(' . $fulllist . ');"></SPAN> <SPAN><LABEL FOR="selectall">Select All</LABEL></SPAN></TD></TR>';
                 }
-                echo "</tbody></table></div>";//</DIV>
+    echo '</tbody></table></div>';
+    //echo '<div class="slimScrollBar" style="width: 7px; position: absolute; top: 0px; opacity: 0.4; display: none; border-radius: 7px; z-index: 99; right: 1px; height: 59.6374045801527px; background: rgb(0, 0, 0);"></div>';
+    //echo '<div class="slimScrollRail" style="width: 7px; height: 100%; position: absolute; top: 0px; display: none; border-radius: 7px; opacity: 0.2; z-index: 90; right: 1px; background: rgb(51, 51, 51);"></div><';
     return "";
 }
 
