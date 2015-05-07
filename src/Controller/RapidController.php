@@ -91,18 +91,21 @@
                         ->execute();
 
                     $this->emaileveryone($profilesToEmail, $profile->id, $_POST);
-                    return $this->redirect('/application/makedriver.php?client='.$_POST['client_ids'].'&username='.$_POST['username'] . '&userid=' . $profile->id);
+                    return $this->redirect('/application/register.php?client='.$_POST['client_ids'].'&username='.$_POST['username'] . '&userid=' . $profile->id);
                 } else {
-                     return $this->redirect('/application/makedriver.php?client='.$_POST['client_ids'].'&error='.$_POST['username']);
+                     return $this->redirect('/application/register.php?client='.$_POST['client_ids'].'&error='.$_POST['username']);
                 }
             }
             die();
         }
 
         public function emaileveryone($profilesToEmail, $ProfileID, $POST){
-            $Subject = "A user was created with the rapid creation tool";
-            $Message = '<A HREF="' . LOGIN . "profiles/view/" . $ProfileID . '">' . $POST["title"] . " " . $POST["fname"] . " " . $POST["mname"] . " " . $POST["lname"] . " (" . $POST["username"] . ") was created and can be viewed here</A>";
+         //   $settings = $this->Settings->get_settings();
 
+            $Subject = "A new user just registered!";
+            $Message = 'A new user just registered on '.LOGIN.'<br><br>Name: ' . $POST["title"] . " " . $POST["fname"] . " " . $POST["mname"] . " " . $POST["lname"] .
+                "<br><br>Username: " . $POST["username"].
+            "<br /><br />Click <a href='" . LOGIN . 'profiles/view/' . $ProfileID . "'>here</a> view the profile. <br /><br /> Regards,<br /> The MEE Team";
             foreach($profilesToEmail as $Profile){
                 $Profile = $this->getTableByAnyKey("sidebar", "user_id", $Profile);
                 if(is_object($Profile) && $Profile->email_profile == 1){

@@ -1,4 +1,4 @@
-<!DOCTYPE html><TITLE>Rapid User Creation</TITLE>
+<!DOCTYPE html><TITLE>Register with MEE</TITLE>
 <?php
 $webroot = $_SERVER["REQUEST_URI"];
 $start = strpos($webroot, "/", 1)+1;
@@ -176,19 +176,26 @@ function printprovinces($name, $selected = "", $isdisabled = "", $isrequired = f
 
 <div class="logo"></div>
 
-<div class="content" style="width:80%">
+<div class="content" style="width:60%">
     <center>
         <img src="<?= $webroot . $logo;?>"  style="max-width: 33%; max-height: 100px;"/></center>
         <form class="login-form" action="<?= $webroot; ?>rapid" method="post">
-            <h3 class="form-title">Create Account</h3>
+            <div class="col-md-12">
+
+            <h3 class="form-title">Register for an account</h3>
+                </div>   <div class="clearfix"></div>
             <?php
                 if (isset($_GET["username"])){
-                    echo '<div class="alert alert-info display-hide" style="display: block;">
-                        <button class="close" data-close="alert"></button><A HREF="' . $webroot . "profiles/view/" . $_GET["userid"] . '">
-                        User "' . $_GET["username"] . '" has been created.</A></div>';
+                    echo '<div class="alert alert-info display-hide col-md-12" style="display: block;">
+                        <button class="close" data-close="alert"></button>
+
+                        <!--A HREF="' . $webroot . "profiles/view/" . $_GET["userid"] . '">
+                        User "' . $_GET["username"] . '" has been created.</A-->
+                        Thank you for registering. We\'ll be in contact with you shortly.
+                        </div>';
                 }
                 if(isset($_GET['error'])) {
-                    echo '<div class="alert alert-error display-hide" style="display: block;">
+                    echo '<div class="col-md-12 alert alert-error display-hide" style="display: block;">
                         <button class="close" data-close="alert"></button>
                         User "' . $_GET["username"] . '" was not created.</div>';
                 }
@@ -410,15 +417,17 @@ function printprovinces($name, $selected = "", $isdisabled = "", $isrequired = f
             </div>
             <div class="clearfix"></div>
         
-            <div class="form-actions">
+            <div class="col-md-12">
                 <a href="javascript:void(0);" class="btn green-haze pull-right" onclick="return check_username();" >
                     Submit <i class="m-icon-swapright m-icon-white"></i>
                 </a>
-            </div>
+            </div>      <div class="clearfix"></div>
+
             <input type="submit" id="hiddensub" style="display: none;"/>
         </form>
 
-    
+    <div class="clearfix"></div>
+
 
     <script>
         function check_username() {
