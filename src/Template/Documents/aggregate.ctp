@@ -6,8 +6,8 @@ if ($_SERVER['SERVER_NAME'] == "localhost" || $_SERVER['SERVER_NAME'] == "127.0.
 }
 
 $language = $this->request->session()->read('Profile.language');
-//$registry = $this->requestAction('/settings/getRegistry');
-$strings = CacheTranslations($language, "aggregate_%","");//,$registry);
+$settings = $this->requestAction('settings/get_settings');
+$strings = CacheTranslations($language, "aggregate_%",$settings);//,$registry);
 ?>
 
 <h3 class="page-title">

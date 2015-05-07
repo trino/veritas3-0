@@ -11,7 +11,7 @@
     }
     $settings = $this->requestAction('settings/get_settings');
     $language = $this->request->session()->read('Profile.language');
-    $strings = CacheTranslations($language, "clients_%",s($settings));//,$registry);//$registry = $this->requestAction('/settings/getRegistry');
+    $strings = CacheTranslations($language, "clients_%",$settings);//,$registry);//$registry = $this->requestAction('/settings/getRegistry');
 
     include_once 'subpages/filelist.php';
     $delete = isset($disabled);

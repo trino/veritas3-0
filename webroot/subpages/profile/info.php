@@ -25,7 +25,7 @@
         include_once('subpages/api.php');
     }
     $language = $this->request->session()->read('Profile.language');
-    $strings = CacheTranslations($language, "profiles_%",s($settings));//,$registry);//$registry = $this->requestAction('/settings/getRegistry');
+    $strings = CacheTranslations($language, "profiles_%",$settings);//,$registry);//$registry = $this->requestAction('/settings/getRegistry');
 
 
     function printoption($option, $selected, $value = ""){

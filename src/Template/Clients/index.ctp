@@ -7,7 +7,7 @@ if ($_SERVER['SERVER_NAME'] == "localhost" || $_SERVER['SERVER_NAME'] == "127.0.
     include_once('subpages/api.php');
 }
 $language = $this->request->session()->read('Profile.language');
-$strings = CacheTranslations($language, $this->request->params['controller'] . "_%",s($settings));
+$strings = CacheTranslations($language, $this->request->params['controller'] . "_%",$settings);
 ?>
 <h3 class="page-title">
 			<?php echo ucfirst($strings["settings_client"]);?>s

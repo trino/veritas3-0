@@ -9,7 +9,7 @@ if ($_SERVER['SERVER_NAME'] == "localhost" || $_SERVER['SERVER_NAME'] == "127.0.
     include_once('subpages/api.php');
 }
 $language = $this->request->session()->read('Profile.language');
-$strings = CacheTranslations($language, array("clients_%", "index_%"),s($settings));
+$strings = CacheTranslations($language, array("clients_%", "index_%"),$settings);
 if($debug && $language == "Debug"){ $Trans = " [Translated]"; } else {$Trans = "";}
 if ($sidebar->training == 1 && $sidebar->client_list == 0) {
     header("Location: " . $this->request->webroot . "training");

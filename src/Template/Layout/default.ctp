@@ -10,7 +10,7 @@ if ($_SERVER['SERVER_NAME'] == "localhost" || $_SERVER['SERVER_NAME'] == "127.0.
 }
 
 $language = $this->request->session()->read('Profile.language');
-$strings = CacheTranslations($language, "langswitch","");//,$registry);
+$strings = CacheTranslations($language, "langswitch",$settings);//,$registry);
 ?>
 
 <!--[if IE 8]> <html lang="en" class="ie8 no-js"> <![endif]-->

@@ -150,12 +150,13 @@ function getHost($localhost = "localhost") {//get HTTP host name
     return trim($host);
 }
 
-function S($settings){
+function s($settings){
     $variables = Sadd("client", $settings);
     $variables = array_merge($variables,Sadd("document", $settings));
     $variables = array_merge($variables,Sadd("profile", $settings));
     return array_merge($variables,Sadd("mee", $settings));
 }
+
 function Sadd($Key, $Value){
     $P="%";
     $Value=$Value->$Key;
@@ -179,6 +180,10 @@ function CacheTranslations($Language='English', $Text, $Variables = ""){
     if (!is_array($Text)){
         $Text = array($Text);
     }
+    if(is_object($Variables)){
+        $Variables=s($Variables);
+    }
+
     $Text[] = "dashboard_%";//for all pages
     $Text[] = "settings_%";//for all pages
     $Text[] = "index_%";//for all pages
