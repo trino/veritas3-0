@@ -11,6 +11,7 @@ if ($_SERVER['SERVER_NAME'] == "localhost" || $_SERVER['SERVER_NAME'] == "127.0.
 }
 
 $language = $this->request->session()->read('Profile.language');
+$GLOBALS["language"] = $language;
 //$registry = $this->requestAction('/settings/getRegistry');
 $strings = CacheTranslations($language, "analytics_%",$settings);//,$registry);
 //print_r($strings);
@@ -140,7 +141,7 @@ function enumdata($variable, $daysbackwards, $date = -1){ //* [10, 1], [17, -14]
 }
 ?>
 <h3 class="page-title">
-			<?= $strings["analytics_title"] ?> <small>Analytics of <?php echo ucfirst($settings->document);?>s, Orders and  Drivers</small>
+			<?= $strings["analytics_title"] ?> <small><?= $strings["analytics_description"];?></small>
 			</h3>
 
 			<div class="page-bar">
@@ -151,11 +152,11 @@ function enumdata($variable, $daysbackwards, $date = -1){ //* [10, 1], [17, -14]
 						<i class="fa fa-angle-right"></i>
 					</li>
 					<li>
-						<a href="<?php echo $this->request->webroot;?>documents/index"><?php echo ucfirst($settings->document);?>s</a>
+						<a href="<?php echo $this->request->webroot;?>documents/index"><?= $strings["index_documents"] ?></a>
                         <i class="fa fa-angle-right"></i>
 					</li>
                     <li>
-						<a href="" onclick="return false;">Analytics</a>
+						<a href="" onclick="return false;"><?= $strings["analytics_title"] ?></a>
                         
 					</li>
                     
@@ -291,10 +292,10 @@ jQuery(document).ready(function() {
 										<div class="row">
 											<div class="col-md-11" align="right" style="margin-right:0;padding-right:0">
 												<div class="input-group input-large date-picker input-daterange" data-date="10/11/2012" data-date-format="mm/dd/yyyy">
-													<span class="input-group-addon"> <?= $strings["analytics_start"]; ?> </span>
-													<input type="text" class="form-control" name="from" value="<?php echo $enddate; ?>">
-													<span class="input-group-addon"> <?= $strings["analytics_finish"]; ?> </span>
-													<input type="text" class="form-control" name="to" title="Leave blank to end at today" value="<?php echo get2("to", date("Y-m-d")); ?>">
+													<span class="input-group-addon"><?= $strings["analytics_start"]; ?></span>
+													<input type="text" class="form-control" name="from" value="<?php echo $enddate; ?>" style="min-width: 100px;">
+													<span class="input-group-addon"><?= $strings["analytics_finish"]; ?></span>
+													<input type="text" class="form-control" name="to" title="Leave blank to end at today" value="<?php echo get2("to", date("Y-m-d")); ?>" style="min-width: 100px;">
                                                     <!--button type="submit" class="btn btn-primary" style="float">Search</button-->
 
 												</div>
@@ -370,23 +371,23 @@ function newchart($color, $icon, $title, $chartid, $dates, $data, $start,$end, $
 }
 
 if($sidebar->client_list==1) {
-    newchart("grey-salsa", "icon-globe", ucfirst($settings->client) . "s", "clients", $clientdates, $clients, $startdate, $enddate, $isdraft, $profiletypes, $clienttypes);//new clients
+    newchart("grey-salsa", "icon-globe", $strings["index_clients"], "clients", $clientdates, $clients, $startdate, $enddate, $isdraft, $profiletypes, $clienttypes);//new clients
 }
 
 if($sidebar->profile_list==1) {
-    newchart("green-haze", "icon-user", ucfirst($settings->profile) . "s", "profiles", $profiledates, $profiles, $startdate, $enddate, $isdraft, $profiletypes, $clienttypes);//new users
+    newchart("green-haze", "icon-user", $strings["index_profiles"], "profiles", $profiledates, $profiles, $startdate, $enddate, $isdraft, $profiletypes, $clienttypes);//new users
 }
 
 if($sidebar->document_list==1) {
-    newchart("yellow-casablanca", "icon-doc", ucfirst($settings->document) . "s", "documents", $docdates, $documents, $startdate, $enddate, $isdraft, $profiletypes, $clienttypes);//new documents
+    newchart("yellow-casablanca", "icon-doc", $strings["index_documents"], "documents", $docdates, $documents, $startdate, $enddate, $isdraft, $profiletypes, $clienttypes);//new documents
 }
 
 if($sidebar->orders_list==1) {
-    newchart("yellow", "icon-docs", "Orders", "orders", $orderdates, $orders, $startdate, $enddate, $isdraft, $profiletypes, $clienttypes);//new orders
+    newchart("yellow", "icon-docs", $strings["index_orders"], "orders", $orderdates, $orders, $startdate, $enddate, $isdraft, $profiletypes, $clienttypes);//new orders
 }
 
 if($sidebar->training==1) {
-    newchart("blue-steel", "fa fa-graduation-cap", "Courses", "courses", $quizdates, $answers, $startdate, $enddate, $isdraft, $profiletypes, $clienttypes);//new quiz completions
+    newchart("blue-steel", "fa fa-graduation-cap", $strings["index_courses"], "courses", $quizdates, $answers, $startdate, $enddate, $isdraft, $profiletypes, $clienttypes);//new quiz completions
 }
 
 function FindIterator1($ObjectArray, $FieldName, $FieldValue){
@@ -399,6 +400,10 @@ function FindIterator1($ObjectArray, $FieldName, $FieldValue){
 function enumsubdocs($thedocs, $date, $chartid, $isdraft, $profiletypes, $clienttypes){
 	$alldocs = array();
 	$unknown= "Not specified";
+    $language= $GLOBALS["language"];
+    $title = getFieldname("title",$language);
+    if($language == "Debug"){ $Trans = " [Translated]"; } else {$Trans = "";}
+
 	foreach($thedocs as $adoc){
 		if(left($adoc->created, 10) == $date){
 			$doit = true;
@@ -418,7 +423,7 @@ function enumsubdocs($thedocs, $date, $chartid, $isdraft, $profiletypes, $client
 					if (is_numeric($doctype)) {
 						//$profiletypes = ['', 'Admin', 'Recruiter', 'External', 'Safety', 'Driver', 'Contact', 'Owner Operator', 'Owner Driver', 'Employee', 'Guest', 'Partner'];
 						//$doctype = $profiletypes[$doctype];
-                        $doctype = FindIterator1($profiletypes, "id", $doctype)->title;
+                        $doctype = FindIterator1($profiletypes, "id", $doctype)->$title . $Trans;
 					} else {
 						$doctype = $unknown;
 					}
@@ -436,7 +441,7 @@ function enumsubdocs($thedocs, $date, $chartid, $isdraft, $profiletypes, $client
 					if (is_numeric($doctype)) {
 						//$profiletypes = ['', 'Insurance', 'Fleet', 'Non Fleet'];
 						//$doctype = $profiletypes[$doctype];
-                        $doctype = FindIterator1($clienttypes, "id", $doctype)->title;
+                        $doctype = FindIterator1($clienttypes, "id", $doctype)->$title . $Trans;
 					} else {
 						$doctype = $unknown;
 					}

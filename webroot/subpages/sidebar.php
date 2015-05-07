@@ -6,6 +6,7 @@
     $sidebar = $this->requestAction("settings/all_settings/" . $profileID . "/sidebar");
     $order_url = $this->requestAction("settings/getclienturl/" . $profileID . "/order");
     $document_url = $this->requestAction("settings/getclienturl/" . $profileID . "/document");
+    if($debug && $language == "Debug"){ $Trans = " [Translated]"; } else {$Trans = "";}
     $ordertype = "MEE";
 //comment
     if (isset($_GET["ordertype"])) {
@@ -242,6 +243,7 @@
 
 
                             <?php if ($sidebar->orders_create == 1) {
+                                $fieldname = getFieldname("Name", $language);
                                 foreach ($productlist as $product) {
                                     $alias = $product->Sidebar_Alias;
                                     if ($alias && $sidebar->$alias == 1 && $product->Visible==1) {
@@ -254,7 +256,7 @@
                                             /*echo $this->request->webroot . $order_url;*/
                                             echo $this->request->webroot . "orders/productSelection?driver=0&ordertype=" . $product->Acronym . '">';
                                             echo '<i class="icon-plus"></i> ';
-                                            echo $product->Name . "</a></li>";
+                                            echo $product->$fieldname . $Trans . "</a></li>";
 
                                     }
                                 }

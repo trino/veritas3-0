@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: May 07, 2015 at 09:59 PM
+-- Generation Time: May 07, 2015 at 10:53 PM
 -- Server version: 5.6.17
 -- PHP Version: 5.5.12
 
@@ -32,18 +32,18 @@ CREATE TABLE IF NOT EXISTS `strings` (
   `English` varchar(4096) NOT NULL,
   `French` varchar(4096) NOT NULL,
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=75 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=76 ;
 
 --
 -- Dumping data for table `strings`
 --
 
 INSERT INTO `strings` (`ID`, `Name`, `English`, `French`) VALUES
-(1, 'Date', '1431027164', ''),
+(1, 'Date', '1431028747', ''),
 (2, 'dashboard_affirmative', 'Yes', 'Oui'),
 (3, 'dashboard_negative', 'No', 'Non'),
 (4, 'dashboard_selectall', 'Select All', ''),
-(5, 'langswitched', 'Your language has been switched to English', 'Votre langue est passé à français'),
+(5, 'langswitched', 'Your language has been switched to English. Refreshing in 5 seconds', 'Votre langue est passé à français. Rafraîchissant dans cinq secondes'),
 (6, 'langswitch', 'Passer au français', 'Switch to English'),
 (7, 'name', 'English', 'français'),
 (8, 'analytics_title', 'MEE Analytics', 'Analytique MEE'),
@@ -110,7 +110,8 @@ INSERT INTO `strings` (`ID`, `Name`, `English`, `French`) VALUES
 (71, 'index_listdocuments', 'List %Document%s', 'Liste des documents'),
 (72, 'index_createdocument', 'Create %Document%', 'Créer un document'),
 (73, 'index_orders', 'Orders', 'ordres'),
-(74, 'index_invoice', 'Invoice', 'facture');
+(74, 'index_invoice', 'Invoice', 'facture'),
+(75, 'analytics_description', 'Analytics of %Document%s, Orders and Drivers', 'Analytics de documents, des ordonnances et des pilotes');
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
