@@ -325,7 +325,7 @@ function printform($counting, $settings, $client, $dr_cl, $driver, $intable = fa
     echo '</div><div class="col-xs-6" ID="driverform">';
     if($_GET["ordertype"] == "BUL"){
         echo '<INPUT TYPE="HIDDEN" NAME="selecting_driver" id="selecting_driver" class="form-control input-' . $size . '" VALUE="">';
-        echo '<INPUT TYPE="TEXT" NAME="drivers" id="drivers" class="form-control input-' . $size . '" VALUE="" READONLY>';
+        echo '<textarea NAME="drivers" id="drivers" class="form-control input-' . $size . '" VALUE="" READONLY></textarea>';
         if($_GET['ordertype']=="BUL"){makeBulk();}
         echo '</DIV></DIV>';
     } else {
@@ -728,6 +728,10 @@ function printform($counting, $settings, $client, $dr_cl, $driver, $intable = fa
         }
     }
 
+    function replaceAll(find, replace, str) {
+        return str.replace(new RegExp(find, 'g'), replace);
+    }
+
     function updateNames(){
         if (UpdatesEnabled) {
             if (document.getElementById("selecting_driver").value) {
@@ -736,6 +740,7 @@ function printform($counting, $settings, $client, $dr_cl, $driver, $intable = fa
                     data: '',
                     type: 'get',
                     success: function (res) {
+                        res=replaceAll(", ", "\n", res);
                         document.getElementById("drivers").value = res;
                     }
                 });
