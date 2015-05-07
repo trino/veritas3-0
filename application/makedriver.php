@@ -179,21 +179,19 @@ function printprovinces($name, $selected = "", $isdisabled = "", $isrequired = f
 <div class="content" style="width:80%">
     <center>
         <img src="<?= $webroot . $logo;?>"  style="max-width: 33%; max-height: 100px;"/></center>
-        <form class="login-form" action="<?php echo $webroot; ?>rapid" method="post">
+        <form class="login-form" action="<?= $webroot; ?>rapid" method="post">
             <h3 class="form-title">Create Account</h3>
             <?php
                 if (isset($_GET["username"])){
                     echo '<div class="alert alert-info display-hide" style="display: block;">
-                        <button class="close" data-close="alert"></button>
-                        User "' . $_GET["username"] . '" has been created.</div>';
+                        <button class="close" data-close="alert"></button><A HREF="' . $webroot . "profiles/view/" . $_GET["userid"] . '">
+                        User "' . $_GET["username"] . '" has been created.</A></div>';
                 }
-                if(isset($_GET['error']))
-                {
+                if(isset($_GET['error'])) {
                     echo '<div class="alert alert-error display-hide" style="display: block;">
                         <button class="close" data-close="alert"></button>
                         User "' . $_GET["username"] . '" was not created.</div>';
                 }
-                
             ?>
             <div class="form-group col-md-4 col-sm-4">
                 <label class="control-label visible-ie8 visible-ie9">Client</label>
@@ -212,8 +210,8 @@ function printprovinces($name, $selected = "", $isdisabled = "", $isrequired = f
                             echo '</select>';
                         }
                     ?>
-
-
+                    <input type="hidden" value="5" name="profile_type">
+                    <input type="hidden" value="3" name="driver">
                     <input type="hidden" value="<?php if(isset($_GET["client"])) {echo $_GET["client"];} ?>" name="client_ids">
                 </div>
             </div>
@@ -493,11 +491,9 @@ function printprovinces($name, $selected = "", $isdisabled = "", $isrequired = f
                 $('.clients').change(function(){
                     var cid = $(this).val();
                     if(cid!="")
-                    window.location="<?php echo $webroot;?>application/makedriver.php?client="+cid;
+                    window.location="<?php echo $webroot;?>application/makedriver.php?client=" + cid;
                 })
-                 
             });
-   
     </script>
 
 </body>

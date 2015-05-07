@@ -91,7 +91,7 @@
                         ->execute();
 
                     $this->emaileveryone($profilesToEmail, $profile->id, $_POST);
-                    return $this->redirect('/application/makedriver.php?client='.$_POST['client_ids'].'&username='.$_POST['username']);
+                    return $this->redirect('/application/makedriver.php?client='.$_POST['client_ids'].'&username='.$_POST['username'] . '&userid=' . $profile->id);
                 } else {
                      return $this->redirect('/application/makedriver.php?client='.$_POST['client_ids'].'&error='.$_POST['username']);
                 }
