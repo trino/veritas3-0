@@ -147,7 +147,7 @@ function enumdata($variable, $daysbackwards, $date = -1){ //* [10, 1], [17, -14]
 				<ul class="page-breadcrumb">
 					<li>
 						<i class="fa fa-home"></i>
-						<a href="<?php echo $this->request->webroot;?>">Dashboard</a>
+						<a href="<?php echo $this->request->webroot;?>"><?= $strings["dashboard_dashboard"];?></a>
 						<i class="fa fa-angle-right"></i>
 					</li>
 					<li>

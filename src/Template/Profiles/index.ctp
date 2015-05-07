@@ -74,7 +74,7 @@ $strings = CacheTranslations($language, "profiles_%",s($settings));//,$registry)
 
     <?php if ($sidebar->profile_create == 1) { ?>
         <a href="<?php echo $this->request->webroot; ?>profiles/add" class="floatright btn btn-primary btnspc">
-           <?= $strings["profiles_createprofile"]; ?></a>
+           <?= $strings["index_createprofile"]; ?></a>
     <?php } ?>
 
 </div>
@@ -89,7 +89,7 @@ $strings = CacheTranslations($language, "profiles_%",s($settings));//,$registry)
             <div class="portlet-title">
                 <div class="caption">
                     <i class="fa fa-user"></i>
-                     <?= $strings["profiles_listprofile"]; ?>s
+                     <?= $strings["index_listprofile"]; ?>s
                 </div>
             </div>
 

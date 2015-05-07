@@ -204,7 +204,7 @@ function CacheTranslations($Language='English', $Text, $Variables = ""){
     $data = array();
     foreach($table as $entry){
         if($Language=="Debug"){
-            $data[$entry->Name] = '[TRANS:' . $entry->Name . ']';
+            $data[$entry->Name] = '[' . $entry->Name . ']';
         } else {
             $data[$entry->Name] = ProcessVariables($entry->Name, $entry->$Language, $Variables);
         }
