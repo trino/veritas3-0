@@ -1442,6 +1442,7 @@ class OrdersController extends AppController
             
             
         }
+        $this->Flash->success('Your bulk order has been saved successfully');;
         die();
         
         

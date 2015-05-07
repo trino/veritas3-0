@@ -251,6 +251,11 @@ function getColor($products, $OrderType, $Default = "blue"){
                                                         <div class="number"></div>
                                                         <div class="desc"></div>
                                                     </div-->
+                                                    <?php
+                                                    if($order->order_type != 'BUL')
+                                                    {
+                                                        ?>
+                                                        
                                                     <a class="more" id="sub_doc_click1"
                                                        href="<?php
                                                        if ($order->draft == "1" or isset($_GET["draft"])){
@@ -270,13 +275,29 @@ function getColor($products, $OrderType, $Default = "blue"){
                                                                }
                                                            } else { ?>javascript:;<?php }
                                                        } ?>">
+                                                       <?php
+                                                    }
+                                                    else
+                                                    {
+                                                        ?>
+                                                        <span class="more">
+                                                        <?php
+                                                    }
+                                                    ?>
 
                                                         <i class="fa fa-copy"></i>
 
 
 
                                                         <?= h(getField($ordertype, "Name", "English")); //it won't let me put it in the desc   ?>
-                                                    </a>
+                                                    <?php
+                                                    if($order->order_type != 'BUL')
+                                                    {
+                                                        ?></a><?php }else{
+                                                            ?>
+                                                            </span>
+                                                            <?php
+                                                        }?>
                                                     <?php echo "</div>";
                                                 } else {
                                                     echo "Unknown";
