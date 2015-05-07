@@ -11,6 +11,7 @@
     $order_url = 'orders/productSelection?driver=0';
     $document_url = $this->requestAction("settings/getclienturl/".$userid."/document");
     $lastcolor = "";
+    $DoAll = $language == "Debug";
 
     function randomcolor(){
         global $lastcolor;
@@ -26,24 +27,24 @@
 ?>
 
 <div class="tiles">
-    <?php if ($sidebar->client_list ==1 && $block->list_client =='1') { ?>
+    <?php if ($DoAll || ($sidebar->client_list ==1 && $block->list_client =='1')) { ?>
         <a href="<?php echo $this->request->webroot; ?>clients" class="tile bg-grey-cascade" style="display: block;">
             <div class="tile-body">
                 <i class="fa fa-search"></i>
             </div>
             <div class="tile-object">
-                <div class="name">List <?=$settings->client;?>s</div>
+                <div class="name"><?= $strings["index_listclients"]; ?></div>
                 <div class="number"></div>
             </div>
         </a>
     <?php } ?>
-    <?php if ($sidebar->client_create ==1 && $block->add_client =='1') { ?>
+    <?php if ($DoAll || ($sidebar->client_create ==1 && $block->add_client =='1')) { ?>
         <a class="tile bg-grey-cascade" href="<?php echo $this->request->webroot; ?>clients/add" style="display: block;">
             <div class="tile-body">
                 <i class="icon-globe"></i>
             </div>
             <div class="tile-object">
-                <div class="name">Create <?=$settings->client;?></div>
+                <div class="name"><?= $strings["index_createclients"]; ?></div>
                 <div class="number"></div>
             </div>
         </a>
@@ -65,29 +66,29 @@
 
 
 
-    <?php if ($sidebar->profile_list ==1 && $block->list_profile =='1') { ?>
+    <?php if ($DoAll || ($sidebar->profile_list ==1 && $block->list_profile =='1')) { ?>
         <a href="<?php echo $this->request->webroot; ?>profiles" class="tile bg-grey-cascade" style="display: block;">
             <div class="tile-body">
                 <i class="fa fa-search"></i>
             </div>
             <div class="tile-object">
-                <div class="name">List <?=$settings->profile;?>s</div>
+                <div class="name"><?=$strings["index_listprofiles"];?></div>
                 <div class="number"></div>
             </div>
         </a>
     <?php } ?>
-    <?php if ($sidebar->profile_create ==1 && $block->addadriver =='1') { ?>
+    <?php if ($DoAll || ($sidebar->profile_create ==1 && $block->addadriver =='1')) { ?>
         <a class="tile bg-grey-cascade" href="<?php echo $this->request->webroot; ?>profiles/add" style="display: block;">
             <div class="tile-body">
                 <i class="icon-user"></i>
             </div>
             <div class="tile-object">
-                <div class="name">Create <?=$settings->profile;?></div>
+                <div class="name"><?= $strings["index_createprofile"];?></div>
                 <div class="number"></div>
             </div>
         </a>
     <?php } ?>
-    <?php  if ($sidebar->profile_list ==1 && $block->draft_profile =='1' && false) { ?>
+    <?php  if ($sidebar->profile_list ==1 && $block->draft_profile =='1' && false) { //abandonded ?>
 		<a href="<?php echo $this->request->webroot; ?>profiles?draft" class="tile bg-grey-cascade" style="display: block;">
             <div class="tile-body">
                 <i class="fa fa-pencil"></i>
@@ -103,30 +104,30 @@
 
 
 
-    <?php if ($sidebar->document_list ==1 && $block->list_document =='1') { ?>
+    <?php if ($DoAll || ($sidebar->document_list ==1 && $block->list_document =='1')) { ?>
         <a href="<?php echo $this->request->webroot; ?>documents" class="tile bg-grey-cascade" style="display: block;">
             <div class="tile-body">
                 <i class="fa fa-search"></i>
             </div>
             <div class="tile-object">
-                <div class="name">List <?=$settings->document;?>s</div>
+                <div class="name"><?= $strings["index_listdocuments"];?></div>
                 <div class="number"></div>
             </div>
         </a>
     <?php } ?>
 
-    <?php if ($sidebar->orders_list ==1 && $block->list_order =='1') { ?>
+    <?php if ($DoAll || ($sidebar->orders_list ==1 && $block->list_order =='1')) { ?>
         <a href="<?php echo $this->request->webroot; ?>orders/orderslist" style="display: block;" class="tile bg-grey-cascade">
             <div class="tile-body">
                 <i class="fa fa-search"></i>
             </div>
             <div class="tile-object">
-                <div class="name">List Orders</div>
+                <div class="name"><?= $strings["index_listorders"] ?></div>
                 <div class="number"></div>
             </div>
         </a>
     <?php } ?>
-    <?php if ($sidebar->order_intact ==1 && $block->orders_intact =='1') { ?>
+    <?php if ($sidebar->order_intact ==1 && $block->orders_intact =='1') {//abandoned ?>
         <a class="tile bg-blue-ebonyclay" href="<?php echo $this->request->webroot; ?>orders/intact" style="display: block;">
             <div class="tile-body">
                 <i class="fa fa-pencil"></i>
@@ -138,7 +139,7 @@
         </a>
     <?php } ?>
 
-    <?php if ($sidebar->orders_create ==1) { ?>
+    <?php if ($DoAll || $sidebar->orders_create ==1) { ?>
         <!--<a href="<?php echo $this->request->webroot.$order_url.'&ordertype=MEE';?>" class="tile bg-yellow" style="display: block;">
             <div class="tile-body">
                 <i class="icon-docs"></i>
@@ -185,7 +186,7 @@
                     $blockalias = $product->Blocks_Alias;
                     //$blockaliasbypass= $blockalias . "b";
                     if ($product->Acronym == "MEE"){$MEEname = $product->Name;}
-                    if ($blockalias && $block->$blockalias =='1' && $product->Visible==1) {
+                    if ($DoAll || ($blockalias && $block->$blockalias =='1' && $product->Visible==1)) {
                         $URL="orders/productSelection?driver=0&ordertype=" . $product->Acronym;//ie: http://localhost/veritas3-0/orders/productSelection?driver=0&ordertype=MEE
                         //if($block->$blockaliasbypass==1){//ie: http://localhost/veritas3-0/orders/addorder/1/?driver=132&division=1&order_type=Driver+Order&forms=99
                         //    $URL="orders/addorder/1/?driver=" . $userid . "&order_type=" . $product->Name . "&forms=".$formlist;
@@ -226,7 +227,7 @@
 
         $Name = getFieldname("title", $language);
         foreach($theproductlist as $product){
-            if($product->enable == 1 && $product->TopBlock == 1) {
+            if($DoAll || ($product->enable == 1 && $product->TopBlock == 1)) {
                 //$URL="orders/addorder/1/?driver=" . $userid . "&division=9&order_type=Not+Applicable&forms=" . $product->number;
                 $URL="documents/add/1?type=" . $product->number;
                 makeblock($debug, $this->request->webroot . $URL, $product->$Name . $Trans, "icon-docs", "bg-yellow");
@@ -259,13 +260,13 @@
 
 
 
-    <?php if ($sidebar->orders_list ==1 && $block->document_draft =='1') { ?>
+    <?php if ($DoAll || ($sidebar->orders_list ==1 && $block->document_draft =='1')) { ?>
         <a class="tile bg-grey-cascade" href="<?php echo $this->request->webroot; ?>orders/orderslist?draft" style="display: block;">
             <div class="tile-body">
                 <i class="fa fa-pencil"></i>
             </div>
             <div class="tile-object">
-                <div class="name"> Order Drafts</div>
+                <div class="name"><?= $strings["index_orderdrafts"];?></div>
                 <div class="number"></div>
             </div>
         </a>
@@ -274,24 +275,24 @@
 
 
 
-    <?php if ($sidebar->document_create ==1 && $block->submit_document =='1') { ?>
+    <?php if ($DoAll || ($sidebar->document_create ==1 && $block->submit_document =='1')) { ?>
         <a href="<?php echo $this->request->webroot.$document_url;?>" class="tile bg-grey-cascade" style="display: block;">
             <div class="tile-body">
                 <i class="icon-doc"></i>
             </div>
             <div class="tile-object">
-                <div class="name">Create <?=$settings->document;?></div>
+                <div class="name"><?= $strings["index_createdocument"];?></div>
                 <div class="number"></div>
             </div>
         </a>
     <?php } ?>
-    <?php if ($sidebar->document_list ==1 && $block->document_draft =='1') { ?>
+    <?php if ($DoAll || ($sidebar->document_list ==1 && $block->document_draft =='1')) { ?>
         <a class="tile bg-grey-cascade" href="<?php echo $this->request->webroot; ?>documents?draft" style="display: block;">
             <div class="tile-body">
                 <i class="fa fa-pencil"></i>
             </div>
             <div class="tile-object">
-                <div class="name"> <?=$settings->document;?> Drafts</div>
+                <div class="name"><?= $strings["index_documentdrafts"];?></div>
                 <div class="number"></div>
             </div>
         </a>
@@ -311,26 +312,26 @@
         </a>
     <?php } ?>
 
-    <?php if ($sidebar->schedule ==1 && $block->schedule =='1') { ?>
+    <?php if ($DoAll || ($sidebar->schedule ==1 && $block->schedule =='1')) { ?>
     <!--<div class="input-group input-medium date date-picker" data-date-start-date="+0d" data-date-format="dd-mm-yyyy">-->
         <a  href="<?php echo $this->request->webroot;?>tasks/calender" class="tile bg-grey-cascade" style="display: block;">
             <div class="tile-body">
                 <i class="fa fa-calendar"></i>
             </div>
             <div class="tile-object">
-                <div class="name">Tasks</div>
+                <div class="name"><?= $strings["index_tasks"]; ?></div>
                 <div class="number"></div>
             </div>
          </a>
     <?php } ?>
-     <?php if ($sidebar->schedule_add ==1 && $block->schedule_add =='1') { ?>
+     <?php if ($DoAll || ($sidebar->schedule_add ==1 && $block->schedule_add =='1')) { ?>
     <!--<div class="input-group input-medium date date-picker" data-date-start-date="+0d" data-date-format="dd-mm-yyyy">-->
         <a  href="<?php echo $this->request->webroot;?>tasks/add" class="tile bg-grey-cascade" style="display: block;">
             <div class="tile-body">
                 <i class="fa fa-calendar"></i>
             </div>
             <div class="tile-object">
-                <div class="name">Add Tasks</div>
+                <div class="name"><?= $strings["index_addtasks"]; ?></div>
                 <div class="number"></div>
             </div>
          </a>
@@ -359,26 +360,26 @@
 
 
 
-    <?php if ($sidebar->feedback == 1 && $block->feedback =='1') { ?>
+    <?php if ($DoAll || ($sidebar->feedback == 1 && $block->feedback =='1')) { ?>
         <a href="<?php echo $this->request->webroot.$document_url;?>" class="tile bg-grey-cascade">
             <div class="tile-body">
                 <i class="fa fa-comments"></i>
             </div>
             <div class="tile-object">
-                <div class="name">Feedback</div>
+                <div class="name"><?= $strings["index_feedback"];?></div>
                 <div class="number"></div>
             </div>
     </a>
     <?php } ?>
 
 
-    <?php if ($sidebar->analytics ==1 && $block->analytics =='1') { ?>
+    <?php if ($DoAll || ($sidebar->analytics ==1 && $block->analytics =='1')) { ?>
         <a href="<?php echo $this->request->webroot;?>documents/analytics" class="tile bg-grey-cascade" style="display: block;">
             <div class="tile-body">
                 <i class="fa fa-bar-chart-o"></i>
             </div>
             <div class="tile-object">
-                <div class="name">Analytics</div>
+                <div class="name"><?= $strings["index_analytics"];?></div>
                 <div class="number"></div>
             </div>
         </a>

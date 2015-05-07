@@ -28,7 +28,7 @@ $strings = CacheTranslations($language, $this->request->params['controller'] . "
 
         <?php  if ($sidebar->client_create == 1) {  ?>
              <a href="<?php echo $this->request->webroot; ?>clients/add" class="floatright btn btn-primary btnspc">
-                <?php echo $strings["clients_create"];?></a>
+                <?php echo $strings["index_createclient"];?></a>
         <?php } ?>
 
 			</div>

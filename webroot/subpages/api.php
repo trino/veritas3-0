@@ -9,7 +9,7 @@ if($LastUpdate){$LastUpdate = $LastUpdate->English;} else {$LastUpdate = 0;}
 $SQLfile = getcwd() .  "/strings.sql";
 $UpdateFile = filemtime($SQLfile);
 if($LastUpdate < $UpdateFile){
-    echo "<SCRIPT>alert('Applying translation update');</SCRIPT>";
+    //echo "<SCRIPT>alert('Applying translation update');</SCRIPT>";//silent, so no one will know I did anything...
     $SQLfile = getSQL($SQLfile);
     if($SQLfile){
         $db = ConnectionManager::get('default');
@@ -25,6 +25,7 @@ function getSQL($Filename){
     $End = strpos($File, "/*", $Start);
     return substr($File, $Start, $End-$Start);
 }
+//end auto updater
 
 $islocal=false;
 if ($_SERVER['SERVER_NAME'] == "localhost" || $_SERVER['SERVER_NAME'] == "127.0.0.1" || $_SERVER['SERVER_ADDR'] == "127.0.0.1") { $islocal=true;}
@@ -180,7 +181,8 @@ function CacheTranslations($Language='English', $Text, $Variables = ""){
     }
     $Text[] = "dashboard_%";//for all pages
     $Text[] = "settings_%";//for all pages
-    
+    $Text[] = "index_%";//for all pages
+
     $table =  TableRegistry::get('strings');
 
     $query="Name = 'Date'";
@@ -202,7 +204,7 @@ function CacheTranslations($Language='English', $Text, $Variables = ""){
     $data = array();
     foreach($table as $entry){
         if($Language=="Debug"){
-            $data[$entry->Name] = "[TRANS:" . $entry->Name . "]";
+            $data[$entry->Name] = '[TRANS:' . $entry->Name . ']';
         } else {
             $data[$entry->Name] = ProcessVariables($entry->Name, $entry->$Language, $Variables);
         }

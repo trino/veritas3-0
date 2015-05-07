@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: May 07, 2015 at 07:41 PM
+-- Generation Time: May 07, 2015 at 09:32 PM
 -- Server version: 5.6.17
 -- PHP Version: 5.5.12
 
@@ -32,14 +32,14 @@ CREATE TABLE IF NOT EXISTS `strings` (
   `English` varchar(4096) NOT NULL,
   `French` varchar(4096) NOT NULL,
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=51 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=65 ;
 
 --
 -- Dumping data for table `strings`
 --
 
 INSERT INTO `strings` (`ID`, `Name`, `English`, `French`) VALUES
-(1, 'Date', '1431020415', ''),
+(1, 'Date', '1431023885', ''),
 (2, 'dashboard_affirmative', 'Yes', 'Oui'),
 (3, 'dashboard_negative', 'No', 'Non'),
 (4, 'dashboard_selectall', 'Select All', ''),
@@ -79,14 +79,28 @@ INSERT INTO `strings` (`ID`, `Name`, `English`, `French`) VALUES
 (40, 'dashboard_off', 'Off', 'désactivé'),
 (41, 'dashboard_confirmdelete', 'Are you sure you want to delete %name%?', 'Êtes-vous sûr de vouloir supprimer %name%?'),
 (42, 'profiles_image', 'Image', 'Image'),
-(43, 'clients_create', 'Create %Client%', 'Créer client'),
-(44, 'clients_list', 'List %Client%s', 'Liste clients'),
+(43, 'index_createclient', 'Create %Client%', 'Créer client'),
+(44, 'index_listclients', 'List %Client%s', 'Liste clients'),
 (45, 'clients_logo', 'Logo', 'Logo'),
 (46, 'clients_aggregate', 'Aggregate Audits', 'Vérifications Aggregate'),
 (47, 'clients_search', 'Search %Client%s', 'Les clients de recherche'),
 (48, 'dashboard_logout', 'Log Out', 'Déconnexion'),
 (49, 'index_qualify', 'Driver Qualification System', 'Système de qualification conducteur'),
-(50, 'index_viewmore', 'View More', 'Afficher davantage');
+(50, 'index_viewmore', 'View More', 'Afficher davantage'),
+(51, 'index_listclients', 'List %Client%s', 'Liste clients'),
+(52, 'index_createclients', 'Create %Client%', 'Créer client'),
+(53, 'index_listprofiles', 'List %Profile%s', 'Liste des profils'),
+(54, 'index_createprofile', 'Create %Profile%', 'Créer un profil'),
+(55, 'index_listorders', 'List Orders', 'Liste commandes'),
+(56, 'index_listdocuments', 'List %Document%s', 'Liste des documents'),
+(57, 'index_orderdrafts', 'Order Drafts', 'ordre Brouillons'),
+(58, 'index_createdocument', 'Create %Document%', 'Créer un document'),
+(59, 'index_documentdrafts', '%Document% Drafts', 'brouillons de documents'),
+(60, 'index_tasks', 'Tasks', 'tâches'),
+(61, 'index_addtasks', 'Add Tasks', 'Ajouter des tâches'),
+(62, 'index_feedback', 'Feedback', 'réaction'),
+(63, 'index_analytics', 'Analytics', 'Analytique\r\n'),
+(64, 'index_calender', 'Calender', 'calandre');
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
