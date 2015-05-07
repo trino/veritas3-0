@@ -2,7 +2,7 @@
 <?php $settings = $this->requestAction('settings/get_settings');
 
 use Cake\ORM\TableRegistry;
-
+$debug=$this->request->session()->read('debug');
 if ($_SERVER['SERVER_NAME'] == "localhost" || $_SERVER['SERVER_NAME'] == "127.0.0.1") {
     include_once('/subpages/api.php');
 } else {
@@ -219,10 +219,12 @@ $strings = CacheTranslations($language, "langswitch",$settings);//,$registry);
 							<a href="<?php echo $this->request->webroot;?>profiles/edit/<?php echo $this->request->session()->read('Profile.id'); ?>" >
 							<i class="icon-user"></i> <?= $strings["dashboard_mysettings"] ?> </a>
 						</li>
-                        <li><!--stop commenting this out-->
-                            <a href="<?php echo $this->request->webroot;?>profiles/langswitch/<?php echo $this->request->session()->read('Profile.id'); ?>" >
-                                <i class="icon-user"></i> <?= $strings["langswitch"]; ?> </a>
-                        </li>
+                        <?php if($debug){?>
+                            <li>
+                                <a href="<?php echo $this->request->webroot;?>profiles/langswitch/<?php echo $this->request->session()->read('Profile.id'); ?>" >
+                                    <i class="icon-user"></i> <?= $strings["langswitch"]; ?> </a>
+                            </li>
+                        <?php } ?>
 						<li class="divider">
 						</li>
 
