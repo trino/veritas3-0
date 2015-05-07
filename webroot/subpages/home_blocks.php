@@ -24,7 +24,7 @@
 
                 
                 $doc = $doc_comp->getDocument();
-               
+                $fieldname = getFieldname("title", $language);
                 //
                 $i=0;
                 $cids = $this->requestAction('/settings/getallclients/'.$this->request->session()->read('Profile.id'));
@@ -81,17 +81,17 @@
     							</div>
     							<div class="desc">
     								 <?php
-									 	$title = ucfirst($d->title);
+									 	$title = ucfirst($d->$fieldname . $Trans);
 									 	//if ($title == "Feedbacks") { $title = "Feedback"; }
                                         
-                                         $titles[strtolower(trim($title))] = 1;
+                                         $titles[strtolower(trim($title))] = 1;//what purpose does this have?
                                         echo $title;
 									  ?>
     							</div>
     						</div>
                             <?php if(strtolower($this->request->params['controller'])!="documents"){?>
-    						<a class="more" href="<?php echo $this->request->webroot;?>documents/index?type=<?php echo urlencode($d->id);?>">
-    						View more <i class="m-icon-swapright m-icon-white"></i>
+    						<a class="more" href="<?php echo $this->request->webroot;?>documents/index?type=<?php echo urlencode($d->id) . '">' . $strings["index_viewmore"]; ?>
+    						 <i class="m-icon-swapright m-icon-white"></i>
     						</a>
                             <!--
                             <a class="more" href="<?php echo $this->request->webroot;?>orders/orderslist<?php if($d->id <=4 ){?>?table=<?php echo $d->table_name;}?>">

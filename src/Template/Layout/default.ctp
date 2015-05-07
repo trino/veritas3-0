@@ -10,7 +10,6 @@ if ($_SERVER['SERVER_NAME'] == "localhost" || $_SERVER['SERVER_NAME'] == "127.0.
 }
 
 $language = $this->request->session()->read('Profile.language');
-//$registry = $this->requestAction('/settings/getRegistry');
 $strings = CacheTranslations($language, "langswitch","");//,$registry);
 ?>
 
@@ -229,7 +228,7 @@ $strings = CacheTranslations($language, "langswitch","");//,$registry);
 
 						<li>
 							<a href="<?php echo $this->request->webroot;?>profiles/logout">
-							<i class="icon-key"></i> Log Out </a>
+							<i class="icon-key"></i> <?= $strings["dashboard_logout"]; ?></a>
 						</li>
 					</ul>
 				</li>
@@ -338,8 +337,9 @@ $strings = CacheTranslations($language, "langswitch","");//,$registry);
             $isfirst = print_title($content, $this->request->webroot, "pages/view/version_log", "version_log", $isfirst, false, $language);
 
             $debugmode = file_exists($_SERVER["DOCUMENT_ROOT"] . "debugmode.txt");
-            if ($debugmode){$debugmode = "(On)"; } else { $debugmode = "(Off)";}
-            $isfirst = print_title($content, $this->request->webroot, "profiles/settings?toggledebug", "Debug Mode " . $debugmode, $isfirst, True, $language);
+            if ($debugmode){$debugmode = "dashboard_on"; } else { $debugmode = "dashboard_off";}
+            $debugmode = " (" . $strings[$debugmode] . ")";
+            $isfirst = print_title($content, $this->request->webroot, "profiles/settings?toggledebug", $strings["dashboard_debug"] . $debugmode, $isfirst, True, $language);
             if ($_SERVER['SERVER_NAME'] == 'localhost') {
                 $isfirst = print_title($content, $this->request->webroot, "profiles/settings", $strings["dashboard_settings"], $isfirst, true, $language);
             }

@@ -6,8 +6,6 @@
 $settings = $this->requestAction('settings/get_settings');
 $language = $this->request->session()->read('Profile.language');
 $strings = CacheTranslations($language, "profiles_%",s($settings));//,$registry);//$registry = $this->requestAction('/settings/getRegistry');
-
-$NULL = "Applicant";
 ?>
 
 <style>
@@ -131,7 +129,7 @@ $NULL = "Applicant";
                                     }
                                     echo '<option value="NULL"';
                                     if (isset($return_profile_type) && $return_profile_type == "NULL") {echo ' selected="selected"';}
-                                    echo '>' . $NULL . '</option>';
+                                    echo '>' . $strings["profiles_null"] . '</option>';
                                 ?>
                             </select>
 
@@ -179,7 +177,7 @@ $NULL = "Applicant";
                             <thead>
                             <tr class="sorting">
                                 <th><?= $this->Paginator->sort('id', "ID") ?></th>
-                                <th style="width:7px;"><?= $this->Paginator->sort('image', 'Image') ?></th>
+                                <th style="width:7px;"><?= $this->Paginator->sort('image', $strings["profiles_image"] ) ?></th>
                                 <th><?= $this->Paginator->sort('username', $strings["profiles_username"]) ?></th>
                                 <!--th><?= $this->Paginator->sort('email') ?></th-->
                                 <th><?= $this->Paginator->sort('fname', $strings["profiles_name"]) ?></th>
@@ -270,7 +268,7 @@ $NULL = "Applicant";
                                                         }
                                                     }
                                                 } else {
-                                                    echo $NULL;
+                                                    echo $strings["profiles_null"];
                                                 }
                                             ?></td>
 
@@ -330,7 +328,7 @@ $NULL = "Applicant";
                                                         ?>
 
             <a href="<?php echo $this->request->webroot; ?>profiles/delete/<?php echo $profile->id; ?><?php echo (isset($_GET['draft'])) ? "?draft" : ""; ?>"
-               onclick="return confirm('Are you sure you want to delete <?= ucfirst(h($profile->username)) ?>?');"
+               onclick="return confirm('<?= ProcessVariables($language, $strings["dashboard_confirmdelete"], array("name" => ucfirst(h($profile->username)))); ?>');"
                class="<?= btnclass("DELETE") ?>"><?= $strings["dashboard_delete"] ?></a>
             </span>
         <?php

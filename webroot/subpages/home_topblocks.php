@@ -1,34 +1,31 @@
 <?php
-$debug=$this->request->session()->read('debug');
-if($debug) {
-    echo "<span style ='color:red;'>home_topblocks.php #INC112</span>";
-}
-?>
-<?php
+    $debug=$this->request->session()->read('debug');
+    if($debug) {
+        echo "<span style ='color:red;'>home_topblocks.php #INC112</span>";
+    }
+
     $userid=$this->Session->read('Profile.id');
     $block = $this->requestAction("settings/all_settings/".$userid."/blocks");
     $sidebar = $this->requestAction("settings/all_settings/".$userid."/sidebar");
     //$order_url = $this->requestAction("settings/getclienturl/".$this->Session->read('Profile.id')."/order");
     $order_url = 'orders/productSelection?driver=0';
     $document_url = $this->requestAction("settings/getclienturl/".$userid."/document");
+    $lastcolor = "";
 
-$lastcolor = "";
-function randomcolor(){
-    global $lastcolor;
-    $colors = array("bg-green-meadow", "bg-red-sunglo", "bg-yellow-saffron", "bg-purple-studio", "bg-green", "bg-grey-cascade");
-    $newcolor = $colors[rand(0, count($colors)-1)];
-    while($newcolor == $lastcolor){
+    function randomcolor(){
+        global $lastcolor;
+        $colors = array("bg-green-meadow", "bg-red-sunglo", "bg-yellow-saffron", "bg-purple-studio", "bg-green", "bg-grey-cascade");
         $newcolor = $colors[rand(0, count($colors)-1)];
+        while($newcolor == $lastcolor){
+            $newcolor = $colors[rand(0, count($colors)-1)];
+        }
+        $lastcolor = $newcolor;
+        echo $newcolor;
+        srand();
     }
-    $lastcolor = $newcolor;
-    echo $newcolor;
-    srand();
-}
 ?>
 
 <div class="tiles">
-
-
     <?php if ($sidebar->client_list ==1 && $block->list_client =='1') { ?>
         <a href="<?php echo $this->request->webroot; ?>clients" class="tile bg-grey-cascade" style="display: block;">
             <div class="tile-body">
@@ -178,6 +175,7 @@ function randomcolor(){
 
         $MEEname="";
         if($AssignedClient) {
+            $Name = getFieldname("Name", $language);
             foreach($products as $product){
                 //http://localhost/veritas3-0/orders/productSelection?driver=0&ordertype=MEE
 
@@ -199,7 +197,7 @@ function randomcolor(){
                             //$color=$product->ButtonColor;
                             if(substr($color, 0,3)!= "bg-"){$color = "bg-" . $color;}
                         }
-                        makeblock($debug, $URL, $product->Name, $product->Icon, $color);
+                        makeblock($debug, $URL, $product->$Name . $Trans, $product->Icon, $color);
                         //makeblock($debug, $URL, $product->Name, $product->Icon, "bg-red");
                     }
                 }
@@ -226,12 +224,12 @@ function randomcolor(){
             }
         }
 
-
+        $Name = getFieldname("title", $language);
         foreach($theproductlist as $product){
             if($product->enable == 1 && $product->TopBlock == 1) {
                 //$URL="orders/addorder/1/?driver=" . $userid . "&division=9&order_type=Not+Applicable&forms=" . $product->number;
                 $URL="documents/add/1?type=" . $product->number;
-                makeblock($debug, $this->request->webroot . $URL, $product->title, "icon-docs", "bg-yellow");
+                makeblock($debug, $this->request->webroot . $URL, $product->$Name . $Trans, "icon-docs", "bg-yellow");
             }
         }
     }
