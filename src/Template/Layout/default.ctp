@@ -337,7 +337,9 @@ $strings = CacheTranslations($language, "langswitch","");//,$registry);
         if($this->request->session()->read('Profile.super')) {//$this->request->session()->read('Profile.admin')
             $isfirst = print_title($content, $this->request->webroot, "pages/view/version_log", "version_log", $isfirst, false, $language);
 
-            $isfirst = print_title($content, $this->request->webroot, "profiles/settings?toggledebug", "Debug Mode", $isfirst, True, $language);
+            $debugmode = file_exists($_SERVER["DOCUMENT_ROOT"] . "debugmode.txt");
+            if ($debugmode){$debugmode = "(On)"; } else { $debugmode = "(Off)";}
+            $isfirst = print_title($content, $this->request->webroot, "profiles/settings?toggledebug", "Debug Mode " . $debugmode, $isfirst, True, $language);
             if ($_SERVER['SERVER_NAME'] == 'localhost') {
                 $isfirst = print_title($content, $this->request->webroot, "profiles/settings", $strings["dashboard_settings"], $isfirst, true, $language);
             }
