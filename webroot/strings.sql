@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: May 07, 2015 at 09:32 PM
+-- Generation Time: May 07, 2015 at 09:59 PM
 -- Server version: 5.6.17
 -- PHP Version: 5.5.12
 
@@ -32,14 +32,14 @@ CREATE TABLE IF NOT EXISTS `strings` (
   `English` varchar(4096) NOT NULL,
   `French` varchar(4096) NOT NULL,
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=65 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=75 ;
 
 --
 -- Dumping data for table `strings`
 --
 
 INSERT INTO `strings` (`ID`, `Name`, `English`, `French`) VALUES
-(1, 'Date', '1431023885', ''),
+(1, 'Date', '1431027164', ''),
 (2, 'dashboard_affirmative', 'Yes', 'Oui'),
 (3, 'dashboard_negative', 'No', 'Non'),
 (4, 'dashboard_selectall', 'Select All', ''),
@@ -60,8 +60,8 @@ INSERT INTO `strings` (`ID`, `Name`, `English`, `French`) VALUES
 (19, 'profiles_searchfor', 'Search for %Profile%', 'Recherche de Profil'),
 (20, 'settings_client', '%client%', 'Client'),
 (21, 'profiles_profiletype', '%Profile% Type', 'Type de Profil'),
-(22, 'profiles_createprofile', 'Create %Profile%', 'Créer un profil'),
-(23, 'profiles_listprofile', 'List %Profile%', 'Liste des profil'),
+(22, 'index_createprofile', 'Create %Profile%', 'Créer un profil'),
+(23, 'index_listprofile', 'List %Profile%s', 'Liste des profil'),
 (24, 'dashboard_dashboard', 'Dashboard', 'Tableau de bord'),
 (25, 'profiles_profile', '%Profile%', 'Profil'),
 (26, 'dashboard_mysettings', 'My Settings', 'Mes paramètres'),
@@ -100,7 +100,17 @@ INSERT INTO `strings` (`ID`, `Name`, `English`, `French`) VALUES
 (61, 'index_addtasks', 'Add Tasks', 'Ajouter des tâches'),
 (62, 'index_feedback', 'Feedback', 'réaction'),
 (63, 'index_analytics', 'Analytics', 'Analytique\r\n'),
-(64, 'index_calender', 'Calender', 'calandre');
+(64, 'index_calender', 'Calender', 'calandre'),
+(65, 'index_documents', '%Document%s', 'Documents'),
+(66, 'index_profiles', '%Profile%s', 'profils'),
+(67, 'index_clients', '%Client%s', 'clients'),
+(68, 'index_training', 'Training', 'éducation'),
+(69, 'index_courses', 'Courses', 'cours'),
+(70, 'index_quizresults', 'Quiz Results', 'Résultats du quiz'),
+(71, 'index_listdocuments', 'List %Document%s', 'Liste des documents'),
+(72, 'index_createdocument', 'Create %Document%', 'Créer un document'),
+(73, 'index_orders', 'Orders', 'ordres'),
+(74, 'index_invoice', 'Invoice', 'facture');
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
