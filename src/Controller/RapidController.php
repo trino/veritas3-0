@@ -45,6 +45,12 @@
                 $profilesToEmail = array();
 
                 if ($profiles->save($profile)) {
+                    if(!$_POST['username']){//if no username, make one
+                        $profile_id = $profile->id;
+                        $_POST['username'] = "Driver_" . $profile_id;
+                        $this->Update1Column("profiles", "email", $_POST['email'], "username", $_POST['username']);
+                    }
+
                     if ($_POST['client_ids']) {
                         $client_id = explode(",", $_POST['client_ids']);
                         foreach ($client_id as $cid) {//asign to clients
@@ -83,7 +89,6 @@
                     $create_que = $query2->insert(['user_id'])
                         ->values(['user_id' => $profile->id])
                         ->execute();
-                    
 
                     $this->emaileveryone($profilesToEmail, $profile->id, $_POST);
                     return $this->redirect('/application/makedriver.php?client='.$_POST['client_ids'].'&username='.$_POST['username']);
@@ -100,13 +105,16 @@
 
             foreach($profilesToEmail as $Profile){
                 $Profile = $this->getTableByAnyKey("sidebar", "user_id", $Profile);
-                if($Profile->email_profile == 1){
+                if(is_object($Profile) && $Profile->email_profile == 1){
                     $Profile = $this->getTableByAnyKey("profiles", "id", $Profile->user_id)->email;
                     $this->Mailer->sendEmail("", $Profile, $Subject, $Message);
                 }
             }
         }
 
+        public function Update1Column($Table, $PrimaryKey, $PrimaryValue, $Key, $Value){
+            TableRegistry::get($Table)->query()->update()->set([$Key => $Value])->where([$PrimaryKey=>$PrimaryValue])->execute();
+        }
         public function getTableByAnyKey($Table, $Key, $Value){
             return TableRegistry::get($Table)->find('all', array('conditions' => array($Key => $Value)))->first();
         }

@@ -140,7 +140,7 @@ function printprovinces($name, $selected = "", $isdisabled = "", $isrequired = f
     <script src="<?= $webroot; ?>assets/global/scripts/metronic.js" type="text/javascript"></script>
     <script src="<?= $webroot; ?>assets/admin/layout/scripts/layout.js" type="text/javascript"></script>
     <script src="<?= $webroot; ?>assets/admin/layout/scripts/demo.js" type="text/javascript"></script>
-    <script src="<?= $webroot; ?>assets/admin/pages/scripts/login.js" type="text/javascript"></script>
+    <!--script src="<?= $webroot; ?>assets/admin/pages/scripts/login.js" type="text/javascript"></script-->
     <!-- END PAGE LEVEL SCRIPTS -->
     <script>
         $(document).ready(function() {
@@ -218,11 +218,11 @@ function printprovinces($name, $selected = "", $isdisabled = "", $isrequired = f
                 </div>
             </div>
 
-            <div class="form-group col-md-4 col-sm-4">
+            <div class="form-group col-md-4 col-sm-4" TITLE="If left blank, the username will be 'Driver_[User ID#]'">
                 <label class="control-label visible-ie8 visible-ie9">Username</label>
                 <div class="input-icon">
                     <i class="fa fa-user"></i>
-                    <input class="uname form-control placeholder-no-fix" type="text" autocomplete="off" placeholder="Username" name="username" required="required" />
+                    <input class="form-control placeholder-no-fix" type="text" autocomplete="off" placeholder="Username" name="username"/>
                 </div>
             </div>
            
@@ -424,64 +424,63 @@ function printprovinces($name, $selected = "", $isdisabled = "", $isrequired = f
 
     <script>
         function check_username() {
-       
-
             var client_id = $('.client_profile_id').val();
             if (client_id == "") {
 
             }
             var un = $('.uname').val();
+            if(un) {
+                $.ajax({
+                    url: '<?php echo $webroot;?>profiles/check_user',
+                    data: 'username=' + un,
+                    type: 'post',
+                    success: function (res) {
+                        res = res.trim();
+                        if (res == '1') {
+                            //alert(res);
+                            alert('Username already exists');
 
-            $.ajax({
-                url: '<?php echo $webroot;?>profiles/check_user',
-                data: 'username=' + $('.uname').val(),
-                type: 'post',
-                success: function (res) {
-                    res = res.trim();
-                    if (res == '1') {
-                        //alert(res);
-                        alert('Username already exists');
+                            $('.uname').focus();
+                            $('html,body').animate({
+                                    scrollTop: $('.login-form').offset().top
+                                },
+                                'slow');
 
-                        $('.uname').focus();
-                        $('html,body').animate({
-                                scrollTop: $('.login-form').offset().top
-                            },
-                            'slow');
-
-                        return false;
-                    } else {
-                        $('.flashUser').hide();
-                        if ($('.email').val() != '') {
-                            var un = $('.email').val();
-                            $.ajax({
-                                url: '<?php echo $webroot;?>profiles/check_email',
-                                data: 'email=' + $('.email').val(),
-                                type: 'post',
-                                success: function (res) {
-                                    res = res.trim();
-                                    if (res == '1') {
-                                        $('.email').focus();
-                                        alert('Email already exists');
-                                        $('html,body').animate({
-                                                scrollTop: $('.login-form').offset().top
-                                            },
-                                            'slow');
-
-                                        return false;
-                                    } else {
-                                        $(this).attr('disabled', 'disabled');
-                                        $('#hiddensub').click();
-                                    }
-                                }
-                            });
+                            return false;
                         } else {
-                            $('#hiddensub').click();
+                            $('.flashUser').hide();
+                            if ($('.email').val() != '') {
+                                var un = $('.email').val();
+                                $.ajax({
+                                    url: '<?php echo $webroot;?>profiles/check_email',
+                                    data: 'email=' + $('.email').val(),
+                                    type: 'post',
+                                    success: function (res) {
+                                        res = res.trim();
+                                        if (res == '1') {
+                                            $('.email').focus();
+                                            alert('Email already exists');
+                                            $('html,body').animate({
+                                                    scrollTop: $('.login-form').offset().top
+                                                },
+                                                'slow');
+
+                                            return false;
+                                        } else {
+                                            $(this).attr('disabled', 'disabled');
+                                            $('#hiddensub').click();
+                                        }
+                                    }
+                                });
+                            } else {
+                                $('#hiddensub').click();
+                            }
                         }
                     }
-                }
-            });
-
-
+                });
+            } else {
+                $('#hiddensub').click();
+            }
     }
    
             $(function() {
