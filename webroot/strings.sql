@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: May 07, 2015 at 10:53 PM
+-- Generation Time: May 07, 2015 at 11:03 PM
 -- Server version: 5.6.17
 -- PHP Version: 5.5.12
 
@@ -32,14 +32,14 @@ CREATE TABLE IF NOT EXISTS `strings` (
   `English` varchar(4096) NOT NULL,
   `French` varchar(4096) NOT NULL,
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=76 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=77 ;
 
 --
 -- Dumping data for table `strings`
 --
 
 INSERT INTO `strings` (`ID`, `Name`, `English`, `French`) VALUES
-(1, 'Date', '1431028747', ''),
+(1, 'Date', '1431032019', ''),
 (2, 'dashboard_affirmative', 'Yes', 'Oui'),
 (3, 'dashboard_negative', 'No', 'Non'),
 (4, 'dashboard_selectall', 'Select All', ''),
@@ -100,7 +100,7 @@ INSERT INTO `strings` (`ID`, `Name`, `English`, `French`) VALUES
 (61, 'index_addtasks', 'Add Tasks', 'Ajouter des tâches'),
 (62, 'index_feedback', 'Feedback', 'réaction'),
 (63, 'index_analytics', 'Analytics', 'Analytique\r\n'),
-(64, 'index_calender', 'Calender', 'calandre'),
+(64, 'index_calendar', 'Calendar', 'calendrier'),
 (65, 'index_documents', '%Document%s', 'Documents'),
 (66, 'index_profiles', '%Profile%s', 'profils'),
 (67, 'index_clients', '%Client%s', 'clients'),
@@ -111,7 +111,8 @@ INSERT INTO `strings` (`ID`, `Name`, `English`, `French`) VALUES
 (72, 'index_createdocument', 'Create %Document%', 'Créer un document'),
 (73, 'index_orders', 'Orders', 'ordres'),
 (74, 'index_invoice', 'Invoice', 'facture'),
-(75, 'analytics_description', 'Analytics of %Document%s, Orders and Drivers', 'Analytics de documents, des ordonnances et des pilotes');
+(75, 'analytics_description', 'Analytics of %Document%s, Orders and Drivers', 'Analytics de documents, des ordonnances et des pilotes'),
+(76, 'tasks_addtask', 'Add Task', 'Ajouter une tâche');
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

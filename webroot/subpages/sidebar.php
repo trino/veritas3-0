@@ -315,7 +315,7 @@
                         <li <?php echo ($this->request['controller'] == 'Tasks' && $this->request['action'] == 'calender') ? 'class="active"' : ''; ?>>
                             <a href="<?php echo $this->request->webroot; ?>tasks/calender">
                                 <i class="icon-plus"></i>
-                                <?= $strings["index_calender"]; ?></a>
+                                <?= $strings["index_calendar"]; ?></a>
                         </li>
                         <?php if ($sidebar->schedule_add == '1') { ?>
                             <li <?php echo ($this->request['controller'] == 'Tasks' && $this->request['action'] == 'add') ? 'class="active"' : ''; ?>>

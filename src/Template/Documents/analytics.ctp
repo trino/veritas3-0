@@ -329,7 +329,7 @@ function datecheck($date, $start, $end){
 
 function pluralize($text, $quantity){
     if (substr($text,-1) == "s") { $text = substr($text, 0, strlen($text)-1);}
-    if ($quantity == 1) { return $text; }
+    if ($quantity == 1 || substr($text, -1)=="d") { return $text; }
     return $text . "s";
 }
 
