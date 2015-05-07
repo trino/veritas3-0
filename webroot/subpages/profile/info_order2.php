@@ -417,7 +417,16 @@ function printform($counting, $settings, $client, $dr_cl, $driver, $intable = fa
 
     function getcheckboxes(){
         var tempstr = '';
-        $('input[type="checkbox"]').each(function () {
+        $('.PRODUCTLIST input[type="checkbox"]').each(function () {
+            if ($(this).is(':checked')){
+                if (tempstr.length==0) { tempstr = $(this).val();} else {tempstr = tempstr + "," + $(this).val();}
+            }
+        });
+        return tempstr;
+    }
+    function getdrivers(){
+        var tempstr = '';
+        $('.recruiters input[type="checkbox"]').each(function () {
             if ($(this).is(':checked')){
                 if (tempstr.length==0) { tempstr = $(this).val();} else {tempstr = tempstr + "," + $(this).val();}
             }
@@ -487,7 +496,20 @@ function printform($counting, $settings, $client, $dr_cl, $driver, $intable = fa
                             alert('Please select at least one driver');
                             return;
                         }
-                        window.location = '<?php echo $this->request->webroot; ?>orders/orderslist?flash=Bulk Order bypass';
+                        else{
+                            $('#qua_btn').html('Saving..');
+                            $('#qua_btn').attr('disabled','disabled');
+                        }
+                        //window.location = '<?php echo $this->request->webroot; ?>orders/orderslist?flash=Bulk Order bypass';
+                        $.ajax({
+                            data:'forms='+getcheckboxes()+'&drivers='+getdrivers()+'&client='+$('#selecting_client').val()+'&division='+division,
+                            url:'<?php echo $this->request->webroot;?>orders/bulksubmit',
+                            type:'post',
+                            success:function()
+                            {
+                               // window.location = '<?php echo $this->request->webroot;?>';
+                            }
+                        });
                         return;
                     }
                     if ($('.selecting_driver').val() == '') {
