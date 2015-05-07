@@ -66,6 +66,7 @@ webroot/canvas/*.png
 *.log
 *.idea
 /vendor/**
+/config/app.php
 /tmp/**
 /logs/**
 *.xml
