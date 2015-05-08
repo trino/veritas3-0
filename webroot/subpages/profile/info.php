@@ -805,7 +805,7 @@
                                 <div class="form-group col-md-12 col-sm-12">
                                     <textarea name="hear" class="form-control"><?php if (isset($p->hear)) echo $p->hear; ?></textarea>
                                 </div>
-                                <div class="col-md-12">
+                                <!--div class="col-md-12">
                                     <div class="form-group">
                                         <h3 class="block">Automatic Survey Email: </h3></div>
                                 </div>
@@ -836,7 +836,7 @@
                                                                           class="form-control" <?php if (isset($p->automatic_email) && $p->automatic_email=='60') { ?>
                                             checked="checked" <?php } ?> value="60" />
                                     </div>
-                                </div>
+                                </div-->
 
                                 <?php
                                     //if (!isset($disabled)) {
