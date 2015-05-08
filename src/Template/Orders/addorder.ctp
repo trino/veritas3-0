@@ -125,7 +125,13 @@ $settings = $this->requestAction('settings/get_settings');
 
 
 
-    function displayform2($DriverProvince, $thedocuments, $name, $theproduct){
+    function displayform2($DriverProvince, $thedocuments, $name, $theproduct,$did=0,$_this){
+        if($did)
+        {
+            $checker = $_this->requestAction('/orders/checkPermisssionOrder/'.$did.'/'.$_GET['driver']);
+            if(!$checker)
+            return false;
+        }
         $name = strtolower($name);
         if(isset($_GET['order_type'])) {
             switch ($theproduct->Acronym){
@@ -247,12 +253,12 @@ $settings = $this->requestAction('settings/get_settings');
                                     $d = $this->requestAction('/clients/getFirstSub/'.$sd->sub_id);
 
                                     if($debugging) {
-                                        echo "<BR>Displayform: " . displayform2($DriverProvince, $thedocuments, $d->title, $theproduct);
+                                        echo "<BR>Displayform: " . displayform2($DriverProvince, $thedocuments, $d->title, $theproduct,$d->id,$_this);
                                         $thedocuments[strtolower($d->title)]["IsSet"] = true;
                                         debug($d);
                                     }
 
-                                    if (displayform2($DriverProvince,$thedocuments,$d->title, $theproduct)){//(displayform($DriverProvince, $provinces, $forms, $d->title,$_this)){
+                                    if (displayform2($DriverProvince,$thedocuments,$d->title, $theproduct,$d->id,$_this)){//(displayform($DriverProvince, $provinces, $forms, $d->title,$_this)){
 
                                         $index+=1;
                                         $act = 0;
@@ -445,7 +451,7 @@ $settings = $this->requestAction('settings/get_settings');
                                 $dx = $this->requestAction('/orders/getSubDetail/'.$sd->sub_id);
                                 // debug($d);
 
-                                if (displayform2($DriverProvince,$thedocuments,$d->title, $theproduct)){
+                                if (displayform2($DriverProvince,$thedocuments,$d->title, $theproduct,$d->id,$_this)){
                                     //if (displayform($DriverProvince, $provinces, $forms, $d->title,$_this)){
                                     $prosubdoc = $this->requestAction('/settings/all_settings/0/0/profile/' . $this->Session->read('Profile.id') . '/' . $d->id);
                                     if (true){ //($prosubdoc['display'] != 0 && $d->display == 1) {

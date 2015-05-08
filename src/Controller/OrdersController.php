@@ -1447,5 +1447,15 @@ class OrdersController extends AppController
         
         
     }
+    public function checkPermisssionOrder($did,$driver)
+    {
+        $recruiter = $this->request->session()->read('Profile.id');
+        $ord = TableRegistry::get('profilessubdocument');
+        $check = $ord->find()->where(['profile_id'=>$recruiter,'subdoc_id'=>$did])->first();
+        $this->response->body($check);
+        return $this->response;
+        die;
+        
+    }
 }
 
