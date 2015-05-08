@@ -578,6 +578,7 @@ class ProfilesController extends AppController{
             $this->Flash->success('Order saved successfully');
         }
         if($id>0) {
+            $this->getsidebar("Sidebar");
 
             $this->set('products', TableRegistry::get('product_types')->find('all'));
             $this->getsubdocument_topblocks($id, false);
@@ -756,6 +757,13 @@ class ProfilesController extends AppController{
      * }
      */
 
+    public function getsidebar($Set = "", $UserID =""){
+        if(!$UserID) {$UserID = $this->request->session()->read('Profile.id');}
+        $UserID = TableRegistry::get('Sidebar')->find()->where(['user_id' => $UserID])->first();
+        if($Set){$this->set($Set, $UserID);}
+        return $UserID;
+    }
+
     /**
      * Add method
      *
@@ -763,6 +771,8 @@ class ProfilesController extends AppController{
      */
     public function add()
     {
+        $this->getsidebar("Sidebar");
+
         $this->set('uid', '0');
         $this->set('id', '0');
         $this->loadModel("ProfileTypes");
