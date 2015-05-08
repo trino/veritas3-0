@@ -197,7 +197,7 @@ if (isset($mee_att['attach_doc']->id) && $mee_att['attach_doc']->id) {
         $description = '<strong>Step 2: </strong>Upload Abstract Consent Form (Above)';
         $docsprinted+=1;
         echo '</DIV>';
-        if ($action == "View" || $action == "Vieworder") {
+        if ($action == "Edit" || $action == "View" || $action == "Addorder") {
             if (count($attachment) > 0 && $morecount>0) {
                 $description="";
                 foreach ($attachment as $name => $file) {
