@@ -113,12 +113,12 @@ $settings = $this->requestAction('settings/get_settings');
     $UserID= $this->request->session()->read('Profile.id');
     if ($DriverID>0 && is_object($p)){
         $DriverProvince = $p->driver_province;
-        $enableddocs= TableRegistry::get('Profilessubdocument')->find('all')->where(['profile_id'=>$UserID]);
-        foreach($thedocuments as $Key => $Value){//$thedocuments
-            $userinfo = FindIterator($enableddocs, "subdoc_id", $Value["ID"]);
-            $thedocuments[$Key]["Display"] = 0;
-            if($userinfo) { $thedocuments[$Key]["Display"] = $userinfo->display;}
-        }
+    }
+    $enableddocs= TableRegistry::get('Profilessubdocument')->find('all')->where(['profile_id'=>$UserID]);
+    foreach($thedocuments as $Key => $Value){//$thedocuments
+        $userinfo = FindIterator($enableddocs, "subdoc_id", $Value["ID"]);
+        $thedocuments[$Key]["Display"] = 0;
+        if($userinfo) { $thedocuments[$Key]["Display"] = $userinfo->display;}
     }
 
     echo "<SCRIPT>var DriverProvince = '" . $DriverProvince . "';</SCRIPT>";
@@ -146,7 +146,7 @@ $settings = $this->requestAction('settings/get_settings');
             //$checker = $_this->requestAction('/orders/checkPermisssionOrder/'.$did.'/'.$_GET['driver']);
             //if(!$checker)
             //return false; //code does not work properly
-            if ($thedocuments[$name]["Display"] == 0){return false;}
+            if ($thedocuments[$name]["Display"] == 0){return false;}//checks order taker's profile setting
         }
         if(isset($_GET['order_type'])) {
             switch ($theproduct->Acronym){
