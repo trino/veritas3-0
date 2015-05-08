@@ -459,7 +459,7 @@
                             <?php
 
 
-                                if ($this->request->session()->read('Profile.profile_type') != '2') {
+                                //if ($this->request->session()->read('Profile.profile_type') != '2') {
                                     if (strlen($is_disabled) == 0) {
 
                                         ?>
@@ -508,7 +508,7 @@
                                         <div class="clearfix"></div>
 
                                     <?php }
-                                }
+                                //}
 ?>
                             <div class="col-md-4">
                                 <div class="form-group">
