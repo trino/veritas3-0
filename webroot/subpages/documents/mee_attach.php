@@ -55,6 +55,7 @@
 
     var_dump($forms);
     var_dump($attachment);
+    var_dump($action);
 
     function nodocs($docsprinted){
         if($docsprinted==0){
@@ -200,7 +201,7 @@ if (isset($mee_att['attach_doc']->id) && $mee_att['attach_doc']->id) {
         $description = '<strong>Step 2: </strong>Upload Abstract Consent Form (Above)';
         $docsprinted+=1;
         echo '</DIV>';
-        if ($action == "Edit" || $action == "View") {
+        if ($action == "Edit" || $action == "View" || $action =="Vieworder") {
             if (count($attachment) > 0 && $morecount>0) {
                 $description="";
                 foreach ($attachment as $name => $file) {
