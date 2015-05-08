@@ -114,7 +114,9 @@ $settings = $this->requestAction('settings/get_settings');
         $DriverProvince = $p->driver_province;
         $enableddocs= TableRegistry::get('Profilessubdocument')->find('all')->where(['profile_id'=>$DriverID]);
         foreach($thedocuments as $Key => $Value){//$thedocuments
+            debug($Value);
             $userinfo = FindIterator($enableddocs, "subdoc_id", $Value["ID"]);
+            debug($userinfo);
             $thedocuments[$Key]["Display"] = $userinfo->display;
         }
     }
