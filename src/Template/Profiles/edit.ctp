@@ -329,7 +329,7 @@
                                             <input type="checkbox" name="stat" value="1"
                                                    id="<?php echo $profile->id; ?>"
                                                    class="checkhiredriver" <?php if ($p->is_hired == '1') echo "checked"; ?> />
-                                            Was this driver hired? <span class="hired_msg"></span></label>
+                                            Was this applicant hired? <span class="hired_msg"></span></label>
                                     <?php
                                     }
                                 }
