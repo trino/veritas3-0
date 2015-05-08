@@ -862,6 +862,7 @@
     
 
 </form>
+</div>
 <script>
 $(function(){
 <?php
