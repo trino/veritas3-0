@@ -12,9 +12,17 @@
         echo "<SCRIPT>alert('" . $Text . "');</SCRIPT>";
     }
 
+
+    $controller = $this->request->params['controller'];
+    $controller = strtolower($controller);
     if($action == "View" && $controller == "documents") {
         $data = getdocumentinfo($did);
-        $DriverProvince =$data->reciever->driver_province;
+        if($DriverProvince =$data->reciever) {//will be null if driver was 0/bypassed
+            $DriverProvince = $data->reciever->driver_province;
+        }
+    } elseif ($action == "Edit" && $controller == "orders") {
+        //echo "OrderID: " . $did;
+        //$mee_att =
     }
 
     function makeBrowseButton($ID, $Display, $Remove = true, $text=""){
@@ -103,8 +111,6 @@
         return false;
     }
 
-    $controller = $this->request->params['controller'];
-    $controller = strtolower($controller);
     include_once 'subpages/filelist.php';
 
     /*$controller = $this->request->params['controller'];
@@ -257,10 +263,6 @@ if (isset($mee_att['attach_doc']->id) && $mee_att['attach_doc']->id) {
 
 
     <?php
-
-
-
-
 
     if (printdivrequired($action, $forms, "id_piece", $DriverProvince, getattachment($mee_att, "id_piece1") . getattachment($mee_att, "id_piece2"))) {
         $docsprinted+=1; ?>
