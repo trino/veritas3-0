@@ -116,6 +116,8 @@
                         <li>TransClick (Aptitude Test)</li>
                         <li>Check DL</li>
                         <li>Employment Verification (Drug test information and Claims History)</li>
+                        <li>Credit Check</li>
+
                     </ul>
                     <p>I hereby consent to a criminal record search (Adult) through both the: </p>
                     <ul>
