@@ -110,14 +110,14 @@ $settings = $this->requestAction('settings/get_settings');
 
     $DriverProvince = "AB";
     $DriverID = $_GET["driver"];
+    $UserID= $this->request->session()->read('Profile.id');
     if ($DriverID>0 && is_object($p)){
         $DriverProvince = $p->driver_province;
-        $enableddocs= TableRegistry::get('Profilessubdocument')->find('all')->where(['profile_id'=>$DriverID]);
+        $enableddocs= TableRegistry::get('Profilessubdocument')->find('all')->where(['profile_id'=>$UserID]);
         foreach($thedocuments as $Key => $Value){//$thedocuments
-            debug($Value);
             $userinfo = FindIterator($enableddocs, "subdoc_id", $Value["ID"]);
-            debug($userinfo);
-            $thedocuments[$Key]["Display"] = $userinfo->display;
+            $thedocuments[$Key]["Display"] = 0;
+            if($userinfo) { $thedocuments[$Key]["Display"] = $userinfo->display;}
         }
     }
 
