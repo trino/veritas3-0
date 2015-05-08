@@ -193,14 +193,14 @@ if (isset($mee_att['attach_doc']->id) && $mee_att['attach_doc']->id) {
     $mee_more = $meedocs->find()->where(['mee_id' => $mee_att['attach_doc']->id]);
     if ($mee_more) {$morecount= countfiles($mee_more);}
 }
-
+//echo "HERE " . $action . " " . $DriverProvince . " " . count($attachment);
     $docsprinted=0;
     if (printdivrequired($action, $forms, "attachments", $DriverProvince, count($attachment))) {
         $doit = false;
         $description = '<strong>Step 2: </strong>Upload Abstract Consent Form (Above)';
         $docsprinted+=1;
         echo '</DIV>';
-        if ($action == "Edit" || $action == "View" || $action == "Addorder") {
+        if ($action == "Edit" || $action == "View") {
             if (count($attachment) > 0 && $morecount>0) {
                 $description="";
                 foreach ($attachment as $name => $file) {
