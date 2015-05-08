@@ -1334,6 +1334,7 @@ class OrdersController extends AppController
                 }
             }
             if(!$value) {*/
+            $insert["ID"] = $document->id;
             foreach ($provinces as $province) {
                 foreach ($forms as $form) {
                     if ($this->isproductprovinceenabled2($query, $form, $document->id, $province)) {

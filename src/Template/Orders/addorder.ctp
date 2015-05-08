@@ -18,8 +18,15 @@
 use Cake\ORM\TableRegistry;
 include_once 'subpages/filelist.php';
 $param = $this->request->params['action'];
+if ($_SERVER['SERVER_NAME'] == "localhost" || $_SERVER['SERVER_NAME'] == "127.0.0.1") {
+    include_once('/subpages/api.php');
+} else {
+    include_once('subpages/api.php');
+}
+
 $view = 'nope';
 $debugging=isset($_GET["debug"]);
+
 if($this->request->params['action'] == 'vieworder'){$view = 'view';}
 $action = ucfirst($param);
 if ($action == "Vieworder") { $action = "View";}
@@ -103,7 +110,15 @@ $settings = $this->requestAction('settings/get_settings');
 
     $DriverProvince = "AB";
     $DriverID = $_GET["driver"];
-    if ($DriverID>0 && is_object($p)){$DriverProvince = $p->driver_province;}
+    if ($DriverID>0 && is_object($p)){
+        $DriverProvince = $p->driver_province;
+        $enableddocs= TableRegistry::get('Profilessubdocument')->find('all')->where(['profile_id'=>$DriverID]);
+        foreach($thedocuments as $Key => $Value){//$thedocuments
+            $userinfo = FindIterator($enableddocs, "subdoc_id", $Value["ID"]);
+            $thedocuments[$Key]["Display"] = $userinfo->display;
+        }
+    }
+
     echo "<SCRIPT>var DriverProvince = '" . $DriverProvince . "';</SCRIPT>";
     if($theproduct->doc_ids && $theproduct->Bypass==0){
         $forms = explode(",", $theproduct->doc_ids);
@@ -123,16 +138,14 @@ $settings = $this->requestAction('settings/get_settings');
         return $table->select()->where(['id' => $ID])->first();
     }
 
-
-
     function displayform2($DriverProvince, $thedocuments, $name, $theproduct,$did=0,$_this){
-        if($did)
-        {
-            $checker = $_this->requestAction('/orders/checkPermisssionOrder/'.$did.'/'.$_GET['driver']);
-            if(!$checker)
-            return false;
-        }
         $name = strtolower($name);
+        if($did) {
+            //$checker = $_this->requestAction('/orders/checkPermisssionOrder/'.$did.'/'.$_GET['driver']);
+            //if(!$checker)
+            //return false; //code does not work properly
+            if ($thedocuments[$name]["Display"] == 0){return false;}
+        }
         if(isset($_GET['order_type'])) {
             switch ($theproduct->Acronym){
                 //case "SIN":
