@@ -1651,7 +1651,9 @@ $settings = $this->requestAction('settings/get_settings');
                         }
 
                         if(saving_draft==1) {
-                            window.location = base_url+'orders/orderslist?flash&draft';
+                            $('#loading5').show();
+                            setTimeout(function(){ window.location = base_url+'orders/orderslist?flash&draft'; }, 5000);
+                            
                         }
                     }
                 });
