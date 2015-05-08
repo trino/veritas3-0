@@ -37,6 +37,7 @@
     if(!isset($DriverProvince)){$DriverProvince = "";}
     if (isset($_GET["forms"])) {$forms = explode(",", $_GET["forms"]);}
     $attachment = array();//Files are in: C:\wamp\www\veritas3-0\webroot\img\pdfs
+    var_dump($DriverProvince);
     if (is_array($forms)) {
         if (in_array("1", $forms)) {//                  Name         Filename
             if ($DriverProvince == "QC") {
