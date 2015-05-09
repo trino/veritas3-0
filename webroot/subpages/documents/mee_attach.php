@@ -131,7 +131,7 @@
             return $files;
         }
 
-        function printfile($webroot, $cc, $file, $skip=false){
+        function printfile($webroot, $cc, $file, $skip=false,$rem=''){
             $path = $webroot . "attachments/" . $file->attachments;
             $realpath = getcwd() . "/attachments/" . $file->attachments;
             if (file_exists($realpath)) {//do not remove this check!
@@ -142,8 +142,10 @@
                     <div>
                                     <span><a style="margin-bottom:5px;" href="javascript:void(0)"
                                              class="btn btn-primary additional" id="mee_att_<?php echo $cc;?>">Browse</a>&nbsp;
+                                             <?php if(!$rem){?>
                                           <a style="margin-bottom:5px;" class="btn btn-danger" href="javascript:void(0);"
                                              onclick="$(this).parent().parent().remove();">Remove</a>
+                                             <?php }?>
                                           <span class="uploaded nohide">
                                                 <a class="dl nohide"
                                                    href="<?php echo $path?>"><?php echo printanattachment($file->attachments) ;?></a>
@@ -223,16 +225,23 @@
             if ($doit && (count($attachment) > 0) || $morecount>0) {
             echo '<div class="col-md-4" align="right">' . $description . ': </div>';
             echo '<div class="col-md-8 mee_more">';
-            if($action=="View" || $action == "Vieworder" ){
+            if(($this->request->params['action'] == 'addorder' || $this->request->params['action'] == 'add') && !$mee_more)
+            {
+                makeBrowseButton(7, true, false, '<FONT COLOR="RED">* Required'.$did.'</FONT>');
+            }
+            if($did ){
+                
                 $skip=true;
                 $morecount = $morecount-1;
                 foreach($mee_more as $key => $file) {//id, mee_id, attachments
-                    if(printfile($this->request->webroot, 8, $file)) {
+                //var_dump($file);
+                    if(printfile($this->request->webroot, 8, $file,'','norem')) {
                         break;
                     }
                 }
+                
             } else {
-                makeBrowseButton(7, true, false, '<FONT COLOR="RED">* Required</FONT>');
+                makeBrowseButton(7, true, false, '<FONT COLOR="RED">* Required'.$did.'</FONT>');
             }
         ?>
 
