@@ -225,9 +225,11 @@
             if ($doit && (count($attachment) > 0) || $morecount>0) {
             echo '<div class="col-md-4" align="right">' . $description . ': </div>';
             echo '<div class="col-md-8 mee_more">';
+            if(!isset($mee_more))
+            $mee_more = false;
             if(($this->request->params['action'] == 'addorder' || $this->request->params['action'] == 'add') && !$mee_more)
             {
-                makeBrowseButton(7, true, false, '<FONT COLOR="RED">* Required'.$did.'</FONT>');
+                makeBrowseButton(7, true, false, '<FONT COLOR="RED">* Required</FONT>');
             }
             if($did ){
                 
@@ -240,9 +242,7 @@
                     }
                 }
                 
-            } else {
-                makeBrowseButton(7, true, false, '<FONT COLOR="RED">* Required'.$did.'</FONT>');
-            }
+            } 
         ?>
 
 
