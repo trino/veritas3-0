@@ -340,7 +340,7 @@
                                             foreach($products as $product){
                                                 $alias = $product->Sidebar_Alias;
                                                 if ($alias) {
-                                                    if ($Sidebar->$alias == 1 && $product->Visible == 1) {
+                                                    if ($sidebar->$alias == 1 && $product->Visible == 1) {
                                                         echo '<br><a href="' . $this->request->webroot . 'orders/productSelection?driver=' . $profile->id;
                                                         echo '&ordertype=' . $product->Acronym . '"';
                                                         echo ' class="blue-stripe btn floatleft ' . $product->ButtonColor . '" style="margin-top:2px;width:75%;">' . $product->Name;
