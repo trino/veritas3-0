@@ -3138,6 +3138,14 @@ class ProfilesController extends AppController{
         $prefix = chr(0).'*'.chr(0);
         return $array[$prefix.$name];
     }
+    function getDriverProv($driver)
+    {
+        $dri = TableRegistry::get('profiles')->find()->where(['id'=>$driver])->first();
+        $pro = $dri->driver_province;
+        $this->response->body($pro);
+        return $this->response;
+        
+    }
 
 
 }

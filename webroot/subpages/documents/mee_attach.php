@@ -227,11 +227,13 @@
             echo '<div class="col-md-8 mee_more">';
             if(!isset($mee_more))
             $mee_more = false;
-            if(($this->request->params['action'] == 'addorder' || $this->request->params['action'] == 'add') && !$mee_more)
+            $lprov = array('BC','QC','SK');
+            $get_prov = $this->requestAction('/profiles/getDriverProv/'.$_GET['driver']);
+            if(($this->request->params['action'] == 'addorder' || $this->request->params['action'] == 'add') && !$mee_more && in_array($get_prov,$lprov))
             {
                 makeBrowseButton(7, true, false, '<FONT COLOR="RED">* Required</FONT>');
             }
-            if($did ){
+            if($did  && in_array($get_prov,$lprov)){
                 
                 $skip=true;
                 $morecount = $morecount-1;
