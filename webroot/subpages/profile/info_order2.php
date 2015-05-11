@@ -325,7 +325,7 @@ function printform($counting, $settings, $client, $dr_cl, $driver, $intable = fa
     echo '</div><div class="col-xs-6" ID="driverform">';
     if($_GET["ordertype"] == "BUL"){
         echo '<INPUT TYPE="HIDDEN" NAME="selecting_driver" id="selecting_driver" class="form-control input-' . $size . '" VALUE="">';
-        echo '<textarea NAME="drivers" id="drivers" class="form-control input-' . $size . '" VALUE="" READONLY></textarea>';
+        echo '<textarea NAME="drivers" id="drivers" class="form-control input-' . $size . '" VALUE="" READONLY STYLE="resize:vertical;"></textarea>';
         if($_GET['ordertype']=="BUL"){makeBulk();}
         echo '</DIV></DIV>';
     } else {

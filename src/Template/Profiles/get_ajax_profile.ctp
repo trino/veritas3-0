@@ -38,7 +38,7 @@ foreach($profiles as $r) {
     }
     if ($mode == 1) {
         $DOIT = false;
-        if (empty($r->profile_type) || $r->profile_type == 5 || $r->profile_type == 8) {
+        if (empty($r->profile_type) || $r->profile_type == 5 || $r->profile_type == 8 || $r->profile_type == 11 || $r->profile_type == 17) {
             $DOIT = true;
         }
         //$profiletype.= " [" . $r->profile_type . "]";
