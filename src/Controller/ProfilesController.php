@@ -329,8 +329,8 @@ class ProfilesController extends AppController{
             } else {
                 $checked = "";
             }//$ProductID, $DocumentID, $Province
-            $checkID = 'chk' . $ID . "." . $acronym;//ONCLICK="simulateClick(' . "'" . $checkID . "'" . ');"
-            echo '<TD TITLE="' . $fullname . '"><INPUT ID="' . $checkID . '" TYPE="CHECKBOX" ONCLICK="setprov(' . $ID . ", '" . $acronym . "'" . ');" ID="' . $ID . "." . $acronym . '"' . $checked . ' STYLE="width:100%;height:100%;"></TD>';
+           /// $checkID = 'chk' . $ID . "." . $acronym;//ONCLICK="simulateClick(' . "'" . $checkID . "'" . ');"
+            echo '<TD TITLE="' . $fullname . '"><INPUT TYPE="CHECKBOX" ONCLICK="setprov(' . $ID . ", '" . $acronym . "'" . ');" ID="' . $ID . "." . $acronym . '"' . $checked . ' STYLE="width:100%;height:100%;"></TD>';
         }
         echo "</TR>";
     }

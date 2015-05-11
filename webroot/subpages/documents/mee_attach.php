@@ -12,6 +12,10 @@
             echo "<SCRIPT>alert('" . $Text . "');</SCRIPT>";
         }
 
+        $controller = $this->request->params['controller'];
+        $controller = strtolower($controller);
+        $action = ucfirst($param);
+
         if($action == "View" && $controller == "documents") {
             $data = getdocumentinfo($did);
             $DriverProvince =$data->reciever->driver_province;
@@ -23,7 +27,6 @@
             if ($Remove) { echo '<a style="margin-bottom:5px;" class="btn btn-danger" href="javascript:void(0);" onclick="$(this).parent().parent().remove();">Remove</a>';}        echo '<span class="uploaded"></span></span><input type="hidden" name="mee_attachments[]" class="mee_att_' . $ID . '" /> ' . $text . '</div>';
         }
 
-        $action = ucfirst($param);
         if (!isset($mee_att)) {$mee_att = array();}
         if (!isset($forms)){$forms = "";}
         if(!isset($DriverProvince)){$DriverProvince = "";}
@@ -103,8 +106,7 @@
             return false;
         }
 
-        $controller = $this->request->params['controller'];
-        $controller = strtolower($controller);
+
         include_once 'subpages/filelist.php';
 
         /*$controller = $this->request->params['controller'];

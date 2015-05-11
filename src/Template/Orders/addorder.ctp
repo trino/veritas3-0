@@ -97,7 +97,6 @@ $settings = $this->requestAction('settings/get_settings');
     //  $forms  -   pass in the $forms variable since globals don't seem to work
     //  $id     -   the ID/index number of the form to check
     function isallone($forms){
-
         if(count($forms)<7) {
             return false;
         } else if(count($forms)=='7' && urldecode($_GET['order_type'])!='Order MEE') {
@@ -142,6 +141,7 @@ $settings = $this->requestAction('settings/get_settings');
 
     function displayform2($DriverProvince, $thedocuments, $name, $theproduct,$did=0,$_this){
         $name = strtolower($name);
+        $debugmode = isset($_GET["debug"]);
         if($did) {
             //$checker = $_this->requestAction('/orders/checkPermisssionOrder/'.$did.'/'.$_GET['driver']);
             //if(!$checker)
@@ -153,6 +153,7 @@ $settings = $this->requestAction('settings/get_settings');
                 //case "SIN":
                 //    return $name == strtolower($_GET["SpecificForm"]);
                 case "MEE":
+                    if($debugmode){return "Is MEE";}
                     return true;
                     break;
                 case "GEM":
@@ -162,6 +163,9 @@ $settings = $this->requestAction('settings/get_settings');
         }
         if(isset($theproduct->BypassForms)){
             return isset($theproduct->BypassForms[$name]);
+        }
+        if(isset($_GET["debug"])){
+            debug($thedocuments);
         }
         //echo "Testing: " . $name . " '" . isset($thedocuments[$name][$DriverProvince]) . "'"; debug($thedocuments);
         //echo "<BR>" . $DriverProvince . " " . $name . " <BR>"; print_r($thedocuments[$name]);
