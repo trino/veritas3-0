@@ -432,6 +432,25 @@ var FormWizard = function () {
                         }
                     }
                     else
+                    if($('.tabber.active').attr('id') == 'tab100000x'){//Challenger Driver Application
+                        
+                        if(!$('#confirm_check1').is(':checked') )
+                        {
+                            
+                            alert('Please confirm that you have read the conditions.');
+                            $('#confirm_check1').focus();
+                            $('html,body').animate({
+                                        scrollTop: $('#confirm_check1').offset().top},
+                                    'slow');
+                            return false;
+                           // }
+                        }
+                            else{
+                            
+                            handleTitle(tab, navigation, index);
+                        }
+                    }
+                    else
                     if($('#tab5').attr('class') == 'tabber tab-pane active' || $('#tab1').attr('class') == 'tabber tab-pane active')
                     {
                         if($('#tab5').attr('class') == 'tabber tab-pane active'){

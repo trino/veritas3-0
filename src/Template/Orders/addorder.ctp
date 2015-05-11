@@ -1506,8 +1506,10 @@ $settings = $this->requestAction('settings/get_settings');
                     conf_recruiter_name: $('#conf_recruiter_name').val(),
                     conf_driver_name: $('#conf_driver_name').val(),
                     conf_date: $('#conf_date').val(),
-                    recruiter_signature: $('#recruiter_signature').val()
+                    recruiter_signature: $('#recruiter_signature').val(),
+                    //confirm_check:$('#confirm_check1').val()
                 };
+                    
 
                 $.ajax({
                     data: data,
