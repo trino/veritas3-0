@@ -8,12 +8,12 @@
     use Cake\Network\Email\Email;
     use Cake\Controller\Component\CookieComponent;
     use Cake\Datasource\ConnectionManager;
-
+    /*
     if ($_SERVER['SERVER_NAME'] == "localhost" || $_SERVER['SERVER_NAME'] == "127.0.0.1") {
         include_once('/subpages/api.php');
     } else {
         include_once('subpages/api.php');
-    }
+    }*/
 
     class RapidController extends AppController{
     
@@ -82,6 +82,41 @@
                 } else {
                      return $this->redirect('/application/makedriver.php?client='.$_POST['client_ids'].'&error='.$_POST['username']);
                 }
+            }
+            die();
+        }
+        
+        function days($type ="")
+        {
+            $train = "";
+            if(isset($_POST))
+            {
+                $_POST['created'] = date('Y-m-d');   
+                if($type =='60')
+                {
+                    if(isset($_POST['train']))
+                    foreach($_POST['train'] as $k=>$values)
+                    {
+                        if(($k+1) == count($_POST['train']))
+                        {
+                            $train .= $values;
+                        }
+                        else
+                            $train .= $values.",";
+                    }
+                    $_POST['jst13'] = $train;
+                }
+                  $modal = TableRegistry::get($type.'days');
+                  $data = $modal->newEntity($_POST);
+                  if($modal->save($data))
+                  {
+                        return $this->redirect('/application/'.$type."days.php?msg=success");
+                  }
+                  else
+                        return $this->redirect('/application/'.$type."days.php?msg=error");
+                  
+               
+                
             }
             die();
         }
