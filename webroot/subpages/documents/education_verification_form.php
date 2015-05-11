@@ -274,6 +274,7 @@
                             <div id="more_edu"></div>
                         <?php
                         }
+                        
                     } else {
                         ?>
                         <div class="form-group row">
@@ -435,7 +436,7 @@
                     <?php } ?>
                 <div id="add_more_edu">
                     <p>&nbsp;</p>
-                    <input type="hidden" name="count_more_edu" id="count_more_edu" value="1">
+                    <input type="hidden" name="count_more_edu" id="count_more_edu" value="<?php if(isset($counter))echo $counter;?>">
                     <a href="javascript:void(0);" class="btn green add_more_edu">Add More</a>
                 </div>
                 <div class="allattach">
@@ -533,7 +534,9 @@
             </form>
             <script>
                 $(function () {
+                    
                     <?php
+                    
                        if(($this->request->params['action']=='addorder' || $this->request->params['action']=='add')&& !count($sub4['att']))
                        {
                            ?>
