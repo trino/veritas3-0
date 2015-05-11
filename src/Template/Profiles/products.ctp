@@ -170,6 +170,13 @@
         }
     }
 
+    function simulateClick(name) {
+        //if (skip) { skip=false; return; }
+        var evt = document.createEvent("MouseEvents");
+        evt.initMouseEvent("click", true, true, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
+        var cb = document.getElementById(name);
+        var canceled = !cb.dispatchEvent(evt);
+    }
 </script>
 
 <div class="portlet box green-haze">
