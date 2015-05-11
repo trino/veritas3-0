@@ -909,6 +909,8 @@
                         }
 
                         makehr();
+
+                        /*
                         foreach($theproductlist as $product){//title enable number TopBlock
                             if($product->enable){
                                 echo '<TR><TD>' . $product->title . '</TD><TD>';
@@ -918,6 +920,7 @@
                             }
                         }
                         makehr();
+                        */
                         ?>
 
                         <tr>

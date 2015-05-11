@@ -95,7 +95,9 @@
 
 
 
-<?php if(isset($_GET["client"])){ ?>
+<?php
+$French=false;
+if(isset($_GET["client"])){ ?>
 
 <!-- BEGIN MAKE DRIVER FORM -->
     <form class="login-form" action="<?php echo $this->request->webroot;?>login/makedriver" method="post">
@@ -133,7 +135,7 @@
 
 
         <form class="login-form" action="<?php echo $this->request->webroot;?>login/index<?php if(isset($_GET['url'])){?>?url=<?php echo $_GET['url']; }?>" method="post">
-        <h3 class="form-title">Log in to your account<BR>Accéder à votre compte</h3>
+        <h3 class="form-title">Log in to your account<?php if($French){ echo '<BR>Accéder à votre compte';} ?></h3>
     
     <?= $this->Flash->render() ?>
     <div class="form-group">
@@ -141,22 +143,22 @@
         <label class="control-label visible-ie8 visible-ie9">Username</label>
         <div class="input-icon">
             <i class="fa fa-user"></i>
-            <input class="form-control placeholder-no-fix" type="text" autocomplete="off" placeholder="Username / Nom de l'utilisateur" name="name" required="required" />
+            <input class="form-control placeholder-no-fix" type="text" autocomplete="off" placeholder="Username<?php if($French){ echo " / Nom de l'utilisateur";} ?>" name="name" required="required" />
         </div>
     </div>
     <div class="form-group">
         <label class="control-label visible-ie8 visible-ie9">Password</label>
         <div class="input-icon">
             <i class="fa fa-lock"></i>
-            <input class="form-control placeholder-no-fix" type="password" autocomplete="off" placeholder="Password / Mot de passe" name="password" required="required"/>
+            <input class="form-control placeholder-no-fix" type="password" autocomplete="off" placeholder="Password<?php if($French){ echo " / Mot de passe";}?>" name="password" required="required"/>
         </div>
     </div>
     <div class="form-actions">
         <label class="checkbox">
-            <input type="checkbox" name="remember" value="1"/> Remember me<BR>Mémoriser mes coordonnées
+            <input type="checkbox" name="remember" value="1"/> Remember me<?php if($French){ echo "<BR>Mémoriser mes coordonnées";}?>
         </label>
         <button type="submit" class="btn green-haze pull-right">
-            Login / Connexion
+            Login<?php if($French){ echo " / Connexion";}?>
             <i class="m-icon-swapright m-icon-white"></i>
         </button>
 
@@ -166,11 +168,13 @@
                     <a href="javascript:;" class="forget-password">here </a>
                 to reset.
             </p>
+            <?php if($French){ echo '
             <P>
                 Avez-vous oublié votre mot de passe? Cliquer
                     <a href="javascript:;" class="forget-password">ici </A>
                 pour le récupérer
             </P>
+            ';} ?>
         </div>
     </div>
 
@@ -197,15 +201,15 @@
 
 <!-- BEGIN FORGOT PASSWORD FORM -->
 <form class="forget-form" action="" method="post">
-    <h3>Forgot Password?<BR>Mot de passe oublié?</h3>
+    <h3>Forgot Password?<?php if($French){ echo "<BR>Mot de passe oublié?";} ?></h3>
     <p>
-        Enter your e-mail address below to reset your password.<BR>
-        Entrez votre adresse e-mail ci-dessous pour réinitialiser votre mot de passe.
+        Enter your e-mail address below to reset your password.<?php if($French){ echo "<BR>
+        Entrez votre adresse e-mail ci-dessous pour réinitialiser votre mot de passe.";} ?>
     </p>
     <div class="form-group">
         <div class="input-icon">
             <i class="fa fa-envelope"></i>
-            <input class="form-control placeholder-no-fix" type="text" id="forgetEmail" autocomplete="off" placeholder="Email / Courriel" name="email"/>
+            <input class="form-control placeholder-no-fix" type="text" id="forgetEmail" autocomplete="off" placeholder="Email<?php if($French){ echo " / Courriel";} ?>" name="email"/>
         </div>
     </div>
     <div class="form-group forget_error" style="display: none;">
@@ -213,9 +217,9 @@
     </div>
     <div class="form-actions">
         <button type="button" id="back-btn" class="btn">
-            <i class="m-icon-swapleft"></i> Back / Dos</button>
+            <i class="m-icon-swapleft"></i> Back<?php if($French){ echo " / Dos";} ?></button>
         <button type="button" class="btn green-haze pull-right forgetpass">
-            Submit / Soumettre
+            Submit<?php if($French){ echo " / Soumettre";} ?>
             <i class="m-icon-swapright m-icon-white"></i>
         </button>
     </div>
@@ -380,7 +384,7 @@ $(function(){
 <!-- END LOGIN -->
 <!-- BEGIN COPYRIGHT -->
 <div class="copyright">
-    &copy; 2015 All Rights Reserved / Tous droits réservés
+    &copy; 2015 All Rights Reserved<?php if($French){ echo " / Tous droits réservés";} ?>
 </div>
 
 </body>
