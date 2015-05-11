@@ -1,5 +1,6 @@
 <?php
  if($this->request->session()->read('debug')){  echo "<span style ='color:red;'>subpages/documents/application_for_employment_gfs.php #INC206</span>";}
+
  ?>
 <form id="form_tab<?php echo $dx->id;?>" action="<?php echo $this->request->webroot;?>documents/application_employment/<?php echo $cid .'/' .$did;?>" method="post">
         <input type="hidden" class="document_type" name="document_type" value="<?php echo $dx->title;?>"/>

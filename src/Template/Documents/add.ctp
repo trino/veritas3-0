@@ -124,8 +124,10 @@ if (isset($this->request->params['pass'][1])) {
                     $doc_count = 0;
                     /*if($cid)
                         include('subpages/home_blocks.php');*/
-                    if(isset($mod->uploaded_for))
+                    if(isset($mod->uploaded_for)){
                         $driver = $mod->uploaded_for;
+                        $_GET['driver'] = $mod->uploaded_for;
+                        }
                     else
                         $driver=0;
                     ?>

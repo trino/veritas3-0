@@ -1,4 +1,10 @@
-<?php if ($this->request->session()->read('debug')) {echo "<span style ='color:red;'>subpages/documents/mee_attach.php #INC203</span>";} ?>
+<?php if ($this->request->session()->read('debug')) {echo "<span style ='color:red;'>subpages/documents/mee_attach.php #INC203</span>";} 
+ if(isset($_GET['order_id']))
+ $dii = $_GET['order_id'];
+ else
+ $dii = $did;
+?>
+
 <form id="form_tab15">
     <input type="hidden" class="document_type" name="document_type" value="<?php echo $dx->title;?>"/>
     <input type="hidden" name="sub_doc_id" value="15" class="sub_docs_id" id="af"/>
