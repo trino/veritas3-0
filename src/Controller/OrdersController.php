@@ -1334,6 +1334,7 @@ class OrdersController extends AppController
                 }
             }
             if(!$value) {*/
+            $insert["ID"] = $document->id;
             foreach ($provinces as $province) {
                 foreach ($forms as $form) {
                     if ($this->isproductprovinceenabled2($query, $form, $document->id, $province)) {
@@ -1416,6 +1417,46 @@ class OrdersController extends AppController
             $this->set('orders', $order);
 
         }
+    }
+    public function bulksubmit()
+    {
+        $dri = $_POST['drivers'];
+        $drivers = explode(',',$dri);
+        //$forms = $_POST['forms'];
+        $arr['forms'] = $_POST['forms'];
+        $arr['order_type'] = 'BUL';
+        $arr['draft'] = 0;
+        $arr['title'] = 'order_'.date('Y-m-d H:i:s');
+        $arr['client_id'] = $_POST['client'];
+        $arr['created'] = date('Y-m-d H:i:s');
+        $arr['division'] = $_POST['division'];
+        $arr['user_id'] = $this->request->session()->read('Profile.id');
+        foreach($drivers as $driver)
+        {
+            $arr['uploaded_for'] = $driver;
+            $ord = TableRegistry::get('orders');
+                                
+            $doc = $ord->newEntity($arr);
+            $ord->save($doc);
+            $this->webservice('BUL', $arr['forms'], $arr['user_id'], $doc->id);
+            unset($doc);
+            
+            
+        }
+        $this->Flash->success('Your bulk order has been saved successfully');;
+        die();
+        
+        
+    }
+    public function checkPermisssionOrder($did,$driver)
+    {
+        $recruiter = $this->request->session()->read('Profile.id');
+        $ord = TableRegistry::get('profilessubdocument');
+        $check = $ord->find()->where(['profile_id'=>$recruiter,'subdoc_id'=>$did])->first();
+        $this->response->body($check);
+        return $this->response;
+        die;
+        
     }
 }
 

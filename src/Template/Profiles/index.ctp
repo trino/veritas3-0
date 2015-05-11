@@ -5,7 +5,7 @@
       }
 $settings = $this->requestAction('settings/get_settings');
 $language = $this->request->session()->read('Profile.language');
-$strings = CacheTranslations($language, "profiles_%",s($settings));//,$registry);//$registry = $this->requestAction('/settings/getRegistry');
+$strings = CacheTranslations($language, "profiles_%",$settings);//,$registry);//$registry = $this->requestAction('/settings/getRegistry');
 ?>
 
 <style>
@@ -74,7 +74,7 @@ $strings = CacheTranslations($language, "profiles_%",s($settings));//,$registry)
 
     <?php if ($sidebar->profile_create == 1) { ?>
         <a href="<?php echo $this->request->webroot; ?>profiles/add" class="floatright btn btn-primary btnspc">
-           <?= $strings["profiles_createprofile"]; ?></a>
+           <?= $strings["index_createprofile"]; ?></a>
     <?php } ?>
 
 </div>
@@ -89,7 +89,7 @@ $strings = CacheTranslations($language, "profiles_%",s($settings));//,$registry)
             <div class="portlet-title">
                 <div class="caption">
                     <i class="fa fa-user"></i>
-                     <?= $strings["profiles_listprofile"]; ?>s
+                     <?= $strings["index_listprofile"]; ?>s
                 </div>
             </div>
 
@@ -127,6 +127,9 @@ $strings = CacheTranslations($language, "profiles_%",s($settings));//,$registry)
                                             }
                                         }
                                     }
+                                    echo '<option value="NULL"';
+                                    if (isset($return_profile_type) && $return_profile_type == "NULL") {echo ' selected="selected"';}
+                                    echo '>' . $strings["profiles_null"] . '</option>';
                                 ?>
                             </select>
 
@@ -174,7 +177,7 @@ $strings = CacheTranslations($language, "profiles_%",s($settings));//,$registry)
                             <thead>
                             <tr class="sorting">
                                 <th><?= $this->Paginator->sort('id', "ID") ?></th>
-                                <th style="width:7px;"><?= $this->Paginator->sort('image', 'Image') ?></th>
+                                <th style="width:7px;"><?= $this->Paginator->sort('image', $strings["profiles_image"] ) ?></th>
                                 <th><?= $this->Paginator->sort('username', $strings["profiles_username"]) ?></th>
                                 <!--th><?= $this->Paginator->sort('email') ?></th-->
                                 <th><?= $this->Paginator->sort('fname', $strings["profiles_name"]) ?></th>
@@ -265,7 +268,7 @@ $strings = CacheTranslations($language, "profiles_%",s($settings));//,$registry)
                                                         }
                                                     }
                                                 } else {
-                                                    echo "Draft";
+                                                    echo $strings["profiles_null"];
                                                 }
                                             ?></td>
 
@@ -325,7 +328,7 @@ $strings = CacheTranslations($language, "profiles_%",s($settings));//,$registry)
                                                         ?>
 
             <a href="<?php echo $this->request->webroot; ?>profiles/delete/<?php echo $profile->id; ?><?php echo (isset($_GET['draft'])) ? "?draft" : ""; ?>"
-               onclick="return confirm('Are you sure you want to delete <?= ucfirst(h($profile->username)) ?>?');"
+               onclick="return confirm('<?= ProcessVariables($language, $strings["dashboard_confirmdelete"], array("name" => ucfirst(h($profile->username)))); ?>');"
                class="<?= btnclass("DELETE") ?>"><?= $strings["dashboard_delete"] ?></a>
             </span>
         <?php

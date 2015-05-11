@@ -25,7 +25,7 @@
         include_once('subpages/api.php');
     }
     $language = $this->request->session()->read('Profile.language');
-    $strings = CacheTranslations($language, "profiles_%",s($settings));//,$registry);//$registry = $this->requestAction('/settings/getRegistry');
+    $strings = CacheTranslations($language, "profiles_%",$settings);//,$registry);//$registry = $this->requestAction('/settings/getRegistry');
 
 
     function printoption($option, $selected, $value = ""){
@@ -459,7 +459,7 @@
                             <?php
 
 
-                                if ($this->request->session()->read('Profile.profile_type') != '2') {
+                                //if ($this->request->session()->read('Profile.profile_type') != '2') {
                                     if (strlen($is_disabled) == 0) {
 
                                         ?>
@@ -508,7 +508,7 @@
                                         <div class="clearfix"></div>
 
                                     <?php }
-                                }
+                                //}
 ?>
                             <div class="col-md-4">
                                 <div class="form-group">
@@ -805,7 +805,7 @@
                                 <div class="form-group col-md-12 col-sm-12">
                                     <textarea name="hear" class="form-control"><?php if (isset($p->hear)) echo $p->hear; ?></textarea>
                                 </div>
-                                <div class="col-md-12">
+                                <!--div class="col-md-12">
                                     <div class="form-group">
                                         <h3 class="block">Automatic Survey Email: </h3></div>
                                 </div>
@@ -836,7 +836,7 @@
                                                                           class="form-control" <?php if (isset($p->automatic_email) && $p->automatic_email=='60') { ?>
                                             checked="checked" <?php } ?> value="60" />
                                     </div>
-                                </div>
+                                </div-->
 
                                 <?php
                                     //if (!isset($disabled)) {
@@ -1066,7 +1066,7 @@
 
         $('.member_type').change(function () {
 
-            if ($(this).val() == '5' || $(this).val() == '7' || $(this).val() == '8') {
+            if ($(this).val() == '5' || $(this).val() == '7' || $(this).val() == '8'|| $(this).val() == '9'|| $(this).val() == '12') {
                 $('.req_driver').each(function () {
                     $(this).prop('required', "required");
                     //alert($(this).attr('name'));
@@ -1121,7 +1121,8 @@
 
         var mem_type = $('.member_type').val();
         if (!isNaN(parseFloat(mem_type)) && isFinite(mem_type)) {
-            if (mem_type == '5' || mem_type == '7' || mem_type == '8') {
+            if (mem_type == '5' || mem_type == '7' || mem_type == '8' || mem_type == '9' || mem_type == '12') {
+
                 $('.req_driver').each(function () {
                     $(this).prop('required', "required");
                     //alert($(this).attr('name'));

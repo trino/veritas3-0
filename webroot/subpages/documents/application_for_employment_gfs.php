@@ -246,7 +246,7 @@
         <div class="col-md-12">
             <h3>Education</h3>
         </div>
-        <div class="col-md-12">
+        <!--div class="col-md-12">
         <div class="table-scrollable">
             <table class="table table-bordered">
                 <thead>
@@ -293,7 +293,7 @@
         </div>
         </div>
         
-            <p>&nbsp;</p>
+            <p>&nbsp;</p-->
             <div class="col-md-12">
                     <label class="control-label col-md-10">Do you have any skills, qualifications or experiences which you feel would specially fit you for working with us? </label>  
                     <div class="col-md-2">
@@ -471,7 +471,7 @@
              </div> 
              
              <p>&nbsp;</p>
-            <div class="col-md-12">
+            <!--div class="col-md-12">
                 <label class="control-label col-md-5">If hired, when can you start?</label> 
                 <div class="col-md-7">              
                     <input class="form-control" name="start"value="<?php if(isset($application_for_employment_gfs))echo $application_for_employment_gfs->start;?>" />
@@ -519,14 +519,14 @@
                 </tbody>
             </table>
         </div> 
-        </div>
+        </div-->
         
         <div class="clearfix"></div>
             <hr />
-            <div class="col-md-12">
-              <h3>Driving Experience and Qualifications</h3>
-              </div>
-              <div class="col-md-6">
+    <div class="col-md-12">
+        <h3>Driving Experience and Qualifications</h3>
+    </div>
+              <!--div class="col-md-6">
               <div class="col-md-12">
                 <h3>Driver Licenses</h3>
               </div>
@@ -583,7 +583,7 @@
                     </tr>
                 </tbody>
             </table>
-        </div>   
+        </div-->
                 
         
         <div class="col-md-12">
@@ -615,7 +615,7 @@
         <hr>
         <div class="col-md-12">
              <h3>EMPLOYMENT HISTORY</h3>
-             <p>Please list your most recent employment first. Add another sheet if necessary. History must be the last three year’s. Commercial drivers shall provide
+             <!--p>Please list your most recent employment first. Add another sheet if necessary. History must be the last three year’s. Commercial drivers shall provide
 
                 an additional seven year’s information on employers for whom the applicant operated a commercial vehicle.
             </p>
@@ -728,7 +728,7 @@
                         <div class="col-md-12"><textarea name="reasons_of_leaving3" class="form-control form-control"><?php if(isset($application_for_employment_gfs))echo $application_for_employment_gfs->reasons_of_leaving3;?></textarea></div>
                     </td>
                 </tr>
-            </table>
+            </table-->
         </div>
         <div class="col-md-12">
             <label class="col-md-6">Would you be willing to take a physical exam?</label>

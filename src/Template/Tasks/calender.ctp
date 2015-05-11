@@ -4,25 +4,34 @@
 if ($this->request->session()->read('timediff')) {
     handletimezone($events,$this->request->session()->read('timediff'));
 }
+
+$settings = $this->requestAction('settings/get_settings');
+if ($_SERVER['SERVER_NAME'] == "localhost" || $_SERVER['SERVER_NAME'] == "127.0.0.1") {
+    include_once('/subpages/api.php');
+} else {
+    include_once('subpages/api.php');
+}
+$language = $this->request->session()->read('Profile.language');
+$strings = CacheTranslations($language, $this->request->params['controller'] . "_%",$settings);
 ?>
 
 
 <h3 class="page-title">
-			Calendar
+    <?= $strings["index_calendar"];?>
 			</h3>
 			<div class="page-bar">
 				<ul class="page-breadcrumb">
 					<li>
 						<i class="fa fa-home"></i>
-						<a href="index.html">Home</a>
+						<a href="index.html"><?= $strings["dashboard_dashboard"];?></a>
 						<i class="fa fa-angle-right"></i>
 					</li>
 				
 					<li>
-						<a href="#">Calendar</a>
+						<a href="#"><?= $strings["index_calendar"];?></a>
 					</li>
 				</ul>
-                <a href="javascript:window.print();" class="floatright btn btn-info">Print</a>
+                <a href="javascript:window.print();" class="floatright btn btn-info"><?= $strings["dashboard_print"];?></a>
 			</div>
 			<!-- END PAGE HEADER-->
 			<!-- BEGIN PAGE CONTENT-->
@@ -31,7 +40,7 @@ if ($this->request->session()->read('timediff')) {
 					<div class="portlet box green-meadow calendar">
 						<div class="portlet-title">
 							<div class="caption">
-								<i class="fa fa-gift"></i>Tasks
+								<i class="fa fa-gift"></i><?= $strings["index_tasks"];?>
 							</div>
 						</div>
 						<div class="portlet-body">
@@ -53,7 +62,7 @@ if ($this->request->session()->read('timediff')) {
 										<hr class="visible-xs"/>
 									</div>-->
                                     <a href="<?php echo $this->request->webroot;?>tasks/add" id="event_add" type="button" class="btn red">
-											Add Task </a>
+											<?= $strings["tasks_addtask"]; ?></a>
 
 <?php
 if ($this->request->session()->read('Profile.super') or $this->request->session()->read('Profile.admin')) {

@@ -211,7 +211,7 @@
                                 }
                              ?>
                                 
-                                Was this driver hired? </label>
+                                Was this applicant hired? </label>
                             <?php } ?>
                        <!-- </div>
                     </div>--></div>

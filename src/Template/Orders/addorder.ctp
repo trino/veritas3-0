@@ -18,8 +18,15 @@
 use Cake\ORM\TableRegistry;
 include_once 'subpages/filelist.php';
 $param = $this->request->params['action'];
+if ($_SERVER['SERVER_NAME'] == "localhost" || $_SERVER['SERVER_NAME'] == "127.0.0.1") {
+    include_once('/subpages/api.php');
+} else {
+    include_once('subpages/api.php');
+}
+
 $view = 'nope';
 $debugging=isset($_GET["debug"]);
+
 if($this->request->params['action'] == 'vieworder'){$view = 'view';}
 $action = ucfirst($param);
 if ($action == "Vieworder") { $action = "View";}
@@ -103,7 +110,17 @@ $settings = $this->requestAction('settings/get_settings');
 
     $DriverProvince = "AB";
     $DriverID = $_GET["driver"];
-    if ($DriverID>0 && is_object($p)){$DriverProvince = $p->driver_province;}
+    $UserID= $this->request->session()->read('Profile.id');
+    if ($DriverID>0 && is_object($p)){
+        $DriverProvince = $p->driver_province;
+    }
+    $enableddocs= TableRegistry::get('Profilessubdocument')->find('all')->where(['profile_id'=>$UserID]);
+    foreach($thedocuments as $Key => $Value){//$thedocuments
+        $userinfo = FindIterator($enableddocs, "subdoc_id", $Value["ID"]);
+        $thedocuments[$Key]["Display"] = 0;
+        if($userinfo) { $thedocuments[$Key]["Display"] = $userinfo->display;}
+    }
+
     echo "<SCRIPT>var DriverProvince = '" . $DriverProvince . "';</SCRIPT>";
     if($theproduct->doc_ids && $theproduct->Bypass==0){
         $forms = explode(",", $theproduct->doc_ids);
@@ -123,10 +140,14 @@ $settings = $this->requestAction('settings/get_settings');
         return $table->select()->where(['id' => $ID])->first();
     }
 
-
-
-    function displayform2($DriverProvince, $thedocuments, $name, $theproduct){
+    function displayform2($DriverProvince, $thedocuments, $name, $theproduct,$did=0,$_this){
         $name = strtolower($name);
+        if($did) {
+            //$checker = $_this->requestAction('/orders/checkPermisssionOrder/'.$did.'/'.$_GET['driver']);
+            //if(!$checker)
+            //return false; //code does not work properly
+            if ($thedocuments[$name]["Display"] == 0){return false;}//checks order taker's profile setting
+        }
         if(isset($_GET['order_type'])) {
             switch ($theproduct->Acronym){
                 //case "SIN":
@@ -247,12 +268,12 @@ $settings = $this->requestAction('settings/get_settings');
                                     $d = $this->requestAction('/clients/getFirstSub/'.$sd->sub_id);
 
                                     if($debugging) {
-                                        echo "<BR>Displayform: " . displayform2($DriverProvince, $thedocuments, $d->title, $theproduct);
+                                        echo "<BR>Displayform: " . displayform2($DriverProvince, $thedocuments, $d->title, $theproduct,$d->id,$_this);
                                         $thedocuments[strtolower($d->title)]["IsSet"] = true;
                                         debug($d);
                                     }
 
-                                    if (displayform2($DriverProvince,$thedocuments,$d->title, $theproduct)){//(displayform($DriverProvince, $provinces, $forms, $d->title,$_this)){
+                                    if (displayform2($DriverProvince,$thedocuments,$d->title, $theproduct,$d->id,$_this)){//(displayform($DriverProvince, $provinces, $forms, $d->title,$_this)){
 
                                         $index+=1;
                                         $act = 0;
@@ -445,7 +466,7 @@ $settings = $this->requestAction('settings/get_settings');
                                 $dx = $this->requestAction('/orders/getSubDetail/'.$sd->sub_id);
                                 // debug($d);
 
-                                if (displayform2($DriverProvince,$thedocuments,$d->title, $theproduct)){
+                                if (displayform2($DriverProvince,$thedocuments,$d->title, $theproduct,$d->id,$_this)){
                                     //if (displayform($DriverProvince, $provinces, $forms, $d->title,$_this)){
                                     $prosubdoc = $this->requestAction('/settings/all_settings/0/0/profile/' . $this->Session->read('Profile.id') . '/' . $d->id);
                                     if (true){ //($prosubdoc['display'] != 0 && $d->display == 1) {
@@ -1651,7 +1672,9 @@ $settings = $this->requestAction('settings/get_settings');
                         }
 
                         if(saving_draft==1) {
-                            window.location = base_url+'orders/orderslist?flash&draft';
+                            $('#loading5').show();
+                            setTimeout(function(){ window.location = base_url+'orders/orderslist?flash&draft'; }, 5000);
+                            
                         }
                     }
                 });

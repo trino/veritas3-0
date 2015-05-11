@@ -251,6 +251,11 @@ function getColor($products, $OrderType, $Default = "blue"){
                                                         <div class="number"></div>
                                                         <div class="desc"></div>
                                                     </div-->
+                                                    <?php
+                                                    if($order->order_type != 'BUL')
+                                                    {
+                                                        ?>
+                                                        
                                                     <a class="more" id="sub_doc_click1"
                                                        href="<?php
                                                        if ($order->draft == "1" or isset($_GET["draft"])){
@@ -270,13 +275,29 @@ function getColor($products, $OrderType, $Default = "blue"){
                                                                }
                                                            } else { ?>javascript:;<?php }
                                                        } ?>">
+                                                       <?php
+                                                    }
+                                                    else
+                                                    {
+                                                        ?>
+                                                        <span class="more">
+                                                        <?php
+                                                    }
+                                                    ?>
 
                                                         <i class="fa fa-copy"></i>
 
 
 
                                                         <?= h(getField($ordertype, "Name", "English")); //it won't let me put it in the desc   ?>
-                                                    </a>
+                                                    <?php
+                                                    if($order->order_type != 'BUL')
+                                                    {
+                                                        ?></a><?php }else{
+                                                            ?>
+                                                            </span>
+                                                            <?php
+                                                        }?>
                                                     <?php echo "</div>";
                                                 } else {
                                                     echo "Unknown";
@@ -310,7 +331,7 @@ function getColor($products, $OrderType, $Default = "blue"){
                                         <td class="actions  util-btn-margin-bottom-5">
 
                                             <?php
-                                                if ($sidebar->orders_list == '1' && $order->draft != 1) {
+                                                if ($sidebar->orders_list == '1' && $order->draft != 1 && $order->order_type!='BUL') {
                                                     ?>
                                                     <a class="<?= btnclass("VIEW") ?>"
                                                        href="<?php echo $this->request->webroot; ?>orders/vieworder/<?php echo $order->client_id; ?>/<?php echo $order->id;
@@ -328,7 +349,7 @@ function getColor($products, $OrderType, $Default = "blue"){
                                             <?php
                                                 $super = $this->request->session()->read('Profile.super');
                                                 //if (isset($super) || isset($_GET['draft'])) {
-                                                    if ($sidebar->orders_edit == '1' && ($this->request->session()->read('Profile.super')==1 || $this->request->session()->read('Profile.id')==$order->user_id)) {
+                                                    if ($sidebar->orders_edit == '1' && $order->order_type!='BUL' && ($this->request->session()->read('Profile.super')==1 || $this->request->session()->read('Profile.id')==$order->user_id)) {
                                                         if (!isset($_GET['table']) && $order->draft == 1) {
                                                             ?>
                                                             <a class="<?= btnclass("EDIT") ?>"

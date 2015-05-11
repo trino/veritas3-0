@@ -1,21 +1,23 @@
 <div class="row">
     <?php
         if ($this->request->session()->read('debug'))
-            echo "<span style ='color:red;'>listing.php #INC113</span>";
+            echo "<span style ='color:red;'>clients/listing.php #INC113</span>";
 
 
         if ($_SERVER['SERVER_NAME'] == "localhost" || $_SERVER['SERVER_NAME'] == "127.0.0.1") {
             include_once('/subpages/api.php');
         } else {
             include_once('subpages/api.php');
-        } ?>
+        }
+    if(!$GLOBALS["translated"]){die("Translation required");}
+    ?>
 
     <div class="col-md-12">
         <div class="portlet box grey-salsa">
             <div class="portlet-title">
                 <div class="caption">
                     <i class="fa fa-globe"></i>
-                    List <?php echo ucfirst($settings->client); ?>s
+                    <?php echo $strings["index_listclients"]; ?>s
                 </div>
             </div>
             <div class="portlet-body form">
@@ -28,10 +30,10 @@
                     <?php if (isset($_GET['draft'])) { ?><input type="hidden" name="draft"/><?php } ?>
 
                     <input class="form-control input-inline" name="search" type="search"
-                           placeholder="Search <?php echo ucfirst($settings->client); ?>s"
+                           placeholder="<?= $strings["clients_search"] ?>"
                            value="<?php if (isset($search_text)) echo $search_text; ?>"
                            aria-controls="sample_1"/>
-                    <button type="submit" class="btn btn-primary input-inline" style="">Search</button>
+                    <button type="submit" class="btn btn-primary input-inline" style=""><?= $strings["dashboard_search"] ?></button>
 
                 </form>
 
@@ -41,11 +43,11 @@
                         <table class="table table-hover  table-striped table-bordered table-hover dataTable no-footer">
                             <thead>
                             <tr class="sorting">
-                                <th width="50px"><?= $this->Paginator->sort('id', 'Id', ['escape' => false]) ?></th>
-                                <th width="220px">Logo</th>
-                                <th><?= $this->Paginator->sort('company_name', ucfirst($settings->client), ['escape' => false]) ?></th>
+                                <th width="50px"><?= $this->Paginator->sort('id', 'ID', ['escape' => false]) ?></th>
+                                <th width="220px"><?= $strings["clients_logo"]; ?></th>
+                                <th><?= $this->Paginator->sort('company_name', ucfirst($strings["settings_client"]), ['escape' => false]) ?></th>
 
-                                <th class="actions"><?= __('Actions') ?></th>
+                                <th class="actions"><?= __($strings["dashboard_actions"]) ?></th>
                             </tr>
                             </thead>
                             <tbody>
@@ -136,19 +138,17 @@
                                                         if ($sidebar->client_list == '1' && !isset($_GET["draft"])) {
                                                             ?>
                                                             <a class="<?= btnclass("btn-info", "blue-soft") ?>"
-                                                               href="<?php echo $this->request->webroot; ?>clients/edit/<?php echo $clients->id; ?>?view">View</a>
+                                                               href="<?php echo $this->request->webroot; ?>clients/edit/<?php echo $clients->id . '?view">' . $strings["dashboard_view"]; ?></a>
 
 
 
                                                         <?php
                                                         }
                                                         if ($sidebar->client_edit == '1') {
-                                                            echo $this->Html->link(__('Edit'), ['controller' => 'clients', 'action' => 'edit', $clients->id], ['class' => btnclass("btn-info", "blue-soft")]);
+                                                            echo $this->Html->link(__($strings["dashboard_edit"]), ['controller' => 'clients', 'action' => 'edit', $clients->id], ['class' => btnclass("btn-info", "blue-soft")]);
                                                         }
 
-
-                                                        if ($sidebar->document_create == '1' && !isset($_GET["draft"]) && false) {
-
+                                                        if ($sidebar->document_create == '1' && !isset($_GET["draft"]) && false) {//FALSE DISABLES THIS
                                                             echo $this->Html->link(__('Create ' . ucfirst($settings->document)), ['controller' => 'documents', 'action' => 'add', $clients->id], ['class' => btnclass("btn-info", "blue-soft")]);
                                                         }
 
@@ -156,13 +156,12 @@
 
                                                         if ($sidebar->client_delete == '1') { ?>
                                                             <a href="<?php echo $this->request->webroot; ?>clients/delete/<?php echo $clients->id; ?><?php echo (isset($_GET['draft'])) ? "?draft" : ""; ?>"
-                                                               onclick="return confirm('Are you sure you want to delete <?= h($clients->company_name) ?>?');"
-                                                               class="<?= btnclass("DELETE") ?>">Delete</a>
+                                                               onclick="return confirm('<?= ProcessVariables($language, $strings["dashboard_confirmdelete"], array("name" =>  h($clients->company_name))); ?>');"
+                                                               class="<?= btnclass("DELETE") . '">' . $strings["dashboard_delete"] ?></a>
 
                                                         <?php }
 
-
-                                                        if ($sidebar->orders_create == '1' && !isset($_GET["draft"]) && false) {
+                                                        if ($sidebar->orders_create == '1' && !isset($_GET["draft"]) && false) {//FALSE DISABLES THIS
                                                             ?>
 
                                                             <?php if ($sidebar->orders_mee == '1') { ?>
@@ -185,7 +184,7 @@
                                                             <?php }
                                                         }
 
-                                                        if ($sidebar->orders_list == '1' && !isset($_GET["draft"]) && false) {
+                                                        if ($sidebar->orders_list == '1' && !isset($_GET["draft"]) && false) {//FALSE DISABLES THIS
                                                             ?>
                                                             <a href="<?php echo $this->request->webroot; ?>orders/orderslist/?client_id=<?php echo $clients->id; ?>"
                                                                class="<?= btnclass("btn-info", "blue-soft") ?>">
@@ -202,7 +201,7 @@
                                                         if($sidebar->aggregate)
                                                         {
                                                             ?>
-                                                            <a href="<?php echo $this->request->webroot;?>documents/aggregate/<?php echo $clients->id;?>" class="<?= btnclass("btn-info", "blue-soft") ?>">Aggregate Audits</a>
+                                                            <a href="<?php echo $this->request->webroot;?>documents/aggregate/<?php echo $clients->id;?>" class="<?= btnclass("btn-info", "blue-soft") . '">' . $strings["clients_aggregate"] ?></a>
                                                             <?php
                                                         }
                                                     ?>
@@ -233,9 +232,9 @@
 
                                 <ul class="pagination sorting">
 
-                                    <?= $this->Paginator->prev('< ' . __('previous')); ?>
+                                    <?= $this->Paginator->prev('< ' . __($strings["dashboard_previous"])); ?>
                                     <?= $this->Paginator->numbers(); ?>
-                                    <?= $this->Paginator->next(__('next') . ' >'); ?>
+                                    <?= $this->Paginator->next(__($strings["dashboard_next"]) . ' >'); ?>
                                 </ul>
 
                             </div>

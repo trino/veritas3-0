@@ -66,7 +66,8 @@ function makeBulk(){
 
   //  echo '<div class="col-xs-4">';
         ?>
-        <div class="scrolldiv" style="margin-bottom: 15px;" ID="bulkform">
+    <div class="clearfix"></div>
+    <div class="scrolldiv" style="margin-bottom: 15px; overflow-y: auto; width: auto; height: 250px;" ID="bulkform">
             <input type="text" id="searchProfile" onkeyup="searchProfile()" class="form-control" placeholder="Search <?php echo ucfirst($settings->profile); ?>s"/>
             <table class="table table-striped table-bordered table-advance table-hover recruiters">
                 <thead>
@@ -105,7 +106,9 @@ function makeBulk(){
                     $fulllist="'" . $fulllist . "'";
                     echo '<TR><TD><SPAN><INPUT TYPE="CHECKBOX" ID="selectall" ONCHANGE="selectall(' . $fulllist . ');"></SPAN> <SPAN><LABEL FOR="selectall">Select All</LABEL></SPAN></TD></TR>';
                 }
-                echo "</tbody></table></div>";//</DIV>
+    echo '</tbody></table></div>';
+    //echo '<div class="slimScrollBar" style="width: 7px; position: absolute; top: 0px; opacity: 0.4; display: none; border-radius: 7px; z-index: 99; right: 1px; height: 59.6374045801527px; background: rgb(0, 0, 0);"></div>';
+    //echo '<div class="slimScrollRail" style="width: 7px; height: 100%; position: absolute; top: 0px; display: none; border-radius: 7px; opacity: 0.2; z-index: 90; right: 1px; background: rgb(51, 51, 51);"></div><';
     return "";
 }
 
@@ -322,7 +325,7 @@ function printform($counting, $settings, $client, $dr_cl, $driver, $intable = fa
     echo '</div><div class="col-xs-6" ID="driverform">';
     if($_GET["ordertype"] == "BUL"){
         echo '<INPUT TYPE="HIDDEN" NAME="selecting_driver" id="selecting_driver" class="form-control input-' . $size . '" VALUE="">';
-        echo '<INPUT TYPE="TEXT" NAME="drivers" id="drivers" class="form-control input-' . $size . '" VALUE="" READONLY>';
+        echo '<textarea NAME="drivers" id="drivers" class="form-control input-' . $size . '" VALUE="" READONLY></textarea>';
         if($_GET['ordertype']=="BUL"){makeBulk();}
         echo '</DIV></DIV>';
     } else {
@@ -417,7 +420,16 @@ function printform($counting, $settings, $client, $dr_cl, $driver, $intable = fa
 
     function getcheckboxes(){
         var tempstr = '';
-        $('input[type="checkbox"]').each(function () {
+        $('.PRODUCTLIST input[type="checkbox"]').each(function () {
+            if ($(this).is(':checked')){
+                if (tempstr.length==0) { tempstr = $(this).val();} else {tempstr = tempstr + "," + $(this).val();}
+            }
+        });
+        return tempstr;
+    }
+    function getdrivers(){
+        var tempstr = '';
+        $('.recruiters input[type="checkbox"]').each(function () {
             if ($(this).is(':checked')){
                 if (tempstr.length==0) { tempstr = $(this).val();} else {tempstr = tempstr + "," + $(this).val();}
             }
@@ -487,7 +499,20 @@ function printform($counting, $settings, $client, $dr_cl, $driver, $intable = fa
                             alert('Please select at least one driver');
                             return;
                         }
-                        window.location = '<?php echo $this->request->webroot; ?>orders/orderslist?flash=Bulk Order bypass';
+                        else{
+                            $('#qua_btn').html('Saving..');
+                            $('#qua_btn').attr('disabled','disabled');
+                        }
+                        //window.location = '<?php echo $this->request->webroot; ?>orders/orderslist?flash=Bulk Order bypass';
+                        $.ajax({
+                            data:'forms='+getcheckboxes()+'&drivers='+getdrivers()+'&client='+$('#selecting_client').val()+'&division='+division,
+                            url:'<?php echo $this->request->webroot;?>orders/bulksubmit',
+                            type:'post',
+                            success:function()
+                            {
+                               window.location = '<?php echo $this->request->webroot;?>';
+                            }
+                        });
                         return;
                     }
                     if ($('.selecting_driver').val() == '') {
@@ -703,6 +728,10 @@ function printform($counting, $settings, $client, $dr_cl, $driver, $intable = fa
         }
     }
 
+    function replaceAll(find, replace, str) {
+        return str.replace(new RegExp(find, 'g'), replace);
+    }
+
     function updateNames(){
         if (UpdatesEnabled) {
             if (document.getElementById("selecting_driver").value) {
@@ -711,6 +740,7 @@ function printform($counting, $settings, $client, $dr_cl, $driver, $intable = fa
                     data: '',
                     type: 'get',
                     success: function (res) {
+                        res=replaceAll(", ", "\n", res);
                         document.getElementById("drivers").value = res;
                     }
                 });

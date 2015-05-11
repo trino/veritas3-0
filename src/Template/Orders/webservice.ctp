@@ -23,7 +23,8 @@
 
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    $startorder1 = false;
+    $ordertype = "MEE-IND";
+    $startorder1 = true;
     $driver_order_79 = false; //only for full mee order (driver order)
 
     $uploadbinaryconsent_1603 = true; //if true
@@ -41,9 +42,9 @@
     $sms_ins_32 = false;                                    // 32   social media search
     $creditcheck_ins_31 = false;                            // 31 Credit Check
 
-
     if ($order_info->order_type == "Driver Order") {
         $driver_order_79 = true; // only TRUE if complete mee orders  - DONT CHANGE
+        $ordertype = "MEE";
     }
 
     $myArray = explode(',', $order_info->forms);

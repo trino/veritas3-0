@@ -9,7 +9,7 @@ if (!isset($_GET["new"])) {
     }
 }
 $language = $this->request->session()->read('Profile.language');
-$strings = CacheTranslations($language, "training_%",s($settings));//,$registry);//$registry = $this->requestAction('/settings/getRegistry');
+$strings = CacheTranslations($language, "training_%",$settings);//,$registry);//$registry = $this->requestAction('/settings/getRegistry');
 ?>
 
 

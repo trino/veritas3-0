@@ -29,7 +29,7 @@
 	
 		<?php //var_dump($application_for_employment_gfs);?>
         <div class="col-sm-12" id="sig8">
-            <input type="hidden" name="gfs_signature" id="gfs_signature" />
+            <input type="hidden" name="gfs_signature" id="gfs_signature" value="<?php if(isset($application_for_employment_gfs) && $application_for_employment_gfs->gfs_signature)echo $application_for_employment_gfs->gfs_signature;?>" />
             <input type="hidden" class="touched" value="0" />
             <input type="hidden" class="touched_edit8" value="<?php if(isset($application_for_employment_gfs) && $application_for_employment_gfs->gfs_signature){?>1<?php }else{?>0<?php }?>" />
             

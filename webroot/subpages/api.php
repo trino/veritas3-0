@@ -1,9 +1,36 @@
 <?php
 use Cake\ORM\TableRegistry;
 
+//Check for translation update in veritsa3-0/webroot/strings.sql
+use Cake\Datasource\ConnectionManager;
+$Table = TableRegistry::get('strings');
+$LastUpdate = $Table->find()->select()->where(["Name" => "Date"])->first();
+if($LastUpdate){$LastUpdate = $LastUpdate->English;} else {$LastUpdate = 0;}
+$SQLfile = getcwd() .  "/strings.sql";
+$UpdateFile = filemtime($SQLfile);
+if($LastUpdate < $UpdateFile){
+    //echo "<SCRIPT>alert('Applying translation update');</SCRIPT>";//silent, so no one will know I did anything...
+    $SQLfile = getSQL($SQLfile);
+    if($SQLfile){
+        $db = ConnectionManager::get('default');
+        $db->execute("TRUNCATE TABLE strings;");
+        $db->execute($SQLfile);
+        $Table->query()->update()->set(['English' => $UpdateFile])->where(['Name'=>"Date"])->execute();
+    }
+}
+
+function getSQL($Filename){
+    $File = file_get_contents($Filename);
+    $Start = strpos($File, "--", strpos($File, "Dumping data for table ")) + 3;
+    $End = strpos($File, "/*", $Start);
+    return substr($File, $Start, $End-$Start);
+}
+//end auto updater
+
 $islocal=false;
 if ($_SERVER['SERVER_NAME'] == "localhost" || $_SERVER['SERVER_NAME'] == "127.0.0.1" || $_SERVER['SERVER_ADDR'] == "127.0.0.1") { $islocal=true;}
 $GLOBALS["islocal"] =$islocal;
+$GLOBALS["translated"] =false;
 $emailaddress= "info@" . getHost("isbmee.com");
 
 /* //this is the code to include it, for some reason the regular way won't work on the live
@@ -123,12 +150,13 @@ function getHost($localhost = "localhost") {//get HTTP host name
     return trim($host);
 }
 
-function S($settings){
+function s($settings){
     $variables = Sadd("client", $settings);
     $variables = array_merge($variables,Sadd("document", $settings));
     $variables = array_merge($variables,Sadd("profile", $settings));
     return array_merge($variables,Sadd("mee", $settings));
 }
+
 function Sadd($Key, $Value){
     $P="%";
     $Value=$Value->$Key;
@@ -149,22 +177,26 @@ function getIterator($Objects, $Fieldname, $Value){
 }
 
 function CacheTranslations($Language='English', $Text, $Variables = ""){
-    $data = array();
     if (!is_array($Text)){
         $Text = array($Text);
     }
+    if(is_object($Variables)){
+        $Variables=s($Variables);
+    }
+
     $Text[] = "dashboard_%";//for all pages
     $Text[] = "settings_%";//for all pages
-    
+    $Text[] = "index_%";//for all pages
+
     $table =  TableRegistry::get('strings');
 
-    $query="";
+    $query="Name = 'Date'";
     foreach($Text as $text){
         if(strlen($query)>0){ $query.= " OR ";}
         if (strpos($text, "%")){
-            $query .= "Name LIKE '" . $text . "'";
+            $query .= "Name LIKE '" . strtolower($text) . "'";
         } else {
-            $query .= "Name = '" . $text . "'";
+            $query .= "Name = '" . strtolower($text) . "'";
         }
     }
 
@@ -177,11 +209,12 @@ function CacheTranslations($Language='English', $Text, $Variables = ""){
     $data = array();
     foreach($table as $entry){
         if($Language=="Debug"){
-            $data[$entry->Name] = "[TRANS:" . $entry->Name . "." . $entry->$Language . "]";
+            $data[$entry->Name] = '[' . $entry->Name . ']';
         } else {
             $data[$entry->Name] = ProcessVariables($entry->Name, $entry->$Language, $Variables);
         }
     }
+    $GLOBALS["translated"]= true;
     return $data;
 }
 
@@ -200,7 +233,11 @@ function ProcessVariables($ID, $Text, $Variables = ""){
         foreach ($Variables as $Key => $Value) {
             if (substr($Key, 0, 1) != "%") {$Key = "%" . $Key;}
             if (substr($Key, -1) != "%") {$Key .= "%";}
-            $Text = str_replace($Key, $Value, $Text);
+            if($ID == "Debug"){
+                $Text.= " [" . $Key . "=" . $Value . "]";
+            } else {
+                $Text = str_replace($Key, $Value, $Text);
+            }
         }
     }
     if($Text) {return $Text;}

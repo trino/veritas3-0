@@ -2,7 +2,7 @@
 <?php $settings = $this->requestAction('settings/get_settings');
 
 use Cake\ORM\TableRegistry;
-
+$debug=$this->request->session()->read('debug');
 if ($_SERVER['SERVER_NAME'] == "localhost" || $_SERVER['SERVER_NAME'] == "127.0.0.1") {
     include_once('/subpages/api.php');
 } else {
@@ -10,8 +10,7 @@ if ($_SERVER['SERVER_NAME'] == "localhost" || $_SERVER['SERVER_NAME'] == "127.0.
 }
 
 $language = $this->request->session()->read('Profile.language');
-//$registry = $this->requestAction('/settings/getRegistry');
-$strings = CacheTranslations($language, "langswitch","");//,$registry);
+$strings = CacheTranslations($language, "langswitch",$settings);//,$registry);
 ?>
 
 <!--[if IE 8]> <html lang="en" class="ie8 no-js"> <![endif]-->
@@ -220,16 +219,18 @@ $strings = CacheTranslations($language, "langswitch","");//,$registry);
 							<a href="<?php echo $this->request->webroot;?>profiles/edit/<?php echo $this->request->session()->read('Profile.id'); ?>" >
 							<i class="icon-user"></i> <?= $strings["dashboard_mysettings"] ?> </a>
 						</li>
-                        <li><!--stop commenting this out-->
-                            <a href="<?php echo $this->request->webroot;?>profiles/langswitch/<?php echo $this->request->session()->read('Profile.id'); ?>" >
-                                <i class="icon-user"></i> <?= $strings["langswitch"]; ?> </a>
-                        </li>
+                        <?php if($debug){?>
+                            <li>
+                                <a href="<?php echo $this->request->webroot;?>profiles/langswitch/<?php echo $this->request->session()->read('Profile.id'); ?>" >
+                                    <i class="icon-user"></i> <?= $strings["langswitch"]; ?> </a>
+                            </li>
+                        <?php } ?>
 						<li class="divider">
 						</li>
 
 						<li>
 							<a href="<?php echo $this->request->webroot;?>profiles/logout">
-							<i class="icon-key"></i> Log Out </a>
+							<i class="icon-key"></i> <?= $strings["dashboard_logout"]; ?></a>
 						</li>
 					</ul>
 				</li>
@@ -337,7 +338,10 @@ $strings = CacheTranslations($language, "langswitch","");//,$registry);
         if($this->request->session()->read('Profile.super')) {//$this->request->session()->read('Profile.admin')
             $isfirst = print_title($content, $this->request->webroot, "pages/view/version_log", "version_log", $isfirst, false, $language);
 
-            $isfirst = print_title($content, $this->request->webroot, "profiles/settings?toggledebug", "Debug Mode", $isfirst, True, $language);
+            $debugmode = file_exists($_SERVER["DOCUMENT_ROOT"] . "debugmode.txt");
+            if ($debugmode){$debugmode = "dashboard_on"; } else { $debugmode = "dashboard_off";}
+            $debugmode = " (" . $strings[$debugmode] . ")";
+            $isfirst = print_title($content, $this->request->webroot, "profiles/settings?toggledebug", $strings["dashboard_debug"] . $debugmode, $isfirst, True, $language);
             if ($_SERVER['SERVER_NAME'] == 'localhost') {
                 $isfirst = print_title($content, $this->request->webroot, "profiles/settings", $strings["dashboard_settings"], $isfirst, true, $language);
             }

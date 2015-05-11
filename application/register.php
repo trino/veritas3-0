@@ -1,4 +1,4 @@
-<!DOCTYPE html><TITLE>Rapid User Creation</TITLE>
+<!DOCTYPE html><TITLE>Register with MEE</TITLE>
 <?php
 $webroot = $_SERVER["REQUEST_URI"];
 $start = strpos($webroot, "/", 1)+1;
@@ -140,13 +140,13 @@ function printprovinces($name, $selected = "", $isdisabled = "", $isrequired = f
     <script src="<?= $webroot; ?>assets/global/scripts/metronic.js" type="text/javascript"></script>
     <script src="<?= $webroot; ?>assets/admin/layout/scripts/layout.js" type="text/javascript"></script>
     <script src="<?= $webroot; ?>assets/admin/layout/scripts/demo.js" type="text/javascript"></script>
-    <script src="<?= $webroot; ?>assets/admin/pages/scripts/login.js" type="text/javascript"></script>
+    <!--script src="<?= $webroot; ?>assets/admin/pages/scripts/login.js" type="text/javascript"></script-->
     <!-- END PAGE LEVEL SCRIPTS -->
     <script>
         $(document).ready(function() {
             Metronic.init(); // init metronic core components
             Layout.init(); // init current layout
-            Login.init();
+           // Login.init();
             Demo.init();
         });
     </script>
@@ -176,24 +176,29 @@ function printprovinces($name, $selected = "", $isdisabled = "", $isrequired = f
 
 <div class="logo"></div>
 
-<div class="content" style="width:80%">
+<div class="content" style="width:60%">
     <center>
         <img src="<?= $webroot . $logo;?>"  style="max-width: 33%; max-height: 100px;"/></center>
-        <form class="login-form" action="<?php echo $webroot; ?>rapid" method="post">
-            <h3 class="form-title">Create Account</h3>
+        <form class="login-form" action="<?= $webroot; ?>rapid" method="post">
+            <div class="col-md-12">
+
+            <h3 class="form-title">Register for an account</h3>
+                </div>   <div class="clearfix"></div>
             <?php
                 if (isset($_GET["username"])){
-                    echo '<div class="alert alert-info display-hide" style="display: block;">
+                    echo '<div class="alert alert-info display-hide col-md-12" style="display: block;">
                         <button class="close" data-close="alert"></button>
-                        User "' . $_GET["username"] . '" has been created.</div>';
+
+                        <!--A HREF="' . $webroot . "profiles/view/" . $_GET["userid"] . '">
+                        User "' . $_GET["username"] . '" has been created.</A-->
+                        Thank you for registering. We\'ll be in contact with you shortly.
+                        </div>';
                 }
-                if(isset($_GET['error']))
-                {
-                    echo '<div class="alert alert-error display-hide" style="display: block;">
+                if(isset($_GET['error'])) {
+                    echo '<div class="col-md-12 alert alert-error display-hide" style="display: block;">
                         <button class="close" data-close="alert"></button>
                         User "' . $_GET["username"] . '" was not created.</div>';
                 }
-                
             ?>
             <div class="form-group col-md-4 col-sm-4">
                 <label class="control-label visible-ie8 visible-ie9">Client</label>
@@ -212,17 +217,17 @@ function printprovinces($name, $selected = "", $isdisabled = "", $isrequired = f
                             echo '</select>';
                         }
                     ?>
-
-
+                    <input type="hidden" value="5" name="profile_type">
+                    <input type="hidden" value="3" name="driver">
                     <input type="hidden" value="<?php if(isset($_GET["client"])) {echo $_GET["client"];} ?>" name="client_ids">
                 </div>
             </div>
 
-            <div class="form-group col-md-4 col-sm-4">
+            <div class="form-group col-md-4 col-sm-4" TITLE="If left blank, the username will be 'Driver_[User ID#]'">
                 <label class="control-label visible-ie8 visible-ie9">Username</label>
                 <div class="input-icon">
                     <i class="fa fa-user"></i>
-                    <input class="uname form-control placeholder-no-fix" type="text" autocomplete="off" placeholder="Username" name="username" required="required" />
+                    <input class="form-control placeholder-no-fix" type="text" autocomplete="off" placeholder="Username" name="username"/>
                 </div>
             </div>
            
@@ -412,76 +417,77 @@ function printprovinces($name, $selected = "", $isdisabled = "", $isrequired = f
             </div>
             <div class="clearfix"></div>
         
-            <div class="form-actions">
+            <div class="col-md-12">
                 <a href="javascript:void(0);" class="btn green-haze pull-right" onclick="return check_username();" >
                     Submit <i class="m-icon-swapright m-icon-white"></i>
                 </a>
-            </div>
+            </div>      <div class="clearfix"></div>
+
             <input type="submit" id="hiddensub" style="display: none;"/>
         </form>
 
-    
+    <div class="clearfix"></div>
+
 
     <script>
         function check_username() {
-       
-
             var client_id = $('.client_profile_id').val();
             if (client_id == "") {
 
             }
             var un = $('.uname').val();
+            if(un) {
+                $.ajax({
+                    url: '<?php echo $webroot;?>profiles/check_user',
+                    data: 'username=' + un,
+                    type: 'post',
+                    success: function (res) {
+                        res = res.trim();
+                        if (res == '1') {
+                            //alert(res);
+                            alert('Username already exists');
 
-            $.ajax({
-                url: '<?php echo $webroot;?>profiles/check_user',
-                data: 'username=' + $('.uname').val(),
-                type: 'post',
-                success: function (res) {
-                    res = res.trim();
-                    if (res == '1') {
-                        //alert(res);
-                        alert('Username already exists');
+                            $('.uname').focus();
+                            $('html,body').animate({
+                                    scrollTop: $('.login-form').offset().top
+                                },
+                                'slow');
 
-                        $('.uname').focus();
-                        $('html,body').animate({
-                                scrollTop: $('.login-form').offset().top
-                            },
-                            'slow');
-
-                        return false;
-                    } else {
-                        $('.flashUser').hide();
-                        if ($('.email').val() != '') {
-                            var un = $('.email').val();
-                            $.ajax({
-                                url: '<?php echo $webroot;?>profiles/check_email',
-                                data: 'email=' + $('.email').val(),
-                                type: 'post',
-                                success: function (res) {
-                                    res = res.trim();
-                                    if (res == '1') {
-                                        $('.email').focus();
-                                        alert('Email already exists');
-                                        $('html,body').animate({
-                                                scrollTop: $('.login-form').offset().top
-                                            },
-                                            'slow');
-
-                                        return false;
-                                    } else {
-                                        $(this).attr('disabled', 'disabled');
-                                        $('#hiddensub').click();
-                                    }
-                                }
-                            });
+                            return false;
                         } else {
-                            $('#hiddensub').click();
+                            $('.flashUser').hide();
+                            if ($('.email').val() != '') {
+                                var un = $('.email').val();
+                                $.ajax({
+                                    url: '<?php echo $webroot;?>profiles/check_email',
+                                    data: 'email=' + $('.email').val(),
+                                    type: 'post',
+                                    success: function (res) {
+                                        res = res.trim();
+                                        if (res == '1') {
+                                            $('.email').focus();
+                                            alert('Email already exists');
+                                            $('html,body').animate({
+                                                    scrollTop: $('.login-form').offset().top
+                                                },
+                                                'slow');
+
+                                            return false;
+                                        } else {
+                                            $(this).attr('disabled', 'disabled');
+                                            $('#hiddensub').click();
+                                        }
+                                    }
+                                });
+                            } else {
+                                $('#hiddensub').click();
+                            }
                         }
                     }
-                }
-            });
-
-
+                });
+            } else {
+                $('#hiddensub').click();
+            }
     }
    
             $(function() {
@@ -494,11 +500,9 @@ function printprovinces($name, $selected = "", $isdisabled = "", $isrequired = f
                 $('.clients').change(function(){
                     var cid = $(this).val();
                     if(cid!="")
-                    window.location="<?php echo $webroot;?>application/makedriver.php?client="+cid;
+                    window.location="<?php echo $webroot;?>application/makedriver.php?client=" + cid;
                 })
-                 
             });
-   
     </script>
 
 </body>

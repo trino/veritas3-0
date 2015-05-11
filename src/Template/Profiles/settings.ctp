@@ -138,7 +138,7 @@ function makedropdownoption($Key, $Value, $TheValue){
                                 <A HREF="producteditor">Product Types</A>
                             </LI>
                             <li>
-                                <a href="#tab_1_14" data-toggle="tab">Profile Importer</a>
+                                <a href="#tab_1_16" data-toggle="tab">Profile Importer</a>
                             </li>
                             <?php
                             }
@@ -160,7 +160,7 @@ function makedropdownoption($Key, $Value, $TheValue){
                            include('subpages/profile/logo.php');
                             echo '</div>';
                          ?>
-                    
+
 
                     <div class="tab-pane" id="tab_1_6">
                         <?php include('subpages/profile/page.php'); ?>
@@ -174,13 +174,13 @@ function makedropdownoption($Key, $Value, $TheValue){
                     <div class="tab-pane" id="tab_1_15">
                         <?php include('subpages/client_logo.php'); ?>
                     </div>
-                     <div class="tab-pane" id="tab_1_14">
+                     <div class="tab-pane" id="tab_1_16">
                         <?php include('subpages/import.php'); ?>
                     </div>
                     <div class="tab-pane" id="tab_1_14">
                         <div class="tabbable tabbable-custom">
                             <ul class="nav nav-tabs">
-                           
+
                                 <li class="active">
                                     <a href="#tab_1_11" data-toggle="tab">Profile Types</a>
                                 </li>
@@ -206,7 +206,7 @@ function makedropdownoption($Key, $Value, $TheValue){
                         <div class="margin-top-10 alert alert-success display-hide cleardata_flash" style="display: none;">
                            Data Successfully Cleared.
                                                     <button class="close" data-close="alert"></button>
-                                                   
+
                         </div>
                     </div>
                     <?php
@@ -327,10 +327,10 @@ function makedropdownoption($Key, $Value, $TheValue){
                             </td>
                             </tr>
                                     <?php
-                                } 
+                                }
                                 }
                                 ?>
-                                
+
                         </table>
                         <?php
                         }
@@ -389,7 +389,7 @@ function makedropdownoption($Key, $Value, $TheValue){
         });
     }
     $(function () {
-        
+
         $('#cleardata').click(function(){
             $(this).attr("disabled","disabled");
             var dn = confirm("Confirm Clear Database Data.");
@@ -405,9 +405,9 @@ function makedropdownoption($Key, $Value, $TheValue){
                     }
                 });
             }
-            
+
         });
-        
+
         $('.addsubdoc').click(function(){
            var subname = $('.subdocname').val();
            var subnameFrench = $('.subdocnameFrench').val();
@@ -441,13 +441,13 @@ function makedropdownoption($Key, $Value, $TheValue){
                     } else {
                          window.location = '<?php echo $this->request->webroot;?>clients/addsubdocs/?sub=' + subname + "&subFrench=" + subnameFrench;
                     }
-                } 
+                }
             });
-            } 
+            }
         });
-        
+
         $('.editsubdoc').click(function(){
-            $(this).html('Saving..'); 
+            $(this).html('Saving..');
             var id = $(this).attr('id').replace('subbtn','');
             var subname = $('#editsubdocname_'+id).val();
             var subnameFrench = $('#editsubdocnameFrench_'+id).val();
@@ -472,10 +472,10 @@ function makedropdownoption($Key, $Value, $TheValue){
             $('#subbtn'+id).html('Save');
                         return false;
            } else if(!color && subname != '' && subnameFrench != '') {
-            
+
             /**************************************************************************************************/
-            
-            
+
+
             $.ajax({
                 url: '<?php echo $this->request->webroot;?>clients/check_document/'+id,
                 data: 'subdocumentname=' + subname + '&subdocumentnameFrench=' + subnameFrench,
@@ -505,12 +505,12 @@ function makedropdownoption($Key, $Value, $TheValue){
                          $('#subbtn'+id).html('Save');
                         return false;
                     }
-                } 
+                }
             });
-            
-            
+
+
             /****************************************************************************************************/
-                
+
            } else if(color && subname == '' && subnameFrench == '') {
                 $('#flasheditSub1_'+id).show();
                 $('#flasheditSub_'+id).hide();
@@ -556,9 +556,9 @@ function makedropdownoption($Key, $Value, $TheValue){
                         }
                         });
                     }
-                } 
+                }
             });
-            } 
+            }
         });
          initiate_ajax_upload('client_default','client');
         <?php
@@ -579,7 +579,7 @@ function makedropdownoption($Key, $Value, $TheValue){
                     addclient = '0';
                     msg = '<span class="msg" style="color:red">Removed</span>';
                 }
-    
+
                 $.ajax({
                     type: "post",
                     data: "client_id=" + client_id + "&add=" + addclient + "&user_id=" +<?php echo $id;?>,
@@ -606,11 +606,11 @@ function makedropdownoption($Key, $Value, $TheValue){
                         msg = '<span class="msg" style="color:red"> Removed</span>';
                     }
                 });
-    
+
                 client_id = client_id.substr(1, length.client_id);
                 $('.client_profile_id').val(client_id);
                 $('.' + nameId).html(msg);
-    
+
             });
         <?php
         }
@@ -692,4 +692,3 @@ function makedropdownoption($Key, $Value, $TheValue){
         min-height: 250px !important;
     }
 </style>
-

@@ -1,12 +1,21 @@
-<?php $settings = $this->requestAction('settings/get_settings'); ?>
-<?php $sidebar =$this->requestAction("settings/get_side/".$this->Session->read('Profile.id'));?>
-
-
 <?php
+$settings = $this->requestAction('settings/get_settings');
+$sidebar =$this->requestAction("settings/get_side/".$this->Session->read('Profile.id'));
+$debug=$this->request->session()->read('debug');
+
+if ($_SERVER['SERVER_NAME'] == "localhost" || $_SERVER['SERVER_NAME'] == "127.0.0.1") {
+    include_once('/subpages/api.php');
+} else {
+    include_once('subpages/api.php');
+}
+$language = $this->request->session()->read('Profile.language');
+$strings = CacheTranslations($language, array("clients_%", "index_%"),$settings);
+if($debug && $language == "Debug"){ $Trans = " [Translated]"; } else {$Trans = "";}
 if ($sidebar->training == 1 && $sidebar->client_list == 0) {
-header("Location: " . $this->request->webroot . "training");
-die();
-}?>
+    header("Location: " . $this->request->webroot . "training");
+    die();
+}
+?>
 
 
 
@@ -15,8 +24,10 @@ die();
 
 <div class="col-md-8" style="padding: 0;">
 <h3 class="page-title">
-    <?php echo $settings->mee;?> Dashboard <?php if($settings->mee == 'MEE'){ ?><small>Driver Qualification System</small><?php } ?>
-
+    <?php
+        echo $settings->mee . " " . $strings["dashboard_dashboard"];
+        if($settings->mee == 'MEE'){ echo " <small>" . $strings["index_qualify"] . "</small>"; }
+    ?>
     <!--img src="<?php echo $this->request->webroot; ?>img/logos/challenger_logoright.jpg" style="float:right;"/-->
 
 </h3>
@@ -79,7 +90,7 @@ die();
     <ul class="page-breadcrumb">
         <li>
             <i class="fa fa-home"></i>
-            <a href="<?php echo $this->request->webroot; ?>">Dashboard</a>
+            <a href="<?php echo $this->request->webroot . '">' . $strings["dashboard_dashboard"]; ?></a>
 
         </li>
 
