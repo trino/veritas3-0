@@ -89,7 +89,7 @@ $strings = CacheTranslations($language, "profiles_%",$settings);//,$registry);//
             <div class="portlet-title">
                 <div class="caption">
                     <i class="fa fa-user"></i>
-                     <?= $strings["index_listprofile"]; ?>s
+                     <?= $strings["index_listprofile"]; ?>
                 </div>
             </div>
 
@@ -297,48 +297,39 @@ $strings = CacheTranslations($language, "profiles_%",$settings);//,$registry);//
 
                                             <?php
                                                 if ($sidebar->document_list == 1/* && $doc != 0 && $cn != 0*/) {
-                                                    ?>
-                                                    <a href="<?php
-                                                    if($profile->profile_type == '5' || $profile->profile_type == '7' || $profile->profile_type == '8' || $profile->profile_type == '11')
-                                                    {
+                                                    echo '<a href="';
+                                                    if($profile->profile_type == '5' || $profile->profile_type == '7' || $profile->profile_type == '8' || $profile->profile_type == '11') {
                                                         echo $this->request->webroot . 'documents/index?type=&submitted_for_id=' . $profile->id;
-                                                     }
-                                                     else
-                                                     {
+                                                     } else {
                                                         echo $this->request->webroot . 'documents/index?type=&submitted_by_id=' . $profile->id;
                                                      }
-                                                      ?>"
-
-                                                    class="<?= btnclass("btn-info", "blue-soft") ?>"><?= $strings["profiles_viewdocuments"]; ?></a>
-                                                    <?php
+                                                      echo '" class="' . btnclass("btn-info", "blue-soft") . '">' . $strings["profiles_viewdocuments"] . '</a>';
                                                     }
 
                                                     if ($sidebar->orders_list == '1' ) {
-                                                        ?>
-                                                        <a href="<?php echo $this->request->webroot; ?>orders/orderslist/?uploaded_for=<?php echo $profile->id; ?>"
-                                                           class="<?= btnclass("btn-info", "blue-soft") ?>">
-                                                            <?= $strings["profiles_vieworders"]; ?></a>
-                                                    <?php
+                                                        echo '<a href="' . $this->request->webroot  . 'orders/orderslist/?uploaded_for=' . $profile->id . '"
+                                                           class="' . btnclass("btn-info", "blue-soft") . '">' . $strings["profiles_vieworders"] . '</a>';
                                                     }
-                                                    ?>
 
-                                            <?php if ($sidebar->profile_delete == '1') {
+                                            if ($sidebar->profile_delete == '1') {
+                                                $CanDelete=false;
                                                 if ($this->request->session()->read('Profile.super') == '1') {
-                                                    if ($this->request->session()->read('Profile.id') != $profile->id) {
-                                                        ?>
-
-            <a href="<?php echo $this->request->webroot; ?>profiles/delete/<?php echo $profile->id; ?><?php echo (isset($_GET['draft'])) ? "?draft" : ""; ?>"
-               onclick="return confirm('<?= ProcessVariables($language, $strings["dashboard_confirmdelete"], array("name" => ucfirst(h($profile->username)))); ?>');"
-               class="<?= btnclass("DELETE") ?>"><?= $strings["dashboard_delete"] ?></a>
-            </span>
-        <?php
-                                                    }
+                                                   $CanDelete = true;//supers can delete anyone
                                                 } else if ($this->request->session()->read('Profile.profile_type') == '2' && ($profile->profile_type == '5')) {
-                                                    ?>
-                                                    <a href="<?php echo $this->request->webroot; ?>profiles/delete/<?php echo $profile->id; ?><?php echo (isset($_GET['draft'])) ? "?draft" : ""; ?>"
-                                                       onclick="return confirm('Are you sure you want to delete <?= ucfirst(h($profile->username)) ?>?');"
-                                                       class="<?= btnclass("DELETE") ?>">Delete</a>
-                                                <?php
+                                                    $CanDelete = true;//recruiters can delete drivers
+                                                } else if($sidebar->profile_create =='1'){
+
+                                                    $CanDelete = in_array($profile->profile_type, $cancreate);//can delete profile types you can create
+                                                }
+                                                if ($this->request->session()->read('Profile.id') == $profile->id) {
+                                                    $CanDelete = false;//can't delete yourself
+                                                }
+
+                                                if($CanDelete){
+                                                    echo '<a href="' . $this->request->webroot . 'profiles/delete/' . $profile->id;
+                                                    if (isset($_GET['draft'])){ echo "?draft";}
+                                                    echo '" onclick="return confirm(' . "'" . ProcessVariables($language, $strings["dashboard_confirmdelete"], array("name" => ucfirst(h($profile->username))));
+                                                    echo "'" . ');" class="' . btnclass("DELETE") . '">' . $strings["dashboard_delete"] . '</a></span>';
                                                 }
                                             }
                                             ?>

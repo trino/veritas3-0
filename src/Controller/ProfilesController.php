@@ -375,12 +375,15 @@ class ProfilesController extends AppController{
     }
 
     public function index(){
+        $u = $this->request->session()->read('Profile.id');
+        $condition = TableRegistry::get("profiles")->find()->where(['id' => $u])->first()->ptypes;
+        $this->set('cancreate', explode(",", $condition) ) ;
+
         $this->loadModel('ProfileTypes');
         $this->set('ptypes', $this->ProfileTypes->find()->where(['enable' => '1']));
         $this->set('doc_comp', $this->Document);
 
-        $setting = $this->Settings->get_permission($this->request->session()->read('Profile.id'));
-        $u = $this->request->session()->read('Profile.id');
+        $setting = $this->Settings->get_permission($u);
         $this->set('ProClients', $this->Settings);
         $super = $this->request->session()->read('Profile.super');
         $condition = $this->Settings->getprofilebyclient($u, $super);

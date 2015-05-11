@@ -111,7 +111,7 @@ var Login = function() {
             }
         });
 
-        jQuery('#forget-password').click(function() {
+        jQuery('.forget-password').click(function() {
             jQuery('.login-form').hide();
             jQuery('.forget-form').show();
         });

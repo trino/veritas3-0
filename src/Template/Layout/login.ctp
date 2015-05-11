@@ -133,7 +133,7 @@
 
 
         <form class="login-form" action="<?php echo $this->request->webroot;?>login/index<?php if(isset($_GET['url'])){?>?url=<?php echo $_GET['url']; }?>" method="post">
-        <h3 class="form-title">Log in to your account</h3>
+        <h3 class="form-title">Log in to your account<BR>Accéder à votre compte</h3>
     
     <?= $this->Flash->render() ?>
     <div class="form-group">
@@ -141,29 +141,36 @@
         <label class="control-label visible-ie8 visible-ie9">Username</label>
         <div class="input-icon">
             <i class="fa fa-user"></i>
-            <input class="form-control placeholder-no-fix" type="text" autocomplete="off" placeholder="Username" name="name" required="required" />
+            <input class="form-control placeholder-no-fix" type="text" autocomplete="off" placeholder="Username / Nom de l'utilisateur" name="name" required="required" />
         </div>
     </div>
     <div class="form-group">
         <label class="control-label visible-ie8 visible-ie9">Password</label>
         <div class="input-icon">
             <i class="fa fa-lock"></i>
-            <input class="form-control placeholder-no-fix" type="password" autocomplete="off" placeholder="Password" name="password" required="required"/>
+            <input class="form-control placeholder-no-fix" type="password" autocomplete="off" placeholder="Password / Mot de passe" name="password" required="required"/>
         </div>
     </div>
     <div class="form-actions">
         <label class="checkbox">
-            <input type="checkbox" name="remember" value="1"/> Remember me </label>
+            <input type="checkbox" name="remember" value="1"/> Remember me<BR>Mémoriser mes coordonnées
+        </label>
         <button type="submit" class="btn green-haze pull-right">
-            Login <i class="m-icon-swapright m-icon-white"></i>
+            Login / Connexion
+            <i class="m-icon-swapright m-icon-white"></i>
         </button>
 
         <div class="forget-password">
             <p>
-                Forgot your password? Click <a href="javascript:;" id="forget-password">
-                    here </a>
+                Forgot your password? Click
+                    <a href="javascript:;" class="forget-password">here </a>
                 to reset.
             </p>
+            <P>
+                Avez-vous oublié votre mot de passe? Cliquer
+                    <a href="javascript:;" class="forget-password">ici </A>
+                pour le récupérer
+            </P>
         </div>
     </div>
 
@@ -190,14 +197,15 @@
 
 <!-- BEGIN FORGOT PASSWORD FORM -->
 <form class="forget-form" action="" method="post">
-    <h3>Forget Password?</h3>
+    <h3>Forgot Password?<BR>Mot de passe oublié?</h3>
     <p>
-        Enter your e-mail address below to reset your password.
+        Enter your e-mail address below to reset your password.<BR>
+        Entrez votre adresse e-mail ci-dessous pour réinitialiser votre mot de passe.
     </p>
     <div class="form-group">
         <div class="input-icon">
             <i class="fa fa-envelope"></i>
-            <input class="form-control placeholder-no-fix" type="text" id="forgetEmail" autocomplete="off" placeholder="Email" name="email"/>
+            <input class="form-control placeholder-no-fix" type="text" id="forgetEmail" autocomplete="off" placeholder="Email / Courriel" name="email"/>
         </div>
     </div>
     <div class="form-group forget_error" style="display: none;">
@@ -205,9 +213,10 @@
     </div>
     <div class="form-actions">
         <button type="button" id="back-btn" class="btn">
-            <i class="m-icon-swapleft"></i> Back </button>
+            <i class="m-icon-swapleft"></i> Back / Dos</button>
         <button type="button" class="btn green-haze pull-right forgetpass">
-            Submit <i class="m-icon-swapright m-icon-white"></i>
+            Submit / Soumettre
+            <i class="m-icon-swapright m-icon-white"></i>
         </button>
     </div>
 </form>
@@ -371,7 +380,7 @@ $(function(){
 <!-- END LOGIN -->
 <!-- BEGIN COPYRIGHT -->
 <div class="copyright">
-    &copy; 2015 All Rights Reserved
+    &copy; 2015 All Rights Reserved / Tous droits réservés
 </div>
 
 </body>
