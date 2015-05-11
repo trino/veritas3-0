@@ -1549,6 +1549,7 @@ class ProfilesController extends AppController{
                 $this->Flash->error('The user could not be saved. Please try again.');
             }
         }
+        $profile->Ptype = $this->getprofiletypeData($profile->profile_type);
 
         $this->set('doc_comp', $this->Document);
         $orders = TableRegistry::get('orders');
