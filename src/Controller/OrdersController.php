@@ -1458,5 +1458,18 @@ class OrdersController extends AppController
         die;
         
     }
+    
+    public function checkSignature($did)
+    {
+        $ord = TableRegistry::get('consent_form')->find()->where(['order_id'=>$did])->first();
+        if($ord->criminal_signature_applicant && $ord->criminal_signature_applicant2 && $ord->signature_company_witness2 && $ord->signature_company_witness)
+        {
+            $check = '1';
+        }
+        else
+        $check = '0';
+        echo $check;
+        die;
+    }
 }
 

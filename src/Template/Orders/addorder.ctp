@@ -1915,13 +1915,30 @@ $settings = $this->requestAction('settings/get_settings');
             data: param,
             type: 'POST',
             success: function (res) {
+                
                 $.ajax({
-                    url: '<?php echo $this->request->webroot;?>orders/createPdf/' + $('#did').val(),
-                    success:function()
+                    url: '<?php echo $this->request->webroot;?>orders/checkSignature/' + $('#did').val(),
+                    success:function(resp)
                     {
-                        $('#loading5').hide();
+                        if(resp=='1')
+                        {
+                            $.ajax({
+                                url: '<?php echo $this->request->webroot;?>orders/createPdf/' + $('#did').val(),
+                                success:function()
+                                {
+                                    $('#loading5').hide();
+                                }
+                            });
+                        }
+                        else
+                        {
+                            alert('There was problem in saving the signature, please go back and re-submit consent form');
+                        }
                     }
                 });
+                
+                
+                
 
 
                 //employment
