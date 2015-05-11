@@ -815,14 +815,15 @@ class ProfilesController extends AppController{
         }
         if ($this->request->is('post')) {
 
-            if (isset($_POST['profile_type']) && $_POST['profile_type'] == 1)
+            if (isset($_POST['profile_type']) && $_POST['profile_type'] == 1) {
                 $_POST['admin'] = 1;
+            }
 
             $_POST['dob'] = $_POST['doby'] . "-" . $_POST['dobm'] . "-" . $_POST['dobd'];
             //debug($_POST);die();
             $profile = $profiles->newEntity($_POST);
             if ($profiles->save($profile)) {
-
+                $this->checkusername($profile->id, $_POST);
                 if ($_POST['client_ids'] != "") {
                     $client_id = explode(",", $_POST['client_ids']);
                     foreach ($client_id as $cid) {
@@ -837,10 +838,11 @@ class ProfilesController extends AppController{
                         $pro_id = array_unique($pros);
 
                         foreach ($pro_id as $k => $p) {
-                            if (count($pro_id) == $k + 1)
+                            if (count($pro_id) == $k + 1) {
                                 $p_ids .= $p;
-                            else
+                            }else {
                                 $p_ids .= $p . ",";
+                            }
                         }
 
                         $query->query()->update()->set(['profile_id' => $p_ids])
@@ -878,6 +880,17 @@ class ProfilesController extends AppController{
         $this->set(compact('profile'));
 
         $this->render("edit");
+    }
+
+    function checkusername($profile, $post){
+        $username = trim($post["username"]);
+        if(!$username) {
+            $username = str_replace(" ", "_", TableRegistry::get('profile_types')->find()->where(['id' => $profile->profile_type])->first()->title . "_" . $profile->id);
+            $queries = TableRegistry::get('Profiles');
+            $queries->query()->update()->set(['username' => $username])
+                ->where(['id' => $profile->id])
+                ->execute();
+        }
     }
 
     public function getprofileByAnyKey($Key, $Value){
@@ -1073,6 +1086,7 @@ class ProfilesController extends AppController{
 
                 $profile = $profiles->newEntity($_POST);
                 if ($profiles->save($profile)) {
+                    $this->checkusername($profile,$_POST);
                     $this->loadModel('ProfileDocs');
                     $this->ProfileDocs->deleteAll(['profile_id' => $profile->id]);
                     if (isset($_POST['profile_doc'])) {
@@ -1386,21 +1400,8 @@ class ProfilesController extends AppController{
                 unset($post['id']);
                 $profile = $profiles->newEntity($post);
                 if ($profiles->save($profile)) {
-                    if ($profile->profile_type == '5')
-                        $username = 'driver_' . $profile->id;
-                    else
-                        if ($profile->profile_type == '7')
-                            $username = 'owner_operator_' . $profile->id;
-                        else
-                            if ($profile->profile_type == '8')
-                                $username = 'owner_driver_' . $profile->id;
-                            else
-                                if ($profile->profile_type == '11')
-                                    $username = 'employee_' . $profile->id;
-                    $queries = TableRegistry::get('Profiles');
-                    $queries->query()->update()->set(['username' => $username])
-                        ->where(['id' => $profile->id])
-                        ->execute();
+                    $this->checkusername( $profile->id, $post);
+
                     if ($post['client_ids'] != "") {
                         $client_id = explode(",", $post['client_ids']);
                         foreach ($client_id as $cid) {
