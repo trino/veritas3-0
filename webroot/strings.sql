@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: May 07, 2015 at 11:03 PM
+-- Generation Time: May 11, 2015 at 09:25 PM
 -- Server version: 5.6.17
 -- PHP Version: 5.5.12
 
@@ -32,14 +32,14 @@ CREATE TABLE IF NOT EXISTS `strings` (
   `English` varchar(4096) NOT NULL,
   `French` varchar(4096) NOT NULL,
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=77 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=96 ;
 
 --
 -- Dumping data for table `strings`
 --
 
 INSERT INTO `strings` (`ID`, `Name`, `English`, `French`) VALUES
-(1, 'Date', '1431032019', ''),
+(1, 'Date', '1431032690', ''),
 (2, 'dashboard_affirmative', 'Yes', 'Oui'),
 (3, 'dashboard_negative', 'No', 'Non'),
 (4, 'dashboard_selectall', 'Select All', ''),
@@ -112,7 +112,26 @@ INSERT INTO `strings` (`ID`, `Name`, `English`, `French`) VALUES
 (73, 'index_orders', 'Orders', 'ordres'),
 (74, 'index_invoice', 'Invoice', 'facture'),
 (75, 'analytics_description', 'Analytics of %Document%s, Orders and Drivers', 'Analytics de documents, des ordonnances et des pilotes'),
-(76, 'tasks_addtask', 'Add Task', 'Ajouter une tâche');
+(76, 'tasks_addtask', 'Add Task', 'Ajouter une tâche'),
+(77, 'month_short01', 'Jan', 'Janv.'),
+(78, 'month_short02', 'Feb', 'Févr.'),
+(79, 'month_short03', 'Mar', 'Mars'),
+(80, 'month_short04', 'Apr', 'Avril'),
+(81, 'month_short05', 'May', 'Mai'),
+(82, 'month_short06', 'June', 'Juin'),
+(83, 'month_short07', 'July', 'Juil.'),
+(84, 'month_short08', 'Aug', 'Août'),
+(85, 'month_short09', 'Sept', 'Sept.'),
+(86, 'month_short10', 'Oct', 'Oct.'),
+(87, 'month_short11', 'Nov', 'Nov.'),
+(88, 'month_short12', 'Dec', 'Déc.'),
+(89, 'analytics_leaveblank', 'Leave blank to end at today', 'Laissez vide pour terminer à aujourd''hui'),
+(90, 'tasks_tasks', 'Tasks', ''),
+(91, 'tasks_notasks', 'No tasks for today.', ''),
+(92, 'tasks_todo', 'To Do', ''),
+(93, 'tasks_reminders', '(Reminders)', ''),
+(94, 'tasks_date', 'Date', ''),
+(95, 'dashboard_add', 'Add', 'Ajouter');
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

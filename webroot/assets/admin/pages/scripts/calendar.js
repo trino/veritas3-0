@@ -21,19 +21,21 @@ var Calendar = function() {
             var h = {};
 
             if (Metronic.isRTL()) {
+                var Today = "Today";
+
                 if ($('#calendar').parents(".portlet").width() <= 720) {
                     $('#calendar').addClass("mobile");
                     h = {
                         right: 'title, prev, next',
                         center: '',
-                        left: 'agendaDay, agendaWeek, month, today'
+                        left: 'agendaDay, agendaWeek, month, ' + Today
                     };
                 } else {
                     $('#calendar').removeClass("mobile");
                     h = {
                         right: 'title',
                         center: '',
-                        left: 'agendaDay, agendaWeek, month, today, prev,next'
+                        left: 'agendaDay, agendaWeek, month, ' + Today + ', prev,next'
                     };
                 }
             } else {
@@ -42,14 +44,14 @@ var Calendar = function() {
                     h = {
                         left: 'title, prev, next',
                         center: '',
-                        right: 'today,month,agendaWeek,agendaDay'
+                        right: Today + ',month,agendaWeek,agendaDay'
                     };
                 } else {
                     $('#calendar').removeClass("mobile");
                     h = {
                         left: 'title',
                         center: '',
-                        right: 'prev,next,today,month,agendaWeek,agendaDay'
+                        right: 'prev,next,' + Today + ',month,agendaWeek,agendaDay'
                     };
                 }
             }

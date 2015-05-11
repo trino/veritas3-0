@@ -957,56 +957,48 @@ class OrdersController extends AppController
     function getDriverByClient($client)
     {
         //$logged_id = $this->request->session()->read('Profile.id');
+        $cmodel = TableRegistry::get('Clients');
         if (!is_numeric($client)) {
             $logged_id = $this->request->session()->read('Profile.id');
             //echo "<br/>";
-
-            $cmodel = TableRegistry::get('Clients');
-            if (!$this->request->session()->read('Profile.admin') && !$this->request->session()->read('Profile.super'))
+            if (!$this->request->session()->read('Profile.admin') && !$this->request->session()->read('Profile.super')) {
                 $clients = $cmodel->find()->where(['(profile_id LIKE "' . $logged_id . ',%" OR profile_id LIKE "%,' . $logged_id . ',%" OR profile_id LIKE "%,' . $logged_id . '")']);
-            else
+            }else {
                 $clients = $cmodel->find();
+            }
 
             $profile_ids = '';
             foreach ($clients as $c) {
-
                 if ($profile_ids) {
                     $profile_ids = $profile_ids . ',' . $c->profile_id;
                 } else {
                     $profile_ids = $c->profile_id;
                 }
             }
-            if (!$profile_ids)
+            if (!$profile_ids) {
                 $profile_ids = '9999999';
-
-            $profile_ids = str_replace(',', ' ', $profile_ids);
-            $profile_ids = trim($profile_ids);
-            $profile_ids = str_replace(' ', ',', $profile_ids);
-            $profile_ids = str_replace(',,', ',', $profile_ids);
-            $profile_ids = str_replace(',,', ',', $profile_ids);
-
-            $model = TableRegistry::get('Profiles');
-            $profile = $model->find()->where(['id IN (' . $profile_ids . ')', '(profile_type = 5 OR profile_type = 7 OR profile_type = 8 OR profile_type = 11)']);
+            }
         } else {
-            $cmodel = TableRegistry::get('Clients');
             $clients = $cmodel->find()->where(['id' => $client])->first();
             $profile_ids = $clients->profile_id;
-
-            $profile_ids = str_replace(',', ' ', $profile_ids);
-            $profile_ids = trim($profile_ids);
-            $profile_ids = str_replace(' ', ',', $profile_ids);
-            $profile_ids = str_replace(',,', ',', $profile_ids);
-            $profile_ids = str_replace(',,', ',', $profile_ids);
-
-            $model = TableRegistry::get('Profiles');
-            $profile = $model->find()->where(['id IN (' . $profile_ids . ')', '(profile_type = 5 OR profile_type = 7 OR profile_type = 8 OR profile_type = 11)']);
         }
-        if ($_GET['ordertype'] != 'QUA')
-            echo "<option value=''>Select Driver</option>";
-        else
-            echo "<option value=''>Select Driver</option>";
-        if ($profile) {
 
+        $profile_ids = str_replace(',', ' ', $profile_ids);
+        $profile_ids = trim($profile_ids);
+        $profile_ids = str_replace(' ', ',', $profile_ids);
+        while(strpos($profile_ids, ",,")) {
+            $profile_ids = str_replace(',,', ',', $profile_ids);
+        }
+
+        $model = TableRegistry::get('Profiles');
+        //$profile = $model->find()->where(['id IN (' . $profile_ids . ')', '(profile_type = 5 OR profile_type = 7 OR profile_type = 8 OR profile_type = 11)']);
+
+        $profile = $model->find()->where(['id IN (' . $profile_ids . ')', $this->makeprofiletypequery()]);
+
+        //echo "<OPTION>" . $this->makeprofiletypequery() . "</OPTION>";
+
+        echo "<option value='' title='Orderscontroller.getDriverByClient'>Select Driver</option>";
+        if ($profile) {
             foreach ($profile as $p) {
                 echo "<option value='" . $p->id . "'>" . $p->fname . ' ' . $p->mname . ' ' . $p->lname . "</option>";
             }
@@ -1014,6 +1006,21 @@ class OrdersController extends AppController
 
         die();
     }
+
+    function makeprofiletypequery(){
+        //'(SELECT placesorders FROM profile_types WHERE profile_types.id == profile_type) == 1'
+        $tempstr = "";
+        $ptypes = TableRegistry::get('profile_types')->find()->where(['placesorders' => 1])->all();
+        foreach($ptypes as $ptype){
+            if($tempstr){
+                $tempstr .= " OR profile_type = " .  $ptype->id;
+            }else{
+                $tempstr = "(profile_type = " .  $ptype->id;
+            }
+        }
+        return $tempstr . ")";
+    }
+
 
     function testing()
     {

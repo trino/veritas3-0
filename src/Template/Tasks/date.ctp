@@ -1,20 +1,34 @@
-<link href="<?php echo $this->request->webroot;?>assets/admin/pages/css/inbox.css" rel="stylesheet" type="text/css"/>
+<?php
+$debug=$this->request->session()->read('debug');
+if ($_SERVER['SERVER_NAME'] == "localhost" || $_SERVER['SERVER_NAME'] == "127.0.0.1") {
+    include_once('/subpages/api.php');
+} else {
+    include_once('subpages/api.php');
+}
+$settings = $this->requestAction('settings/get_settings');
+$language = $this->request->session()->read('Profile.language');
+$controller =  $this->request->params['controller'];
+$strings = CacheTranslations($language, $controller  . "_%",$settings);
+//if($debug && $language == "Debug"){ $Trans = " [Translated]"; } else {$Trans = "";}
+?>
+
+<link href="<?= $this->request->webroot;?>assets/admin/pages/css/inbox.css" rel="stylesheet" type="text/css"/>
 <h3 class="page-title">
-			To Do <small>(Reminders)</small>
+			<?= $strings["tasks_todo"] . ' <small>' . $strings["tasks_reminders"] . '</small>'; ?>
 			</h3>
 			<div class="page-bar">
 				<ul class="page-breadcrumb">
 					<li>
 						<i class="fa fa-home"></i>
-						<a href="<?php echo $this->request->webroot;?>">Dashboard</a>
+						<a href="<?= $this->request->webroot . '">' . $strings["dashboard_dashboard"] . '</a>' ?>
 						<i class="fa fa-angle-right"></i>
 					</li>
 					<li>
-						<a href="<?php echo $this->request->webroot;?>tasks/calender">Tasks</a>
+						<a href="<?php echo $this->request->webroot;?>tasks/calender"><?= $strings["tasks_tasks"] ?></a>
                         <i class="fa fa-angle-right"></i>
 					</li>
                     <li>
-                        <a href="">Date (<?php echo $this->request['pass'][0];?>)</a>
+                        <a href=""><?= $strings["tasks_date"] ?> (<?php echo $this->request['pass'][0];?>)</a>
                     </li>
 				</ul>
                 
@@ -27,11 +41,11 @@
 					<ul class="inbox-nav margin-bottom-10">
 						<li class="compose-btn">
 							<a href="<?=$this->request->webroot;?>tasks/add?date=<?= $this->request['pass'][0]; ?>" id="event_add" data-title="Add Task" class="btn green">
-							<i class="fa fa-edit"></i> Add Task </a>
+							<i class="fa fa-edit"></i> <?= $strings["tasks_addtask"] ?> </a>
 						</li>
 						<li class="inbox active">
 							<a href="javascript:;" class="btn" data-title="Tasks">
-							Tasks  </a>
+                                <?= $strings["tasks_tasks"] ?>  </a>
 							<b></b>
 						</li>
 						
@@ -39,7 +53,7 @@
 				</div>
 				<div class="col-md-10">
 					<div class="inbox-header">
-						<h1 class="pull-left">Tasks</h1>
+						<h1 class="pull-left"><?= $strings["tasks_tasks"] ?></h1>
 						<!--<form class="form-inline pull-right" action="index.html">
 							<div class="input-group input-medium">
 								<input type="text" class="form-control" placeholder="Search">
@@ -72,7 +86,7 @@
                         <?php
                         }
                         else
-                            echo "No tasks for today.";
+                            echo $strings["tasks_notasks"];
                         ?>
 					</div>
 				</div>

@@ -32,6 +32,21 @@ if ($_SERVER['SERVER_NAME'] == "localhost" || $_SERVER['SERVER_NAME'] == "127.0.
 $GLOBALS["islocal"] =$islocal;
 $GLOBALS["translated"] =false;
 $emailaddress= "info@" . getHost("isbmee.com");
+$GLOBALS["webroot"]="";
+
+function translatedatepicker($Language='English', $_this) {
+    $webroot = $_this->request->webroot;
+    $Lang = "";
+    switch ($Language) {
+        case "French":
+            $Lang = "fr";
+            break;
+    }
+    if ($Lang) {
+        echo '<script type="text/javascript" src="' . $webroot . 'assets/global/plugins/bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.' . $Lang . '.js"></script>';
+        //echo '<SCRIPT>$.datepicker.setDefaults($.datepicker.regional["' . $Lang . '"]);</SCRIPT>';
+    }
+}
 
 /* //this is the code to include it, for some reason the regular way won't work on the live
 if ($_SERVER['SERVER_NAME'] == "localhost" || $_SERVER['SERVER_NAME'] == "127.0.0.1") {

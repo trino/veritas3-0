@@ -15,6 +15,10 @@ switch ($mode){
         break;
 }
 
+function printtdline($Text){
+    echo "<TR><TD>" . $Text . "</TD></TR>";
+}
+
 $fulllist="";
 foreach($profiles as $r) {
     $DOIT = true;
@@ -37,10 +41,12 @@ foreach($profiles as $r) {
         $profiletype = "(Draft)";
     }
     if ($mode == 1) {
-        $DOIT = false;
-        if (empty($r->profile_type) || $r->profile_type == 5 || $r->profile_type == 8 || $r->profile_type == 11 || $r->profile_type == 17) {
-            $DOIT = true;
-        }
+        //$DOIT = false;
+        //if (empty($r->profile_type) || $r->profile_type == 5 || $r->profile_type == 8 || $r->profile_type == 11 || $r->profile_type == 17) {
+        //    $DOIT = true;
+        //}
+
+        $DOIT = $pType[$r->profile_type . ".canorder"] == 1;
         //$profiletype.= " [" . $r->profile_type . "]";
     }
 //echo $r->username;continue;

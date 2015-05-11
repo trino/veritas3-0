@@ -676,7 +676,7 @@ class ProfilesController extends AppController{
                             }
                         }
             */
-
+            $profile->Ptype = $this->getprofiletypeData($profile->profile_type);
             $this->set('orders', $order);
             $this->set('profile', $profile);
             $this->set('disabled', 1);
@@ -684,6 +684,11 @@ class ProfilesController extends AppController{
         }
         $this->render("edit");
     }
+
+    function getprofiletypeData($ID){
+        return TableRegistry::get('profile_types') ->find()->where(['id' => $ID])->first();
+    }
+
 
     public function viewReport($profile, $profile_edit_view = 0)
     {
@@ -1042,6 +1047,10 @@ class ProfilesController extends AppController{
         $profiles = TableRegistry::get('Profiles');
         $path = $this->Document->getUrl();
 
+        if(isset($_POST["language"])){
+            $this->request->session()->write("Profile.language", ucfirst($_POST["language"]));
+        }
+
         if ($add == '0') {
             $profile_type = $this->request->session()->read('Profile.profile_type');
             $_POST['created'] = date('Y-m-d');
@@ -1055,6 +1064,7 @@ class ProfilesController extends AppController{
                     $_POST['password'] = md5($_POST['password']);
                 }
             }
+
             if ($this->request->is('post')) {
                 if (isset($_POST['profile_type']) && $_POST['profile_type'] == 1) {
                     $_POST['admin'] = 1;
@@ -1902,8 +1912,9 @@ class ProfilesController extends AppController{
         $query = array();
         $column="title";
         if($Language != "English"){$column.=$Language;}
-        foreach($rec as $Ptype){//id title enable ISB titleFrench
+        foreach($rec as $Ptype){//id title enable ISB titleFrench placesorders
             $query[$Ptype->id] = $Ptype->$column;
+            $query[$Ptype->id . ".canorder"] = $Ptype->placesorders;
         }
         $this->response->body($query);
         return $this->response;
@@ -2950,22 +2961,20 @@ class ProfilesController extends AppController{
         die();
     }
 
-    function enableproduct($id)
-    {
+    function enableproduct($id) {
         $p = TableRegistry::get('order_products');
         $enable = $_POST['enable'];
         if ($p->query()->update()->set(['enable' => $enable])->where(['id' => $id])->execute()) {
             echo $enable;
         }
-
         die();
     }
 
-    function ptypesenable($id)
+    function ptypesenable($id, $field = "enable")
     {
         $p = TableRegistry::get('profile_types');
         $enable = $_POST['enable'];
-        if ($p->query()->update()->set(['enable' => $enable])->where(['id' => $id])->execute()) {
+        if ($p->query()->update()->set([$field => $enable])->where(['id' => $id])->execute()) {
             if ($enable == '1')
                 echo "Added";
             else

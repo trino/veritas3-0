@@ -6,6 +6,7 @@
 $settings = $this->requestAction('settings/get_settings');
 $language = $this->request->session()->read('Profile.language');
 $strings = CacheTranslations($language, "profiles_%",$settings);//,$registry);//$registry = $this->requestAction('/settings/getRegistry');
+if($language == "Debug"){ $Trans = " [Translated]"; } else {$Trans = "";}
 ?>
 
 <style>
@@ -123,7 +124,7 @@ $strings = CacheTranslations($language, "profiles_%",$settings);//,$registry);//
                                                 if (isset($return_profile_type) && $return_profile_type == $ProfileType->id) {
                                                     echo ' selected="selected"';
                                                 }
-                                                echo ">" . ucfirst($ProfileType->$fieldname) . "</option>";
+                                                echo ">" . ucfirst($ProfileType->$fieldname) . $Trans . "</option>";
                                             }
                                         }
                                     }

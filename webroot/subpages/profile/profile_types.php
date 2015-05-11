@@ -29,7 +29,8 @@
                     <th>Title (English)</th>
                     <th>Title (French)</th>
                     <th>Enable</th>
-                    <!--<th>Actions</th>-->
+                    <th>Can Order</th>
+                    <th>Actions</th>
 
                 </tr>
                 </thead>
@@ -40,10 +41,11 @@
                 {?>
                     <tr>
                         <td><?php echo $i;?></td>
-                        <td class="titleptype_<?php echo $product->id;?>"><?php echo $product->title;?></td>
-                        <td class="titleptypeFrench_<?php echo $product->id;?>"><?php echo $product->titleFrench;?></td>
-                        <td><input type="checkbox" <?php if($product->enable=='1'){echo "checked='checked'";}?> class="penable" id="pchk_<?php echo $product->id;?>" /><span class="span_<?php echo $product->id;?>"></span></td>
+                        <td class="titleptype_<?= $product->id;?>"><?php echo $product->title;?></td>
+                        <td class="titleptypeFrench_<?= $product->id;?>"><?php echo $product->titleFrench;?></td>
+                        <td><input type="checkbox" <?php if($product->enable=='1'){echo "checked='checked'";}?> class="penable" id="pchk_<?= $product->id;?>" /><span class="span_<?= $product->id;?>"></span></td>
                         <!--php if($product->id != 1 && $product->id != 2 && $product->id != 5 && $product->id != 7 && $product->id != 8  && $product->id != 11) {?>-->
+                        <td><input type="checkbox" <?php if($product->placesorders=='1'){echo "checked='checked'";}?> class="oenable" id="ochk_<?= $product->id;?>" /><span class="span2_<?= $product->id;?>"></span></td>
                         <td><a href="javascript:;" class="btn btn-info editptype" id="editptype_<?php echo $product->id;?>">Edit</a></td>
                     </tr>        
                 <?php
@@ -93,27 +95,36 @@ $(function(){
         })
     });
     $('.penable').live('click',function(){
-        var enb = "";
+        var enb = "0";
         var ids = $(this).attr('id');
-        
-       var id =  ids.replace("pchk_","");
-       //alert(id);
-       if($(this).is(":checked")) {
-           enb = "1";
-       }else {
-           enb = "0";
-       }
-      $.ajax({
-        url:"<?php echo $this->request->webroot;?>profiles/ptypesenable/"+id,
-        data:"enable="+enb,
-        type:"post",
-        success: function(msg){
-            $('.span_'+id).html(msg);
-            $('.span_'+id).show();
-            $('.span_'+id).fadeOut(2000);
-        }
-      })      
-            
+        var id =  ids.replace("pchk_","");
+        if($(this).is(":checked")) {enb = "1";}
+        $.ajax({
+            url:"<?php echo $this->request->webroot;?>profiles/ptypesenable/"+id,
+            data:"enable="+enb,
+            type:"post",
+            success: function(msg){
+                $('.span_'+id).html(msg);
+                $('.span_'+id).show();
+                $('.span_'+id).fadeOut(2000);
+            }
+         })
+    });
+    $('.oenable').live('click',function(){
+        var enb = "0";
+        var ids = $(this).attr('id');
+        var id =  ids.replace("ochk_","");
+        if($(this).is(":checked")) {enb = "1";}
+        $.ajax({
+            url:"<?php echo $this->request->webroot;?>profiles/ptypesenable/"+id + "/placesorders",
+            data:"enable="+enb,
+            type:"post",
+            success: function(msg){
+                $('.span2_'+id).html(msg);
+                $('.span2_'+id).show();
+                $('.span2_'+id).fadeOut(2000);
+            }
+        })
     });
 })
 </script>

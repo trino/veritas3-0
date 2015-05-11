@@ -13,6 +13,7 @@ if ($_SERVER['SERVER_NAME'] == "localhost" || $_SERVER['SERVER_NAME'] == "127.0.
 }
 $language = $this->request->session()->read('Profile.language');
 $strings = CacheTranslations($language, $this->request->params['controller'] . "_%",$settings);
+echo "<SCRIPT LANGUAGE='JavaScript'>var Language = '" . $language . "';</SCRIPT>";
 ?>
 
 
@@ -100,15 +101,28 @@ if ($this->request->session()->read('Profile.super') or $this->request->session(
 					</div>
 				</div>
 			</div>
-<script src="<?php echo $this->request->webroot;?>assets/global/plugins/moment.min.js"></script>
-<script src="<?php echo $this->request->webroot;?>assets/global/plugins/fullcalendar/fullcalendar.min.js"></script>
+<script src="<?= $this->request->webroot;?>assets/global/plugins/moment.min.js"></script>
+<script src="<?= $this->request->webroot;?>assets/global/plugins/fullcalendar/fullcalendar.min.js"></script>
 <!-- END PAGE LEVEL PLUGINS -->
 <!-- BEGIN PAGE LEVEL SCRIPTS -->
 <script src="<?php echo $this->request->webroot;?>assets/admin/pages/scripts/calendar.js"></script>
 
-<?php
+<?php //load fullcalendar language
 //echo "User time: " . $_SESSION['time']  . " Server timezone offset " . date("Z")/3600;
+$lang = "";
+switch ($language) {
+    case "French":
+        $lang = "fr";
+        break;
+    case "Debug":
+        $lang="debug";
+        break;
+}
+if($lang){
+    echo '<script src="' .$this->request->webroot . 'assets/global/plugins/fullcalendar/lang/' . $lang . '.js"></script>';
+}
 ?>
+
 <script>
 jQuery(document).ready(function() {       
   $('#calendar').fullCalendar({
@@ -121,11 +135,11 @@ jQuery(document).ready(function() {
             $date = $dat[0];
             ?>
         {
-            title: '<?php echo $event->title;?>',
-            desc: '<?php echo $event->description;?>',
-            delUrl: '<?php echo $this->request->webroot."tasks/delete/".$event->id;?>',
-            start: '<?php echo str_replace(" ","T",$event->date);?>',
-            url: '<?php echo $this->request->webroot;?>tasks/edit/<?php echo $event->id;?>',
+            title: '<?= $event->title;?>',
+            desc: '<?= $event->description;?>',
+            delUrl: '<?= $this->request->webroot."tasks/delete/".$event->id;?>',
+            start: '<?= str_replace(" ","T",$event->date);?>',
+            url: '<?= $this->request->webroot;?>tasks/edit/<?php echo $event->id;?>',
             time: <?= $_SESSION['Config']['time'] ?>
         },
     <?php }?>

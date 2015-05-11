@@ -504,12 +504,25 @@
                                                         user</label>
                                                 </DIV>
                                             </DIV>
-                                        <?php } ?>
-                                        <div class="clearfix"></div>
+                                        <?php } elseif( $userID == $id) { ?>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="control-label">Language: </label><BR>
+                                    <select name="language" class="form-control">
+                                        <?php
+                                        printoption("English", $language, "English");
+                                        printoption("French", $language, "French");
+                                        if($this->request->session()->read('Profile.super')==1){
+                                            printoption("Debug", $language, "Debug");
+                                        }
+                                        ?>
+                                    </select>
+                                </DIV>
+                            </DIV>
+                                    <?php } ?>
 
-                                    <?php }
-                                //}
-?>
+                                <div class="clearfix"></div>
+                                    <?php } ?>
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label class="control-label">Title: </label><BR>

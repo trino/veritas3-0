@@ -335,7 +335,7 @@
                                 }
 
                                 if (isset($p)) {
-                                    if ($profile->profile_type == 5 || $profile->profile_type == 7 || $profile->profile_type == 8 || $profile->profile_type == 11 || $profile->profile_type == 17) {//driver, owner driver, owner operator, sales, employee
+                                    if ($profile->Ptype->placesorders == 1) {//driver, owner driver, owner operator, sales, employee
                                         if ($sidebar->orders_create == 1){
                                             foreach($products as $product){
                                                 $alias = $product->Sidebar_Alias;

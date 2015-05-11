@@ -1576,19 +1576,13 @@ class DocumentComponent extends Component
             //echo $profile_ids.'_';die();
             if($driver==0 && $client==0)
             {
-                if($controller->request->session()->read('Profile.super'))
-                {
-                    
-                    $model = TableRegistry::get('Profiles');
-                    $q = $model->find()->where(['(profile_type = 5 OR profile_type = 7 OR profile_type = 8 OR profile_type = 11)'])->order('fname');
-                    //var_dump($q);die();
-                } 
-                else 
-                {
-                    $model = TableRegistry::get('Profiles');  
-                    $q = $model->find()->where(['(profile_type = 5 OR profile_type = 7 OR profile_type = 8 OR profile_type = 11)','id IN ('.$profile_ids.')'])->order('fname');
-                }  
-                
+                $model = TableRegistry::get('Profiles');
+                $conditions = array($this->makeprofiletypequery());
+                if(!$controller->request->session()->read('Profile.super')) {
+                    $conditions[] = 'id IN ('.$profile_ids.')';
+                }
+                $q = $model->find()->where([$conditions])->order('fname');
+
             }
             else
             if($driver!=0) {
@@ -1598,13 +1592,27 @@ class DocumentComponent extends Component
             
             $dr_cl['driver'] = $q;
             $dr_cl['client'] = $clients; 
-            
+           // $dr_cl["query"] = $this->makeprofiletypequery();
             //$this->response->body($dr_cl);
             return $dr_cl;
             die();
             
         }
-        
+
+    function makeprofiletypequery(){
+        //'(SELECT placesorders FROM profile_types WHERE profile_types.id == profile_type) == 1'
+        $tempstr = "";
+        $ptypes = TableRegistry::get('profile_types')->find()->where(['placesorders' => 1])->all();
+        foreach($ptypes as $ptype){
+            if($tempstr){
+                $tempstr .= " OR profile_type = " .  $ptype->id;
+            }else{
+                $tempstr = "(profile_type = " .  $ptype->id;
+            }
+        }
+        return $tempstr . ")";
+    }
+
         public function getOrderData($cid = 0, $order_id = 0)
         {
             if (!$order_id) {

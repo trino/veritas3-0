@@ -1,3 +1,18 @@
+<?php
+$debug=$this->request->session()->read('debug');
+if ($_SERVER['SERVER_NAME'] == "localhost" || $_SERVER['SERVER_NAME'] == "127.0.0.1") {
+    include_once('/subpages/api.php');
+} else {
+    include_once('subpages/api.php');
+}
+
+$settings = $this->requestAction('settings/get_settings');
+$language = $this->request->session()->read('Profile.language');
+$controller =  $this->request->params['controller'];
+$strings = CacheTranslations($language, $controller  . "_%",$settings);
+//if($debug && $language == "Debug"){ $Trans = " [Translated]"; } else {$Trans = "";}
+?>
+
 <script type="text/javascript" src="<?= $this->request->webroot;?>js/datetime.js"></script>
 <body onLoad="ajaxpage('timezone');">
 
@@ -41,15 +56,23 @@ if(isset($isdisabled)) {$disabled = "disabled='disabled'";}
 				<ul class="page-breadcrumb">
 					<li>
 						<i class="fa fa-home"></i>
-						<a href="<?php echo $this->request->webroot;?>">Dashboard</a>
+						<a href="<?= $this->request->webroot . '">' . $strings["dashboard_dashboard"] ?></a>
 						<i class="fa fa-angle-right"></i>
 					</li>
 					<li>
-						<a href="<?php echo $this->request->webroot;?>tasks/calender">Tasks</a>
+						<a href="<?php echo $this->request->webroot;?>tasks/calender"><?= $strings["tasks_tasks"]; ?></a>
                         <i class="fa fa-angle-right"></i>
 					</li>
                     <li>
-						<?php if(isset($isdisabled))echo "View"; elseif(isset($event)){echo "Edit";}else{echo "Add";}?>
+						<?php
+                            if(isset($isdisabled)) {
+                                echo $strings["dashboard_view"];
+                            } elseif(isset($event)){
+                                echo $strings["dashboard_edit"];
+                            }else{
+                                echo $strings["dashboard_add"];
+                            }
+                        ?>
 					</li>
 				</ul>
                 <?php
@@ -125,7 +148,6 @@ if(isset($isdisabled)) {$disabled = "disabled='disabled'";}
 </div>
 <link rel="stylesheet" type="text/css" href="<?php echo $this->request->webroot;?>css/date.css"/>
 <style>
-.table-condensed td:hover{cursor:pointer; }
-
-
+    .table-condensed td:hover{cursor:pointer; }
 </style>
+<?php translatedatepicker($language, $this); ?>

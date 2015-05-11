@@ -282,6 +282,7 @@ function printform($counting, $settings, $client, $dr_cl, $driver, $intable = fa
                             data-placeholder="Select <?php echo ucfirst($settings->client); ?>" disabled>
                         <?php
     }
+    //debug( $dr_cl["query"]);
     foreach ($dr_cl['client'] as $dr) {
         $client_id = $dr->id;
         ?>
@@ -508,8 +509,7 @@ function printform($counting, $settings, $client, $dr_cl, $driver, $intable = fa
                             data:'forms='+getcheckboxes()+'&drivers='+getdrivers()+'&client='+$('#selecting_client').val()+'&division='+division,
                             url:'<?php echo $this->request->webroot;?>orders/bulksubmit',
                             type:'post',
-                            success:function()
-                            {
+                            success:function() {
                                window.location = '<?php echo $this->request->webroot;?>';
                             }
                         });
@@ -609,8 +609,7 @@ function printform($counting, $settings, $client, $dr_cl, $driver, $intable = fa
 
             <?php
 
-        if(!$driver)
-        {
+        if(!$driver){
             ?>
             $.ajax({
                 url: '<?php echo $this->request->webroot;?>orders/getDriverByClient/' + client + '?ordertype=<?php if(isset($_GET['ordertype']))echo $_GET['ordertype']?>',

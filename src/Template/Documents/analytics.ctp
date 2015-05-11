@@ -13,7 +13,7 @@ if ($_SERVER['SERVER_NAME'] == "localhost" || $_SERVER['SERVER_NAME'] == "127.0.
 $language = $this->request->session()->read('Profile.language');
 $GLOBALS["language"] = $language;
 //$registry = $this->requestAction('/settings/getRegistry');
-$strings = CacheTranslations($language, "analytics_%",$settings);//,$registry);
+$strings = CacheTranslations($language, array("analytics_%","month_%") ,$settings);//,$registry);
 //print_r($strings);
 
 function left($text, $length){
@@ -122,7 +122,7 @@ function add_date($givendate,$day=0,$mth=0,$yr=0) {
 	return $newdate;
 }
 
-function enumdata($variable, $daysbackwards, $date = -1){ //* [10, 1], [17, -14], [30, 5] *// strtotime('-1 day', $dateto)
+function enumdata($variable, $daysbackwards, $date = -1, $strings){ //* [10, 1], [17, -14], [30, 5] *// strtotime('-1 day', $dateto)
 	$tempstr= "";
 	$delimeter="";
 	if ($date ==-1) { $date= date("Y-m-d"); }
@@ -130,7 +130,7 @@ function enumdata($variable, $daysbackwards, $date = -1){ //* [10, 1], [17, -14]
 		$newdate =add_date($date, -$temp,0,0);
 		$thedate = extractdate($newdate);
 		//getdatestamp($newdate); //right($thedate,2);
-		$day = '"' . date("M d" , getdatestamp($newdate)) . '"' ; //if ($temp==0) { $day = '"' . "End". '"' ; } else {
+		$day = '"' . todate($newdate, $strings) . '"' ; //if ($temp==0) { $day = '"' . "End". '"' ; } else {
 		$quantity = 0;
 		if (array_key_exists($thedate,$variable)){$quantity  = $variable[$thedate];}
 		$tempstr = "[" . $day . ',' . $quantity . "]" . $delimeter . $tempstr;
@@ -204,19 +204,19 @@ jQuery(document).ready(function() {
 
 
 	var data = [{
-		data: [<?php echo enumdata($docdates, $days, $startdate); ?>]
+		data: [<?php echo enumdata($docdates, $days, $startdate, $strings); ?>]
 	}];
 	var data2 = [{
-		data: [<?php echo enumdata($orderdates, $days, $startdate); ?>]
+		data: [<?php echo enumdata($orderdates, $days, $startdate, $strings); ?>]
 	}];
 	var data3 = [{
-		data: [<?php echo enumdata($profiledates, $days, $startdate); ?>]
+		data: [<?php echo enumdata($profiledates, $days, $startdate, $strings); ?>]
 	}];
 	var data4 = [{
-		data: [<?php echo enumdata($clientdates, $days, $startdate); ?>]
+		data: [<?php echo enumdata($clientdates, $days, $startdate, $strings); ?>]
 	}];
     var data5 = [{
-        data: [<?php echo enumdata($quizdates, $days, $startdate); ?>]
+        data: [<?php echo enumdata($quizdates, $days, $startdate, $strings); ?>]
     }];
 
 	var options = marking(<?php echo $docavg; ?>, 'red');
@@ -295,7 +295,7 @@ jQuery(document).ready(function() {
 													<span class="input-group-addon"><?= $strings["analytics_start"]; ?></span>
 													<input type="text" class="form-control" name="from" value="<?php echo $enddate; ?>" style="min-width: 100px;">
 													<span class="input-group-addon"><?= $strings["analytics_finish"]; ?></span>
-													<input type="text" class="form-control" name="to" title="Leave blank to end at today" value="<?php echo get2("to", date("Y-m-d")); ?>" style="min-width: 100px;">
+													<input type="text" class="form-control" name="to" title="<?= $strings["analytics_leaveblank"] ?>" value="<?php echo get2("to", date("Y-m-d")); ?>" style="min-width: 100px;">
                                                     <!--button type="submit" class="btn btn-primary" style="float">Search</button-->
 
 												</div>
@@ -315,8 +315,9 @@ function get2($name, $default ="" ){
 		return $default;
 	}
 	
-function todate($date){
-	return date("M d", getdatestamp($date));
+function todate($date, $strings){
+    return $strings["month_short" . date("m", getdatestamp($date))] . date(" d", getdatestamp($date));
+	//return date("M d", getdatestamp($date));
 }
 
 function datecheck($date, $start, $end){
@@ -333,7 +334,7 @@ function pluralize($text, $quantity){
     return $text . "s";
 }
 
-function newchart($color, $icon, $title, $chartid, $dates, $data, $start,$end, $isdraft, $profiletypes, $clienttypes){
+function newchart($color, $icon, $title, $chartid, $dates, $data, $start,$end, $isdraft, $profiletypes, $clienttypes, $strings){
 	echo '<P><div class="row"><div class="col-md-12">';
 		echo '<div class="portlet box ' . $color . '">';
 			echo '<div class="portlet-title">';
@@ -352,7 +353,7 @@ function newchart($color, $icon, $title, $chartid, $dates, $data, $start,$end, $
 					foreach($dates as $key => $value){
 						if (datecheck($key,$start,$end)){
 							$didit=true;
-							$rawdata.=todate($key) . ":\t" . $value . " " . pluralize(left(strtolower($title), strlen($title)-1), $value) . "\r\n";
+							$rawdata.=todate($key, $strings) . ":\t" . $value . " " . pluralize(left(strtolower($title), strlen($title)-1), $value) . "\r\n";
 							$alldocs = enumsubdocs($data, $key, $chartid, $isdraft, $profiletypes, $clienttypes);
 							foreach($alldocs as $key => $value){
 								$rawdata.="\t" . $value . ' ' . pluralize($key, $value) . "\r\n";
@@ -363,7 +364,7 @@ function newchart($color, $icon, $title, $chartid, $dates, $data, $start,$end, $
 					$rawdata.='</textarea>';
 				} 
 				if (!$didit) {
-					$rawdata = "No " .  strtolower($title);
+					$rawdata = $strings["dashboard_negative"] . " " .  strtolower($title);
 				}
 				
 				echo '</DIV><div class="col-md-4">' . $rawdata  . '</div>';
@@ -371,23 +372,23 @@ function newchart($color, $icon, $title, $chartid, $dates, $data, $start,$end, $
 }
 
 if($sidebar->client_list==1) {
-    newchart("grey-salsa", "icon-globe", $strings["index_clients"], "clients", $clientdates, $clients, $startdate, $enddate, $isdraft, $profiletypes, $clienttypes);//new clients
+    newchart("grey-salsa", "icon-globe", $strings["index_clients"], "clients", $clientdates, $clients, $startdate, $enddate, $isdraft, $profiletypes, $clienttypes, $strings);//new clients
 }
 
 if($sidebar->profile_list==1) {
-    newchart("green-haze", "icon-user", $strings["index_profiles"], "profiles", $profiledates, $profiles, $startdate, $enddate, $isdraft, $profiletypes, $clienttypes);//new users
+    newchart("green-haze", "icon-user", $strings["index_profiles"], "profiles", $profiledates, $profiles, $startdate, $enddate, $isdraft, $profiletypes, $clienttypes, $strings);//new users
 }
 
 if($sidebar->document_list==1) {
-    newchart("yellow-casablanca", "icon-doc", $strings["index_documents"], "documents", $docdates, $documents, $startdate, $enddate, $isdraft, $profiletypes, $clienttypes);//new documents
+    newchart("yellow-casablanca", "icon-doc", $strings["index_documents"], "documents", $docdates, $documents, $startdate, $enddate, $isdraft, $profiletypes, $clienttypes, $strings);//new documents
 }
 
 if($sidebar->orders_list==1) {
-    newchart("yellow", "icon-docs", $strings["index_orders"], "orders", $orderdates, $orders, $startdate, $enddate, $isdraft, $profiletypes, $clienttypes);//new orders
+    newchart("yellow", "icon-docs", $strings["index_orders"], "orders", $orderdates, $orders, $startdate, $enddate, $isdraft, $profiletypes, $clienttypes, $strings);//new orders
 }
 
 if($sidebar->training==1) {
-    newchart("blue-steel", "fa fa-graduation-cap", $strings["index_courses"], "courses", $quizdates, $answers, $startdate, $enddate, $isdraft, $profiletypes, $clienttypes);//new quiz completions
+    newchart("blue-steel", "fa fa-graduation-cap", $strings["index_courses"], "courses", $quizdates, $answers, $startdate, $enddate, $isdraft, $profiletypes, $clienttypes, $strings);//new quiz completions
 }
 
 function FindIterator1($ObjectArray, $FieldName, $FieldValue){

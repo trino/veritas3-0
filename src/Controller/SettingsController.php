@@ -426,7 +426,7 @@ class SettingsController extends AppController {
                             }
                             $ditit++;
                             if(count($columns)==2) {
-                                if(tablehaskey($Table, 'Name', $Page . $columns[0])){
+                                if($this->tablehaskey($Table, 'Name', $Page . $columns[0])){
                                     $Table->query()->update()->set([$Language =>  $columns[1]])->where(['Name' => $Page . $columns[0]])->execute();
                                     $Data .= $CRLF . $ditit . ") update " . $Page . $columns[0] . " (" . $Language . ") = " . $columns[1];
                                 } else {
