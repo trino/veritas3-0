@@ -485,7 +485,7 @@ var FormWizard = function () {
                         else{
                             if(form_name == 'consent')
                             {
-                                
+
                                 if($('#sig2 .touched').val()!='1' && $('#sig2 .touched_edit2').val()!='1')
                                 {
                                     alert('Please provide your signature to confirm.');

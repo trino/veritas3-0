@@ -1932,13 +1932,12 @@ $settings = $this->requestAction('settings/get_settings');
                         }
                         else
                         {
-                            alert('There was problem in saving the signature, please go back and re-submit consent form');
+                            alert('There was problem saving the signatures, please go back and re-submit the consent form.');
+                            $('#loading5').hide();
+
                         }
                     }
                 });
-                
-                
-                
 
 
                 //employment
