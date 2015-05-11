@@ -177,7 +177,7 @@
                         <label for="confirm_check" style="margin: 0;">
                             <h4 style="line-height: 120%;">
                             <input type="checkbox" class="form-control" value="1" id="confirm_check1" name="confirm_check"/> 
-                                I confirm that I have read and understand the <a href="<?php echo $this->request->webroot;?>pages/views/terms" target="_blank">Terms & conditions.</a></h4></label>
+                                I confirm that I have read and understand the <a href="<?php echo $this->request->webroot;?>pages/view/terms" target="_blank">Terms & conditions.</a></h4></label>
                     </div>
             <?php 
             } ?>
