@@ -2264,7 +2264,10 @@ class ProfilesController extends AppController{
         if (isset($_POST['username']) && $_POST['username'] && $user1=="")
             $user = $_POST['username'];
         else
+            if($user1)
             $user = $user1;
+            else
+            {echo '0';die();}
         $q = TableRegistry::get('profiles');
         $que = $q->find();
 
