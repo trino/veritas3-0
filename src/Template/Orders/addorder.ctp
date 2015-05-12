@@ -1,19 +1,3 @@
-<script src="<?php echo $this->request->webroot; ?>js/jquery.easyui.min.js" type="text/javascript"></script>
-<script src="<?php echo $this->request->webroot; ?>js/ajaxupload.js" type="text/javascript"></script>
-<style>.allattach{display:none;}</style>
-
-<script>
-    document.onmousedown  = myClickListener;
-    var eventIsFiredFromElement = "";
-    function myClickListener(e){
-        if(e==null){
-            eventIsFiredFromElement = event.srcElement.innerHTML;//IE
-        } else {
-            eventIsFiredFromElement = e.target.innerHTML;//firefox
-        }
-    }
-</script>
-
 <?php
 use Cake\ORM\TableRegistry;
 include_once 'subpages/filelist.php';
@@ -63,7 +47,27 @@ function provinces($name){
 $is_disabled = '';
 if (isset($disabled)){ $is_disabled = 'disabled="disabled"';}
 $settings = $this->requestAction('settings/get_settings');
-?>
+
+//<script src="<?php echo $this->request->webroot;  js/jquery.easyui.min.js" type="text/javascript"></script>
+//<script src="<?php echo $this->request->webroot;  js/ajaxupload.js" type="text/javascript"></script>
+
+JSinclude($this,"js/jquery.easyui.min.js");
+JSinclude($this,"js/ajaxupload.js");
+    ?>
+<style>.allattach{display:none;}</style>
+
+<script>
+    document.onmousedown  = myClickListener;
+    var eventIsFiredFromElement = "";
+    function myClickListener(e){
+        if(e==null){
+            eventIsFiredFromElement = event.srcElement.innerHTML;//IE
+        } else {
+            eventIsFiredFromElement = e.target.innerHTML;//firefox
+        }
+    }
+</script>
+
 <input type="hidden" id="tablename" value="<?php echo $table; ?>"/>
 
 <h3 class="page-title">

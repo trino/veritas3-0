@@ -22,7 +22,7 @@ if($LastUpdate < $UpdateFile){
 function JSinclude($_this, $File){
     $URL = $_this->request->webroot . $File;
     $File = getcwd() . "/" . $File;
-    echo '<script src="' . $URL . '?' . filemtime($File) . '"></script>';
+    echo '<script src="' . $URL . '?' . filemtime($File) . '" type="text/javascript"></script>';
 }
 
 
@@ -317,6 +317,10 @@ function translate($language, $flushcache = false){
         echo $language . " is not installed on this system.";
     }
     return $language;
+}
+
+function alert($Text){
+    echo "<SCRIPT>alert('$Text');</SCRIPT>";
 }
 */
 ?>

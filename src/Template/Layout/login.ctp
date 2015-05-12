@@ -56,8 +56,20 @@
 <script src="<?php echo $this->request->webroot;?>assets/global/scripts/metronic.js" type="text/javascript"></script>
 <script src="<?php echo $this->request->webroot;?>assets/admin/layout/scripts/layout.js" type="text/javascript"></script>
 <script src="<?php echo $this->request->webroot;?>assets/admin/layout/scripts/demo.js" type="text/javascript"></script>
-<script src="<?php echo $this->request->webroot;?>assets/admin/pages/scripts/login.js" type="text/javascript"></script>
+
 <!-- END PAGE LEVEL SCRIPTS -->
+    <?php
+    if ($_SERVER['SERVER_NAME'] == "localhost" || $_SERVER['SERVER_NAME'] == "127.0.0.1") {
+        include_once('/subpages/api.php');
+    } else {
+        include_once('subpages/api.php');
+    }
+
+    JSinclude($this, "assets/admin/pages/scripts/login.js");
+    //<script src="<?php echo $this->request->webroot; assets/admin/pages/scripts/login.js" type="text/javascript"></script>
+
+    ?>
+
 <script>
     jQuery(document).ready(function() {
         Metronic.init(); // init metronic core components

@@ -109,7 +109,9 @@ $strings = CacheTranslations($language, "langswitch",$settings);//,$registry);
 <script type="text/javascript" src="<?php echo $this->request->webroot;?>assets/global/plugins/ckeditor/ckeditor.js"></script>
 
 
-<script type="text/javascript" src="<?php echo $this->request->webroot;?>js/ajaxupload.js"></script>
+<?php //<script type="text/javascript" src="<?php echo $this->request->webroot; js/ajaxupload.js"></script>
+    JSinclude($this, "js/ajaxupload.js");
+?>
 
 <script type="text/javascript" src="<?php echo $this->request->webroot;?>assets/global/plugins/jquery-validation/js/jquery.validate.min.js"></script>
 <script type="text/javascript" src="<?php echo $this->request->webroot;?>assets/global/plugins/jquery-validation/js/additional-methods.min.js"></script>
@@ -133,7 +135,11 @@ $strings = CacheTranslations($language, "langswitch",$settings);//,$registry);
 <script src="<?php echo $this->request->webroot;?>assets/admin/pages/scripts/index.js" type="text/javascript"></script>
 <script src="<?php echo $this->request->webroot;?>assets/admin/pages/scripts/tasks.js" type="text/javascript"></script>
 <script src="<?php echo $this->request->webroot;?>assets/admin/pages/scripts/profile.js" type="text/javascript"></script>
-<script src="<?php echo $this->request->webroot;?>assets/admin/pages/scripts/form-wizard.js"></script>
+
+<?php //<script src="<?php echo $this->request->webroot; assets/admin/pages/scripts/form-wizard.js"></script>
+    JSinclude($this, "assets/admin/pages/scripts/form-wizard.js");
+?>
+
 <script src="<?php echo $this->request->webroot;?>assets/admin/pages/scripts/components-pickers.js"></script>
 <script src="<?php echo $this->request->webroot;?>assets/admin/pages/scripts/components-dropdowns.js"></script>
 
