@@ -509,8 +509,22 @@ function printform($counting, $settings, $client, $dr_cl, $driver, $intable = fa
                             data:'forms='+getcheckboxes()+'&drivers='+getdrivers()+'&client='+$('#selecting_client').val()+'&division='+division,
                             url:'<?php echo $this->request->webroot;?>orders/bulksubmit',
                             type:'post',
-                            success:function() {
-                               window.location = '<?php echo $this->request->webroot;?>';
+                            success:function(res) {
+                                var response = JSON.parse(res);
+                                var driv = response['driver'].split(',');
+                                var ord = response['order_id'].split(',');
+                                for(var k=0;k<driv.length;k++)
+                                {
+                                    $.ajax({
+                                        url:'<?php echo $this->request->webroot;?>orders/webservice/BUL/'+response['forms']+'/'+driv[k]+'/'+ord[k],
+                                        success:function()
+                                        {
+                                            if(k == driv.length-1)
+                                            window.location = '<?php echo $this->request->webroot;?>';
+                                        }
+                                    })
+                                }
+                              
                             }
                         });
                         return;

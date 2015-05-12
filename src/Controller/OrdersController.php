@@ -780,8 +780,8 @@ class OrdersController extends AppController
         $subdocument = TableRegistry::get('subdocuments');
 
         $this->layout = "blank";
-        echo '<br><br>order id: '.$orderid . '<br>';
-        echo 'driverid: '. $driverid .'<br/><br/>';
+        /*echo '<br><br>order id: '.$orderid . '<br>';
+        echo 'driverid: '. $driverid .'<br/><br/>';*/
 
         $model = TableRegistry::get('profiles');
         $driverinfo = $model->find()->where(['id' => $driverid])->first(); //$conditions[] = 'find_in_set(id, ' . $conditions2 . ')'
@@ -1438,6 +1438,8 @@ class OrdersController extends AppController
         $arr['created'] = date('Y-m-d H:i:s');
         $arr['division'] = $_POST['division'];
         $arr['user_id'] = $this->request->session()->read('Profile.id');
+        $arr['driver'] = '';
+        $arr['order_id'] = '';
         foreach($drivers as $driver)
         {
             $arr['uploaded_for'] = $driver;
@@ -1445,11 +1447,23 @@ class OrdersController extends AppController
                                 
             $doc = $ord->newEntity($arr);
             $ord->save($doc);
-            $this->webservice('BUL', $arr['forms'], $arr['user_id'], $doc->id);
+            //$this->webservice('BUL', $arr['forms'], $arr['user_id'], $doc->id);
+            if($arr['driver'])
+            $arr['driver'] = $arr['driver'].','.$driver;
+            else
+            $arr['driver'] = $driver;
+            if($arr['order_id'])
+            $arr['order_id'] = $arr['order_id'].','. $doc->id;
+            else
+            $arr['order_id'] =  $doc->id;
+            
+            
             unset($doc);
             
             
         }
+        
+        echo json_encode($arr);
         $this->Flash->success('Your bulk order has been saved successfully');
         die();
         
