@@ -9,7 +9,7 @@ if ($_SERVER['SERVER_NAME'] == "localhost" || $_SERVER['SERVER_NAME'] == "127.0.
 $settings = $this->requestAction('settings/get_settings');
 $language = $this->request->session()->read('Profile.language');
 $controller =  $this->request->params['controller'];
-$strings = CacheTranslations($language, $controller  . "_%",$settings);
+$strings = CacheTranslations($language, array($controller  . "_%", "month_long%"),$settings);
 //if($debug && $language == "Debug"){ $Trans = " [Translated]"; } else {$Trans = "";}
 ?>
 
@@ -17,11 +17,12 @@ $strings = CacheTranslations($language, $controller  . "_%",$settings);
 <body onLoad="ajaxpage('timezone');">
 
 <?php
-function offsettime2($date, $minutes){
-    if ($minutes == 0){ return $date;}
+function offsettime2($date, $minutes, $strings){
+    //if ($minutes == 0){ return $date;}
     $newdate= date_create($date);
     if ($minutes > 0) {$newdate->modify("+" . $minutes . " minutes"); }
-    return $newdate->format('d F Y - H:i');
+    $month = $strings["month_long" . date_format($newdate, 'm')];
+    return str_replace(".", $month, $newdate->format('d . Y - H:i'));
 }
 
 function offsettime($date, $offset){
@@ -95,14 +96,14 @@ if(isset($isdisabled)) {$disabled = "disabled='disabled'";}
                         <input type="hidden" name="offset" value="<?= $offset ?>">
 						<input type="text" name="date" <?php echo $disabled;?> class="form-control todo-taskbody-due date form_datetime" placeholder="Due Date..." value="<?php
                         if(isset($event)) {
-                            echo date('d F Y - H:i',strtotime($event->date));
+                            echo offsettime2(date('d F Y - H:i',strtotime($event->date)), 0, $strings);
                         } else {
                             $minutes = ceil(date("i") / 5) * 5 - date("i");
                             if ($minutes==0){$minutes=5;}
                             if (isset($_GET["date"])) {
-                                echo offsettime2(date('Y-m-d ', strtotime($_GET["date"])) . date("H:i"), $minutes);
+                                echo offsettime2(date('Y-m-d ', strtotime($_GET["date"])) . date("H:i"), $minutes, $strings);
                             } else {
-                                echo offsettime2(date('Y-m-d H:i'), $minutes);
+                                echo offsettime2(date('Y-m-d H:i'), $minutes, $strings);
                             }
                             //echo date('d F Y - ', strtotime($_GET["date"])) . date("H:i", time() + $minutes * 60000) . " " . $minutes;
                         }?>"/>
@@ -150,4 +151,3 @@ if(isset($isdisabled)) {$disabled = "disabled='disabled'";}
 <style>
     .table-condensed td:hover{cursor:pointer; }
 </style>
-<?php translatedatepicker($language, $this); ?>

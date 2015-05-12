@@ -2779,6 +2779,9 @@
 <script type="text/javascript" src="<?php echo $this->request->webroot;?>assets/global/plugins/bootstrap-daterangepicker/daterangepicker.js"></script>
 <script type="text/javascript" src="<?php echo $this->request->webroot;?>assets/global/plugins/bootstrap-colorpicker/js/bootstrap-colorpicker.js"></script>
 <script type="text/javascript" src="<?php echo $this->request->webroot;?>assets/global/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
+<?php
+    translatedatepicker($language, $this);
+?>
 <!-- END PAGE LEVEL PLUGINS -->
 <!-- BEGIN PAGE LEVEL SCRIPTS -->
 <script src="<?php echo $this->request->webroot;?>assets/global/scripts/metronic.js" type="text/javascript"></script>

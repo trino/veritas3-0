@@ -49,9 +49,14 @@ function translatedatepicker($Language='English', $_this) {
             $Lang = "fr";
             break;
     }
-    if ($Lang) {
-        echo '<script type="text/javascript" src="' . $webroot . 'assets/global/plugins/bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.' . $Lang . '.js"></script>';
-        //echo '<SCRIPT>$.datepicker.setDefaults($.datepicker.regional["' . $Lang . '"]);</SCRIPT>';
+    if ($Lang) {//Remember: The datepicker locale was modified to overwrite the EN locale!!!
+        echo '<script type="text/javascript" src="' . $webroot . 'assets/global/plugins/bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.' . $Lang . '.js" charset="UTF-8"></script>';
+/*<SCRIPT LANGUAGE="JAVASCRIPT">' . "
+    $('.datepicker').datepicker({
+            language: '" . $Lang . "'
+    });
+</SCRIPT>";
+*/
     }
 }
 

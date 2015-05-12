@@ -52,11 +52,13 @@
 
             <TH>Visible</TH>
             <TH>Bypass</TH>
+
+            <TH>Price</TH>
         </TR>
     </thead>
     <tbody>
         <TR ONCLICK="productclick('');">
-            <TD COLSPAN="15" ALIGN="CENTER" <?php if(!isset($_GET["Acronym"])){echo 'CLASS="selected"';}?>>
+            <TD COLSPAN="16" ALIGN="CENTER" <?php if(!isset($_GET["Acronym"])){echo 'CLASS="selected"';}?>>
                 <A HREF="javascript:void(0)" CLASS="btn default btn-info">Create new product type</A>
             </TD>
         </TR>
@@ -70,6 +72,15 @@
                 }
                 if(!$text){$text=$Blank;}
                 echo "<TD>" . $text . "</TD>";
+            }
+
+            function formatprice($price){
+                if (strpos($price, ".")){
+                    $price= str_replace(".", "<SUP>", $price);
+                } else {
+                    $price.="<SUP>00";
+                }
+                return "$" . $price . "</SUP>";
             }
 
             foreach($producttypes as $producttype){
@@ -105,6 +116,8 @@
 
                     td($producttype->Visible, True);
                     td($producttype->Bypass, True);
+
+                    td(formatprice($producttype->Price));
                 echo "</TR>";
             }
         ?>
@@ -273,6 +286,9 @@
     tr("Top Block Color", 2, "What color will the Top blocks show as");
     makecolordropdown("Block_Color", $colors, str_replace("bg-", "", getvalue($selectedproduct, "Block_Color")));
 
+    tr("Price", 1, "Do not put a $ sign");
+    input("text", "Price", getvalue($selectedproduct, "Price", "0.00"), false,false,true);
+
     tr("Icon", 12, "What icon will show");//needs to be a full row, don't ask me why
     echo '<BR>';
     $icon = getvalue($selectedproduct, "Icon");
@@ -281,7 +297,7 @@
     makeradio($this->request->webroot, "Icon", $icon, "fa icon-surveillance", "surveillance", $iconsize);
     makeradio($this->request->webroot, "Icon", $icon, "fa icon-physical", "physical", $iconsize);
 
-    echo '<INPUT STYLE="float: right" TYPE="SUBMIT" NAME="submit" CLASS="btn btn-primary" VALUE="Save Changes">';
+    echo '<INPUT STYLE="float: right" TYPE="SUBMIT" NAME="submit" CLASS="btn btn-primary" ONCLICK="return isvalid();" VALUE="Save Changes">';
     if(isset($_GET["Acronym"])) {
         echo '<INPUT STYLE="float: right" TYPE="BUTTON" NAME="discard" ONCLICK="return discardprod();" CLASS="btn btn-warning btnspc" VALUE="Discard Changes">';
         echo '<INPUT STYLE="float: right" TYPE="BUTTON" NAME="delete" ONCLICK="return deleteproduct();" CLASS="btn btn-danger btnspc" VALUE="Delete">';
@@ -304,6 +320,19 @@
 
 <SCRIPT>
     var BypassMode = <?php if($Bypass){ echo "true";} else {echo "false";} ?>;
+
+    function getelementvalue(Name){
+        return document.getElementById(Name).value;
+    }
+
+    function isvalid(){
+        var Price = getelementvalue("Price");
+        if (isNaN(Price)) {
+            alert("The price (" + Price + ") is not a valid number");
+            return false;
+        }
+        return true;
+    }
 
     function addblocked(ID){
         var added = addID("Blocked", ID);
