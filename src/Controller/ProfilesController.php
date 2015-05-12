@@ -186,7 +186,7 @@ class ProfilesController extends AppController{
                     break;
                 case "rename":
                     $this->RenameProduct($DocID, $_POST["newname"], $Language);
-                    echo $DocID . " (" . $_POST["Language"] . ") was renamed to '" . $_POST["newname"] . "'";
+                    echo $DocID . " (" . $Language . ") was renamed to '" . $_POST["newname"] . "'";
                     break;
                 case "deletedocument":
                     $this->DeleteProduct($DocID);
@@ -1055,15 +1055,22 @@ class ProfilesController extends AppController{
         file_put_contents("royslog.txt", "To: " . $To . " Subject: " . $Subject . " Mesage: " . $Message, FILE_APPEND);
     }
 
+    function updatelanguage($post){
+        $language = "English";
+        if(isset($post["language"])){
+            $language=ucfirst($post["language"]);
+            $this->request->session()->write("Profile.language", $language);
+        }
+        return $language;
+    }
+
     function saveprofile($add = "")
     {
         $settings = $this->Settings->get_settings();
         $profiles = TableRegistry::get('Profiles');
         $path = $this->Document->getUrl();
 
-        if(isset($_POST["language"])){
-            $this->request->session()->write("Profile.language", ucfirst($_POST["language"]));
-        }
+        $this->updatelanguage($_POST);
 
         if ($add == '0') {
             $profile_type = $this->request->session()->read('Profile.profile_type');
@@ -1542,6 +1549,8 @@ class ProfilesController extends AppController{
                 $this->request->data['admin'] = 0;
             }
             $this->request->data['dob'] = $_POST['doby'] . "-" . $_POST['dobm'] . "-" . $_POST['dobd'];
+            $this->request->data['language'] = $this->updatelanguage($_POST);
+
             //var_dump($this->request->data); die();//echo $_POST['admin'];die();
             $profile = $this->Profiles->patchEntity($profile, $this->request->data);
             if ($this->Profiles->save($profile)) {
@@ -2424,7 +2433,7 @@ class ProfilesController extends AppController{
         $orders = TableRegistry::get('orders');
         $order = $orders
             ->find()
-            ->where(['orders.draft' => 0])->order('orders.id DESC')->limit(1);
+            ->where(['orders.draft' => 0])->order('orders.id DESC')->limit(15);
 
         foreach ($order as $o) {
 

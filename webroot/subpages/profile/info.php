@@ -4,66 +4,66 @@
 </style>
 
 <?php
-    $param = $this->request->params['action'];
-    if ($this->request->session()->read('debug')) {
-        echo "<span style ='color:red;'>subpages/profile/info.php #INC117</span>";
+$param = $this->request->params['action'];
+if ($this->request->session()->read('debug')) {
+    echo "<span style ='color:red;'>subpages/profile/info.php #INC117</span>";
+}
+
+
+$userID = $this->Session->read('Profile.id');
+if(!$userID && isset($_GET["client"])){
+    $userID = 0;
+}
+
+$getProfileType = $this->requestAction('profiles/getProfileType/' . $userID);
+$sidebar = $this->requestAction("settings/all_settings/" . $userID . "/sidebar");
+$settings = $this->requestAction('settings/get_settings');
+
+if ($_SERVER['SERVER_NAME'] == "localhost" || $_SERVER['SERVER_NAME'] == "127.0.0.1") {
+    include_once('/subpages/api.php');
+} else {
+    include_once('subpages/api.php');
+}
+$language = $this->request->session()->read('Profile.language');
+$strings = CacheTranslations($language, "profiles_%",$settings);//,$registry);//$registry = $this->requestAction('/settings/getRegistry');
+
+
+function printoption($option, $selected, $value = ""){
+    $tempstr = "";
+    if ($option == $selected) {
+        $tempstr = " selected";
     }
-
-
-    $userID = $this->Session->read('Profile.id');
-    if(!$userID && isset($_GET["client"])){
-        $userID = 0;
+    if (strlen($value) > 0) {
+        $value = " value='" . $value . "'";
     }
+    echo '<option' . $value . $tempstr . ">" . $option . "</option>";
+}
 
-    $getProfileType = $this->requestAction('profiles/getProfileType/' . $userID);
-    $sidebar = $this->requestAction("settings/all_settings/" . $userID . "/sidebar");
-    $settings = $this->requestAction('settings/get_settings');
+function printoption2($value, $selected = "", $option){
+    $tempstr = "";
+    if ($option == $selected or $value == $selected) {
+        $tempstr = " selected";
+    }
+    echo '<OPTION VALUE="' . $value . '"' . $tempstr . ">" . $option . "</OPTION>";
+}
 
-    if ($_SERVER['SERVER_NAME'] == "localhost" || $_SERVER['SERVER_NAME'] == "127.0.0.1") {
-        include_once('/subpages/api.php');
+function printoptions($name, $valuearray, $selected = "", $optionarray, $isdisabled = "", $isrequired = false){
+    if ($name == 'profile_type') {
+        echo '<SELECT ' . $isdisabled . ' name="' . $name . '" class="form-control member_type req_driver"';
     } else {
-        include_once('subpages/api.php');
+        echo '<SELECT ' . $isdisabled . ' name="' . $name . '" class="form-control req_driver"';
     }
-    $language = $this->request->session()->read('Profile.language');
-    $strings = CacheTranslations($language, "profiles_%",$settings);//,$registry);//$registry = $this->requestAction('/settings/getRegistry');
+    echo '>';
 
-
-    function printoption($option, $selected, $value = ""){
-        $tempstr = "";
-        if ($option == $selected) {
-            $tempstr = " selected";
-        }
-        if (strlen($value) > 0) {
-            $value = " value='" . $value . "'";
-        }
-        echo '<option' . $value . $tempstr . ">" . $option . "</option>";
+    for ($temp = 0; $temp < count($valuearray); $temp += 1) {
+        printoption2($valuearray[$temp], $selected, $optionarray[$temp]);
     }
+    echo '</SELECT>';
+}
 
-    function printoption2($value, $selected = "", $option){
-        $tempstr = "";
-        if ($option == $selected or $value == $selected) {
-            $tempstr = " selected";
-        }
-        echo '<OPTION VALUE="' . $value . '"' . $tempstr . ">" . $option . "</OPTION>";
-    }
-
-    function printoptions($name, $valuearray, $selected = "", $optionarray, $isdisabled = "", $isrequired = false){
-        if ($name == 'profile_type') {
-            echo '<SELECT ' . $isdisabled . ' name="' . $name . '" class="form-control member_type req_driver"';
-        } else {
-            echo '<SELECT ' . $isdisabled . ' name="' . $name . '" class="form-control req_driver"';
-        }
-        echo '>';
-
-        for ($temp = 0; $temp < count($valuearray); $temp += 1) {
-            printoption2($valuearray[$temp], $selected, $optionarray[$temp]);
-        }
-        echo '</SELECT>';
-    }
-
-    function printprovinces($name, $selected = "", $isdisabled = "", $isrequired = false){
-        printoptions($name, array("", "AB", "BC", "MB", "NB", "NL", "NT", "NS", "NU", "ON", "PE", "QC", "SK", "YT"), $selected, array("Select Province", "Alberta", "British Columbia", "Manitoba", "New Brunswick", "Newfoundland and Labrador", "Northwest Territories", "Nova Scotia", "Nunavut", "Ontario", "Prince Edward Island", "Quebec", "Saskatchewan", "Yukon Territories"), $isdisabled, $isrequired);
-    }
+function printprovinces($name, $selected = "", $isdisabled = "", $isrequired = false){
+    printoptions($name, array("", "AB", "BC", "MB", "NB", "NL", "NT", "NS", "NU", "ON", "PE", "QC", "SK", "YT"), $selected, array("Select Province", "Alberta", "British Columbia", "Manitoba", "New Brunswick", "Newfoundland and Labrador", "Northwest Territories", "Nova Scotia", "Nunavut", "Ontario", "Prince Edward Island", "Quebec", "Saskatchewan", "Yukon Territories"), $isdisabled, $isrequired);
+}
 
 ?>
 
@@ -116,54 +116,14 @@
 
                                             <?php
 
-                                                $isISB = (isset($sidebar) && $settings->client_option == 0);
-                                                $ptyp = $this->requestAction('profiles/gettypes/ptypes/' . $this->request->session()->read('Profile.id'));
-                                                if ($ptyp != "")
-                                                    $pts = explode(",", $ptyp);
-                                                foreach ($ptypes as $k => $pt) {
-                                                    //var_dump($pt);
-                                                    if (isset($pts)) {
-                                                        if (in_array($pt->id, $pts)) {
-                                                            if ($pt->id == '1') {
-                                                                //if($this->request->session()->read('Profile.super'))
-                                                                //{
-                                                                ?>
-                                                                <option
-                                                                    value="<?php echo $pt->id; ?>" <?php if (isset($p) && $p->profile_type == 1) { ?> selected="selected" <?php } ?>>
-                                                                    <?php echo $pt->title; ?>
-                                                                </option>
-                                                                <?php
-
-                                                                //}
-                                                            } else {
-                                                                /*if($isISB)
-                                                                {
-                                                                    if ($pt->id<='8')
-                                                                    {
-                                                                    ?>
-                                                                    <option
-                                                                            value="<?php echo $pt->id;?>" <?php if (isset($p) && $p->profile_type == $pt->id) { ?> selected="selected" <?php } ?>>
-                                                                            <?php echo $pt->title;?>
-                                                                    </option>
-                                                                <?php
-                                                                    }
-                                                                }
-                                                                else
-                                                                {*/
-                                                                ?>
-                                                                <option
-                                                                    value="<?php echo $pt->id; ?>" <?php if (isset($p) && $p->profile_type == $pt->id) { ?> selected="selected" <?php } ?>>
-                                                                    <?php echo $pt->title; ?>
-                                                                </option>
-                                                                <?php
-                                                                //}
-                                                            }
-
-                                                            ?>
-
-                                                        <?php
-                                                        }
-                                                    } else {
+                                            $isISB = (isset($sidebar) && $settings->client_option == 0);
+                                            $ptyp = $this->requestAction('profiles/gettypes/ptypes/' . $this->request->session()->read('Profile.id'));
+                                            if ($ptyp != "")
+                                                $pts = explode(",", $ptyp);
+                                            foreach ($ptypes as $k => $pt) {
+                                                //var_dump($pt);
+                                                if (isset($pts)) {
+                                                    if (in_array($pt->id, $pts)) {
                                                         if ($pt->id == '1') {
                                                             //if($this->request->session()->read('Profile.super'))
                                                             //{
@@ -199,96 +159,136 @@
                                                             //}
                                                         }
 
+                                                        ?>
+
+                                                    <?php
                                                     }
+                                                } else {
+                                                    if ($pt->id == '1') {
+                                                        //if($this->request->session()->read('Profile.super'))
+                                                        //{
+                                                        ?>
+                                                        <option
+                                                            value="<?php echo $pt->id; ?>" <?php if (isset($p) && $p->profile_type == 1) { ?> selected="selected" <?php } ?>>
+                                                            <?php echo $pt->title; ?>
+                                                        </option>
+                                                        <?php
+
+                                                        //}
+                                                    } else {
+                                                        /*if($isISB)
+                                                        {
+                                                            if ($pt->id<='8')
+                                                            {
+                                                            ?>
+                                                            <option
+                                                                    value="<?php echo $pt->id;?>" <?php if (isset($p) && $p->profile_type == $pt->id) { ?> selected="selected" <?php } ?>>
+                                                                    <?php echo $pt->title;?>
+                                                            </option>
+                                                        <?php
+                                                            }
+                                                        }
+                                                        else
+                                                        {*/
+                                                        ?>
+                                                        <option
+                                                            value="<?php echo $pt->id; ?>" <?php if (isset($p) && $p->profile_type == $pt->id) { ?> selected="selected" <?php } ?>>
+                                                            <?php echo $pt->title; ?>
+                                                        </option>
+                                                        <?php
+                                                        //}
+                                                    }
+
                                                 }
+                                            }
                                             ?>
                                             <?php
 
-                                                /*
-                                                if ($this->request->session()->read('Profile.super')) {
-                                                    ?>
-                                                    <option
-                                                        value="1" <?php if (isset($p) && $p->profile_type == 1) { ?> selected="selected" <?php } ?>>
-                                                        Admin
-                                                    </option>
-                                                <?php }
+                                            /*
+                                            if ($this->request->session()->read('Profile.super')) {
+                                                ?>
+                                                <option
+                                                    value="1" <?php if (isset($p) && $p->profile_type == 1) { ?> selected="selected" <?php } ?>>
+                                                    Admin
+                                                </option>
+                                            <?php }
 
 
-                                                if ($isISB) {
-                                                    ?>
+                                            if ($isISB) {
+                                                ?>
 
 
-                                                    <option
-                                                        value="2" <?php if (isset($p) && $p->profile_type == 2) { ?> selected="selected" <?php }
-                                                        if (!$this->request->session()->read('Profile.super')) {
-                                                            ?> disabled="disabled"
-                                                        <?php } ?>>
-                                                        Recruiter
-                                                    </option>
-
-                                                    <option
-                                                        value="3" <?php if (isset($p) && $p->profile_type == 3) { ?> selected="selected" <?php }
-                                                        if (!$this->request->session()->read('Profile.super')) { ?> disabled="disabled"
-                                                        <?php } ?>>
-                                                        External
-                                                    </option>
-
-                                                    <option
-                                                        value="4" <?php if (isset($p) && $p->profile_type == 4) { ?> selected="selected" <?php }
-                                                        if (!$this->request->session()->read('Profile.super')) { ?> disabled="disabled"
-                                                        <?php } ?>>
-                                                        Safety
-                                                    </option>
-
-                                                    <option
-                                                        value="5" <?php if ((isset($p) && $p->profile_type == 5) || (!isset($p) && isset($getProfileType->profile_type) && $getProfileType->profile_type == 2)) { ?> selected="selected" <?php }
-                                                        if (!$this->request->session()->read('Profile.super') && ($this->request->session()->read('Profile.profile_type') != '2')) {
-                                                            ?>
-                                                            disabled="disabled"
-                                                        <?php
-                                                        }
-                                                    ?>>
-                                                        Driver
-                                                    </option>
-
-                                                    <option
-                                                        value="6" <?php if (isset($p) && $p->profile_type == 6) { ?> selected="selected" <?php }
-                                                        if (!$this->request->session()->read('Profile.super')) { ?> disabled="disabled"
-                                                        <?php } ?>>
-                                                        Contact
-                                                    </option>
-
-                                                    <option value="7" <?php if (isset($p) && $p->profile_type == 7) { ?> selected="selected" <?php }
-                                                        if (!$this->request->session()->read('Profile.super') && $this->request->session()->read('Profile.profile_type')!='2') { ?> disabled="disabled"
-                                                    <?php }?>>
-                                                        Owner Operator
-                                                    </option>
-
-                                                    <option value="8" <?php if (isset($p) && $p->profile_type == 8) { ?> selected="selected" <?php }
-                                                                    if (!$this->request->session()->read('Profile.super') && $this->request->session()->read('Profile.profile_type')!='2') { ?> disabled="disabled"
+                                                <option
+                                                    value="2" <?php if (isset($p) && $p->profile_type == 2) { ?> selected="selected" <?php }
+                                                    if (!$this->request->session()->read('Profile.super')) {
+                                                        ?> disabled="disabled"
                                                     <?php } ?>>
-                                                        Owner Driver
-                                                    </option>
+                                                    Recruiter
+                                                </option>
 
-                                                <?php } else { ?>
+                                                <option
+                                                    value="3" <?php if (isset($p) && $p->profile_type == 3) { ?> selected="selected" <?php }
+                                                    if (!$this->request->session()->read('Profile.super')) { ?> disabled="disabled"
+                                                    <?php } ?>>
+                                                    External
+                                                </option>
 
-                                                    <option
-                                                        value="9" <?php if (isset($p) && $p->profile_type == 9) { ?> selected="selected" <?php }
-                                                        if (!$this->request->session()->read('Profile.super')) { ?> disabled="disabled" <?php } ?>>
-                                                        Employee
-                                                    </option>
-                                                    <option
-                                                        value="10" <?php if (isset($p) && $p->profile_type == 10) { ?> selected="selected" <?php }
-                                                        if (!$this->request->session()->read('Profile.super')) { ?> disabled="disabled" <?php } ?>>
-                                                        Guest
-                                                    </option>
-                                                    <option
-                                                        value="11" <?php if (isset($p) && $p->profile_type == 11) { ?> selected="selected" <?php }
-                                                        if (!$this->request->session()->read('Profile.super')) { ?> disabled="disabled" <?php } ?> >
-                                                        Partner
-                                                    </option>
+                                                <option
+                                                    value="4" <?php if (isset($p) && $p->profile_type == 4) { ?> selected="selected" <?php }
+                                                    if (!$this->request->session()->read('Profile.super')) { ?> disabled="disabled"
+                                                    <?php } ?>>
+                                                    Safety
+                                                </option>
 
-                                                <?php }*/ ?>
+                                                <option
+                                                    value="5" <?php if ((isset($p) && $p->profile_type == 5) || (!isset($p) && isset($getProfileType->profile_type) && $getProfileType->profile_type == 2)) { ?> selected="selected" <?php }
+                                                    if (!$this->request->session()->read('Profile.super') && ($this->request->session()->read('Profile.profile_type') != '2')) {
+                                                        ?>
+                                                        disabled="disabled"
+                                                    <?php
+                                                    }
+                                                ?>>
+                                                    Driver
+                                                </option>
+
+                                                <option
+                                                    value="6" <?php if (isset($p) && $p->profile_type == 6) { ?> selected="selected" <?php }
+                                                    if (!$this->request->session()->read('Profile.super')) { ?> disabled="disabled"
+                                                    <?php } ?>>
+                                                    Contact
+                                                </option>
+
+                                                <option value="7" <?php if (isset($p) && $p->profile_type == 7) { ?> selected="selected" <?php }
+                                                    if (!$this->request->session()->read('Profile.super') && $this->request->session()->read('Profile.profile_type')!='2') { ?> disabled="disabled"
+                                                <?php }?>>
+                                                    Owner Operator
+                                                </option>
+
+                                                <option value="8" <?php if (isset($p) && $p->profile_type == 8) { ?> selected="selected" <?php }
+                                                                if (!$this->request->session()->read('Profile.super') && $this->request->session()->read('Profile.profile_type')!='2') { ?> disabled="disabled"
+                                                <?php } ?>>
+                                                    Owner Driver
+                                                </option>
+
+                                            <?php } else { ?>
+
+                                                <option
+                                                    value="9" <?php if (isset($p) && $p->profile_type == 9) { ?> selected="selected" <?php }
+                                                    if (!$this->request->session()->read('Profile.super')) { ?> disabled="disabled" <?php } ?>>
+                                                    Employee
+                                                </option>
+                                                <option
+                                                    value="10" <?php if (isset($p) && $p->profile_type == 10) { ?> selected="selected" <?php }
+                                                    if (!$this->request->session()->read('Profile.super')) { ?> disabled="disabled" <?php } ?>>
+                                                    Guest
+                                                </option>
+                                                <option
+                                                    value="11" <?php if (isset($p) && $p->profile_type == 11) { ?> selected="selected" <?php }
+                                                    if (!$this->request->session()->read('Profile.super')) { ?> disabled="disabled" <?php } ?> >
+                                                    Partner
+                                                </option>
+
+                                            <?php }*/ ?>
 
 
                                         </select>
@@ -314,11 +314,11 @@
                             <div class="col-md-6" id="isb_id"
                                  style="display:
                                  <?php
-                                     /* as discussed on march 18, isb id only for recruiter and driver type for driver , owners etc
-                                      if ((isset($p) && $p->profile_type != 5) && (isset($getProfileType->profile_type) && $getProfileType->profile_type == 1) || ($this->request->session()->read('Profile.profile_type') == 2 && (isset($p) && $p->id == ($this->request->session()->read('Profile.id')))) || ($this->request->session()->read('Profile.profile_type') == 2 && (isset($p) && $p->id != 5  ))) echo 'block'; else echo "none" */ ?>
+                                 /* as discussed on march 18, isb id only for recruiter and driver type for driver , owners etc
+                                  if ((isset($p) && $p->profile_type != 5) && (isset($getProfileType->profile_type) && $getProfileType->profile_type == 1) || ($this->request->session()->read('Profile.profile_type') == 2 && (isset($p) && $p->id == ($this->request->session()->read('Profile.id')))) || ($this->request->session()->read('Profile.profile_type') == 2 && (isset($p) && $p->id != 5  ))) echo 'block'; else echo "none" */ ?>
                                  <?php
-                                     if ((isset($p) && $p->profile_type == 2))
-                                         echo 'block'; else echo "none" ?>
+                                 if ((isset($p) && $p->profile_type == 2))
+                                     echo 'block'; else echo "none" ?>
                                      ;">
                                 <div class="form-group">
                                     <label class="control-label">ISB Id: </label>
@@ -326,11 +326,11 @@
                                         name="isb_id" type="text"
                                         placeholder=""
                                         class="form-control req_rec" <?php if (isset($p->isb_id)) { ?> value="<?php echo $p->isb_id; ?>" <?php }
-                                        if (isset($p->isb_id) && !$this->request->session()->read('Profile.super')) {
-                                            ?>
-                                            disabled="disabled"
-                                        <?php
-                                        }
+                                    if (isset($p->isb_id) && !$this->request->session()->read('Profile.super')) {
+                                        ?>
+                                        disabled="disabled"
+                                    <?php
+                                    }
                                     ?>  />
                                 </div>
                             </div>
@@ -430,25 +430,25 @@
                             {
                             }
                             else
-                            {    
-                            
-                            ?>
-                            <div class="col-md-6 hideusername">
-                                <div class="form-group">
-                                    <label class="control-label">Username: </label>
-                                    <input <?php echo $is_disabled ?> id="username_field" name="username" type="text"
-                                                                      class="form-control req_driver req_rec uname" <?php if (isset($p->username)) { ?> value="<?php echo $p->username; ?>" <?php } ?>
-                                        <?php
-                                        if ($userID>0 && ($this->request->session()->read('Profile.super') != '1' && ($this->request->params['action'] == 'edit'))) {
-                                            echo 'disabled="disabled"';
-                                        }
-                                       ?>/>
+                            {
+
+                                ?>
+                                <div class="col-md-6 hideusername">
+                                    <div class="form-group">
+                                        <label class="control-label">Username: </label>
+                                        <input <?php echo $is_disabled ?> id="username_field" name="username" type="text"
+                                                                          class="form-control req_driver req_rec uname" <?php if (isset($p->username)) { ?> value="<?php echo $p->username; ?>" <?php } ?>
+                                            <?php
+                                            if ($userID>0 && ($this->request->session()->read('Profile.super') != '1' && ($this->request->params['action'] == 'edit'))) {
+                                                echo 'disabled="disabled"';
+                                            }
+                                            ?>/>
                             <span class="error passerror flashUser"
                                   style="display: none;">Username already exists</span>
                             <span class="error passerror flashUser1"
                                   style="display: none;">Username is required.</span>
+                                    </div>
                                 </div>
-                            </div>
                             <?php
                             }
                             ?>
@@ -469,83 +469,83 @@
                             <?php
 
 
-                                //if ($this->request->session()->read('Profile.profile_type') != '2') {
-                                    if (strlen($is_disabled) == 0) {
+                            //if ($this->request->session()->read('Profile.profile_type') != '2') {
+                            if (strlen($is_disabled) == 0) {
 
-                                        ?>
-                                        <div class="col-md-4">
-                                            <div class="form-group">
-                                                <label class="control-label">Password: </label>
+                                ?>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label class="control-label">Password: </label>
 
 
-                                                <!-- <input  <?php echo $is_disabled ?> type="password" name="password" id="password" class="form-control"
+                                        <!-- <input  <?php echo $is_disabled ?> type="password" name="password" id="password" class="form-control"
                                    <?php // if (isset($p->password)){ ?><?php //echo $p->password; ?> <?php //} ?>
                                    <?php if (isset($p->password) && $p->password) {//do nothing
-                                                } else { ?>required="required"<?php } ?>  />-->
+                                        } else { ?>required="required"<?php } ?>  />-->
 
 
-                                                <input  <?php echo $is_disabled ?> type="password" value=""
-                                                                                   autocomplete="off"
-                                                                                   name="password" id="password"
-                                                                                   class="form-control <?php if (!isset($p->password)) {?>req_rec<?php }?>" <?php if (isset($p->password) && $p->password) {//do nothing
-                                                } ?>/>
-                                            </div>
-                                        </div>
-                                        <?php if (isset($p->password)) { ?>
-                                            <input type="hidden" value="<?php $p->password ?>" name="hid_pass"/>
-                                        <?php } ?>
-                                        <div class="col-md-4">
-                                            <div class="form-group">
-                                                <label class="control-label">Re-type Password: </label>
-                                                <input <?php if (isset($p->password) && $p->password){//do nothing
-                                                }else{ ?>required="required"<?php } ?>  <?php echo $is_disabled ?>
-                                                       type="password" class="form-control <?php if (!isset($p->password)) {?>req_rec<?php }?>"
-                                                       id="retype_password" <?php //if (isset($p->password)) { ?> <?php // echo $p->password; ?>  <?php // } ?>/>
+                                        <input  <?php echo $is_disabled ?> type="password" value=""
+                                                                           autocomplete="off"
+                                                                           name="password" id="password"
+                                                                           class="form-control <?php if (!isset($p->password)) {?>req_rec<?php }?>" <?php if (isset($p->password) && $p->password) {//do nothing
+                                        } ?>/>
+                                    </div>
+                                </div>
+                                <?php if (isset($p->password)) { ?>
+                                    <input type="hidden" value="<?php $p->password ?>" name="hid_pass"/>
+                                <?php } ?>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label class="control-label">Re-type Password: </label>
+                                        <input <?php if (isset($p->password) && $p->password){//do nothing
+                                        }else{ ?>required="required"<?php } ?>  <?php echo $is_disabled ?>
+                                               type="password" class="form-control <?php if (!isset($p->password)) {?>req_rec<?php }?>"
+                                               id="retype_password" <?php //if (isset($p->password)) { ?> <?php // echo $p->password; ?>  <?php // } ?>/>
                             <span class="error passerror flashPass1"
                                   style="display: none;">Please enter the same password in both boxes</span>
-                                            </div>
-                                        </div>
-                                        <?php if ($param == "add") { ?>
-                                            <div class="col-md-4">
-                                                <div class="form-group">
-                                                    <label class="control-label">Email Credentials: </label><BR>
-                                                    <input type="checkbox" name="emailcreds" , id="emailcreds">
-                                                    <label style="margin-top: 5px;" for="emailcreds">Email to the new
-                                                        user</label>
-                                                </DIV>
-                                            </DIV>
-                                        <?php } elseif( $userID == $id) { ?>
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label class="control-label">Language: </label><BR>
-                                    <select name="language" class="form-control">
-                                        <?php
-                                        printoption("English", $language, "English");
-                                        printoption("French", $language, "French");
-                                        if($this->request->session()->read('Profile.super')==1){
-                                            printoption("Debug", $language, "Debug");
-                                        }
-                                        ?>
-                                    </select>
-                                </DIV>
-                            </DIV>
-                                    <?php } ?>
+                                    </div>
+                                </div>
+                                <?php if ($param == "add") { ?>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label class="control-label">Email Credentials: </label><BR>
+                                            <input type="checkbox" name="emailcreds" , id="emailcreds">
+                                            <label style="margin-top: 5px;" for="emailcreds">Email to the new
+                                                user</label>
+                                        </DIV>
+                                    </DIV>
+                                <?php } elseif( $userID == $id) { ?>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label class="control-label">Language: </label><BR>
+                                            <select name="language" class="form-control">
+                                                <?php
+                                                printoption("English", $language, "English");
+                                                printoption("French", $language, "French");
+                                                if($this->request->session()->read('Profile.super')==1){
+                                                    printoption("Debug", $language, "Debug");
+                                                }
+                                                ?>
+                                            </select>
+                                        </DIV>
+                                    </DIV>
+                                <?php } ?>
 
                                 <div class="clearfix"></div>
-                                    <?php } ?>
+                            <?php } ?>
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label class="control-label">Title: </label><BR>
                                     <SELECT <?php echo $is_disabled ?> name="title" class="form-control "><?php
 
-                                            if (isset($p->title)) {
-                                                $title = $p->title;
-                                            } else {
-                                                $title = "";
-                                            }
-                                            printoption("Mr.", $title, "Mr.");
-                                            printoption("Mrs.", $title, "Mrs.");
-                                            printoption("Ms.", $title, "Ms.");
+                                        if (isset($p->title)) {
+                                            $title = $p->title;
+                                        } else {
+                                            $title = "";
+                                        }
+                                        printoption("Mr.", $title, "Mr.");
+                                        printoption("Mrs.", $title, "Mrs.");
+                                        printoption("Ms.", $title, "Ms.");
                                         ?></SELECT>
 
                                     <!--
@@ -607,14 +607,14 @@
                                     <label class="control-label">Gender: </label>
                                     <SELECT <?php echo $is_disabled ?> name="gender"
                                                                        class="form-control req_driver"><?php
-                                            $gender = "";
-                                            if (isset($p->gender)) {
-                                                $gender = $p->gender;
-                                            }
-                                            echo '<!-- selected option is ' . $gender . '-->';
-                                            printoption("Select Gender", "");
-                                            printoption("Male", $gender, "Male");
-                                            printoption("Female", $gender, "Female");
+                                        $gender = "";
+                                        if (isset($p->gender)) {
+                                            $gender = $p->gender;
+                                        }
+                                        echo '<!-- selected option is ' . $gender . '-->';
+                                        printoption("Select Gender", "");
+                                        printoption("Male", $gender, "Male");
+                                        printoption("Female", $gender, "Female");
                                         ?></SELECT>
                                 </div>
                             </div>
@@ -622,7 +622,7 @@
 
 
 
-                      <?php if($settings->mee== "MEE"){?>
+                            <?php if($settings->mee== "MEE"){?>
                             <div class="col-md-3">
                                 <div class="form-group">
 
@@ -646,46 +646,46 @@
 
 
 
-                                                $currentyear = "0000";
-                                                $currentmonth = 0;
-                                                $currentday = 0;
+                                            $currentyear = "0000";
+                                            $currentmonth = 0;
+                                            $currentday = 0;
 
-                                                if (isset($p->dob)) {
-                                                    $currentyear = substr($p->dob, 0, 4);
-                                                    $currentmonth = substr($p->dob, 5, 2);
-                                                    $currentday = substr($p->dob, -2);
+                                            if (isset($p->dob)) {
+                                                $currentyear = substr($p->dob, 0, 4);
+                                                $currentmonth = substr($p->dob, 5, 2);
+                                                $currentday = substr($p->dob, -2);
+                                            }
+
+
+                                            echo '<select class="form-control req_driver " NAME="doby" ' . $is_disabled . '>';
+
+                                            $now = date("Y");
+                                            for ($temp = $now; $temp > 1899; $temp -= 1) {
+                                                printoption($temp, $currentyear, $temp);
+                                            }
+                                            echo '</select></div><div class="col-md-4">';
+
+
+                                            echo '<select  class="form-control req_driver " NAME="dobm" ' . $is_disabled . '>';
+                                            $monthnames = array("Jan", "Feb", "Mar", "Apr", "May", "June", "July", "Aug", "Sept", "Oct", "Nov", "Dec");
+                                            for ($temp = 1; $temp < 13; $temp += 1) {
+                                                if ($temp < 10) {
+                                                    $temp = "0" . $temp;
                                                 }
+                                                printoption($temp, $currentmonth, $temp);
+                                            }
+                                            echo '</select></div><div class="col-md-4">';
 
 
-                                                echo '<select class="form-control req_driver " NAME="doby" ' . $is_disabled . '>';
-
-                                                $now = date("Y");
-                                                for ($temp = $now; $temp > 1899; $temp -= 1) {
-                                                    printoption($temp, $currentyear, $temp);
+                                            echo '<select class="form-control req_driver " name="dobd" ' . $is_disabled . '>';
+                                            for ($temp = 1; $temp < 32; $temp++) {
+                                                if ($temp < 10) {
+                                                    $temp = "0" . $temp;
                                                 }
-                                                echo '</select></div><div class="col-md-4">';
+                                                printoption($temp, $currentday, $temp);
+                                            }
 
-
-                                                echo '<select  class="form-control req_driver " NAME="dobm" ' . $is_disabled . '>';
-                                                $monthnames = array("Jan", "Feb", "Mar", "Apr", "May", "June", "July", "Aug", "Sept", "Oct", "Nov", "Dec");
-                                                for ($temp = 1; $temp < 13; $temp += 1) {
-                                                    if ($temp < 10) {
-                                                        $temp = "0" . $temp;
-                                                    }
-                                                    printoption($temp, $currentmonth, $temp);
-                                                }
-                                                echo '</select></div><div class="col-md-4">';
-
-
-                                                echo '<select class="form-control req_driver " name="dobd" ' . $is_disabled . '>';
-                                                for ($temp = 1; $temp < 32; $temp++) {
-                                                    if ($temp < 10) {
-                                                        $temp = "0" . $temp;
-                                                    }
-                                                    printoption($temp, $currentday, $temp);
-                                                }
-
-                                                echo '</select></div>';
+                                            echo '</select></div>';
                                             ?>
                                         </div>
                                     </div>
@@ -720,11 +720,11 @@
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <?php
-                                            if (isset($p->province)) {
-                                                printprovinces("province", $p->province, $is_disabled, false);
-                                            } else {
-                                                printprovinces("province", "", $is_disabled, false);
-                                            }
+                                        if (isset($p->province)) {
+                                            printprovinces("province", $p->province, $is_disabled, false);
+                                        } else {
+                                            printprovinces("province", "", $is_disabled, false);
+                                        }
                                         ?>
 
                                         <!-- old
@@ -786,11 +786,11 @@
                                         <label class="control-label">Province issued: </label>
 
                                         <?php
-                                            if (isset($p->driver_province)) {
-                                                printprovinces("driver_province", $p->driver_province, $is_disabled, true);
-                                            } else {
-                                                printprovinces("driver_province", "", $is_disabled, true);
-                                            }
+                                        if (isset($p->driver_province)) {
+                                            printprovinces("driver_province", $p->driver_province, $is_disabled, true);
+                                        } else {
+                                            printprovinces("driver_province", "", $is_disabled, true);
+                                        }
                                         ?>
 
 
@@ -808,19 +808,19 @@
 
                                     </div>
                                 </div>
-                                
+
                                 <?php }
-                                    else { ?>
-                                        <input type="hidden" name="doby" value="0000"/>
-                                        <input type="hidden" name="dobm" value="00"/>
-                                        <input type="hidden" name="dobd" value="00"/>
-                                    <?php
-                                    }
-                                    $delete = isset($disabled);
-                                    if (isset($client_docs)) {
-                                        //   include_once 'subpages/filelist.php';
-                                        //   listfiles($client_docs, "img/jobs/",'profile_doc',$delete);
-                                    }
+                                else { ?>
+                                    <input type="hidden" name="doby" value="0000"/>
+                                    <input type="hidden" name="dobm" value="00"/>
+                                    <input type="hidden" name="dobd" value="00"/>
+                                <?php
+                                }
+                                $delete = isset($disabled);
+                                if (isset($client_docs)) {
+                                    //   include_once 'subpages/filelist.php';
+                                    //   listfiles($client_docs, "img/jobs/",'profile_doc',$delete);
+                                }
                                 ?>
                                 <div class="form-group col-md-12 col-sm-12">
                                     <label class="control-label ">Where did you hear about us?</label>
@@ -862,7 +862,7 @@
                                 </div-->
 
                                 <?php
-                                    //if (!isset($disabled)) {
+                                //if (!isset($disabled)) {
                                 ?>
                                 <!--<div class="form-group col-md-12">
 
@@ -917,16 +917,16 @@
         </div>
     </div>
     <?php
-        if ($this->request->params['action'] == 'edit') {
+    if ($this->request->params['action'] == 'edit') {
 
-        } else {
-            ?>
-            <!--div class="tab-pane" id="subtab_4_3">
-                <p>Please save info first.</p>
-            </div-->
+    } else {
+        ?>
+        <!--div class="tab-pane" id="subtab_4_3">
+            <p>Please save info first.</p>
+        </div-->
 
-        <?php
-        }
+    <?php
+    }
     ?>
 
 
@@ -1003,8 +1003,11 @@
         }
 
     }
+
+    //I break for bad code
     </SCRIPT>
-<SCRIPT>
+    <SCRIPT>
+
     $(function () {
         //initiate_ajax_upload1('addMore1', 'doc');
 
@@ -1090,8 +1093,10 @@
         })
 
         $('.member_type').change(function () {
+
             if ($(this).val() == '5' || $(this).val() == '7' || $(this).val() == '8'|| $(this).val() == '9'|| $(this).val() == '12') {
-                if($(this).val() == '5' || $(this).val() == '7' || $(this).val() == '9' || $(this).val() == '12') {
+                if($(this).val() == '5' || $(this).val() == '7' || $(this).val() == '9' || $(this).val() == '12')
+                {
                     $('.hideusername').hide();
                 }
                 $('.req_driver').each(function () {
@@ -1121,8 +1126,8 @@
                 $('.req_rec').removeProp('required');
                 //$('.req_sales').attr('required','required');
                 if($(this).val() == '5' || $(this).val() == '7' || $(this).val() == '8'){
-                
-                } else{//cannot have 2 elses for 1 if
+
+                } else {//cannot have 2 elses for 1 if
                     $('.req_sales').attr('required','required');
                 } else {//cannot have 2 elses for 1 if
                     $('.nav-tabs li:not(.active)').each(function () {
@@ -1136,7 +1141,7 @@
                     //$('#username_field').removeAttr('disabled');
                     //$('.un').prop('required', "required");
                     <?php
-                        if(isset($p->password) && $p->password) {
+                        if(isset($p->password) && $p->password){
                             //do nth
                         } else{
                             ?>
@@ -1144,127 +1149,132 @@
                                 $('#retype_password').prop('required', "required");
                             <?php
                         }
+                    ?>
+                }
+
+                var profile_type = $(this).val();
+                if (profile_type == '1' || profile_type == '2') {
+                    $('#isb_id').show();
+                    $('.req_driver').removeProp('required');
+                    //$('.un').removeProp('required');
+                    $('.req_rec').prop('required', "required");
+                }
+
+            });
+
+            var mem_type = $('.member_type').val();
+            if (!isNaN(parseFloat(mem_type)) && isFinite(mem_type)) {
+                if (mem_type == '5' || mem_type == '7' || mem_type == '8' || mem_type == '9' || mem_type == '12') {
+                    $('.req_driver').each(function () {
+                        $(this).prop('required', "required");
+                        //alert($(this).attr('name'));
+                        //});
+                        //$('.nav-tabs li:not(.active)').each(function () {
+                        //  $(this).hide();
+                    });
+                    if(mem_type == '5' || mem_type == '7' || mem_type == '8'){
+                        $('#driver_div').show();
+                    } else {
+                        $('#driver_div select').removeAttr('required');
+                    }
+                    $('#isb_id').hide();
+                    //$('.username_div').hide();
+                    //$('.un').removeProp('required');
+                    $('#password').removeProp('required');
+                    $('#retype_password').removeProp('required');
+                    //$('#username_field').attr('disabled','disabled');
+                    $('.req_rec').removeProp('required');
+                    if(mem_type == '5' || mem_type == '7' || mem_type == '8'){
+
+                    } else {
+                        //$('#driver_div select').removeAttr('required');
+                        $('.req_sales').attr('required','required');
+                    }
+
+                } else {
+                    $('.nav-tabs li:not(.active)').each(function () {
+                        $(this).show();
+                    });
+                    $('#driver_div').hide();
+                    //$('.username_div').show();
+                    $('#isb_id').hide();
+                    $('.req_driver').removeProp('required');
+                    $('.req_rec').removeProp('required');
+                    //$('#username_field').removeAttr('disabled');
+                    //$('.un').prop('required', "required");
+                    <?php
+                    if(isset($p->password) && $p->password){
+                        //do nth
+                    }else{
+                        ?>
+                            $('#password').prop('required', "required");
+                            $('#retype_password').prop('required', "required");
+                        <?php
+                    }
                      ?>
                 }
 
-            var profile_type = $(this).val();
-            if (profile_type == '1' || profile_type == '2') {
-                $('#isb_id').show();
-                $('.req_driver').removeProp('required');
-                //$('.un').removeProp('required');
-                $('.req_rec').prop('required', "required");
+                if (mem_type == '1' || mem_type == '2') {
+                    $('#isb_id').show();
+                    $('.req_driver').removeProp('required');
+                    //$('.un').removeProp('required');
+                    $('.req_rec').prop('required', "required");
+                }
             }
-
         });
 
-        var mem_type = $('.member_type').val();
-        if (!isNaN(parseFloat(mem_type)) && isFinite(mem_type)) {
-            if (mem_type == '5' || mem_type == '7' || mem_type == '8' || mem_type == '9' || mem_type == '12') {
 
-                $('.req_driver').each(function () {
-                    $(this).prop('required', "required");
-                    //alert($(this).attr('name'));
-                    //});
-                    //$('.nav-tabs li:not(.active)').each(function () {
-                    //  $(this).hide();
-                });
-                if(mem_type == '5' || mem_type == '7' || mem_type == '8'){
-                    $('#driver_div').show();
-                } else {
-                    $('#driver_div select').removeAttr('required');
-                }
-                $('#isb_id').hide();
-                //$('.username_div').hide();
-                //$('.un').removeProp('required');
-                $('#password').removeProp('required');
-                $('#retype_password').removeProp('required');
-                //$('#username_field').attr('disabled','disabled');
-                $('.req_rec').removeProp('required');
-                if(mem_type == '5' || mem_type == '7' || mem_type == '8'){
-                
-                } else {
-                    //$('#driver_div select').removeAttr('required');
-                    $('.req_sales').attr('required','required');
-                }
 
+
+
+
+
+
+        function initiate_ajax_upload1(button_id, doc) {
+            var button = $('#' + button_id), interval;
+            if (doc == 'doc') {
+                var act = "<?php echo $this->request->webroot;?>profiles/upload_all/<?php if(isset($id))echo $id;?>";
             } else {
-                $('.nav-tabs li:not(.active)').each(function () {
-                    $(this).show();
-                });
-                $('#driver_div').hide();
-                //$('.username_div').show();
-                $('#isb_id').hide();
-                $('.req_driver').removeProp('required');
-                $('.req_rec').removeProp('required');
-                //$('#username_field').removeAttr('disabled');
-                //$('.un').prop('required', "required");
-                <?php
-                if(isset($p->password) && $p->password){
-                    //do nth
-                }else{
-                    ?>
-                        $('#password').prop('required', "required");
-                        $('#retype_password').prop('required', "required");
-                    <?php
-                }
-                 ?>
+                var act = "<?php echo $this->request->webroot;?>profiles/upload_img/<?php if(isset($id))echo $id;?>";
             }
-
-            if (mem_type == '1' || mem_type == '2') {
-                $('#isb_id').show();
-                $('.req_driver').removeProp('required');
-                //$('.un').removeProp('required');
-                $('.req_rec').prop('required', "required");
-            }
-        }
-    });
-
-
-    function initiate_ajax_upload1(button_id, doc) {
-        var button = $('#' + button_id), interval;
-        if (doc == 'doc') {
-            var act = "<?php echo $this->request->webroot;?>profiles/upload_all/<?php if(isset($id))echo $id;?>";
-        } else {
-            var act = "<?php echo $this->request->webroot;?>profiles/upload_img/<?php if(isset($id))echo $id;?>";
-        }
-        new AjaxUpload(button, {
-            action: act,
-            name: 'myfile',
-            onSubmit: function (file, ext) {
-                button.text('Uploading');
-                this.disable();
-                interval = window.setInterval(function () {
-                    var text = button.text();
-                    if (text.length < 13) {
-                        button.text(text + '.');
+            new AjaxUpload(button, {
+                action: act,
+                name: 'myfile',
+                onSubmit: function (file, ext) {
+                    button.text('Uploading');
+                    this.disable();
+                    interval = window.setInterval(function () {
+                        var text = button.text();
+                        if (text.length < 13) {
+                            button.text(text + '.');
+                        } else {
+                            button.text('Uploading');
+                        }
+                    }, 200);
+                },
+                onComplete: function (file, response) {
+                    if (doc == "doc") {
+                        button.html('Browse');
                     } else {
-                        button.text('Uploading');
+                        button.html('<i class="fa fa-image"></i> Add/Edit Image');
                     }
-                }, 200);
-            },
-            onComplete: function (file, response) {
-                if (doc == "doc") {
-                    button.html('Browse');
-                } else {
-                    button.html('<i class="fa fa-image"></i> Add/Edit Image');
-                }
-                window.clearInterval(interval);
-                this.enable();
-                if (doc == "doc") {
-                    $('#' + button_id).parent().find('span').text(" " + response);
-                    $('.' + button_id + "_doc").val(response);
-                    $('#delete_' + button_id).attr('title', response);
-                    if (button_id == 'addMore1') {
-                        $('#delete_' + button_id).show();
+                    window.clearInterval(interval);
+                    this.enable();
+                    if (doc == "doc") {
+                        $('#' + button_id).parent().find('span').text(" " + response);
+                        $('.' + button_id + "_doc").val(response);
+                        $('#delete_' + button_id).attr('title', response);
+                        if (button_id == 'addMore1') {
+                            $('#delete_' + button_id).show();
+                        }
+                    } else {
+                        $("#clientpic").attr("src", '<?php echo $this->request->webroot;?>img/jobs/' + response);
+                        $('#client_img').val(response);
                     }
-                } else {
-                    $("#clientpic").attr("src", '<?php echo $this->request->webroot;?>img/jobs/' + response);
-                    $('#client_img').val(response);
-                }
 //$('.flashimg').show();
-            }
-        });
-    }
+                }
+            });
+        }
 </script>
 
 </div>
