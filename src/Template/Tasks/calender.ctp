@@ -112,9 +112,8 @@ if ($this->request->session()->read('Profile.super') or $this->request->session(
 
 JSinclude($this, "assets/global/plugins/fullcalendar/fullcalendar.min.js");
 JSinclude($this, "assets/admin/pages/scripts/calendar.js");
-?>
 
-<?php //load fullcalendar language
+//load fullcalendar language
 //echo "User time: " . $_SESSION['time']  . " Server timezone offset " . date("Z")/3600;
 $lang = "";
 switch ($language) {
