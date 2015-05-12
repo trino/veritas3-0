@@ -424,18 +424,22 @@ class SettingsController extends AppController {
                             foreach($columns as $column){
                                 $column = trim($column);
                             }
+                            if(count($columns)==1) {
+                                $columns[1]=$columns[0];
+                            }
+                            $columns[0] = strtolower(str_replace(" " , "", $columns[0]));
                             $ditit++;
                             if(count($columns)==2) {
                                 if($this->tablehaskey($Table, 'Name', $Page . $columns[0])){
                                     $Table->query()->update()->set([$Language =>  $columns[1]])->where(['Name' => $Page . $columns[0]])->execute();
-                                    $Data .= $CRLF . $ditit . ") update " . $Page . $columns[0] . " (" . $Language . ") = " . $columns[1];
+                                    $Data .= $CRLF . $ditit . ") update " . $Page . $columns[0] . "(" . $Language . ") = " . $columns[1];
                                 } else {
                                     $Table->query()->insert(['Name', $Language])->values(['Name' => $Page . $columns[0], $Language => $columns[1]])->execute();
-                                    $Data .= $CRLF . $ditit . ") insert " . $Page . $columns[0] . " (" . $Language . ") = " . $columns[1];
+                                    $Data .= $CRLF . $ditit . ") insert " . $Page . $columns[0] . "(" . $Language . ") = " . $columns[1];
                                 }
                             } else {
                                 $Table->query()->insert(['Name', 'English', 'French'])->values(['Name' => $Page . $columns[0], 'English' => $columns[1], 'French' => $columns[2]])->execute();
-                                $Data.=$CRLF . $ditit . ") insert " . $Page . $columns[0] . " (English) = '" . $columns[1] . "' (French) = '" . $columns[2] . "'";
+                                $Data.=$CRLF . $ditit . ") insert " . $Page . $columns[0] . "(English) = '" . $columns[1] . "' (French) = '" . $columns[2] . "'";
                             }
                     }
                 }

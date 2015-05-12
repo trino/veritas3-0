@@ -65,6 +65,7 @@ class DocumentsController extends AppController{
         }
 
         $sess = $this->request->session()->read('Profile.id');
+        $language = $this->request->session()->read('Profile.language');
         $docs = TableRegistry::get('Documents');
         $cls = TableRegistry::get('Clients');
         //$attachments = TableRegistry::get('attachments');
@@ -179,7 +180,7 @@ class DocumentsController extends AppController{
         if (isset($_GET['type'])) {
             $this->set('return_type', $_GET['type']);
         }
-        $this->set('documents', $this->appendattachments($this->paginate($doc)));
+        $this->set('documents', $this->appendattachments($this->paginate($doc), $language));
         if (isset($_GET['flash'])) {
             $this->success(true, "", false);//I don't know why it doesn't redirect.
         }
@@ -3193,11 +3194,14 @@ class DocumentsController extends AppController{
         }*/
     }
 
-    public function appendattachments($query){
+    public function appendattachments($query, $Language = "English"){
+        $fieldname = "title";
+        if($Language != "English" && $Language != "Debug"){$fieldname.=$Language;}
         $docs = TableRegistry::get('subdocuments')->find();
         $docnames = array();
         foreach($docs as $doc){
-            $docnames[$doc->id] = $doc->title;
+            $docnames[$doc->id] = $doc->$fieldname;
+            if($Language=="Debug"){$docnames[$doc->id].=" [Trans]";}
         }
         foreach($query as $client){
             if (isset($docnames[$client->sub_doc_id])) {$client->document_type = $docnames[$client->sub_doc_id];}

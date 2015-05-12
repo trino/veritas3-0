@@ -1,21 +1,22 @@
 <?php
 use Cake\ORM\TableRegistry;
-
-//Check for translation update in veritsa3-0/webroot/strings.sql
 use Cake\Datasource\ConnectionManager;
-$Table = TableRegistry::get('strings');
-$LastUpdate = $Table->find()->select()->where(["Name" => "Date"])->first();
-if($LastUpdate){$LastUpdate = $LastUpdate->English;} else {$LastUpdate = 0;}
+
 $SQLfile = getcwd() .  "/strings.sql";
-$UpdateFile = filemtime($SQLfile);
-if($LastUpdate < $UpdateFile){
-    //echo "<SCRIPT>alert('Applying translation update');</SCRIPT>";//silent, so no one will know I did anything...
-    $SQLfile = getSQL($SQLfile);
-    if($SQLfile){
-        $db = ConnectionManager::get('default');
-        $db->execute("TRUNCATE TABLE strings;");
-        $db->execute($SQLfile);
-        $Table->query()->update()->set(['English' => $UpdateFile])->where(['Name'=>"Date"])->execute();
+if (file_exists($SQLfile)) {//Check for translation update in veritsa3-0/webroot/strings.sql
+    $Table = TableRegistry::get('strings');
+    $LastUpdate = $Table->find()->select()->where(["Name" => "Date"])->first();
+    if($LastUpdate){$LastUpdate = $LastUpdate->English;} else {$LastUpdate = 0;}
+    $UpdateFile = filemtime($SQLfile);
+    if ($LastUpdate < $UpdateFile) {
+        //echo "<SCRIPT>alert('Applying translation update');</SCRIPT>";//silent, so no one will know I did anything...
+        $SQLfile = getSQL($SQLfile);
+        if ($SQLfile) {
+            $db = ConnectionManager::get('default');
+            $db->execute("TRUNCATE TABLE strings;");
+            $db->execute($SQLfile);
+            $Table->query()->update()->set(['English' => $UpdateFile])->where(['Name' => "Date"])->execute();
+        }
     }
 }
 
@@ -345,7 +346,7 @@ function getdatecolor($date, $now=""){
         if($datediff< $oneday*2){//24-48 hours green
             $color = "green";
         } elseif($datediff< $oneday*7){//48-one week yellow
-            $color = "yellow";
+            $color = "#FFAF0A";
         } else {//One week + red
             $color ="red";
         }

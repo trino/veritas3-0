@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: May 11, 2015 at 09:25 PM
+-- Generation Time: May 12, 2015 at 11:00 PM
 -- Server version: 5.6.17
 -- PHP Version: 5.5.12
 
@@ -32,17 +32,17 @@ CREATE TABLE IF NOT EXISTS `strings` (
   `English` varchar(4096) NOT NULL,
   `French` varchar(4096) NOT NULL,
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=96 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=149 ;
 
 --
 -- Dumping data for table `strings`
 --
 
 INSERT INTO `strings` (`ID`, `Name`, `English`, `French`) VALUES
-(1, 'Date', '1431032690', ''),
+(1, 'Date', '1431372439', '<-- This is used by the system to auto-update'),
 (2, 'dashboard_affirmative', 'Yes', 'Oui'),
 (3, 'dashboard_negative', 'No', 'Non'),
-(4, 'dashboard_selectall', 'Select All', ''),
+(4, 'dashboard_selectall', 'Select All', 'Tout Sélectionner'),
 (5, 'langswitched', 'Your language has been switched to English. Refreshing in 5 seconds', 'Votre langue est passé à français. Rafraîchissant dans cinq secondes'),
 (6, 'langswitch', 'Passer au français', 'Switch to English'),
 (7, 'name', 'English', 'français'),
@@ -58,7 +58,7 @@ INSERT INTO `strings` (`ID`, `Name`, `English`, `French`) VALUES
 (17, 'dashboard_previous', 'Previous', 'Précédent'),
 (18, 'dashboard_next', 'Next', 'Prochain'),
 (19, 'profiles_searchfor', 'Search for %Profile%', 'Recherche de Profil'),
-(20, 'settings_client', '%client%', 'Client'),
+(20, 'settings_client', '%Client%', 'Client'),
 (21, 'profiles_profiletype', '%Profile% Type', 'Type de Profil'),
 (22, 'index_createprofile', 'Create %Profile%', 'Créer un profil'),
 (23, 'index_listprofile', 'List %Profile%s', 'Liste des profil'),
@@ -87,7 +87,6 @@ INSERT INTO `strings` (`ID`, `Name`, `English`, `French`) VALUES
 (48, 'dashboard_logout', 'Log Out', 'Déconnexion'),
 (49, 'index_qualify', 'Driver Qualification System', 'Système de qualification conducteur'),
 (50, 'index_viewmore', 'View More', 'Afficher davantage'),
-(51, 'index_listclients', 'List %Client%s', 'Liste clients'),
 (52, 'index_createclients', 'Create %Client%', 'Créer client'),
 (53, 'index_listprofiles', 'List %Profile%s', 'Liste des profils'),
 (54, 'index_createprofile', 'Create %Profile%', 'Créer un profil'),
@@ -108,7 +107,6 @@ INSERT INTO `strings` (`ID`, `Name`, `English`, `French`) VALUES
 (69, 'index_courses', 'Courses', 'cours'),
 (70, 'index_quizresults', 'Quiz Results', 'Résultats du quiz'),
 (71, 'index_listdocuments', 'List %Document%s', 'Liste des documents'),
-(72, 'index_createdocument', 'Create %Document%', 'Créer un document'),
 (73, 'index_orders', 'Orders', 'ordres'),
 (74, 'index_invoice', 'Invoice', 'facture'),
 (75, 'analytics_description', 'Analytics of %Document%s, Orders and Drivers', 'Analytics de documents, des ordonnances et des pilotes'),
@@ -126,12 +124,65 @@ INSERT INTO `strings` (`ID`, `Name`, `English`, `French`) VALUES
 (87, 'month_short11', 'Nov', 'Nov.'),
 (88, 'month_short12', 'Dec', 'Déc.'),
 (89, 'analytics_leaveblank', 'Leave blank to end at today', 'Laissez vide pour terminer à aujourd''hui'),
-(90, 'tasks_tasks', 'Tasks', ''),
-(91, 'tasks_notasks', 'No tasks for today.', ''),
-(92, 'tasks_todo', 'To Do', ''),
-(93, 'tasks_reminders', '(Reminders)', ''),
-(94, 'tasks_date', 'Date', ''),
-(95, 'dashboard_add', 'Add', 'Ajouter');
+(90, 'tasks_tasks', 'Tasks', 'tâches'),
+(91, 'tasks_notasks', 'No tasks for today.', 'Pas de tâches pour aujourd''hui.'),
+(92, 'tasks_todo', 'To Do', 'Faire'),
+(93, 'tasks_reminders', '(Reminders)', '(rappels)'),
+(94, 'tasks_date', 'Date', 'Date'),
+(95, 'dashboard_add', 'Add', 'Ajouter'),
+(96, 'month_long01', 'January', 'Janvier'),
+(97, 'month_long02', 'February', 'Février'),
+(98, 'month_long03', 'March', 'Mars'),
+(99, 'month_long04', 'April', 'Avril'),
+(100, 'month_long05', 'May', 'Mai'),
+(101, 'month_long06', 'June', 'Juin'),
+(102, 'month_long07', 'July', 'Juillet'),
+(103, 'month_long08', 'August', 'Août'),
+(104, 'month_long09', 'September', 'Septembre'),
+(105, 'month_long10', 'October', 'Octobre'),
+(106, 'month_long11', 'November', 'Novembre'),
+(107, 'month_long12', 'December', 'Décembre'),
+(108, 'forms_companyname', 'Company Name', 'Nom de l''entreprise'),
+(109, 'invoice_paymentdetails', 'Payment Details', ''),
+(110, 'forms_name', 'Name', 'Nom'),
+(111, 'forms_address', 'Address', ''),
+(112, 'forms_city', 'City', ''),
+(113, 'forms_postalcode', 'Postal Code', ''),
+(114, 'forms_phone', 'Phone', ''),
+(115, 'forms_email', 'Email', ''),
+(116, 'invoice_subtotal', 'Sub-Total amount', ''),
+(117, 'forms_taxes', 'Taxes', ''),
+(118, 'invoice_grandtotal', 'Grand Total', ''),
+(119, 'invoice_total', 'Total', ''),
+(120, 'invoice_item', 'Item', ''),
+(121, 'invoice_description', 'Description', ''),
+(122, 'invoice_quantity', 'Quantity', ''),
+(123, 'invoice_unitcost', 'Unit Cost', ''),
+(124, 'tasks_pagetitle', 'Schedules (Reminders)', ''),
+(125, 'tasks_title', 'Task Title', ''),
+(126, 'tasks_description', 'Task Description', ''),
+(127, 'tasks_2yourself', 'Send an email notification to yourself', ''),
+(128, 'tasks_2others', 'Send notification to other email addresses (separated with commas)', ''),
+(129, 'forms_savechanges', 'Save Changes', ''),
+(130, 'dashboard_drafts', 'Drafts', 'Brouillons'),
+(131, 'documents_document', '%Document%', 'Document'),
+(132, 'documents_orderid', 'Order ID', ''),
+(133, 'documents_submittedby', 'Submitted by', ''),
+(134, 'documents_submittedfor', 'Submitted for', ''),
+(135, 'documents_created', 'Created', ''),
+(136, 'documents_status', 'Status', ''),
+(137, 'documents_search', 'Search %Document%s', ''),
+(138, 'documents_noresults', 'No %Document%s found', ''),
+(139, 'documents_draft', 'draft', ''),
+(140, 'documents_saved', 'saved', ''),
+(141, 'documents_pending', 'pending', ''),
+(142, 'documents_complete', 'complete', ''),
+(143, 'orders_search', 'Search Orders', ''),
+(144, 'orders_division', 'Division', ''),
+(145, 'orders_ordertype', 'Order Type', ''),
+(146, 'orders_scorecard', 'Score Card', ''),
+(147, 'orders_noresults', 'No orders found', ''),
+(148, 'orders_all', 'List All Orders', '');
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

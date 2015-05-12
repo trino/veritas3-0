@@ -1,40 +1,50 @@
 <?php
     $settings = $this->requestAction('settings/get_settings');
     $sidebar = $this->requestAction("settings/all_settings/" . $this->Session->read('Profile.id') . "/sidebar");
+    $debug=$this->request->session()->read('debug');
 
-if ($_SERVER['SERVER_NAME'] == "localhost" || $_SERVER['SERVER_NAME'] == "127.0.0.1") {
-    include_once('/subpages/api.php');
-} else {
-    include_once('subpages/api.php');
-}?>
+    if ($_SERVER['SERVER_NAME'] == "localhost" || $_SERVER['SERVER_NAME'] == "127.0.0.1") {
+        include_once('/subpages/api.php');
+    } else {
+        include_once('subpages/api.php');
+    }
+
+    $language = $this->request->session()->read('Profile.language');
+    $controller =  $this->request->params['controller'];
+    $strings = CacheTranslations($language, $controller  . "_%",$settings);
+    if($debug && $language == "Debug"){ $Trans = " [Translated]"; } else {$Trans = "";}
+?>
 
 <h3 class="page-title">
-    <?php echo ucfirst($settings->document); ?>s <?php if (isset($_GET['draft'])) { ?>(Draft)<?php } ?>
+    <?php
+        $string = "index_documents";
+        if (isset($_GET['draft'])) { $string = "index_documentdrafts"; }
+        echo $strings[$string];
+    ?>
 </h3>
 <div class="page-bar">
     <ul class="page-breadcrumb">
         <li>
             <i class="fa fa-home"></i>
-            <a href="<?php echo $this->request->webroot; ?>">Dashboard</a>
+            <a href="<?php echo $this->request->webroot; ?>"><?=$strings["dashboard_dashboard"];?></a>
             <i class="fa fa-angle-right"></i>
         </li>
         <li>
-            <a href=""><?php echo ucfirst($settings->document); ?>s</a>
+            <a href=""><?= $strings["index_documents"];?></a>
         </li>
     </ul>
 
-    <a href="javascript:window.print();" class="floatright btn btn-info">Print</a>
+    <a href="javascript:window.print();" class="floatright btn btn-info"><?=$strings["dashboard_print"];?></a>
     <?php if ($sidebar->document_create == 1) { ?>
         <a href="<?php echo $this->request->webroot; ?>documents/add" class="floatright btn btn-primary btnspc">
-            Create <?php echo ucfirst($settings->document); ?></a>
+            <?= $strings["index_createdocument"]; ?></a>
     <?php }
         if (isset($_GET["draft"])) { ?>
             <a href="<?php echo $this->request->webroot; ?>documents/index" class="floatright btn btn-info btnspc">
-                List <?php echo ucfirst($settings->document); ?>s</a>
+                <?=$strings["index_listdocuments"];?></a>
         <?php } else { ?>
-            <a href="<?php echo $this->request->webroot; ?>documents/index?draft"
-               class="floatright btn btn-info btnspc">
-                Drafts</a>
+            <a href="<?php echo $this->request->webroot; ?>documents/index?draft" class="floatright btn btn-info btnspc">
+                <?=$strings["dashboard_drafts"];?></a>
         <?php } ?>
 
 </div>
@@ -46,7 +56,7 @@ if ($_SERVER['SERVER_NAME'] == "localhost" || $_SERVER['SERVER_NAME'] == "127.0.
             <div class="portlet-title">
                 <div class="caption">
                     <i class="fa fa-copy"></i>
-                    List <?php echo ucfirst($settings->document); ?>s
+                    <?=$strings["index_listdocuments"];?>
                 </div>
             </div>
             <div class="portlet-body form">
@@ -72,15 +82,16 @@ if ($_SERVER['SERVER_NAME'] == "localhost" || $_SERVER['SERVER_NAME'] == "127.0.
                             ?>
 
                             <select class="form-control input-inline" name="type">
-                                <option value=""><?php echo ucfirst($settings->document); ?></option>
+                                <option value=""><?= $strings["documents_document"]; ?></option>
                                 <?php
+                                    $fieldname = getFieldname("title", $language);
                                     foreach ($type as $t) {
                                         if(!isset($t->show) || $t->show) {
                                             ?>
                                             <option
                                                 value="<?php echo $t->id; ?>"
                                                 <?php if (isset($return_type) && $return_type == $t->id) { ?> selected="selected"<?php } ?> >
-                                                <?php echo ucfirst($t->title); ?>
+                                                <?php echo ucfirst($t->$fieldname . $Trans); ?>
                                             </option>
                                         <?php
                                         }
@@ -107,7 +118,7 @@ if ($_SERVER['SERVER_NAME'] == "localhost" || $_SERVER['SERVER_NAME'] == "127.0.
 
 
                             <select class="form-control input-inline" name="submitted_by_id" style="width:140px;">
-                                <option value="">Submitted by</option>
+                                <option value=""><?=$strings["documents_submittedby"];?></option>
                                 <?php
                                     foreach ($users as $u) {
                                         ?>
@@ -121,7 +132,7 @@ if ($_SERVER['SERVER_NAME'] == "localhost" || $_SERVER['SERVER_NAME'] == "127.0.
                             <?php if ($settings->mee == "MEE") { ?>
 
                             <select class="form-control input-inline" name="submitted_for_id" style="">
-                                <option value="">Submitted for</option>
+                                <option value=""><?= $strings["documents_submittedfor"];?></option>
                                 <?php
                                     $dr_cl = $doc_comp->getDriverClient(0, 0);
                                     $drcl_d = $dr_cl['driver'];
@@ -148,7 +159,7 @@ if ($_SERVER['SERVER_NAME'] == "localhost" || $_SERVER['SERVER_NAME'] == "127.0.
 
 
                             <select class="form-control showclientdivision  input-inline" name="client_id">
-                                <option value=""><?php echo ucfirst($settings->client); ?></option>
+                                <option value=""><?= $strings["settings_client"]; ?></option>
                                 <?php
                                     foreach ($clients as $c) {
                                         ?>
@@ -162,12 +173,12 @@ if ($_SERVER['SERVER_NAME'] == "localhost" || $_SERVER['SERVER_NAME'] == "127.0.
 
 
                             <input class="form-control input-inline" name="searchdoc" type="search"
-                                   placeholder=" Search <?php echo ucfirst($settings->document); ?>s"
+                                   placeholder="<?= $strings["documents_search"]; ?>"
                                    value="<?php if (isset($search_text)) echo $search_text; ?>"
                                    aria-controls="sample_1"/>
 
 
-                            <button type="submit" class="btn btn-primary input-inline" id="search">Search</button>
+                            <button type="submit" class="btn btn-primary input-inline" id="search"><?= $strings["dashboard_search"]; ?></button>
 
                         </form>
                     </div>
@@ -182,29 +193,29 @@ if ($_SERVER['SERVER_NAME'] == "localhost" || $_SERVER['SERVER_NAME'] == "127.0.
                             class="table table-condensed table-striped table-bordered table-hover dataTable no-footer">
                             <thead>
                             <tr class="sorting">
-                                <th title="Document ID"><?= $this->Paginator->sort('id'); ?></th>
-                                <th><?= $this->Paginator->sort('document_type', ucfirst($settings->document) . ''); ?></th>
+                                <th title="Document ID"><?= $this->Paginator->sort('id', "ID"); ?></th>
+                                <th><?= $this->Paginator->sort('document_type', $strings["documents_document"]); ?></th>
 
                                 <?php if ($settings->mee == "MEE") { ?>
 
-                                <th title="Order ID" style="max-width: 58px;"><?= $this->Paginator->sort('oid', "Order ID"); ?></th>
+                                <th title="Order ID" style="max-width: 58px;"><?= $this->Paginator->sort('oid', $strings["documents_orderid"]); ?></th>
                                 <?php } ?>
 
-                                <th><?= $this->Paginator->sort('user_id', 'Submitted by'); ?><?php if (isset($end)) echo $end;
+                                <th><?= $this->Paginator->sort('user_id', $strings["documents_submittedby"]); ?><?php if (isset($end)) echo $end;
                                         if (isset($start)) echo "//" . $start; ?></th>
 
 
                                 <?php if ($settings->mee == "MEE") { ?>
 
-                                <th><?= $this->Paginator->sort('uploaded_for', 'Submitted for'); ?><?php if (isset($end)) echo $end;
+                                <th><?= $this->Paginator->sort('uploaded_for', $strings["documents_submittedfor"]); ?><?php if (isset($end)) echo $end;
                                         if (isset($start)) echo "//" . $start; ?></th>
 
                                 <?php } ?>
 
-                                <th><?= $this->Paginator->sort('created', 'Created'); ?></th>
-                                <th><?= $this->Paginator->sort('client_id', ucfirst($settings->client)); ?></th>
-                                <th class="actions"><?= __('Actions') ?></th>
-                                <th><?= $this->Paginator->sort('draft', "Status"); ?></th>
+                                <th><?= $this->Paginator->sort('created', $strings["documents_created"]); ?></th>
+                                <th><?= $this->Paginator->sort('client_id', $strings["settings_client"]); ?></th>
+                                <th class="actions"><?= __($strings["dashboard_actions"]) ?></th>
+                                <th><?= $this->Paginator->sort('draft', $strings["documents_status"]); ?></th>
 
                             </tr>
                             </thead>
@@ -217,8 +228,7 @@ if ($_SERVER['SERVER_NAME'] == "localhost" || $_SERVER['SERVER_NAME'] == "127.0.
                                     array_push($docz, $d->title);
                                 }
 
-                                function hasget($name)
-                                {
+                                function hasget($name) {
                                     if (isset($_GET[$name])) {
                                         return strlen($_GET[$name]) > 0;
                                     }
@@ -227,18 +237,14 @@ if ($_SERVER['SERVER_NAME'] == "localhost" || $_SERVER['SERVER_NAME'] == "127.0.
 
                                 //var_dump($docz);
                                 if (count($documents) == 0) {
-                                    echo '<TR><TD COLSPAN="9" ALIGN="CENTER">No ' . strtolower($settings->document) . 's found';
-                                    if (hasget('searchdoc')) {
-                                        echo " matching '" . $_GET['searchdoc'] . "'";
-                                    }
-                                    echo '</TD></TR>';
+                                    echo '<TR><TD COLSPAN="9" ALIGN="CENTER">' . $strings["documents_noresults"] . '</TD></TR>';
                                 }
 
                                 foreach ($documents as $docs):
 
-                                if ($docs->document_type == 'feedbacks' && !$this->request->session()->read('Profile.super'))
+                                if ($docs->document_type == 'feedbacks' && !$this->request->session()->read('Profile.super')) {
                                     continue;
-
+                                }
 
                                 if ($row_color_class == "even") {
                                     $row_color_class = "odd";
@@ -249,8 +255,9 @@ if ($_SERVER['SERVER_NAME'] == "localhost" || $_SERVER['SERVER_NAME'] == "127.0.
                                 $uploaded_for = $doc_comp->getUser($docs->uploaded_for);
                                 $getClientById = $doc_comp->getClientById($docs->client_id);
                                 $orderID = $this->Number->format($docs->order_id);
-                                if($orderID)
-                                $orderDetail = $doc_comp->getOrderById($docs->order_id);
+                                if($orderID) {
+                                    $orderDetail = $doc_comp->getOrderById($docs->order_id);
+                                }
                                 $getColorId = $this->requestAction('documents/getColorId/'.$docs->sub_doc_id);
                                 //$orderDetail = '<A HREF="'.$this->request->webroot.'orders/vieworder/'.$orderDetail->client_id.'/' . $orderID . '">' . $orderID . '</A>';
                             ?>
@@ -270,18 +277,18 @@ if ($_SERVER['SERVER_NAME'] == "localhost" || $_SERVER['SERVER_NAME'] == "127.0.
                                             case 0://plain text
                                                 echo  h($docs->document_type);
                                                 break;
-                                        case 1://top block
-                                        echo '<div class="dashboard-stat ';
+                                            case 1://top block
+                                                echo '<div class="dashboard-stat ';
                                        // $colors = array("pre-screening" => "blue-madison", "survey" => "green", "driver application" => "red", "road test" => "yellow", "consent form" => "purple", "feedbacks" => "red-intense", "attachment" => "yellow-saffron", "audits" => "grey-cascade");
                                        /* if (isset($colors[strtolower($docs->document_type)])) {
                                             echo $colors[strtolower($docs->document_type)];
                                         }
                                         */
-                                        if(isset($getColorId)) {
-                                            echo $getColorId;
-                                        }else {
-                                            echo "blue";
-                                        }
+                                                if(isset($getColorId)) {
+                                                    echo $getColorId;
+                                                }else {
+                                                    echo "blue";
+                                                }
                                     ?>">
 
                                     <a class="more"  id="sub_doc_click1"
@@ -299,8 +306,7 @@ if ($_SERVER['SERVER_NAME'] == "localhost" || $_SERVER['SERVER_NAME'] == "127.0.
                                        */
 
                                        ?>">
-                                        <?=  h(str_replace('_',' ',$docs->document_type)); //it won't let me put it in the desc  ?>
-
+                                        <?= h(str_replace('_',' ',$docs->document_type)); //it won't let me put it in the desc ?>
                                         <i class="fa fa-copy"></i>
 
                                     </a>
@@ -389,11 +395,11 @@ if ($_SERVER['SERVER_NAME'] == "localhost" || $_SERVER['SERVER_NAME'] == "127.0.
                         <?php
                         if ($sidebar->document_list == '1' && !isset($_GET["draft"])) {
                             //echo $this->Html->link(__('View'), ['action' => 'view', $docs->client_id, $docs->id], ['class' => btnclass("VIEW")]);
-                            echo '<a class="' . btnclass("VIEW") . '" href="' . $VIEWURL . '">View</a>';
+                            echo '<a class="' . btnclass("VIEW") . '" href="' . $VIEWURL . '">' . $strings["dashboard_view"] . '</a>';
                         } ?>
                         <?php
                             if ($sidebar->document_edit == '1' && ($this->request->session()->read('Profile.super')==1 || $this->request->session()->read('Profile.id')==$docs->user_id)) {
-                                echo '<a class="' . btnclass("EDIT") . '" href="' . $EDITURL .'">Edit</a>';
+                                echo '<a class="' . btnclass("EDIT") . '" href="' . $EDITURL .'">' . $strings["dashboard_edit"] . '</a>';
                             }
                         ?>
                         <?php if ($sidebar->document_delete == '1' && $docs->order_id == 0) {
@@ -406,15 +412,15 @@ if ($_SERVER['SERVER_NAME'] == "localhost" || $_SERVER['SERVER_NAME'] == "127.0.
                                 if (isset($_GET['draft'])) {
                                     ?>
                                     <a href="<?php echo $this->request->webroot; ?>documents/delete/<?php echo $docs->id; ?>/draft"
-                                       onclick="return confirm('Are you sure you want to delete <?= $docname; ?>?');"
-                                       class="<?= btnclass("DELETE") ?>">Delete</a>
+                                       onclick="return confirm('<?= ProcessVariables($language, $strings["dashboard_confirmdelete"], array("name" => $docname)); ?>');"
+                                       class="<?= btnclass("DELETE") ?>"><?= $strings["dashboard_delete"]; ?></a>
 
                                 <?php
                                 } else {
                                     ?>
                                     <a href="<?php echo $this->request->webroot; ?>documents/delete/<?php echo $docs->id; ?>"
-                                       onclick="return confirm('Are you sure you want to delete <?= $docname; ?>?');"
-                                       class="<?= btnclass("DELETE") ?>">Delete</a>
+                                       onclick="return confirm('<?= ProcessVariables($language, $strings["dashboard_confirmdelete"], array("name" => $docname)); ?>');"
+                                       class="<?= btnclass("DELETE") ?>"><?= $strings["dashboard_delete"]; ?></a>
                                 <?php
                                 }
                             }
@@ -428,10 +434,10 @@ if ($_SERVER['SERVER_NAME'] == "localhost" || $_SERVER['SERVER_NAME'] == "127.0.
                         <?php
                             if($docs->draft == 1){
                                 $Color = "label-warning";
-                                $Label = "draft";
+                                $Label = $strings["documents_draft"];
                             } else {
                                 $Color = "label-success";
-                                $Label = "saved";
+                                $Label = $strings["documents_saved"];
                             }
                             echo '<span class="label label-sm ' . $Color . '" style="padding:4px;">' . $Label . '</span>';
                         ?></td>
@@ -455,9 +461,9 @@ if ($_SERVER['SERVER_NAME'] == "localhost" || $_SERVER['SERVER_NAME'] == "127.0.
                              style="margin-top:-10px;">
 
                             <ul class="pagination sorting">
-                                <?= $this->Paginator->prev('< ' . __('previous')); ?>
+                                <?= $this->Paginator->prev('< ' . __($strings["dashboard_previous"])); ?>
                                 <?= $this->Paginator->numbers(); ?>
-                                <?= $this->Paginator->next(__('next') . ' >'); ?>
+                                <?= $this->Paginator->next(__($strings["dashboard_next"]) . ' >'); ?>
                             </ul>
                         </div>
                     </div>

@@ -1,6 +1,7 @@
 <?php
     $settings = $this->requestAction('settings/get_settings');
     $sidebar = $this->requestAction("settings/get_side/" . $this->Session->read('Profile.id'));
+    $debug=$this->request->session()->read('debug');
 
     if ($_SERVER['SERVER_NAME'] == "localhost" || $_SERVER['SERVER_NAME'] == "127.0.0.1") {
         include_once('/subpages/api.php');
@@ -8,41 +9,52 @@
         include_once('subpages/api.php');
     }
 
-function getColor($products, $OrderType, $Default = "blue"){
-    $product = getIterator($products, "Name", $OrderType);
-    if (is_object($product)) { return $product->ButtonColor;}
-    return $Default;
-}
+    $language = $this->request->session()->read('Profile.language');
+    $controller =  $this->request->params['controller'];
+    $strings = CacheTranslations($language, array($controller  . "_%", "documents_%"),$settings);
+    if($debug && $language == "Debug"){ $Trans = " [Translated]"; } else {$Trans = "";}
+
+    function getColor($products, $OrderType, $Default = "blue"){
+        $product = getIterator($products, "Name", $OrderType);
+        if (is_object($product)) { return $product->ButtonColor;}
+        return $Default;
+    }
 ?>
 
 <h3 class="page-title">
-    Orders <?php if (isset($_GET['draft'])) { ?>(Draft)<?php } ?>
+    <?php
+        if (isset($_GET['draft'])) {
+            echo $strings["index_orderdrafts"];
+        } else {
+            echo $strings["index_orders"];
+        }
+    ?>
 </h3>
 <div class="page-bar">
     <ul class="page-breadcrumb">
         <li>
             <i class="fa fa-home"></i>
-            <a href="<?php echo $this->request->webroot; ?>">Dashboard</a>
+            <a href="<?php echo $this->request->webroot; ?>"><?= $strings["dashboard_dashboard"];?></a>
             <i class="fa fa-angle-right"></i>
         </li>
         <li>
-            <a href="">Orders</a>
+            <a href=""><?= $strings["index_orders"];?></a>
         </li>
     </ul>
     <div class="page-toolbar">
 
     </div>
-    <a href="javascript:window.print();" class="floatright btn btn-info">Print</a>
+    <a href="javascript:window.print();" class="floatright btn btn-info"><?= $strings["dashboard_print"]; ?></a>
 
     <?php
         if ($sidebar->orders_list == 1 && !isset($_GET["draft"])) {
             ?>
             <a href="<?php echo $this->request->webroot; ?>orders/orderslist?draft"
                class="floatright btn btn-warning btnspc">
-                List Order Drafts</a>
+                <?= $strings["index_orderdrafts"]; ?></a>
         <?php } elseif (isset($_GET["draft"])) { ?>
             <a href="<?php echo $this->request->webroot; ?>orders/orderslist" class="floatright btn btn-warning btnspc">
-                List All Orders</a>
+                <?= $strings["orders_all"];?></a>
         <?php }
 
 
@@ -67,7 +79,7 @@ function getColor($products, $OrderType, $Default = "blue"){
             <div class="portlet-title">
                 <div class="caption">
                     <i class="fa fa-clipboard"></i>
-                    List Orders
+                    <?= $strings["index_listorders"]; ?>
                 </div>
             </div>
             <div class="portlet-body form">
@@ -86,7 +98,7 @@ function getColor($products, $OrderType, $Default = "blue"){
                                 $users = $doc_comp->getAllUser();
                             ?>
                             <select class="form-control input-inline" name="submitted_by_id" style="">
-                                <option value="">Submitted by</option>
+                                <option value=""><?= $strings["documents_submittedby"];?></option>
                                 <?php
                                     foreach ($users as $u) {
                                         ?>
@@ -97,7 +109,7 @@ function getColor($products, $OrderType, $Default = "blue"){
                                 ?>
                             </select>
                             <select class="form-control input-inline" name="uploaded_for" style="">
-                                <option value="">Submitted for</option>
+                                <option value=""><?= $strings["documents_submittedfor"];?></option>
                                 <?php
                                     foreach ($users as $u) {
                                         ?>
@@ -114,7 +126,7 @@ function getColor($products, $OrderType, $Default = "blue"){
                                 $clients = $doc_comp->getAllClient();
                             ?>
                             <select class="form-control showdivision input-inline" name="client_id">
-                                <option value=""><?php echo ucfirst($settings->client); ?></option>
+                                <option value=""><?=$strings["settings_client"]; ?></option>
                                 <?php
                                     foreach ($clients as $c) {
                                         ?>
@@ -131,12 +143,12 @@ function getColor($products, $OrderType, $Default = "blue"){
                             </div>
 
                             <input class="form-control input-inline" name="searchdoc" type="search"
-                                   placeholder="Search Orders"
+                                   placeholder="<?=$strings["orders_search"];?>"
                                    value="<?php if (isset($search_text)) echo $search_text; ?>"
                                    aria-controls="sample_1"/>
 
 
-                            <button type="submit" class="btn btn-primary input-inline">Search</button>
+                            <button type="submit" class="btn btn-primary input-inline"><?= $strings["dashboard_search"]; ?></button>
 
 
                         </form>
@@ -165,16 +177,16 @@ function getColor($products, $OrderType, $Default = "blue"){
                             class="table table-condensed table-striped table-bordered table-hover dataTable no-footer">
                             <thead>
                             <tr class="sorting">
-                                <th><?= $this->Paginator->sort('id'); ?></th>
-                                <th><?= $this->Paginator->sort('orders.order_type', "Order Type"); ?></th>
-                                <th><?= $this->Paginator->sort('user_id', 'Submitted by'); ?></th>
-                                <th><?= $this->Paginator->sort('uploaded_for', 'Submitted for'); ?></th>
-                                <th><?= $this->Paginator->sort('client_id', ucfirst($settings->client)); ?></th>
-                                <th>Division</th>
-                                <th><?= $this->Paginator->sort('created', 'Created'); ?></th>
-                                <th class="actions"><?= __('Actions') ?></th>
+                                <th><?= $this->Paginator->sort('id', "ID"); ?></th>
+                                <th><?= $this->Paginator->sort('orders.order_type', $strings["orders_ordertype"]); ?></th>
+                                <th><?= $this->Paginator->sort('user_id', $strings["documents_submittedby"]); ?></th>
+                                <th><?= $this->Paginator->sort('uploaded_for', $strings["documents_submittedfor"]); ?></th>
+                                <th><?= $this->Paginator->sort('client_id', $strings["settings_client"]); ?></th>
+                                <th><?=$strings["orders_division"]; ?></th>
+                                <th><?= $this->Paginator->sort('created', $strings["documents_created"]); ?></th>
+                                <th class="actions"><?= __($strings["dashboard_actions"]) ?></th>
                                 <!--th><?= $this->Paginator->sort('bright_planet_html_binary', 'Status'); ?></th-->
-                                <th><?= $this->Paginator->sort('complete', 'Status'); ?></th>
+                                <th><?= $this->Paginator->sort('complete', $strings["documents_status"]); ?></th>
                             </tr>
                             </thead>
                             <tbody>
@@ -189,11 +201,7 @@ function getColor($products, $OrderType, $Default = "blue"){
                                 }
 
                                 if (count($orders) == 0) {
-                                    echo '<TR><TD COLSPAN="10" ALIGN="CENTER">No orders found';
-                                    if (hasget('searchdoc')) {
-                                        echo " matching '" . $_GET['searchdoc'] . "'";
-                                    }
-                                    echo '</TD></TR>';
+                                    echo '<TR><TD COLSPAN="10" ALIGN="CENTER">' . $strings["orders_noresults"] . '</TD></TR>';
                                 }
 
                                 foreach ($orders as $order):
@@ -289,7 +297,7 @@ function getColor($products, $OrderType, $Default = "blue"){
 
 
 
-                                                        <?= h(getField($ordertype, "Name", "English")); //it won't let me put it in the desc   ?>
+                                                        <?= h(getField($ordertype, "Name", $language) . $Trans); //it won't let me put it in the desc   ?>
                                                     <?php
                                                     if($order->order_type != 'BUL')
                                                     {
@@ -338,7 +346,7 @@ function getColor($products, $OrderType, $Default = "blue"){
                                                            if ($order->order_type) {
                                                                echo '?order_type=' . urlencode($order->order_type);
                                                                if ($order->forms) echo '&forms=' . $order->forms;
-                                                           } ?>">View</a>
+                                                           } ?>"><?= $strings["dashboard_view"]; ?></a>
 <?php
 //if (!isset($_GET['table']))
 //echo $this->Html->link(__('View'), ['action' => 'vieworder', $order->client_id, $order->id], ['class' => 'btn btn-info']);
@@ -353,7 +361,7 @@ function getColor($products, $OrderType, $Default = "blue"){
                                                         if (!isset($_GET['table']) && $order->draft == 1) {
                                                             ?>
                                                             <a class="<?= btnclass("EDIT") ?>"
-                                                               href="<?= $EDITURL ?>">Edit</a>
+                                                               href="<?= $EDITURL ?>"><?= $strings["dashboard_edit"]; ?></a>
 <?php
 //echo $this->Html->link(__('Edit'), ['controller' => 'orders', 'action' => 'addorder', $order->client_id, $order->id], ['class' => 'btn btn-primary']);
                                                         } /*elseif (isset($_GET['table'])) {
@@ -374,7 +382,7 @@ echo $this->Html->link(__('Edit'), ['controller' => 'orders', 'action' => 'addor
                                             <?php if (!isset($_GET['draft']) && is_object($order->profile) && ($order->draft == 0)) {
                                                 ?>
                                                 <a href="<?php echo $this->request->webroot; ?>profiles/view/<?php echo $order->profile->id ?>?getprofilescore=1"
-                                                   class="<?= btnclass("btn-info", "blue-soft") ?>">Score Card</a>
+                                                   class="<?= btnclass("btn-info", "blue-soft") ?>"><?= $strings["orders_scorecard"]; ?></a>
                                             <?php
                                             }
 
@@ -383,8 +391,8 @@ echo $this->Html->link(__('Edit'), ['controller' => 'orders', 'action' => 'addor
                                                     ?><a
                                                     href="<?php echo $this->request->webroot; ?>orders/deleteorder/<?php echo $order->id; ?><?php if (isset($_GET['draft'])) echo "?draft"; ?>"
                                                     class="<?= btnclass("DELETE") ?>"
-                                                    onclick="return confirm('Are you sure you want to delete order <?= $order->id ?>?');">
-                                                        Delete</a>
+                                                    onclick="return confirm('<?= ProcessVariables($language, $strings["dashboard_confirmdelete"], array("name" => $order->id)); ?>');">
+                                                        <?= $strings["dashboard_delete"];?></a>
                                                 <?php
                                                 }
 
@@ -402,7 +410,7 @@ echo $this->Html->link(__('Edit'), ['controller' => 'orders', 'action' => 'addor
                                             {
                                                 ?>
                                                  <span class="label label-sm label-warning"
-                                                          style="float:right;padding:4px;">draft</span>
+                                                          style="float:right;padding:4px;"><?= $strings["documents_draft"]; ?></span>
                                                 <?php
 
                                             }else
@@ -412,12 +420,12 @@ echo $this->Html->link(__('Edit'), ['controller' => 'orders', 'action' => 'addor
 
 
                                                     <span class="label label-sm label-primary"
-                                                          style="float:right;padding:4px;">pending</span>
+                                                          style="float:right;padding:4px;"><?= $strings["documents_pending"];?></span>
                                                 <?php
 
                                             } else { ?>
                                                 <span class="label label-sm label-success"
-                                                      style="float:right;padding:4px;">complete</span>
+                                                      style="float:right;padding:4px;"><?= $strings["documents_complete"];?></span>
                                             <?php } ?>
                                         </td>
 
@@ -437,9 +445,9 @@ echo $this->Html->link(__('Edit'), ['controller' => 'orders', 'action' => 'addor
                             <div id="sample_2_paginate" class="dataTables_paginate paging_simple_numbers"
                                  style="margin-top:-10px;">
                                 <ul class="pagination sorting">
-                                    <?= $this->Paginator->prev('< ' . __('previous')); ?>
+                                    <?= $this->Paginator->prev('< ' . __($strings["dashboard_previous"])); ?>
                                     <?= $this->Paginator->numbers(); ?>
-                                    <?= $this->Paginator->next(__('next') . ' >'); ?>
+                                    <?= $this->Paginator->next(__($strings["dashboard_next"]) . ' >'); ?>
                                 </ul>
                             </div>
                         </div>

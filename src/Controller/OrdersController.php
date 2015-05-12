@@ -1031,10 +1031,8 @@ class OrdersController extends AppController
         $this->set('doc_comp', $this->Document);
         if (isset($_GET['draft']) && isset($_GET['flash'])) {
             $this->Flash->success('Order saved as draft');
-        } else {
-            if (isset($_GET['flash'])) {
-                $this->Flash->success('Order saved successfully');
-            }
+        } elseif (isset($_GET['flash'])) {
+            $this->Flash->success('Order saved successfully');
         }
         $setting = $this->Settings->get_permission($this->request->session()->read('Profile.id'));
         $doc = $this->Document->getDocumentcount();
@@ -1044,8 +1042,8 @@ class OrdersController extends AppController
         if ($setting->orders_list == 0 || count($doc) == 0 || $cn == 0) {
             $this->Flash->error('Sorry, you don\'t have the required permissions.');
             return $this->redirect("/");
-
         }
+
         $orders = TableRegistry::get('orders');
         $order = $orders->find();
         //$order = $order->order(['orders.id' => 'DESC']);
@@ -1061,95 +1059,112 @@ class OrdersController extends AppController
 
         if (!$this->request->session()->read('Profile.super')) {
             $u = $this->request->session()->read('Profile.id');
-
             $setting = $this->Settings->get_permission($u);
             /*if ($setting->document_others == 0) {
                 if ($cond == '')
                     $cond = $cond . ' user_id = ' . $u;
                 else
                     $cond = $cond . ' AND user_id = ' . $u;
-
             }*/
-
         }
+
         if (isset($_GET['searchdoc']) && $_GET['searchdoc']) {
             $cond = $cond . ' (orders.title LIKE "%' . $_GET['searchdoc'] . '%" OR orders.description LIKE "%' . $_GET['searchdoc'] . '%")';
         }
+
         if (isset($_GET['table']) && $_GET['table']) {
-            if ($cond == '')
+            if ($cond == '') {
                 $cond = $cond . ' orders.id IN (SELECT order_id FROM ' . $_GET['table'] . ')';
-            else
+            }else {
                 $cond = $cond . ' AND orders.id IN (SELECT order_id FROM ' . $_GET['table'] . ')';
+            }
         }
+
         if (!$this->request->session()->read('Profile.admin') && $setting->orders_others == 0) {
-            if ($cond == '')
+            if ($cond == '') {
                 $cond = $cond . ' orders.user_id = ' . $this->request->session()->read('Profile.id');
-            else
+            }else {
                 $cond = $cond . ' AND orders.user_id = ' . $this->request->session()->read('Profile.id');
+            }
         }
+
         if (!$this->request->session()->read('Profile.admin') && $setting->orders_others == 1) {
-            if ($cond == '')
+            if ($cond == ''){
                 $cond = $cond . ' orders.client_id IN (' . $cli_id . ')';
-            else
+            }else {
                 $cond = $cond . ' AND orders.client_id IN (' . $cli_id . ')';
+            }
         }
+
         if (isset($_GET['submitted_by_id']) && $_GET['submitted_by_id']) {
-            if ($cond == '')
+            if ($cond == '') {
                 $cond = $cond . ' orders.user_id = ' . $_GET['submitted_by_id'];
-            else
+            }else {
                 $cond = $cond . ' AND orders.user_id = ' . $_GET['submitted_by_id'];
+            }
         }
+
         if (isset($_GET['uploaded_for']) && $_GET['uploaded_for']) {
-            if ($cond == '')
+            if ($cond == '') {
                 $cond = $cond . ' orders.uploaded_for = ' . $_GET['uploaded_for'];
-            else
+            }else {
                 $cond = $cond . ' AND orders.uploaded_for = ' . $_GET['uploaded_for'];
+            }
         }
+
         if (isset($_GET['client_id']) && $_GET['client_id']) {
-            if ($cond == '')
+            if ($cond == '') {
                 $cond = $cond . ' orders.client_id = ' . $_GET['client_id'];
-            else
+            }else {
                 $cond = $cond . ' AND orders.client_id = ' . $_GET['client_id'];
+            }
         }
+
         if (isset($_GET['division']) && $_GET['division']) {
-            if ($cond == '')
+            if ($cond == '') {
                 $cond = $cond . ' division = "' . $_GET['division'] . '"';
-            else
+            }else {
                 $cond = $cond . ' AND division = "' . $_GET['division'] . '"';
+            }
         }
+
         if (isset($_GET['draft'])) {
-            if ($cond == '')
+            if ($cond == '') {
                 $cond = $cond . ' orders.draft = 1';
-            else
+            }else {
                 $cond = $cond . ' AND orders.draft = 1';
+            }
         }/* else {
                 if ($cond == '')
                     $cond = $cond . ' orders.draft = 0';
                 else
                     $cond = $cond . ' AND orders.draft = 0';
             }*/
+
         if ($cond) {
             $order = $order->where([$cond])->contain(['Profiles']);
         } else {
             $order = $order->contain(['Profiles']);
         }
+
         if (isset($_GET['searchdoc'])) {
             $this->set('search_text', $_GET['searchdoc']);
         }
+
         if (isset($_GET['submitted_by_id'])) {
             $this->set('return_user_id', $_GET['submitted_by_id']);
         }
+
         if (isset($_GET['client_id'])) {
             $this->set('return_client_id', $_GET['client_id']);
         }
+
         if (isset($_GET['type'])) {
             $this->set('return_type', $_GET['type']);
         }
 
         //debug($order);
-
         $this->set('orders', $this->appendattachments($this->paginate($order)));
-
     }
 
     function getClientByDriver($driver)
@@ -1408,25 +1423,30 @@ class OrdersController extends AppController
         }
         $this->set('clients', $q);
 
-        if(isset($_GET))
-        {
+        if(isset($_GET)) {
             $cond =[];
-            if(isset($_GET['from']))
-                array_push($cond,["created >="=>$_GET['from']]);
-            if(isset($_GET['to']))
-                array_push($cond,["created <="=>$_GET['to']]);
-            if(isset($_GET['client_id']))
-                array_push($cond,["client_id"=>$_GET['client_id']]);
-
+            if(isset($_GET['from'])) {
+                array_push($cond, ["created >=" => $_GET['from']]);
+            }
+            if(isset($_GET['to'])) {
+                array_push($cond, ["created <=" => $_GET['to']]);
+            }
+            if(isset($_GET['client_id'])) {
+                array_push($cond, ["client_id" => $_GET['client_id']]);
+            }
 
             $orders = TableRegistry::get('orders');
             $order = $orders->find()->order(['orders.id' => 'DESC'])->where(['draft' => 0, $cond])->all();
             $this->set('orders', $order);
 
+            $table = TableRegistry::get('product_types')->find('all');
+            $this->set('products', $table);
+
+            $this->set('taxes', 0.13);
         }
     }
-    public function bulksubmit()
-    {
+
+    public function bulksubmit() {
         $dri = $_POST['drivers'];
         $drivers = explode(',',$dri);
         //$forms = $_POST['forms'];

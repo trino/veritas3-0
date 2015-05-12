@@ -9,7 +9,7 @@ if ($_SERVER['SERVER_NAME'] == "localhost" || $_SERVER['SERVER_NAME'] == "127.0.
 $settings = $this->requestAction('settings/get_settings');
 $language = $this->request->session()->read('Profile.language');
 $controller =  $this->request->params['controller'];
-$strings = CacheTranslations($language, array($controller  . "_%", "month_long%"),$settings);
+$strings = CacheTranslations($language, array($controller  . "_%", "month_long%", "forms_%"),$settings);
 //if($debug && $language == "Debug"){ $Trans = " [Translated]"; } else {$Trans = "";}
 ?>
 
@@ -51,7 +51,7 @@ if(isset($isdisabled)) {$disabled = "disabled='disabled'";}
 
 ?>
 <h3 class="page-title">
-			Schedules (Reminders)</small>
+			<?=$strings["tasks_pagetitle"];?></small>
 			</h3>
 			<div class="page-bar">
 				<ul class="page-breadcrumb">
@@ -113,21 +113,21 @@ if(isset($isdisabled)) {$disabled = "disabled='disabled'";}
 			<!-- TASK TITLE -->
 			<div class="form-group">
 				<div class="col-md-12">
-					<input type="text" required <?php echo $disabled;?> name="title" class="form-control todo-taskbody-tasktitle" placeholder="Task Title..." value="<?php if(isset($event))echo $event->title;?>" />
+					<input type="text" required <?php echo $disabled;?> name="title" class="form-control todo-taskbody-tasktitle" placeholder="<?=$strings["tasks_title"];?>..." value="<?php if(isset($event))echo $event->title;?>" />
 				</div>
 			</div>
 			<!-- TASK DESC -->
 			<div class="form-group">
 				<div class="col-md-12">
-					<textarea class="form-control todo-taskbody-taskdesc" required <?php echo $disabled;?> name="description" rows="8" placeholder="Task Description..."><?php if(isset($event))echo $event->description;?></textarea>
+					<textarea class="form-control todo-taskbody-taskdesc" required <?php echo $disabled;?> name="description" rows="8" placeholder="<?=$strings["tasks_description"];?>..."><?php if(isset($event))echo $event->description;?></textarea>
 				</div>
 			</div>
             <div class="form-group">
                 <div class="col-md-12">
-                    <input type="checkbox" id="email_self" name="email_self" value="1" <?php if(isset($event) && $event->email_self=='1')echo "checked='checked'";?> <?php echo $disabled;?> /><label for="email_self">Send an email notification to yourself</label>
+                    <input type="checkbox" id="email_self" name="email_self" value="1" <?php if(isset($event) && $event->email_self=='1')echo "checked='checked'";?> <?php echo $disabled;?> /><label for="email_self"><?=$strings["tasks_2yourself"];?></label>
                 </div>
 				<div class="col-md-12">
-					<textarea class="form-control todo-taskbody-taskdesc" <?php echo $disabled;?> name="others_email" rows="2" placeholder="Send notification to other email addresses (separated with commas)"><?php if(isset($event))echo $event->others_email;?></textarea>
+					<textarea class="form-control todo-taskbody-taskdesc" <?php echo $disabled;?> name="others_email" rows="2" placeholder="<?=$strings["tasks_2others"];?>"><?php if(isset($event))echo $event->others_email;?></textarea>
                     <input type="hidden" name="timezoneoffset" value="<?= $this->request->session()->read('time') ?>">
 				</div>
 			</div>
@@ -139,7 +139,7 @@ if(isset($isdisabled)) {$disabled = "disabled='disabled'";}
                 <?php if (isset($event)){
                     echo '<a href="../delete/' . $event->id . '" class="btn btn-danger delUrl" onclick="return confirm(' . "'Are you sure you want to delete this event?');" . '">Delete</a>';
                 } ?>
-				<button class="btn btn-sm green-haze" type="submit" name="submit">Save Changes</button>
+				<button class="btn btn-sm green-haze" type="submit" name="submit"><?= $strings["forms_savechanges"]; ?></button>
 			</div>
             <?php }?>
 		</div>
