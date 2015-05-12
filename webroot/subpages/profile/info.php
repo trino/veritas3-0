@@ -1003,6 +1003,8 @@
         }
 
     }
+    </SCRIPT>
+<SCRIPT>
     $(function () {
         //initiate_ajax_upload1('addMore1', 'doc');
 
@@ -1088,10 +1090,8 @@
         })
 
         $('.member_type').change(function () {
-
             if ($(this).val() == '5' || $(this).val() == '7' || $(this).val() == '8'|| $(this).val() == '9'|| $(this).val() == '12') {
-                if($(this).val() == '5' || $(this).val() == '7' || $(this).val() == '9' || $(this).val() == '12')
-                {
+                if($(this).val() == '5' || $(this).val() == '7' || $(this).val() == '9' || $(this).val() == '12') {
                     $('.hideusername').hide();
                 }
                 $('.req_driver').each(function () {
@@ -1102,16 +1102,15 @@
                 //  $(this).hide();
                 //});
                 if($(this).val() == '5' || $(this).val() == '7' || $(this).val() == '8'){
-                $('#driver_div').show();
-                $('#driver_div select').attr('required','required');
-                $('.placeofbirth').attr('required','required');
-                //$('#driver_div select').removeAttr('required');
-                }
-                else{
-                $('#driver_div').hide();
-                $('#driver_div select').removeAttr('required');
-                $('.placeofbirth').removeAttr('required');
-                $('.req_sales').attr('required','required');
+                    $('#driver_div').show();
+                    $('#driver_div select').attr('required','required');
+                    $('.placeofbirth').attr('required','required');
+                    //$('#driver_div select').removeAttr('required');
+                } else{
+                    $('#driver_div').hide();
+                    $('#driver_div select').removeAttr('required');
+                    $('.placeofbirth').removeAttr('required');
+                    $('.req_sales').attr('required','required');
                 }
                 $('#isb_id').hide();
                 //$('.username_div').hide();
@@ -1123,34 +1122,30 @@
                 //$('.req_sales').attr('required','required');
                 if($(this).val() == '5' || $(this).val() == '7' || $(this).val() == '8'){
                 
+                } else{//cannot have 2 elses for 1 if
+                    $('.req_sales').attr('required','required');
+                } else {//cannot have 2 elses for 1 if
+                    $('.nav-tabs li:not(.active)').each(function () {
+                        $(this).show();
+                    });
+                    $('#driver_div').hide();
+                    $('#isb_id').hide();
+                    //$('.username_div').show();
+                    $('.req_driver').removeProp('required');
+                    $('.req_rec').removeProp('required');
+                    //$('#username_field').removeAttr('disabled');
+                    //$('.un').prop('required', "required");
+                    <?php
+                        if(isset($p->password) && $p->password) {
+                            //do nth
+                        } else{
+                            ?>
+                                $('#password').prop('required', "required");
+                                $('#retype_password').prop('required', "required");
+                            <?php
+                        }
+                     ?>
                 }
-                else{
-                $('.req_sales').attr('required','required');
-            }
-            else {
-                $('.nav-tabs li:not(.active)').each(function () {
-                    $(this).show();
-                });
-                $('#driver_div').hide();
-                $('#isb_id').hide();
-                //$('.username_div').show();
-                $('.req_driver').removeProp('required');
-                $('.req_rec').removeProp('required');
-                //$('#username_field').removeAttr('disabled');
-                //$('.un').prop('required', "required");
-                <?php
-                if(isset($p->password) && $p->password)
-                {
-                    //do nth
-                } else{
-                    ?>
-
-                $('#password').prop('required', "required");
-                $('#retype_password').prop('required', "required");
-                <?php
-                }
-                 ?>
-            }
 
             var profile_type = $(this).val();
             if (profile_type == '1' || profile_type == '2') {
@@ -1174,13 +1169,9 @@
                     //  $(this).hide();
                 });
                 if(mem_type == '5' || mem_type == '7' || mem_type == '8'){
-                $('#driver_div').show();
-                
-                }
-                else
-                {
+                    $('#driver_div').show();
+                } else {
                     $('#driver_div select').removeAttr('required');
-                   
                 }
                 $('#isb_id').hide();
                 //$('.username_div').hide();
@@ -1191,13 +1182,9 @@
                 $('.req_rec').removeProp('required');
                 if(mem_type == '5' || mem_type == '7' || mem_type == '8'){
                 
-                
-                }
-                else
-                {
+                } else {
                     //$('#driver_div select').removeAttr('required');
                     $('.req_sales').attr('required','required');
-                   
                 }
 
             } else {
@@ -1212,16 +1199,13 @@
                 //$('#username_field').removeAttr('disabled');
                 //$('.un').prop('required', "required");
                 <?php
-                if(isset($p->password) && $p->password)
-                {
+                if(isset($p->password) && $p->password){
                     //do nth
-                }
-                else{
+                }else{
                     ?>
-
-                $('#password').prop('required', "required");
-                $('#retype_password').prop('required', "required");
-                <?php
+                        $('#password').prop('required', "required");
+                        $('#retype_password').prop('required', "required");
+                    <?php
                 }
                  ?>
             }
@@ -1270,10 +1254,10 @@
                     $('#' + button_id).parent().find('span').text(" " + response);
                     $('.' + button_id + "_doc").val(response);
                     $('#delete_' + button_id).attr('title', response);
-                    if (button_id == 'addMore1')
+                    if (button_id == 'addMore1') {
                         $('#delete_' + button_id).show();
-                }
-                else {
+                    }
+                } else {
                     $("#clientpic").attr("src", '<?php echo $this->request->webroot;?>img/jobs/' + response);
                     $('#client_img').val(response);
                 }
