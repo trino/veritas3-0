@@ -430,8 +430,8 @@
                             {
                             }
                             else
-                            {    
-                            
+                            {
+
                             ?>
                             <div class="col-md-6 hideusername">
                                 <div class="form-group">
@@ -808,7 +808,7 @@
 
                                     </div>
                                 </div>
-                                
+
                                 <?php }
                                     else { ?>
                                         <input type="hidden" name="doby" value="0000"/>
@@ -1122,7 +1122,7 @@
                 $('.req_rec').removeProp('required');
                 //$('.req_sales').attr('required','required');
                 if($(this).val() == '5' || $(this).val() == '7' || $(this).val() == '8'){
-                
+
                 }
                 else{
                 $('.req_sales').attr('required','required');
@@ -1175,12 +1175,12 @@
                 });
                 if(mem_type == '5' || mem_type == '7' || mem_type == '8'){
                 $('#driver_div').show();
-                
+
                 }
                 else
                 {
                     $('#driver_div select').removeAttr('required');
-                   
+
                 }
                 $('#isb_id').hide();
                 //$('.username_div').hide();
@@ -1190,14 +1190,14 @@
                 //$('#username_field').attr('disabled','disabled');
                 $('.req_rec').removeProp('required');
                 if(mem_type == '5' || mem_type == '7' || mem_type == '8'){
-                
-                
+
+
                 }
                 else
                 {
                     //$('#driver_div select').removeAttr('required');
                     $('.req_sales').attr('required','required');
-                   
+
                 }
 
             } else {

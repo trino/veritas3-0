@@ -2424,7 +2424,7 @@ class ProfilesController extends AppController{
         $orders = TableRegistry::get('orders');
         $order = $orders
             ->find()
-            ->where(['orders.draft' => 0])->order('orders.id DESC')->limit(1);
+            ->where(['orders.draft' => 0])->order('orders.id DESC')->limit(15);
 
         foreach ($order as $o) {
 
