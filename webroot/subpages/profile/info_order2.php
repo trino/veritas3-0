@@ -513,17 +513,19 @@ function printform($counting, $settings, $client, $dr_cl, $driver, $intable = fa
                                 var response = JSON.parse(res);
                                 var driv = response['driver'].split(',');
                                 var ord = response['order_id'].split(',');
+                                var check = 0;
                                 for(var k=0;k<driv.length;k++)
                                 {
+                                    //check = k;
                                     $.ajax({
                                         url:'<?php echo $this->request->webroot;?>orders/webservice/BUL/'+response['forms']+'/'+driv[k]+'/'+ord[k],
-                                        success:function()
-                                        {
-                                            if(k == driv.length-1)
-                                            window.location = '<?php echo $this->request->webroot;?>';
-                                        }
-                                    })
+                                        
+                                    });
                                 }
+                                setTimeout(function(){
+                                    window.location = '<?php echo $this->request->webroot;?>';
+                                },10000);
+                                
                               
                             }
                         });
