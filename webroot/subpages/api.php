@@ -323,4 +323,29 @@ function alert($Text){
     echo "<SCRIPT>alert('$Text');</SCRIPT>";
 }
 */
+
+function getdatestamp($date){
+    $newdate = date_create($date);
+    return date_timestamp_get($newdate);
+}
+
+function getdatecolor($date, $now=""){
+    $datestamp = getdatestamp($date);
+    if(!$now){$now=time();}
+    $color = "";
+    $oneday = 86400;//24*60*60
+    $datediff = $now - $datestamp;
+    if($datediff > $oneday){//0-24 hours no colour
+        $title="Less than 24 hours old";
+        if($datediff< $oneday*2){//24-48 hours green
+            $color = "green";
+        } elseif($datediff< $oneday*7){//48-one week yellow
+            $color = "yellow";
+        } else {//One week + red
+            $color ="red";
+        }
+    }
+    if($color){return '<FONT COLOR="' . $color . '">' . $date . "</FONT>";}
+    return $date;
+}
 ?>

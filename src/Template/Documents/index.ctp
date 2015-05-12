@@ -374,7 +374,7 @@ if ($_SERVER['SERVER_NAME'] == "localhost" || $_SERVER['SERVER_NAME'] == "127.0.
                         ?></td>
 
                     <?}?>
-                    <td><?= h($docs->created) ?></td>
+                    <td><?= getdatecolor(h($docs->created)) ?></td>
                     <td>
                         <?php
                             if (is_object($getClientById)) {

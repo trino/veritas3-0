@@ -327,7 +327,7 @@ function getColor($products, $OrderType, $Default = "blue"){
                                                 echo '';
                                             } ?></td>
 
-                                        <td><?= h($order->created) ?></td>
+                                        <td><?= getdatecolor(h($order->created)) ?></td>
                                         <td class="actions  util-btn-margin-bottom-5">
 
                                             <?php

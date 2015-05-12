@@ -111,10 +111,7 @@ function getquiz($courses, $id){
     }
 }
 
-function getdatestamp($date){
-	$newdate = date_create($date);
-	return date_timestamp_get($newdate);
-}
+
 
 function add_date($givendate,$day=0,$mth=0,$yr=0) {
 	$cd = strtotime($givendate);
