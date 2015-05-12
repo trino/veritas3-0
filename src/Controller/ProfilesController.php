@@ -883,6 +883,7 @@ class ProfilesController extends AppController{
     }
 
     function checkusername($profile, $post){
+
         $username = trim($post["username"]);
         if(!$username) {
             $username = str_replace(" ", "_", TableRegistry::get('profile_types')->find()->where(['id' => $profile->profile_type])->first()->title . "_" . $profile->id);

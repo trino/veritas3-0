@@ -510,7 +510,7 @@ function printform($counting, $settings, $client, $dr_cl, $driver, $intable = fa
                             url:'<?php echo $this->request->webroot;?>orders/bulksubmit',
                             type:'post',
                             success:function() {
-                               window.location = '<?php echo $this->request->webroot;?>';
+                              // window.location = '<?php echo $this->request->webroot;?>';
                             }
                         });
                         return;

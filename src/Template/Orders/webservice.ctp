@@ -1,4 +1,5 @@
 <?php
+
     if ($_SERVER['SERVER_NAME'] == "localhost" || $_SERVER['SERVER_NAME'] == "127.0.0.1") {
         include_once('/subpages/api.php');
     } else {
@@ -24,7 +25,7 @@
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     $ordertype = "MEE-IND";
-    $startorder1 = true;
+    $startorder1 = false;
     $driver_order_79 = false; //only for full mee order (driver order)
 
     $uploadbinaryconsent_1603 = true; //if true
@@ -254,7 +255,6 @@
 
         var_dump($soap_xml);
         $result = $client->call('ProductDetails', $soap_xml);
-//get between
         $r = explode('[', $result['ProductDetailsResult']);
         if (isset($r[1])) {
             $r = explode(']', $r[1]);
