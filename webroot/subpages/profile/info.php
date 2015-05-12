@@ -424,8 +424,16 @@
                                 </div>
                             </div>
                             <div class="clearfix"></div>
-                            <?php //}?>
-                            <div class="col-md-6">
+                            <?php //}
+                            //echo $p->profile_type;
+                            if(isset($p->profile_type) && ($p->profile_type=='5' || $p->profile_type=='8' || $p->profile_type=='7' || $p->profile_type=='9' || $p->profile_type=='12'))
+                            {
+                            }
+                            else
+                            {    
+                            
+                            ?>
+                            <div class="col-md-6 hideusername">
                                 <div class="form-group">
                                     <label class="control-label">Username: </label>
                                     <input <?php echo $is_disabled ?> id="username_field" name="username" type="text"
@@ -441,19 +449,21 @@
                                   style="display: none;">Username is required.</span>
                                 </div>
                             </div>
-
+                            <?php
+                            }
+                            ?>
 
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label class="control-label">Email Address: </label>
                                     <input <?php echo $is_disabled ?> name="email" type="email"
                                                                       placeholder=""
-                                                                      class="form-control un email req_driver" <?php if (isset($p->email)) { ?> value="<?php echo $p->email; ?>" <?php } ?>/>
+                                                                      class="form-control un email req_driver req_rec req_sales" <?php if (isset($p->email)) { ?> value="<?php echo $p->email; ?>" <?php } ?><?php if (isset($p->profile_type) && ($p->profile_type == '9' || $p->profile_type=='12')) { ?> required="required" <?php } ?>/>
                             <span class="error passerror flashEmail"
                                   style="display: none;">Email already exists</span>
                                 </div>
                             </div>
-
+                            <div class="clearfix"></div>
 
 
                             <?php
@@ -477,7 +487,7 @@
                                                 <input  <?php echo $is_disabled ?> type="password" value=""
                                                                                    autocomplete="off"
                                                                                    name="password" id="password"
-                                                                                   class="form-control" <?php if (isset($p->password) && $p->password) {//do nothing
+                                                                                   class="form-control <?php if (!isset($p->password)) {?>req_rec<?php }?>" <?php if (isset($p->password) && $p->password) {//do nothing
                                                 } ?>/>
                                             </div>
                                         </div>
@@ -489,7 +499,7 @@
                                                 <label class="control-label">Re-type Password: </label>
                                                 <input <?php if (isset($p->password) && $p->password){//do nothing
                                                 }else{ ?>required="required"<?php } ?>  <?php echo $is_disabled ?>
-                                                       type="password" class="form-control"
+                                                       type="password" class="form-control <?php if (!isset($p->password)) {?>req_rec<?php }?>"
                                                        id="retype_password" <?php //if (isset($p->password)) { ?> <?php // echo $p->password; ?>  <?php // } ?>/>
                             <span class="error passerror flashPass1"
                                   style="display: none;">Please enter the same password in both boxes</span>
@@ -618,7 +628,7 @@
 
                                     <label class="control-label">Place of Birth: </label>
                                     <input <?php echo $is_disabled ?> name="placeofbirth" type="text" placeholder=""
-                                                                      class="form-control req_driver" <?php if (isset($p->placeofbirth)) { ?>
+                                                                      class="form-control req_driver placeofbirth" <?php if (isset($p->placeofbirth)) { ?>
                                         value="<?php echo $p->placeofbirth; ?>" <?php } ?>/>
                                 </div>
                             </div>
@@ -1080,6 +1090,10 @@
         $('.member_type').change(function () {
 
             if ($(this).val() == '5' || $(this).val() == '7' || $(this).val() == '8'|| $(this).val() == '9'|| $(this).val() == '12') {
+                if($(this).val() == '5' || $(this).val() == '7' || $(this).val() == '9' || $(this).val() == '12')
+                {
+                    $('.hideusername').hide();
+                }
                 $('.req_driver').each(function () {
                     $(this).prop('required', "required");
                     //alert($(this).attr('name'));
@@ -1087,7 +1101,18 @@
                 //$('.nav-tabs li:not(.active)').each(function () {
                 //  $(this).hide();
                 //});
+                if($(this).val() == '5' || $(this).val() == '7' || $(this).val() == '8'){
                 $('#driver_div').show();
+                $('#driver_div select').attr('required','required');
+                $('.placeofbirth').attr('required','required');
+                //$('#driver_div select').removeAttr('required');
+                }
+                else{
+                $('#driver_div').hide();
+                $('#driver_div select').removeAttr('required');
+                $('.placeofbirth').removeAttr('required');
+                $('.req_sales').attr('required','required');
+                }
                 $('#isb_id').hide();
                 //$('.username_div').hide();
                 //$('#username_field').attr('disabled','disabled');
@@ -1095,7 +1120,12 @@
                 $('#password').removeProp('required');
                 $('#retype_password').removeProp('required');
                 $('.req_rec').removeProp('required');
-
+                //$('.req_sales').attr('required','required');
+                if($(this).val() == '5' || $(this).val() == '7' || $(this).val() == '8'){
+                
+                }
+                else{
+                $('.req_sales').attr('required','required');
             }
             else {
                 $('.nav-tabs li:not(.active)').each(function () {
@@ -1143,7 +1173,15 @@
                     //$('.nav-tabs li:not(.active)').each(function () {
                     //  $(this).hide();
                 });
+                if(mem_type == '5' || mem_type == '7' || mem_type == '8'){
                 $('#driver_div').show();
+                
+                }
+                else
+                {
+                    $('#driver_div select').removeAttr('required');
+                   
+                }
                 $('#isb_id').hide();
                 //$('.username_div').hide();
                 //$('.un').removeProp('required');
@@ -1151,6 +1189,16 @@
                 $('#retype_password').removeProp('required');
                 //$('#username_field').attr('disabled','disabled');
                 $('.req_rec').removeProp('required');
+                if(mem_type == '5' || mem_type == '7' || mem_type == '8'){
+                
+                
+                }
+                else
+                {
+                    //$('#driver_div select').removeAttr('required');
+                    $('.req_sales').attr('required','required');
+                   
+                }
 
             } else {
                 $('.nav-tabs li:not(.active)').each(function () {

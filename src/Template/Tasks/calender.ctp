@@ -102,10 +102,17 @@ if ($this->request->session()->read('Profile.super') or $this->request->session(
 				</div>
 			</div>
 <script src="<?= $this->request->webroot;?>assets/global/plugins/moment.min.js"></script>
-<script src="<?= $this->request->webroot;?>assets/global/plugins/fullcalendar/fullcalendar.min.js"></script>
+
 <!-- END PAGE LEVEL PLUGINS -->
 <!-- BEGIN PAGE LEVEL SCRIPTS -->
-<script src="<?php echo $this->request->webroot;?>assets/admin/pages/scripts/calendar.js"></script>
+
+<?php
+//<script src="<?= $this->request->webroot; assets/global/plugins/fullcalendar/fullcalendar.min.js"></script>
+//<script src="<?php echo $this->request->webroot; assets/admin/pages/scripts/calendar.js"></script>
+
+JSinclude($this, "assets/global/plugins/fullcalendar/fullcalendar.min.js");
+JSinclude($this, "assets/admin/pages/scripts/calendar.js");
+?>
 
 <?php //load fullcalendar language
 //echo "User time: " . $_SESSION['time']  . " Server timezone offset " . date("Z")/3600;
