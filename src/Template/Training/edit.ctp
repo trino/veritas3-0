@@ -92,7 +92,7 @@ if (isset($quiz)){
 <div class="col-md-6">
     <div class="form-group">
         <label class="control-label">Image:</label>
-        <SELECT NAME="image" ID="image" class="form-control">
+        <SELECT NAME="image" ID="image" class="form-control" SELECTED="<?= $quiz->image; ?>">
         <?php
             //<!--input name="image" id="image" class="form-control" value="<?php if (isset($quiz)) { echo $quiz->image; } else {echo "training.png";} " /-->
             $dir = getcwd() . "/img";

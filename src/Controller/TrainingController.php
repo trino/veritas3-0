@@ -217,7 +217,7 @@ class TrainingController extends AppController {
 
     public function savequiz($post){//ID Name Description Attachments image
         $table = TableRegistry::get('training_list');
-        $post=$this->i2($post);
+        $post=$_POST;
         $ID = str_replace('"', "", $post["ID"]);
 
         if (isset($ID)){

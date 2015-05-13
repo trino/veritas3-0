@@ -64,10 +64,10 @@
     }
 
     function quizheader($QuizID, $id, $name, $image){
-    if (($id == $QuizID) or ($QuizID == -1)){
-    if (strlen($image) == 0) {
-        $image = "training.png";
-    }
+        if (($id == $QuizID) or ($QuizID == -1)){
+        if (strlen($image) == 0) {
+            $image = "training.png";
+        }
 ?>
 <div class="row">
     <div class="col-md-12">
@@ -81,7 +81,7 @@
             <div class="portlet-body">
                 <div class="row">
                     <div class="col-md-2" align="center">
-                        <img src="img/<?php if (strlen(trim($image)) == 0) {
+                        <img style="max-height: 114px; max-width: 100%;" src="img/<?php if (strlen(trim($image)) == 0) {
                             echo "training.png";
                         } else {
                             echo $image;
