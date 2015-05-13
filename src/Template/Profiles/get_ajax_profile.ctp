@@ -1,11 +1,23 @@
 <?php
+
+use Cake\ORM\TableRegistry;
+$language = $this->request->session()->read('Profile.language');
+function getstring($String, $language){//no variable processing
+    $Table = TableRegistry::get('strings')->find()->select()->where(["Name" => $String])->first();
+    if($language=="Debug"){
+        if(!$Table){$String.=" NOT FOUND";}
+        return "[" . $String . "]";
+    }
+    return $Table->$language;
+}
+
 $debug=$this->request->session()->read('debug');
 if($debug || true) {
-    echo "<TR><TD><span style ='color:red;'>profiles/get_ajax_profile.php #INC???</span></TD></TR>";
+    echo "<TR><TD><span style ='color:red;'>profiles/get_ajax_profile.ctp #INC???</span></TD></TR>";
 }
 
 $i=0;
-$pType = $this->requestAction('/profiles/getProfileTypes');// ['','Admin','Recruiter','External','Safety','Driver','Contact'];
+$pType = $this->requestAction('/profiles/getProfileTypes/' . $language);// ['','Admin','Recruiter','External','Safety','Driver','Contact'];
 
 $mode = $profiles->mode;
 switch ($mode){
@@ -19,42 +31,51 @@ function printtdline($Text){
     echo "<TR><TD>" . $Text . "</TD></TR>";
 }
 
-$fulllist="";
-foreach($profiles as $r) {
-    $DOIT = true;
-    $username = "[NO NAME]";
-    $profiletype = "";
-    if (strlen(trim($r->username) > 0)) {
-        $username = $r->username;
-    } elseif (strlen(trim($r->fname . $r->lname)) > 0) {
-        $username = $r->fname . " " . $r->lname;
-    }
-    if ($fulllist) {
-        $fulllist .= "," . $r->id;
-    } else {
-        $fulllist = $r->id;
-    }
-    if (isset($pType[$r->profile_type])) {
-        $profiletype = "(" . $pType[$r->profile_type] . ")";
-    }
-    if (!$profiletype) {
-        $profiletype = "(Draft)";
-    }
-    if ($mode == 1) {
-        //$DOIT = false;
-        //if (empty($r->profile_type) || $r->profile_type == 5 || $r->profile_type == 8 || $r->profile_type == 11 || $r->profile_type == 17) {
-        //    $DOIT = true;
-        //}
+/*
+echo "<TR><TD>";
+print_r($pType);
+echo "</TD></TR>";
+*/
 
-        $DOIT = $pType[$r->profile_type . ".canorder"] == 1;
-        //$profiletype.= " [" . $r->profile_type . "]";
-    }
+$fulllist="";
+if(iterator_count($profiles)==0){
+    printtdline(getstring("infoorder_nonefound", $language));
+} else {
+    foreach ($profiles as $r) {
+        $DOIT = true;
+        $username = "[NO NAME]";
+        $profiletype = "";
+        if (strlen(trim($r->username) > 0)) {
+            $username = $r->username;
+        } elseif (strlen(trim($r->fname . $r->lname)) > 0) {
+            $username = $r->fname . " " . $r->lname;
+        }
+        if ($fulllist) {
+            $fulllist .= "," . $r->id;
+        } else {
+            $fulllist = $r->id;
+        }
+        if (isset($pType[$r->profile_type])) {
+            $profiletype = " (" . $pType[$r->profile_type] . ")";
+        }
+        if (!$profiletype) {
+            $profiletype = " (Draft)";
+        }
+        if ($mode == 1) {
+            //$DOIT = false;
+            //if (empty($r->profile_type) || $r->profile_type == 5 || $r->profile_type == 8 || $r->profile_type == 11 || $r->profile_type == 17) {
+            //    $DOIT = true;
+            //}
+
+            $DOIT = $pType[$r->profile_type . ".canorder"] == 1;
+            //$profiletype.= " [" . $r->profile_type . "]";
+        }
 //echo $r->username;continue;
 //if($i%2==0)
-    if ($DOIT) {
-        ?>
-        <tr>
-            <td>
+        if ($DOIT) {
+            ?>
+            <tr>
+                <td>
 <span><input id="p_<?= $i ?>" name="p_<?= $r->id ?>" class="profile_client" onchange="<?php
     $checked = "";
     if ($mode == 0) {
@@ -72,13 +93,14 @@ foreach($profiles as $r) {
                 <span><label for="p_<?= $i ?>"><?php echo $username; ?> <?php if ($profiletype) {
                             echo $profiletype;
                         } ?> </span></label>
-                <span class="msg_<?php echo $r->id; ?>"></span>
-            </td>
-        </tr>
+                    <span class="msg_<?php echo $r->id; ?>"></span>
+                </td>
+            </tr>
 <?php
 // }
 
-        $i++;
+            $i++;
+        }
     }
 }
 

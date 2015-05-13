@@ -1,5 +1,17 @@
 <?php
-    if($this->request->session()->read('debug')) {echo "<span style ='color:red;'>subpages/profile/info_order2.php #INC???</span>";}
+    $debug=$this->request->session()->read('debug');
+    if($debug) {echo "<span style ='color:red;'>subpages/profile/info_order2.php #INC???</span>";}
+
+    if ($_SERVER['SERVER_NAME'] == "localhost" || $_SERVER['SERVER_NAME'] == "127.0.0.1") {
+        include_once('/subpages/api.php');
+    } else {
+        include_once('subpages/api.php');
+    }
+    $settings = $this->requestAction('settings/get_settings');
+    $language = $this->request->session()->read('Profile.language');
+    $strings = CacheTranslations($language, "infoorder_%",$settings);
+    $GLOBALS["language"] = $language;
+    if($debug && $language == "Debug"){ $Trans = " [Translated]"; } else {$Trans = "";}
 
     $intable = true;
     $cols = 8;
@@ -55,25 +67,25 @@
     $GLOBALS['settings'] = $this->requestAction('settings/get_settings');
     $GLOBALS['counting'] = $counting;
 
-    function makeBulk(){
+    function makeBulk($strings){
     //    $contact = $GLOBALS['contact'];
-    $pType = $GLOBALS['pType'];
-    $settings = $GLOBALS['settings'];
-    $counting = $GLOBALS['counting'];
-    if($counting==1){
-        $profiles = $GLOBALS['profiles'];
-    }
+        $pType = $GLOBALS['pType'];
+        $settings = $GLOBALS['settings'];
+        $counting = $GLOBALS['counting'];
+        if($counting==1){
+            $profiles = $GLOBALS['profiles'];
+        }
 
     //  echo '<div class="col-xs-4">';
 ?>
     <div class="clearfix"></div>
 <div class="scrolldiv" style="margin-bottom: 15px; overflow-y: auto; width: auto; height: 250px;" ID="bulkform">
-    <input type="text" id="searchProfile" onkeyup="searchProfile()" class="form-control" placeholder="Search <?php echo ucfirst($settings->profile); ?>s"/>
+    <input type="text" id="searchProfile" onkeyup="searchProfile()" class="form-control" placeholder="<?= $strings["infoorder_searchprofiles"]; ?>"/>
     <table class="table table-striped table-bordered table-advance table-hover recruiters">
         <thead>
-        <tr>
-            <th colspan="2">Add <?php echo ucfirst($settings->profile); ?></th>
-        </tr>
+        <!--tr>
+            <th colspan="2"><?= $strings["infoorder_addprofile"]; ?></th>
+        </tr-->
         </thead>
         <tbody id="profileTable">
         <?php
@@ -134,7 +146,7 @@
 
 
 
-            function makeform($ordertype, $cols, $color, $Title, $Description, $products, $Disabled, $counting, $settings, $client, $dr_cl, $driver, $_this, $Otype ="", $inforequired = false, $Blocked = ""){
+            function makeform($ordertype, $cols, $color, $Title, $Description, $products, $Disabled, $counting, $settings, $client, $dr_cl, $driver, $_this, $Otype ="", $inforequired = false, $Blocked = "", $strings){
                 if (strlen($Otype)==0) { $Otype = $Title; }
                 if (strlen($color)>0){ $color = "-" . $color;}
                 $color=""; //color is disabled for now
@@ -148,17 +160,19 @@
                 echo '<h3>' . $Title . '<span>' . $Description . '</span></h3>';
                 echo '<h4><!--i>$</i>999<i>.99</i> <span> One Time Payment </span--></h4></div>';
 
-                printform($counting, $settings, $client, $dr_cl, $driver, true,$_this);
-
-                echo '<ul class="pricing' . $color . '-content list-unstyled">';
-                productslist($ordertype, $products, "form", $Disabled, $Blocked);
+                if($ordertype) {
+                    printform($counting, $settings, $client, $dr_cl, $driver, true, $_this, $strings);
+                    echo '<ul class="pricing' . $color . '-content list-unstyled">';
+                    productslist($ordertype, $products, "form", $Disabled, $Blocked);
+                }
 
                 $productcount=iterator_count($products);
                 $tempstr = getcheckboxes("form", $productcount);
 
                 echo '</ul><div class="pricing-footer"><p><hr/></p>';
-                printbutton($ordertype, $_this->request->webroot, 3, $tempstr,$_this, $Otype, $inforequired);
-
+                if($ordertype) {
+                    printbutton($ordertype, $_this->request->webroot, 3, $tempstr, $_this, $Otype, $inforequired, $strings);
+                }
                 echo '</div></div></div>';
                 return $ordertype;//$Otype;
             }
@@ -184,6 +198,9 @@
             }
 
             function productslist($ordertype, $products, $ID, $Checked = false, $Blocked = ""){
+                $field = getFieldname("title", $GLOBALS["language"]);
+                if($GLOBALS["language"] == "Debug"){ $Trans = " [Translated]"; } else {$Trans = "";}
+
                 if ($Checked) { $Checked = ' checked disabled';} else { $Checked = "";}
                 $index=0;
                 if($Blocked){$Blocked = explode(",", $Blocked);}
@@ -191,7 +208,7 @@
                 foreach ($products as $p) {
                     if(showproduct($ordertype, $p, $Blocked)) {
                         $name=$ID . $index ;
-                        echo '<li id="product_' . $p->number . '"><div class="col-xs-10"><i class="fa fa-file-text-o"></i> <label for="' . $name . '">'. $p->title . '</label></div>';
+                        echo '<li id="product_' . $p->number . '"><div class="col-xs-10"><i class="fa fa-file-text-o"></i> <label for="' . $name . '">'. $p->$field . $Trans . '</label></div>';
                         echo '<div class="col-xs-2"><input type="checkbox" value="' . $p->number . '" id="' . $name . '"' . $Checked . '/></div>';
                         echo '<div class="clearfix"></div></li>';
                     }
@@ -200,7 +217,7 @@
                 echo "</DIV>";
             }
 
-            function printbutton($type, $webroot, $index, $tempstr = "",$_this, $o_type, $inforequired = true){
+            function printbutton($type, $webroot, $index, $tempstr = "",$_this, $o_type, $inforequired = true, $strings){
                 if (strlen($type) > 0) {
                     switch ($index) {
                         case 3:
@@ -214,7 +231,7 @@
                 switch ($index) {
                     case 1:
                         if (!$inforequired) {
-                            echo '<a href="javascript:void(0);" id="qua_btn" class="btn btn-danger  btn-lg placenow">Continue <i class="m-icon-swapright m-icon-white"></i></a>';
+                            echo '<a href="javascript:void(0);" id="qua_btn" class="btn btn-danger  btn-lg placenow">' . $strings["infoorder_continue"] . ' <i class="m-icon-swapright m-icon-white"></i></a>';
                         } else {
 
                         }
@@ -224,19 +241,19 @@
                         <?php
                         break;
                     case 3:
-                        echo '<a href="#" class="btn red-flamingo"> Place Order <i class="m-icon-swapright m-icon-white"></i></a>';
+                        //echo '<a href="#" class="btn red-flamingo"> Place Order <i class="m-icon-swapright m-icon-white"></i></a>';
                         break;
                     case 4:
-                        echo '<a href="#" class="btn yellow-crusta">Place Order <i class="m-icon-swapright m-icon-white"></i></a>';
+                        //echo '<a href="#" class="btn yellow-crusta">Place Order <i class="m-icon-swapright m-icon-white"></i></a>';
                         break;
                     case 5:
                         echo '<a class=" btn btn-danger btn-lg  button-next proceed" id="cart_btn" href="javascript:void(0)">';
-                        echo 'Continue <i class="m-icon-swapright m-icon-white"></i></a>';
+                        echo $strings["infoorder_continue"] . ' <i class="m-icon-swapright m-icon-white"></i></a>';
                         break;
                 }
             }
 
-            function printform($counting, $settings, $client, $dr_cl, $driver, $intable = false,$_this)
+            function printform($counting, $settings, $client, $dr_cl, $driver, $intable = false,$_this, $strings)
             {//pass the variables exactly as given, then specifiy if it's in a table or not
             echo '<input type="hidden" name="document_type" value="add_driver"/>';
             echo '<div class="form-group clientsel">';
@@ -249,7 +266,7 @@
             }
             $size = "ignore";
 
-            echo '<div class="col-xs-3 control-label" align="right" style="margin-top: 6px;">Client</div><div class="col-xs-6">';
+            echo '<div class="col-xs-3 control-label" align="right" style="margin-top: 6px;">' . $strings["settings_client"] . '</div><div class="col-xs-6">';
 
             $dodiv = true;?>
 
@@ -275,7 +292,7 @@
 
                 data-placeholder="Select <?php echo ucfirst($settings->client) . '" ';
                 if ($client) { ?><?php } ?>>
-                        <option>None Selected</option><?php
+                        <option><?= $strings["infoorder_noneselected"]; ?></option><?php
             } else { ?>
 
                     <select id="selecting_client" class="form-control input-<?= $size; ?> select2me"
@@ -321,29 +338,29 @@
 <div class="form-group ">
 
     <?php
-    echo '<div class="col-xs-3 control-label"  align="right" style="margin-top: 6px;">Driver';
-    if($_GET["ordertype"] == "BUL"){ echo '(s)';}
+    echo '<div class="col-xs-3 control-label"  align="right" style="margin-top: 6px;">' . $strings["infoorder_driver"];
+    if(isset($_GET["ordertype"]) && $_GET["ordertype"] == "BUL"){ echo '(s)';}
     echo '</div><div class="col-xs-6" ID="driverform">';
-    if($_GET["ordertype"] == "BUL"){
+    if(isset($_GET["ordertype"]) && $_GET["ordertype"] == "BUL"){
         echo '<INPUT TYPE="HIDDEN" NAME="selecting_driver" id="selecting_driver" class="form-control input-' . $size . '" VALUE="">';
         echo '<textarea NAME="drivers" id="drivers" class="form-control input-' . $size . '" VALUE="" READONLY STYLE="resize:vertical;"></textarea>';
-        if($_GET['ordertype']=="BUL"){makeBulk();}
+        if($_GET['ordertype']=="BUL"){makeBulk($strings);}
         echo '</DIV></DIV>';
     } else {
         ?>
 
     <select class="form-control input-<?= $size ?> select2me"
-            <?php if (!isset($_GET['ordertype']) || (isset($_GET['ordertype']) && $_GET['ordertype'] != "QUA")) { ?>data-placeholder="Create New Driver"<?php } ?>
+            <?php if (!isset($_GET['ordertype']) || (isset($_GET['ordertype']) && $_GET['ordertype'] != "QUA")) { ?>data-placeholder="<?= $strings["infoorder_createdriver"]; ?>"<?php } ?>
             id="selecting_driver" <?php if ($driver) { ?>disabled="disabled"<?php } ?>>
         <?php if (!isset($_GET['ordertype']) || (isset($_GET['ordertype']) && $_GET['ordertype'] != "QUA")) { ?>
         <option <? if ($driver == '0') {
             echo 'selected';
-        } ?>>Select Driver
+        } ?>><?= $strings["infoorder_selectdriver"];?>
             </option><?php } else {
             ?>
             <option <? if ($driver == '0') {
                 echo 'selected';
-            } ?>>Select Driver
+            } ?>><?= $strings["infoorder_selectdriver"];?>
             </option>
         <?php
         }
@@ -387,9 +404,14 @@
 
 <div class="row">
     <?php
+        if (!is_object($product)){//error handlin for a bad redirect
+            makeform("", $cols, '', "ERROR", "MISSING ORDER TYPE", $products, True, $counting, $settings, $client, $dr_cl, $driver, $_this, "", false, "", $strings );
+        } else {
+            $name_field = getFieldname("Name", $language);
+            $desc_field = getFieldname("Description", $language);
 
-        $o_type = makeform($product->Acronym, $cols, '', $product->Name, $product->Description, $products, $product->Checked == 1, $counting, $settings, $client, $dr_cl, $driver, $_this, $product->Alias, false, $product->Blocked);
-
+            $o_type = makeform($product->Acronym, $cols, '', $product->$name_field . $Trans, $product->$desc_field . $Trans, $products, $product->Checked == 1, $counting, $settings, $client, $dr_cl, $driver, $_this, $product->Alias, false, $product->Blocked, $strings);
+        }
         /*
         if ($ordertype == "MEE") {
             $o_type = makeform("MEE", $cols, "red", "Order MEE", "The all in one package", $products, true, $counting, $settings, $client, $dr_cl, $driver, $_this);
@@ -412,7 +434,7 @@
             url: "<?php echo $this->request->webroot;?>clients/quickcontact",
             type: "post",
             dataType: "HTML",
-            data: "Type=generateHTML&ClientID=" + ClientID + "&Ordertype=" + Ordertype,
+            data: "Type=generateHTML&ClientID=" + ClientID + "&Ordertype=" + Ordertype + "&Language=<?= $language; ?>",
             success: function (msg) {
                 $('.PRODUCTLIST').html(msg);
             }
@@ -532,7 +554,7 @@
                     return;
                 }
                 if ($('.selecting_driver').val() == '') {
-                    alert('Please select driver.');
+                    alert('<?= $strings["infoorder_alertselectdriver"];?>');
                     $('#s2id_selecting_driver .select2-choice').attr('style', 'border:1px solid red;');
                     $('html,body').animate({scrollTop: $('#s2id_selecting_driver .select2-choice').offset().top}, 'slow');
                     return false;
@@ -595,9 +617,9 @@
                 if(!$_GET['driver']){
                     if(!isset($_GET['ordertype']) || (isset($_GET['ordertype']) && $_GET['ordertype']!='QUA')){
                         ?>
-            $('#s2id_selecting_driver .select2-chosen').html('Select Driver');
+            $('#s2id_selecting_driver .select2-chosen').html('<?=$strings["infoorder_selectdriver"];?>');
             <?php }else { ?>
-            $('#s2id_selecting_driver .select2-chosen').html('Select Driver');
+            $('#s2id_selecting_driver .select2-chosen').html('<?=$strings["infoorder_selectdriver"];?>');
             <?php
             }}
             ?>

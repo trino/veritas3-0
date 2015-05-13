@@ -577,7 +577,7 @@
                     //return $_POST["ClientID"] . " " . $_POST["ProductID"] . " " . $Value;
                     break;
                 case "generateHTML":
-                    $this->generateproductHTML($_POST["ClientID"], $_POST["Ordertype"]);
+                    $this->generateproductHTML($_POST["ClientID"], $_POST["Ordertype"], $_POST["Language"]);
                     break;
             }
             $this->layout = 'ajax';
@@ -617,19 +617,23 @@
             return $products;
         }
 
-        function generateproductHTML($ClientID, $ordertype){//$ordertype = acronym
+        function generateproductHTML($ClientID, $ordertype, $Language = "English"){//$ordertype = acronym
             //function productslist($ordertype, $products, $ID, $Checked = false, $Blocked = ""){
             $Product =  TableRegistry::get('product_types')->find()->where(['Acronym' => $ordertype])->first();
             if ($Product->Checked == 1) { $Checked = ' checked disabled';} else { $Checked = "";}
             if( $Product->Blocked) {$Blocked = explode(",", $Product->Blocked);}else {$Blocked = "";}
             $products = $this->getproductlist($ClientID);
             $count=0;
+
+            $NameField = "title";
+            if($Language=="Debug"){$Trans = " [Translated]";} else {$Trans ="";}
+            if($Language!="English" && $Language != "Debug"){$NameField.=$Language;}
             foreach ($products as $p) {
                 $isfound=true;
                 if(is_array($Blocked)){$isfound=in_array($p->number, $Blocked);}
                 if($isfound && $p->clientenabled) {
                     echo '<li id="product_' . $p->number . '"><div class="col-xs-10"><i class="fa fa-file-text-o"></i> ';
-                    echo '<label for="form' . $count . '">' . $p->title . '</label></div>';
+                    echo '<label for="form' . $count . '">' . $p->$NameField . $Trans . '</label></div>';
                     echo '<div class="col-xs-2"><input type="checkbox" value="' . $p->number . '" id="form' . $count . '"' . $Checked . '/></div>';
                     echo '<div class="clearfix"></div></li>';
                     $count+=1;

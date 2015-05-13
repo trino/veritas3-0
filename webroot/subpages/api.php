@@ -49,10 +49,14 @@ function translatedatepicker($Language='English', $_this) {
         case "French":
             $Lang = "fr";
             break;
+        case "Debug":
+            echo "<!-- DEBUG MODE -->";
+            break;
     }
-    if ($Lang) {//Remember: The datepicker locale was modified to overwrite the EN locale!!!
+    if ($Lang) {//Remember: The datepicker locales need to be fixed, see the french one for an example
         echo '<script type="text/javascript" src="' . $webroot . 'assets/global/plugins/bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.' . $Lang . '.js" charset="UTF-8"></script>';
-/*<SCRIPT LANGUAGE="JAVASCRIPT">' . "
+        echo '<script type="text/javascript" src="' . $webroot . 'assets/global/plugins/select2/select2_locale_' . $Lang . '.js"></script>';
+/*<SCRIPT LANGUAGE="JAVASCRIPT">' . "//official code, and it doesn't work!
     $('.datepicker').datepicker({
             language: '" . $Lang . "'
     });
@@ -152,7 +156,9 @@ function btnclass($xscolor, $stripecolor = ""){
 }
 
 
-
+function test(){
+    die("HELLO WORLD");
+}
 
 
 

@@ -3496,7 +3496,7 @@
 <script type="text/javascript" src="<?php echo $this->request->webroot;?>assets/global/plugins/bootstrap-select/bootstrap-select.min.js"></script>
 <script type="text/javascript" src="<?php echo $this->request->webroot;?>assets/global/plugins/select2/select2.min.js"></script>
 <script type="text/javascript" src="<?php echo $this->request->webroot;?>assets/global/plugins/jquery-multi-select/js/jquery.multi-select.js"></script>
-<!-- END PAGE LEVEL PLUGINS -->
+<!-- dropdown END PAGE LEVEL PLUGINS -->
 <!-- BEGIN PAGE LEVEL SCRIPTS -->
 <script src="<?php echo $this->request->webroot;?>assets/global/scripts/metronic.js" type="text/javascript"></script>
 <script src="<?php echo $this->request->webroot;?>assets/admin/layout/scripts/layout.js" type="text/javascript"></script>

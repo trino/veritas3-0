@@ -7,7 +7,7 @@
     //include("subpages/profileslisting.php");
     $viewmode = isset($_GET["view"]);
     $pType = $this->requestAction('/profiles/getProfileTypes');// ['','Admin','Recruiter','External','Safety','Driver','Contact'];
-if (!$viewmode){
+    if (!$viewmode){
 ?>
 
 

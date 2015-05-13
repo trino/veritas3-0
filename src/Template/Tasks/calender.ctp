@@ -103,7 +103,7 @@ if ($this->request->session()->read('Profile.super') or $this->request->session(
 			</div>
 <script src="<?= $this->request->webroot;?>assets/global/plugins/moment.min.js"></script>
 
-<!-- END PAGE LEVEL PLUGINS -->
+<!-- calendar END PAGE LEVEL PLUGINS -->
 <!-- BEGIN PAGE LEVEL SCRIPTS -->
 
 <?php

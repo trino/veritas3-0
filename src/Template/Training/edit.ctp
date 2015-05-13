@@ -13,6 +13,17 @@ function trunc($text, $digits, $append = ""){
 }
 $QuizID="";
 
+function getextension($path, $value=PATHINFO_EXTENSION){
+    return strtolower(pathinfo($path, $value));
+}
+function printoption($value, $selected="", $option = "", $dir="") {
+    $tempstr = "";
+    if(!$option){$option=$value;}
+    if ($option == $selected or $value == $selected) {$tempstr = " selected";}
+    if($dir){$tempstr.=' class="selectbg" style="background-image: url(' .$dir . "/" . $value . ');"';}
+    echo '<OPTION VALUE="' . $value . '"' . $tempstr . ">" . $option . "</OPTION>";
+}
+
 function clean($data, $datatype=0){
     if (is_object($data)){
         switch($datatype) {
@@ -36,6 +47,13 @@ if (isset($quiz)){
     $quiz=clean($quiz);
 }
 ?>
+<STYLE>
+    .selectbg{
+        background-size: 80px 100%;
+        background-position: right top;
+        background-repeat: no-repeat;
+    }
+</STYLE>
 
     <h3 class="page-title">
         Edit Quiz
@@ -74,7 +92,19 @@ if (isset($quiz)){
 <div class="col-md-6">
     <div class="form-group">
         <label class="control-label">Image:</label>
-        <input name="image" id="image" class="form-control" value="<?php if (isset($quiz)) { echo $quiz->image; } else {echo "training.png";} ?>" />
+        <SELECT NAME="image" ID="image" class="form-control">
+        <?php
+            //<!--input name="image" id="image" class="form-control" value="<?php if (isset($quiz)) { echo $quiz->image; } else {echo "training.png";} " /-->
+            $dir = getcwd() . "/img";
+            $images = scandir($dir);
+            foreach($images as $image){
+                $ext = getextension($image);
+                if($ext=="gif" || $ext == "png") {
+                    printoption($image, $quiz->image, "", $this->request->webroot . "img");
+                }
+            }
+        ?>
+        </SELECT>
     </div>
 </div>
 <div class="col-md-6">

@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: May 12, 2015 at 11:00 PM
+-- Generation Time: May 13, 2015 at 05:09 PM
 -- Server version: 5.6.17
 -- PHP Version: 5.5.12
 
@@ -32,14 +32,14 @@ CREATE TABLE IF NOT EXISTS `strings` (
   `English` varchar(4096) NOT NULL,
   `French` varchar(4096) NOT NULL,
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=149 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=158 ;
 
 --
 -- Dumping data for table `strings`
 --
 
 INSERT INTO `strings` (`ID`, `Name`, `English`, `French`) VALUES
-(1, 'Date', '1431372439', '<-- This is used by the system to auto-update'),
+(1, 'Date', '1431464409', '<-- This is used by the system to auto-update'),
 (2, 'dashboard_affirmative', 'Yes', 'Oui'),
 (3, 'dashboard_negative', 'No', 'Non'),
 (4, 'dashboard_selectall', 'Select All', 'Tout Sélectionner'),
@@ -182,7 +182,16 @@ INSERT INTO `strings` (`ID`, `Name`, `English`, `French`) VALUES
 (145, 'orders_ordertype', 'Order Type', ''),
 (146, 'orders_scorecard', 'Score Card', ''),
 (147, 'orders_noresults', 'No orders found', ''),
-(148, 'orders_all', 'List All Orders', '');
+(148, 'orders_all', 'List All Orders', ''),
+(149, 'infoorder_continue', 'Continue', ''),
+(150, 'infoorder_driver', 'Driver', ''),
+(151, 'infoorder_selectdriver', 'Select Driver', ''),
+(152, 'infoorder_createdriver', 'Create New Driver', ''),
+(153, 'infoorder_noneselected', 'None Selected', ''),
+(154, 'infoorder_alertselectdriver', 'Please select a driver.', ''),
+(155, 'infoorder_addprofile', 'Add %Profile%', ''),
+(156, 'infoorder_searchprofiles', 'Search %Profile%s', ''),
+(157, 'infoorder_nonefound', 'No Results Found', '');
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

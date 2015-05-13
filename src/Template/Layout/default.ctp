@@ -128,7 +128,7 @@ $strings = CacheTranslations($language, "langswitch",$settings);//,$registry);
 <?php
     translatedatepicker($language, $this);
 ?>
-<!-- END PAGE LEVEL PLUGINS -->
+<!-- default END PAGE LEVEL PLUGINS -->
 <!-- BEGIN PAGE LEVEL SCRIPTS -->
 <script src="<?php echo $this->request->webroot;?>assets/global/scripts/metronic.js" type="text/javascript"></script>
 <script src="<?php echo $this->request->webroot;?>assets/admin/layout/scripts/layout.js" type="text/javascript"></script>

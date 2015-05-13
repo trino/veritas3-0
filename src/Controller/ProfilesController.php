@@ -1925,7 +1925,9 @@ class ProfilesController extends AppController{
         $column="title";
         if($Language != "English"){$column.=$Language;}
         foreach($rec as $Ptype){//id title enable ISB titleFrench placesorders
-            $query[$Ptype->id] = $Ptype->$column;
+            $name= $Ptype->$column;
+            if(!$name){$name=$Ptype->title . " (MISSING: " . $Language . ")";}
+            $query[$Ptype->id] = $name;
             $query[$Ptype->id . ".canorder"] = $Ptype->placesorders;
         }
         $this->response->body($query);
