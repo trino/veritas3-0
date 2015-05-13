@@ -5,7 +5,7 @@
     $webroot = substr($webroot, 0, $start);
 
     error_reporting(E_ERROR | E_PARSE);//suppress warnings
-    include("../config/app.php");
+    include("../config/app.php");//config file is not meant to be run without cake, thus error reporting needs to be suppressed
     error_reporting(E_ALL);//re-enable warnings
 
     $con = "";
@@ -226,8 +226,8 @@
                         echo '</select>';
                     }
                 ?>
-                <input type="hidden" value="5" name="profile_type">
-                <input type="hidden" value="3" name="driver">
+                <!--input type="hidden" value="5" name="profile_type"-->
+                <!--input type="hidden" value="3" name="driver"-->
                 <input type="hidden" value="<?php if (isset($_GET["client"])) {
                     echo $_GET["client"];
                 } ?>" name="client_ids">
@@ -531,7 +531,7 @@
             $('.clients').change(function () {
                 var cid = $(this).val();
                 if (cid != "")
-                    window.location = "<?php echo $webroot;?>application/makedriver.php?client=" + cid;
+                    window.location = "<?php echo $webroot;?>application/register.php?client=" + cid;
             })
         });
     </script>
