@@ -29,6 +29,7 @@ function clean($data, $datatype=0){
 
 $title = "Courses";
 if (isset($_GET["quizid"])) { $title = "Course Results";}
+$isASAP = false;
 ?>
 
 
@@ -67,23 +68,36 @@ Users
     <table class="table table-condensed  table-striped table-bordered table-hover dataTable no-footer">
         <thead>
 
-
-
         <?php if (isset($users)) { ?>
         <tr>
             <th>ID</th>
-            <th>First Name</th>
-            <th>Last Name</th>
+            <th>First/Last Name</th>
             <TH>Username</TH>
+
+            <?php
+                if($settings->mee == "ASAP Secured Training"){
+                    $isASAP =true;
+                    echo '<TH>Site Name</TH><TH>Division</TH>';
+                }
+            ?>
+
             <TH>Score</TH>
             <TH>Actions</TH>
         </tr>
         </thead>
         <tbody>
             <?php
+                    function printuser($user, $webroot, $isASAP){
+                        echo '<TR><TD>' . $user->Profiles['id'] . '</TD><TD>' . ucfirst($user->Profiles['fname']) . ' ' . ucfirst($user->Profiles['lname']) . '</TD><TD>';
+                        echo '<A HREF="' . $webroot . 'profiles/edit/' . $user->Profiles['id'] . '">' . ucfirst($user->Profiles['username']) . '</A></TD><TD>';
+                        if($isASAP){
+                            echo $user->sitename . '</TD><TD>' . $user->asapdivision . '</TD><TD>';
+                        }
+                    }
+
                     $total=0;
                     $usercount=0;
-                    $nottakenyet="Course not taken yet";
+                    $nottakenyet="[Not taken]";
                     foreach ($users as $user) {//http://localhost/veritas3/profiles/edit/120
                         foreach($users2 as $user2){
                             if ($user2->UserID == $user->UserID){
@@ -91,9 +105,7 @@ Users
                             }
                         }
 
-                        echo '<TR><TD>' . $user->Profiles['id'] . '</TD><TD>' . ucfirst($user->Profiles['fname']) . '</TD><TD>' . ucfirst($user->Profiles['lname']) . '</TD><TD>';
-                        echo '<A HREF="' . $this->request->webroot . 'profiles/edit/' . $user->Profiles['id'] . '">' . ucfirst($user->Profiles['username']) . '</A></TD><TD>';
-
+                        printuser($user, $this->request->webroot, $isASAP);
                         if (strlen($user->profile['questions'])==0) {
                             echo $nottakenyet . '</TD><TD><A HREF="' . $this->request->webroot . 'training/users?quizid=' . $_GET['quizid'] . '&userid=';
                             echo $user->UserID . '" class="' . btnclass("danger", "yellow") . '">Unenroll</A>';
@@ -115,17 +127,16 @@ Users
 
                     foreach($users2 as $user) {
                         if (!$user->profile) {
-                            echo '<TR><TD>' . $user->Profiles['id'] . '</TD><TD>' . ucfirst($user->Profiles['fname']) . '</TD><TD>' . ucfirst($user->Profiles['lname']) . '</TD><TD>';
-                            echo '<A HREF="' . $this->request->webroot . 'profiles/edit/' . $user->Profiles['id'] . '">' . ucfirst($user->Profiles['username']) . '</A></TD><TD>';
+                            printuser($user, $this->request->webroot, $isASAP);
                             echo $nottakenyet . '</TD><TD><A HREF="' . $this->request->webroot . 'training/users?quizid=' . $_GET['quizid'] . '&userid=';
                             echo $user->UserID . '" class="' . btnclass("danger", "yellow") . '">Unenroll</A>';
                         }
                     }
 
                     if ($usercount==0) {
-                        echo '<TR><TD colspan="6" align="center">No one has taken this course yet</TD></TR>';
+                        echo '<TR><TD colspan="7" align="center">No one has taken this course yet</TD></TR>';
                     } else {
-                        echo '<TR><TD colspan="4" align="right">Average:</TD><TD>' . round($total/$usercount,2) . "%</TD><TD></TD></TR>";
+                        echo '<TR><TD colspan="5" align="right">Average:</TD><TD>' . round($total/$usercount,2) . "%</TD><TD></TD></TR>";
                     }
                 } else {
             ?>

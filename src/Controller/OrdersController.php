@@ -20,8 +20,7 @@ class OrdersController extends AppController
 
     }
 
-    public function productSelection()
-    {
+    public function productSelection() {
         $this->set('doc_comp', $this->Document);
         $this->loadModel('OrderProducts');
         $settings = $this->Settings->get_settings();
@@ -33,13 +32,12 @@ class OrdersController extends AppController
         $this->set('product', $table);
     }
 
-    public function initialize()
-    {
-
+    public function initialize() {
         parent::initialize();
         $this->loadComponent('Settings');
         $this->loadComponent('Document');
         $this->loadComponent('Mailer');
+        $this->loadComponent('Trans');
         if (!$this->request->session()->read('Profile.id')) {
             $url = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
             $this->redirect('/login?url=' . urlencode($url));
@@ -47,8 +45,7 @@ class OrdersController extends AppController
 
     }
 
-    public function vieworder($cid = null, $did = null, $table = null)
-    {
+    public function vieworder($cid = null, $did = null, $table = null) {
         $this->LoadSubDocs($_GET["forms"]);
         $meedocs = TableRegistry::get('mee_attachments_more');
         $this->set('meedocs',$meedocs);
@@ -58,7 +55,7 @@ class OrdersController extends AppController
         $doc = $this->Document->getDocumentcount();
         $cn = $this->Document->getUserDocumentcount();
         if ($setting->orders_list == 0 || count($doc) == 0 || $cn == 0) {
-            $this->Flash->error('Sorry, you don\'t have the required permissions.');
+            $this->Flash->error($this->Trans->getString("flash_permissions"));
             return $this->redirect("/");
 
         }
@@ -215,7 +212,7 @@ class OrdersController extends AppController
 
         //die(count($doc));
         if ($setting->orders_create == 0 || count($doc) == 0 || $cn == 0) {
-            $this->Flash->error('Sorry, you don\'t have the required permissions.');
+            $this->Flash->error($this->Trans->getString("flash_permissions"));
             return $this->redirect("/");
 
         }
@@ -435,7 +432,7 @@ class OrdersController extends AppController
         }
         $setting = $this->Settings->get_permission($this->request->session()->read('Profile.id'));
         if ($setting->orders_delete == 0) {
-            $this->Flash->error('Sorry, you don\'t have the required permissions.');
+            $this->Flash->error($this->Trans->getString("flash_permissions"));
             return $this->redirect("/");
         }
 
@@ -475,7 +472,7 @@ class OrdersController extends AppController
         $cn = $this->Document->getUserDocumentcount();
 
         if ($setting->orders_list == 0 || count($doc) == 0 || $cn == 0) {
-            $this->Flash->error('Sorry, you don\'t have the required permissions.');
+            $this->Flash->error($this->Trans->getString("flash_permissions"));
             return $this->redirect("/");
         }
 
@@ -1040,7 +1037,7 @@ class OrdersController extends AppController
         $this->set('products', TableRegistry::get('product_types')->find('all'));
 
         if ($setting->orders_list == 0 || count($doc) == 0 || $cn == 0) {
-            $this->Flash->error('Sorry, you don\'t have the required permissions.');
+            $this->Flash->error($this->Trans->getString("flash_permissions"));
             return $this->redirect("/");
         }
 

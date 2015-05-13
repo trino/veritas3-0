@@ -5,15 +5,17 @@
  * Date: 4/15/2015
  * Time: 1:44 PM
  */
-
 namespace App\Controller\Component;
 
+use Cake\Controller\Component;
+use Cake\ORM\TableRegistry;
 
-class TransComponent
-{
+
+class TransComponent extends Component {
     //http://www.onlamp.com/pub/a/php/2002/06/13/php.html
-//http://stackoverflow.com/questions/1450037/how-to-load-language-with-gettext-in-php
-// I18N support information here
+    //http://stackoverflow.com/questions/1450037/how-to-load-language-with-gettext-in-php
+    // I18N support information here
+    /*  code doesn't work for french
     function setup(){
         $language = $this->request->session()->read('Profile.language');
 
@@ -31,5 +33,27 @@ class TransComponent
         $domain = 'default';
         bindtextdomain($domain, "C:/wamp/www/veritas3-0/Locale");//www/veritsa3-0/,   Locale
         textdomain($domain);
+    }
+    */
+
+    public function getString($String, $Variables = ""){
+        $Table = TableRegistry::get('strings')->find()->select()->where(["Name" => $String])->first();
+        if(!$Table){return "[" . $String . " NOT FOUND]";}
+        $language = $this->request->session()->read('Profile.language');
+        if($language=="Debug"){return "[" . $String . "]";}
+        $text = $Table->$language;
+        if(!$text){ return "[" . $String . " is missing the " . $language. " translation]";}
+        if(is_array($Variables)){
+            foreach($Variables as $Key => $Value){
+                if (substr($Key, 0, 1) != "%") {$Key = "%" . $Key;}
+                if (substr($Key, -1) != "%") {$Key .= "%";}
+                if($language == "Debug"){
+                    $text.= " [" . $Key . "=" . $Value . "]";
+                } else {
+                    $text = str_replace($Key, $Value, $text);
+                }
+            }
+        }
+        return $text;
     }
 }

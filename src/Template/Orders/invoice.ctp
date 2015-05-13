@@ -8,7 +8,7 @@
     $settings = $this->requestAction('settings/get_settings');
     $language = $this->request->session()->read('Profile.language');
     $controller =  $this->request->params['controller'];
-    $strings = CacheTranslations($language, array("invoice_%", "analytics_%", "month_long%", "forms_%"),$settings);
+    $strings = CacheTranslations($language, array("invoice_%", "analytics_%", "month_long%", "forms_%", "infoorder_nonefound"),$settings);
     if($debug && $language == "Debug"){ $Trans = " [Translated]"; } else {$Trans = "";}
 
     function asDollars($value) {
@@ -16,7 +16,13 @@
     }
     $total = 0;
 ?>
-
+<STYLE>
+    @media print {
+        a[href]:after {
+            content: none !important;
+        }
+    }
+</STYLE>
 <link href="<?php echo $this->request->webroot;?>assets/admin/pages/css/invoice.css" rel="stylesheet" type="text/css"/>
 <h3 class="page-title">
     <?= $strings["index_invoice"] ?> <small></small>
@@ -175,7 +181,7 @@
         <?php }?>
 	</div>
 	<div class="row">
-    <?php if(count($orders)>0){?>
+
 		<div class="col-xs-12">
 			<table class="table table-striped table-hover">
 			<thead>
@@ -201,46 +207,48 @@
 			</tr>
 			</thead>
 			<tbody>
-            <?php foreach($orders as $order){?>
-            <tr>
-          		<td>
-					 <?php echo $order->id;?>
-				</td>
-				<td>
-					 <?php echo $order->title;?>
-				</td>
-				<td class="hidden-480">
-                    <?php
-                        $Fieldname = getFieldname("Name", $language);
-                        $productype = $order->order_type;
-                        $productype = FindIterator($products, "Acronym", $productype);
-                        echo $productype->$Fieldname . $Trans;
 
-                        $quantity=1;
-                        $total += $quantity*$productype->Price;
+            <?php
+            if(count($orders)==0) {
+                echo "<TR><TD COLSPAN='6' ALIGN='CENTER'><strong>" . $strings["infoorder_nonefound"] . "</strong></TD></TR>";
+            } else {
+                foreach ($orders as $order) {
                     ?>
-				</td>
-				<td class="hidden-480">
-					 <?= $quantity ?>
-				</td>
-				<td class="hidden-480">
-					 <?= asDollars($productype->Price); ?>
-                </td>
-				<td>
-                    <?= asDollars($quantity * $productype->Price); ?>
-				</td>
-                
-            </tr>
-            <?php }?>
-		
+                    <tr>
+                        <td>
+                            <?php echo $order->id;?>
+                        </td>
+                        <td>
+                            <?php echo $order->title;?>
+                        </td>
+                        <td class="hidden-480">
+                            <?php
+                            $Fieldname = getFieldname("Name", $language);
+                            $productype = $order->order_type;
+                            $productype = FindIterator($products, "Acronym", $productype);
+                            echo $productype->$Fieldname . $Trans;
+
+                            $quantity = 1;
+                            $total += $quantity * $productype->Price;
+                            ?>
+                        </td>
+                        <td class="hidden-480">
+                            <?= $quantity ?>
+                        </td>
+                        <td class="hidden-480">
+                            <?= asDollars($productype->Price); ?>
+                        </td>
+                        <td>
+                            <?= asDollars($quantity * $productype->Price); ?>
+                        </td>
+
+                    </tr>
+                <?php }
+            }
+            ?>
 			</tbody>
 			</table>
 		</div>
-        <?php }
-        else{
-            echo "<strong>No Results Found!</strong>";
-        }?>
-        
 	</div>
 	<div class="row">
 		<div class="col-xs-4">

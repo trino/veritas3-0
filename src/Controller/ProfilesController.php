@@ -27,6 +27,7 @@ class ProfilesController extends AppController{
         $this->loadComponent('Settings');
         $this->loadComponent('Mailer');
         $this->loadComponent('Document');
+        $this->loadComponent('Trans');
         if (!$this->request->session()->read('Profile.id')) {
             $url = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
             $this->redirect('/login?url=' . urlencode($url));
@@ -389,7 +390,7 @@ class ProfilesController extends AppController{
         $condition = $this->Settings->getprofilebyclient($u, $super);
         //var_dump($condition);die();
         if ($setting->profile_list == 0) {
-            $this->Flash->error('Sorry, you don\'t have the required permissions.');
+            $this->Flash->error($this->Trans->getString("flash_permissions"));
             return $this->redirect("/");
         }
         if (isset($_GET['draft'])) {
@@ -486,7 +487,7 @@ class ProfilesController extends AppController{
 
         if($setting->profile_list==0)
         {
-            $this->Flash->error('Sorry, you don\'t have the required permissions.');
+            $this->Flash->error($this->Trans->getString("flash_permissions"));
                 return $this->redirect("/");
 
         }
@@ -593,7 +594,7 @@ class ProfilesController extends AppController{
             $setting = $this->Settings->get_permission($this->request->session()->read('Profile.id'));
 
             if ($setting->profile_list == 0) {
-                $this->Flash->error('Sorry, you don\'t have the required permissions.');
+                $this->Flash->error($this->Trans->getString("flash_permissions"));
                 return $this->redirect("/");
 
             }
@@ -753,7 +754,7 @@ class ProfilesController extends AppController{
      * $note = $q->find()->where(['id'=>$noteid])->first();
      * if (strlen($text) == 0) {//Delete note
      * if($note->profile_delete==0){
-     * $this->Flash->error('Sorry, you don\'t have the required permissions.');
+     * $this->Flash->error($this->Trans->getString("flash_permissions"));
      * return $this->redirect("/");
      * }
      * //if ($this->Profiles->delete($profile)) {
@@ -791,13 +792,13 @@ class ProfilesController extends AppController{
         // Only super admin and recruiter are allowed to create profiles as discussed on feb 19
         /*if (!$this->request->session()->read('Profile.super')) {
             if ($this->request->session()->read('Profile.profile_type') != '2') {
-                $this->Flash->error('Sorry, you don\'t have the required permissions.');
+                $this->Flash->error($this->Trans->getString("flash_permissions"));
                 return $this->redirect("/profiles");
             }
         }*/
 
         if ($setting->profile_create == 0 && !$this->request->session()->read('Profile.super')) {
-            $this->Flash->error('Sorry, you don\'t have the required permissions.');
+            $this->Flash->error($this->Trans->getString("flash_permissions"));
             return $this->redirect("/");
 
         }
@@ -1514,7 +1515,7 @@ class ProfilesController extends AppController{
 
         $setting = $this->Settings->get_permission($this->request->session()->read('Profile.id'));
         if ($setting->profile_edit == 0 && $id != $this->request->session()->read('Profile.id')) {
-            $this->Flash->error('Sorry, you don\'t have the required permissions.');
+            $this->Flash->error($this->Trans->getString("flash_permissions"));
             return $this->redirect("/");
         } else {
             $this->set('myuser', '1');

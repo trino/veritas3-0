@@ -35,6 +35,7 @@ class DocumentsController extends AppController{
         $this->loadComponent('Settings');
         $this->loadComponent('Document');
         $this->loadComponent('Mailer');
+        $this->loadComponent('Trans');
         if (!$this->request->session()->read('Profile.id')) {
             $url = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
             $this->redirect('/login?url='.urlencode($url));
@@ -242,7 +243,7 @@ class DocumentsController extends AppController{
             $doc = $this->Document->getDocumentcount();
             $cn = $this->Document->getUserDocumentcount();
             if ($setting->document_list == 0 || count($doc) == 0 || $cn == 0) {
-                $this->Flash->error('Sorry, you don\'t have the required permissions.');
+                $this->Flash->error($this->Trans->getString("flash_permissions"));
                 return $this->redirect("/");
             }
             /*$profile = $this->Clients->get($id);
@@ -493,7 +494,13 @@ class DocumentsController extends AppController{
 
 
     function add($cid = 0, $did = 0, $type = NULL){
-
+        $clients = TableRegistry::get('Clients');
+        if($cid==0) {
+            $clientcount = $clients->find('all')->count();
+            if($clientcount==1){
+                $cid = $clients->find('all')->first()->id;
+            }
+        }
         $this->set('doc_comp',$this->Document);
         $this->set('cid', $cid);
         $this->set('did', $did);
@@ -502,7 +509,7 @@ class DocumentsController extends AppController{
         $this->set('subdoc',$subdoc);
         $meedocs = TableRegistry::get('mee_attachments_more');
         $this->set('meedocs',$meedocs);
-        $clients = TableRegistry::get('Clients');
+
         $c = $clients->find()->order('company_name')->all();
         $this->set('clients', $c);
         if ($did) {
@@ -579,14 +586,14 @@ class DocumentsController extends AppController{
                 $query = $doc->find()->where(['id' => $did])->first();
                 $this->set('document', $query);
                 if ($setting->document_edit == 0 || count($doc) == 0 || $cn == 0) {
-                    $this->Flash->error('Sorry, you don\'t have the required permissions.');
+                    $this->Flash->error($this->Trans->getString("flash_permissions"));
                     return $this->redirect("/");
 
                 }
 
             } else {
                 if ($setting->document_create == 0 || count($doc) == 0 || $cn == 0) {
-                    $this->Flash->error('Sorry, you don\'t have the required permissions.');
+                    $this->Flash->error($this->Trans->getString("flash_permissions"));
                     return $this->redirect("/");
 
                 }
@@ -884,7 +891,7 @@ class DocumentsController extends AppController{
         $setting = $this->Settings->get_permission($this->request->session()->read('Profile.id'));
 
         if ($setting->document_delete == 0) {
-            $this->Flash->error('Sorry, you don\'t have the required permissions.');
+            $this->Flash->error($this->Trans->getString("flash_permissions"));
             return $this->redirect("/");
 
         }

@@ -246,8 +246,7 @@
                                                             <div class="form-group col-md-4">
                                                                 <label class="control-label">Province/State</label>
                                                                 <?php
-                                                                    function printoption($value, $selected, $option)
-                                                                    {
+                                                                    function printoption($value, $selected, $option) {
                                                                         $tempstr = "";
                                                                         if ($option == $selected or $value == $selected) {
                                                                             $tempstr = " selected";
@@ -255,8 +254,7 @@
                                                                         echo '<OPTION VALUE="' . $value . '"' . $tempstr . ">" . $option . "</OPTION>";
                                                                     }
 
-                                                                    function printoptions($name, $valuearray, $selected, $optionarray)
-                                                                    {
+                                                                    function printoptions($name, $valuearray, $selected, $optionarray) {
                                                                         echo '<SELECT name="' . $name . '" class="form-control member_type" >';
                                                                         for ($temp = 0; $temp < count($valuearray); $temp += 1) {
                                                                             printoption($valuearray[$temp], $selected, $optionarray[$temp]);
@@ -264,8 +262,7 @@
                                                                         echo '</SELECT>';
                                                                     }
 
-                                                                    function printprovinces($name, $selected)
-                                                                    {
+                                                                    function printprovinces($name, $selected) {
                                                                         printoptions($name, array("", "AB", "BC", "MB", "NB", "NL", "NT", "NS", "NU", "ON", "PE", "QC", "SK", "YT", "AL", "AK", "AZ", "AR", "CA", "CO", "CT", "DE", "FL", "GA", "HI", "ID", "IL", "IN", "IA", "KS", "KY", "LA", "ME", "MD", "MA", "MI", "MN", "MS", "MO", "MT", "NE", "NV", "NH", "NJ", "NM", "NY", "NC", "ND", "OH", "OK", "OR", "PA", "RI", "SC", "SD", "TN", "TX", "UT", "VT", "VA", "WA", "WV", "WI", "WY"), $selected, array("Select Province", "Alberta", "British Columbia", "Manitoba", "New Brunswick", "Newfoundland and Labrador", "Northwest Territories", "Nova Scotia", "Nunavut", "Ontario", "Prince Edward Island", "Quebec", "Saskatchewan", "Yukon Territories", "Alabama", "Alaska", "Arizona", "Arkansas", "California", "Colorado", "Connecticut", "Delaware", "Florida", "Georgia", "Hawaii", "Idaho", "Illinois", "Indiana", "Iowa", "Kansas", "Kentucky", "Louisiana", "Maine", "Maryland", "Massachusetts", "Michigan", "Minnesota", "Mississippi", "Missouri", "Montana", "Nebraska", "Nevada", "New Hampshire", "New Jersey", "New Mexico", "New York", "North Carolina", "North Dakota", "Ohio", "Oklahoma", "Oregon", "Pennsylvania", "Rhode Island", "South Carolina", "South Dakota", "Tennessee", "Texas", "Utah", "Vermont", "Virginia", "Washington", "Virginia", "Wisconsin", "Wyoming"));
 
                                                                     }

@@ -8,8 +8,7 @@ if ($_SERVER['SERVER_NAME'] == "localhost" || $_SERVER['SERVER_NAME'] == "127.0.
 class TrainingController extends AppController {
     public function nopermissions(){ return "You can not edit courses."; }
     //my pages\actions
-    public function index()
-    {
+    public function index() {
         if (isset($_GET["action"])) {
             if ($this->canedit()) {
                 switch ($_GET["action"]) {

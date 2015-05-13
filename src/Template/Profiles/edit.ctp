@@ -335,7 +335,7 @@
                                 }
 
                                 if (isset($p)) {
-                                    if ($profile->Ptype->placesorders == 1) {//driver, owner driver, owner operator, sales, employee
+                                    if ($profile->Ptype && $profile->Ptype->placesorders == 1) {//driver, owner driver, owner operator, sales, employee
                                         if ($sidebar->orders_create == 1){
                                             foreach($products as $product){
                                                 $alias = $product->Sidebar_Alias;
@@ -349,6 +349,8 @@
                                                 }
                                             }
                                         }
+                                    } elseif (!$profile->Ptype){
+                                        echo "Profile type: " . $profile->profile_type . " is missing";
                                     }
                                 }
 
