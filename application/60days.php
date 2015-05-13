@@ -28,7 +28,7 @@
  			<span style="display:block;">TRANSPORTATION</span>
  		</div>
         <?php if(!isset($_GET['msg']) || (isset($_GET['msg']) && $_GET['msg']=='error')){
-            if($_GET['msg']=='error')
+            if(isset($_GET['msg']) && $_GET['msg']=='error')
              echo '<div class="clearfix"></div><div class="alert alert-info display-hide" style="display: block;">
                         <button class="close" data-close="alert"></button>
                         Couldnot submit the form. Please try again.

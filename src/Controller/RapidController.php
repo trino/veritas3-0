@@ -142,7 +142,7 @@
          //   $settings = $this->Settings->get_settings();
 
             $Subject = "A new user just registered!";
-            $Message = 'A new user just registered on '.LOGIN.'<br><br>Name: ' . $POST["title"] . " " . $POST["fname"] . " " . $POST["mname"] . " " . $POST["lname"] .
+            $Message = 'A new user just registered on '.LOGIN.'<br><br>Name: ' . $POST["fname"] . " " . $POST["mname"] . " " . $POST["lname"] .
                 "<br><br>Username: " . $POST["username"].
             "<br /><br />Click <a href='" . LOGIN . 'profiles/view/' . $ProfileID . "'>here</a> view the profile. <br /><br /> Regards,<br /> The MEE Team";
             foreach($profilesToEmail as $Profile){

@@ -49,10 +49,12 @@ function printdocumentinfo($ID, $isOrder = false, $linktoOrder = false){
         if ($isOrder) {
             echo 'Order Information (ID: ' . $ID . ')';
             if ($linktoOrder) {
+                /*
                 echo '<a style="float:right;" href="' . $webroot . 'orders/vieworder/' . $data->client_id . '/' . $data->id ;
                 echo '?order_type=' . $data->order_type;
                 if ($data->forms) { echo '&forms=' . $data->forms; }
                 echo '" class="nohide btn btn-xs btn-primary">View Order</a>';
+                */
             }
         } else {
             echo 'Document Information (ID: ' . $ID . ')';

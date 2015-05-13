@@ -25,7 +25,7 @@
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     $ordertype = "MEE-IND";
-    $startorder1 = false;
+    $startorder1 = true;
     $driver_order_79 = false; //only for full mee order (driver order)
 
     $uploadbinaryconsent_1603 = true; //if true
