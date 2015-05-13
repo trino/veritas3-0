@@ -422,7 +422,7 @@
                                         <a href="#tab_1_1" data-toggle="tab">Profile</a>
                                     </li>
                                     <?php
-                                     if ($this->request['action'] == 'view' && ($p->profile_type == 5 || $p->profile_type == 7 || $p->profile_type == 8 || $profile->profile_type == 11)) {
+                                     if ($this->request['action'] == 'view' &&  ($profile->Ptype && $profile->Ptype->placesorders == 1)) {//driver, owner driver, owner operator, sales, employee)) {
                                         //if (($this->request['action'] == 'edit' || $this->request['action'] == 'view') && ($p->profile_type == 5 || $p->profile_type == 7 || $p->profile_type == 8) ) {
                                     ?>
                                         <li <?php activetab($activetab, "scorecard"); ?>>
