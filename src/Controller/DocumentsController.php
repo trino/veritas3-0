@@ -501,6 +501,9 @@ class DocumentsController extends AppController{
                 $cid = $clients->find('all')->first()->id;
             }
         }
+        if($cid) {
+            $this->set('client', $clients->find()->where(['id' => $cid])->first());
+        }
         $this->set('doc_comp',$this->Document);
         $this->set('cid', $cid);
         $this->set('did', $did);

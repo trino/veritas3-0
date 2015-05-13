@@ -24,7 +24,14 @@ if(isset($disabled)){$is_disabled = 'disabled="disabled"';}
 <div class="form-group">
 <label class="col-md-3 control-label">Conference Name: </label>
 <div class="col-md-4">
-<input type="text" name="conference_name"  class="form-control " <?php echo $is_disabled;?> value="<?php if(isset($audits))echo $audits->conference_name;?>" />
+<input type="text" name="conference_name"  class="form-control " <?php echo $is_disabled;?> value="<?php
+if(isset($audits)) {
+    echo $audits->conference_name;
+} elseif($controller == "documents" && $action == "Create"){
+    //$clientid = $this->request->params["pass"][0];
+    echo $client->company_name;
+}
+?>" />
 </div>
 </div>
 
@@ -157,7 +164,7 @@ function makeyeardropdown($is_disabled, $Name, $Value, $Language, $Count = 5, $S
 </div>
 </div>
     <?
-          $action = ucfirst($param);
+        $action = ucfirst($param);
         if ($action != "Add") {
     ?>
  	<div class="form-group">
