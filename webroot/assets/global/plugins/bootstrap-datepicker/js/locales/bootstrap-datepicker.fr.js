@@ -15,3 +15,6 @@
 		format: "dd/mm/yyyy"
 	};
 }(jQuery));
+$(document).ready(function(){
+    $.fn.datepicker.defaults.language = 'fr';
+});

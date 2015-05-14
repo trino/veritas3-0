@@ -124,6 +124,11 @@
                                                                           value="1" <?php if (isset($sidebar) && $sidebar->email_profile == 1) echo "checked"; ?> />
                                         Recieve Email
                                     </label>
+                                    <label class="uniform-inline">
+                                        <input <?php echo $is_disabled ?> type="checkbox" name="side[viewprofiles]"
+                                                                          value="1" <?php if (isset($sidebar) && $sidebar->viewprofiles == 1) echo "checked"; ?> />
+                                        View Other's
+                                    </label>
 
                                 </div>
                                 <div class="clearfix"></div>

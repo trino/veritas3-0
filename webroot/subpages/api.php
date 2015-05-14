@@ -53,9 +53,14 @@ function translatedatepicker($Language='English', $_this) {
             echo "<!-- DEBUG MODE -->";
             break;
     }
-    if ($Lang) {//Remember: The datepicker locales need to be fixed, see the french one for an example
-        echo '<script type="text/javascript" src="' . $webroot . 'assets/global/plugins/bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.' . $Lang . '.js" charset="UTF-8"></script>';
-        echo '<script type="text/javascript" src="' . $webroot . 'assets/global/plugins/select2/select2_locale_' . $Lang . '.js"></script>';
+    if ($Lang) {//Remember: The datepicker and datetimepicker locales need to be fixed, see the french ones for an example
+        JSinclude($_this, 'assets/global/plugins/bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.' . $Lang . '.js');
+        JSinclude($_this, 'assets/global/plugins/select2/select2_locale_' . $Lang . '.js');
+        JSinclude($_this, 'assets/global/plugins/bootstrap-datepicker/js/locales/bootstrap-datepicker.' . $Lang . '.js');
+        //echo '<script type="text/javascript" src="' . $webroot . 'assets/global/plugins/bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.' . $Lang . '.js" charset="UTF-8"></script>';
+        //echo '<script type="text/javascript" src="' . $webroot . 'assets/global/plugins/select2/select2_locale_' . $Lang . '.js"></script>';
+        //echo '<script type="text/javascript" src="' . $webroot . 'assets/global/plugins/bootstrap-datepicker/js/locales/bootstrap-datepicker.' . $Lang . '.js"></script>';
+
 /*<SCRIPT LANGUAGE="JAVASCRIPT">' . "//official code, and it doesn't work!
     $('.datepicker').datepicker({
             language: '" . $Lang . "'

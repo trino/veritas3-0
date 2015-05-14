@@ -15,5 +15,9 @@
 		weekStart: 1,
 		format: "dd/mm/yyyy"
 	};
-    $.extend($.fn.datetimepicker.defaults, $.fn.datetimepicker.locales['fr']);
+  //  $.extend($.fn.datetimepicker.defaults, $.fn.datetimepicker.regional['fr']);
 })(jQuery);
+
+$(document).ready(function(){
+    $.fn.datetimepicker.defaults.language = 'fr';
+});

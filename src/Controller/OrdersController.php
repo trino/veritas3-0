@@ -1497,8 +1497,7 @@ class OrdersController extends AppController
         
     }
     
-    public function checkSignature($did)
-    {
+    public function checkSignature($did) {
         $ord = TableRegistry::get('consent_form')->find()->where(['order_id'=>$did])->first();
         if($ord->criminal_signature_applicant && $ord->criminal_signature_applicant2 && $ord->signature_company_witness2 && $ord->signature_company_witness)
         {
@@ -1508,6 +1507,21 @@ class OrdersController extends AppController
         $check = '0';
         echo $check;
         die;
+    }
+
+
+
+    public function makeneworder($userid){
+        $table = TableRegistry::get('orders');
+        $date = date('Y-m-d H:i:s');
+        //$values = array();
+        $table->query()->insert(array_keys($values))->values($values)->execute();
+    }
+    public function groupdocument($docid, $orderid){
+        $table = TableRegistry::get('profilessubdocument');
+        $table->query()->update()->set(['order_id' => $orderid])
+            ->where(['id' => $docid])
+            ->execute();
     }
 }
 

@@ -583,21 +583,21 @@ class ProfilesController extends AppController{
             $this->Flash->success('Order saved successfully');
         }
         if($id>0) {
-            $this->getsidebar("Sidebar");
-
+            $this->getsidebar("Sidebar");//$sidebar->viewprofiles
+            $userid=$this->request->session()->read('Profile.id');
             $this->set('products', TableRegistry::get('product_types')->find('all'));
             $this->getsubdocument_topblocks($id, false);
             $this->loadModel("ProfileTypes");
             $this->set("ptypes", $this->ProfileTypes->find()->where(['enable' => '1'])->all());
             $this->set('uid', $id);
             $this->set('doc_comp', $this->Document);
-            $setting = $this->Settings->get_permission($this->request->session()->read('Profile.id'));
+            $setting = $this->Settings->get_permission($userid);
 
-            if ($setting->profile_list == 0) {
+            if ($setting->profile_list == 0 || ($userid != $id && $setting->viewprofiles ==0)) {
                 $this->Flash->error($this->Trans->getString("flash_permissions"));
                 return $this->redirect("/");
-
             }
+
             $docs = TableRegistry::get('profile_docs');
             $query = $docs->find();
             $client_docs = $query->select()->where(['profile_id' => $id])->all();
@@ -1504,22 +1504,24 @@ class ProfilesController extends AppController{
             $this->Flash->success('Profile created successfully! Please assign profile to at least one client.');
         }
 
+        $userid=$this->request->session()->read('Profile.id');
         $pr = TableRegistry::get('profiles');
         $query = $pr->find();
         $aa = $query->select()->where(['id' => $id])->first();
-        $checker = $this->Settings->check_edit_permission($this->request->session()->read('Profile . id'), $id, $aa->created_by);
+        $checker = $this->Settings->check_edit_permission($userid, $id, $aa->created_by);
         if ($checker == 0) {
             //  $this->Flash->error('Sorry, you don\'t have the required permissions6.');
             //  return $this->redirect("/profiles/index");
         }
 
-        $setting = $this->Settings->get_permission($this->request->session()->read('Profile.id'));
-        if ($setting->profile_edit == 0 && $id != $this->request->session()->read('Profile.id')) {
+        $setting = $this->Settings->get_permission($userid);
+        if (($setting->profile_edit == 0 || $setting->viewprofiles ==0) && $id != $userid) {
             $this->Flash->error($this->Trans->getString("flash_permissions"));
             return $this->redirect("/");
         } else {
             $this->set('myuser', '1');
         }
+
         $this->getsubdocument_topblocks($id, false);//subdocument_topblocks
         $this->loadModel("ProfileTypes");
         $this->set("ptypes", $this->ProfileTypes->find()->where(['enable' => '1'])->all());

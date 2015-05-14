@@ -35,11 +35,20 @@ class TransComponent extends Component {
         textdomain($domain);
     }
     */
+    public function getLanguage($UserID){
+        if($UserID) {
+            $Table = TableRegistry::get('profiles')->find()->select()->where(["id" => $UserID])->first()->language;
+        } else{
+            $Table = $this->request->session()->read('Profile.language');
+        }
+        if($Table){return $Table;}
+        return "English";
+    }
 
-    public function getString($String, $Variables = ""){
+    public function getString($String, $Variables = "", $UserID=""){
         $Table = TableRegistry::get('strings')->find()->select()->where(["Name" => $String])->first();
         if(!$Table){return "[" . $String . " NOT FOUND]";}
-        $language = $this->request->session()->read('Profile.language');
+        $language = $this->getLanguage($UserID);
         if($language=="Debug"){return "[" . $String . "]";}
         $text = $Table->$language;
         if(!$text){ return "[" . $String . " is missing the " . $language. " translation]";}

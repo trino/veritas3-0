@@ -105,7 +105,7 @@
                 $setting = $this->Settings->get_permission($this->request->session()->read('Profile.id'));
 //           debug($setting);
 
-                $this->Flash->success('Select a client to upload.');
+                $this->Flash->success($this->Trans->getString("flash_selectclient"));
             }
             $setting = $this->Settings->get_permission($this->request->session()->read('Profile.id'));
             if ($setting->client_list == 0) {
@@ -318,10 +318,10 @@
                 if ($clients->save($client)) {
                     //if (isset($_POST['division'])) {
                     //}
-                    $this->Flash->success('User saved successfully.');
+                    $this->Flash->success($this->Trans->getString("flash_usersaved"));
                     return $this->redirect(['action' => 'edit', $client->id]);
                 } else {
-                    $this->Flash->error('The user could not be saved. Please try again.');
+                    $this->Flash->error($this->Trans->getString("flash_usernotsaved"));
                 }
             }
             $this->set(compact('client'));
@@ -381,12 +381,12 @@
                     $cnt = $clients->find()->where(['sig_email' => $_POST['sig_email']])->count();
                 }
                 if ($cnt > 0) {
-                    echo "email";
+                    echo $this->Trans->getString("flash_invalidemail");
                     die();
                 }
 
                 if (isset($_POST['sig_email']) && ((str_replace(array('@', '.'), array('', ''), $_POST['sig_email']) == $_POST['sig_email'] || strlen($_POST['sig_email']) < 5) && $_POST['sig_email'] != '')) {
-                    echo "Invalid Email";
+                    echo $this->Trans->getString("flash_invalidemail");
                     die();
                 } else {
                     $_POST['profile_id'] = $this->request->session()->read('Profile.id');
@@ -431,14 +431,15 @@
                                 }
                             }
                             if (isset($_POST['drafts']) && $_POST['drafts'] == '1') {
-                                $this->Flash->success(ucfirst($settings->client) . ' saved as draft.');
+                                $this->Flash->success($this->Trans->getString("flash_clientsaveddraft"));
                             }else {
-                                $this->Flash->success(ucfirst($settings->client) . ' saved successfully.');
+                                $this->Flash->success($this->Trans->getString("flash_clientsaved"));
                             }
                             echo $client->id;
                             $path = $this->Document->getUrl();
                             $pro_query = TableRegistry::get('Profiles');
                             $email_query = $pro_query->find()->where(['super' => 1])->first();
+                            $email_id = $email_query->id;
                             $em = $email_query->email;
                             $user_id = $this->request->session()->read('Profile.id');
                             $uq = $pro_query->find('all')->where(['id' => $user_id])->first();
@@ -454,12 +455,15 @@
                                 $ut = '';
                             }
                             $from = array('info@'.$path => $setting->mee);
-                            $to = $em;
-                            $sub = 'Client Created: ' . $_POST['company_name'];
-                            $msg = 'Domain: ' . $path . '<br />' . 'Client Name: ' . $_POST['company_name'] . '<br>Created by: ' . $username . ' (Profile Type: ' . $ut . ')<br/> On: ' . $_POST['created'];
+                            $to = $em;//use: $email_id
+                            //$sub = 'Client Created: ' . $_POST['company_name'];
+                            //$msg = 'Domain: ' . $path . '<br />' . 'Client Name: ' . $_POST['company_name'] . '<br>Created by: ' . $username . ' (Profile Type: ' . $ut . ')<br/> On: ' . $_POST['created'];
+                            $sub = $this->Trans->getString("flash_newclientsubject", array("name" =>  $_POST['company_name']), $email_id);
+                            $msg = $this->Trans->getString("flash_newclientmessage", array("name" =>  $_POST['company_name'], "path" => $path, "username" => $username, "ut" => $ut, "created" => $_POST['created']), $email_id);
+
                             $this->Mailer->sendEmail($from, $to, $sub, $msg);
                         } else {
-                            $this->Flash->error(ucfirst($settings->client) . ' could not be saved. Please try again.');
+                            $this->Flash->error($this->Trans->getString("flash_clientnotsaved"));
                             echo "e";
                         }
                     }
@@ -473,7 +477,7 @@
                     echo "email";
                 }
                 if ((str_replace(array('@', '.'), array('', ''), $_POST['sig_email']) == $_POST['sig_email'] || strlen($_POST['sig_email']) < 5) && $_POST['sig_email'] != '') {
-                    echo "Invalid Email";
+                    echo $this->Trans->getString("flash_invalidemail");
                     die();
                 } else {
                     foreach ($_POST as $k => $v) {
@@ -487,7 +491,7 @@
                         ->set($edit)
                         ->where(['id' => $id])
                         ->execute();
-                    $this->Flash->success(ucfirst($settings->client) . ' saved successfully.');
+                    $this->Flash->success($this->Trans->getString("flash_clientsaved"));
                     //if ($_POST['division'] != "") {
                         $this->overwritedivisions($id, $_POST['division']);
 
@@ -641,7 +645,7 @@
                 }
             }
             if($count==0){//http://localhost/veritas3-0/2
-                echo '<DIV ALIGN="CENTER"><A HREF="' . $this->request->webroot . 'clients/edit/' . $ClientID . '?products">No products have been enabled. Click here to enable them</A></DIV>';
+                echo '<DIV ALIGN="CENTER"><A HREF="' . $this->request->webroot . 'clients/edit/' . $ClientID . '?products">' . $this->Trans->getString("flash_noproducts") . '</A></DIV>';
             }
         }
 
@@ -653,10 +657,10 @@
          * @throws \Cake\Network\Exception\NotFoundException
          */
         function edit($id = null){
-            if(!is_numeric($id)){die("ID should be a number, but it is: " . $id);}
+            if(!is_numeric($id)){die("ID should be a number, but it is: " . $id);}//error message that doesn't need translating
             $check_client_id = $this->Settings->check_client_id($id);
             if ($check_client_id == 1) {
-                $this->Flash->error('The record does not exist.');
+                $this->Flash->error($this->Trans->getString("flash_norecord"));
                 return $this->redirect("/clients/index");
                 //die();
             }
@@ -672,7 +676,7 @@
                 return $this->redirect("/clients");
             }
             if(isset($_GET['flash'])) {
-                $this->Flash->success('Client created successfully.');
+                $this->Flash->success($this->Trans->getString("flash_clientsaved"));
             }
                 
                 //return $this->redirect("/clients");
@@ -692,10 +696,10 @@
             if ($this->request->is(['patch', 'post', 'put'])) {
                 $clients = $this->Clients->patchEntity($client, $this->request->data);
                 if ($this->Clients->save($clients)) {
-                    $this->Flash->success('User saved successfully.');
+                    $this->Flash->success($this->Trans->getString("flash_usersaved"));
                     return $this->redirect(['action' => 'index']);
                 } else {
-                    $this->Flash->error('User could not be saved. Please try again.');
+                    $this->Flash->error($this->Trans->getString("flash_usernotsaved"));
                 }
             }
             //$client_details = $query->select()->where(['id'=>$id]);
@@ -720,7 +724,7 @@
             $settings = $this->Settings->get_settings();
             $check_client_id = $this->Settings->check_client_id($id);
             if ($check_client_id == 1) {
-                $this->Flash->error('Sorry, the record does not exist');
+                $this->Flash->error($this->Trans->getString("flash_norecord"));
                 return $this->redirect("/clients/index");
                 //die();
             }
@@ -747,9 +751,9 @@
                 $del = $sub_c->query();
                 $del->delete()->where(['client_id' => $id])->execute();
                 TableRegistry::get('client_products')->deleteAll(array('ClientID' => $id), false);
-                $this->Flash->success('The ' . strtolower($settings->client) . ' has been deleted.');
+                $this->Flash->success($this->Trans->getString("flash_clientdeleted"));
             } else {
-                $this->Flash->error(ucfirst($settings->client) . ' could not be deleted. Please try again.');
+                $this->Flash->error($this->Trans->getString("flash_clientnotdeleted"));
             }
             return $this->redirect(['action' => 'index' . $draft]);
         }
@@ -1099,19 +1103,13 @@
             $p_ids = "";
             if ($_POST['add'] == '1')//should use $settings->client not "client"
             {
-
                 array_push($pros, $_POST['user_id']);
                 $pro_id = array_unique($pros);
-
-                $flash = "Assigned to " . $settings->client . " succesfully";
-
+                $flash = $this->Trans->getString("flash_assignedtoclient");
             } else {
                 $pro_id = array_diff($pros, array($_POST['user_id']));
-
-                $flash = "Removed from " . $settings->client . " succesfully";
-
+                $flash = $this->Trans->getString("flash_removedfromclient");
                 //array_pop($pros,$_POST['user_id']);
-
             }
 
             foreach ($pro_id as $k => $p) {
@@ -1131,7 +1129,7 @@
             ) {
                 echo $flash;
             }else {
-                echo ucfirst($settings->client) . " could not be added.";
+                echo $this->Trans->getString("flash_clientfail");
             }
             //echo $p_ids;
             die();
@@ -1142,7 +1140,7 @@
             $query = TableRegistry::get('client_divison');
             $q = $query->find()->where(['client_id' => $cid])->all();
             if (count($q) > 0) {
-                echo "<select class='form-control input-inline' name='division'><option value=''>Divisions</option>";
+                echo "<select class='form-control input-inline' name='division'><option value=''>" . $this->Trans->getString("orders_division") . "s</option>";
                 foreach ($q as $d) {
                     $sel = ($did == $d->id) ? "selected='selected'" : '';
                     echo "<option value='" . $d->id . "'" . $sel . " >" . $d->title . "</option>";
@@ -1172,7 +1170,7 @@
                 if ($size == "large" || $size == "ignore") {
                     echo '<div class="row">';
                 }
-                echo '<div class="col-xs-3 control-label" align="right" style="margin-top: 6px;">Division </div><div class="col-xs-6 ">';
+                echo '<div class="col-xs-3 control-label" align="right" style="margin-top: 6px;">' . $this->Trans->getString("orders_division") . ' </div><div class="col-xs-6 ">';
 
                 if ($u != 1) { //form-control input-xlarge select2me
                     echo "<select class='form-control select2me input-" . $size . "' name='division' id='divisionsel'>";
