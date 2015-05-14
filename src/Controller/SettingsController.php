@@ -88,7 +88,16 @@ class SettingsController extends AppController {
         $setting = TableRegistry::get('Settings');
          $query = $setting->query();
                 $query->update()
-                ->set(['client'=>$_POST['client'],'document'=>$_POST['document'],'profile'=>$_POST['profile'],'mee'=>$_POST['mee']])
+                ->set([
+                    'client'=>$_POST['client'],
+                    'document'=>$_POST['document'],
+                    'profile'=>$_POST['profile'],
+                    'mee'=>$_POST['mee'],
+
+                    'clientFrench'=>$_POST['clientFrench'],
+                    'documentFrench'=>$_POST['documentFrench'],
+                    'profileFrench'=>$_POST['profileFrench']
+                ])
                 ->where(['id' => 1])
                 ->execute();
         echo "1";

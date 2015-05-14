@@ -184,20 +184,22 @@ function getHost($localhost = "localhost") {//get HTTP host name
     return trim($host);
 }
 
-function s($settings){
-    $variables = Sadd("client", $settings);
-    $variables = array_merge($variables,Sadd("document", $settings));
-    $variables = array_merge($variables,Sadd("profile", $settings));
-    return array_merge($variables,Sadd("mee", $settings));
+function s($settings, $language = "English"){
+    $variables = Sadd("client", $language, $settings);
+    $variables = array_merge($variables,Sadd("document", $language, $settings));
+    $variables = array_merge($variables,Sadd("profile", $language, $settings));
+    return array_merge($variables,Sadd("mee", "English", $settings));//no french equivalent
 }
 
-function Sadd($Key, $Value){
+function Sadd($Key, $language, $Value){
     $P="%";
+    $NewName = $Key;
+    if($language != "English" && $language != "Debug"){$Key .= $language;}
     $Value=$Value->$Key;
     $variables=array();
-    $variables[$P. strtolower($Key) .$P] = strtolower($Value);
-    $variables[$P. strtoupper($Key) .$P] = strtoupper($Value);
-    $variables[$P. ucfirst($Key) .$P] = ucfirst($Value);
+    $variables[$P. strtolower($NewName) .$P] = strtolower($Value);
+    $variables[$P. strtoupper($NewName) .$P] = strtoupper($Value);
+    $variables[$P. ucfirst($NewName) .$P] = ucfirst($Value);
     return $variables;
 }
 
