@@ -1724,7 +1724,7 @@ class ProfilesController extends AppController{
             $blocks->save($article);
         }
 
-        $this->getsubdocument_topblocks($user_id, true);
+        //$this->getsubdocument_topblocks($user_id, true); //not used anymore
         die();
     }
 
