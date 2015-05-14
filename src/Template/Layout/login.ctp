@@ -68,8 +68,10 @@
     JSinclude($this, "assets/admin/pages/scripts/login.js");
     //<script src="<?php echo $this->request->webroot; assets/admin/pages/scripts/login.js" type="text/javascript"></script>
     $rememberme = true;
-    $translate = false;
+    $translate = true;
 
+    //keys must be the same as the name of the parameter in text(), values are the name of the language in that language
+    if($translate){$languages = array("English" => "English", "French" => "Français");}
     function text($Language, $English, $French){
         return $$Language;
     }
@@ -394,8 +396,18 @@ $(function(){
 <div class="copyright">
     &copy; 2015 <?= text($language, "All Rights Reserved", "Tous droits réservés"); ?>
 </div>
-<div class="copyright" <?php if(!$translate){ echo 'style="display:none;"';} ?>><!-- WILL NOT WORK WHEN YOU HAVE MORE THAN 2 LANGUAGES! -->
-    <A HREF="?language=<?= text($language, "French", "English"); ?>"><?= text($language, "Français", "English"); ?></A>
+<div class="copyright" <?php
+        if(!$translate){
+                echo 'style="display:none;">';
+        } else {
+            echo '>';
+            foreach($languages as $key => $name){
+                if($key!=$language) {
+                    echo '<A HREF="?language=' . $key . '">' . $name . '</A> ';
+                }
+            }
+        }
+    ?>
 </div>
 </body>
 <!-- END BODY -->
