@@ -8,8 +8,7 @@ use Cake\ORM\TableRegistry;
 
 include_once(APP . '../webroot/subpages/soap/nusoap.php');
 
-class OrdersController extends AppController
-{
+class OrdersController extends AppController {
 
     public $paginate = [
         'limit' => 10,
@@ -42,7 +41,6 @@ class OrdersController extends AppController
             $url = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
             $this->redirect('/login?url=' . urlencode($url));
         }
-
     }
 
     public function vieworder($cid = null, $did = null, $table = null) {
@@ -76,7 +74,6 @@ class OrdersController extends AppController
         $this->set('profile', $profile);*/
         $this->set('disabled', 1);
         if ($did) {
-
             $feeds = TableRegistry::get('feedbacks');
             //$pre_at = TableRegistry::get('driver_application_accident');
 
@@ -199,8 +196,7 @@ class OrdersController extends AppController
         $this->render('addorder');
     }
 
-    public function addorder($cid = 0, $did = 0, $table = null)
-    {
+    public function addorder($cid = 0, $did = 0, $table = null) {
         $this->set('doc_comp', $this->Document);
         $meedocs = TableRegistry::get('mee_attachments_more');
         $this->set('meedocs',$meedocs);
@@ -214,8 +210,8 @@ class OrdersController extends AppController
         if ($setting->orders_create == 0 || count($doc) == 0 || $cn == 0) {
             $this->Flash->error($this->Trans->getString("flash_permissions"));
             return $this->redirect("/");
-
         }
+
         $orders = TableRegistry::get('orders');
         if ($did) {
             $order_id = $orders->find()->where(['id' => $did])->first();
@@ -396,7 +392,6 @@ class OrdersController extends AppController
      */
     public function savedDriverApp($document_id = 0, $cid = 0){
         $this->Document->savedDriverApp($document_id, $cid);
-
         die;
     }
 
@@ -449,8 +444,7 @@ class OrdersController extends AppController
         }
     }
 
-    public function subpages($filename)
-    {
+    public function subpages($filename) {
         $this->set('doc_comp', $this->Document);
         $this->layout = "blank";
         $this->set("filename", $filename);
@@ -603,7 +597,7 @@ class OrdersController extends AppController
         echo $response;
         echo $arr['response'] = $_GET['response'];
 
-        echo 'AAAAAAAAAAA';
+        echo "AAAAAAAAAAAH I'M ON FIRE! SOMEONE HELP ME!";
 
         die();
         $querys = TableRegistry::get('orders');
@@ -615,8 +609,7 @@ class OrdersController extends AppController
         die();
     }
 
-    public function save_ebs_pdi($orderid, $pdi)
-    {
+    public function save_ebs_pdi($orderid, $pdi) {
         $this->set('doc_comp', $this->Document);
         $query2 = TableRegistry::get('orders');
         $arr['ebs_pdi'] = $pdi;
@@ -629,8 +622,7 @@ class OrdersController extends AppController
         return $this->response;
     }
 
-    public function save_webservice_ids($orderid, $ins_id, $ebs_id)
-    {
+    public function save_webservice_ids($orderid, $ins_id, $ebs_id) {
         $this->set('doc_comp', $this->Document);
         $query2 = TableRegistry::get('orders');
         $arr['ins_id'] = $ins_id;
@@ -644,9 +636,7 @@ class OrdersController extends AppController
         return $this->response;
     }
 
-    public function save_pdi($orderid, $id, $pdi)
-    {
-
+    public function save_pdi($orderid, $id, $pdi) {
         //    echo  $orderid . ' ' .  $id . ' ' . $pdi;
         $this->set('doc_comp', $this->Document);
         $query2 = TableRegistry::get('orders');
@@ -803,14 +793,13 @@ class OrdersController extends AppController
 
         $this->set('order_attach', $order_attach);
         $this->set('subdocument', TableRegistry::get('subdocuments'));
-
     }
-    public function createPdfBg()
-    {
+
+    public function createPdfBg() {
         //die();
     }
-    public function createPdf($oid)
-    {
+
+    public function createPdf($oid) {
         $this->set('doc_comp', $this->Document);
         $this->set('oid', $oid);
         $this->layout = 'blank';
@@ -837,8 +826,7 @@ class OrdersController extends AppController
 
     }
 
-    public function createPdfEmployment($id)
-    {
+    public function createPdfEmployment($id) {
         $this->set('doc_comp', $this->Document);
         $this->layout = 'blank';
         $consent = TableRegistry::get('employment_verification');
@@ -856,8 +844,7 @@ class OrdersController extends AppController
         $this->set(compact('att'));
     }
 
-    public function createPdfEducation($oid)
-    {
+    public function createPdfEducation($oid) {
         $this->set('doc_comp', $this->Document);
         $this->set('oid', $oid);
         $this->layout = 'blank';
@@ -876,8 +863,7 @@ class OrdersController extends AppController
         $this->set(compact('att'));
     }
 
-    public function viewReport($client_id, $order_id)
-    {
+    public function viewReport($client_id, $order_id) {
         $this->set('doc_comp', $this->Document);
         $orders = TableRegistry::get('orders');
         $order = $orders
@@ -888,8 +874,7 @@ class OrdersController extends AppController
         //  debug($order);
     }
 
-    function savedriver($oid)
-    {
+    function savedriver($oid) {
         $this->set('doc_comp', $this->Document);
         $arr['is_hired'] = $_POST['is_hired'];
         $orders = TableRegistry::get('profiles');
@@ -908,51 +893,43 @@ class OrdersController extends AppController
         die();
     }
 
-    public function saveAttachmentsDriverApp($data = NULL, $count = 0)
-    {
+    public function saveAttachmentsDriverApp($data = NULL, $count = 0) {
         $this->Document->saveAttachmentsDriverApp($data, $count);
         die();
     }
 
-    public function saveAttachmentsRoadTest($data = NULL, $count = 0)
-    {
+    public function saveAttachmentsRoadTest($data = NULL, $count = 0) {
         $this->Document->saveAttachmentsRoadTest($data, $count);
         die();
     }
 
-    public function saveAttachmentsConsentForm($data = NULL, $count = 0)
-    {
+    public function saveAttachmentsConsentForm($data = NULL, $count = 0) {
         $this->Document->saveAttachmentsConsentForm($data, $count);
         die();
     }
 
-    public function saveAttachmentsEmployment($data = NULL, $count = 0)
-    {
+    public function saveAttachmentsEmployment($data = NULL, $count = 0) {
         $this->Document->saveAttachmentsEmployment($data, $count);
         die();
     }
 
-    public function saveAttachmentsEducation($data = NULL, $count = 0)
-    {
+    public function saveAttachmentsEducation($data = NULL, $count = 0) {
         $this->Document->saveAttachmentsEducation($data, $count);
         die();
     }
 
-    function getprocessed($table, $oid)
-    {
+    function getprocessed($table, $oid) {
         $model = TableRegistry::get($table);
         $q = $model->find()->where(['order_id' => $oid])->count();
         $this->response->body($q);
         return $this->response;
     }
 
-    public function drafts()
-    {
+    public function drafts() {
 
     }
 
-    function getDriverByClient($client)
-    {
+    function getDriverByClient($client) {
         //$logged_id = $this->request->session()->read('Profile.id');
         $cmodel = TableRegistry::get('Clients');
         if (!is_numeric($client)) {
@@ -1019,8 +996,7 @@ class OrdersController extends AppController
     }
 
 
-    function testing()
-    {
+    function testing() {
         $this->set('doc_comp', $this->Document);
     }
 
@@ -1170,16 +1146,17 @@ class OrdersController extends AppController
         $settings = $this->Settings->get_settings();
         $logged_id = $this->request->session()->read('Profile.id');
         $cmodel = TableRegistry::get('Clients');
-        if (!$this->request->session()->read('Profile.admin') && !$this->request->session()->read('Profile.super'))
+        if (!$this->request->session()->read('Profile.admin') && !$this->request->session()->read('Profile.super')) {
             $clients = $cmodel->find()->where(['(profile_id LIKE "' . $logged_id . ',%" OR profile_id LIKE "%,' . $logged_id . ',%" OR profile_id LIKE "%,' . $logged_id . '") AND (profile_id LIKE "' . $driver . ',%" OR profile_id LIKE "%,' . $driver . ',%" OR profile_id LIKE "%,' . $driver . '")']);//Selecting client with respect to both loggedin user and driver
-        else
+        }else {
             $clients = $cmodel->find()->where(['(profile_id LIKE "' . $driver . ',%" OR profile_id LIKE "%,' . $driver . ',%" OR profile_id LIKE "%,' . $driver . '")']);
-
+        }
         if (!is_numeric($driver)) {
-            if (!$this->request->session()->read('Profile.admin') && !$this->request->session()->read('Profile.super'))
+            if (!$this->request->session()->read('Profile.admin') && !$this->request->session()->read('Profile.super')) {
                 $clients = $cmodel->find()->where(['(profile_id LIKE "' . $logged_id . ',%" OR profile_id LIKE "%,' . $logged_id . ',%" OR profile_id LIKE "%,' . $logged_id . '")']);
-            else
+            }else {
                 $clients = $cmodel->find();
+            }
         }
         //debug($clients);
 
@@ -1217,15 +1194,12 @@ class OrdersController extends AppController
 
 
 
-    public function getOrderData($cid = 0, $order_id = 0)
-    {
+    public function getOrderData($cid = 0, $order_id = 0) {
         $this->Document->getOrderData($cid, $order_id);
         die;
-
     }
 
-    public function getSubDocs()
-    {
+    public function getSubDocs() {
         $docs = TableRegistry::get('subdocuments');
         $doc = $docs->find()->all();
         //$do = $doc->select('all');
@@ -1234,69 +1208,58 @@ class OrdersController extends AppController
         die;
     }
 
-    public function getdocid($sub_doc_id, $order_id)
-    {
+    public function getdocid($sub_doc_id, $order_id) {
         $doc = TableRegistry::get('documents');
         $doc = $doc->find()->where(['sub_doc_id' => $sub_doc_id, 'order_id' => $order_id])->first();
         $this->response->body($doc);
         return $this->response;
         die;
     }
-    public function getProductTitle($id='')
-    {
+
+    public function getProductTitle($id='') {
         $doc = TableRegistry::get('order_products');
         $doc = $doc->find()->where(['number' => $id])->first();
         $this->response->body($doc);
         return $this->response;
         die;
     }
-    function check_driver_abstract2($id)
-    {
+
+    function check_driver_abstract2($id) {
         $doc = TableRegistry::get('profiles');
         $doc = $doc->find()->where(['id' => $id])->first();
         $this->response->body($doc);
         return $this->response;
         die;
-
     }
-    function check_cvor2($id)
-    {
+
+    function check_cvor2($id) {
         $doc = TableRegistry::get('profiles');
         $doc = $doc->find()->where(['id' => $id])->first();
         $this->response->body($doc);
         return $this->response;
         die;
-
     }
-    function check_driver_abstract($id)
-    {
+
+    function check_driver_abstract($id) {
         $doc = TableRegistry::get('profiles');
         $doc = $doc->find()->where(['id' => $id])->first();
         $province = $doc->driver_province;
         $arr = array('BC','MB','NU','NT','QC','SK','YT');
         //$arr = array('BC','SK','MB');
-        if(in_array($province,$arr)) {
-            echo '1';
-        } else {
-            echo '0';
-        }
+        echo '0';
+        if(in_array($province,$arr)) {echo '1';}
         die();
-
     }
-    function check_cvor($id)
-    {
+
+    function check_cvor($id) {
         $doc = TableRegistry::get('profiles');
         $doc = $doc->find()->where(['id' => $id])->first();
         $province = $doc->driver_province;
         //$arr = array('BC','MB','NU','NT','QC','SK','YT');
         $arr = array('BC','SK','MB');
-        if(in_array($province,$arr)) {
-            echo '1';
-        } else {
-            echo '0';
-        }
+        echo '0';
+        if(in_array($province,$arr)) {echo '1';}
         die();
-
     }
 
 
@@ -1320,6 +1283,7 @@ class OrdersController extends AppController
         $item = $Table->find()->where(['ProductID' => $ProductID, 'FormID' => $DocumentID, "Province" => $Province])->first();
         if($item) {return true;} else {return false;}
     }
+
     function isproductprovinceenabled2($Items, $ProductID, $DocumentID, $Province){//new fast method
         foreach($Items as $Item){
             if ($Item->ProductID == $ProductID){
@@ -1332,6 +1296,7 @@ class OrdersController extends AppController
         }
         return false;
     }
+
     public function LoadSubDocs($Forms){
         $Table = TableRegistry::get('order_provinces');
         $subdocuments = TableRegistry::get('subdocuments')->find('all');//id title
@@ -1377,46 +1342,39 @@ class OrdersController extends AppController
         return $return;
     }
 
-    function getProNum()
-    {
+    function getProNum() {
         $products =  TableRegistry::get('order_products');
         $pro = $products->find()->where(['enable'=>1,'id <>'=>8]);
         $prod = '';
-        foreach($pro as $p)
-        {
-            if($prod == '')
-            {
+        foreach($pro as $p) {
+            if($prod == '') {
                 $prod = $p->number;
+            } else {
+                $prod = $prod . ',' . $p->number;
             }
-            else
-                $prod = $prod.','.$p->number;
-
         }
         $this->response->body($prod);
         return $this->response;
         die;
     }
-    function getSubDetail($id)
-    {
+
+    function getSubDetail($id) {
         //die('here');
         $products =  TableRegistry::get('subdocuments');
         $pro = $products->find()->where(['id'=>$id])->first();
         $this->response->body($pro);
         return $this->response;
         die;
-
     }
-    public function invoice()
-    {
 
+    public function invoice() {
         $query = TableRegistry::get('Clients');
         $q = $query->find();
         $u = $this->request->session()->read('Profile.id');
-        if ($this->request->session()->read('Profile.super'))
+        if ($this->request->session()->read('Profile.super')) {
             $q = $q->select();
-        else {
+        }else {
             $q = $q->select()->where(['profile_id LIKE "' . $u . ',%" OR profile_id LIKE "%,' . $u . ',%" OR profile_id LIKE "%,' . $u . '" OR profile_id LIKE "' . $u . '" ']);
-
         }
         $this->set('clients', $q);
 
@@ -1457,37 +1415,31 @@ class OrdersController extends AppController
         $arr['user_id'] = $this->request->session()->read('Profile.id');
         $arr['driver'] = '';
         $arr['order_id'] = '';
-        foreach($drivers as $driver)
-        {
+        foreach($drivers as $driver) {
             $arr['uploaded_for'] = $driver;
             $ord = TableRegistry::get('orders');
                                 
             $doc = $ord->newEntity($arr);
             $ord->save($doc);
             //$this->webservice('BUL', $arr['forms'], $arr['user_id'], $doc->id);
-            if($arr['driver'])
-            $arr['driver'] = $arr['driver'].','.$driver;
-            else
-            $arr['driver'] = $driver;
-            if($arr['order_id'])
-            $arr['order_id'] = $arr['order_id'].','. $doc->id;
-            else
-            $arr['order_id'] =  $doc->id;
-            
-            
+            if($arr['driver']) {
+                $arr['driver'] = $arr['driver'] . ',' . $driver;
+            }else {
+                $arr['driver'] = $driver;
+            }
+            if($arr['order_id']) {
+                $arr['order_id'] = $arr['order_id'] . ',' . $doc->id;
+            }else {
+                $arr['order_id'] = $doc->id;
+            }
             unset($doc);
-            
-            
         }
         
         echo json_encode($arr);
         $this->Flash->success('Your bulk order has been saved successfully');
         die();
-        
-        
     }
-    public function checkPermisssionOrder($did,$driver)
-    {
+    public function checkPermisssionOrder($did,$driver) {
         $recruiter = $this->request->session()->read('Profile.id');
         $ord = TableRegistry::get('profilessubdocument');
         $check = $ord->find()->where(['profile_id'=>$recruiter,'subdoc_id'=>$did])->first();
@@ -1499,12 +1451,10 @@ class OrdersController extends AppController
     
     public function checkSignature($did) {
         $ord = TableRegistry::get('consent_form')->find()->where(['order_id'=>$did])->first();
-        if($ord->criminal_signature_applicant && $ord->criminal_signature_applicant2 && $ord->signature_company_witness2 && $ord->signature_company_witness)
-        {
+        $check = '0';
+        if($ord->criminal_signature_applicant && $ord->criminal_signature_applicant2 && $ord->signature_company_witness2 && $ord->signature_company_witness) {
             $check = '1';
         }
-        else
-        $check = '0';
         echo $check;
         die;
     }
