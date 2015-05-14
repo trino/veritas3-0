@@ -11,6 +11,7 @@ class LoginController extends AppController{
     public function initialize() {
         parent::initialize();
         $this->loadComponent('Settings');
+        $this->loadComponent('Trans');
         if($this->request->session()->read('Profile.id'))
         {
             //$this->redirect($this->referer());
@@ -78,8 +79,8 @@ class LoginController extends AppController{
                     $this->redirect('/pages');
                 }
             } else{
-                $this->Flash->error('Invalid username or password.');
-                $this->redirect('/login');
+                $this->Flash->error($this->Trans->getString("flash_invalidlogin", "", $_POST["language"]));
+                $this->redirect('/login?language=' . $_POST["language"]);
             }
         }else {
            // die();

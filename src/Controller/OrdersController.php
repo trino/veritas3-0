@@ -234,7 +234,7 @@ class OrdersController extends AppController {
                 $dr = $orde->draft;
                 if ($dr == '0' || !$dr) {
                     $dr = 0;
-                    $this->Flash->success('Your order has been submitted');
+                    $this->Flash->success($this->Trans->getString("flash_ordersaved"));
                     //die();
                 } else {
                     $dr = 1;
@@ -436,7 +436,7 @@ class OrdersController extends AppController {
 
         $this->loadModel('Documents');
         $this->Documents->deleteAll(array('order_id' => $id));
-        $this->Flash->success('The order has been deleted.');
+        $this->Flash->success($this->Trans->getString("flash_orderdeleted"));
         if ($draft) {
             $this->redirect('/orders/orderslist?draft');
         }else {
@@ -455,10 +455,10 @@ class OrdersController extends AppController {
 
         $this->set('doc_comp', $this->Document);
         if (isset($_GET['draft']) && isset($_GET['flash'])) {
-            $this->Flash->success('Order saved as draft');
+            $this->Flash->success($this->Trans->getString("flash_orderdraft"));
         } else {
             if (isset($_GET['flash'])) {
-                $this->Flash->success('Order submitted successfully.');
+                $this->Flash->success($this->Trans->getString("flash_ordersaved"));
             }
         }
         $setting = $this->Settings->get_permission($this->request->session()->read('Profile.id'));
@@ -1003,9 +1003,9 @@ class OrdersController extends AppController {
     public function orderslist(){
         $this->set('doc_comp', $this->Document);
         if (isset($_GET['draft']) && isset($_GET['flash'])) {
-            $this->Flash->success('Order saved as draft');
+            $this->Flash->success($this->Trans->getString("flash_orderdraft"));
         } elseif (isset($_GET['flash'])) {
-            $this->Flash->success('Order saved successfully');
+            $this->Flash->success($this->Trans->getString("flash_ordersaved"));
         }
         $setting = $this->Settings->get_permission($this->request->session()->read('Profile.id'));
         $doc = $this->Document->getDocumentcount();
@@ -1436,7 +1436,7 @@ class OrdersController extends AppController {
         }
         
         echo json_encode($arr);
-        $this->Flash->success('Your bulk order has been saved successfully');
+        $this->Flash->success($this->Trans->getString("flash_bulkorder"));
         die();
     }
     public function checkPermisssionOrder($did,$driver) {

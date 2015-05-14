@@ -35,14 +35,18 @@ class TransComponent extends Component {
         textdomain($domain);
     }
     */
-    public function getLanguage($UserID){
+    public function getLanguage($UserID = ""){
         if($UserID) {
-            $Table = TableRegistry::get('profiles')->find()->select()->where(["id" => $UserID])->first()->language;
-        } else{
+            if (is_numeric($UserID)) {//is a number, use it as a user id
+                $Table = TableRegistry::get('profiles')->find()->select()->where(["id" => $UserID])->first()->language;
+            } else {//is not a number, assume it's a language
+                return ucfirst($UserID);
+            }
+        } else{//the user is logged in, use session variable
             $Table = $this->request->session()->read('Profile.language');
         }
         if($Table){return $Table;}
-        return "English";
+        return "English";//assume english
     }
 
     public function getString($String, $Variables = "", $UserID=""){

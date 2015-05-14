@@ -34,7 +34,7 @@ class PagesController extends AppController {
         $this->getAllClient();
 	   $this->loadModel('Clients');
         if(isset($_GET['orderflash']))
-        $this->Flash->success('Order saved as draft');
+        $this->Flash->success($this->Trans->getString("flash_orderdraft"));
         $userid=$this->request->session()->read('Profile.id');
 		$setting = $this->Settings->get_permission($userid);
 // debug($setting);die();
@@ -82,7 +82,7 @@ class PagesController extends AppController {
                     ->set($con)
                     ->where(['slug'=>$slug])
                     ->execute();
-         $this->Flash->success('Page saved successfully.');
+         $this->Flash->success($this->Trans->getString("pagesaved"));
         $this->redirect('/profiles/edit/'.$this->request->session()->read('Profile.id'));
     }
 

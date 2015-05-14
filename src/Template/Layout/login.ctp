@@ -184,7 +184,10 @@ if(isset($_GET["client"])){ ?>
             <?= text($language, "Login", "Connexion"); ?>
             <i class="m-icon-swapright m-icon-white"></i>
         </button>
-        <?php if(!$rememberme){echo '</DIV>';} ?>
+        <?php
+            if(!$rememberme){echo '</DIV>';}
+            echo '<INPUT TYPE="hidden" name="language" value="' . $language . '">';
+        ?>
         <div class="forget-password">
             <?= text($language, '<p>Forgot your password? Click <a href="javascript:;" class="forget-password">here </a>to reset.</p>', '<P>Avez-vous oublié votre mot de passe? Cliquer <a href="javascript:;" class="forget-password">ici </A>pour le récupérer</P>'); ?>
         </div>

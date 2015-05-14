@@ -19,6 +19,7 @@ class LogosController extends AppController {
     {
         parent::intialize();
         $this->loadComponent('Settings');
+        $this->loadComponent('Trans');
         if(!$this->request->session()->read('Profile.id'))
         {
                 $url = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
@@ -47,10 +48,10 @@ class LogosController extends AppController {
                 $query1 = $logo->query();
                 if($query1->update()->set(['active' => 1])->where(['id' => $id])->execute())
             {
-                $this->Flash->success(__('Your Logo has been updated.'));
+                $this->Flash->success(__($this->Trans->getString("flash_logosaved")));
                 return $this->redirect(['controller'=>'profiles','action' => 'add']);
             }
-            $this->Flash->error(__('Unable to update logo.'));
+            $this->Flash->error(__($this->Trans->getString("flash_logonotsaved")));
          }
         
 	}
@@ -187,10 +188,10 @@ class LogosController extends AppController {
                 $query1 = $logo->query();
                 if($query1->update()->set(['active' => 1])->where(['id' => $id])->execute())
             {
-                $this->Flash->success(__('Your Logo has been updated.'));
+                $this->Flash->success(__($this->Trans->getString("flash_logosaved")));
                 return $this->redirect(['controller'=>'profiles','action' => 'add']);
             }
-            $this->Flash->error(__('Unable to update logo.'));
+            $this->Flash->error(__($this->Trans->getString("flash_logonotsaved")));
          }
         
 	}
@@ -218,10 +219,10 @@ class LogosController extends AppController {
 		$logo = $this->Logos->newEntity($this->request->data);
 		if ($this->request->is('post')) {
 			if ($this->Logos->save($logo)) {
-				$this->Flash->success('The logo has been saved.');
+				$this->Flash->success($this->Trans->getString("flash_logosaved"));
 				return $this->redirect(['action' => 'index']);
 			} else {
-				$this->Flash->error('The logo could not be saved. Please try again.');
+				$this->Flash->error($this->Trans->getString("flash_logonotsaved"));
 			}
 		}
 		$this->set(compact('logo'));
@@ -241,10 +242,10 @@ class LogosController extends AppController {
 		if ($this->request->is(['patch', 'post', 'put'])) {
 			$logo = $this->Logos->patchEntity($logo, $this->request->data);
 			if ($this->Logos->save($logo)) {
-				$this->Flash->success('The logo has been saved.');
+				$this->Flash->success($this->Trans->getString("flash_logosaved"));
 				return $this->redirect(['action' => 'index']);
 			} else {
-				$this->Flash->error('The logo could not be saved. Please try again.');
+				$this->Flash->error($this->Trans->getString("flash_logonotsaved"));
 			}
 		}
 		$this->set(compact('logo'));

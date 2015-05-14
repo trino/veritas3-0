@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: May 14, 2015 at 04:30 PM
+-- Generation Time: May 14, 2015 at 10:57 PM
 -- Server version: 5.6.17
 -- PHP Version: 5.5.12
 
@@ -32,14 +32,14 @@ CREATE TABLE IF NOT EXISTS `strings` (
   `English` varchar(4096) NOT NULL,
   `French` varchar(4096) NOT NULL,
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=159 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=188 ;
 
 --
 -- Dumping data for table `strings`
 --
 
 INSERT INTO `strings` (`ID`, `Name`, `English`, `French`) VALUES
-(1, 'Date', '1431529754', '<-- This is used by the system to auto-update'),
+(1, 'Date', '1431613851', '<-- This is used by the system to auto-update'),
 (2, 'dashboard_affirmative', 'Yes', 'Oui'),
 (3, 'dashboard_negative', 'No', 'Non'),
 (4, 'dashboard_selectall', 'Select All', 'Tout Sélectionner'),
@@ -192,7 +192,36 @@ INSERT INTO `strings` (`ID`, `Name`, `English`, `French`) VALUES
 (155, 'infoorder_addprofile', 'Add %Profile%', 'Ajouter %Profile%'),
 (156, 'infoorder_searchprofiles', 'Search %Profile%s', '%Profile%s de recherche'),
 (157, 'infoorder_nonefound', 'No Results Found', 'Aucun Résultat Trouvé'),
-(158, 'flash_permissions', 'Sorry, you don\\''t have the required permissions.', 'Désolé, vous ne disposez pas des autorisations nécessaires.');
+(158, 'flash_permissions', 'Sorry, you don\\''t have the required permissions.', 'Désolé, vous ne disposez pas des autorisations nécessaires.'),
+(159, 'flash_invalidemail', 'Invalid email address', ''),
+(160, 'flash_noproducts', 'No products have been enabled. Click here to enable them', ''),
+(161, 'flash_assignedtoclient', 'Assigned to %client% succesfully', ''),
+(162, 'flash_removedfromclient', 'Removed from %client% succesfully', ''),
+(163, 'flash_clientfail', '%Client% could not be added. Please try again', ''),
+(164, 'flash_newclientsubject', '%Client% Created: %name%', ''),
+(165, 'flash_newclientmessage', 'Domain: %path% <br>%Client% Name: %name% <br>Created by: %username% (%Profile% Type: %ut%) <br> Created on: %created%', ''),
+(166, 'flash_docsaved', 'The %document% has been saved.', ''),
+(167, 'flash_cantviewdocs', 'Sorry, you don\\''t have the required permission to view %documents%. Please contact the administrator to enable it.', ''),
+(168, 'flash_cantuploaddocs', 'Sorry you don\\''t have the required permission to upload %document%s. Please contact the administrator to enable it.', ''),
+(169, 'flash_docdeleted', '%Document% has been deleted.', ''),
+(170, 'flash_docnotdeleted', '%Document% could not be deleted. Please try again.', ''),
+(171, 'flash_docnotsaved', '%Document% could not be saved. Please try again.', ''),
+(172, 'flash_docnotupdated', '%Document% could not be updated. Please try again.', ''),
+(173, 'flash_docupdated', 'The %document% has been updated.', ''),
+(174, 'flash_feedbacksent', 'The feedback has been sent.', ''),
+(175, 'flash_feedbacknotsent', 'The feedback has been sent.', ''),
+(176, 'flash_usersaved', 'User saved successfully.', ''),
+(177, 'flash_usernotsaved', 'The user could not be saved. Please try again.', ''),
+(178, 'flash_jobdeleted', ' The Job has been deleted.', ''),
+(179, 'flash_jobnotdeleted', 'Job could not be deleted. Please try again.', ''),
+(180, 'flash_invalidlogin', 'Invalid username or password.', ''),
+(181, 'flash_logosaved', 'Your Logo has been saved.', ''),
+(182, 'flash_logonotsaved', 'The logo could not be saved. Please try again.', ''),
+(183, 'flash_ordersaved', 'Your order has been saved', ''),
+(184, 'flash_orderdeleted', 'The order has been deleted.', ''),
+(185, 'flash_orderdraft', 'Order saved as draft', ''),
+(186, 'flash_bulkorder', 'Your bulk order has been saved successfully', ''),
+(187, 'flash_pagesaved', 'Page saved successfully.', '');
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

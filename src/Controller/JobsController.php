@@ -44,10 +44,10 @@ class JobsController extends AppController {
 		$user = $this->Jobs->newEntity($this->request->data);
 		if ($this->request->is('post')) {
 			if ($this->Jobs->save($user)) {
-				$this->Flash->success('User saved successfully.');
+				$this->Flash->success($this->Trans->getString("flash_usersaved"));
 				return $this->redirect(['action' => 'index']);
 			} else {
-				$this->Flash->error('The user could not be saved. Please try again.');
+				$this->Flash->error($this->Trans->getString("flash_usernotsaved"));
 			}
 		}
 		$this->set(compact('user'));
@@ -68,10 +68,10 @@ class JobsController extends AppController {
 		if ($this->request->is(['patch', 'post', 'put'])) {
 			$user = $this->Jobs->patchEntity($user, $this->request->data);
 			if ($this->Jobs->save($user)) {
-				$this->Flash->success('User saved successfully.');
+				$this->Flash->success($this->Trans->getString("flash_usersaved"));
 				return $this->redirect(['action' => 'index']);
 			} else {
-				$this->Flash->error('The user could not be saved. Please try again.');
+				$this->Flash->error($this->Trans->getString("flash_usernotsaved"));
 			}
 		}
 		$this->set(compact('user'));
@@ -89,9 +89,9 @@ class JobsController extends AppController {
 		$user = $this->Jobs->get($id);
 		$this->request->allowMethod(['post', 'delete']);
 		if ($this->Jobs->delete($user)) {
-			$this->Flash->success('The Job has been deleted.');
+			$this->Flash->success($this->Trans->getString("flash_jobdeleted"));
 		} else {
-			$this->Flash->error('Job could not be deleted. Please try again.');
+			$this->Flash->error($this->Trans->getString("flash_jobnotdeleted"));
 		}
 		return $this->redirect(['action' => 'index']);
 	}
