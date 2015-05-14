@@ -67,6 +67,12 @@
 
     JSinclude($this, "assets/admin/pages/scripts/login.js");
     //<script src="<?php echo $this->request->webroot; assets/admin/pages/scripts/login.js" type="text/javascript"></script>
+    $rememberme = true;
+    $translate = false;
+
+    function text($Language, $English, $French){
+        return $$Language;
+    }
 
     ?>
 
@@ -108,7 +114,9 @@
 
 
 <?php
-$French=false;
+$language = "English";
+if($translate && isset($_GET["language"])){$language = $_GET["language"];}
+
 if(isset($_GET["client"])){ ?>
 
 <!-- BEGIN MAKE DRIVER FORM -->
@@ -147,7 +155,7 @@ if(isset($_GET["client"])){ ?>
 
 
         <form class="login-form" action="<?php echo $this->request->webroot;?>login/index<?php if(isset($_GET['url'])){?>?url=<?php echo $_GET['url']; }?>" method="post">
-        <h3 class="form-title">Log in to your account<?php if($French){ echo '<BR>Accéder à votre compte';} ?></h3>
+        <h3 class="form-title"><?= text($language, "Log in to your account", "Accéder à votre compte"); ?></h3>
     
     <?= $this->Flash->render() ?>
     <div class="form-group">
@@ -155,38 +163,28 @@ if(isset($_GET["client"])){ ?>
         <label class="control-label visible-ie8 visible-ie9">Username</label>
         <div class="input-icon">
             <i class="fa fa-user"></i>
-            <input class="form-control placeholder-no-fix" type="text" autocomplete="off" placeholder="Username<?php if($French){ echo " / Nom de l'utilisateur";} ?>" name="name" required="required" />
+            <input class="form-control placeholder-no-fix" type="text" autocomplete="off" placeholder="<?= text($language, "Username", "Nom de l'utilisateur"); ?>" name="name" required="required" />
         </div>
     </div>
     <div class="form-group">
         <label class="control-label visible-ie8 visible-ie9">Password</label>
         <div class="input-icon">
             <i class="fa fa-lock"></i>
-            <input class="form-control placeholder-no-fix" type="password" autocomplete="off" placeholder="Password<?php if($French){ echo " / Mot de passe";}?>" name="password" required="required"/>
+            <input class="form-control placeholder-no-fix" type="password" autocomplete="off" placeholder="<?= text($language, "Password", "Mot de passe"); ?>" name="password" required="required"/>
         </div>
     </div>
     <div class="form-actions">
-        <label class="checkbox">
-            <input type="checkbox" name="remember" value="1"/> Remember me<?php if($French){ echo "<BR>Mémoriser mes coordonnées";}?>
+        <label class="checkbox" <?php if(!$rememberme){echo 'style="display: none;"';} ?>>
+            <input type="checkbox" name="remember" value="1"/><?= text($language, "Remember me", "Mémoriser mes coordonnées"); ?>
         </label>
-        <button type="submit" class="btn green-haze pull-right">
-            Login<?php if($French){ echo " / Connexion";}?>
+        <?php if(!$rememberme){echo '<DIV ALIGN="RIGHT">';} ?>
+        <button type="submit" class="btn green-haze <?php if($rememberme){echo 'pull-right';} ?>">
+            <?= text($language, "Login", "Connexion"); ?>
             <i class="m-icon-swapright m-icon-white"></i>
         </button>
-
+        <?php if(!$rememberme){echo '</DIV>';} ?>
         <div class="forget-password">
-            <p>
-                Forgot your password? Click
-                    <a href="javascript:;" class="forget-password">here </a>
-                to reset.
-            </p>
-            <?php if($French){ echo '
-            <P>
-                Avez-vous oublié votre mot de passe? Cliquer
-                    <a href="javascript:;" class="forget-password">ici </A>
-                pour le récupérer
-            </P>
-            ';} ?>
+            <?= text($language, '<p>Forgot your password? Click <a href="javascript:;" class="forget-password">here </a>to reset.</p>', '<P>Avez-vous oublié votre mot de passe? Cliquer <a href="javascript:;" class="forget-password">ici </A>pour le récupérer</P>'); ?>
         </div>
     </div>
 
@@ -213,15 +211,14 @@ if(isset($_GET["client"])){ ?>
 
 <!-- BEGIN FORGOT PASSWORD FORM -->
 <form class="forget-form" action="" method="post">
-    <h3>Forgot Password?<?php if($French){ echo "<BR>Mot de passe oublié?";} ?></h3>
+    <h3><?= text($language, "Forgot Password?", "Mot de passe oublié?"); ?></h3>
     <p>
-        Enter your e-mail address below to reset your password.<?php if($French){ echo "<BR>
-        Entrez votre adresse e-mail ci-dessous pour réinitialiser votre mot de passe.";} ?>
+        <?= text($language, "Enter your e-mail address below to reset your password.", "Entrez votre adresse e-mail ci-dessous pour réinitialiser votre mot de passe."); ?>
     </p>
     <div class="form-group">
         <div class="input-icon">
             <i class="fa fa-envelope"></i>
-            <input class="form-control placeholder-no-fix" type="text" id="forgetEmail" autocomplete="off" placeholder="Email<?php if($French){ echo " / Courriel";} ?>" name="email"/>
+            <input class="form-control placeholder-no-fix" type="text" id="forgetEmail" autocomplete="off" placeholder="<?= text($language, "Email", "Courriel"); ?>" name="email"/>
         </div>
     </div>
     <div class="form-group forget_error" style="display: none;">
@@ -229,9 +226,9 @@ if(isset($_GET["client"])){ ?>
     </div>
     <div class="form-actions">
         <button type="button" id="back-btn" class="btn">
-            <i class="m-icon-swapleft"></i> Back<?php if($French){ echo " / Dos";} ?></button>
+            <i class="m-icon-swapleft"></i> <?= text($language, "Back", "Dos"); ?></button>
         <button type="button" class="btn green-haze pull-right forgetpass">
-            Submit<?php if($French){ echo " / Soumettre";} ?>
+            <?= text($language, "Submit", "Soumettre"); ?>
             <i class="m-icon-swapright m-icon-white"></i>
         </button>
     </div>
@@ -246,8 +243,7 @@ $(function(){
             url : "<?php echo $this->request->webroot;?>profiles/forgetpassword",
             type :"post",
             data :"email="+email,
-            success: function(msg)
-            {
+            success: function(msg) {
                  $('.forget_error').text(msg);
                  $('.forget_error').show();
                  $('.forget_error').fadeOut(5000);
@@ -396,9 +392,11 @@ $(function(){
 <!-- END LOGIN -->
 <!-- BEGIN COPYRIGHT -->
 <div class="copyright">
-    &copy; 2015 All Rights Reserved<?php if($French){ echo " / Tous droits réservés";} ?>
+    &copy; 2015 <?= text($language, "All Rights Reserved", "Tous droits réservés"); ?>
 </div>
-
+<div class="copyright" <?php if(!$translate){ echo 'style="display:none;"';} ?>><!-- WILL NOT WORK WHEN YOU HAVE MORE THAN 2 LANGUAGES! -->
+    <A HREF="?language=<?= text($language, "French", "English"); ?>"><?= text($language, "Français", "English"); ?></A>
+</div>
 </body>
 <!-- END BODY -->
 </html>
