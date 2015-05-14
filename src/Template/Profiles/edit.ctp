@@ -323,19 +323,12 @@
                                 </div>
                             <?php }
                                 if (isset($p)) {
-                                    if ($p->profile_type == 5 || $profile->profile_type == 7 || $profile->profile_type == 8 || $profile->profile_type == 11 && $settings->mee =="MEE") {
-                                        ?>
-                                        <label class="uniform-inline" style="margin-bottom:20px;">
-                                            <input type="checkbox" name="stat" value="1"
-                                                   id="<?php echo $profile->id; ?>"
-                                                   class="checkhiredriver" <?php if ($p->is_hired == '1') echo "checked"; ?> />
-                                            Was this applicant hired? <span class="hired_msg"></span></label>
-                                    <?php
-                                    }
-                                }
-
-                                if (isset($p)) {
                                     if ($profile->Ptype && $profile->Ptype->placesorders == 1) {//driver, owner driver, owner operator, sales, employee
+                                        echo '<label class="uniform-inline" style="margin-bottom:20px;">
+                                                <input type="checkbox" name="stat" value="1" id="' . $profile->id . '" class="checkhiredriver"';
+                                            if ($p->is_hired == '1') {echo " checked";}
+                                        echo '/> Was this applicant hired? <span class="hired_msg"></span></label>';
+
                                         if ($sidebar->orders_create == 1){
                                             foreach($products as $product){
                                                 $alias = $product->Sidebar_Alias;

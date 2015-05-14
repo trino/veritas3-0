@@ -10,68 +10,61 @@ use Cake\Network\Email\Email;
 
 class FeedbacksController extends AppController{
     
-    public function intialize()
-    {
+    public function intialize() {
         parent::intialize();
         $this->loadComponent('Settings');
-        if(!$this->request->session()->read('Profile.id'))
-        {
+        $this->loadComponent('Trans');
+        if(!$this->request->session()->read('Profile.id')) {
                 $url = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
                 $this->redirect('/login?url='.urlencode($url));
         }
         
     }
     
-    public function index()
-    {
+    public function index() {
         
     }
     
-    public function add($order_id,$cid)
-    {
+    public function add($order_id,$cid) {
         $this->loadComponent('Document');
-        if(isset($_GET['document']))
-        {
+        if(isset($_GET['document'])) {
             $_POST['document_id'] = $order_id;
             $_POST['order_id'] = 0;
-        }
-        else{
-        $_POST['order_id'] = $order_id;
-        $_POST['document_id'] = 0;
+        } else{
+            $_POST['order_id'] = $order_id;
+            $_POST['document_id'] = 0;
         }
         $_POST['client_id'] = $cid;
         $_POST['user_id'] = $this->request->session()->read('Profile.id');
         
         
         $docs = TableRegistry::get('Feedbacks');
-         if(isset($_GET['document']))
-        $docx = $docs->find()->where(['document_id'=>$order_id])->first();
-        else
-        $docx = $docs->find()->where(['order_id'=>$order_id])->first();
-        
+        if(isset($_GET['document'])) {
+            $docx = $docs->find()->where(['document_id' => $order_id])->first();
+        }else {
+            $docx = $docs->find()->where(['order_id' => $order_id])->first();
+        }
         if (!isset($_GET['document']) || isset($_GET['order_id'])) {
-                if(!isset($_GET['order_id']))
-                $arr['order_id'] = $_POST['order_id'];
-                else
-                $arr['order_id'] = $_GET['order_id'];
+                if (!isset($_GET['order_id'])){
+                    $arr['order_id'] = $_POST['order_id'];
+                }else {
+                    $arr['order_id'] = $_GET['order_id'];
+                }
                 $arr['document_id'] = 0;
-                if (isset($_POST['uploaded_for']))
+                if (isset($_POST['uploaded_for'])) {
                     $uploaded_for = $_POST['uploaded_for'];
-                else
+                }else {
                     $uploaded_for = '';
+                }
                 $for_doc = array('document_type'=>'Feedback','sub_doc_id'=>6,'order_id'=>$arr['order_id'],'user_id'=>$_POST['user_id'],'uploaded_for'=>$uploaded_for);
                  $this->Document->saveDocForOrder($for_doc);
                  
-                 if(isset($_POST['attach_doc']))
-                        {
-                            
+                 if(isset($_POST['attach_doc'])) {
                             $model = $this->loadModel('DocAttachments');
                             $model->deleteAll(['order_id'=> $order_id,'sub_id'=>6]);
                             $client_docs = $_POST['attach_doc'];
-                            foreach($client_docs as $d)
-                            {
-                                if($d != "")
-                                {
+                            foreach($client_docs as $d) {
+                                if($d != "") {
                                     $attach = TableRegistry::get('doc_attachments');
                                     $ds['order_id']= $order_id;
                                     $ds['attachment'] =$d;
@@ -82,19 +75,13 @@ class FeedbacksController extends AppController{
                                 }
                             }
                         } 
-            }
-            else
-            {
-                if(isset($_POST['attach_doc']))
-                        {
-                            
+            } else {
+                if(isset($_POST['attach_doc'])) {
                             $model = $this->loadModel('DocAttachments');
                             $model->deleteAll(['document_id'=> $order_id]);
                             $client_docs = $_POST['attach_doc'];
-                            foreach($client_docs as $d)
-                            {
-                                if($d != "")
-                                {
+                            foreach($client_docs as $d) {
+                                if($d != "") {
                                     $attach = TableRegistry::get('doc_attachments');
                                     $ds['document_id']= $order_id;
                                     $ds['attachment'] =$d;
@@ -106,8 +93,7 @@ class FeedbacksController extends AppController{
                             }
                         } 
             }
-        if($docx)
-        {
+        if($docx) {
             
             $feedback['title']= $_POST['title'];
             $feedback['description'] = $_POST['description'];
@@ -124,12 +110,10 @@ class FeedbacksController extends AppController{
                 ->set($feedback)
                 ->where(['id' => $id])
                 ->execute();
-             if($update)
-            	   echo "OK";
-            	
-        }
-        else
-        {
+             if($update) {
+                 echo "OK";
+             }
+        } else {
             //die('2');
             $doc = $docs->newEntity($_POST);
     		if ($this->request->is('post')) {
@@ -151,19 +135,15 @@ class FeedbacksController extends AppController{
     }
     
     
-    function basic($cid, $did)
-        {
+    function basic($cid, $did) {
             $this->set('doc_comp',$this->Document);
            
             if (isset($_POST)) {
                 
-                if (isset($_GET['draft']) && $_GET['draft'])
-                {
+                if (isset($_GET['draft']) && $_GET['draft']) {
                     $arr['draft'] = 1;
                     $draft = '?draft';
-                }
-                else
-                {
+                } else {
                     $arr['draft'] = 0;
                     $draft = '';    
                 }
@@ -185,24 +165,20 @@ class FeedbacksController extends AppController{
                         $doczs = TableRegistry::get('generic_forms');
                         $ds['document_id'] = $doc->id;
                         
-                        foreach($_POST as $k=>$v)
-                        {
+                        foreach($_POST as $k=>$v) {
                             $ds[$k]=$v;
                         }
                         $docz = $doczs->newEntity($ds);
                         $doczs->save($docz);
                         $did = $doc->id;
-                        if(isset($_POST['attach_doc']))
-                        {
+                        if(isset($_POST['attach_doc'])) {
                             //var_dump($_POST['attach_doc']);die();
                             $model = $this->loadModel('DocAttachments');
                             $model->deleteAll(['document_id'=> $did]);
                             //$client_do = implode(',',$_POST['attach_doc']);
                             //$client_docs=explode(',',$client_do);
-                            foreach($_POST['attach_doc'] as $d)
-                            {
-                                if($d != "")
-                                {
+                            foreach($_POST['attach_doc'] as $d) {
+                                if($d != "") {
                                     $attach = TableRegistry::get('doc_attachments');
                                     $ds['document_id']= $did;
                                     $ds['attachment'] =$d;
@@ -215,16 +191,14 @@ class FeedbacksController extends AppController{
                             
                         }
                         unset($doczs);
-                        $this->Flash->success('Document saved successfully.');
+                        $this->Flash->success($this->Trans->getString("flash_docsaved"));
                         $this->redirect(array('action' => 'index'.$draft));
                     } else {
-                        $this->Flash->error('Document could not be saved. Please try again.');
+                        $this->Flash->error($this->Trans->getString("flash_docnotsaved"));
                         $this->redirect(array('action' => 'index'.$draft));
                     }
 
-                } 
-                else 
-                {
+                } else {
                     $docs = TableRegistry::get('Documents');
                     $query2 = $docs->query();
                     $query2->update()
@@ -236,22 +210,18 @@ class FeedbacksController extends AppController{
                         $doczs = TableRegistry::get('generic_forms');
                         $ds['document_id'] = $did;
                         
-                        foreach($_POST as $k=>$v)
-                        {
+                        foreach($_POST as $k=>$v) {
                             $ds[$k]=$v;
                         }
                         $docz = $doczs->newEntity($ds);
                         $doczs->save($docz);
-                        if(isset($_POST['attach_doc']))
-                        {
+                        if(isset($_POST['attach_doc'])) {
                             
                             $model = $this->loadModel('DocAttachments');
                             $model->deleteAll(['document_id'=> $did]);
                             $client_docs = $_POST['attach_doc'];
-                            foreach($client_docs as $d)
-                            {
-                                if($d != "")
-                                {
+                            foreach($client_docs as $d) {
+                                if($d != "") {
                                     $attach = TableRegistry::get('doc_attachments');
                                     $ds['document_id']= $did;
                                     $ds['attachment'] =$d;
@@ -263,24 +233,23 @@ class FeedbacksController extends AppController{
                             }
                         }
                         unset($doczs);
-                    $this->Flash->success('Document Updated successfully.');
+                    $this->Flash->success($this->Trans->getString("flash_docupdated"));
                     $this->redirect(array('action' => 'index'.$draft));
                 }
-                }
-                else
-                {
+                } else {
                     $arr['document_id'] = 0;                   
-                    if(!isset($_GET['order_id']))
-                    $arr['order_id'] = $did;
-                    else{
-                    $arr['order_id'] = $_GET['order_id'];
-                    $did = $_GET['order_id'];
+                    if(!isset($_GET['order_id'])) {
+                        $arr['order_id'] = $did;
+                    }else{
+                        $arr['order_id'] = $_GET['order_id'];
+                        $did = $_GET['order_id'];
                     }
                     $arr['document_id'] = 0;
-                    if (isset($_POST['uploaded_for']))
+                    if (isset($_POST['uploaded_for'])) {
                         $uploaded_for = $_POST['uploaded_for'];
-                    else
+                    }else {
                         $uploaded_for = '';
+                    }
                     $for_doc = array('document_type'=>'Audit','sub_doc_id'=>8,'order_id'=>$arr['order_id'],'user_id'=>'','uploaded_for'=>$uploaded_for);
                     $this->Document->saveDocForOrder($for_doc);
                     
@@ -291,77 +260,66 @@ class FeedbacksController extends AppController{
                         $ds['order_id'] = $did;
                         $ds['document_id'] = 0;
                         $doczs = TableRegistry::get('generic_forms');
-                        foreach($_POST as $k=>$v)
-                        {
+                        foreach($_POST as $k=>$v) {
                             $ds[$k]=$v;
                         }
                         $docz = $doczs->newEntity($ds);
                         $doczs->save($docz);
                         unset($doczs);
-                        }
-                        else
-                        {
+                    } else {
                             $this->loadModel('GenericForms');
                             $this->Audits->deleteAll(['order_id' => $did]);
                             $doczs = TableRegistry::get('generic_forms');
                             $ds['order_id'] = $did;
                             
-                            foreach($_POST as $k=>$v)
-                            {
+                            foreach($_POST as $k=>$v) {
                                 $ds[$k]=$v;
                             }
                             $docz = $doczs->newEntity($ds);
                             $doczs->save($docz);
                             unset($doczs);  
                         }
-                    
                     die();
                 }
-
             }
-
         }
     
-    public function addsurvey($order_id,$cid)
-    {
+    public function addsurvey($order_id,$cid) {
         $this->loadComponent('Document');
-        if(isset($_GET['document']))
-        {
+        if(isset($_GET['document'])) {
             $_POST['document_id'] = $order_id;
             $_POST['order_id'] = 0;
-        }
-        else{
-        $_POST['order_id'] = $order_id;
-        $_POST['document_id'] = 0;
+        } else{
+            $_POST['order_id'] = $order_id;
+            $_POST['document_id'] = 0;
         }
         
         $_POST['client_id'] = $cid;
         
         $_POST['user_id'] = $this->request->session()->read('Profile.id');
         if (!isset($_GET['document']) || isset($_GET['order_id'])) {
-                if(!isset($_GET['order_id']))
-                $arr['order_id'] = $_POST['order_id'];
-                else
-                $arr['order_id'] = $_GET['order_id'];
+                if(!isset($_GET['order_id'])) {
+                    $arr['order_id'] = $_POST['order_id'];
+                }else {
+                    $arr['order_id'] = $_GET['order_id'];
+                }
                 $arr['document_id'] = 0;
-                if (isset($_POST['uploaded_for']))
+                if (isset($_POST['uploaded_for'])) {
                     $uploaded_for = $_POST['uploaded_for'];
-                else
+                }else {
                     $uploaded_for = '';
+                }
                 $for_doc = array('document_type'=>'Survey','sub_doc_id'=>5,'order_id'=>$arr['order_id'],'user_id'=>$_POST['user_id'],'uploaded_for'=>$uploaded_for);
                 
                 $this->Document->saveDocForOrder($for_doc);
                 
-                if(isset($_POST['attach_doc']))
-                        {
+                if(isset($_POST['attach_doc'])) {
                             
                             $model = $this->loadModel('DocAttachments');
                             $model->deleteAll(['order_id'=> $arr['order_id'],'sub_id'=>5]);
                             $client_docs = $_POST['attach_doc'];
-                            foreach($client_docs as $d)
-                            {
-                                if($d != "")
-                                {
+                            foreach($client_docs as $d) {
+                                if($d != "") {
                                     $attach = TableRegistry::get('doc_attachments');
                                     $ds['order_id']= $arr['order_id'];
                                     $ds['attachment'] =$d;
@@ -372,19 +330,14 @@ class FeedbacksController extends AppController{
                                 }
                             }
                         } 
-            }
-            else
-            {
-                if(isset($_POST['attach_doc']))
-                        {
+            } else {
+                if(isset($_POST['attach_doc'])) {
                             
                             $model = $this->loadModel('DocAttachments');
                             $model->deleteAll(['document_id'=> $order_id,'sub_id'=>5]);
                             $client_docs = $_POST['attach_doc'];
-                            foreach($client_docs as $d)
-                            {
-                                if($d != "")
-                                {
+                            foreach($client_docs as $d) {
+                                if($d != "") {
                                     $attach = TableRegistry::get('doc_attachments');
                                     $ds['document_id']= $order_id;
                                     $ds['attachment'] =$d;
@@ -400,16 +353,16 @@ class FeedbacksController extends AppController{
         
         
         $docs = TableRegistry::get('Survey');
-        if(isset($_GET['document']) && !isset($_GET['order_id']))
-        $docx = $docs->find()->where(['document_id'=>$order_id])->first();
-        else{
-        if(isset($_GET['order_id']))
-        $docx = $docs->find()->where(['order_id'=>$_GET['order_id']])->first();
-        else
-        $docx = $docs->find()->where(['order_id'=>$order_id])->first();
+        if(isset($_GET['document']) && !isset($_GET['order_id'])) {
+            $docx = $docs->find()->where(['document_id' => $order_id])->first();
+        }else{
+            if(isset($_GET['order_id'])) {
+                $docx = $docs->find()->where(['order_id' => $_GET['order_id']])->first();
+            }else {
+                $docx = $docs->find()->where(['order_id' => $order_id])->first();
+            }
         }
-        if($docx)
-        {
+        if($docx) {
             $survey['ques1']= $_POST['ques1'];
             $survey['ques2a'] = $_POST['ques2a'];
             $survey['ques2b'] = $_POST['ques2b'];
@@ -428,12 +381,9 @@ class FeedbacksController extends AppController{
                    
                    
                   
-        }
-        else
-        {
+        } else {
             $doc = $docs->newEntity($_POST);
     		if ($this->request->is('post')) {
-    		  
     			if ($docs->save($doc)) {
     			      echo "OK";
     				//$this->Flash->success('The Survey has been sent.');
@@ -448,8 +398,7 @@ class FeedbacksController extends AppController{
         $this->render('add');
         die();
     }
-    public function edit($id = NULL)
-    {
+    public function edit($id = NULL) {
         
         $docs = TableRegistry::get('Documents');
         $query = $docs->find()->where(['id'=>$id]);
@@ -463,10 +412,10 @@ class FeedbacksController extends AppController{
                 ->where(['id' => $id])
                 ->execute();
 			if ($update) {
-				$this->Flash->success('The feedback has been sent.');
+				$this->Flash->success($this->Trans->getString("flash_feedbacksent"));
                 	return $this->redirect('/documents/index');
 			} else {
-				$this->Flash->error('Feedback not sent. Please try again.');
+				$this->Flash->error($this->Trans->getString("flash_feedbacknotsent"));
                 return $this->redirect('/feedbacks/add');
 			}
 		}

@@ -50,7 +50,7 @@ class DocumentsController extends AppController{
         $doc = $this->Document->getDocumentcount();
         $cn = $this->Document->getUserDocumentcount();
         if ($setting->document_list == 0 || count($doc) == 0 || $cn == 0) {
-            $this->Flash->error('Sorry, you don\'t have the required permissions to view documents. Please contact the administrator to enable.');
+            $this->Flash->error($this->Trans->getString("flash_cantviewdocs"));
             return $this->redirect("/");
         }
         if (!$this->request->session()->read('Profile.super')) {
@@ -192,10 +192,11 @@ class DocumentsController extends AppController{
         $saved = "saved";
         if($DID){$saved = "updated";}
         if($Success) {
-            $this->Flash->success($Document . ' ' . $saved . ' successfully.');
+            $this->Flash->success($this->Trans->getString("flash_doc" . $saved));
         }else{
-            $this->Flash->error($Document . ' could not be ' . $saved . '. Please try again.');
+            $this->Flash->error($this->Trans->getString("flash_docnot" . $saved));
         }
+
         if($redirect){
             $this->redirect(array('action' => 'index'.$draft));
         }
@@ -539,14 +540,14 @@ class DocumentsController extends AppController{
                 $query = $doc->find()->where(['id' => $did])->first();
                 $this->set('document', $query);
                 if ($setting->document_edit == 0 || count($doc) == 0 || $cn == 0) {
-                    $this->Flash->error('Sorry you don\'t have the required permissions to upload documents. Please contact the administrator to enable.');
+                    $this->Flash->error($this->Trans->getString("flash_cantuploaddocs"));
                     //return $this->redirect("/");
 
                 }
 
             } else {
                if ($setting->document_create == 0 || count($doc) == 0 || $cn == 0) {
-                    $this->Flash->error('Sorry you don\'t have the required permissions to upload documents. Please contact the administrator to enable.');
+                    $this->Flash->error($this->Trans->getString("flash_cantuploaddocs"));
                     //return $this->redirect("/");
 
                 }
@@ -564,7 +565,7 @@ class DocumentsController extends AppController{
                     $arr['user_id'] = $this->request->session()->read('Profile.id');
                     $doc = $docs->newEntity($arr);
                     if ($docs->save($doc)) {
-                        $this->Flash->success('The document has been saved.');
+                        $this->Flash->success($this->Trans->getString("flash_docsaved"));
                         $this->redirect('/documents');
                     } else {
                         //$this->Flash->error('Client could not be saved. Please try again.');
@@ -577,7 +578,7 @@ class DocumentsController extends AppController{
                         ->set($arr)
                         ->where(['id' => $did])
                         ->execute();
-                    $this->Flash->success('The document has been saved.');
+                    $this->Flash->success($this->Trans->getString("flash_docsaved"));
                     $this->redirect('/documents');
                 }
             }
@@ -614,7 +615,7 @@ class DocumentsController extends AppController{
                     $arr['user_id'] = $this->request->session()->read('Profile.id');
                     $doc = $docs->newEntity($arr);
                     if ($docs->save($doc)) {
-                        $this->Flash->success('The document has been saved.');
+                        $this->Flash->success($this->Trans->getString("flash_docsaved"));
                         $this->redirect('orders/orderslist');
                     } else {
                         //$this->Flash->error('Client could not be saved. Please try again.');
@@ -627,7 +628,7 @@ class DocumentsController extends AppController{
                         ->set($arr)
                         ->where(['id' => $did])
                         ->execute();
-                    $this->Flash->success('The document has been saved.');
+                    $this->Flash->success($this->Trans->getString("flash_docsaved"));
                     $this->redirect('/documents');
                 }
             }
@@ -877,6 +878,8 @@ class DocumentsController extends AppController{
             else if($u == 8)
                 $ut = 'Owner Driver';
         }
+
+        //NEEDS TRANSLATION
         $from = array('info@' . getHost("isbmee.com") => "Admin");;// $emailaddress;//'info@isbmee.com';
         $to = $em;
         $sub = 'Client created';
@@ -913,9 +916,9 @@ class DocumentsController extends AppController{
 
             if ($this->Documents->deleteAll(array('id' => $id))) {
 
-                $this->Flash->success(ucfirst($settings->document) . ' has been deleted.');
+                $this->Flash->success($this->Trans->getString("flash_docdeleted"));
             } else {
-                $this->Flash->error(ucfirst($settings->document) . ' could not be deleted. Please try again.');
+                $this->Flash->error($this->Trans->getString("flash_docnotdeleted"));
             }
             if($type=='draft')
             {

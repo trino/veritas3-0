@@ -449,7 +449,9 @@ class ProfilesController extends AppController{
 
         }
         /*=================================================================================================== */
-        if ($cond) {
+        if($setting->viewprofiles == 0){
+            $query = $this->Profiles->find()->where(['id' => $u]);
+        } elseif ($cond) {
             //echo $cond;die();
             $query = $querys->find();
             $query = $query->where([$cond, 'OR' => $condition, 'AND' => 'super = 0']);
