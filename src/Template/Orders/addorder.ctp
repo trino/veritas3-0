@@ -1782,22 +1782,18 @@ JSinclude($this,"js/ajaxupload.js");
         {
             save_signature('8');
         }
-        /*if($(".tab-pane.active").prev('.tab-pane').find("input[name='document_type']").val()=='Driver Application')
-         {    if(!$('#confirm_check').is(':checked'))
-         {
-         alert('Please Confirm that you have read the conditoins');
-         $('#confirm_check').focus();
-
-         }
-         }*/
+       
     }
 
     function save_signature(numb) {
-        //alert('rest');return;
-        //alert(numb);
+        
         $("#test" + numb).data("jqScribble").save(function (imageData) {
             if ((numb == '8' && $('#gfs_signature').parent().find('.touched').val() == 1) || (numb == '1' && $('#recruiter_signature').parent().find('.touched').val() == 1) || (numb == '3' && $('#criminal_signature_applicant').parent().find('.touched').val() == 1) || (numb == '4' && $('#signature_company_witness').parent().find('.touched').val() == 1) || (numb == '5' && $('#signature_company_witness2').parent().find('.touched').val() == 1) || (numb == '6' && $('#signature_company_witness2').parent().find('.touched').val() == 1)) {
                 $.post('<?php echo $this->request->webroot; ?>canvas/image_save.php', {imagedata: imageData}, function (response) {
+                    if(response=='' && (numb=='3' || numb=='5' || numb=='4' || numb=='6'))
+                    {
+                        alert('There was problem saving the signatures, please go back and re-submit the consent form.');
+                    }
                     if (numb == '1') {
 
                         $('#recruiter_signature').val(response);
