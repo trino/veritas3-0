@@ -1093,136 +1093,140 @@ function printprovinces($name, $selected = "", $isdisabled = "", $isrequired = f
         })
 
         $('.member_type').change(function () {
+            
 
-            if ($(this).val() == '5' || $(this).val() == '7' || $(this).val() == '8'|| $(this).val() == '9'|| $(this).val() == '12') {
-                if($(this).val() == '5' || $(this).val() == '7' || $(this).val() == '9' || $(this).val() == '12')
-                {
-                    $('.hideusername').hide();
-                }
-                $('.req_driver').each(function () {
-                    $(this).prop('required', "required");
-                    //alert($(this).attr('name'));
-                });
-                //$('.nav-tabs li:not(.active)').each(function () {
-                //  $(this).hide();
-                //});
-                if($(this).val() == '5' || $(this).val() == '7' || $(this).val() == '8'){
-                    $('#driver_div').show();
-                    $('#driver_div select').attr('required','required');
-                    $('.placeofbirth').attr('required','required');
-                    //$('#driver_div select').removeAttr('required');
-                } else{
-                    $('#driver_div').hide();
-                    $('#driver_div select').removeAttr('required');
-                    $('.placeofbirth').removeAttr('required');
-                    $('.req_sales').attr('required','required');
-                }
-                $('#isb_id').hide();
-                //$('.username_div').hide();
-                //$('#username_field').attr('disabled','disabled');
-                //$('.un').removeProp('required');
-                $('#password').removeProp('required');
-                $('#retype_password').removeProp('required');
-                $('.req_rec').removeProp('required');
-                //$('.req_sales').attr('required','required');
-                if($(this).val() == '5' || $(this).val() == '7' || $(this).val() == '8'){
-
-                } else {//cannot have 2 elses for 1 if
-                    $('.req_sales').attr('required','required');
-                } else {//cannot have 2 elses for 1 if
-                    $('.nav-tabs li:not(.active)').each(function () {
-                        $(this).show();
-                    });
-                    $('#driver_div').hide();
-                    $('#isb_id').hide();
-                    //$('.username_div').show();
-                    $('.req_driver').removeProp('required');
-                    $('.req_rec').removeProp('required');
-                    //$('#username_field').removeAttr('disabled');
-                    //$('.un').prop('required', "required");
-                    <?php
-                        if(isset($p->password) && $p->password){
-                            //do nth
-                        } else{
-                            ?>
-                                $('#password').prop('required', "required");
-                                $('#retype_password').prop('required', "required");
-                            <?php
-                        }
-                    ?>
-                }
-
-                var profile_type = $(this).val();
-                if (profile_type == '1' || profile_type == '2') {
-                    $('#isb_id').show();
-                    $('.req_driver').removeProp('required');
-                    //$('.un').removeProp('required');
-                    $('.req_rec').prop('required', "required");
-                }
-
-            });
-
-            var mem_type = $('.member_type').val();
-            if (!isNaN(parseFloat(mem_type)) && isFinite(mem_type)) {
-                if (mem_type == '5' || mem_type == '7' || mem_type == '8' || mem_type == '9' || mem_type == '12') {
-                    $('.req_driver').each(function () {
-                        $(this).prop('required', "required");
-                        //alert($(this).attr('name'));
-                        //});
-                        //$('.nav-tabs li:not(.active)').each(function () {
-                        //  $(this).hide();
-                    });
-                    if(mem_type == '5' || mem_type == '7' || mem_type == '8'){
-                        $('#driver_div').show();
-                    } else {
-                        $('#driver_div select').removeAttr('required');
-                    }
-                    $('#isb_id').hide();
-                    //$('.username_div').hide();
-                    //$('.un').removeProp('required');
-                    $('#password').removeProp('required');
-                    $('#retype_password').removeProp('required');
-                    //$('#username_field').attr('disabled','disabled');
-                    $('.req_rec').removeProp('required');
-                    if(mem_type == '5' || mem_type == '7' || mem_type == '8'){
-
-                    } else {
-                        //$('#driver_div select').removeAttr('required');
-                        $('.req_sales').attr('required','required');
-                    }
-
-                } else {
-                    $('.nav-tabs li:not(.active)').each(function () {
-                        $(this).show();
-                    });
-                    $('#driver_div').hide();
-                    //$('.username_div').show();
-                    $('#isb_id').hide();
-                    $('.req_driver').removeProp('required');
-                    $('.req_rec').removeProp('required');
-                    //$('#username_field').removeAttr('disabled');
-                    //$('.un').prop('required', "required");
-                    <?php
-                    if(isset($p->password) && $p->password){
-                        //do nth
-                    }else{
-                        ?>
-                            $('#password').prop('required', "required");
-                            $('#retype_password').prop('required', "required");
-                        <?php
-                    }
-                     ?>
-                }
-
-                if (mem_type == '1' || mem_type == '2') {
-                    $('#isb_id').show();
-                    $('.req_driver').removeProp('required');
-                    //$('.un').removeProp('required');
-                    $('.req_rec').prop('required', "required");
-                }
-            }
+                                    if ($(this).val() == '5' || $(this).val() == '7' || $(this).val() == '8'|| $(this).val() == '9'|| $(this).val() == '12') {
+                                                if($(this).val() == '5' || $(this).val() == '7' || $(this).val() == '9' || $(this).val() == '12')
+                                                {
+                                                    $('.hideusername').hide();
+                                                }
+                                                $('.req_driver').each(function () {
+                                                    $(this).prop('required', "required");
+                                                    //alert($(this).attr('name'));
+                                                });
+                                        
+                                                if($(this).val() == '5' || $(this).val() == '7' || $(this).val() == '8'){
+                                                    $('#driver_div').show();
+                                                    $('#driver_div select').attr('required','required');
+                                                    $('.placeofbirth').attr('required','required');
+                                                    //$('#driver_div select').removeAttr('required');
+                                                } else{
+                                                    $('#driver_div').hide();
+                                                    $('#driver_div select').removeAttr('required');
+                                                    $('.placeofbirth').removeAttr('required');
+                                                    $('.req_sales').attr('required','required');
+                                                }
+                                                $('#isb_id').hide();
+                                        
+                                                $('#password').removeProp('required');
+                                                $('#retype_password').removeProp('required');
+                                                $('.req_rec').removeProp('required');
+                                        
+                                        if($(this).val() == '5' || $(this).val() == '7' || $(this).val() == '8'){
+                                            $('.email').attr('required','required');
+                        
+                                        } else {
+                                            $('.req_sales').attr('required','required');
+                                            $('.email').attr('required','required');
+                                        } 
+                                        }
+                                        else {
+                                            $('.nav-tabs li:not(.active)').each(function () {
+                                                $(this).show();
+                                            });
+                                            $('#driver_div').hide();
+                                            $('#isb_id').hide();
+                                            //$('.username_div').show();
+                                            $('.req_driver').removeProp('required');
+                                            $('.req_rec').removeProp('required');
+                                            //$('#username_field').removeAttr('disabled');
+                                            //$('.un').prop('required', "required");
+                                            <?php
+                                                if(isset($p->password) && $p->password){
+                                                    //do nth
+                                                } else{
+                                                    ?>
+                                                        $('#password').prop('required', "required");
+                                                        $('#retype_password').prop('required', "required");
+                                                    <?php
+                                                }
+                                            ?>
+                                        }
+                        
+                                        var profile_type = $(this).val();
+                                        if (profile_type == '1' || profile_type == '2') {
+                                            $('#isb_id').show();
+                                            $('.req_driver').removeProp('required');
+                                            //$('.un').removeProp('required');
+                                            $('.req_rec').prop('required', "required");
+                                        }
+                        
+                                    });
+                        
+                                    var mem_type = $('.member_type').val();
+                                    if (!isNaN(parseFloat(mem_type)) && isFinite(mem_type)) {
+                                        if (mem_type == '5' || mem_type == '7' || mem_type == '8' || mem_type == '9' || mem_type == '12') {
+                                            $('.req_driver').each(function () {
+                                                $(this).prop('required', "required");
+                                                //alert($(this).attr('name'));
+                                                //});
+                                                //$('.nav-tabs li:not(.active)').each(function () {
+                                                //  $(this).hide();
+                                            });
+                                            if(mem_type == '5' || mem_type == '7' || mem_type == '8'){
+                                                $('#driver_div').show();
+                                            } else {
+                                                $('#driver_div select').removeAttr('required');
+                                            }
+                                            $('#isb_id').hide();
+                                            //$('.username_div').hide();
+                                            //$('.un').removeProp('required');
+                                            $('#password').removeProp('required');
+                                            $('#retype_password').removeProp('required');
+                                            //$('#username_field').attr('disabled','disabled');
+                                            $('.req_rec').removeProp('required');
+                                            if(mem_type == '5' || mem_type == '7' || mem_type == '8'){
+                                                $('.email').attr('required','required');
+                                            } else {
+                                                //$('#driver_div select').removeAttr('required');
+                                                $('.req_sales').attr('required','required');
+                                                $('.email').attr('required','required');
+                                            }
+                        
+                                        } 
+                                        
+                                        else {
+                                            $('.nav-tabs li:not(.active)').each(function () {
+                                                $(this).show();
+                                            });
+                                            $('#driver_div').hide();
+                                            //$('.username_div').show();
+                                            $('#isb_id').hide();
+                                            $('.req_driver').removeProp('required');
+                                            $('.req_rec').removeProp('required');
+                                            //$('#username_field').removeAttr('disabled');
+                                            //$('.un').prop('required', "required");
+                                            <?php
+                                            if(isset($p->password) && $p->password){
+                                                //do nth
+                                            }else{
+                                                ?>
+                                                    $('#password').prop('required', "required");
+                                                    $('#retype_password').prop('required', "required");
+                                                <?php
+                                            }
+                                             ?>
+                                        }
+                        
+                                        if (mem_type == '1' || mem_type == '2') {
+                                            $('#isb_id').show();
+                                            $('.req_driver').removeProp('required');
+                                            //$('.un').removeProp('required');
+                                            $('.req_rec').prop('required', "required");
+                                        }
+                                    }
         });
-
+        
 
 
 
