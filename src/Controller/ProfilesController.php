@@ -917,7 +917,7 @@ class ProfilesController extends AppController{
             if ($_FILES['csv']['size'] > 0) {
                 $handle = fopen($_FILES['csv']['tmp_name'], "r");
                 $i=0;
-                $flash ="<br/>";
+                $flash ="";
                 $line = 0;
                 while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
                     if($i!=0){
