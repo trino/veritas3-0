@@ -917,19 +917,21 @@ class ProfilesController extends AppController{
             if ($_FILES['csv']['size'] > 0) {
                 $handle = fopen($_FILES['csv']['tmp_name'], "r");
                 $i=0;
-                $flash ="";
+                $flash ="<br/>";
+                $line = 0;
                 while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
                     if($i!=0){
-
+                        $line++;
                         $em =0;
                         $un =0;
                         if($data[19]!="") {$em = $this->check_email('', $data[19]);}
                         if($data[2]!="") {$un = $this->check_user('', $data[2]);}
                         if($un == 1 && $data[19]) {//ignore if username is blank, fix that later
-                            $flash .= "Username '" . $data[2] . "' already exists, ";
+                            $flash .= "Username '" . $data[2] . "' already exists(Line no ".$line."), ";
                         }elseif($em == 1) {
-                            $flash .= "Email '" . $data[19] . "' already exists, ";
+                            $flash .= "Email '" . $data[19] . "' already exists(Line no ".$line."), ";
                         } else {
+                            
                             foreach($data as $KEY => $VALUE){//clean all values
                                 $data[$KEY] =  trim(ucfirst(addslashes($VALUE)));
                             }
@@ -964,7 +966,7 @@ class ProfilesController extends AppController{
                                     $this->Update1Column("profiles", "id", $userid, "username", $username);
                                 }
                                 
-                                $flash.= "Success, ";
+                               $flash .= "Success (Line no ".$line.")";
 
                                 /*$query2 = $profile->query();
                                 $user = $query2->insert(['profile_type','driver','username','title','fname','mname','lname','phone','gender','placeofbirth','dob','street',
