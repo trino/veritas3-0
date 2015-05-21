@@ -338,7 +338,11 @@
                                         echo '/> Was this applicant hired? <span class="hired_msg"></span></label>';
 
                                         echo '<br><label class="uniform-inline" style="clear:both;margin-bottom: 20px;">
-                                        <input type="checkbox" name="" value="1" id="" class=""> Enable Re-qualify?<span class=""></span></label>';
+                                        <input type="checkbox" name="" value="1" id="' . $profile->id . '" class="checkrequalify"';
+                                         if ($p->requalify == '1') {
+                                            echo " checked";
+                                        }
+                                        echo '> Enable Re-qualify?<span class="req_msg"></span></label>';
 
                                         if ($sidebar->orders_create == 1) {
                                             foreach ($products as $product) {
@@ -451,13 +455,17 @@
 
                                             <?php } ?>
 
-
+                                            <?php
+                                             $gfs = $this->requestAction('/settings/check_client/'.$id."/2");
+                                             if($gfs){
+                                            ?>
                                             <li  <?php activetab($activetab, "feedback"); ?> >
                                                 <a href="#tab_1_8" data-toggle="tab">Feedback</a>
                                             </li>
 
 
                                         <?php
+                                            }
                                         }
                                     ?>
                                 </ul>
@@ -670,7 +678,28 @@
                 }
             })
         });
+        
+        $('.checkrequalify').click(function(){
+             var oid = $(this).attr('id');
+            var msgs = '';
+            if ($(this).is(":checked")) {
+                var hired = 1;
+                msg = '<span class="msg" style="color:#45B6AF"> Added</span>';
+            }
+            else {
+                var hired = 0;
+                msg = '<span class="msg" style="color:red"> Removed</span>';
+            }
 
+            $.ajax({
+                url: "<?php echo $this->request->webroot;?>orders/requalify/" + oid,
+                type: 'post',
+                data: 'requalify=' + hired,
+                success: function () {
+                    $('.req_msg').html(msg);
+                }
+            })
+        })
         /*$('.checkhiredriver').change(function () {
          var msg = '';
          var nameId = 'msg_'+$(this).val();

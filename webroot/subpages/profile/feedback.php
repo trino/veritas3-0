@@ -2,6 +2,8 @@
     if ($this->request->session()->read('debug')) {
         echo "<span style ='color:red;'>subpages/profile/feedback.php #INC124445</span>";
     }
+        $feedbacks = $this->requestAction('/settings/get_fedbacks/'.$id);
+    
 ?>
 
 <div class="portlet box green-haze">
@@ -11,7 +13,7 @@
         </div>
     </div>
     <div class="portlet-body">
-
+        <?php if($feedbacks!="" && count($feedbacks)>0){?>
         <div class="table-scrollable">
 
             <table
@@ -26,21 +28,40 @@
                 </tr>
                 </thead>
                 <tbody class="allpt">
+                <?php 
+                if(isset($p))
+                {
+                    if($p->profile_type =='5')
+                    {
+                        $form = '60 day feedback';
+                        $a = '60days.php';
+                    }
+                    elseif($p->profile_type == '9' || $p->profile_type == '12')
+                    {
+                        $form = '30 day feddback';
+                        $a = '30days.php';
+                    }   
+                }
+                foreach($feedbacks as $f)
+                {
+                    
+                    ?>
                 <tr>
-                    <td>1</td>
-                    <td>60 day survey</td>
-                    <td>3/3/15 20:45</td>
-                    <td><a href="javascript:;" class="btn btn-info editptype" id="editptype_1">View</a></td>
+                    <td><?php echo $k+1;?></td>
+                    <td><?php echo $form;?></td>
+                    <td><?php echo $f->created;?></td>
+                    <td><a href="<?php echo $this->request->webroot;?>application/<?php echo $a.'?p_id='.$id.'&form_id='.$f->id;?>" class="btn btn-info editptype" id="editptype_1" target="_blank">View</a></td>
                 </tr>
-                <tr>
-                    <td>2</td>
-                    <td>60 day survey</td>
-                    <td>6/31/15 20:45</td>
-                    <td><a href="javascript:;" class="btn btn-info editptype" id="editptype_1">View</a></td>
-                </tr>
+                <?php }?>
+                
                 </tbody>
             </table>
 
         </div>
+        <?php }
+        else
+        {
+            echo "<strong>No feedback submitted yet!</strong>";
+        }?>
     </div>
 </div>

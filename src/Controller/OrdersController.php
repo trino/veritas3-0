@@ -885,6 +885,17 @@ class OrdersController extends AppController {
 
         die();
     }
+    function requalify($uid) {
+        $this->set('doc_comp', $this->Document);
+        $arr['requalify'] = $_POST['requalify'];
+        $orders = TableRegistry::get('profiles');
+        $order = $orders
+            ->query()->update()
+            ->set($arr)
+            ->where(['profiles.id' => $uid])->execute();
+
+        die();
+    }
 
 
 

@@ -467,4 +467,37 @@ class SettingsController extends AppController {
         if ($results) { return true; }
         return false;
     }
+    
+    function check_client($uid,$cid)
+    {
+        $client = TableRegistry::get('clients')->find()->where(['id'=>$cid])->first();
+        $p_ids = explode(',',$client->profile_id);
+        if(in_array($uid,$p_ids))
+             $this->response->body('1');
+        else
+             $this->response->body('0');
+        return $this->response;
+    }
+    
+    function get_fedbacks($uid)
+    {
+        $profile = TableRegistry::get('profiles')->find()->where(['id'=>$uid])->first();
+        //echo $profile->profile_type; die();
+        if($profile->profile_type=='5')
+        {
+            //60day form for driver
+            $feedback = TableRegistry::get("60days")->find()->where(['profile_id'=>$uid])->all();
+        }
+        elseif($profile->profile_type=='9'|| $profile->profile_type=='12')
+        {
+            //30day form for employee & sales
+            $feedback = TableRegistry::get("30days")->find()->where(['profile_id'=>$uid])->all();
+        }
+        else
+            $feedback = "";
+        
+         $this->response->body($feedback);
+         return $this->response;
+        
+    }
  }
