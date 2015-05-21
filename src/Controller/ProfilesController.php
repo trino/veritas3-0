@@ -927,9 +927,9 @@ class ProfilesController extends AppController{
                         if($data[19]!="") {$em = $this->check_email('', $data[19]);}
                         if($data[2]!="") {$un = $this->check_user('', $data[2]);}
                         if($un == 1 && $data[19]) {//ignore if username is blank, fix that later
-                            $flash .= "Username '" . $data[2] . "' already exists(Line no ".$line."), ";
+                            $flash .= "Failed: Username '" . $data[2] . "' already exists(Line no ".$line."), ";
                         }elseif($em == 1) {
-                            $flash .= "Email '" . $data[19] . "' already exists(Line no ".$line."), ";
+                            $flash .= "Failed: Email '" . $data[19] . "' already exists(Line no ".$line."), ";
                         } else {
                             
                             foreach($data as $KEY => $VALUE){//clean all values
