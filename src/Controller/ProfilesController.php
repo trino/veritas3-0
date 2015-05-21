@@ -966,7 +966,7 @@ class ProfilesController extends AppController{
                                     $this->Update1Column("profiles", "id", $userid, "username", $username);
                                 }
                                 
-                               $flash .= "Success (Line no ".$line.")";
+                               $flash .= "Success (Line no ".$line."), ";
 
                                 /*$query2 = $profile->query();
                                 $user = $query2->insert(['profile_type','driver','username','title','fname','mname','lname','phone','gender','placeofbirth','dob','street',
