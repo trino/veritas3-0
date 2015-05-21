@@ -592,7 +592,7 @@
  			</form>
             
     <?php }
-    elseif(!isset($row))
+    elseif(!isset($row)&&!isset($_GET['msg']) )
     {
          echo '<div class="clearfix"></div><div class="alert alert-info display-hide" style="display: block;">
                         <button class="close" data-close="alert"></button>
