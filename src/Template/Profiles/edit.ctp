@@ -1,4 +1,5 @@
-<link href="<?php echo $this->request->webroot; ?>assets/admin/pages/css/profile.css" rel="stylesheet" type="text/css"/> <!--REQUIRED-->
+<link href="<?php echo $this->request->webroot; ?>assets/admin/pages/css/profile.css" rel="stylesheet"
+      type="text/css"/> <!--REQUIRED-->
 <style>
     @media print {
         .page-header {
@@ -33,11 +34,15 @@
 </style>
 <?php
     $is_disabled = '';
-    if (isset($disabled)) { $is_disabled = 'disabled="disabled"';}// style="border: 0px solid;"';}
-    if (isset($profile)){$p = $profile;}
+    if (isset($disabled)) {
+        $is_disabled = 'disabled="disabled"';
+    }// style="border: 0px solid;"';}
+    if (isset($profile)) {
+        $p = $profile;
+    }
     $settings = $this->requestAction('settings/get_settings');
-    if(!isset($BypassLogin))$BypassLogin = false;
-    if($BypassLogin) {
+    if (!isset($BypassLogin)) $BypassLogin = false;
+    if ($BypassLogin) {
         $userID = 1;
     } else {
         $userID = $this->request->session()->read('Profile.id');
@@ -50,7 +55,7 @@
 <!-- BEGIN STYLE CUSTOMIZER -->
 <div class="theme-panel hidden-xs hidden-sm">
     <?php if (strlen($is_disabled) == 0) {
-        if($_SERVER['SERVER_NAME'] =='localhost'){
+        if ($_SERVER['SERVER_NAME'] == 'localhost') {
             echo '<div class="toggler"></div>';//doesn't work in view mode, so remove it and be done with it
         }
     } ?>
@@ -223,7 +228,7 @@
             if ($sidebar->profile_edit == '1' && $param == 'view') {
 
                 //if ($checker == 1) {
-                    echo $this->Html->link(__('Edit'), ['action' => 'edit', $profile->id], ['class' => 'floatright btn btn-primary btnspc']);
+                echo $this->Html->link(__('Edit'), ['action' => 'edit', $profile->id], ['class' => 'floatright btn btn-primary btnspc']);
 
                 //}
             } else if ($param == 'edit') {
@@ -238,7 +243,7 @@
 
         if ($sidebar->profile_edit == '1' && $param == 'view') {
 
-        $checker = $this->requestAction('settings/check_edit_permission/' . $this->request->session()->read('Profile.id') . '/' . $profile->id);
+            $checker = $this->requestAction('settings/check_edit_permission/' . $this->request->session()->read('Profile.id') . '/' . $profile->id);
 
             if ($checker == 1) {
 
@@ -251,7 +256,7 @@
                     } else {
                         echo $this->request->webroot . 'documents/index?type=&submitted_by_id=' . $profile->id;
                     }
-                ?>"  class=" floatright btn default btnspc">View My Documents</a>
+                ?>" class=" floatright btn default btnspc">View My Documents</a>
             <?php
             }
         }
@@ -314,23 +319,29 @@
                                 <?php if (isset($p->fname)) echo ucwords($p->fname . ' ' . $p->lname); ?>
                             </div>
 
-                            <?php if (isset($p->isb_id) && ($p->isb_id != "") && ( $settings->mee =="MEE")) {
+                            <?php if (isset($p->isb_id) && ($p->isb_id != "") && ($settings->mee == "MEE")) {
                                 ?>
                                 <div class="profile-usertitle-job">
                                     <small>
-                                    ISB ID: <?php echo $p->isb_id; ?>
+                                        ISB ID: <?php echo $p->isb_id; ?>
                                     </small>
                                 </div>
                             <?php }
                                 if (isset($p)) {
                                     if ($profile->Ptype && $profile->Ptype->placesorders == 1) {//driver, owner driver, owner operator, sales, employee
-                                        echo '<label class="uniform-inline" style="margin-bottom:20px;">
+
+                                        echo '<label class="uniform-inline" style="margin-bottom:10px;">
                                                 <input type="checkbox" name="stat" value="1" id="' . $profile->id . '" class="checkhiredriver"';
-                                            if ($p->is_hired == '1') {echo " checked";}
+                                        if ($p->is_hired == '1') {
+                                            echo " checked";
+                                        }
                                         echo '/> Was this applicant hired? <span class="hired_msg"></span></label>';
 
-                                        if ($sidebar->orders_create == 1){
-                                            foreach($products as $product){
+                                        echo '<br><label class="uniform-inline" style="clear:both;margin-bottom: 20px;">
+                                        <input type="checkbox" name="" value="1" id="" class=""> Enable Re-qualify?<span class=""></span></label>';
+
+                                        if ($sidebar->orders_create == 1) {
+                                            foreach ($products as $product) {
                                                 $alias = $product->Sidebar_Alias;
                                                 if ($alias) {
                                                     if ($sidebar->$alias == 1 && $product->Visible == 1) {
@@ -342,15 +353,15 @@
                                                 }
                                             }
                                         }
-                                    } elseif (!$profile->Ptype){
+                                    } elseif (!$profile->Ptype) {
                                         echo "Profile type: " . $profile->profile_type . " is missing";
                                     }
                                 }
 
-                            //if (isset($client_docs)) {
-                            //    include_once 'subpages/filelist.php';
-                            //    listfiles($client_docs, "img/jobs/", 'profile_doc', false, 2);
-                            //}
+                                //if (isset($client_docs)) {
+                                //    include_once 'subpages/filelist.php';
+                                //    listfiles($client_docs, "img/jobs/", 'profile_doc', false, 2);
+                                //}
                             ?>
                         </div>
 
@@ -379,7 +390,7 @@
                                 if (isset($_GET['getprofilescore'])) {
                                     $activetab = "scorecard";
                                 } //
-                                if (isset($_SERVER['HTTP_REFERER'])){
+                                if (isset($_SERVER['HTTP_REFERER'])) {
                                     if (strpos($_SERVER['HTTP_REFERER'], "profiles/edit/" . $id) > 0 or strpos($_SERVER['HTTP_REFERER'], "profiles/add") > 0 or strpos($_SERVER['HTTP_REFERER'], "productSelection") > 0 or isset($_GET["clientflash"])) { //. $id
                                         if (isset($Clientcount) && $Clientcount == 0) {
                                             $activetab = "permissions";
@@ -409,27 +420,17 @@
                             <div class="tabbable tabbable-custom">
                                 <ul class="nav nav-tabs">
 
-                                    <!--<li <?php if ($this->request['action'] == 'add' || $this->request['action'] == 'view' || (!isset($_GET['getprofilescore']) && (isset($Clientcount) && $Clientcount != 0))) { ?> class="active" <?php } ?> >
--->
                                     <li  <?php activetab($activetab, "profile"); ?> >
                                         <a href="#tab_1_1" data-toggle="tab">Profile</a>
                                     </li>
                                     <?php
-                                     if ($this->request['action'] == 'view' &&  ($profile->Ptype && $profile->Ptype->placesorders == 1)) {//driver, owner driver, owner operator, sales, employee)) {
-                                        //if (($this->request['action'] == 'edit' || $this->request['action'] == 'view') && ($p->profile_type == 5 || $p->profile_type == 7 || $p->profile_type == 8) ) {
-                                    ?>
-                                        <li <?php activetab($activetab, "scorecard"); ?>>
-                                            <a href="#tab_1_11" data-toggle="tab">View Scorecard</a>
-                                        </li>
-                                    <?php
-                                    }
-
-                                        /*$needs = false;
-                                        if (isset($id) and (isset($p) && $p->profile_type == 5) or $needs) {
-                                            echo '<li';
-                                            activetab($activetab, "orders");
-                                            echo '><a href="#tab_1_10" data-toggle="tab">Orders</li></a></li>';
-                                        } */
+                                        if ($this->request['action'] == 'view' && ($profile->Ptype && $profile->Ptype->placesorders == 1)) {
+                                            ?>
+                                            <li <?php activetab($activetab, "scorecard"); ?>>
+                                                <a href="#tab_1_11" data-toggle="tab">View Scorecard</a>
+                                            </li>
+                                        <?php
+                                        }
 
                                         if ($this->request['action'] != 'add') {
 
@@ -441,9 +442,8 @@
 
 
                                             <?php }
-                                            $checker = $this->requestAction('/settings/check_edit_permission/' . $this->request->session()->read('Profile.id') . '/' . $profile->id."/".$profile->created_by);
-                                            if($this->request->session()->read('Profile.super') == '1' || ($sidebar->profile_create == '1' && $sidebar->profile_edit=='1')){
-//if ($this->request->session()->read('Profile.admin') || ($this->request->session()->read('Profile.id') != $id && $this->request->session()->read('Profile.profile_type') == '2')) {
+                                            $checker = $this->requestAction('/settings/check_edit_permission/' . $this->request->session()->read('Profile.id') . '/' . $profile->id . "/" . $profile->created_by);
+                                            if ($this->request->session()->read('Profile.super') == '1' || ($sidebar->profile_create == '1' && $sidebar->profile_edit == '1')) {
                                                 ?>
                                                 <li <?php activetab($activetab, "permissions"); ?>>
                                                     <a href="#tab_1_7" data-toggle="tab">Permissions</a>
@@ -451,6 +451,10 @@
 
                                             <?php } ?>
 
+
+                                            <li  <?php activetab($activetab, "feedback"); ?> >
+                                                <a href="#tab_1_8" data-toggle="tab">Feedback</a>
+                                            </li>
 
 
                                         <?php
@@ -462,8 +466,7 @@
                                 <div class="tab-content">
                                     <!-- PERSONAL INFO TAB -->
 
-                                    <!--<div class="tab-pane  <?php if ($this->request['action'] == 'add' || $this->request['action'] == 'view' || (!isset($_GET['getprofilescore']) && ($Clientcount != 0))) { ?> active <?php } ?> " id="tab_1_1">
-                                    -->
+
                                     <div class="tab-pane  <?php activetab($activetab, "profile", false); ?> "
                                          id="tab_1_1">
 
@@ -477,16 +480,6 @@
                                         if ($this->request['action'] != 'add') {
                                             ?>
 
-                                            <!--php
-                                            if (isset($id) and (isset($p) && $p->profile_type == 5) or $needs) {
-                                                echo '<div class="tab-pane';
-                                                activetab($activetab, "orders", false);
-                                                echo '" id="tab_1_10">';
-                                                include('subpages/profile/listorders.php');
-                                                echo '</div>';//lists driver's orders
-                                            }
-                                            -->
-
                                             <div class="tab-pane <?php activetab($activetab, "notes", false); ?>"
                                                  id="tab_1_9">
                                                 <div class="cleafix">&nbsp;</div>
@@ -494,7 +487,6 @@
                                                 <div class="portlet-body">
                                                     <?php include('subpages/documents/recruiter_notes.php');//notes ?>
                                                 </div>
-                                                <!--</div>-->
                                             </div>
 
                                         <?php }
@@ -511,9 +503,17 @@
                                     ?>
                                     <div class="tab-pane <?php activetab($activetab, "permissions", false); ?>"
                                          id="tab_1_7">
-                                        <?php if(!isset($BypassLogin))$BypassLogin = false;if(!$BypassLogin){ include('subpages/profile/block.php');}//permissions?>
+                                        <?php if (!isset($BypassLogin)) $BypassLogin = false;
+                                            if (!$BypassLogin) {
+                                                include('subpages/profile/block.php');
+                                            }//permissions?>
                                     </div>
 
+                                    <div class="tab-pane <?php activetab($activetab, "feedback", false); ?>"
+                                         id="tab_1_8">
+                                        <?       include('subpages/profile/feedback.php');
+                                     ?>
+                                    </div>
 
                                 </div>
                             </div>

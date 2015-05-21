@@ -25,7 +25,6 @@
 
 ?>
 
-
 <ul class="nav nav-tabs nav-justified">
     <?php if ($this->request->session()->read('Profile.profile_type') != '2') {
         ?>
@@ -696,8 +695,29 @@
                                         No </label>
                                 </td>
                             </tr>
+
+
+                            <tr>
+                                <td class="vtop"> Auto Email Survey? (60 day survey goes to Drivers, 30 day goes to employee and sales) from hired date?</td>
+                                <td>
+                                    <label class="uniform-inline">
+                                        <input <?php echo $is_disabled ?> type="radio"
+                                                                          name="side[logo]"
+                                                                          value="1" <?php if (isset($sidebar) && $sidebar->logo33333333333333333 == 1) echo "checked"; ?>/>
+                                        Yes </label>
+                                    <label class="uniform-inline">
+                                        <input <?php echo $is_disabled ?> type="radio"
+                                                                          name="side[logo]"
+                                                                          value="0" <?php if (isset($sidebar) && $sidebar->logo3333333333333333333 == 0) echo "checked"; ?>/>
+                                        No </label>
+                                </td>
+                            </tr>
+
+
                             <!--<tr>
                             <td class="vtop"> Enable Bulk Order</td>
+                                                        I just noticed that it appears that the 30 day survey goes to general Employees and the 60 day survey goes to Drivers. Could we account for this?
+
                             <td>
                                 <label class="uniform-inline">
                                     <input <?php echo $is_disabled ?> type="radio"

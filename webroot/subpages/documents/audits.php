@@ -28,7 +28,6 @@ if(isset($disabled)){$is_disabled = 'disabled="disabled"';}
 if(isset($audits)) {
     echo $audits->conference_name;
 } elseif($controller == "documents" && $action == "Create"){
-    //$clientid = $this->request->params["pass"][0];
     echo $client->company_name;
 }
 ?>" />

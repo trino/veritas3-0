@@ -11,7 +11,7 @@
     }
     $settings = $this->requestAction('settings/get_settings');
     $language = $this->request->session()->read('Profile.language');
-    $strings = CacheTranslations($language, "clients_%",$settings);//,$registry);//$registry = $this->requestAction('/settings/getRegistry');
+    $strings = CacheTranslations($language, "clients_%", $settings);//,$registry);//$registry = $this->requestAction('/settings/getRegistry');
 
     include_once 'subpages/filelist.php';
     $delete = isset($disabled);
@@ -130,6 +130,12 @@
                                 </li>
                                 <?php if ($this->request['action'] != "add" && !isset($_GET['view'])) {
                                     ?>
+
+                                    <li>
+                                        <a href="#tab_1_6" data-toggle="tab">Re-qualify</a>
+                                    </li>
+
+
                                     <li>
                                         <a href="#tab_1_4" data-toggle="tab">Products</a>
                                     </li>
@@ -138,17 +144,16 @@
                                         <a href="#tab_1_2" data-toggle="tab">Documents</a>
                                     </li>
 
+                                    <li>
+                                        <a href="#tab_1_3"
+                                           data-toggle="tab"><?php echo (!isset($_GET['view'])) ? "Assign to Profile" : "Assigned To"; ?></a>
+                                    </li>
+
+
                                 <?php
-
-
 
                                 } ?>
 
-
-                                <li>
-                                    <a href="#tab_1_3"
-                                       data-toggle="tab"><?php echo (!isset($_GET['view'])) ? "Assign to Profile" : "Assigned To"; ?></a>
-                                </li>
 
                             </UL>
                         </div>
@@ -246,7 +251,8 @@
                                                             <div class="form-group col-md-4">
                                                                 <label class="control-label">Province/State</label>
                                                                 <?php
-                                                                    function printoption($value, $selected, $option) {
+                                                                    function printoption($value, $selected, $option)
+                                                                    {
                                                                         $tempstr = "";
                                                                         if ($option == $selected or $value == $selected) {
                                                                             $tempstr = " selected";
@@ -254,7 +260,8 @@
                                                                         echo '<OPTION VALUE="' . $value . '"' . $tempstr . ">" . $option . "</OPTION>";
                                                                     }
 
-                                                                    function printoptions($name, $valuearray, $selected, $optionarray) {
+                                                                    function printoptions($name, $valuearray, $selected, $optionarray)
+                                                                    {
                                                                         echo '<SELECT name="' . $name . '" class="form-control member_type" >';
                                                                         for ($temp = 0; $temp < count($valuearray); $temp += 1) {
                                                                             printoption($valuearray[$temp], $selected, $optionarray[$temp]);
@@ -262,7 +269,8 @@
                                                                         echo '</SELECT>';
                                                                     }
 
-                                                                    function printprovinces($name, $selected) {
+                                                                    function printprovinces($name, $selected)
+                                                                    {
                                                                         printoptions($name, array("", "AB", "BC", "MB", "NB", "NL", "NT", "NS", "NU", "ON", "PE", "QC", "SK", "YT", "AL", "AK", "AZ", "AR", "CA", "CO", "CT", "DE", "FL", "GA", "HI", "ID", "IL", "IN", "IA", "KS", "KY", "LA", "ME", "MD", "MA", "MI", "MN", "MS", "MO", "MT", "NE", "NV", "NH", "NJ", "NM", "NY", "NC", "ND", "OH", "OK", "OR", "PA", "RI", "SC", "SD", "TN", "TX", "UT", "VT", "VA", "WA", "WV", "WI", "WY"), $selected, array("Select Province", "Alberta", "British Columbia", "Manitoba", "New Brunswick", "Newfoundland and Labrador", "Northwest Territories", "Nova Scotia", "Nunavut", "Ontario", "Prince Edward Island", "Quebec", "Saskatchewan", "Yukon Territories", "Alabama", "Alaska", "Arizona", "Arkansas", "California", "Colorado", "Connecticut", "Delaware", "Florida", "Georgia", "Hawaii", "Idaho", "Illinois", "Indiana", "Iowa", "Kansas", "Kentucky", "Louisiana", "Maine", "Maryland", "Massachusetts", "Michigan", "Minnesota", "Mississippi", "Missouri", "Montana", "Nebraska", "Nevada", "New Hampshire", "New Jersey", "New Mexico", "New York", "North Carolina", "North Dakota", "Ohio", "Oklahoma", "Oregon", "Pennsylvania", "Rhode Island", "South Carolina", "South Dakota", "Tennessee", "Texas", "Utah", "Vermont", "Virginia", "Washington", "Virginia", "Wisconsin", "Wyoming"));
 
                                                                     }
@@ -586,9 +594,7 @@
                                                 {
                                             ?>
                                             <div class="tab-pane" id="tab_1_2">
-                                                <?php
-                                                    }
-                                                ?>
+                                                <?php } ?>
                                                 <h4 class="col-md-6">
                                                     Enable <?php echo ucfirst($settings->document) . 's?'; ?></h4>
 
@@ -670,7 +676,7 @@
                                                                             </td>
 
                                                                             <?php
-                                                                            $csubdoc = $this->requestAction('/settings/all_settings/0/0/client/' . $id . '/' . $sub->id);
+                                                                                $csubdoc = $this->requestAction('/settings/all_settings/0/0/client/' . $id . '/' . $sub->id);
                                                                             ?>
                                                                             <td class="">
 
@@ -710,17 +716,6 @@
                                                             }
 
 
-
-
-
-
-
-
-
-
-
-
-
                                                         ?>
 
                                                     </table>
@@ -758,9 +753,14 @@
                                                 </form>
                                             </div>
                                             <?php } ?>
-                                            <div class="tab-pane" id="tab_1_3" style="min-height: 300px;;">
+                                            <div class="tab-pane" id="tab_1_3" style="min-height: 300px;">
                                                 <?php
                                                     include('subpages/clients/recruiter_contact_table.php');
+                                                ?>
+                                            </div>
+                                            <div class="tab-pane" id="tab_1_6" style="">
+                                                <?php
+                                                    include('subpages/clients/requalify.php');
                                                 ?>
                                             </div>
 
