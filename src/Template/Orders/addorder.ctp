@@ -1814,6 +1814,7 @@ JSinclude($this,"js/ajaxupload.js");
                     if (numb == '8') {
                         $('#gfs_signature').val(response);
                     }
+                    $('.saved'+numb).html('Saved');
                 });
             }
         });
