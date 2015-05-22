@@ -1771,10 +1771,10 @@ JSinclude($this,"js/ajaxupload.js");
     });
     function saveSignature() {
         if ($(".tabber.active").prev('.tabber').find("input[name='document_type']").val() == 'Consent Form') {
-            save_signature('3');
-            save_signature('4');
-            save_signature('5');
-            save_signature('6');
+            //save_signature('3');
+            //save_signature('4');
+            //save_signature('5');
+            //save_signature('6');
 
         }
         else
@@ -1786,9 +1786,10 @@ JSinclude($this,"js/ajaxupload.js");
     }
 
     function save_signature(numb) {
+        //alert('trd');
         
         $("#test" + numb).data("jqScribble").save(function (imageData) {
-            if ((numb == '8' && $('#gfs_signature').parent().find('.touched').val() == 1) || (numb == '1' && $('#recruiter_signature').parent().find('.touched').val() == 1) || (numb == '3' && $('#criminal_signature_applicant').parent().find('.touched').val() == 1) || (numb == '4' && $('#signature_company_witness').parent().find('.touched').val() == 1) || (numb == '5' && $('#signature_company_witness2').parent().find('.touched').val() == 1) || (numb == '6' && $('#signature_company_witness2').parent().find('.touched').val() == 1)) {
+            if ((numb == '8' && $('#gfs_signature').parent().find('.touched').val() == 1) || (numb == '1' && $('#recruiter_signature').parent().find('.touched').val() == 1) || (numb == '3' && $('#criminal_signature_applicant').parent().find('.touched').val() == 1) || (numb == '4' && $('#signature_company_witness').parent().find('.touched').val() == 1) || (numb == '5' && $('#criminal_signature_applicant2').parent().find('.touched').val() == 1) || (numb == '6' && $('#signature_company_witness2').parent().find('.touched').val() == 1)) {
                 $.post('<?php echo $this->request->webroot; ?>canvas/image_save.php', {imagedata: imageData}, function (response) {
                     if(response=='' && (numb=='3' || numb=='5' || numb=='4' || numb=='6'))
                     {

@@ -39,7 +39,7 @@
     		<div class="links" style="margin-top: 5px;">
     			<strong style="display: none;">OPTIONS:</strong>
     			<a href="#" onclick='addImage();' style="display: none;">Add Image</a>
-    			<a href="javascript:void(0)" onclick='$("#test5").data("jqScribble").clear();'>Clear</a> 			
+    			<a href="javascript:void(0)" onclick='$("#test5").data("jqScribble").clear();$(this).parent().parent().find(".touched").val("0");'>Clear</a>  <a href="javascript:void(0)" onclick="save_signature('5');">Save</a> 			
                 <br />
                 
                 
