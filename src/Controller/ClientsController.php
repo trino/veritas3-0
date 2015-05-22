@@ -6,7 +6,8 @@
     use Cake\Controller\Controller;
     use Cake\ORM\TableRegistry;
     use Cake\Network\Email\Email;
-
+    use App\Controller\OrdersController;
+    
     class ClientsController extends AppController{
 
         public $paginate = [
@@ -1463,5 +1464,147 @@
             
            die();
         }
+        
+        
+        function cron()
+        {
+            $clients = TableRegistry::get('clients')->find('all')->where(['requalify'=>'1']);
+            $marr = array();
+            foreach($clients as $c)
+            {
+                if($c->requalify_re == '0')
+                {
+                     $date = $c->requalify_date;
+                }
+                
+                $today = date('Y-m-d');
+                
+                $frequency = $c->requalify_frequency;
+                $forms = $c->requalify_product;
+                $nxt_sec = strtotime($today)+($frequency*24*60*60*30);
+                
+                $nxt_date = date('Y-m-d',$nxt_sec)."<br/>";
+                $pro = '';
+                $p_type = '';
+                $profile_type = TableRegistry::get("profile_types")->find('all')->where(['placesorders'=>1]);
+                foreach($profile_type as $ty)
+                {
+                    $p_type .= $ty->id.",";
+                }
+                $p_types = substr($p_type,0,strlen($p_type)-1);
+                $users = explode(',',$c->profile_id);
+                $profile = TableRegistry::get('profiles')->find('all')->where(['id IN('.$c->profile_id.')','requalify'=>'1', 'profile_type IN('.$p_types.')']);
+                  
+                  foreach($profile as $p)
+                  {
+                    if($c->requalify_re == '1')
+                    {
+                         $date = $p->hired_date;
+                    }
+                    
+                    if($today == $date || $date == $nxt_date)
+                    {
+                        $pro .=$p->id.","; 
+                    }
+                    
+                  }
+                  
+                  $pro = substr($pro,0,strlen($pro)-1);
+                  
+                  //$this->bulksubmit($pro,$forms,$c->id);
+                  $dri = $pro;
+                    $drivers = explode(',',$dri);
+                    //$forms = $_POST['forms'];
+                    $arr['forms'] = $forms;
+                    $arr['order_type'] = 'BUL';
+                    $arr['draft'] = 0;
+                    $arr['title'] = 'order_'.date('Y-m-d H:i:s');
+                    
+                    $arr['client_id'] = $c->id;
+                    $arr['created'] = date('Y-m-d H:i:s');
+                    //$arr['division'] = $_POST['division'];
+                    //$arr['user_id'] = $this->request->session()->read('Profile.id');
+                    $arr['driver'] = '';
+                    $arr['order_id'] = '';
+                    foreach($drivers as $driver) {
+                        $arr['uploaded_for'] = $driver;
+                        $ord = TableRegistry::get('orders');
+                                            
+                        $doc = $ord->newEntity($arr);
+                        $ord->save($doc);
+                        //$this->webservice('BUL', $arr['forms'], $arr['user_id'], $doc->id);
+                        if($arr['driver']) {
+                            $arr['driver'] = $arr['driver'] . ',' . $driver;
+                        }else {
+                            $arr['driver'] = $driver;
+                        }
+                        if($arr['order_id']) {
+                            $arr['order_id'] = $arr['order_id'] . ',' . $doc->id;
+                        }else {
+                            $arr['order_id'] = $doc->id;
+                        }
+                    }
+                    array_push($marr,$arr);
+                    unset($arr);
+                                
+            }
+                    $this->set('arrs',$marr);
+            
+            
+            
+        }
+        /*
+        public function bulksubmit() {
+        $dri = $dri;
+        $drivers = explode(',',$dri);
+        //$forms = $_POST['forms'];
+        $arr['forms'] = $form;
+        $arr['order_type'] = 'BUL';
+        $arr['draft'] = 0;
+        $arr['title'] = 'order_'.date('Y-m-d H:i:s');
+        $arr['client_id'] = $cid;
+        $arr['created'] = date('Y-m-d H:i:s');
+        //$arr['division'] = $_POST['division'];
+        //$arr['user_id'] = $this->request->session()->read('Profile.id');
+        $arr['driver'] = '';
+        $arr['order_id'] = '';
+        foreach($drivers as $driver) {
+            $arr['uploaded_for'] = $driver;
+            $ord = TableRegistry::get('orders');
+                                
+            $doc = $ord->newEntity($arr);
+            $ord->save($doc);
+            //$this->webservice('BUL', $arr['forms'], $arr['user_id'], $doc->id);
+            if($arr['driver']) {
+                $arr['driver'] = $arr['driver'] . ',' . $driver;
+            }else {
+                $arr['driver'] = $driver;
+            }
+            if($arr['order_id']) {
+                $arr['order_id'] = $arr['order_id'] . ',' . $doc->id;
+            }else {
+                $arr['order_id'] = $doc->id;
+            }
+            if($doc->id)
+            {
+                $this->web('BUL',$form,$driver,$doc->id);
+            }
+            unset($doc);
+        }
+        
+        
+        
+        
+        
+        
+    }*/
+    function web($order_type = null, $forms = null, $driverid = null, $orderid = null)
+    {
+        $this->set('order_type',$order_type);
+        $this->set('form',$forms);
+        $this->set('driverid',$driverid);
+        $this->set('orderid',$orderid);
     }
+        
+}
 ?>

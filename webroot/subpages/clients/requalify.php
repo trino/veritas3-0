@@ -17,9 +17,9 @@ Re-qualification will be applied to all profiles that are active.
 
     <tr>
         <td>When would you like to run re-qualifications?</td>
-        <td><input type="checkbox" <?php if(isset($client)&& $client->requalify_re=='1')echo "checked";?> name="requalify_re" value="1"> Anniversary Date (Hire of hire? - what if the recruiter doesn't click hired on the profile?)
-            <br> - or - <br> Select a date:
-            <input type="text" class="form-control date-picker" style="width:50%;" name="requalify_date" value="<?php  if(isset($client)&& $client->requalify_date!="")echo $client->requalify_date; else echo date('Y-m-d');?>">
+        <td><input type="radio" <?php if(isset($client)&& $client->requalify_re=='1')echo "checked";?> name="requalify_re" value="1" onclick="$('.r_date').hide();"/> Anniversary Date (Hire of hire? - what if the recruiter doesn't click hired on the profile?)
+            <br> - or - <br> <input type="radio" <?php if(isset($client)&& $client->requalify_re=='0')echo "checked";?> name="requalify_re" value="0" onclick="$('.r_date').show();">Select a date:
+            <input type="text" class="form-control date-picker r_date" style="width:50%;<?php echo (isset($client)&& $client->requalify_re==1)?"display:none":"display:block";?>;" name="requalify_date" value="<?php  if(isset($client)&& $client->requalify_date!="")echo $client->requalify_date; else echo date('Y-m-d');?>">
         </td>
     </tr>
 
@@ -40,16 +40,16 @@ Re-qualification will be applied to all profiles that are active.
         <td>
         <?php $r = explode(',',$client->requalify_product); ?>
             <input type="checkbox" <?php if(in_array('1',$r))echo "checked";?> name="requalify_product[]" value="1"> Driver's Record Abstract (MVR) #1
-            &nbsp;&nbsp;<input type="checkbox" <?php if(in_array('2',$r))echo "checked";?> name="requalify_product[]" value="2"> CVOR #14
-            &nbsp;&nbsp;<input type="checkbox" <?php if(in_array('3',$r))echo "checked";?>name="requalify_product[]" value="3"> Check DL #72
+            &nbsp;&nbsp;<input type="checkbox" <?php if(in_array('14',$r))echo "checked";?> name="requalify_product[]" value="14"> CVOR #14
+            &nbsp;&nbsp;<input type="checkbox" <?php if(in_array('72',$r))echo "checked";?> name="requalify_product[]" value="72"> Check DL #72
         </td>
     </tr>
     
 </table>
  <div class="form-actions">
-                <button  type="button" class="btn btn-primary requalify_submit" >
-                    Submit <i class="m-icon-swapright m-icon-white"></i>
-                </a>
+    <button  type="button" class="btn btn-primary requalify_submit" >
+        Submit <i class="m-icon-swapright m-icon-white"></i>
+    </a>
  </div>
  <div class="margin-top-10 alert alert-success display-hide requalify_flash"  style="display: none;">
     <button class="close" data-close="alert"></button>

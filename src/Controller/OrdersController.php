@@ -717,12 +717,16 @@ class OrdersController extends AppController {
         return $Text;
     }
 
-
+    function test1()
+    {
+        return '12';
+    }
     public function webservice($order_type = null, $forms = null, $driverid = null, $orderid = null) {
+        
         $all_attachments = TableRegistry::get('mee_attachments');
         $mee_query = $all_attachments->find()->where(['order_id'=>$orderid]);
         $orderid=$this->filternonnumeric($orderid);//there is an error message being passed in $orderid!!!
-
+  
         if($mee_query) {
             foreach($mee_query as $mq) {
                 /* UNCOMMENT BELOW TO VIEW THE ATTACHMENTS OF MEE*/
@@ -877,6 +881,7 @@ class OrdersController extends AppController {
     function savedriver($oid) {
         $this->set('doc_comp', $this->Document);
         $arr['is_hired'] = $_POST['is_hired'];
+        $arr['hired_date'] = $_POST['hired_date'];
         $orders = TableRegistry::get('profiles');
         $order = $orders
             ->query()->update()

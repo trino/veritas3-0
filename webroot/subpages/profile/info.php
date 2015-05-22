@@ -85,7 +85,13 @@ function printprovinces($name, $selected = "", $isdisabled = "", $isrequired = f
                         <div class="row">
                             <input type="hidden" name="created_by"
                                    value="<?php echo $this->request->session()->read('Profile.id') ?>"/>
-
+                            <div class="col-md-6 hired_date" <?php if(isset($p)&& $p->is_hired==0)echo "style='display:none;";?> >
+                                <div class="form-group">
+                                    <label class="control-label">Hired Date:</label>
+                                    <input type="text" name="hired_date" value="<?php if(isset($p))echo $p->hired_date;?>" disabled="disabled" class="form-control date_hired"/>
+                                </div>
+                            </div>
+                            <div class="clearfix"></div>
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label class="control-label"><?php echo ucfirst($settings->profile); ?>
