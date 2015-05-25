@@ -17,7 +17,7 @@ Re-qualification will be applied to all profiles that are active.
 
     <tr>
         <td>When would you like to run re-qualifications?</td>
-        <td><input type="radio" <?php if(isset($client)&& $client->requalify_re=='1')echo "checked";?> name="requalify_re" value="1" onclick="$('.r_date').hide();"/> Anniversary Date (Hire of hire? - what if the recruiter doesn't click hired on the profile?)
+        <td><input type="radio" <?php if(isset($client)&& $client->requalify_re=='1')echo "checked";?> name="requalify_re" value="1" onclick="$('.r_date').hide();"/> Anniversary Date (Hire of hire)
             <br> - or - <br> <input type="radio" <?php if(isset($client)&& $client->requalify_re=='0')echo "checked";?> name="requalify_re" value="0" onclick="$('.r_date').show();">Select a date:
             <input type="text" class="form-control date-picker r_date" style="width:50%;<?php echo (isset($client)&& $client->requalify_re==1)?"display:none":"display:block";?>;" name="requalify_date" value="<?php  if(isset($client)&& $client->requalify_date!="")echo $client->requalify_date; else echo date('Y-m-d');?>">
         </td>

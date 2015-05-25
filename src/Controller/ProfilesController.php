@@ -2583,7 +2583,7 @@ class ProfilesController extends AppController{
                         $from = array('info@' . $path => $setting->mee);
                         $to = $profile1->email;
                         $sub = 'Order Completed';
-                        $msg = 'Your order has been processed and is ready to download.<br /><br /> Please login <a href="' . LOGIN . '">here</a> to retrieve your score card.<br /><br /> Regards,<br /> The ISB MEE Team';
+                        $msg = 'Your order has been processed and   ready to download.<br /><br /> Please login <a href="' . LOGIN . '">here</a> to retrieve your score card.<br /><br /> Regards,<br /> The ISB MEE Team';
                         $this->Mailer->sendEmail($from, $to, $sub, $msg);
                     }
                 }
