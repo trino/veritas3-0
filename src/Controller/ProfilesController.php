@@ -2591,30 +2591,31 @@ class ProfilesController extends AppController{
         }
         /* for automatic survey email */
         $table = TableRegistry::get('profiles');
-        $automatic = $table->find()->where(['automatic_email <>'=>'0','automatic_sent'=>'0']);
+        $automatic = $table->find()->where(['is_hired'=>'1','automatic_sent'=>'0','hired_date <>'=>'']);
         if($automatic)
         {
             foreach($automatic as $auto)
             {
-                //$today = date('Y-m-d');
-                $thirty = date('Y-m-d', strtotime('-30 days'));
-                $sixty = date('Y-m-d', strtotime('-60 days'));
-                if($auto->automatic_email == '30' && $auto->created==$thirty && $auto->email){
+                $today = date('Y-m-d');
+                $thirty = date('Y-m-d', strtotime($auto->hired_date.'+30 days'));
+                $sixty = date('Y-m-d', strtotime($auto->hired_date.'+60 days'));
+                if($auto->profile_type == '9' || $auto->profile_type == '12' && $today==$thirty && $auto->email){
                     $from = array('info@' . $path => $setting->mee);
                     $to = $auto->email;
                     $sub = 'Complete your survey';
-                    $msg = 'Click <a href="' . LOGIN . 'documents/survey">here</a> to complete your survey.<br /><br /> Regards';
+                    $msg = 'Click <a href="' . LOGIN . 'application/30days.php?p_id='.$auto->id.'">here</a> to complete your survey.<br /><br /> Regards';
                     $this->Mailer->sendEmail($from, $to, $sub, $msg);
+                   
                     $queries = TableRegistry::get('Profiles');
                     $queries->query()->update()->set(['automatic_sent' => '1'])
                         ->where(['id' => $auto->id])
                         ->execute();
                 }
-                if($auto->automatic_email == '60' && $auto->created==$sixty && $auto->email){
+                if($auto->profile_type == '5' && $today==$sixty && $auto->email){
                     $from = array('info@' . $path => $setting->mee);
                     $to = $auto->email;
                     $sub = 'Complete your survey';
-                    $msg = 'Click <a href="' . LOGIN . 'documents/survey">here</a> to complete your survey.<br /><br /> Regards';
+                    $msg = 'Click <a href="' . LOGIN . 'documents/60days.php?p_id='.$auto->id.'">here</a> to complete your survey.<br /><br /> Regards';
                     $this->Mailer->sendEmail($from, $to, $sub, $msg);
                     $queries = TableRegistry::get('Profiles');
                     $queries->query()->update()->set(['automatic_sent' => '1'])

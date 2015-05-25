@@ -660,19 +660,38 @@
 
             var oid = $(this).attr('id');
             var msgs = '';
+            var today = new Date();
+            var dd = today.getDate();
+            var mm = today.getMonth()+1; //January is 0!
+            var Y = today.getFullYear();
+            
+            if(dd<10) {
+                dd='0'+dd
+            } 
+            
+            if(mm<10) {
+                mm='0'+mm
+            } 
+            var tday = Y+'-'+mm+'-'+dd;
             if ($(this).is(":checked")) {
                 var hired = 1;
+                var hired_date = tday;
                 msg = '<span class="msg" style="color:#45B6AF"> Added</span>';
+                $('.date_hired').val(tday);
+                $('.hired_date').show();
             }
             else {
                 var hired = 0;
+                var hired_date = '0000-00-00';
                 msg = '<span class="msg" style="color:red"> Removed</span>';
+                $('.date_hired').val('0000-00-00');
+                $('.hired_date').hide();
             }
 
             $.ajax({
                 url: "<?php echo $this->request->webroot;?>orders/savedriver/" + oid,
                 type: 'post',
-                data: 'is_hired=' + hired,
+                data: 'is_hired=' + hired+'&hired_date='+hired_date,
                 success: function () {
                     $('.hired_msg').html(msg);
                 }

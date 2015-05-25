@@ -20,6 +20,7 @@
         public function initialize(){
             parent::initialize();
             $this->loadComponent('Mailer');
+            $this->loadComponent('Document');
         }
 
         public function index()
@@ -121,10 +122,22 @@
                     }
                     $_POST['jst13'] = $train;
                 }
+                  $path = $this->Document->getUrl();
                   $modal = TableRegistry::get($type.'days');
                   $data = $modal->newEntity($_POST);
+                  $settings = TableRegistry::get('settings');
+                  $setting = $settings->find()->first();
                   if($modal->save($data))
                   {
+                        $from = array('info@' . $path => $setting->mee);
+                        $pro = TableRegistry::get('profiles')->find()->where(['id'=>$_POST['profile_id']])->first();
+                        $rec = TableRegistry::get('profiles')->find()->where(['id'=>$pro->created_by])->first();
+                        if($rec->email)
+                        {
+                            $rec_email = $rec->email;
+                            $this->Mailer->sendEmail($from, $rec_email, "Survey form submitted", "The profile '".$pro->username."' has submitted the ".$type."days form.");
+                            
+                        }
                         return $this->redirect('/application/'.$type."days.php?msg=success");
                   }
                   else
@@ -159,6 +172,146 @@
         }
         public function getTableByAnyKey($Table, $Key, $Value){
             return TableRegistry::get($Table)->find('all', array('conditions' => array($Key => $Value)))->first();
+        }
+        
+        function cron()
+        {
+            $today = date('Y-m-d'); 
+            $msg ="";
+            $clients = TableRegistry::get('clients')->find('all')->where(['requalify'=>'1']);
+            $marr = array();
+            $a = TableRegistry::get('profiles')->find()->where(['super'=>'1'])->first();
+            $admin_email = $a->email;
+            
+          //debug($clients);
+          //die();
+            foreach($clients as $c)
+            {
+               
+                $msg .= "<br/><br/><strong>Clients</strong><br/>";
+                $msg .= $c->company_name;
+                $msg .="<br/>";
+                $message = "The users that u recruited have been requalified."."</br>";
+                $message .= "Requalifed Date:".$today."</br>";
+                $em_names ='';
+                if($c->requalify_re == '0')
+                {
+                     $date = $c->requalify_date;
+                }
+                
+                
+                
+                $frequency = $c->requalify_frequency;
+                $forms = $c->requalify_product;
+                $msg .= "Selected Forms:".$forms."<br/>";
+                //$nxt_sec = strtotime($today)+($frequency*24*60*60*30);
+                $nxt_date = date('Y-m-d', strtotime('+'.$frequency.' months'));
+                //$nxt_date = date('Y-m-d',$nxt_sec);
+                $pro = '';
+                $p_type = '';
+                $p_name = "";
+                $emails ='';
+                $profile_type = TableRegistry::get("profile_types")->find('all')->where(['placesorders'=>1]);
+                foreach($profile_type as $ty)
+                {
+                    $p_type .= $ty->id.",";
+                }
+                $p_types = substr($p_type,0,strlen($p_type)-1);
+                $users = explode(',',$c->profile_id);
+                $rec = array();
+                $profile = TableRegistry::get('profiles')->find('all')->where(['id IN('.$c->profile_id.')','requalify'=>'1', 'profile_type IN('.$p_types.')']);
+                  
+                  foreach($profile as $p)
+                  {
+                    if($c->requalify_re == '1')
+                    {
+                         $date = $p->hired_date;
+                    }
+                    
+                    if($today == $date || $date == $nxt_date)
+                    {
+                        $pro .=$p->id.","; 
+                        $p_name .= $p->username.",";
+                        if($p->profile_type == '2' && $p->email!="")
+                        {
+                            array_push($p->email, $rec);
+                            $emails .= $p->email.",";
+                            
+                        }
+                        else
+                        {
+                            $em_names .= $p->username;
+                        }
+                    }
+                    
+                  }
+                  $em_names = substr($em_names,0,strlen($em_names)-1);
+                  $emails = substr($emails,0,strlen($emails)-1);
+                  $pro = substr($pro,0,strlen($pro)-1);
+                  $p_name = substr($p_name,0,strlen($p_name)-1);
+                  //$this->bulksubmit($pro,$forms,$c->id);
+                  $msg .= "Profiles:".$p_name."<br/>";
+                  $msg .= "Emails Sent to:".$emails."<br/>";
+                  $message .= "Recruited Profiles:".$em_names."</br>";
+                  if($pro!="")
+                  {
+                    
+                    $dri = $pro;
+                    $drivers = explode(',',$dri);
+                    //$forms = $_POST['forms'];
+                    $arr['forms'] = $forms;
+                    $arr['order_type'] = 'BUL';
+                    $arr['draft'] = 0;
+                    $arr['title'] = 'order_'.date('Y-m-d H:i:s');
+                    
+                    $arr['client_id'] = $c->id;
+                    $arr['created'] = date('Y-m-d H:i:s');
+                    //$arr['division'] = $_POST['division'];
+                    //$arr['user_id'] = $this->request->session()->read('Profile.id');
+                    $arr['driver'] = '';
+                    $arr['order_id'] = '';
+                    foreach($drivers as $driver) {
+                        
+                        $arr['uploaded_for'] = $driver;
+                        $ord = TableRegistry::get('orders');
+                                            
+                        $doc = $ord->newEntity($arr);
+                        $ord->save($doc);
+                        //$this->webservice('BUL', $arr['forms'], $arr['user_id'], $doc->id);
+                        if($arr['driver']) {
+                            $arr['driver'] = $arr['driver'] . ',' . $driver;
+                        }else {
+                            $arr['driver'] = $driver;
+                        }
+                        if($arr['order_id']) {
+                            $arr['order_id'] = $arr['order_id'] . ',' . $doc->id;
+                        }else {
+                            $arr['order_id'] = $doc->id;
+                        }
+                    }
+                        array_push($marr,$arr);
+                       
+                        
+                        foreach($rec as $r)
+                        {
+                            $this->Mailer->sendEmail("", $r, 'Driver Requalified', $message);
+                        }
+                    }
+                    unset($arr);
+                    unset($rec);
+                                
+            }
+            if($pro != "")
+            {
+                 $this->Mailer->sendEmail("", $admin_email, 'Driver Requalifion cron', $msg);
+            }
+                    $this->set('profiles',$pro);
+                    $this->set('arrs',$marr);
+                    $this->set('msg',$msg);
+                    $this->set('message', $message);
+            
+            
+            
         }
 
     }

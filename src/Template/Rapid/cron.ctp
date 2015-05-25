@@ -1,12 +1,10 @@
-<?php
-    //var_dump($arrs);die();
-    echo $msg;
-    
-?>
+
 <script>
 $(function(){
-    /*
-    <?php foreach($arrs as $arr){?>
+    
+    <?php  if(isset($profiles) &&$profiles!= ""){
+      
+        foreach($arrs as $arr){?>
     var forms = '<?php echo $arr['forms'];?>';
     var driver = '<?php echo $arr['driver'];?>';
     //var clients = '<?php echo $arr['client_id'];?>';
@@ -23,8 +21,17 @@ $(function(){
 
         });
     }
-   <?php }?>
-   */
+   <?php }
+   }?>
+   
 })
 
 </script>
+<?php
+    if(isset($profiles) && $profiles!="")
+        echo $msg."<br/>";
+    else
+        echo "No profile found on this day(".date('Y-m-d').")";
+   
+ 
+?>

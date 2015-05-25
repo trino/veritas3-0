@@ -83,15 +83,16 @@ function printprovinces($name, $selected = "", $isdisabled = "", $isrequired = f
                         <input type="hidden" name="drafts" value="0" id="profile_drafts"/>
 
                         <div class="row">
-                            <input type="hidden" name="created_by"
-                                   value="<?php echo $this->request->session()->read('Profile.id') ?>"/>
-                            <div class="col-md-6 hired_date" <?php if(isset($p)&& $p->is_hired==0)echo "style='display:none;";?> >
+                            <input type="hidden" name="created_by" value="<?php echo $this->request->session()->read('Profile.id') ?>"/>
+                            <?php if(isset($p)){?>
+                            <div class="col-md-6 hired_date"  style='display:none;' >
                                 <div class="form-group">
                                     <label class="control-label">Hired Date:</label>
                                     <input type="text" name="hired_date" value="<?php if(isset($p))echo $p->hired_date;?>" disabled="disabled" class="form-control date_hired"/>
                                 </div>
                             </div>
                             <div class="clearfix"></div>
+                            <?php }?>
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label class="control-label"><?php echo ucfirst($settings->profile); ?>
@@ -103,11 +104,6 @@ function printprovinces($name, $selected = "", $isdisabled = "", $isrequired = f
                                                    echo $p->profile_type;
                                                } ?>" <?php echo $is_disabled ?> />
                                     <?php } ?>
-
-
-
-
-
 
                                     <?php if ($this->request->params['action'] == 'add' || ($this->request->params['action'] == 'edit' && $this->request->session()->read('Profile.id') != $id)) {
 
