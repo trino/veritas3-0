@@ -57,7 +57,42 @@ Re-qualification will be applied to all profiles that are active.
 </div>
 <div class="clearfix"></div>
 </form>
-
+<div class="col-md-12">
+    <table  class="table table-condensed  table-striped table-bordered table-hover dataTable no-footer">
+        <tr>
+            <td>Driver (Username)</td>
+            <td>Hired Date</td>
+            <td>Enable Requalify?</td>
+            <td>Cron Orders Placed</td>
+        </tr>
+        <?php 
+            $profiles = $this->requestAction('/rapid/getcronProfiles/'.$client->profile_id);
+            foreach($profiles as $p)
+            {
+        ?>
+            <tr>
+                <td><?php echo $p->username;?></td>
+                <td><?php echo $p->hired_date;?></td>
+                <td><?php echo ($p->requalify=='1')?'yes':'no';?></td>
+                <td><?php $crons = $this->requestAction('/rapid/cron_client/'.$p->id."/".$client->id);
+                            $show ='';
+                           $cron = explode(",",$crons);
+                           foreach($cron as $cr)
+                           {
+                            
+                                $pr = explode('&',$cr);
+                                $show .= $pr[0]." <a href='".$this->request->webroot."profiles/view/".$p->id."?getprofilescore=1' target='_blank'>View</a>,";
+                                
+                           }
+                           echo $show = substr($show,0,strlen($show)-1);
+                ?></td>
+            </tr>
+            <?php    
+            }
+        ?>
+    </table>
+</div>
+<div class="clearfix"></div>
 <script>
 $(function(){
     $('.requalify_submit').click(function(){

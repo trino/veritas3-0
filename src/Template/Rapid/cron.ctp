@@ -31,7 +31,7 @@ $(function(){
     if(isset($profiles) && $profiles!="")
         echo $msg."<br/>";
     else
-        echo "No profile found on this day(".date('Y-m-d').")";
+        echo "No new profiles found on this day(".date('Y-m-d').")";
    
  
 ?>

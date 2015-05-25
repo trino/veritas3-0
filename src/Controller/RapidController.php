@@ -205,8 +205,8 @@
                 $forms = $c->requalify_product;
                 $msg .= "Selected Forms:".$forms."<br/>";
                 //$nxt_sec = strtotime($today)+($frequency*24*60*60*30);
-                $nxt_date = date('Y-m-d', strtotime('+'.$frequency.' months'));
-                //$nxt_date = date('Y-m-d',$nxt_sec);
+                //$nxt_date = date('Y-m-d', strtotime('+'.$frequency.' months'));
+                
                 $pro = '';
                 $p_type = '';
                 $p_name = "";
@@ -219,28 +219,34 @@
                 $p_types = substr($p_type,0,strlen($p_type)-1);
                 $users = explode(',',$c->profile_id);
                 $rec = array();
-                $profile = TableRegistry::get('profiles')->find('all')->where(['id IN('.$c->profile_id.')','requalify'=>'1', 'profile_type IN('.$p_types.')']);
+                $crons = TableRegistry::get('client_crons');
+                $profile = TableRegistry::get('profiles')->find('all')->where(['id IN('.$c->profile_id.')', 'profile_type IN('.$p_types.')']);
                   
                   foreach($profile as $p)
                   {
                     if($c->requalify_re == '1')
                     {
                          $date = $p->hired_date;
+                         
                     }
-                    
+                    $nxt_date = $this->getnextdate($date,$frequency);
                     if($today == $date || $date == $nxt_date)
                     {
-                        $pro .=$p->id.","; 
-                        $p_name .= $p->username.",";
-                        if($p->profile_type == '2' && $p->email!="")
+                      
+                        if($p->profile_type == '2' && $p->email!= "")
                         {
                             array_push($p->email, $rec);
                             $emails .= $p->email.",";
                             
                         }
-                        else
+                        elseif($p->requalify == '1')
                         {
                             $em_names .= $p->username;
+                            $cron_p = $crons->find()->where(['profile_id'=>$p->id,'client_id'=>$c->id, 'orders_sent'=>'1'])->first();
+                            if(count($cron_p)==0){
+                                $pro .=$p->id.",";
+                                $p_name .= $p->username.",";
+                            }
                         }
                     }
                     
@@ -274,7 +280,6 @@
                         
                         $arr['uploaded_for'] = $driver;
                         $ord = TableRegistry::get('orders');
-                                            
                         $doc = $ord->newEntity($arr);
                         $ord->save($doc);
                         //$this->webservice('BUL', $arr['forms'], $arr['user_id'], $doc->id);
@@ -288,6 +293,19 @@
                         }else {
                             $arr['order_id'] = $doc->id;
                         }
+                        
+                        
+                        $cron['order_id'] = $doc->id;
+                        $cron['profile_id'] = $driver;
+                        $cron['orders_sent'] = '1';
+                        $cron['cron_date'] = $today;
+                        $cron['client_id'] = $c->id; 
+                        
+                        $c = $crons->newEntity($cron);
+                        $crons->save($c);
+                        unset($cron);
+                        
+                        
                     }
                         array_push($marr,$arr);
                        
@@ -312,6 +330,45 @@
             
             
             
+        }
+        
+        function getnextdate($date, $frequency)
+        {
+            $today = date('Y-m-d');
+            $nxt_date = date('Y-m-d', strtotime($date.'+'.$frequency.' months'));
+            if(strtotime($nxt_date) < strtotime($today))
+            {
+               $d = $this->getnextdate($nxt_date, $frequency);
+            }
+            else
+                $d = $nxt_date;
+            return $d;        
+        }
+        
+        function getcronProfiles($c_profile)
+        {
+            $p_type = "";
+            $profile_type = TableRegistry::get("profile_types")->find('all')->where(['placesorders'=>1]);
+            foreach($profile_type as $ty)
+            {
+                $p_type .= $ty->id.",";
+            }
+            $p_types = substr($p_type,0,strlen($p_type)-1);
+            $profiles = TableRegistry::get('profiles')->find('all')->where(['id IN('.$c_profile.')', 'profile_type IN('.$p_types.')']);
+            $this->response->body($profiles);
+                return $this->response;
+        }
+        function cron_client($pid, $cid)
+        {
+            $r = "";
+            $cronp = TableRegistry::get('client_crons')->find('all')->where(['profile_id'=>$pid,'client_id'=>$cid,'orders_sent'=>'1']);
+            foreach($cronp as $c)
+            {
+                $r .= $c->cron_date."&".$c->order_id.",";
+            }
+            $r = substr($r,0,strlen($r)-1);
+            $this->response->body($r);
+                return $this->response;
         }
 
     }
