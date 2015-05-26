@@ -15,7 +15,6 @@
             for (var k = 0; k < driv.length; k++) {
                 $.ajax({
                     url: '<?php echo $this->request->webroot;?>orders/webservice/BUL/' + forms + '/' + driv[k] + '/' + ord[k],
-
                 });
             }
         <?php
@@ -30,6 +29,6 @@
     if (isset($profiles) && $profiles != "") {
         echo $msg . "<br/>";
     } else {
-        echo "No cron jobs found for this day(" . date('Y-m-d') . ")";
+        echo "No re-qualifications found for this day (" . date('Y-m-d') . ")";
     }
 ?>

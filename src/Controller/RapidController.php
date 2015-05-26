@@ -172,6 +172,7 @@
 
         function cron()
         {
+
             $today = date('Y-m-d');
             $msg = "";
             $clients = TableRegistry::get('clients')->find('all')->where(['requalify' => '1']);
@@ -181,6 +182,8 @@
 
             //debug($clients);
             //die();
+
+
             foreach ($clients as $c) {
 
                 $msg .= "<br/><br/><strong>Client:</strong><br/>";
@@ -220,16 +223,17 @@
                         $date = $p->hired_date;
                     }
 
-                    $nxt_date = $this->getnextdate($date, $frequency);
-                    if ($today == $date || $date == $nxt_date) {
+                   $nxt_date = $this->getnextdate($date, $frequency);
+
+                    if ($today == $date || $today == $nxt_date) {
 
                         if ($p->profile_type == '2' && $p->email != "") {
                             array_push($p->email, $rec);
-                            $emails .= $p->email . ",";
+                          echo   $emails .= $p->email . ",";
 
                         } elseif ($p->requalify == '1') {
                             $em_names .= $p->username;
-                            $cron_p = $crons->find()->where(['profile_id' => $p->id, 'client_id' => $c->id, 'orders_sent' => '1'])->first();
+                            $cron_p = $crons->find()->where(['profile_id' => $p->id, 'client_id' => $c->id, 'orders_sent' => '1', 'cron_date' => $today])->first();
                             if (count($cron_p) == 0) {
                                 $pro .= $p->id . ",";
                                 $p_name .= $p->username . ",";

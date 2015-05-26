@@ -33,12 +33,12 @@
                 {
                     if($p->profile_type =='5')
                     {
-                        $form = '60 day feedback';
+                        $form = '60 day survey';
                         $a = '60days.php';
                     }
                     elseif($p->profile_type == '9' || $p->profile_type == '12')
                     {
-                        $form = '30 day feddback';
+                        $form = '30 day survey';
                         $a = '30days.php';
                     }   
                 }

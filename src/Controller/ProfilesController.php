@@ -2589,6 +2589,11 @@ class ProfilesController extends AppController{
                 }
             }
         }
+
+
+
+
+
         /* for automatic survey email */
         $table = TableRegistry::get('profiles');
         $automatic = $table->find()->where(['is_hired'=>'1','automatic_sent'=>'0','hired_date <>'=>'']);
@@ -2602,8 +2607,8 @@ class ProfilesController extends AppController{
                 if($auto->profile_type == '9' || $auto->profile_type == '12' && $today==$thirty && $auto->email){
                     $from = array('info@' . $path => $setting->mee);
                     $to = $auto->email;
-                    $sub = 'Complete your survey';
-                    $msg = 'Click <a href="' . LOGIN . 'application/30days.php?p_id='.$auto->id.'">here</a> to complete your survey.<br /><br /> Regards';
+                    $sub = 'MEE - Survey';
+                    $msg = 'This is an automated email reminding you to complete your survey.<br><br>Click <a href="' . LOGIN . 'application/30days.php?p_id='.$auto->id.'">here</a> to complete your survey.<br /><br /> Regards,<br><br>The MEE Team';
                     $this->Mailer->sendEmail($from, $to, $sub, $msg);
                    
                     $queries = TableRegistry::get('Profiles');
@@ -2611,11 +2616,12 @@ class ProfilesController extends AppController{
                         ->where(['id' => $auto->id])
                         ->execute();
                 }
-                if($auto->profile_type == '5' && $today==$sixty && $auto->email){
+
+                if($auto->profile_type == '5' || $auto->profile_type == '7'  || $auto->profile_type == '8'  && $today==$sixty && $auto->email){
                     $from = array('info@' . $path => $setting->mee);
                     $to = $auto->email;
-                    $sub = 'Complete your survey';
-                    $msg = 'Click <a href="' . LOGIN . 'documents/60days.php?p_id='.$auto->id.'">here</a> to complete your survey.<br /><br /> Regards';
+                    $sub = 'MEE - Survey';
+                    $msg = 'This is an automated email reminding you to complete your survey.<br><br>Click <a href="' . LOGIN . 'application/60days.php?p_id='.$auto->id.'">here</a> to complete your survey.<br /><br /> Regards,<br><br>The MEE Team';
                     $this->Mailer->sendEmail($from, $to, $sub, $msg);
                     $queries = TableRegistry::get('Profiles');
                     $queries->query()->update()->set(['automatic_sent' => '1'])
@@ -2624,6 +2630,16 @@ class ProfilesController extends AppController{
                 }
             }
         }
+
+
+
+
+
+
+
+
+
+
 
         die();
     }
