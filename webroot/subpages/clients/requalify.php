@@ -75,7 +75,7 @@ Re-qualification will be applied to all profiles that are active.
                 <td><?php echo $p->hired_date;?></td>
                 <td><?php echo ($p->requalify=='1')?'yes':'no';?></td>
                 <td><?php $crons = $this->requestAction('/rapid/cron_client/'.$p->id."/".$client->id);
-                            $show ='';
+                           $show ='';
                            $cron = explode(",",$crons);
                            foreach($cron as $cr)
                            {
