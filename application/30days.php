@@ -556,7 +556,7 @@
             {
                  echo '<div class="clearfix"></div><div class="alert alert-info display-hide" style="display: block;">
                                 <button class="close" data-close="alert"></button>
-                                Sorry, the profile dosenot exists.
+                                Sorry, the profile does not exist.
                                 </div>'; 
             }
             else
