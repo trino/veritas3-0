@@ -1,7 +1,7 @@
 <script>
     $(function () {
 
-        <?php  if(isset($profiles) && $profiles!= ""){
+        <?php  if(isset($profiles) && $profiles> 0){
 
             foreach($arrs as $arr){
             ?>
@@ -26,7 +26,7 @@
 
 </script>
 <?php
-    if (isset($profiles) && $profiles != "") {
+    if (isset($profiles) && $profiles >0) {
         echo $msg . "<br/>";
     } else {
         echo "No re-qualifications found for this day (" . date('Y-m-d') . ")";

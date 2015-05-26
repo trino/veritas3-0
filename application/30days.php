@@ -64,7 +64,9 @@
  			30 Day Employee Review
  			<span style="display:block;">WAREHOUSE</span>
  		</div>
-         <?php if((!isset($_GET['msg']) || (isset($_GET['msg']) && $_GET['msg']=='error'))&&(isset($row))){
+         <?php 
+         echo $row['profile_type'];
+         if((!isset($_GET['msg']) || (isset($_GET['msg']) && $_GET['msg']=='error'))&&(isset($row)&& ($row['profile_type']=='9'||$row['profile_type']=='12'))){
             if(isset($_GET['msg']) && $_GET['msg']=='error')
              echo '<div class="clearfix"></div><div class="alert alert-info display-hide" style="display: block;">
                         <button class="close" data-close="alert"></button>
@@ -558,6 +560,13 @@
                                 <button class="close" data-close="alert"></button>
                                 Sorry, the profile does not exist.
                                 </div>'; 
+            }
+            elseif(isset($row)&&($row['profile_type']!='9' && $row['profile_type']!='12')&&!isset($_GET['msg']))
+            {
+                 echo '<div class="clearfix"></div><div class="alert alert-info display-hide" style="display: block;">
+                                <button class="close" data-close="alert"></button>
+                            This user cannot submit this form.
+                        </div>';
             }
             else
             {
