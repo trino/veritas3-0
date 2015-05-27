@@ -132,7 +132,7 @@
                     $rec = TableRegistry::get('profiles')->find()->where(['id' => $pro->created_by])->first();
                     if ($rec->email) {
                         $rec_email = $rec->email;
-                        $this->Mailer->sendEmail($from, $rec_email, "Survey form submitted", "The profile '" . $pro->username . "' has submitted the " . $type . "days form.Click <a href='".LOGIN."application/".$type."days.php?p_id=".$_POST['profile_id']."&form_id=".$data->id."' target='_blank'>here</a> to view the form.");
+                        $this->Mailer->sendEmail($from, $rec_email, "Survey form submitted", "The profile '" . $pro->username . "' has submitted the " . $type . "days survey. Click <a href='".LOGIN."application/".$type."days.php?p_id=".$_POST['profile_id']."&form_id=".$data->id."' target='_blank'>here</a> to view the form.");
 
                     }
                     return $this->redirect('/application/' . $type . "days.php?msg=success");
@@ -184,7 +184,6 @@
             //debug($clients);
             //die();
 
-            
             foreach ($clients as $c) {
                 $pro = '';
                 $msg .= "<br/><br/><strong>Client:</strong><br/>";

@@ -603,7 +603,7 @@
     {
          echo '<div class="clearfix"></div><div class="alert alert-info display-hide" style="display: block;">
                         <button class="close" data-close="alert"></button>
-                    This user cannot submit this form.
+                    User can not submit this form.
                 </div>';
     }
     else
