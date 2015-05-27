@@ -181,7 +181,6 @@
             $a = TableRegistry::get('profiles')->find()->where(['super' => '1'])->first();
             $admin_email = $a->email;
             $user_count = 0; 
-            $em = array();
             //debug($clients);
             //die();
 
@@ -194,6 +193,8 @@
                 $message .= "Re-qualified Date:" . $today . "</br>";
                 $em_names = '';
                 $pronames = array();
+                $em = array();
+
                 if ($c->requalify_re == '0') {
                     $date = $c->requalify_date;
                 }
