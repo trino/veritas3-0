@@ -155,8 +155,17 @@ function BasicCanvasSave(imageData){window.open(imageData,'jqScribble Image');}
             //jquery removes that stuff from the event object.
             canvas.addEventListener('touchstart', function(e)
             {
-                $elm.parent().find('.touched').val('1');
-                $elm.closest('.touched').val('1');
+                
+                
+                if($elm.parent().find('.touched').parent().attr('id')=='sig1' || $elm.parent().find('.touched').parent().attr('id')=='sig2' || $elm.parent().find('.touched').parent().attr('id')=='sig3' || $elm.parent().find('.touched').parent().attr('id')=='sig4')
+                {
+                //do nothing
+                }
+                else
+                {
+                    $elm.parent().find('.touched').val('1');
+                    
+                }
                 var o = $elm.offset();
                 e.preventDefault();
                 if(e.touches.length > 0)self.brush.strokeBegin(e.touches[0].pageX-o.left, e.touches[0].pageY-o.top);
@@ -182,8 +191,16 @@ function BasicCanvasSave(imageData){window.open(imageData,'jqScribble Image');}
             $(canvas).bind({
                 mousedown: function(e)
                 {
-                    //alert($elm.attr('id'));
-                    $elm.parent().find('.touched').val('1');
+                    
+                    if($elm.parent().find('.touched').parent().attr('id')=='sig1' || $elm.parent().find('.touched').parent().attr('id')=='sig2' || $elm.parent().find('.touched').parent().attr('id')=='sig3' || $elm.parent().find('.touched').parent().attr('id')=='sig4')
+                    {
+                    //do nothing
+                    }
+                    else
+                    {
+                        $elm.parent().find('.touched').val('1');
+                        
+                    }
                     var o = $elm.offset();
                     self.brush.strokeBegin(e.pageX-o.left, e.pageY-o.top);
                 },
