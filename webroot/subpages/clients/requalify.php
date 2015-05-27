@@ -26,8 +26,8 @@ Re-qualification will be applied to all profiles that are active.
     <tr>
         <td>Re-qualify Frequency?</td>
         <td>
-            
-            <input type="radio" <?php if(isset($client)&& $client->requalify_frequency=='3')echo "checked";?> value="3" name="requalify_frequency"> 3 Months
+            <input type="radio" <?php if(isset($client)&& $client->requalify_frequency=='1')echo "checked";?> value="1" name="requalify_frequency"> 1 Month
+            &nbsp;&nbsp;<input type="radio" <?php if(isset($client)&& $client->requalify_frequency=='3')echo "checked";?> value="3" name="requalify_frequency"> 3 Months
             &nbsp;&nbsp;<input type="radio" <?php if(isset($client)&& $client->requalify_frequency=='6')echo "checked";?> value="6" name="requalify_frequency"> 6 Months
             &nbsp;&nbsp;<input type="radio" <?php if(isset($client)&& $client->requalify_frequency=='12')echo "checked";?> value="12" name="requalify_frequency"> 12 Months
 

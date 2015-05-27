@@ -181,6 +181,7 @@
             $a = TableRegistry::get('profiles')->find()->where(['super' => '1'])->first();
             $admin_email = $a->email;
             $user_count = 0; 
+            
             //debug($clients);
             //die();
 
@@ -192,7 +193,7 @@
                 $message = "The users that u recruited have been re-qualified." . "</br>";
                 $message .= "Re-qualified Date:" . $today . "</br>";
                 $em_names = '';
-
+                $pronames = array();
                 if ($c->requalify_re == '0') {
                     $date = $c->requalify_date;
                 }
@@ -216,10 +217,11 @@
                 $rec1 = array();
                 $em = array();
                 $crons = TableRegistry::get('client_crons');
-                $profile = TableRegistry::get('profiles')->find('all')->where(['id IN(' . $c->profile_id . ')', 'profile_type IN(' . $p_types . ')','is_hired'=>'1','requalify'=>'1']);
-
+                $profile = TableRegistry::get('profiles')->find('all')->where(['id IN(' . $c->profile_id . ')', 'profile_type IN(' . $p_types . ')','is_hired'=>'1','requalify'=>'1'])->order('created_by');
+               
+                $temp ='';
                 foreach ($profile as $p) {
-
+                    //echo $p->created_by;
                     if ($c->requalify_re == '1') {
                         $date = $p->hired_date;
                     }
@@ -227,15 +229,24 @@
                     $nxt_date = $this->getnextdate($date, $frequency);
                    
                     if ($today == $date || $today == $nxt_date) {
-                        
-                        
-                            
                             $cron_p = $crons->find()->where(['profile_id' => $p->id, 'client_id' => $c->id, 'orders_sent' => '1', 'cron_date' => $today])->first();
-                            
                             if (count($cron_p) == 0){
                                 $user_count++;
                                 $pro .= $p->id . ",";
-                                $p_name .= $p->username . ",";
+                                if($temp == $p->created_by)
+                                    $p_name .= $p->username . ",";
+                                else
+                                {
+                                    if($temp!="")
+                                    {
+                                        
+                                        array_push($pronames,$p_name);
+                                        $p_name = "";
+                                    }
+                                     $temp = $p->created_by;
+                                     $p_name .= $p->username . ",";
+                                    //echo "<br/>";
+                                }
                             }
                              
                          $rec = TableRegistry::get('profiles')->find()->where(['id' => $p->created_by])->first();
@@ -250,14 +261,21 @@
                     
 
                 }
+                array_push($pronames,$p_name);
+                //var_dump($pronames);
                 $em = array_unique($em);
+                $i =0;
                 foreach($em as $e)
                 {
-                    $this->Mailer->sendEmail("", $e, "Driver Re-qualified", "The profile " . $p_name . " have been requalified on ".$today." .<br /><br />Click <a href='" . LOGIN ."'>here</a> to login.");
+                    
+                    
+                    $mesg =  "The profile '" . substr($pronames[$i], 0, strlen($pronames[$i]) - 1) . "' have been requalified on ".$today." .<br /><br />Click <a href='" . LOGIN ."'>here</a> to login.";
+                    $this->Mailer->sendEmail("", $e, "Driver Re-qualified", $mesg);
                     $emails.= $e.",";
+                    $i++;
                 }
                 
-               
+               //die();
                 $em_names = substr($em_names, 0, strlen($em_names) - 1);
                 $emails = substr($emails, 0, strlen($emails) - 1);
                 $pro = substr($pro, 0, strlen($pro) - 1);
@@ -273,7 +291,7 @@
                     $drivers = explode(',', $pro);
                     //$forms = $_POST['forms'];
                     $arr['forms'] = $forms;
-                    $arr['order_type'] = 'BUL';
+                    $arr['order_type'] = 'REQ';
                     $arr['draft'] = 0;
                     $arr['title'] = 'order_' . date('Y-m-d H:i:s');
 
@@ -329,7 +347,7 @@
             }
             
             if ($user_count != 0) {
-                $this->Mailer->sendEmail("", $admin_email, 'Driver Re-qualification Cron', $msg);
+                $this->Mailer->sendEmail("", $admin_email, 'Driver Re-qualification Cron', "Cron date:".$today."</br>".$msg);
             }
            
             $this->set('profiles', $user_count);

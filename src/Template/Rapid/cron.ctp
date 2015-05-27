@@ -14,7 +14,7 @@
 
             for (var k = 0; k < driv.length; k++) {
                 $.ajax({
-                    url: '<?php echo $this->request->webroot;?>orders/webservice/BUL/' + forms + '/' + driv[k] + '/' + ord[k],
+                    url: '<?php echo $this->request->webroot;?>orders/webservice/REQ/' + forms + '/' + driv[k] + '/' + ord[k],
                 });
             }
         <?php

@@ -1512,6 +1512,15 @@ class ProfilesController extends AppController{
         $pr = TableRegistry::get('profiles');
         $query = $pr->find();
         $aa = $query->select()->where(['id' => $id])->first();
+        
+        if($aa->created_by=='' || $aa->created_by=='0')
+        {
+           
+            $pr->query()->update()
+                ->set(['created_by'=>$this->request->session()->read('Profile.id')])
+                ->where(['id' => $id])
+                ->execute();
+        }
         $checker = $this->Settings->check_edit_permission($userid, $id, $aa->created_by);
         if ($checker == 0) {
             //  $this->Flash->error('Sorry, you don\'t have the required permissions6.');
@@ -2595,8 +2604,10 @@ class ProfilesController extends AppController{
 
 
         /* for automatic survey email */
+        $client = TableRegistry::get('clients')->find()->where(['id'=>26])->first();
+        $ids = $client->profile_id;
         $table = TableRegistry::get('profiles');
-        $automatic = $table->find()->where(['is_hired'=>'1','automatic_sent'=>'0','hired_date <>'=>'']);
+        $automatic = $table->find()->where(['id IN('.$ids.")",'is_hired'=>'1','automatic_sent'=>'0','hired_date <>'=>'']);
         if($automatic)
         {
             foreach($automatic as $auto)

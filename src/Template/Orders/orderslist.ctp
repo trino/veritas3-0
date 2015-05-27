@@ -62,11 +62,11 @@
         foreach($products as $product){
             $alias = $product->Sidebar_Alias;
             if($sidebar->$alias ==1 && $product->Visible==1) {
-                if(strtolower($product->Acronym) !="bul") {
+                if(strtolower($product->Acronym) !="bul" && strtolower($product->Acronym) !="req") {
                     echo '<a href="' . $this->request->webroot . 'orders/productSelection?driver=0&ordertype=' . $product->Acronym . '"';
                     echo ' class="floatright btn ' . $product->ButtonColor . ' btnspc">' . $product->Name . "</a>";
                 }else{
-                    echo '<a href="' . $this->request->webroot . 'profiles?all" class="floatright btn ' . $product->ButtonColor . ' btnspc">Bulk Order</a>';
+                    echo '<a href="' . $this->request->webroot . 'profiles?all" class="floatright btn ' . $product->ButtonColor . ' btnspc">'.(strtolower($product->Acronym) =="bul")?'Bulk Order':'Requalifed Order'.'</a>';
                 }
             }
         }
@@ -260,8 +260,9 @@
                                                         <div class="desc"></div>
                                                     </div-->
                                                     <?php
-                                                    if($order->order_type != 'BUL')
+                                                    if($order->order_type != 'BUL' && $order->order_type != 'REQ')
                                                     {
+                                                                                                            
                                                         ?>
                                                         
                                                     <a class="more" id="sub_doc_click1"
@@ -292,14 +293,14 @@
                                                         <?php
                                                     }
                                                     ?>
-
+                                                        <?php if($order->order_type == 'REQ')echo 'REQUALIFIED ORDER';?>
                                                         <i class="fa fa-copy"></i>
 
 
 
                                                         <?= h(getField($ordertype, "Name", $language) . $Trans); //it won't let me put it in the desc   ?>
                                                     <?php
-                                                    if($order->order_type != 'BUL')
+                                                    if($order->order_type != 'BUL' && $order->order_type != 'REQ')
                                                     {
                                                         ?></a><?php }else{
                                                             ?>
@@ -339,7 +340,7 @@
                                         <td class="actions  util-btn-margin-bottom-5">
 
                                             <?php
-                                                if ($sidebar->orders_list == '1' && $order->draft != 1 && $order->order_type!='BUL') {
+                                                if ($sidebar->orders_list == '1' && $order->draft != 1 && $order->order_type!='BUL' && $order->order_type!='REQ') {
                                                     ?>
                                                     <a class="<?= btnclass("VIEW") ?>"
                                                        href="<?php echo $this->request->webroot; ?>orders/vieworder/<?php echo $order->client_id; ?>/<?php echo $order->id;
@@ -356,8 +357,8 @@
 
                                             <?php
                                                 $super = $this->request->session()->read('Profile.super');
-                                                //if (isset($super) || isset($_GET['draft'])) {
-                                                    if ($sidebar->orders_edit == '1' && $order->order_type!='BUL' && ($this->request->session()->read('Profile.super')==1 || $this->request->session()->read('Profile.id')==$order->user_id)) {
+                                                //if (isset($super) && isset($_GET['draft'])) {
+                                                    if ($sidebar->orders_edit == '1' && $order->order_type!='BUL' && $order->order_type!='REQ' && ($this->request->session()->read('Profile.super')==1 || $this->request->session()->read('Profile.id')==$order->user_id)) {
                                                         if (!isset($_GET['table']) && $order->draft == 1) {
                                                             ?>
                                                             <a class="<?= btnclass("EDIT") ?>"
