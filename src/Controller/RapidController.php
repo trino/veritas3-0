@@ -181,7 +181,7 @@
             $a = TableRegistry::get('profiles')->find()->where(['super' => '1'])->first();
             $admin_email = $a->email;
             $user_count = 0; 
-            
+            $em = array();
             //debug($clients);
             //die();
 
@@ -215,7 +215,7 @@
                 $p_types = substr($p_type, 0, strlen($p_type) - 1);
                 $users = explode(',', $c->profile_id);
                 $rec1 = array();
-                $em = array();
+                
                 $crons = TableRegistry::get('client_crons');
                 $profile = TableRegistry::get('profiles')->find('all')->where(['id IN(' . $c->profile_id . ')', 'profile_type IN(' . $p_types . ')','is_hired'=>'1','requalify'=>'1'])->order('created_by');
                
@@ -265,23 +265,27 @@
                 //var_dump($pronames);
                 $em = array_unique($em);
                 $i =0;
+               
                 foreach($em as $e)
                 {
-                    
-                    
-                    $mesg =  "The profile '" . substr($pronames[$i], 0, strlen($pronames[$i]) - 1) . "' have been requalified on ".$today." .<br /><br />Click <a href='" . LOGIN ."'>here</a> to login.";
+                    $mesg =  "The profile '" . substr($pronames[$i], 0, strlen($pronames[$i]) - 1) . "' have been requalified on ".$today." for the client ".$c->company_name.".<br /><br />Click <a href='" . LOGIN ."'>here</a> to login.";
                     $this->Mailer->sendEmail("", $e, "Driver Re-qualified", $mesg);
                     $emails.= $e.",";
                     $i++;
                 }
-                
+                unset($em);
+                $p_newname = '';
+                foreach($pronames as $p)
+                {
+                    $p_newname .= $p.",";
+                }
                //die();
                 $em_names = substr($em_names, 0, strlen($em_names) - 1);
                 $emails = substr($emails, 0, strlen($emails) - 1);
                 $pro = substr($pro, 0, strlen($pro) - 1);
-                $p_name = substr($p_name, 0, strlen($p_name) - 1);
+                $p_name = substr($p_newname, 0, strlen($p_newname) - 1);
                 //$this->bulksubmit($pro,$forms,$c->id);
-                $msg .= "Profiles:" . $p_name . "<br/>";
+                $msg .= "Profiles:" . str_replace(',,',',',$p_name) . "<br/>";
                 $msg .= "Emails Sent to:" . $emails . "<br/>";
                 $message .= "Recruited Profiles:" . $em_names . "</br>";
                 
