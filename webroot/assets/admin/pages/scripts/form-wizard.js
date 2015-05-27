@@ -507,7 +507,7 @@ var FormWizard = function () {
 
                                 if($('#sig2 .touched').val()!='1' && $('#sig2 .touched_edit2').val()!='1')
                                 {
-                                    alert('Please provide your signature to confirm.');
+                                    alert('Please save the signature before you proceed.');
                                     $('html,body').animate({
                                         scrollTop: $('#sig2').offset().top},
                                     'slow');
@@ -516,7 +516,7 @@ var FormWizard = function () {
                                 else
                                 if($('#sig4 .touched').val()!='1' && $('#sig4 .touched_edit4').val()!='1')
                                 {
-                                    alert('Please provide your signature to confirm.');
+                                    alert('Please save the signature before you proceed.');
                                     $('html,body').animate({
                                         scrollTop: $('#sig4').offset().top},
                                     'slow');
@@ -525,7 +525,7 @@ var FormWizard = function () {
                                 else
                                 if($('#sig1 .touched').val()!='1' && $('#sig1 .touched_edit1').val()!='1')
                                 {
-                                    alert('Please provide your signature to confirm.');
+                                    alert('Please save the signature before you proceed.');
                                     $('html,body').animate({
                                         scrollTop: $('#sig1').offset().top},
                                     'slow');
@@ -535,7 +535,7 @@ var FormWizard = function () {
                                 else
                                 if($('#sig3 .touched').val()!='1' && $('#sig3 .touched_edit3').val()!='1')
                                 {
-                                    alert('Please provide your signature to confirm.');
+                                    alert('Please save the signature before you proceed.');
                                     $('html,body').animate({
                                         scrollTop: $('#sig3').offset().top},
                                     'slow');
