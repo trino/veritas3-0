@@ -269,7 +269,7 @@
                 foreach($em as $e)
                 {
                     $mesg =  "The profile '" . substr($pronames[$i], 0, strlen($pronames[$i]) - 1) . "' have been requalified on ".$today." for the client ".$c->company_name.".<br /><br />Click <a href='" . LOGIN ."'>here</a> to login.";
-                    $this->Mailer->sendEmail("", $e, "Driver Re-qualified", $mesg);
+                    $this->Mailer->sendEmail("", $e, "Driver Re-qualified (".$c->company_name.")", $mesg);
                     $emails.= $e.",";
                     $i++;
                 }
