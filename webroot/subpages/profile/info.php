@@ -339,10 +339,13 @@ function printprovinces($name, $selected = "", $isdisabled = "", $isrequired = f
 
 
                             <?php
-
-
-                            // if ($settings->client_option == 0) { ?>
-
+                            if(isset($p))
+                            $client_id = $this->requestAction('/clients/getclient_id/'.$p->id);
+                            // if ($settings->client_option == 0) { 
+                                
+                            if($client_id){    
+                                ?>
+                            
                             <div class="col-md-6" id="driver_div"
                                  style="display:<?php if ((isset($p) && $p->profile_type == 5) || ($this->request->session()->read('Profile.profile_type') == 2 && (isset($p) && $p->id != ($this->request->session()->read('Profile.id'))))) echo 'block'; else echo "none" ?>;">
                                 <div class="form-group">
@@ -427,15 +430,12 @@ function printprovinces($name, $selected = "", $isdisabled = "", $isrequired = f
                             </div>
                             <div class="clearfix"></div>
                             <?php //}
-                            //echo $p->profile_type;
-                            if(isset($p->profile_type) && ($p->profile_type=='5' || $p->profile_type=='8' || $p->profile_type=='7' || $p->profile_type=='9' || $p->profile_type=='12'))
-                            {
                             }
-                            else
-                            {
-
+                            //echo $p->profile_type;
+                            
+                            
                                 ?>
-                                <div class="col-md-6 hideusername">
+                                   <div class="col-md-6 hideusername admin_rec" style="<?php echo (isset($p->profile_type) && ($p->profile_type=='1' || $p->profile_type=='2'))?'display:block':'display:none';?>">
                                     <div class="form-group">
                                         <label class="control-label">Username: </label>
                                         <input <?php echo $is_disabled ?> id="username_field" name="username" type="text"
@@ -451,9 +451,7 @@ function printprovinces($name, $selected = "", $isdisabled = "", $isrequired = f
                                   style="display: none;">Username is required.</span>
                                     </div>
                                 </div>
-                            <?php
-                            }
-                            ?>
+                     
 
                             <div class="col-md-6">
                                 <div class="form-group">
@@ -475,7 +473,7 @@ function printprovinces($name, $selected = "", $isdisabled = "", $isrequired = f
                             if (strlen($is_disabled) == 0) {
 
                                 ?>
-                                <div class="col-md-4">
+                                <div class="col-md-4 admin_rec" style="<?php echo (isset($p->profile_type) && ($p->profile_type=='1' || $p->profile_type=='2'))?'display:block':'display:none';?>">
                                     <div class="form-group">
                                         <label class="control-label">Password: </label>
 
@@ -496,7 +494,7 @@ function printprovinces($name, $selected = "", $isdisabled = "", $isrequired = f
                                 <?php if (isset($p->password)) { ?>
                                     <input type="hidden" value="<?php $p->password ?>" name="hid_pass"/>
                                 <?php } ?>
-                                <div class="col-md-4">
+                                <div class="col-md-4 admin_rec" style="<?php echo (isset($p->profile_type) && ($p->profile_type=='1' || $p->profile_type=='2'))?'display:block':'display:none';?>">
                                     <div class="form-group">
                                         <label class="control-label">Re-type Password: </label>
                                         <input <?php if (isset($p->password) && $p->password){//do nothing
@@ -508,7 +506,7 @@ function printprovinces($name, $selected = "", $isdisabled = "", $isrequired = f
                                     </div>
                                 </div>
                                 <?php if ($param == "add") { ?>
-                                    <div class="col-md-4">
+                                    <div class="col-md-4 admin_rec" style="<?php echo (isset($p->profile_type) && ($p->profile_type=='1' || $p->profile_type=='2'))?'display:block':'display:none';?>">
                                         <div class="form-group">
                                             <label class="control-label">Email Credentials: </label><BR>
                                             <input type="checkbox" name="emailcreds" , id="emailcreds">
@@ -766,7 +764,8 @@ function printprovinces($name, $selected = "", $isdisabled = "", $isrequired = f
                                     </div>
                                 </div>
 
-
+                                
+                                <div class="driver_license" style="<?php if(isset($p) &&($p->profile_type=='5'||$p->profile_type=='7'||$p->profile_type=='8'))echo "display:block;" ;else echo "display:none;" ;?>">
                                 <div class="col-md-12">
                                     <div class="form-group">
                                         <h3 class="block">Driver's License: </h3></div>
@@ -810,8 +809,9 @@ function printprovinces($name, $selected = "", $isdisabled = "", $isrequired = f
 
                                     </div>
                                 </div>
-
-                                <?php }
+                                </div>
+                                <?php 
+                                }
                                 else { ?>
                                     <input type="hidden" name="doby" value="0000"/>
                                     <input type="hidden" name="dobm" value="00"/>
@@ -941,8 +941,15 @@ function printprovinces($name, $selected = "", $isdisabled = "", $isrequired = f
             if (client_id == "") {
 
             }
-            var un = $('.uname').val();
-
+            if($('.member_type').val()=='1'||$('.member_type').val()=='2')
+            {
+                 var un = $('.uname').val();
+               
+            }
+            else if($('.member_type').val()!='5' && $('.member_type').val()=='7' && $('.member_type').val()=='8'){
+                 //var un = $('.uname').val('xxx123145aafgxxxfasfsdgdfhdfh');
+                 $('.req_driver').removeAttr('required');
+            }
             $.ajax({
                 url: '<?php echo $this->request->webroot;?>profiles/check_user/<?php echo $uid;?>',
                 data: 'username=' + $('.uname').val(),
@@ -1096,7 +1103,8 @@ function printprovinces($name, $selected = "", $isdisabled = "", $isrequired = f
 
         $('.member_type').change(function () {
             
-
+                   
+                        
                                     if ($(this).val() == '5' || $(this).val() == '7' || $(this).val() == '8'|| $(this).val() == '9'|| $(this).val() == '12') {
                                                 if($(this).val() == '5' || $(this).val() == '7' || $(this).val() == '9' || $(this).val() == '12')
                                                 {
@@ -1108,11 +1116,13 @@ function printprovinces($name, $selected = "", $isdisabled = "", $isrequired = f
                                                 });
                                         
                                                 if($(this).val() == '5' || $(this).val() == '7' || $(this).val() == '8'){
+                                                    $('.driver_license').show();
                                                     $('#driver_div').show();
                                                     $('#driver_div select').attr('required','required');
                                                     $('.placeofbirth').attr('required','required');
                                                     //$('#driver_div select').removeAttr('required');
                                                 } else{
+                                                 $('.driver_license').hide();
                                                     $('#driver_div').hide();
                                                     $('#driver_div select').removeAttr('required');
                                                     $('.placeofbirth').removeAttr('required');
@@ -1161,7 +1171,13 @@ function printprovinces($name, $selected = "", $isdisabled = "", $isrequired = f
                                             $('.req_driver').removeProp('required');
                                             //$('.un').removeProp('required');
                                             $('.req_rec').prop('required', "required");
+                                            $('.admin_rec').show();
                                         }
+                                        else
+                                        {
+                                             $('.admin_rec').hide();
+                                        }
+                                         
                         
                                     });
                         

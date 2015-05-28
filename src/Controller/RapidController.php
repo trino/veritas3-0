@@ -236,6 +236,8 @@
 
                 $temp = '';
                 foreach ($profile as $p) {
+                    if($p->profile_type=='5'||$p->profile_type=='7'||$p->profile_type=='8')
+                    {
                     //echo $p->created_by;
                     if ($c->requalify_re == '1') {
                         $date = $p->hired_date;
@@ -270,7 +272,7 @@
                         }
 
                     }
-
+                    }
                 }
                 array_push($pronames, $p_name);
                 //var_dump($pronames);

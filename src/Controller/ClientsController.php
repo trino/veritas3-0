@@ -28,6 +28,22 @@
             }
 
         }
+        function getclient_id($id)
+        {
+            $client = TableRegistry::get('clients')->find()->where(['id'=>'17'])->first();
+            $pid = $client->profile_id;
+            $pids = explode(",",$pid);
+            if(in_array($id,$pids))
+            {
+              $q= '1';
+           
+            }
+            else
+                $q = 0;
+              $this->response->body($q);
+            return $this->response;
+             die();
+        }
 
         function upload_img($id = ""){
             if (isset($_FILES['myfile']['name']) && $_FILES['myfile']['name']) {
