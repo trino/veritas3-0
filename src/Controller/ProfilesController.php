@@ -2613,8 +2613,11 @@ class ProfilesController extends AppController{
             foreach($automatic as $auto)
             {
                 $today = date('Y-m-d');
-                $thirty = date('Y-m-d', strtotime($auto->hired_date.'+30 days'));
-                $sixty = date('Y-m-d', strtotime($auto->hired_date.'+60 days'));
+                 $thirty = date('Y-m-d', strtotime($auto->hired_date.'+30 days'));
+                 $sixty = date('Y-m-d', strtotime($auto->hired_date.'+60 days'));
+              //  echo   $sixty = date('Y-m-d', strtotime($today.'-60 days'));
+
+             
                 if($auto->profile_type == '9' || $auto->profile_type == '12' && $today==$thirty && $auto->email){
                     $from = array('info@' . $path => $setting->mee);
                     $to = $auto->email;
