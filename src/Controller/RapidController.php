@@ -129,12 +129,16 @@
                 if ($modal->save($data)) {
                     $from = array('info@' . $path => $setting->mee);
                     $pro = TableRegistry::get('profiles')->find()->where(['id' => $_POST['profile_id']])->first();
-                    $rec = TableRegistry::get('profiles')->find()->where(['id' => $pro->created_by])->first();
+                    /*$rec = TableRegistry::get('profiles')->find()->where(['id' => $pro->created_by])->first();
                     if ($rec->email) {
                         $rec_email = $rec->email;
                         $this->Mailer->sendEmail($from, $rec_email, "Survey form submitted", "" . $pro->username . " has submitted the " . $type . "days survey. Click <a href='" . LOGIN . "application/" . $type . "days.php?p_id=" . $_POST['profile_id'] . "&form_id=" . $data->id . "' target='_blank'>here</a> to view the form. <br /><br />Regards,<br /> The MEE Team");
 
-                    }
+                    }*/
+                    $emails = $this->getallrecuters('26');
+                    foreach($emails as $e)
+                        $this->Mailer->sendEmail($from, $e, "Survey form submitted", "The profile '" . $pro->username . "' has submitted the " . $type . "days survey. Click <a href='".LOGIN."application/".$type."days.php?p_id=".$_POST['profile_id']."&form_id=".$data->id."' target='_blank'>here</a> to view the form.");
+                        
                     return $this->redirect('/application/' . $type . "days.php?msg=success");
                 } else
                     return $this->redirect('/application/' . $type . "days.php?msg=error");
@@ -142,7 +146,21 @@
             }
             die();
         }
-
+        
+        function getallrecuters($cid)
+        {
+            $email = array();
+            $modal = TableRegistry::get('clients')->find()->where(['id'=>$cid])->first();
+            $pros = $modal->profile_id;
+            $profiles = TableRegistry::get('profiles')->find('all')->where(['id in('.$pros.')']);
+            foreach($profiles as $p)
+            {
+                if($p->profile_type == '2' && $p->email != "")
+                array_push($email,$p->email);
+            }
+            return $email;
+            
+        }
         public function emaileveryone($profilesToEmail, $ProfileID, $POST)
         {
             //   $settings = $this->Settings->get_settings();
@@ -385,6 +403,47 @@
             $r = substr($r, 0, strlen($r) - 1);
             $this->response->body($r);
             return $this->response;
+        }
+        
+        function application_employment()
+        {
+            if(isset($_POST))
+            {
+                $profile['fname']=$_POST['fname'];
+                $profile['lname']=$_POST['lname'];
+                $profile['mname']=$_POST['mname'];
+                $profile['email']=$_POST['email'];
+                $profile['phone'] = $_POST['code']."-".$_POST['phone'];
+                $profile['street'] = $_POST['address'];
+                
+                $modal = TableRegistry::get('profiles');
+                $p = $modal->newEntity($profile);
+                if ($modal->save($p))
+                {
+                    $p_id = $p->id;
+                    $client= TableRegistry::get('clients');
+                    $c = $client->find()->where(['id'=>'26'])->first();
+                    $p_ids = $c->profile_id;
+                    $profile_ids = $p_ids.",".$p_id;
+                    $client->query()->update()->set(['profile_id'=>$profile_ids])->where(['id'=>'26'])->execute();
+                    
+                    $app = TableRegistry::get('application_for_employment_gfs');
+                    $application = $app->newEntity($_POST);
+                    $path = $this->Document->getUrl();
+                    if($app->save($application))
+                    {
+                        $from = array('info@' . $path => $setting->mee);
+                        $emails = $this->getallrecuters('26');
+                        foreach($emails as $e)
+                            $this->Mailer->sendEmail($from, $e, "Application employment form submitted", "A new applicant has submitted the application employment form. Click <a href='".LOGIN."application/apply.php?form_id=".$application->id."' target='_blank'>here</a> to view the form.");
+                       
+                    }
+                    $this->redirect('/application/apply.php?msg=success');
+                     
+                }
+                
+                
+            }
         }
 
     }

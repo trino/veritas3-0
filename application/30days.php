@@ -65,7 +65,7 @@
  			<span style="display:block;">WAREHOUSE</span>
  		</div>
          <?php 
-         echo $row['profile_type'];
+         
          if((!isset($_GET['msg']) || (isset($_GET['msg']) && $_GET['msg']=='error'))&&(isset($row)&& ($row['profile_type']=='9'||$row['profile_type']=='12'))){
             if(isset($_GET['msg']) && $_GET['msg']=='error')
              echo '<div class="clearfix"></div><div class="alert alert-info display-hide" style="display: block;">
