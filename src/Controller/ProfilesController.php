@@ -2422,7 +2422,7 @@ class ProfilesController extends AppController{
         $datetime = date('Y-m-d H:i:s');
         echo "Checking for events before " . $datetime;
         $query = $que->select()->where(['(date <= "' . $datetime . '")', 'sent' => 0])->limit(200);
-        echo "<BR>" . iterator_count($query) . " emails to send";
+        echo "<BR>" . iterator_count($query) . " emails to send<br><br>";
         //VAR_Dump($query);die();
         foreach ($query as $todo) {
             if ($todo->email_self == '1') {

@@ -293,10 +293,8 @@
                                                         <?php
                                                     }
                                                     ?>
-                                                        <?php if($order->order_type == 'REQ')echo 'REQUALIFIED ORDER';?>
+                                                        <?php if($order->order_type == 'REQ')echo 'RE-QUALIFICATION';?>
                                                         <i class="fa fa-copy"></i>
-
-
 
                                                         <?= h(getField($ordertype, "Name", $language) . $Trans); //it won't let me put it in the desc   ?>
                                                     <?php

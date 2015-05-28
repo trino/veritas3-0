@@ -346,8 +346,8 @@
 
                                         if ($sidebar->orders_create == 1) {
                                             foreach ($products as $product) {
-                                                $alias = $product->Sidebar_Alias;
-                                                if ($alias) {
+                                                 $alias = $product->Sidebar_Alias;
+                                                if ($alias && $alias !="bulk") {
                                                     if ($sidebar->$alias == 1 && $product->Visible == 1) {
                                                         echo '<br><a href="' . $this->request->webroot . 'orders/productSelection?driver=' . $profile->id;
                                                         echo '&ordertype=' . $product->Acronym . '"';
