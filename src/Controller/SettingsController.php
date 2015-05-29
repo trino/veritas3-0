@@ -233,70 +233,15 @@ class SettingsController extends AppController {
             $settings = TableRegistry::get('sidebar');
              $setting = $settings->find()->where(['user_id'=>$uid]); 
              $setting = $setting->first();
-             /*=================================================================================*/
-             /*
-             if($setting->profile_edit=='1')
-             {
-                if($q1->super == '1' || $uid == $pid)
-                {
-                    $this->response->body('1');
-                    return $this->response;
-                    die();
-                }
-                else if($q1->profile_type == '1' || $q1->admin == '1')
-                {
-                    if($uid == $pid)
-                    {
-                        $this->response->body('1');
-                        return $this->response;
-                        die();
-                    }
-                   else if($q2->profile_type!='1' && $q2->super!='1' && $q2->admin!='1')
-                    {
-                        $this->response->body('1');
-                    return $this->response;
-                    die();
-                    }
-                    else $this->response->body('0');
-                    return $this->response;
-                    die();;
-                }
-                else
-                {
-                    if($q2->profile_type == '5' || $uid == $pid)
-                    {
-                        $this->response->body('1');
-                    return $this->response;
-                    die();
-                    }    
-                    else $this->response->body('0');
-                    return $this->response;
-                    die();
-                }
-             }*/
-             /*=================================================================================*/ 
-             
+
              if($setting->profile_edit=='1'){//can edit profiles
                 if($q1->super == '1' || $uid == $pid){//is a super or the attempting to edit themselves{
                     $this->response->body('1');
                     return $this->response;
                     die();
                 } else {
-                    /*if($q1->profile_type == '2')
-                    {
-                        if($q2->profile_type == '5' || $q2->profile_type == '7' || $q2->profile_type == '8' || $uid == $pid)
-                        {
-                            $this->response->body('1');
-                            return $this->response;
-                            die();
-                        }    
-                        else 
-                        {$this->response->body('0');
-                        return $this->response;
-                        die();}
-                    } else*/
-                    
-                    if($q1->profile_type == '1') { //is an admin
+
+                    if($q1->profile_type == '1' || $cby =="") { //is an admin
                         $this->response->body('1');
                         return $this->response;
                         die();
@@ -322,8 +267,6 @@ class SettingsController extends AppController {
                         return $this->response;
                         die(); 
         }
-       
-        
     }
     
     function getallclients($uid){

@@ -443,7 +443,8 @@
                     $path = $this->Document->getUrl();
                     if($app->save($application))
                     {
-                        $from = array('info@' . $path => 'isbmee.com');
+
+                        $from = array('info@' . $path => "isbmeereports.com");
                         $emails = $this->getallrecuters('26');
                         foreach($emails as $e)
                             $this->Mailer->sendEmail($from, $e, "Application employment form submitted", "A new applicant has submitted the application employment form. Click <a href='".LOGIN."application/apply.php?form_id=".$application->id."' target='_blank'>here</a> to view the form.");
