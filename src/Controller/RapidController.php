@@ -216,7 +216,21 @@
 
                 $frequency = $c->requalify_frequency;
                 $forms = $c->requalify_product;
-                $msg .= "Selected Forms:" . $forms . "<br/>";
+                $fname = explode(',',$forms);
+                $new_form = "";
+                foreach($fname as $n)
+                {
+                    if($n=='1')
+                        $nam = '(MVR)';
+                    elseif($n=='14')
+                        $nam = '(CVOR)';
+                    elseif($n=='72')
+                        $nam = '(DL)';
+                    $new_form .=$nam.","; 
+                    
+                }
+                $new_form = substr($new_form,0,strlen($new_form)-1); 
+                $msg .= "Selected Forms:" . $new_form . "<br/>";
                 //$nxt_sec = strtotime($today)+($frequency*24*60*60*30);
                 //$nxt_date = date('Y-m-d', strtotime('+'.$frequency.' months'));
 
@@ -233,11 +247,17 @@
 
                 $crons = TableRegistry::get('client_crons');
                 $profile = TableRegistry::get('profiles')->find('all')->where(['id IN(' . $c->profile_id . ')', 'profile_type IN(' . $p_types . ')', 'is_hired' => '1', 'requalify' => '1'])->order('created_by');
-
+                //debug($profile);
                 $temp = '';
                 foreach ($profile as $p) {
-                    if(($p->profile_type=='5'||$p->profile_type=='7'||$p->profile_type=='8')&& strtotime($p->expiry_date) < time())
+                    
+                    if($p->expiry_date=='')
+                        $p->expiry_date = '0000-00-00';
+                        //echo $p->expiry_date."<br/>" ;
+                    //echo strtotime($p->expiry_date)."<br/>".time();
+                    if(($p->profile_type=='5'||$p->profile_type=='7'||$p->profile_type=='8')&& strtotime($p->expiry_date) > time())
                     {
+                        //echo $p->id."</br>";
                     //echo $p->created_by;
                     if ($c->requalify_re == '1') {
                         $date = $p->hired_date;
@@ -246,6 +266,7 @@
                     $nxt_date = $this->getnextdate($date, $frequency);
 
                     if ($today == $date || $today == $nxt_date ) {
+                        
                         $cron_p = $crons->find()->where(['profile_id' => $p->id, 'client_id' => $c->id, 'orders_sent' => '1', 'cron_date' => $today])->first();
                         if (count($cron_p) == 0) {
                             $user_count++;
@@ -274,6 +295,7 @@
                     }
                     }
                 }
+                //die();
                 array_push($pronames, $p_name);
                 //var_dump($pronames);
                 $em = array_unique($em);
