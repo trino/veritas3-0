@@ -236,7 +236,7 @@
 
                 $temp = '';
                 foreach ($profile as $p) {
-                    if($p->profile_type=='5'||$p->profile_type=='7'||$p->profile_type=='8')
+                    if(($p->profile_type=='5'||$p->profile_type=='7'||$p->profile_type=='8')&& strtotime($p->expiry_date) < time())
                     {
                     //echo $p->created_by;
                     if ($c->requalify_re == '1') {
@@ -245,7 +245,7 @@
                     //echo $date;
                     $nxt_date = $this->getnextdate($date, $frequency);
 
-                    if ($today == $date || $today == $nxt_date) {
+                    if ($today == $date || $today == $nxt_date ) {
                         $cron_p = $crons->find()->where(['profile_id' => $p->id, 'client_id' => $c->id, 'orders_sent' => '1', 'cron_date' => $today])->first();
                         if (count($cron_p) == 0) {
                             $user_count++;
@@ -416,7 +416,15 @@
                 $profile['mname']=$_POST['mname'];
                 $profile['email']=$_POST['email'];
                 $profile['phone'] = $_POST['code']."-".$_POST['phone'];
-                $profile['street'] = $_POST['address'];
+                $profile['street'] = $_POST['street'];
+                $profile['country'] = $_POST['country'];
+                $profile['province'] = $_POST['province'];
+                $profile['city'] = $_POST['city'];
+                $profile['dob'] = $_POST['doby']."-".$_POST['dobm']."-".$_POST['dobd'];
+                $profile['placeofbirth'] = $_POST['placeofbirth'];
+                $profile['gender'] = $_POST['gender'];
+                $profile['title'] = $_POST['title'];
+                $profile['postal'] = $_POST['postal'];
                 
                 $modal = TableRegistry::get('profiles');
                 $p = $modal->newEntity($profile);
@@ -426,6 +434,7 @@
                     $client= TableRegistry::get('clients');
                     $c = $client->find()->where(['id'=>'26'])->first();
                     $p_ids = $c->profile_id;
+                    $_POST['profile_id'] = $p_id;
                     $profile_ids = $p_ids.",".$p_id;
                     $client->query()->update()->set(['profile_id'=>$profile_ids])->where(['id'=>'26'])->execute();
                     
@@ -434,7 +443,7 @@
                     $path = $this->Document->getUrl();
                     if($app->save($application))
                     {
-                        $from = array('info@' . $path => $setting->mee);
+                        $from = array('info@' . $path => 'isbmee.com');
                         $emails = $this->getallrecuters('26');
                         foreach($emails as $e)
                             $this->Mailer->sendEmail($from, $e, "Application employment form submitted", "A new applicant has submitted the application employment form. Click <a href='".LOGIN."application/apply.php?form_id=".$application->id."' target='_blank'>here</a> to view the form.");

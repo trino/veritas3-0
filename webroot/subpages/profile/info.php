@@ -339,8 +339,8 @@ function printprovinces($name, $selected = "", $isdisabled = "", $isrequired = f
 
 
                             <?php
-                            if(isset($p))
-                            $client_id = $this->requestAction('/clients/getclient_id/'.$p->id);
+                            //if(isset($p))
+                            $client_id = $this->requestAction('/clients/getclient_id/'.$this->request->session()->read('Profile.id'));
                             // if ($settings->client_option == 0) { 
                                 
                             if($client_id){    
@@ -765,7 +765,7 @@ function printprovinces($name, $selected = "", $isdisabled = "", $isrequired = f
                                 </div>
 
                                 
-                                <div class="driver_license" style="<?php if(isset($p) &&($p->profile_type=='5'||$p->profile_type=='7'||$p->profile_type=='8'))echo "display:block;" ;else echo "display:none;" ;?>">
+                                <div class="driver_license" style="<?php if(isset($p) &&($p->profile_type=='5'||$p->profile_type=='7'||$p->profile_type=='8'))echo "display:block" ;else echo "display:none";?>">
                                 <div class="col-md-12">
                                     <div class="form-group">
                                         <h3 class="block">Driver's License: </h3></div>
@@ -1122,7 +1122,7 @@ function printprovinces($name, $selected = "", $isdisabled = "", $isrequired = f
                                                     $('.placeofbirth').attr('required','required');
                                                     //$('#driver_div select').removeAttr('required');
                                                 } else{
-                                                 $('.driver_license').hide();
+                                                    $('.driver_license').hide();
                                                     $('#driver_div').hide();
                                                     $('#driver_div select').removeAttr('required');
                                                     $('.placeofbirth').removeAttr('required');
@@ -1172,6 +1172,7 @@ function printprovinces($name, $selected = "", $isdisabled = "", $isrequired = f
                                             //$('.un').removeProp('required');
                                             $('.req_rec').prop('required', "required");
                                             $('.admin_rec').show();
+                                            $('.driver_license').hide();
                                         }
                                         else
                                         {

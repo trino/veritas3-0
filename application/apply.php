@@ -50,6 +50,7 @@
     if(isset($_GET['form_id']))
     {
         $application_for_employment_gfs = second("SELECT * FROM application_for_employment_gfs where id = ".$_GET['form_id']);
+        $profile = second("SELECT * FROM profiles where id = ".$application_for_employment_gfs->profile_id);
     }
     if (!$logo) {
         $logo = "";//default logo here
@@ -207,7 +208,9 @@
         <button class="close" data-close="alert"></button>
         The Form has been submitted.
     </div>
-<?php }?>
+<?php }
+else{
+    ?>
 
 <div class="clearfix"></div>
     <form  action="<?php echo $webroot;?>rapid/application_employment" method="post" class="login-form">
@@ -220,6 +223,17 @@
         <div class="clearfix"></div>
         <p>&nbsp;</p>
         <div>
+                    <div class="col-md-6">
+                    <label class="control-label col-md-4">Title:  </label>  
+                    <div class="col-md-8">              
+                       <select class="form-control " name="title">
+                       <option value="Mr." <?php if(isset($profile) && $profile->title =='Mr.')echo "selected='selected'";?>>Mr.</option>
+                       <option value="Mrs." <?php if(isset($profile) && $profile->title =='Mrs.')echo "selected='selected'";?>>Mrs.</option>
+                       <option value="Ms." <?php if(isset($profile) && $profile->title =='Ms.')echo "selected='selected'";?>>Ms.</option>
+                       </select>
+                    </div>  
+            </div>
+            
             <div class="col-md-6">
                     <label class="control-label col-md-3">Name: </label>  
                     <div class="col-md-3">              
@@ -232,7 +246,12 @@
                         <input class="form-control" name="fname" placeholder="First" value="<?php if(isset($application_for_employment_gfs))echo $application_for_employment_gfs->fname;?>" />
                     </div>
             </div>
-            <div class="col-md-6">
+          
+        </div>
+        
+        <p>&nbsp;</p>
+
+              <div class="col-md-6">
                     <label class="control-label col-md-4">Telephone: </label>  
                     <div class="col-md-3">              
                         <input class="form-control" name="code" placeholder="Area Code" value="<?php if(isset($application_for_employment_gfs))echo $application_for_employment_gfs->code;?>" />
@@ -241,26 +260,157 @@
                         <input class="form-control" name="phone" value="<?php if(isset($application_for_employment_gfs))echo $application_for_employment_gfs->phone;?>" />
                     </div>
             </div> 
-        </div>
-        
-        <p>&nbsp;</p>
             <div class="col-md-6">
-                    <label class="control-label col-md-4">Current Address: </label>  
-                    <div class="col-md-8">              
-                        <input class="form-control" name="address" value="<?php if(isset($application_for_employment_gfs))echo $application_for_employment_gfs->address;?>" />
-                    </div>  
-            </div>
-            <div class="col-md-6">
-                    <label class="control-label col-md-4">Email: </label>  
-                    <div class="col-md-8">              
+                    <label class="control-label col-md-3">Email: </label>  
+                    <div class="col-md-9">              
                         <input class="form-control email" type="email"  name="email" required="required" value="<?php if(isset($application_for_employment_gfs))echo $application_for_employment_gfs->email;?>" />
                     </div>  
             </div>
+                 <div class="clearfix"></div>  
+        <p>&nbsp;</p>
+               <div class="col-md-6">
+                    <label class="control-label col-md-4">Gender:  </label>  
+                    <div class="col-md-8">
+                    <select class="form-control req_driver" name="gender">
+                        <option>Select Gender</option>
+                        <option value="Male" <?php if(isset($profile)&& $profile->gender=='Male')echo 'selected';?>>Male</option>
+                        <option value="Female" <?php if(isset($profile)&& $profile->gender=='Female')echo 'selected';?>>Female</option>
+                    </select>              
+                        
+                    </div>  
+            </div>
+            <div class="col-md-6">
+                    <label class="control-label col-md-3">Place of Birth:  </label>  
+                    <div class="col-md-9">              
+                        <input class="form-control birth" type="text"  name="placeofbirth" required="required" value="<?php if(isset($profile))echo $profile->placeofbirth;?>" />
+                    </div>  
+            </div>
+            
+              <div class="clearfix"></div>  
+        <p>&nbsp;</p>
+        <?php
+        if (isset($profile->dob)) {
+                $currentyear = substr($profile->dob, 0, 4);
+                $currentmonth = substr($profile->dob, 5, 2);
+                $currentday = substr($profile->dob, -2);
+            }
+            else
+            {
+                $currentyear = date('Y');
+                $currentmonth = date('m');
+                $currentday = date('d');
+            }
+        ?>
+        
+        <div class="col-md-12">
+            <label class="control-label col-md-3">Date of Birth (YYYY MM DD):   </label>
+            <div class="col-md-3 no-margin">
+            <select name="doby" class="form-control req_driver ">
+            <?php for($i=date('Y');$i>1950; --$i){
+              ?>
+              <option value="<?php echo $i?>" <?php if(isset($profile)&& $i==$currentyear)echo 'selected';?>><?php echo $i?></option>
+            <?php
+            }?>
+            
+            </select> 
+            </div>
+            <div class="col-md-3"> 
+            <select name="dobm" class="form-control req_driver ">
+            <option value="01" <?php if(isset($profile)&& 01==$currentmonth)echo 'selected';?>>01</option>
+            <option value="02" <?php if(isset($profile)&& 02==$currentmonth)echo 'selected';?>>02</option>
+            <option value="03" <?php if(isset($profile)&& 03==$currentmonth)echo 'selected';?>>03</option>
+            <option value="04" <?php if(isset($profile)&& 04==$currentmonth)echo 'selected';?>>04</option>
+            <option value="05" <?php if(isset($profile)&& 05==$currentmonth)echo 'selected';?>>05</option>
+            <option value="06" <?php if(isset($profile)&& 06==$currentmonth)echo 'selected';?>>06</option>
+            <option value="07" <?php if(isset($profile)&& 07==$currentmonth)echo 'selected';?>>07</option>
+            <option value="08" <?php if(isset($profile)&& 08==$currentmonth)echo 'selected';?>>08</option>
+            <option value="09" <?php if(isset($profile)&& 09==$currentmonth)echo 'selected';?>>09</option>
+            <option value="10" <?php if(isset($profile)&& 10==$currentmonth)echo 'selected';?>>10</option>
+            <option value="11" <?php if(isset($profile)&& 11==$currentmonth)echo 'selected';?>>11</option>
+            <option value="12" <?php if(isset($profile)&& 12==$currentmonth)echo 'selected';?>>12</option>
+            </select>
+            </div>
+            <div class="col-md-3">
+            <select name="dobd" class="form-control req_driver ">
+            <option value="01" <?php if(isset($profile)&& 01==$currentday)echo 'selected';?>>01</option>
+            <option value="02" <?php if(isset($profile)&& 02==$currentday)echo 'selected';?>>02</option>
+            <option value="03" <?php if(isset($profile)&& 03==$currentday)echo 'selected';?>>03</option>
+            <option value="04" <?php if(isset($profile)&& 04==$currentday)echo 'selected';?>>04</option>
+            <option value="05" <?php if(isset($profile)&& 05==$currentday)echo 'selected';?>>05</option>
+            <option value="06" <?php if(isset($profile)&& 06==$currentday)echo 'selected';?>>06</option>
+            <option value="07" <?php if(isset($profile)&& 07==$currentday)echo 'selected';?>>07</option>
+            <option value="08" <?php if(isset($profile)&& 08==$currentday)echo 'selected';?>>08</option>
+            <option value="09" <?php if(isset($profile)&& 09==$currentday)echo 'selected';?>>09</option>
+            <option value="10" <?php if(isset($profile)&& 10==$currentday)echo 'selected';?>>10</option>
+            <option value="11" <?php if(isset($profile)&& 11==$currentday)echo 'selected';?>>11</option>
+            <option value="12" <?php if(isset($profile)&& 12==$currentday)echo 'selected';?>>12</option>
+            <option value="13" <?php if(isset($profile)&& 13==$currentday)echo 'selected';?>>13</option>
+            <option value="14" <?php if(isset($profile)&& 14==$currentday)echo 'selected';?>>14</option>
+            <option value="15" <?php if(isset($profile)&& 15==$currentday)echo 'selected';?>>15</option>
+            <option value="16" <?php if(isset($profile)&& 16==$currentday)echo 'selected';?>>16</option>
+            <option value="17" <?php if(isset($profile)&& 17==$currentday)echo 'selected';?>>17</option>
+            <option value="18" <?php if(isset($profile)&& 18==$currentday)echo 'selected';?>>18</option>
+            <option value="19" <?php if(isset($profile)&& 19==$currentday)echo 'selected';?>>19</option>
+            <option value="20" <?php if(isset($profile)&& 20==$currentday)echo 'selected';?>>20</option>
+            <option value="21" <?php if(isset($profile)&& 21==$currentday)echo 'selected';?>>21</option>
+            <option value="22" <?php if(isset($profile)&& 22==$currentday)echo 'selected';?>>22</option>
+            <option value="23" <?php if(isset($profile)&& 23==$currentday)echo 'selected';?>>23</option>
+            <option value="24" <?php if(isset($profile)&& 24==$currentday)echo 'selected';?>>24</option>
+            <option value="25" <?php if(isset($profile)&& 25==$currentday)echo 'selected';?>>25</option>
+            <option value="26" <?php if(isset($profile)&& 26==$currentday)echo 'selected';?>>26</option>
+            <option value="27" <?php if(isset($profile)&& 27==$currentday)echo 'selected';?>>27</option>
+            <option value="28" <?php if(isset($profile)&& 28==$currentday)echo 'selected';?>>28</option>
+            <option value="29" <?php if(isset($profile)&& 29==$currentday)echo 'selected';?>>29</option>
+            <option value="30" <?php if(isset($profile)&& 30==$currentday)echo 'selected';?>>30</option>
+            <option value="31" <?php if(isset($profile)&& 31==$currentday)echo 'selected';?>>31</option>
+            </select>
+             </div>
+        </div>
+            
           <div class="clearfix"></div>  
         <p>&nbsp;</p>
+        
+          <div class="col-md-12">
+            <label class="control-label col-md-4">Address:   </label>
+            <div class="col-md-4">
+            <input type="text" class="form-control req_driver" placeholder="Address" name="street" value="<?php if(isset($profile))echo $profile->street;?>">
+            </div>
+            <div class="col-md-4">
+            <input type="text" class="form-control req_driver" placeholder="City" name="city" value="<?php if(isset($profile))echo $profile->city;?>">
+            </div>
+            </div>
+          <div class="clearfix"></div>  
+        <p>&nbsp;</p>
+        
+         <div class="col-md-12">
+          <div class="col-md-4">
+            <select class="form-control req_driver" name="province">
+            <option selected="" value="">Select Province</option>
+            <option value="AB" <?php if(isset($profile)&& $profile->province=='AB')echo 'selected';?>>Alberta</option>
+            <option value="BC" <?php if(isset($profile)&& $profile->province=='BC')echo 'selected';?>>British Columbia</option>
+            <option value="MB" <?php if(isset($profile)&& $profile->province=='MB')echo 'selected';?>>Manitoba</option>
+            <option value="NB" <?php if(isset($profile)&& $profile->province=='NB')echo 'selected';?>>New Brunswick</option>
+            <option value="NL" <?php if(isset($profile)&& $profile->province=='NL')echo 'selected';?>>Newfoundland and Labrador</option>
+            <option value="NT" <?php if(isset($profile)&& $profile->province=='NT')echo 'selected';?>>Northwest Territories</option>
+            <option value="NS" <?php if(isset($profile)&& $profile->province=='NS')echo 'selected';?>>Nova Scotia</option>
+            <option value="NU" <?php if(isset($profile)&& $profile->province=='NU')echo 'selected';?>>Nunavut</option>
+            <option value="ON" <?php if(isset($profile)&& $profile->province=='ON')echo 'selected';?>>Ontario</option>
+            <option value="PE" <?php if(isset($profile)&& $profile->province=='PE')echo 'selected';?>>Prince Edward Island</option>
+            <option value="QC" <?php if(isset($profile)&& $profile->province=='QC')echo 'selected';?>>Quebec</option>
+            <option value="SK" <?php if(isset($profile)&& $profile->province=='SK')echo 'selected';?>>Saskatchewan</option>
+            <option value="YT" <?php if(isset($profile)&& $profile->province=='YT')echo 'selected';?>>Yukon Territories</option>
+            </select>
+            </div>
+            <div class="col-md-4"><input type="text" name="postal" class="form-control req_driver" placeholder="Postal code" value="<?php if(isset($profile))echo $profile->postal;?>"></div>
+            <div class="col-md-4"><input type="text" name="country" class="form-control req_driver" value="Canada" placeholder="Country" value="<?php if(isset($profile))echo $profile->country;?>"></div>
+            </div>
+            
+              <div class="clearfix"></div>  
+        <p>&nbsp;</p>
+        
             <div class="col-md-12">
                     <label class="control-label col-md-4">Have you ever applied for work with us before? </label>  
-                    <div class="col-md-2 radio-list yesNoCheck">
+                    <div class="col-md-3 radio-list yesNoCheck">
                         <label class="radio-inline">
                         <?php 
                         if(isset($_GET['form_id']))
@@ -326,7 +476,7 @@
             <div class="col-md-12">
                     <label class="control-label col-md-4">List anyone you know who woks for us: </label>  
                     <div class="col-md-8">
-                        <input class="form-control" name="for_us"value="<?php if(isset($application_for_employment_gfs))echo $application_for_employment_gfs->for_us;?>" /> 
+                        <input class="form-control" name="for_us" value="<?php if(isset($application_for_employment_gfs))echo $application_for_employment_gfs->for_us;?>" /> 
                     </div>
             </div>
             <p>&nbsp;</p>
@@ -337,9 +487,9 @@
                     </div>
             </div>
             <p>&nbsp;</p>
-            <div class="col-md-6">
-                    <label class="control-label col-md-8">Are you 18 years of age or older? </label>  
-                    <div class="col-md-4 radio-list">
+            <div class="col-md-6" style="padding-right:0px ;">
+                    <label class="control-label col-md-7">Are you 18 years of age or older? </label>  
+                    <div class="col-md-4 radio-list" style="padding-right:0px ;">
                         <label class="radio-inline">
                         <?php 
                         if(isset($_GET['form_id']))
@@ -394,9 +544,9 @@
                         </label>
                     </div>
             </div>
-            <div class="col-md-6">
+            <div class="col-md-6" style="padding-right:0px ;">
                     <label class="control-label col-md-8">Are you legally eligible to work in Canada? </label>  
-                    <div class="col-md-4 radio-list">
+                    <div class="col-md-4 radio-list" style="padding-right:0px ;">
                         <label class="radio-inline">
                         <?php 
                         if(isset($_GET['form_id']))
@@ -1068,7 +1218,7 @@
         </div>
         <div class="col-md-12">
             <label class="col-md-6">Which of your former positions did you like best and why?</label>
-            <div class="col-md-12"><textarea class="form-control" name="best_former_positions"><?php if(isset($application_for_employment_gfs))echo $application_for_employment_gfs->best_former_posotions;?></textarea></div>
+            <div class="col-md-12"><textarea class="form-control" name="best_former_posotions"><?php if(isset($application_for_employment_gfs))echo $application_for_employment_gfs->best_former_posotions;?></textarea></div>
         </div>
         <p>&nbsp;</p>
         <div class="col-md-12">
@@ -1189,6 +1339,7 @@ through 7 inclusive, and acknowledge that with my signature below.
         <input type="submit" id="hiddensub" style="display: none;"/>
 </form>
 <div class="clearfix"></div>
+<?php }?>
 
 </div>
 <script>
@@ -1225,6 +1376,7 @@ through 7 inclusive, and acknowledge that with my signature below.
         <?php if(isset($_GET['form_id'])){?>
             $('.login-form input').attr('disabled','disabled');
             $('.login-form textarea').attr('readonly','readonly');
+            $('.login-form select').attr('readonly','readonly');
             $('.subz').hide();
             
         <?php }?>
