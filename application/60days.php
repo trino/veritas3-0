@@ -57,7 +57,9 @@
     <link href="<?= $webroot; ?>assets/global/plugins/uniform/css/uniform.default.css" rel="stylesheet" type="text/css"/>
     <link href="<?= $webroot; ?>assets/admin/pages/css/login3.css" rel="stylesheet" type="text/css"/>
     <link href="<?= $webroot; ?>assets/global/css/components.css" rel="stylesheet" type="text/css"/>
-    
+    <style>
+    p{text-align:justify!important;}
+    </style>
  	<div style="width:77%" class="content">
  		<div class="logo col-md-12" style="margin-top: 0;">
  			<img src="<?= $webroot; ?>img/logo.png" />

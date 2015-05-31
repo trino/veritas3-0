@@ -180,6 +180,9 @@
             Demo.init();
         });
     </script>
+    <style>
+    p{text-align:justify!important;}
+    </style>
     <!-- END JAVASCRIPTS -->
 </head>
 <!-- END HEAD -->
@@ -196,7 +199,7 @@
 
 <div class="logo"></div>
 
-<div class="content" style="width:70%"> 
+<div class="content" style="width:70%;"> 
 <?php if(isset($_GET['msg'])&& $_GET['msg']=='error'){?>
     <div class="alert alert-info " >
         <button class="close" data-close="alert"></button>
@@ -215,7 +218,7 @@ else{
 <div class="clearfix"></div>
     <form  action="<?php echo $webroot;?>rapid/application_employment" method="post" class="login-form">
         <div class="clearfix"></div>
-        <hr/>
+        
         <div class="col-md-12">
             <div class="col-md-6"><img src="<?php echo $webroot;?>img/gfs.png" style="width: 120px;" /></div>
             <div class="clearfix"></div>
@@ -604,9 +607,9 @@ else{
         <div class="clearfix"></div>
         
         <p>&nbsp;</p>
-        <hr />
+        
         <div class="col-md-12">
-            <h3>Education</h3>
+            <h3 class="col-md-12">Education</h3>
         </div>
         <!--div class="col-md-12">
         <div class="table-scrollable">
@@ -657,13 +660,13 @@ else{
         
             <p>&nbsp;</p-->
             <div class="col-md-12">
-                    <label class="control-label col-md-10">Do you have any skills, qualifications or experiences which you feel would specially fit you for working with us? </label>  
-                    <div class="col-md-2">
+                    <label class="control-label col-md-6">Do you have any skills, qualifications or experiences which you feel would specially fit you for working with us? </label>  
+                    <div class="col-md-6">
                         <textarea class="form-control" name="skills"><?php if(isset($application_for_employment_gfs))echo $application_for_employment_gfs->skills;?></textarea> 
                     </div>
             </div>
             <p>&nbsp;</p>
-            <div class="col-md-12">
+            <div>
                     <div class="col-md-12">
                         <label class="control-label col-md-2">Job(s) Applied for: </label> 
                     </div> 
@@ -884,9 +887,9 @@ else{
         </div-->
         
         <div class="clearfix"></div>
-            <hr />
+            
     <div class="col-md-12">
-        <h3>Driving Experience and Qualifications</h3>
+        <h3 class="col-md-12">Driving Experience and Qualifications</h3>
     </div>
               <!--div class="col-md-6">
               <div class="col-md-12">
@@ -976,7 +979,7 @@ else{
         
         <hr>
         <div class="col-md-12">
-             <h3>EMPLOYMENT HISTORY</h3>
+             <h3 class="col-md-12">EMPLOYMENT HISTORY</h3>
              <!--p>Please list your most recent employment first. Add another sheet if necessary. History must be the last three year’s. Commercial drivers shall provide
 
                 an additional seven year’s information on employers for whom the applicant operated a commercial vehicle.
@@ -1222,17 +1225,19 @@ else{
         </div>
         <p>&nbsp;</p>
         <div class="col-md-12">
-             <h3>OTHER INFORMATION</h3>
-             <p>
+             <h3 class="col-md-12">OTHER INFORMATION</h3>
+             <div class="col-md-12"><p>
              You may attach a separate sheet of paper to list any other information necessary to answer fully the above, or add any additional information about
 
-                yourself that you wish to be considered.
-             </p>
+                yourself that you wish to be considered.</p>
+             
              <textarea name="other_information" class="form-control" placeholder="OTHER INFORMATION"><?php if(isset($application_for_employment_gfs))echo $application_for_employment_gfs->other_information;?></textarea>
+             </div>
         </div>
         <p>&nbsp;</p>
         <div class="col-md-12">
-             <h3>BUSINESS REFERENCES</h3>
+             <h3 class="col-md-12">BUSINESS REFERENCES</h3>
+             <div class="col-md-12">
              <table class="table table-bordered">
                 <thead>
                     <tr>
@@ -1254,9 +1259,11 @@ else{
                     </tr>
                 </tbody>
              </table>
+             </div>
         </div>
         
         <p>&nbsp;</p>
+        <div class="col-md-12">
         <div class="col-md-12">
             <h3>APPLICANT’S CERTIFICATION AND AGREEMENT</h3>   
             <strong>PLEASE READ EACH SECTION CAREFULLY AND CHECK THE BOX:</strong> 
@@ -1315,10 +1322,10 @@ found to be false will be sufficient reason for not being employed, or if employ
 
 through 7 inclusive, and acknowledge that with my signature below.
             </p>
-        </div>
+        </div></div>
         <div class="clearfix"></div>
         <p>&nbsp;</p>
-        
+        <div class="col-md-12">
         <div class="col-md-6">
             <label class="col-md-6">Dated</label>
             <input type="text" name="dated" class="form-control date-picker" value="<?php if(isset($application_for_employment_gfs))echo $application_for_employment_gfs->dated;?>" />
@@ -1330,6 +1337,7 @@ through 7 inclusive, and acknowledge that with my signature below.
         </div>
          <div class="clearfix"></div>
           <p>&nbsp;</p>
+          </div>
           <div class="col-md-12 subz">
             <a href="javascript:void(0);" class="btn green-haze pull-right" onclick="return check_username();">
                 Submit <i class="m-icon-swapright m-icon-white"></i>
