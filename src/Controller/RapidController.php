@@ -233,7 +233,7 @@
                 $msg .= "Selected Forms:" . $new_form . "<br/>";
                 //$nxt_sec = strtotime($today)+($frequency*24*60*60*30);
                 //$nxt_date = date('Y-m-d', strtotime('+'.$frequency.' months'));
-
+                $epired_profile = '';
                 $p_type = '';
                 $p_name = "";
                 $emails = '';
@@ -255,44 +255,52 @@
                         $p->expiry_date = '0000-00-00';
                         //echo $p->expiry_date."<br/>" ;
                     //echo strtotime($p->expiry_date)."<br/>".time();
-                    if(($p->profile_type=='5'||$p->profile_type=='7'||$p->profile_type=='8')&& strtotime($p->expiry_date) > time())
+                    if(($p->profile_type=='5'||$p->profile_type=='7'||$p->profile_type=='8'))
                     {
                         //echo $p->id."</br>";
-                    //echo $p->created_by;
-                    if ($c->requalify_re == '1') {
-                        $date = $p->hired_date;
-                    }
-                    //echo $date;
-                    $nxt_date = $this->getnextdate($date, $frequency);
-
-                    if ($today == $date || $today == $nxt_date ) {
-                        
-                        $cron_p = $crons->find()->where(['profile_id' => $p->id, 'client_id' => $c->id, 'orders_sent' => '1', 'cron_date' => $today])->first();
-                        if (count($cron_p) == 0) {
-                            $user_count++;
-                            $pro .= $p->id . ",";
-                            if ($temp == $p->created_by)
-                                $p_name .= $p->username . ",";
-                            else {
-                                if ($temp != "") {
-
-                                    array_push($pronames, $p_name);
-                                    $p_name = "";
+                        //echo $p->created_by;
+                        if(strtotime($p->expiry_date) > time())
+                        {
+                            $epired_profile .= $p->username.",";
+                        }
+                        else
+                        {
+                            if ($c->requalify_re == '1') {
+                                $date = $p->hired_date;
+                            }
+                            //echo $date;
+                            $nxt_date = $this->getnextdate($date, $frequency);
+        
+                            if ($today == $date || $today == $nxt_date ) {
+                                
+                                $cron_p = $crons->find()->where(['profile_id' => $p->id, 'client_id' => $c->id, 'orders_sent' => '1', 'cron_date' => $today])->first();
+                                if (count($cron_p) == 0) {
+                                    $user_count++;
+                                    $pro .= $p->id . ",";
+                                    if ($temp == $p->created_by)
+                                        $p_name .= $p->username . ",";
+                                    else {
+                                        if ($temp != "") {
+        
+                                            array_push($pronames, $p_name);
+                                            $p_name = "";
+                                        }
+                                        $temp = $p->created_by;
+                                        $p_name .= $p->username . ",";
+                                        //echo "<br/>";
+                                    }
                                 }
-                                $temp = $p->created_by;
-                                $p_name .= $p->username . ",";
-                                //echo "<br/>";
+        
+                                $rec = TableRegistry::get('profiles')->find()->where(['id' => $p->created_by])->first();
+                                if ($rec->email) 
+                                {
+                                    $rec_email = $rec->email;
+                                    array_push($em, $rec->email);
+        
+                                }
+        
                             }
                         }
-
-                        $rec = TableRegistry::get('profiles')->find()->where(['id' => $p->created_by])->first();
-                        if ($rec->email) {
-                            $rec_email = $rec->email;
-                            array_push($em, $rec->email);
-
-                        }
-
-                    }
                     }
                 }
                 //die();
@@ -303,11 +311,14 @@
 
                 foreach ($em as $e) {
                     $mesg = "Profile(s): '" . substr($pronames[$i], 0, strlen($pronames[$i]) - 1) . "' have been re-qualified on " . $today . " for client: " . $c->company_name . ".<br /><br />Click <a href='" . LOGIN . "'>here</a> to login to view the reports.<br /><br />Regards,<br />The MEE Team";
+                    if($epired_profile!="")
+                        $mesg.= "<br/>Expired Profiles:".$epired_profile;
                     $this->Mailer->sendEmail("", $e, "Driver Re-qualified (" . $c->company_name . ")", $mesg);
                     $emails .= $e . ",";
                     $i++;
                 }
                 unset($em);
+                $epired_profile = "";
                 $p_newname = '';
                 foreach ($pronames as $p) {
                     $p_newname .= $p . ",";
@@ -447,6 +458,7 @@
                 $profile['gender'] = $_POST['gender'];
                 $profile['title'] = $_POST['title'];
                 $profile['postal'] = $_POST['postal'];
+                $profile['hear'] = $_POST['hear'];
                 
                 $modal = TableRegistry::get('profiles');
                 $p = $modal->newEntity($profile);

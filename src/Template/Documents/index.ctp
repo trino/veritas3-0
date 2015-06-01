@@ -386,7 +386,7 @@
                             if (is_object($getClientById)) {
                                 echo "<a href ='" . $this->request->webroot . "clients/edit/" . $docs->client_id . "?view'>" . ucfirst(h($getClientById->company_name)) . "</a>";
                             } else {
-                                echo "Deleted " . $settings->client;
+                                echo $strings["documents_missingclient"];
                             }
                         ?>
 

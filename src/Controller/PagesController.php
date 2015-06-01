@@ -23,6 +23,7 @@ class PagesController extends AppController {
      public function initialize() {
         parent::initialize();
         $this->loadComponent('Settings');
+        $this->loadComponent('Trans');
         if(!$this->request->session()->read('Profile.id')) {
             $this->redirect('/login');
         }

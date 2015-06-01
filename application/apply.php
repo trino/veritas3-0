@@ -410,7 +410,26 @@ else{
             
               <div class="clearfix"></div>  
         <p>&nbsp;</p>
-        
+            <div class="col-md-12">
+               
+                <label class="control-label col-md-6"> Where did you hear about us?</label> 
+                        <div class="col-md-6">              
+                            <select name="hear" class="form-control">
+                                <option value="Advertisement" <?php if(isset($profile)&& $profile->hear=='Advertisement')echo 'selected';?>>Advertisement</option>
+                                <option value="Email/Newsletter"  <?php if(isset($profile)&& $profile->hear=='Email/Newsletter')echo 'selected';?>>Email/Newsletter</option>
+                                <option value="Facebook"  <?php if(isset($profile)&& $profile->hear=='Facebook')echo 'selected';?>>Facebook</option>
+                                <option value="Family or Friend"  <?php if(isset($profile)&& $profile->hear=='Family or Friend')echo 'selected';?>>Family or Friend</option>
+                                <option value="Magazine Article"  <?php if(isset($profile)&& $profile->hear=='Magazine Article')echo 'selected';?>>Magazine Article</option>
+                                <option value="Newspaper Story"  <?php if(isset($profile)&& $profile->hear=='Newspaper Story')echo 'selected';?>>Newspaper Story</option>
+                                <option value="TV/Cable News"  <?php if(isset($profile)&& $profile->hear=='TV/Cable News')echo 'selected';?>>TV/Cable News</option>
+                                <option value="Twitter"  <?php if(isset($profile)&& $profile->hear=='')echo 'selected';?>>Twitter</option>
+                                <option value="Website/Search Engine"  <?php if(isset($profile)&& $profile->hear=='Website/Search Engine')echo 'selected';?>>Website/Search Engine</option>
+                                <option value="YouTube"  <?php if(isset($profile)&& $profile->hear=='YouTube')echo 'selected';?>>YouTube</option>
+                                <option value="Others"  <?php if(isset($profile)&& $profile->hear=='Others')echo 'selected';?>> Others</option>
+                                
+                            </select>
+                        </div>
+            </div>
             <div class="col-md-12">
                     <label class="control-label col-md-4">Have you ever applied for work with us before? </label>  
                     <div class="col-md-3 radio-list yesNoCheck">
@@ -468,10 +487,14 @@ else{
                         <span>No</span>
                         </label>
                     </div>
-                    <div id="yesDiv" style="display: none;">
-                        <label class="control-label col-md-2">If yes, when? </label> 
-                        <div class="col-md-4">              
+                    <div class="clearfix"></div>
+                     <div class="col-md-4"></div>
+                    <div id="yesDiv" style="display: none;" class="col-md-8">
+                    <div class="row">
+                        <label class="control-label col-md-3">If yes, when? </label> 
+                        <div class="col-md-9">              
                             <textarea class="form-control" name="worked"><?php if(isset($application_for_employment_gfs))echo $application_for_employment_gfs->worked;?></textarea>
+                        </div>
                         </div>
                     </div> 
             </div>
@@ -1332,8 +1355,11 @@ through 7 inclusive, and acknowledge that with my signature below.
         </div>
         <div class="col-md-6">
             <label class="col-md-12">Signature</label>
-            <input type="text" class="form-control" name="gfs_signature" value="<?php if(isset($application_for_employment_gfs))echo $application_for_employment_gfs->gfs_signature;?>" />
+            <?php
+            include('../webroot/canvas/apply.php');
             
+        ?>
+        
         </div>
          <div class="clearfix"></div>
           <p>&nbsp;</p>
@@ -1352,6 +1378,11 @@ through 7 inclusive, and acknowledge that with my signature below.
 </div>
 <script>
         function check_username() {
+            if($('.touched').val()==0)
+            {
+                alert('No Signature found.');
+                return false;
+            }
             
            if ($('.email').val() != '') {
                         var un = $('.email').val();
@@ -1372,22 +1403,50 @@ through 7 inclusive, and acknowledge that with my signature below.
                                     return false;
                                 } else {
                                     $(this).attr('disabled', 'disabled');
-                                    $('#hiddensub').click();
+                                     save_signature('100');
+                                   
                                 }
                             }
                         });
                     } else {
-                        $('#hiddensub').click();
+                         save_signature('100');
                     }
       }
+
       $(function(){
+        $('.hiddensub').click(function(){
+           
+        })
+           
         <?php if(isset($_GET['form_id'])){?>
+        
             $('.login-form input').attr('disabled','disabled');
             $('.login-form textarea').attr('readonly','readonly');
             $('.login-form select').attr('readonly','readonly');
             $('.subz').hide();
             
         <?php }?>
+           $('#yesCheck').click(function(){
+              $("#yesDiv").show();  
+            });
+            $('#noCheck').click(function(){
+              $("#yesDiv").hide();  
+            });
+            
+            $('#notAbleToWork').click(function(){
+              $("#notAbleDiv").show();  
+            });
+            $('#ableToWork').click(function(){
+              $("#notAbleDiv").hide();  
+            });
+            
+            $('#partTime').click(function(){
+              $("#partTimeDiv").show();  
+            });
+            $('#fullTime').click(function(){
+              $("#partTimeDiv").hide();  
+            });
+             
     })
     </script>
 </body>

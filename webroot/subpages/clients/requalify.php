@@ -67,8 +67,7 @@ Re-qualification will be applied to all profiles that are active.
         </tr>
         <?php 
             $profiles = $this->requestAction('/rapid/getcronProfiles/'.$client->profile_id);
-            foreach($profiles as $p)
-            {
+            foreach($profiles as $p) {//this line is erroring out
         ?>
             <tr>
                 <td><?php echo $p->username;?></td>

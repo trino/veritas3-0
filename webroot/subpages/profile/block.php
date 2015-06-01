@@ -698,7 +698,7 @@
 
 
                             <tr>
-                                <td class="vtop"> Auto Email Survey? (60 day survey goes to Drivers, 30 day goes to employee and sales) from hired date?</td>
+                                <td class="vtop"> Auto Email Survey?</td>
                                 <td>
                                     <label class="uniform-inline">
                                         <input <?php echo $is_disabled ?> type="radio"
@@ -710,6 +710,7 @@
                                                                           name="side[logo]"
                                                                           value="0" <?php if (isset($sidebar) && $sidebar->logo3333333333333333333 == 0) echo "checked"; ?>/>
                                         No </label>
+                                    &emsp; (60 day survey goes to Drivers, 30 day goes to employee and sales) from hired date?
                                 </td>
                             </tr>
 

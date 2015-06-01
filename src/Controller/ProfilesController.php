@@ -133,17 +133,20 @@ class ProfilesController extends AppController{
     public function settings(){
         if(isset($_GET["DeleteDoc"])){
             $this->DeleteSubdocument($_GET["DeleteDoc"]);
-            $this->Flash->success('Subdocument created successfully.');
+            $this->Flash->success($this->Trans->getString("flash_subdocumentdeleted"));
         }
         if(isset($_GET["toggledebug"])) {
             $filename = $_SERVER["DOCUMENT_ROOT"] . "debugmode.txt";
             if (file_exists($filename)) {
                 unlink($filename);
-                $this->Flash->success('Debug mode: Deactivated');
+                //$this->Flash->success('Debug mode: Deactivated');
+                $debugstate = $this->Trans->getString("dashboard_off");
             } else {
                 file_put_contents ($filename, "true");
-                $this->Flash->success('Debug mode: Activated');
+                //$this->Flash->success('Debug mode: Activated');
+                $debugstate = $this->Trans->getString("dashboard_on");
             }
+            $this->Flash->success($this->Trans->getString("dashboard_debug") . " " . $debugstate);
         }
 
         $this->loadModel('Logos');
@@ -582,7 +585,7 @@ class ProfilesController extends AppController{
 
     public function view($id = null){
         if (isset($_GET['success'])) {
-            $this->Flash->success('Order saved successfully');
+            $this->Flash->success($this->Trans->getString("flash_ordersaved"));
         }
         if($id>0) {
             $this->getsidebar("Sidebar");//$sidebar->viewprofiles
@@ -874,10 +877,10 @@ class ProfilesController extends AppController{
                     //     $this->sendEmail($from, $to, $sub, $msg);
                 }
 
-                $this->Flash->success('Profile created successfully.');
+                $this->Flash->success($this->Trans->getString("flash_profilecreated"));
                 return $this->redirect(['action' => 'edit', $profile->id]);
             } else {
-                $this->Flash->error('The user could not be saved. Please try again.');
+                $this->Flash->error($this->Trans->getString("flash_profilenotcreated"));
             }
         }
         $this->set(compact('profile'));
@@ -961,12 +964,12 @@ class ProfilesController extends AppController{
 
                             $pros = $profile->newEntity($pro);
                             if($profile->save($pros)) {
-                                $username = $data[2];
+                                /*$username = $data[2];
                                 if(!$username){//if username is blank, substitute for "Driver_" . $userid;
                                     $userid=$this->getprofileByAnyKey("email", $data[19])->id;
                                     $username = "Driver_" . $userid;
                                     $this->Update1Column("profiles", "id", $userid, "username", $username);
-                                }
+                                }*/
                                 
                                $flash .= "Success (Line no ".$line."), ";
 
@@ -1006,10 +1009,10 @@ class ProfilesController extends AppController{
             }
 
 
-            $this->Flash->success('Profiles Successfully Imported. '.$flash);
+            $this->Flash->success($this->Trans->getString("flash_profilesimported") . ' ' . $flash);
             $this->redirect('/profiles');
         } else {
-            $this->Flash->error('Invaild CSV file.');
+            $this->Flash->error($this->Trans->getString("flash_invalidcsv"));
             $this->redirect('/profiles/settings');
         }
     }
@@ -1212,7 +1215,7 @@ class ProfilesController extends AppController{
                         //          $this->sendEmail($from,$to,$sub,$msg);
                     }
                     if (isset($_POST['drafts']) && ($_POST['drafts'] == '1')) {
-                        $this->Flash->success('Profile Saved as draft Successfully. ');
+                        $this->Flash->success($this->Trans->getString("flash_profilesaveddraft"));
                     } else {
                         $pro_query = TableRegistry::get('Profiles');
                         $email_query = $pro_query->find()->where(['super' => 1])->first();
@@ -1263,7 +1266,7 @@ class ProfilesController extends AppController{
                             // $this->sendEmail($_POST["email"], $sub, $msg);
                             //file_put_contents("royslog.txt",$to . " " .  $_POST["email"] . ": " .  $sub . " - " . $msg, FILE_APPEND);
                         }
-                        $this->Flash->success('Profile Saved Successfully. ');
+                        $this->Flash->success($this->Trans->getString("flash_profilesaved"));
 
                     }
                     echo $profile->id;
@@ -1345,9 +1348,9 @@ class ProfilesController extends AppController{
                         }
                     }
                     if (isset($_POST['drafts']) && ($_POST['drafts'] == '1')) {
-                        $this->Flash->success('Profile Saved as draft. ');
+                        $this->Flash->success($this->Trans->getString("flash_profilesaveddraft"));
                     } else {
-                        $this->Flash->success('Profile Saved Successfully. ');
+                        $this->Flash->success($this->Trans->getString("flash_profilesaved"));
                     }
                 } else {
                     echo "0";
@@ -1476,7 +1479,7 @@ class ProfilesController extends AppController{
         $this->set('doc_comp', $this->Document);
         $check_pro_id = $this->Settings->check_pro_id($id);
         if ($check_pro_id == 1) {
-            $this->Flash->error('The record does not exist. ');
+            $this->Flash->error($this->Trans->getString("flash_profilenotfound"));
             return $this->redirect("/profiles/index");
             //die();
         }
@@ -1484,7 +1487,7 @@ class ProfilesController extends AppController{
         $clientcount = $this->Settings->getClientCountByProfile($id);
         $this->set('Clientcount', $clientcount);
         if (isset($_GET['clientflash']) || $clientcount == 0) {
-            $this->Flash->success('Profile created successfully! Please assign profile to at least one client.');
+            $this->Flash->success($this->Trans->getString("flash_profilecreated"));
         }
 
         $userid=$this->request->session()->read('Profile.id');
@@ -1502,13 +1505,13 @@ class ProfilesController extends AppController{
         }
         $checker = $this->Settings->check_edit_permission($userid, $id, $aa->created_by);
         if ($checker == 0) {
-            //  $this->Flash->error('Sorry, you don\'t have the required permissions6.');
+            //  $this->Flash->error($this->Trans->getString("flash_permissions") . ' (6)');
             //  return $this->redirect("/profiles/index");
         }
 
         $setting = $this->Settings->get_permission($userid);
         if (($setting->profile_edit == 0 || $setting->viewprofiles ==0) && $id != $userid) {
-            $this->Flash->error($this->Trans->getString("flash_permissions"));
+            $this->Flash->error($this->Trans->getString("flash_permissions") . ' (0)');
             return $this->redirect("/");
         } else {
             $this->set('myuser', '1');
@@ -1549,10 +1552,10 @@ class ProfilesController extends AppController{
             //var_dump($this->request->data); die();//echo $_POST['admin'];die();
             $profile = $this->Profiles->patchEntity($profile, $this->request->data);
             if ($this->Profiles->save($profile)) {
-                $this->Flash->success('User saved successfully.');
+                $this->Flash->success($this->Trans->getString("flash_profilesaved"));
                 return $this->redirect(['action' => 'index']);
             } else {
-                $this->Flash->error('The user could not be saved. Please try again.');
+                $this->Flash->error($this->Trans->getString("flash_profilenotsaved"));
             }
         }
         $profile->Ptype = $this->getprofiletypeData($profile->profile_type);
@@ -1594,14 +1597,14 @@ class ProfilesController extends AppController{
     public function delete($id = null) {
         $check_pro_id = $this->Settings->check_pro_id($id);
         if ($check_pro_id == 1) {
-            $this->Flash->error('Sorry, the record does not exist.');
+            $this->Flash->error($this->Trans->getString("flash_profilenotfound"));
             return $this->redirect("/profiles/index");
             die();
         }
 
         $checker = $this->Settings->check_permission($this->request->session()->read('Profile.id'), $id);
         if ($checker == 0) {
-            $this->Flash->error('Sorry, you don\'t have the required permissions4.');
+            $this->Flash->error($this->Trans->getString("flash_permissions") . ' (1)');
             return $this->redirect("/profiles/index");
             die();
         }
@@ -1609,7 +1612,7 @@ class ProfilesController extends AppController{
         $setting = $this->Settings->get_permission($this->request->session()->read('Profile.id'));
 
         if ($setting->profile_delete == 0) {
-            $this->Flash->error('Sorry, you don\'t have the required permissions3.');
+            $this->Flash->error($this->Trans->getString("flash_permissions") . ' (3)');
             return $this->redirect("/");
 
         }
@@ -1621,9 +1624,9 @@ class ProfilesController extends AppController{
         $profile = $this->Profiles->get($id);
         // $this->request->allowMethod(['post', 'delete']);
         if ($this->Profiles->delete($profile)) {
-            $this->Flash->success('The user has been deleted.');
+            $this->Flash->success($this->Trans->getString("flash_profiledeleted"));
         } else {
-            $this->Flash->error('User could not be deleted. Please try again.');
+            $this->Flash->error($this->Trans->getString("flash_profilenotdeleted"));
         }
         return $this->redirect(['action' => 'index' . $draft]);
     }
@@ -2031,7 +2034,7 @@ class ProfilesController extends AppController{
     function filterBy() {
         $setting = $this->Settings->get_permission($this->request->session()->read('Profile.id'));
         if ($setting->profile_list == 0) {
-            $this->Flash->error('Sorry, you don\'t have the required permissions2.');
+            $this->Flash->error($this->Trans->getString("flash_permissions") . ' (2)');
             return $this->redirect("/");
         }
         $profile_type = $_GET['filter_profile_type'];
@@ -3137,7 +3140,7 @@ class ProfilesController extends AppController{
         }
         if(isset($_GET["Delete"])){
             TableRegistry::get('product_types')->deleteAll(array('Acronym'=>$_GET["Delete"]), false);
-            $this->Flash->success($_GET["Delete"] . ' has been deleted.');
+            $this->Flash->success($this->Trans->getString("flash_productdeleted", array("%Name%" => $_GET["Delete"])));
         }
         if(isset($_GET["Name"])){
             $this->SaveFields('product_types', $_GET, "Acronym");
@@ -3167,10 +3170,10 @@ class ProfilesController extends AppController{
 
         if($exists){
             $Table->query()->update()->set($Data)->where([$PrimaryKey => $Data[$PrimaryKey]])->execute();
-            $this->Flash->success($Data[$PrimaryKey] . ' has been updated.');
+            $this->Flash->success($this->Trans->getString("flash_productupdated", array("%Name%" => $Data[$PrimaryKey])));
         } else {
             $Table->query()->insert(array_keys($Data))->values($Data)->execute();
-            $this->Flash->success($Data[$PrimaryKey] . ' has been created.');
+            $this->Flash->success($this->Trans->getString("flash_productcreated", array("%Name%" => $Data[$PrimaryKey])));
         }
     }
 

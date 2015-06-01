@@ -16,6 +16,7 @@ class TasksController extends AppController {
     
      public function initialize() {
         parent::initialize();
+        $this->loadComponent('Trans');
         if(!$this->request->session()->read('Profile.id')) {
                 $url = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
                 $this->redirect('/login?url='.urlencode($url));
@@ -80,11 +81,11 @@ class TasksController extends AppController {
             $event = $events->newEntity($arr);
     
             if ($events->save($event)) {
-                $this->Flash->success('Task saved successfully.');
+                $this->Flash->success($this->Trans->getString("flash_eventsaved"));
             } 
             else 
             {
-                $this->Flash->error('Error creating task. Please try again.');
+                $this->Flash->error($this->Trans->getString("flash_eventnotsaved"));
                 
             }
             return $this->redirect(['action' => 'calender']);
@@ -122,7 +123,7 @@ class TasksController extends AppController {
                 ->set($arr)
                 ->where(['id' => $id])
                 ->execute();
-    	        $this->Flash->success('Event saved successfully.');
+    	        $this->Flash->success($this->Trans->getString("flash_eventsaved"));
                 
             
             return $this->redirect(['action' => 'calender']);
@@ -143,9 +144,12 @@ class TasksController extends AppController {
       $query = $event->query();
       if($query->delete()
         ->where(['id' => $id])
-        ->execute())
-         $this->Flash->success('Event deleted successfully.');
-		return $this->redirect(['action' => 'calender']);
+        ->execute()) {
+          $this->Flash->success($this->Trans->getString("flash_eventdeleted"));
+      } else {
+          $this->Flash->error($this->Trans->getString("flash_eventnotdeleted"));
+      }
+      return $this->redirect(['action' => 'calender']);
 	}
     
     function logout()

@@ -14,6 +14,7 @@ class UsersController extends AppController {
         ];
      public function initialize() {
         parent::initialize();
+        $this->loadComponent('Trans');
         if(!$this->request->session()->read('User.id'))
         {
                 $url = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
@@ -59,10 +60,10 @@ class UsersController extends AppController {
 		$user = $this->Users->newEntity($this->request->data);
 		if ($this->request->is('post')) {
 			if ($this->Users->save($user)) {
-				$this->Flash->success('User saved successfully.');
+				$this->Flash->success($this->Trans->getString("flash_usersaved"));
 				return $this->redirect(['action' => 'index']);
 			} else {
-				$this->Flash->error('The user could not be saved. Please try again.');
+				$this->Flash->error($this->Trans->getString("flash_usernotsaved"));
 			}
 		}
 		$this->set(compact('user'));
@@ -83,10 +84,10 @@ class UsersController extends AppController {
 		if ($this->request->is(['patch', 'post', 'put'])) {
 			$user = $this->Users->patchEntity($user, $this->request->data);
 			if ($this->Users->save($user)) {
-				$this->Flash->success('User saved successfully.');
+				$this->Flash->success($this->Trans->getString("flash_usersaved"));
 				return $this->redirect(['action' => 'index']);
 			} else {
-				$this->Flash->error('The user could not be saved. Please try again.');
+				$this->Flash->error($this->Trans->getString("flash_usernotsaved"));
 			}
 		}
 		$this->set(compact('user'));
@@ -103,9 +104,9 @@ class UsersController extends AppController {
 		$user = $this->Users->get($id);
 		$this->request->allowMethod(['post', 'delete']);
 		if ($this->Users->delete($user)) {
-			$this->Flash->success('The user has been deleted.');
+			$this->Flash->success($this->Trans->getString("flash_userdeleted"));
 		} else {
-			$this->Flash->error('User could not be deleted. Please try again.');
+			$this->Flash->error($this->Trans->getString("flash_usernotdeleted"));
 		}
 		return $this->redirect(['action' => 'index']);
 	}
