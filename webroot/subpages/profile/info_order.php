@@ -92,7 +92,7 @@
                                 </div>
                             </div>
                             <?php if ($sidebar->client_option == 0 && $p->profile_type != 11 /*&& (isset($p) && $p->profile_type == 5)*/) { ?>
-
+                                <?php if(isset($p) && ($p->profile_type == 5 || $p->profile_type == 7 || $p->profile_type == 8)){?>
                                 <div class="col-md-4" id="driver_div"
                                      style="">
                                     <div class="form-group">
@@ -174,7 +174,7 @@
                                         </select>
                                     </div>
                                 </div>
-                            <?php } ?>
+                            <?php }} ?>
 
                             <div class="col-md-4">
                                 <div class="form-group">
