@@ -87,6 +87,10 @@
                                             value="11" <?php if (isset($p) && $p->profile_type == 11) {?> selected="selected" <?php }?>>
                                             Employee
                                         </option>
+                                        <option
+                                            value="12" <?php if (isset($p) && $p->profile_type == 12) {?> selected="selected" <?php }?>>
+                                            Sales
+                                        </option>
                                     </select>
 
                                 </div>
