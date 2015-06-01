@@ -760,7 +760,9 @@
                                             </div>
                                             <div class="tab-pane" id="tab_1_6" style="">
                                                 <?php
-                                                    include('subpages/clients/requalify.php');
+                                                    if($action != "Create") {
+                                                        include('subpages/clients/requalify.php');
+                                                    }
                                                 ?>
                                             </div>
 
