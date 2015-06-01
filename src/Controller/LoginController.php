@@ -36,19 +36,13 @@ class LoginController extends AppController{
         
         if(isset($_POST['name'])){
             $this->loadModel('Profiles');
-            unset($_POST['submit']);
-            $_POST['username'] = $_POST['name'];
+            $conditions = array();
+            $conditions['username'] = $_POST['name'];
             $arr['password'] = $_POST['password'];
-            $_POST['password'] = md5($_POST['password']);
-            unset($_POST['name']);
-            if(isset($_POST['remember'])) {
-                $arr['remember'] = 1;
-            }else {
-                $arr['remember'] = 0;
-            }
-            unset($_POST['remember']);
-            //die('here');
-            $q = $this->Profiles->find()->where($_POST)->first();
+            $conditions['password'] = md5($_POST['password']);
+            $arr['remember'] = 0;
+            if(isset($_POST['remember'])) {$arr['remember'] = 1;}
+            $q = $this->Profiles->find()->where($conditions)->first();
 
             if($q) {
                 if($arr['remember']){
