@@ -1127,6 +1127,11 @@ function printprovinces($name, $selected = "", $isdisabled = "", $isrequired = f
                                                     $('#driver_div select').removeAttr('required');
                                                     $('.placeofbirth').removeAttr('required');
                                                     $('.req_sales').attr('required','required');
+                                                    $('.member_type').removeAttr('required');
+                                                    $('.driver_license input').each(function(){
+                                                        $(this).removeAttr('required');
+                                                    })
+                                                    $('.driver_license select').removeAttr('required');
                                                 }
                                                 $('#isb_id').hide();
                                         
@@ -1140,6 +1145,11 @@ function printprovinces($name, $selected = "", $isdisabled = "", $isrequired = f
                                         } else {
                                             $('.req_sales').attr('required','required');
                                             $('.email').attr('required','required');
+                                            $('.member_type').removeAttr('required');
+                                            $('.driver_license input').each(function(){
+                                                $(this).removeAttr('required');
+                                            })
+                                            $('.driver_license select').removeAttr('required');
                                         } 
                                         }
                                         else {
@@ -1196,6 +1206,11 @@ function printprovinces($name, $selected = "", $isdisabled = "", $isrequired = f
                                                 $('#driver_div').show();
                                             } else {
                                                 $('#driver_div select').removeAttr('required');
+                                                $('.member_type').removeAttr('required');
+                                                $('.driver_license input').each(function(){
+                                                        $(this).removeAttr('required');
+                                                    })
+                                                    $('.driver_license select').removeAttr('required');
                                             }
                                             $('#isb_id').hide();
                                             //$('.username_div').hide();
@@ -1210,6 +1225,11 @@ function printprovinces($name, $selected = "", $isdisabled = "", $isrequired = f
                                                 //$('#driver_div select').removeAttr('required');
                                                 $('.req_sales').attr('required','required');
                                                 $('.email').attr('required','required');
+                                                $('.member_type').removeAttr('required');
+                                                $('.driver_license input').each(function(){
+                                                        $(this).removeAttr('required');
+                                                    })
+                                                    $('.driver_license select').removeAttr('required');
                                             }
                         
                                         } 
