@@ -96,6 +96,23 @@
     echo '<br>32   social media search                     ' . $sms_ins_32;                                            // 32   social media search
     echo '<br>31   credit check                            ' . $creditcheck_ins_31;                                            // 31 creditcheck
 
+
+    if (isset($driverinfo->driver_license_no) && $driverinfo->driver_license_no != "") {
+    } else {
+        $driverinfo->driver_license_no = "123ABC";
+    }
+
+    if (isset($driverinfo->driver_province) && $driverinfo->driver_province != "") {
+    } else {
+        $driverinfo->driver_province = "ON";
+    }
+
+    if (isset($driverinfo->email) && $driverinfo->email != "") {
+    } else {
+        $driverinfo->email = "test@" . getHost("isbmee.com");
+    }
+
+
     if ($startorder1 == true) {
         $body = '&lt;ProductData&gt;&lt;isb_FN&gt;' . $driverinfo->fname . '&lt;/isb_FN&gt;&lt;isb_LN&gt;' . $driverinfo->lname .
             '&lt;/isb_LN&gt;&lt;isb_Ref&gt;MEETEST-777&lt;/isb_Ref&gt;&lt;isb_DOL&gt;' . date("Y-m-d") . '&lt;/isb_DOL&gt;&lt;isb_Prov&gt;' . $driverinfo->driver_province . '&lt;/isb_Prov&gt;&lt;isb_UserID&gt;' . $user_id234 . '&lt;/isb_UserID&gt;&lt;/ProductData&gt;';
@@ -299,10 +316,6 @@
 
     if ($transclick_ins_78 == true) {
 
-        if (isset($driverinfo->email) && $driverinfo->email != "") {
-        } else {
-            $driverinfo->email = "test@" . getHost("isbmee.com");
-        }
 
         $soap_xml = '<?xml version="1.0" encoding="utf-8"?>
 <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">

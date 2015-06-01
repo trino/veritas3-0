@@ -1701,10 +1701,10 @@ JSinclude($this,"js/ajaxupload.js");
                 $.ajax({
                     url: '<?php echo $this->request->webroot;?>orders/webservice/<?php echo $_GET['order_type'];?>/<?php echo $_GET['forms']; ?>/' +  $('#uploaded_for').val() +'/' +  $('#did').val(),
                     success:function(){
-                            window.location = URL;
+                         //   window.location = URL;
                     },
                     error:function(){
-                           window.location = URL;
+                        //   window.location = URL;
                     }
                 });
 
@@ -1755,10 +1755,10 @@ JSinclude($this,"js/ajaxupload.js");
                                 recruiter_signature: $('#recruiter_signature').val()
                             },
                             success:function(){
-                                     window.location = base_url+'orders/orderslist?flash';
+                             //        window.location = base_url+'orders/orderslist?flash';
                             },
                             error:function(){
-                                   window.location = base_url+'orders/orderslist?flash';
+                             //      window.location = base_url+'orders/orderslist?flash';
                             }
                         });
                     }

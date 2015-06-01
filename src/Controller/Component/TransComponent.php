@@ -43,7 +43,7 @@ class TransComponent extends Component {
                 return ucfirst($UserID);
             }
         } else{//the user is logged in, use session variable
-            $Table = $this->request->session()->read('Profile.language');
+
         }
         if($Table){return $Table;}
         return "English";//assume english
