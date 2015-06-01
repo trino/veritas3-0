@@ -12,15 +12,13 @@
     $logo = 'img/logos/';
     $company_name = "";
 
-    function connectdb()
-    {
+    function connectdb() {
         global $con, $config;
         $con = mysqli_connect("localhost:3306", $config['Datasources']['default']['username'], $config['Datasources']['default']['password'], $config['Datasources']['default']['database']) or die("Error " . mysqli_error($con));
         return $con;
     }
 
-    function first($query)
-    {
+    function first($query) {
         global $con;
         $result = $con->query($query);
         while ($row = mysqli_fetch_array($result)) {

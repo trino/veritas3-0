@@ -913,7 +913,7 @@
                                     window.location = '<?php echo $this->request->webroot;?>clients/edit/' + res + '?flash';
                                 }
                                 else if (res == 'email') {
-                                    alert('Email Already Exist.');
+                                    alert('<?= $strings["dashboard_emailexists"]; ?>');
                                 }
                                 else if (res == 'Invalid Email') {
                                     $('#tab_1_1 input[type="email"]').focus();
@@ -925,7 +925,7 @@
                                 }
 
                                 else {
-                                    alert('Couldn\'t save your data');
+                                    alert('<?= $strings["clients_notsaved"]; ?>');
                                 }
                                 $('#save_client_p1').text(' Save ');
                             }

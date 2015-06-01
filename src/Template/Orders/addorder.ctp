@@ -47,7 +47,8 @@ function provinces($name){
 $is_disabled = '';
 if (isset($disabled)){ $is_disabled = 'disabled="disabled"';}
 $settings = $this->requestAction('settings/get_settings');
-
+$language = $this->request->session()->read('Profile.language');
+$strings = CacheTranslations($language, "orders_%", $settings);
 //<script src="<?php echo $this->request->webroot;  js/jquery.easyui.min.js" type="text/javascript"></script>
 //<script src="<?php echo $this->request->webroot;  js/ajaxupload.js" type="text/javascript"></script>
 
@@ -1858,7 +1859,7 @@ JSinclude($this,"js/ajaxupload.js");
                     showforms('document_tab_3.php');
                 }
                 else {
-                    alert('Email Already Exists.');
+                    alert('<?= $strings["dashboard_emailexists"]; ?>'');
                     $('#driverEm').focus();
                     $('#driverEm').attr('style', 'border-color:red');
                     $('.button-previous').click();

@@ -983,7 +983,7 @@ function printprovinces($name, $selected = "", $isdisabled = "", $isrequired = f
                                     res = res.trim();
                                     if (res == '1') {
                                         $('.email').focus();
-                                        alert('Email already exists');
+                                        alert('<?= $strings["dashboard_emailexists"]; ?>');
                                         $('html,body').animate({
                                                 scrollTop: $('.page-title').offset().top
                                             },

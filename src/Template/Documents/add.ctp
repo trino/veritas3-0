@@ -1617,7 +1617,7 @@ if (isset($this->request->params['pass'][1])) {
             switch(type) {
                 case 'Driver Application':
                     if(!$('#confirm_check').is(':checked')) {
-                        alert('Please testconfirm that you have read the conditions.');
+                        alert('Please confirm that you have read the conditions.');
                         $('#confirm_check').focus();
                         $('html,body').animate({scrollTop: $('#confirm_check').offset().top}, 'slow');
                         return false;

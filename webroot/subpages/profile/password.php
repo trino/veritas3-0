@@ -1,6 +1,8 @@
  <?php
- if($this->request->session()->read('debug'))
-        echo "<span style ='color:red;'>password.php #INC154</span>";
+ if($this->request->session()->read('debug')) {
+     echo "<span style ='color:red;'>password.php #INC154</span>";
+     //this file does not appear to be used!
+ }
  ?>
 <form method="post" action="" role="form" id="pass_form" >
         <div class="form-group">
@@ -37,8 +39,7 @@
 <script>
 $(function(){
    $('#save_pass').click(function(){
-    if($('#retype_password').val() == $('#password').val())
-    {
+    if($('#retype_password').val() == $('#password').val()) {
     if($('#retype_password').val()){    
     $('#save_pass').text('Saving..');
         var str = $('#pass_form input').serialize();
@@ -46,26 +47,21 @@ $(function(){
            url:'<?php echo $this->request->webroot;?>profiles/changePass/<?php echo $id;?>',
            data:str,
            type:'post',
-           success:function(res)
-           {
-            if(res==1){
-            $('.flashPass').show();
-            $('.flashPass').fadeOut(3500);
-            }
-            else
-            alert('Couldn\'t save password');
-            $('#save_pass').text(' Change Password ');
+           success:function(res) {
+                if(res==1){
+                    $('.flashPass').show();
+                    $('.flashPass').fadeOut(3500);
+                } else {
+                    alert('Couldn\'t save password');
+                }
+                $('#save_pass').text(' Change Password ');
            } 
         });
-        }
-        else
-        {
+        } else {
             ('.flashPass').show();
             $('.flashPass').fadeOut(3500);
         }
-    }
-    else
-    {
+    } else {
         $('.flashPass1').show();
             $('.flashPass1').fadeOut(3500);
     }
