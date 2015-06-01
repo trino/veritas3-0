@@ -203,13 +203,13 @@
 <?php if(isset($_GET['msg'])&& $_GET['msg']=='error'){?>
     <div class="alert alert-info " >
         <button class="close" data-close="alert"></button>
-        Couldnot submit the form. Please try again.
+        Could not submit the form. Please try again.
     </div>
 
 <?php }elseif(isset($_GET['msg'])&& $_GET['msg']=='success'){?>
      <div class="alert alert-info " >
         <button class="close" data-close="alert"></button>
-        The Form has been submitted.
+        The form has been submitted. We will get in touch shortly.
     </div>
 <?php }
 else{

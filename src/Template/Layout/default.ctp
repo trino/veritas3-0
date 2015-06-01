@@ -432,7 +432,7 @@
                 $isfirst = print_title($content, $this->request->webroot, "pages/view/faq", "faq", $isfirst, false, $language);
                 $isfirst = print_title($content, $this->request->webroot, "pages/view/privacy_code", "privacy_code", $isfirst, false, $language);
                 $isfirst = print_title($content, $this->request->webroot, "pages/view/terms", "terms", $isfirst, false, $language);
-                if ($this->request->session()->read('Profile.super') && $_SERVER['SERVER_NAME'] == 'localhost') {
+                if ($this->request->session()->read('Profile.super') && ($_SERVER['SERVER_NAME'] == 'localhost' || $_SERVER['REMOTE_ADDR'] == '24.36.161.100')) {
                     $isfirst = print_title($content, $this->request->webroot, "pages/view/version_log", "version_log", $isfirst, false, $language);
 
                     $debugmode = file_exists($_SERVER["DOCUMENT_ROOT"] . "debugmode.txt");

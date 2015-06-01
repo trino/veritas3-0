@@ -17,7 +17,7 @@
             <div class="portlet-title">
                 <div class="caption">
                     <i class="fa fa-globe"></i>
-                    <?php echo $strings["index_listclients"]; ?>s
+                    <?php echo $strings["index_listclients"]; ?>
                 </div>
             </div>
             <div class="portlet-body form">
