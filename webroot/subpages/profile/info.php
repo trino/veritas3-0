@@ -477,7 +477,7 @@ function printprovinces($name, $selected = "", $isdisabled = "", $isrequired = f
                             if (strlen($is_disabled) == 0) {
 
                                 ?>
-                                <div class="col-md-4 admin_rec" style="<?php echo (isset($p->profile_type) && ($p->profile_type=='1' || $p->profile_type=='2'))?'display:block':'display:none';?>">
+                                <div class="col-md-4 admin_rec passwords" style="<?php echo (isset($p->profile_type) && ($p->profile_type=='1' || $p->profile_type=='2'))?'display:block':'display:none';?>">
                                     <div class="form-group">
                                         <label class="control-label">Password: </label>
 
@@ -1172,8 +1172,9 @@ function printprovinces($name, $selected = "", $isdisabled = "", $isrequired = f
                                                     //do nth
                                                 } else{
                                                     ?>
+                                                    if (profile_type == '1' || profile_type == '2'){
                                                         $('#password').prop('required', "required");
-                                                        $('#retype_password').prop('required', "required");
+                                                        $('#retype_password').prop('required', "required");}
                                                     <?php
                                                 }
                                             ?>
@@ -1192,7 +1193,11 @@ function printprovinces($name, $selected = "", $isdisabled = "", $isrequired = f
                                         {
                                              $('.admin_rec').hide();
                                         }
-                                         
+                                        if($('.passwords').attr('style') == 'display: none;')
+                                        {
+                                            $('#retype_password').removeAttr('required');
+                                            $('#password').removeAttr('required');
+                                        } 
                         
                                     });
                         
@@ -1254,8 +1259,9 @@ function printprovinces($name, $selected = "", $isdisabled = "", $isrequired = f
                                                 //do nth
                                             }else{
                                                 ?>
+                                                if (mem_type == '1' || mem_type == '2'){
                                                     $('#password').prop('required', "required");
-                                                    $('#retype_password').prop('required', "required");
+                                                    $('#retype_password').prop('required', "required");}
                                                 <?php
                                             }
                                              ?>
@@ -1268,6 +1274,11 @@ function printprovinces($name, $selected = "", $isdisabled = "", $isrequired = f
                                             $('.req_rec').prop('required', "required");
                                         }
                                     }
+                                    if($('.passwords').attr('style') == 'display: none;')
+                                        {
+                                            $('#retype_password').removeAttr('required');
+                                            $('#password').removeAttr('required');
+                                        }
         });
         
 
