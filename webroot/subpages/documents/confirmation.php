@@ -172,11 +172,11 @@
             }
             else
             {?>
-                 <div class="note note-success">
+                 <div class="note note-success" style="display: none;">
 
                         <label for="confirm_check" style="margin: 0;">
                             <h4 style="line-height: 120%;">
-                            <input type="checkbox" class="form-control" value="1" id="confirm_check1" name="confirm_check"/> 
+                            <input type="checkbox" class="form-control" value="1" id="confirm_check1" name="confirm_check" checked="checked"/> 
                                 I confirm that I have read and understand the <a href="<?php echo $this->request->webroot;?>pages/view/terms" target="_blank">Terms & Conditions.</a></h4></label>
                     </div>
             <?php 
