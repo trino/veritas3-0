@@ -1646,10 +1646,7 @@
     
     function assignedTo($cid,$rid)
     {
-        if($_SERVER['SERVER_NAME']=='localhost')
-        {
-            $cid = 26;
-        }
+        
         $cli = TableRegistry::get('clients')->find()->where(['id'=>$cid])->first();
         $pro = $cli->profile_id;
         $arr = explode(',',$pro);
