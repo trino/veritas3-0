@@ -341,9 +341,13 @@ function printprovinces($name, $selected = "", $isdisabled = "", $isrequired = f
                             <?php
                             //if(isset($p))
                             $client_id = $this->requestAction('/clients/getclient_id/'.$this->request->session()->read('Profile.id'));
+                            if(isset($p))
+                                $user_client = $this->requestAction('/clients/getclient_id/'.$p->id);
+                            else
+                                $user_client = 0;
                             // if ($settings->client_option == 0) { 
                                 
-                            if($client_id){    
+                            if($client_id || $user_client){    
                                 ?>
                             
                             <div class="col-md-6" id="driver_div"

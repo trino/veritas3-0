@@ -961,12 +961,12 @@ class ProfilesController extends AppController{
 
                             $pros = $profile->newEntity($pro);
                             if($profile->save($pros)) {
-                                $username = $data[2];
+                                /*$username = $data[2];
                                 if(!$username){//if username is blank, substitute for "Driver_" . $userid;
                                     $userid=$this->getprofileByAnyKey("email", $data[19])->id;
                                     $username = "Driver_" . $userid;
                                     $this->Update1Column("profiles", "id", $userid, "username", $username);
-                                }
+                                }*/
                                 
                                $flash .= "Success (Line no ".$line."), ";
 
