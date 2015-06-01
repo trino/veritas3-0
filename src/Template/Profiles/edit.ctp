@@ -48,8 +48,12 @@
         $userID = $this->request->session()->read('Profile.id');
     }
 
-    $sidebar = $this->requestAction("settings/all_settings/0/sidebar");
+    if($this->request->session()->read('Profile.super')){
+        $sidebar = $this->requestAction("settings/all_settings/0/sidebar");
+    }else{
+        $sidebar = $this->requestAction("settings/all_settings/".$userID."/sidebar");
 
+    }
 ?>
 <!-- END SAMPLE PORTLET CONFIGURATION MODAL FORM-->
 <!-- BEGIN STYLE CUSTOMIZER -->

@@ -160,6 +160,7 @@ class SettingsController extends AppController {
     }
     
     function all_settings($uid="", $type="", $scope="", $scope_id="", $doc_id=""){
+
         if($type != "" || $type !="0") {
             if($type =='sidebar') {
                 return $this->get_side($uid);
