@@ -245,7 +245,7 @@ jQuery(document).ready(function() {
 					{color: thecolor, lineWidth: 1, yaxis: {from: average, to: average}}
 				]
 			},
-			colors: [thecolor],
+			colors: [thecolor]
 		};
 	}
 
@@ -349,7 +349,7 @@ function newchart($color, $icon, $title, $chartid, $dates, $data, $start,$end, $
 						if (datecheck($key,$start,$end)){
 							$didit=true;
 							$rawdata.=todate($key, $strings) . ":\t" . $value . " " . pluralize(left(strtolower($title), strlen($title)-1), $value) . "\r\n";
-							$alldocs = enumsubdocs($data, $key, $chartid, $isdraft, $profiletypes, $clienttypes);
+							$alldocs = enumsubdocs($data, $key, $chartid, $isdraft, $profiletypes, $clienttypes, $strings);
 							foreach($alldocs as $key => $value){
 								$rawdata.="\t" . $value . ' ' . pluralize($key, $value) . "\r\n";
 							}
@@ -366,23 +366,23 @@ function newchart($color, $icon, $title, $chartid, $dates, $data, $start,$end, $
 				echo '</div></div></div></div></div>';
 }
 
-if($sidebar->client_list==1) {
+if($sidebar->client_list==1) {//clients
     newchart("grey-salsa", "icon-globe", $strings["index_clients"], "clients", $clientdates, $clients, $startdate, $enddate, $isdraft, $profiletypes, $clienttypes, $strings);//new clients
 }
 
-if($sidebar->profile_list==1) {
+if($sidebar->profile_list==1) {//profiles
     newchart("green-haze", "icon-user", $strings["index_profiles"], "profiles", $profiledates, $profiles, $startdate, $enddate, $isdraft, $profiletypes, $clienttypes, $strings);//new users
 }
 
-if($sidebar->document_list==1) {
-    newchart("yellow-casablanca", "icon-doc", $strings["index_documents"], "documents", $docdates, $documents, $startdate, $enddate, $isdraft, $profiletypes, $clienttypes, $strings);//new documents
+if($sidebar->document_list==1) {//documents
+    newchart("yellow-casablanca", "icon-doc", $strings["index_documents"], "documents", $docdates, $documents, $startdate, $enddate, $isdraft, $subdocuments, $clienttypes, $strings);//new documents
 }
 
-if($sidebar->orders_list==1) {
+if($sidebar->orders_list==1) {//orders
     newchart("yellow", "icon-docs", $strings["index_orders"], "orders", $orderdates, $orders, $startdate, $enddate, $isdraft, $profiletypes, $clienttypes, $strings);//new orders
 }
 
-if($sidebar->training==1) {
+if($sidebar->training==1) {//cpurses/training
     newchart("blue-steel", "fa fa-graduation-cap", $strings["index_courses"], "courses", $quizdates, $answers, $startdate, $enddate, $isdraft, $profiletypes, $clienttypes, $strings);//new quiz completions
 }
 
@@ -393,9 +393,9 @@ function FindIterator1($ObjectArray, $FieldName, $FieldValue){
     return false;
 }
 
-function enumsubdocs($thedocs, $date, $chartid, $isdraft, $profiletypes, $clienttypes){
+function enumsubdocs($thedocs, $date, $chartid, $isdraft, $profiletypes, $clienttypes, $strings){
 	$alldocs = array();
-	$unknown= "Not specified";
+	$unknown= $strings["analytics_notspecified"];
     $language= $GLOBALS["language"];
     $title = getFieldname("title",$language);
     if($language == "Debug"){ $Trans = " [Translated]"; } else {$Trans = "";}
@@ -414,7 +414,12 @@ function enumsubdocs($thedocs, $date, $chartid, $isdraft, $profiletypes, $client
 
 			if ($doit) {
 				$doctype = $adoc->document_type;
-				if ($chartid == "profiles") {
+                if($doctype AND $language != "English"){//documents
+                    $subdoc = FindIterator1($profiletypes, "id", $adoc->sub_doc_id);//subdocuments passed into profiletypes
+                    $doctype = $subdoc->$title . $Trans;
+                }
+
+				if ($chartid == "profiles") {//PROFILE TYPES
 					$doctype = $adoc->profile_type;
 					if (is_numeric($doctype)) {
 						//$profiletypes = ['', 'Admin', 'Recruiter', 'External', 'Safety', 'Driver', 'Contact', 'Owner Operator', 'Owner Driver', 'Employee', 'Guest', 'Partner'];
@@ -427,9 +432,9 @@ function enumsubdocs($thedocs, $date, $chartid, $isdraft, $profiletypes, $client
 				if ($chartid == "orders") {
 					$doctype = $adoc->is_hired;
 					if ($doctype) {
-						$doctype = "New Hiree";
+						$doctype = $strings["analytics_hired"];
 					} else {
-						$doctype = "Candidate";
+						$doctype = $strings["analytics_nothired"];
 					}
 				}
 				if ($chartid == "clients") {

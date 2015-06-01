@@ -986,6 +986,8 @@ class DocumentsController extends AppController{
 
         $this->set('profiletypes', TableRegistry::get('profile_types')->find()->select());
         $this->set('clienttypes', TableRegistry::get('client_types')->find()->select());
+
+        $this->set('subdocuments', TableRegistry::get('subdocuments')->find()->select());
     }
 
 
