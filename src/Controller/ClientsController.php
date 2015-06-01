@@ -562,8 +562,8 @@
                 //overwrite existing divisions
                 $divisionlist = $Table->find()->where(['client_id' => $id]);
                 foreach ($divisionlist as $div) {
-                    $dd[$currentdivision]=trim($dd[$currentdivision]);
                     if($currentdivision < $ddcount){//has a division of this index, use it
+                        $dd[$currentdivision]=trim($dd[$currentdivision]);
                         $Table->query()->update()->set(['title' => $dd[$currentdivision]])->where(['id' => $div->id])->execute();
                     } else {//doesn't have a new division of this index, delete it
                         $Table->deleteAll(array("id" => $div->id));
