@@ -1643,6 +1643,29 @@
         $this->set('driverid',$driverid);
         $this->set('orderid',$orderid);
     }
+    
+    function assignedTo($cid,$rid)
+    {
+        if($_SERVER['SERVER_NAME']=='localhost')
+        {
+            $cid = 26;
+        }
+        $cli = TableRegistry::get('clients')->find()->where(['id'=>$cid])->first();
+        $pro = $cli->profile_id;
+        $arr = explode(',',$pro);
+        //echo $rid;
+        //var_dump($arr);
+        if(in_array($rid,$arr))
+        {
+            $check = true;
+        }
+        else
+        $check = false;
+        
+        $this->response->body($check);
+            return $this->response;
+        
+    }
         
 }
 ?>
