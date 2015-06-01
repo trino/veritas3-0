@@ -320,7 +320,7 @@
                                                 if (is_object($client)) {
                                                     echo "<a href ='" . $this->request->webroot . "clients/edit/" . $order->client_id . "?view' target='_blank'>" . ucfirst(h($client->company_name)) . "</a>";
                                                 } else {
-                                                    echo "Deleted " . $settings->client;
+                                                    echo $strings["documents_missingclient"];
                                                 }
                                             ?></td>
                                         <td><?php if ($order->division) {
@@ -328,10 +328,8 @@
                                                 if (is_object($div)) {
                                                     echo ucfirst($div->title);
                                                 } elseif ($this->request->session()->read('Profile.profile_type') == 1) {
-                                                    echo "Missing division: " . $order->division; //only shows for admins
+                                                    echo $strings["documents_missingdivision"] . ": " . $order->division; //only shows for admins
                                                 }
-                                            } else {
-                                                echo '';
                                             } ?></td>
 
                                         <td><?= getdatecolor(h($order->created)) ?></td>

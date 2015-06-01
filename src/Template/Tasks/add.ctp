@@ -96,7 +96,7 @@ if(isset($isdisabled)) {$disabled = "disabled='disabled'";}
                         <input type="hidden" name="offset" value="<?= $offset ?>">
 						<input type="text" name="date" <?php echo $disabled;?> class="form-control todo-taskbody-due date form_datetime" placeholder="Due Date..." value="<?php
                         if(isset($event)) {
-                            echo offsettime2(date('d F Y - H:i',strtotime($event->date)), 0, $strings);
+                            echo offsettime2(date('d F Y H:i',strtotime($event->date)), 0, $strings);
                         } else {
                             $minutes = ceil(date("i") / 5) * 5 - date("i");
                             if ($minutes==0){$minutes=5;}
