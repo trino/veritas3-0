@@ -29,7 +29,7 @@ class TransComponent extends Component {
         putenv("LC_ALL=$language");
         setlocale(LC_ALL, $language);
 
-// Set the text domain as 'messages'
+        // Set the text domain as 'messages'
         $domain = 'default';
         bindtextdomain($domain, "C:/wamp/www/veritas3-0/Locale");//www/veritsa3-0/,   Locale
         textdomain($domain);
