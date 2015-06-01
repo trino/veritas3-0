@@ -88,11 +88,13 @@ Users
         <tbody>
             <?php
                     function printuser($user, $webroot, $isASAP){
+                        if (!is_numeric($user->Profiles['id'])) {return false;}
                         echo '<TR><TD>' . $user->Profiles['id'] . '</TD><TD>' . ucfirst($user->Profiles['fname']) . ' ' . ucfirst($user->Profiles['lname']) . '</TD><TD>';
                         echo '<A HREF="' . $webroot . 'profiles/edit/' . $user->Profiles['id'] . '">' . ucfirst($user->Profiles['username']) . '</A></TD><TD>';
                         if($isASAP){
                             echo $user->sitename . '</TD><TD>' . $user->asapdivision . '</TD><TD>';
                         }
+                        return true;
                     }
 
                     $total=0;
@@ -105,31 +107,39 @@ Users
                             }
                         }
 
-                        printuser($user, $this->request->webroot, $isASAP);
-                        if (strlen($user->profile['questions'])==0) {
-                            echo $nottakenyet . '</TD><TD><A HREF="' . $this->request->webroot . 'training/users?quizid=' . $_GET['quizid'] . '&userid=';
-                            echo $user->UserID . '" class="' . btnclass("danger", "yellow") . '">Unenroll</A>';
-                        } else {
-                            $usercount+=1;
-                            $total+= $user->profile['percent'];
-                            $score=round($user->profile['percent'],2);
-                            echo  $user->profile['correct'] . '/' . $user->profile['questions']  . ' (' ;
-                            if ($score<80) {echo "<font color='red'>";} else {echo '<font color="green">';}
-                            echo $score . '%</font>)' . '</TD><TD><A HREF="' . $this->request->webroot . 'training/quiz?quizid=' . $_GET['quizid'] . '&userid=';
-                            echo $user->UserID . '" class="' . btnclass("primary", "blue") . '">View Answers</A>';
-                            if ($score>=80) {echo '<a href="' . $this->request->webroot . 'training/certificate?quizid=' .  $_GET['quizid'] . '&userid=' .  $user->UserID . '" class="' . btnclass("danger", "yellow") . '">Certificate</A> ';} else {
-                                echo '<A HREF="' . $this->request->webroot . 'training/users?action=deleteanswers&quizid=' . $_GET['quizid'] . '&userid=';
-                                echo $user->UserID . '" class="' . btnclass("danger", "red") . '" onclick="return confirm(' . "'Are you sure you want to delete " . ucfirst($user->Profiles['username']) . "\'s answers?'" . ');" >Delete Answers</A>';
+                        if (printuser($user, $this->request->webroot, $isASAP)) {
+                            if (strlen($user->profile['questions']) == 0) {
+                                echo $nottakenyet . '</TD><TD><A HREF="' . $this->request->webroot . 'training/users?quizid=' . $_GET['quizid'] . '&userid=';
+                                echo $user->UserID . '" class="' . btnclass("danger", "yellow") . '">Unenroll</A>';
+                            } else {
+                                $usercount += 1;
+                                $total += $user->profile['percent'];
+                                $score = round($user->profile['percent'], 2);
+                                echo $user->profile['correct'] . '/' . $user->profile['questions'] . ' (';
+                                if ($score < 80) {
+                                    echo "<font color='red'>";
+                                } else {
+                                    echo '<font color="green">';
+                                }
+                                echo $score . '%</font>)' . '</TD><TD><A HREF="' . $this->request->webroot . 'training/quiz?quizid=' . $_GET['quizid'] . '&userid=';
+                                echo $user->UserID . '" class="' . btnclass("primary", "blue") . '">View Answers</A>';
+                                if ($score >= 80) {
+                                    echo '<a href="' . $this->request->webroot . 'training/certificate?quizid=' . $_GET['quizid'] . '&userid=' . $user->UserID . '" class="' . btnclass("danger", "yellow") . '">Certificate</A> ';
+                                } else {
+                                    echo '<A HREF="' . $this->request->webroot . 'training/users?action=deleteanswers&quizid=' . $_GET['quizid'] . '&userid=';
+                                    echo $user->UserID . '" class="' . btnclass("danger", "red") . '" onclick="return confirm(' . "'Are you sure you want to delete " . ucfirst($user->Profiles['username']) . "\'s answers?'" . ');" >Delete Answers</A>';
+                                }
                             }
+                            echo '</TD></TR>';
                         }
-                        echo '</TD></TR>';
                     }
 
                     foreach($users2 as $user) {
                         if (!$user->profile) {
-                            printuser($user, $this->request->webroot, $isASAP);
-                            echo $nottakenyet . '</TD><TD><A HREF="' . $this->request->webroot . 'training/users?quizid=' . $_GET['quizid'] . '&userid=';
-                            echo $user->UserID . '" class="' . btnclass("danger", "yellow") . '">Unenroll</A>';
+                            if (printuser($user, $this->request->webroot, $isASAP)) {
+                                echo $nottakenyet . '</TD><TD><A HREF="' . $this->request->webroot . 'training/users?quizid=' . $_GET['quizid'] . '&userid=';
+                                echo $user->UserID . '" class="' . btnclass("danger", "yellow") . '">Unenroll</A>';
+                            }
                         }
                     }
 
