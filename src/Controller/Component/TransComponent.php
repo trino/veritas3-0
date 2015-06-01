@@ -35,6 +35,26 @@ class TransComponent extends Component {
         textdomain($domain);
     }
     */
+
+    function getVariables($settings, $language = "English"){
+        $variables = $this->Sadd("client", $language, $settings);
+        $variables = array_merge($variables,$this->Sadd("document", $language, $settings));
+        $variables = array_merge($variables,$this->Sadd("profile", $language, $settings));
+        return array_merge($variables,$this->Sadd("mee", "English", $settings));//no french equivalent
+    }
+
+    function Sadd($Key, $language, $Value){
+        $P="%";
+        $NewName = $Key;
+        if($language != "English" && $language != "Debug"){$Key .= $language;}
+        $Value=$Value->$Key;
+        $variables=array();
+        $variables[$P. strtolower($NewName) .$P] = strtolower($Value);
+        $variables[$P. strtoupper($NewName) .$P] = strtoupper($Value);
+        $variables[$P. ucfirst($NewName) .$P] = ucfirst($Value);
+        return $variables;
+    }
+
     public function getLanguage($UserID = ""){
         if($UserID) {
             if (is_numeric($UserID)) {//is a number, use it as a user id
@@ -49,6 +69,10 @@ class TransComponent extends Component {
         return "English";//assume english
     }
 
+    function get_settings(){
+        return TableRegistry::get('Settings')->find()->first();
+    }
+
     public function getString($String, $Variables = "", $UserID=""){
         $Table = TableRegistry::get('strings')->find()->select()->where(["Name" => $String])->first();
         if(!$Table){return "[" . $String . " NOT FOUND]";}
@@ -56,6 +80,9 @@ class TransComponent extends Component {
         if($language=="Debug"){return "[" . $String . "]";}
         $text = $Table->$language;
         if(!$text){ return "[" . $String . " is missing the " . $language. " translation]";}
+        if (!is_array($Variables) AND is_numeric(strpos($text, "%"))){
+            $Variables = $this->getVariables($this->get_settings(), $language);
+        }
         if(is_array($Variables)){
             foreach($Variables as $Key => $Value){
                 if (substr($Key, 0, 1) != "%") {$Key = "%" . $Key;}
