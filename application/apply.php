@@ -888,9 +888,9 @@ else{
         
         <div class="clearfix"></div>
             
-    <div class="col-md-12">
+    <!--div class="col-md-12">
         <h3 class="col-md-12">Driving Experience and Qualifications</h3>
-    </div>
+    </div-->
               <!--div class="col-md-6">
               <div class="col-md-12">
                 <h3>Driver Licenses</h3>
@@ -951,7 +951,7 @@ else{
         </div-->
                 
         
-        <div class="col-md-12">
+        <!--div class="col-md-12">
             <label class="col-md-6">Show special courses or training that will help you as as driver</label>
             <div class="col-md-6"><textarea class="form-control" name="special_course"><?php if(isset($application_for_employment_gfs))echo $application_for_employment_gfs->special_course;?></textarea></div>
             <p>&nbsp;</p>
@@ -979,7 +979,7 @@ else{
         
         <hr>
         <div class="col-md-12">
-             <h3 class="col-md-12">EMPLOYMENT HISTORY</h3>
+             <h3 class="col-md-12">EMPLOYMENT HISTORY</h3-->
              <!--p>Please list your most recent employment first. Add another sheet if necessary. History must be the last three year’s. Commercial drivers shall provide
 
                 an additional seven year’s information on employers for whom the applicant operated a commercial vehicle.
@@ -1093,7 +1093,7 @@ else{
                         <div class="col-md-12"><textarea name="reasons_of_leaving3" class="form-control form-control"><?php if(isset($application_for_employment_gfs))echo $application_for_employment_gfs->reasons_of_leaving3;?></textarea></div>
                     </td>
                 </tr>
-            </table-->
+            </table>
         </div>
         <div class="col-md-12">
             <label class="col-md-6">Would you be willing to take a physical exam?</label>
@@ -1223,7 +1223,7 @@ else{
             <label class="col-md-6">Which of your former positions did you like best and why?</label>
             <div class="col-md-12"><textarea class="form-control" name="best_former_posotions"><?php if(isset($application_for_employment_gfs))echo $application_for_employment_gfs->best_former_posotions;?></textarea></div>
         </div>
-        <p>&nbsp;</p>
+        <p>&nbsp;</p-->
         <div class="col-md-12">
              <h3 class="col-md-12">OTHER INFORMATION</h3>
              <div class="col-md-12"><p>
