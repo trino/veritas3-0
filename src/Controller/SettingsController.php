@@ -412,14 +412,18 @@ class SettingsController extends AppController {
         return false;
     }
     
-    function check_client($uid,$cid)
-    {
+    function check_client($uid,$cid) {
         $client = TableRegistry::get('clients')->find()->where(['id'=>$cid])->first();
-        $p_ids = explode(',',$client->profile_id);
-        if(in_array($uid,$p_ids))
-             $this->response->body('1');
-        else
-             $this->response->body('0');
+        if(is_object($client)) {
+            $p_ids = explode(',', $client->profile_id);
+            if (in_array($uid, $p_ids)) {
+                $this->response->body('1');
+            } else {
+                $this->response->body('0');
+            }
+        } else {
+            $this->response->body('0');
+        }
         return $this->response;
     }
     
