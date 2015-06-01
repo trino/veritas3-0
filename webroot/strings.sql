@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: May 14, 2015 at 10:57 PM
+-- Generation Time: Jun 01, 2015 at 05:30 PM
 -- Server version: 5.6.17
 -- PHP Version: 5.5.12
 
@@ -32,14 +32,14 @@ CREATE TABLE IF NOT EXISTS `strings` (
   `English` varchar(4096) NOT NULL,
   `French` varchar(4096) NOT NULL,
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=188 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=212 ;
 
 --
 -- Dumping data for table `strings`
 --
 
 INSERT INTO `strings` (`ID`, `Name`, `English`, `French`) VALUES
-(1, 'Date', '1431613851', '<-- This is used by the system to auto-update'),
+(1, 'Date', '1431664334', '<-- This is used by the system to auto-update'),
 (2, 'dashboard_affirmative', 'Yes', 'Oui'),
 (3, 'dashboard_negative', 'No', 'Non'),
 (4, 'dashboard_selectall', 'Select All', 'Tout Sélectionner'),
@@ -184,8 +184,8 @@ INSERT INTO `strings` (`ID`, `Name`, `English`, `French`) VALUES
 (147, 'orders_noresults', 'No orders found', 'Pas de commandes trouvé'),
 (148, 'orders_all', 'List All Orders', 'Inscrivez commandes'),
 (149, 'infoorder_continue', 'Continue', 'Continuer'),
-(150, 'infoorder_driver', 'Driver', 'Pilote'),
-(151, 'infoorder_selectdriver', 'Select Driver', 'Sélectionnez Pilote'),
+(150, 'infoorder_driver', 'Subject', 'Pilote'),
+(151, 'infoorder_selectdriver', 'Select Subject', 'Sélectionnez Pilote'),
 (152, 'infoorder_createdriver', 'Create New Driver', 'Créer un Nouveau Pilote'),
 (153, 'infoorder_noneselected', 'None Selected', 'Aucune sélection'),
 (154, 'infoorder_alertselectdriver', 'Please select a driver.', 'S''il vous plaît sélectionner un pilote.'),
@@ -213,7 +213,7 @@ INSERT INTO `strings` (`ID`, `Name`, `English`, `French`) VALUES
 (176, 'flash_usersaved', 'User saved successfully.', ''),
 (177, 'flash_usernotsaved', 'The user could not be saved. Please try again.', ''),
 (178, 'flash_jobdeleted', ' The Job has been deleted.', ''),
-(179, 'flash_jobnotdeleted', 'Job could not be deleted. Please try again.', ''),
+(179, 'flash_jobnotdeleted', 'The job could not be deleted. Please try again.', ''),
 (180, 'flash_invalidlogin', 'Invalid username or password.', ''),
 (181, 'flash_logosaved', 'Your Logo has been saved.', ''),
 (182, 'flash_logonotsaved', 'The logo could not be saved. Please try again.', ''),
@@ -221,7 +221,31 @@ INSERT INTO `strings` (`ID`, `Name`, `English`, `French`) VALUES
 (184, 'flash_orderdeleted', 'The order has been deleted.', ''),
 (185, 'flash_orderdraft', 'Order saved as draft', ''),
 (186, 'flash_bulkorder', 'Your bulk order has been saved successfully', ''),
-(187, 'flash_pagesaved', 'Page saved successfully.', '');
+(187, 'flash_pagesaved', 'Page saved successfully.', ''),
+(188, 'flash_clientsaved', '%Client% saved', '%Client% sauvé'),
+(189, 'flash_eventsaved', 'Event saved successfully.', ''),
+(190, 'flash_eventnotsaved', 'Error creating event. Please try again.', ''),
+(191, 'flash_eventdeleted', 'Event deleted successfully.', ''),
+(192, 'flash_eventnotdeleted', 'Event could not be deleted. Please try again.', ''),
+(193, 'flash_userdeleted', 'The user has been deleted.', ''),
+(194, 'flash_usernotdeleted', 'User could not be deleted. Please try again.', ''),
+(195, 'flash_profilesaved', '%Profile% saved successfully.', ''),
+(196, 'flash_profilenotsaved', 'The %profile% could not be saved. Please try again.', ''),
+(197, 'flash_subdocumentdeleted', 'Subdocument deleted successfully.', ''),
+(198, 'flash_ordersaved', 'Order saved successfully', ''),
+(199, 'flash_profilecreated', '%Profile% created successfully. Please assign the %profile% to at least one client.', ''),
+(200, 'flash_profilenotcreated', 'The %profile% could not be saved. Please try again.', ''),
+(201, 'flash_profilenotfound', 'Sorry, the %profile% does not exist.', ''),
+(202, 'flash_invalidcsv', 'Invalid CSV file.', ''),
+(203, 'flash_profilesimported', '%Profile%s Successfully Imported', ''),
+(204, 'flash_profilesaved', '%Profile% saved successfully.', ''),
+(205, 'flash_profilesaveddraft', '%Profile% saved as draft successfully.', ''),
+(206, 'flash_profilenotsaved', 'The %profile% could not be saved. Please try again.', ''),
+(207, 'flash_profiledeleted', 'The %profile% has been deleted.', ''),
+(208, 'flash_profilenotdeleted', 'The %profile% could not be deleted. Please try again.', ''),
+(209, 'flash_productdeleted', '%Name% has been deleted', ''),
+(210, 'flash_productupdated', '%Name% has been updated', ''),
+(211, 'flash_productcreated', '%Name% has been created', '');
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
