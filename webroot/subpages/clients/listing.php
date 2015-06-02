@@ -57,11 +57,7 @@
                                 if (isset($client)) {
 
                                     if (count($client) == 0) {
-                                        echo '<TR><TD COLSPAN="6" ALIGN="CENTER">No ' . strtolower($settings->client) . 's found';
-                                        if (isset($_GET['search'])) {
-                                            echo " matching '" . $_GET['search'] . "'";
-                                        }
-                                        echo '</TD></TR>';
+                                        echo '<TR><TD COLSPAN="6" ALIGN="CENTER">' . $strings["clients_nonefound"] . '</TD></TR>';
                                     }
 
                                     foreach ($client as $clients):

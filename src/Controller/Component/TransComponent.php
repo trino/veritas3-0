@@ -84,7 +84,7 @@ class TransComponent extends Component {
         $Table = TableRegistry::get('strings')->find()->select()->where(["Name" => $String])->first();
         if(!$Table){return "[" . $String . " NOT FOUND]";}
         $language = $this->getLanguage($UserID);
-        if($language=="Debug"){return "[" . $String . "]";}
+        if($language=="Debug"){return "[TC:" . $String . "]";}
         $text = $Table->$language;
         if(!$text){ return "[" . $String . " is missing the " . $language. " translation]";}
         if (!is_array($Variables) AND is_numeric(strpos($text, "%"))){

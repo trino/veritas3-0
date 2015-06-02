@@ -246,8 +246,6 @@ function CacheTranslations($Language='English', $Text, $Variables = ""){
     $Language = trim($Language);
     $acceptablelanguages = array("English", "French", "Debug");
     if(!in_array ($Language, $acceptablelanguages)){$Language = $acceptablelanguages[0]; }
-
-    //echo "Query: " . $query;
     $table = $table->find()->where(["(" . $query . ")"])->all();
     $data = array();
     foreach($table as $entry){

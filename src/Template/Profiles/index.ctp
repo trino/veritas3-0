@@ -199,11 +199,7 @@ if($language == "Debug"){ $Trans = " [Translated]"; } else {$Trans = "";}
 
 
                                 if (count($profiles) == 0) {
-                                    echo '<TR><TD COLSPAN="8" ALIGN="CENTER">No ' . strtolower($settings->profile) . 's found';
-                                    if (hasget('searchprofile')) {
-                                        echo " matching '" . $_GET['searchprofile'] . "'";
-                                    }
-                                    echo '</TD></TR>';
+                                    echo '<TR><TD COLSPAN="8" ALIGN="CENTER">' . $strings["profiles_nonefound"] . '</TD></TR>';
                                 }
 
                                 foreach ($profiles as $profile):
