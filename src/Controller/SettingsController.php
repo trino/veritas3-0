@@ -448,4 +448,21 @@ class SettingsController extends AppController {
          return $this->response;
         
     }
+    function getclient($cid)
+    {
+        $client = TableRegistry::get('clients')->find()->where(['id'=>$cid])->first();
+        
+             $this->response->body($client->company_name);
+        
+        return $this->response;
+    }
+    function getprofile($pid)
+    {
+        $profile = TableRegistry::get('profiles')->find()->where(['id'=>$pid])->first();
+        
+             $this->response->body($profile->username);
+        
+        return $this->response;
+    }
+    
  }

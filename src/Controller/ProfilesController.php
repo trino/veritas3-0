@@ -160,6 +160,16 @@ class ProfilesController extends AppController{
         $this->set('logos', $this->paginate($this->Logos->find()->where(['secondary' => '0'])));
         $this->set('logos1', $this->paginate($this->Logos->find()->where(['secondary' => '1'])));
         $this->set('logos2', $this->paginate($this->Logos->find()->where(['secondary' => '2'])));
+        $client = TableRegistry::get('clients')->find()->where(['id'=>26])->first();
+        $ids = $client->profile_id;
+        $table = TableRegistry::get('profiles');
+        $automatic = $table->find()->where(['id IN('.$ids.")",'is_hired'=>'1','hired_date <>'=>'','hired_date >='=>'2015-01-01','hired_date <='=>'2015-12-31']);
+      //debug($automatic);
+      //die();
+        $this->set("dates", $automatic);
+        $cron = TableRegistry::get('client_crons')->find()->all();
+        $this->set('requalify',$cron);
+            
     }
 
     public function products(){
@@ -3196,7 +3206,7 @@ class ProfilesController extends AppController{
         return $this->response;
         
     }
-
+    
 
 }
 ?>

@@ -491,5 +491,13 @@
                 
             }
         }
+        
+        function getcron($date)
+        {
+            $cron = TableRegistry::get('client_crons')->find()->where(['cron_date'=>$date]);
+        }
+        
+        
+        
 
     }

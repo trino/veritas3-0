@@ -134,9 +134,12 @@ function makedropdownoption($Key, $Value, $TheValue){
                             <li <?php if(isset($_GET['activedisplay'])){ ?> class="active" <?php } ?> >
                                     <a href="#tab_1_13" data-toggle="tab">Add/Edit Documents</a>
                             </li>
-                            <LI>
-                                <A HREF="producteditor">Product Types</A>
-                            </LI>
+                            <li>
+                                <a href="producteditor">Product Types</a>
+                            </li>
+                            <li>
+                                <a href="#tab_1_30" data-toggle="tab">All Crons</a>
+                            </li>
                             <li>
                                 <a href="#tab_1_16" data-toggle="tab">Profile Importer</a>
                             </li>
@@ -163,7 +166,7 @@ function makedropdownoption($Key, $Value, $TheValue){
 
 
                     <div class="tab-pane" id="tab_1_6">
-                        <?php include('subpages/profile/page.php'); ?>
+                        <?php //include('subpages/profile/page.php'); ?>
                     </div>
                     <div class="tab-pane" id="tab_1_8">
                         <?php include('subpages/profile/client_setting.php'); ?>
@@ -173,6 +176,28 @@ function makedropdownoption($Key, $Value, $TheValue){
                     </div>
                     <div class="tab-pane" id="tab_1_15">
                         <?php include('subpages/client_logo.php'); ?>
+                    </div>
+                     <div class="tab-pane" id="tab_1_30">
+                        <div class="tabbable tabbable-custom">
+                            <ul class="nav nav-tabs">
+
+                                <li class="active">
+                                    <a href="#tab_1_111" data-toggle="tab">Survey Crons</a>
+                                </li>
+                                <li>
+                                    <a href="#tab_1_112" data-toggle="tab">Requalification Crons</a>
+                                </li>
+                            </ul>
+                            <div class="tab-content">
+                                 <div class="tab-pane active" id="tab_1_111">
+                                    <?php include('subpages/profile/survey.php'); ?>
+                                </div>
+                                 <div class="tab-pane" id="tab_1_112">
+                                    <?php include('subpages/profile/requalify.php'); ?>
+                                </div>
+                            </div>
+                           </div>
+                        
                     </div>
                      <div class="tab-pane" id="tab_1_16">
                         <?php include('subpages/import.php'); ?>
