@@ -6,22 +6,22 @@
     $contact = $this->requestAction('/profiles/getContact');
     //include("subpages/profileslisting.php");
     $viewmode = isset($_GET["view"]);
-    $pType = $this->requestAction('/profiles/getProfileTypes');// ['','Admin','Recruiter','External','Safety','Driver','Contact'];
+    $pType = $this->requestAction('/profiles/getProfileTypes/' . $language);// ['','Admin','Recruiter','External','Safety','Driver','Contact'];
     if (!$viewmode){
 ?>
 
 
 <div class="col-md-3" style=" float: right;margin-bottom: 10px;padding-right: 0;">
-<a href="<?php echo $this->request->webroot;?>profiles/add" class="btn btn-primary" style="float: right;">Add Profile</a>
+<a href="<?php echo $this->request->webroot;?>profiles/add" class="btn btn-primary" style="float: right;"><?= $strings["infoorder_addprofile"]; ?></a>
 </div>
 <div class="clearfix"></div>
 <div class="scrolldiv" style="margin-bottom: 15px;">
 
-    <input type="text" id="searchProfile" onkeyup="searchProfile()" class="form-control" placeholder="Search <?php echo ucfirst($settings->profile); ?>s"/>
+    <input type="text" id="searchProfile" onkeyup="searchProfile()" class="form-control" placeholder="<?= $strings["infoorder_searchprofiles"]; ?>"/>
     <table class="table table-striped table-bordered table-advance table-hover recruiters">
         <thead>
         <tr>
-            <th colspan="2">Add <?php echo ucfirst($settings->profile); ?></th>
+            <th colspan="2"><?= $strings["infoorder_addprofile"]; ?></th>
         </tr>
         </thead>
         <tbody id="profileTable">
@@ -36,11 +36,11 @@
                     } elseif(strlen(trim($r->fname . $r->lname))>0) {
                         $username = $r->fname . " " . $r->lname;
                     }
-                    if(isset($pType[$r->profile_type]))
-                    $profiletype = "(" . $pType[$r->profile_type] . ")";
-                    else
                     $profiletype = "";
-                    if ($profiletype == "()") {$profiletype = "(Draft)"; }
+                    if(isset($pType[$r->profile_type])) {
+                        $profiletype = " (" . $pType[$r->profile_type] . ")";
+                    }
+                    if ($profiletype == " ()") {$profiletype = "(Draft)"; }
                     ?>
                     <tr>
 
@@ -79,7 +79,7 @@
                         <table class="table table-striped table-bordered table-advance table-hover recruiters">
                             <thead>
                             <tr>
-                                <th colspan="2">Profiles:</th>
+                                <th colspan="2"><?= $strings["index_profiles"]; ?>:</th>
                             </tr>
                             </thead>
                             <tbody id="">

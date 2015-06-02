@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 01, 2015 at 10:51 PM
+-- Generation Time: Jun 02, 2015 at 11:10 PM
 -- Server version: 5.6.17
 -- PHP Version: 5.5.12
 
@@ -32,14 +32,14 @@ CREATE TABLE IF NOT EXISTS `strings` (
   `English` varchar(4096) NOT NULL,
   `French` varchar(4096) NOT NULL,
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=219 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=246 ;
 
 --
 -- Dumping data for table `strings`
 --
 
 INSERT INTO `strings` (`ID`, `Name`, `English`, `French`) VALUES
-(1, 'Date', '1433172658', '<-- This is used by the system to auto-update'),
+(1, 'Date', '1433191920', '<-- This is used by the system to auto-update'),
 (2, 'dashboard_affirmative', 'Yes', 'Oui'),
 (3, 'dashboard_negative', 'No', 'Non'),
 (4, 'dashboard_selectall', 'Select All', 'Tout Sélectionner'),
@@ -251,8 +251,35 @@ INSERT INTO `strings` (`ID`, `Name`, `English`, `French`) VALUES
 (214, 'analytics_notspecified', 'Not specified', 'Non spécifié'),
 (215, 'analytics_hired', 'New Hiree', 'Nouvel embauchée'),
 (216, 'analytics_nothired', 'Candidate', 'Candidat'),
-(217, 'dashboard_emailexists', 'This email address is already in use', ''),
-(218, 'clients_notsaved', 'Unable to save your data, please try again', '');
+(217, 'dashboard_emailexists', 'This email address is already in use', 'Cette adresse email est déjà en cours d''utilisation'),
+(218, 'clients_notsaved', 'Unable to save your data, please try again', 'Impossible d''enregistrer vos données, s''il vous plaît essayer à nouveau'),
+(219, 'flash_error', 'Error', 'Erreur'),
+(220, 'tasks_confirmdelete', 'Are you sure you want to delete this event?', 'Êtes-vous sûr de vouloir supprimer cet événement?'),
+(221, 'clients_nonefound', 'No %client%s found', 'Pas de %client%s trouvés'),
+(222, 'profiles_nonefound', 'No %profile%s found', 'Pas de %profile%s trouvés'),
+(223, 'clients_editclient', 'Edit %Client%', 'Modifier %Client%'),
+(224, 'clients_viewclient', 'View %Client%', 'View %Client%'),
+(225, 'clients_createclient', 'Create %Client%', 'Créer %Client%'),
+(226, 'clients_manager', '%Client% Manager', 'Gestionnaire %Client%'),
+(227, 'clients_displayorder', 'Display Order', 'Ordre d''affichage'),
+(228, 'clients_show', 'Show', 'Révéler'),
+(229, 'clients_enabledocs', 'Enable %Document%s?', 'Activer %Document%s?'),
+(230, 'clients_products', 'Products', 'Produits'),
+(231, 'clients_requalify', 'Re-qualify', 'Requalifier'),
+(232, 'clients_info', 'Info', 'Infos'),
+(233, 'clients_assigntoprofile', 'Assign to %Profile%', 'Attribuez au %profile%'),
+(234, 'clients_assignedto', 'Assigned To', 'Assigné À'),
+(235, 'clients_everyoneenabled', 'Enabled for everyone (Globally)', 'Activé pour tout le monde (tout le monde)'),
+(236, 'clients_clientenabled', 'Enabled for this %client% (Locally)', 'Activé pour ce %client% (local)'),
+(237, 'clients_all', 'All', 'Tous'),
+(238, 'clients_helpnotice', 'A product needs to be enabled both globally and locally for it to show up for a client', 'Un produit doit être activé à la fois globalement et localement pour qu''il apparaisse pour un %client%'),
+(239, 'clients_message', 'Message', 'Message'),
+(240, 'clients_requalifynotice', 'Re-qualification will be applied to all profiles that are active.', 'Re-qualification sera appliquée à tous les profils qui sont actives.'),
+(241, 'clients_enablerequalify', 'Enable Requalify?', 'Activer requalifier?'),
+(242, 'clients_requalifywhen', 'When would you like to run re-qualifications?', 'Quand souhaitez-vous afin de fonctionner re-qualifications?'),
+(243, 'clients_or', '- or -', '- Ou -'),
+(244, 'clients_anniversary', 'Anniversary Date (From date of hire)', 'Date anniversaire (De la date d''embauche)'),
+(245, 'clients_selectadate', 'Select a date:', 'Sélectionner une date:');
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

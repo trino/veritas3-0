@@ -1,4 +1,8 @@
-Re-qualification will be applied to all profiles that are active.
+<?php if($this->request->session()->read('debug')) {
+    echo "<span style ='color:red;'>subpages/clients/requalify.php #INC???</span><BR>";
+}
+echo $strings["clients_requalifynotice"];
+?>
 <form action="" method="post" class="requalify_form">
 <input type="hidden" name="id" value="<?php echo $client->id; ?>" />
 <table class="table table-condensed  table-striped table-bordered table-hover dataTable no-footer" id="myTable">
@@ -11,14 +15,14 @@ Re-qualification will be applied to all profiles that are active.
     </thead>
     <tbody-->
     <tr>
-        <td><i class="fa fa-refresh"></i> Enable Requalify?</td>
-        <td><input type="checkbox" <?php if(isset($client)&& $client->requalify=='1')echo "checked";?> name="requalify" value="1"> Yes</td>
+        <td><i class="fa fa-refresh"></i> <?= $strings["clients_enablerequalify"]; ?></td>
+        <td><input type="checkbox" <?php if(isset($client)&& $client->requalify=='1')echo "checked";?> name="requalify" value="1"> <?= $strings["dashboard_affirmative"]; ?></td>
     </tr>
 
     <tr>
-        <td>When would you like to run re-qualifications?</td>
-        <td><input type="radio" <?php if(isset($client)&& $client->requalify_re=='1')echo "checked";?> name="requalify_re" value="1" onclick="$('.r_date').hide();"/> Anniversary Date (Hire of hire)
-            <br> - or - <br> <input type="radio" <?php if(isset($client)&& $client->requalify_re=='0')echo "checked";?> name="requalify_re" value="0" onclick="$('.r_date').show();">Select a date:
+        <td><?= $strings["clients_requalifywhen"] ?></td>
+        <td><input type="radio" <?php if(isset($client)&& $client->requalify_re=='1')echo "checked";?> name="requalify_re" value="1" onclick="$('.r_date').hide();"/> <?= $strings["clients_anniversary"]; ?>
+            <br><?= $strings["clients_or"]; ?><br> <input type="radio" <?php if(isset($client)&& $client->requalify_re=='0')echo "checked";?> name="requalify_re" value="0" onclick="$('.r_date').show();"><?= $strings["clients_selectadate"]; ?>
             <input type="text" class="form-control date-picker r_date" style="width:50%;<?php echo (isset($client)&& $client->requalify_re==1)?"display:none":"display:block";?>;" name="requalify_date" value="<?php  if(isset($client)&& $client->requalify_date!="")echo $client->requalify_date; else echo date('Y-m-d');?>">
         </td>
     </tr>
@@ -38,10 +42,29 @@ Re-qualification will be applied to all profiles that are active.
     <tr>
         <td>Products Included</td>
         <td>
-        <?php $r = explode(',',$client->requalify_product); ?>
-            <input type="checkbox" <?php if(in_array('1',$r))echo "checked";?> name="requalify_product[]" value="1"> Driver's Record Abstract (MVR) #1
-            &nbsp;&nbsp;<input type="checkbox" <?php if(in_array('14',$r))echo "checked";?> name="requalify_product[]" value="14"> CVOR #14
-            &nbsp;&nbsp;<input type="checkbox" <?php if(in_array('72',$r))echo "checked";?> name="requalify_product[]" value="72"> Check DL #72
+        <?php
+            function productname($products, $number, $language){
+                $product = getIterator($products, "number", $number);
+                $title = getFieldname("title", $language);
+                $title = $product->$title;
+                if ($language == "Debug"){ $title.= " [Trans]";}
+                return $title . " #" . $number;
+            }
+            function printproducts($r, $products, $numbers, $language){
+                $hasprinted=false;
+                foreach($numbers as $number){
+                    if($hasprinted) { echo "&nbsp;&nbsp;"; }
+                    echo '<input type="checkbox" id="p' . $number . '"';
+                    if(in_array($number,$r)) {echo " checked";}
+                    echo ' name="requalify_product[]" value="' . $number . '">';
+                    echo '<label for="p' . $number . '">' . productname($products, $number, $language) . "</label>";
+                    $hasprinted=true;
+                }
+            }
+
+            $r = explode(',',$client->requalify_product);
+            printproducts($r, $products, array(1, 14, 72), $language);
+            ?>
         </td>
     </tr>
     
@@ -72,7 +95,7 @@ Re-qualification will be applied to all profiles that are active.
             <tr>
                 <td><?php echo $p->username;?></td>
                 <td><?php echo $p->hired_date;?></td>
-                <td><?php echo ($p->requalify=='1')?'yes':'no';?></td>
+                <td><?php echo ($p->requalify=='1')? $strings["dashboard_affirmative"]: $strings["dashboard_negative"];?></td>
                 <td><?php $crons = $this->requestAction('/rapid/cron_client/'.$p->id."/".$client->id);
                            $show ='';
                            $cron = explode(",",$crons);
@@ -80,7 +103,7 @@ Re-qualification will be applied to all profiles that are active.
                            {
                             
                                 $pr = explode('&',$cr);
-                                $show .= $pr[0]." <a href='".$this->request->webroot."profiles/view/".$p->id."?getprofilescore=1' target='_blank'>View</a>,";
+                                $show .= $pr[0]." <a href='".$this->request->webroot."profiles/view/".$p->id."?getprofilescore=1' target='_blank'>" . $strings["dashboard_view"] . "</a>,";
                                 
                            }
                            echo $show = substr($show,0,strlen($show)-1);

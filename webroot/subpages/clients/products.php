@@ -12,16 +12,16 @@ if($this->request->session()->read('debug')) {
 <table class='table table-condensed  table-striped table-bordered table-hover dataTable no-footer'  ID='myTable'>
     <thead>
         <TR>
-            <TH>Message</TH>
+            <TH><?= $strings["clients_message"]; ?></TH>
             <TD COLSPAN="3">
                 <div class="toast"></div>
             </TD>
         </TR>
         <TR>
             <TH>ID</TH>
-            <TH>Product</TH>
-            <TH>Enabled for everyone (Globally)</TH>
-            <TH>Enabled for this client (Locally)</TH>
+            <TH><?= $strings["clients_products"]; ?></TH>
+            <TH><?= $strings["clients_everyoneenabled"]; ?></TH>
+            <TH><?= $strings["clients_clientenabled"]; ?></TH>
         </TR>
     </thead>
     <tbody>
@@ -29,7 +29,8 @@ if($this->request->session()->read('debug')) {
 $global=true;
 $local=true;
 foreach($products as $product){
-    echo '<TR><TD>' . $product->number . '</TD><TD><DIV ID="dn' . $product->number . '">' . $product->title . '</DIV></TD><TD>';
+    $title = getFieldname("title", $language);
+    echo '<TR><TD>' . $product->number . '</TD><TD><DIV ID="dn' . $product->number . '">' . $product->$title . $Trans . '</DIV></TD><TD>';
     if(!checkbox("global" . $product->number, $product->enable, "enable('global', -1, " .  $product->number . ");", false)){$global = false;}
     echo "<TD>";
     if(!checkbox("local" . $product->number, $product->clientenabled, "enable('local', " .  $id . ", " . $product->number . ");", false)) {$local=false;}
@@ -44,7 +45,7 @@ function checkbox($name, $status, $onclick, $disabled = false){
 }
 
 
-echo "</tbody><tfoot><TR><TD></TD><TD>All</TD><TD>";
+echo "</tbody><tfoot><TR><TD></TD><TD>" . $strings["clients_all"] . "</TD><TD>";
 checkbox("allglobal", $global, "selectall('global', 'allglobal', -1);");
 echo "</TD><TD>";
 checkbox("alllocal", $local, "selectall('local', 'alllocal', " . $id . ");");
@@ -53,7 +54,7 @@ checkbox("alllocal", $local, "selectall('local', 'alllocal', " . $id . ");");
     </TR>
     <TR>
         <TD colspan="4">
-            A product needs to be enabled both globally and locally for it to show up for a client
+            <?= $strings["clients_helpnotice"]; ?>
         </TD>
     </TR>
 </tfoot>

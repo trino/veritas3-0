@@ -11,7 +11,8 @@
     }
     $settings = $this->requestAction('settings/get_settings');
     $language = $this->request->session()->read('Profile.language');
-    $strings = CacheTranslations($language, "clients_%", $settings);//,$registry);//$registry = $this->requestAction('/settings/getRegistry');
+    $strings = CacheTranslations($language, array("clients_%", "forms_%", "infoorder_%", "index_%", "documents_document"), $settings);//,$registry);//$registry = $this->requestAction('/settings/getRegistry');
+    if($language == "Debug") { $Trans = " [Trans]";} else { $Trans = ""; }
 
     include_once 'subpages/filelist.php';
     $delete = isset($disabled);
@@ -36,41 +37,41 @@
     if ($action == "Add") {
         $action = "Create";
     }
-
+    $title = $strings["clients_" . strtolower($action) . "client"];
 ?>
 
 <h3 class="page-title">
-    <?php echo $action . " " . ucfirst($settings->client); ?>
+    <?= $title; ?>
 </h3>
 
 <div class="page-bar">
     <ul class="page-breadcrumb">
         <li>
             <i class="fa fa-home"></i>
-            <a href="<?php echo $this->request->webroot; ?>">Dashboard</a>
+            <a href="<?= $this->request->webroot . '">' . $strings["dashboard_dashboard"]; ?></a>
             <i class="fa fa-angle-right"></i>
         </li>
         <li>
-            <a href=""><?php echo $action . " " . ucfirst($settings->client); ?></a>
+            <a href=""><?= $title; ?></a>
         </li>
     </ul>
     <!--a href="javascript:window.print();" class="floatright btn btn-info">Print</a-->
     <?php
         if (isset($disabled) || isset($_GET['view'])) { ?>
-            <a href="javascript:window.print();" class="floatright btn btn-info">Print</a>
+            <a href="javascript:window.print();" class="floatright btn btn-info"><?= $strings["dashboard_print"]; ?></a>
         <?php }
 
         if (isset($client) && $sidebar->client_delete == '1' && $param != 'add') { ?>
-            <a href="<?php echo $this->request->webroot; ?>clients/delete/<?php echo $client->id; ?><?php echo (isset($_GET['draft'])) ? "?draft" : ""; ?>"
+            <a href="<?= $this->request->webroot; ?>clients/delete/<?= $client->id; ?><?= (isset($_GET['draft'])) ? "?draft" : ""; ?>"
                onclick="return confirm('Are you sure you want to delete <?= h($client->company_name) ?>?');"
-               class="floatright btn btn-danger btnspc">Delete</a>
+               class="floatright btn btn-danger btnspc"><?= $strings["dashboard_delete"]; ?></a>
         <?php }
         if (isset($client) && $sidebar->client_edit == '1' && isset($_GET['view'])) {
             echo $this->Html->link(__('Edit'), ['controller' => 'clients', 'action' => 'edit', $client->id], ['class' => 'floatright btn btn-primary btnspc']);
         } else if (isset($client) && $param == 'edit') {
             ?>
-            <a href="<?php echo $this->request->webroot; ?>clients/edit/<?php echo $client->id; ?>?view"
-               class='floatright btn btn-info btnspc'>View</a>
+            <a href="<?= $this->request->webroot; ?>clients/edit/<?= $client->id; ?>?view"
+               class='floatright btn btn-info btnspc'><?= $strings["dashboard_view"]; ?></a>
         <?php
 
         }
@@ -122,31 +123,31 @@
                     <div class="portlet box grey-salsa">
                         <div class="portlet-title">
                             <div class="caption">
-                                <i class="fa fa-briefcase"></i><?php echo ucfirst($settings->client); ?> Manager
+                                <i class="fa fa-briefcase"></i><?= $strings["clients_manager"]; ?>
                             </div>
                             <ul class="nav nav-tabs">
                                 <li class="active">
-                                    <a href="#tab_1_1" data-toggle="tab">Info</a>
+                                    <a href="#tab_1_1" data-toggle="tab"><?= $strings["clients_info"]; ?></a>
                                 </li>
                                 <?php if ($this->request['action'] != "add" && !isset($_GET['view'])) {
                                     ?>
 
                                     <li>
-                                        <a href="#tab_1_6" data-toggle="tab">Re-qualify</a>
+                                        <a href="#tab_1_6" data-toggle="tab"><?= $strings["clients_requalify"] ?></a>
                                     </li>
 
 
                                     <li>
-                                        <a href="#tab_1_4" data-toggle="tab">Products</a>
+                                        <a href="#tab_1_4" data-toggle="tab"><?= $strings["clients_products"]; ?></a>
                                     </li>
 
                                     <li>
-                                        <a href="#tab_1_2" data-toggle="tab">Documents</a>
+                                        <a href="#tab_1_2" data-toggle="tab"><?= $strings["documents_document"]; ?></a>
                                     </li>
 
                                     <li>
                                         <a href="#tab_1_3"
-                                           data-toggle="tab"><?php echo (!isset($_GET['view'])) ? "Assign to Profile" : "Assigned To"; ?></a>
+                                           data-toggle="tab"><?php echo (!isset($_GET['view'])) ? $strings["clients_assigntoprofile"] : $strings["clients_assignedto"]; ?></a>
                                     </li>
 
 
@@ -560,7 +561,7 @@
                                                                  align="right">
                                                                 <div class="row">
                                                                     <button type="submit" class="btn btn-primary"
-                                                                            id="save_client_p1">Save Changes
+                                                                            id="save_client_p1"><?= $strings["forms_savechanges"]; ?>
                                                                     </button>
                                                                     <!--button type="submit" class="btn btn-info" onclick="$('#client_drafts').val('1',function(){$('#save_client_p1').click();});">Save As Draft</button-->
                                                                 </div>
@@ -596,7 +597,7 @@
                                             <div class="tab-pane" id="tab_1_2">
                                                 <?php } ?>
                                                 <h4 class="col-md-6">
-                                                    Enable <?php echo ucfirst($settings->document) . 's?'; ?></h4>
+                                                    <?= $strings["clients_enabledocs"]; ?></h4>
 
                                                 <div class="clearfix"></div>
 
@@ -605,12 +606,12 @@
                                                         <tr class="myclass">
                                                             <th></th>
                                                             <!--<th class="">System</th>-->
-                                                            <th class=""><?php echo ucfirst($settings->document); ?> </th>
+                                                            <th class=""><?= $strings["documents_document"]; ?> </th>
 
                                                             <? if ($settings->mee != "Events Audit") {
                                                                 ?>
-                                                                <th class="">Orders</th>
-                                                                <th class="">Display Order</th>
+                                                                <th class=""><?= $strings["index_orders"]; ?></th>
+                                                                <th class=""><?= $strings["clients_displayorder"]; ?></th>
                                                             <? }?>
                                                         </tr>
                                                         <?php
@@ -646,13 +647,13 @@
                                                                                         type="radio"
                                                                                         name="clientC[<?php echo $sub->id; ?>]"
                                                                                         value="1"  <?php if ($csubdoc['display'] == 1) { ?> checked="checked" <?php } ?> />
-                                                                                    Yes </label>
+                                                                                    <?= $strings["dashboard_affirmative"]; ?> </label>
                                                                                 <label class="uniform-inline">
                                                                                     <input <?php echo $is_disabled ?>
                                                                                         type="radio"
                                                                                         name="clientC[<?php echo $sub->id; ?>]"
                                                                                         value="0"  <?php if ($csubdoc['display'] == 0) { ?> checked="checked" <?php } ?> />
-                                                                                    No </label>
+                                                                                    <?= $strings["dashboard_negative"]; ?> </label>
                                                                             </td>
 
                                                                         </tr>
@@ -672,7 +673,7 @@
                                                                             <td>
 
                             <span
-                                id="sub_<?php echo $sub['id']; ?>"><?php echo ucfirst($sub['title']); ?></span>
+                                id="sub_<?php echo $sub['id']; ?>"><?= ucfirst($sub[getFieldname('title', $language)]) . $Trans; ?></span>
                                                                             </td>
 
                                                                             <?php
@@ -685,19 +686,19 @@
                                                                                         type="radio"
                                                                                         name="clientC[<?php echo $sub->id; ?>]"
                                                                                         value="1"  <?php if ($csubdoc['display'] == 1) { ?> checked="checked" <?php } ?> />
-                                                                                    Yes </label>
+                                                                                    <?= $strings["dashboard_affirmative"]; ?> </label>
                                                                                 <label class="uniform-inline">
                                                                                     <input <?php echo $is_disabled ?>
                                                                                         type="radio"
                                                                                         name="clientC[<?php echo $sub->id; ?>]"
                                                                                         value="0"  <?php if ($csubdoc['display'] == 0) { ?> checked="checked" <?php } ?> />
-                                                                                    No </label>
+                                                                                    <?= $strings["dashboard_negative"]; ?> </label>
                                                                             </td>
                                                                             <td>
                                                                                 <input <?php if ($csubdoc['display_order'] == 1) { ?> checked="checked" <?php } ?>
                                                                                     type="checkbox" id="check<?= $u ?>"
                                                                                     onclick="if($(this).is(':checked')){$(this).closest('td').find('.fororder').val('1');}else {$(this).closest('td').find('.fororder').val('0');}"/>
-                                                                                <label for="check<?= $u ?>">Show</label>
+                                                                                <label for="check<?= $u ?>"><? $strings["clients_show"]; ?></label>
 
                                                                                 <input class="fororder" type="hidden"
                                                                                        value="<?php if ($csubdoc['display_order'] == 1) {
@@ -739,7 +740,7 @@
                                                                 <div class="row">
                                                                     <a href="javascript:void(0)" id="save_display1"
                                                                        class="btn btn-primary"  <?php echo $is_disabled ?>>
-                                                                        Save Changes </a>
+                                                                        <?= $strings["forms_savechanges"]; ?> </a>
 
                                                                 </div>
                                                             </div>
@@ -847,7 +848,7 @@
                             type: 'post',
                             success: function (res) {
                                 $('.flash').show();
-                                $('#save_display1').text(' Save Changes ');
+                                $('#save_display1').text('<?= $strings["forms_savechanges"]; ?>');
                             }
                         })
                     });
