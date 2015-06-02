@@ -40,7 +40,7 @@
     			<strong style="display: none;">OPTIONS:</strong>
     			<a href="#" onclick='addImage();' style="display: none;">Add Image</a>
                 <p style="color: red;">Please sign here then click save before proceeding</p>
-    			<a href="javascript:void(0)" onclick='$("#test4").data("jqScribble").clear();$(this).parent().parent().find(".touched").val("0");'>Clear</a>  <a href="javascript:void(0)" onclick="save_signature('4');$(this).parent().parent().find('.touched').val('1');">Save</a>  <span class="saved4" style="color: green;"></span>			
+    			<a href="javascript:void(0)" onclick='$("#test4").data("jqScribble").clear();$(this).parent().parent().find(".touched").val("0");'>Clear</a>  <a href="javascript:void(0)" onclick="$(this).parent().parent().find('.touched').val('1');save_signature('4');">Save</a>  <span class="saved4" style="color: green;"></span>			
                 <br />
                 
                 

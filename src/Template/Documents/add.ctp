@@ -580,25 +580,36 @@ if (isset($this->request->params['pass'][1])) {
 
     function saveSignature()
     {
+        //alert('test');
         if($(".subform4").attr('style') == '')
         {
-            save_signature('3');
-            save_signature('4');
-            save_signature('5');
-            save_signature('6');
+            //save_signature('3');
+            //save_signature('4');
+            //save_signature('5');
+            //save_signature('6');
             //save_signature('6');
         }
+        else
+        {
+            if($('.sub_docs_id').val()=='18')
+            {
+                save_signature('8');
+            }
+        }
+        
 
     }
     function save_signature(numb)
     {
         //alert('rest');return;
-        //alert(numb);
+        
         $("#test"+numb).data("jqScribble").save(function(imageData)
         {
-            if((numb=='1' && $('#recruiter_signature').parent().find('.touched').val()==1) || (numb=='3' && $('#criminal_signature_applicant').parent().find('.touched').val()==1) || (numb=='4' && $('#signature_company_witness').parent().find('.touched').val()==1) || (numb=='5' && $('#signature_company_witness2').parent().find('.touched').val()==1) || (numb=='6' && $('#signature_company_witness2').parent().find('.touched').val()==1)){
+            //alert($('#signature_company_witness2').parent().find('.touched').val());
+            if((numb=='1' && $('#recruiter_signature').parent().find('.touched').val()==1) || (numb=='3' && $('#criminal_signature_applicant').parent().find('.touched').val()==1) || (numb=='4' && $('#signature_company_witness').parent().find('.touched').val()==1) || (numb=='5' && $('#criminal_signature_applicant2').parent().find('.touched').val()==1) || (numb=='6' && $('#signature_company_witness2').parent().find('.touched').val()==1) || (numb=='8' && $('#gfs_signature').parent().find('.touched').val()==1)){
                 $.post('<?php echo $this->request->webroot; ?>canvas/image_save.php', {imagedata: imageData}, function(response)
                 {
+                    
                     if(numb=='1')
                     {
 
@@ -619,6 +630,10 @@ if (isset($this->request->params['pass'][1])) {
                     if(numb=='6')
                     {
                         $('#signature_company_witness2').val(response);
+                    }
+                    if(numb=='8')
+                    {
+                        $('#gfs_signature').val(response);
                     }
                 });
             }
@@ -1739,7 +1754,7 @@ if (isset($this->request->params['pass'][1])) {
                 //data:'uploaded_for='+$('#uploaded_for').val(),
                 data: data,
                 type: 'post',
-                //beforeSend:saveSignature,
+                beforeSend:saveSignature,
                 url: '<?php echo $this->request->webroot;?>documents/savedoc/<?php echo $cid;?>/' + doc_id + '/?document=' + type + '&draft=' + draft+'<?php if(isset($_GET['order_id'])){?>&order_id=<?php echo $_GET['order_id'];}?>',
                 success: function (res) {
 
