@@ -451,13 +451,8 @@
         return tempstr;
     }
     function getdrivers(){
-        var tempstr = '';
-        $('.recruiters input[type="checkbox"]').each(function () {
-            if ($(this).is(':checked')){
-                if (tempstr.length==0) { tempstr = $(this).val();} else {tempstr = tempstr + "," + $(this).val();}
-            }
-        });
-        return tempstr;
+        
+        return document.getElementById("selecting_driver").value;
     }
 
     function check_driver_abstract(driver) {
@@ -534,6 +529,7 @@
                         success:function(res) {
                             var response = JSON.parse(res);
                             var driv = response['driver'].split(',');
+                            //alert(response['order_id']);
                             var ord = response['order_id'].split(',');
                             var check = 0;
                             for(var k=0;k<driv.length;k++)

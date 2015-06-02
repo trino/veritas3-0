@@ -1125,7 +1125,7 @@ function printprovinces($name, $selected = "", $isdisabled = "", $isrequired = f
                                                     if($(this).val() == '5' || $(this).val() == '7' || $(this).val() == '8'){
                                                     $('#driver_div select').attr('required','required');
                                                     $('.driver_license input').each(function(){
-                                                        $(this).required();
+                                                        $(this).attr('required','required');
                                                     });
                                                     }
                                                     else
@@ -1210,6 +1210,13 @@ function printprovinces($name, $selected = "", $isdisabled = "", $isrequired = f
                                             $('#retype_password').removeAttr('required');
                                             $('#password').removeAttr('required');
                                         } 
+                                        if($('.hideusername').attr('style') == 'display:none;')
+                                        {
+                                            $('.hideusername input').each(function(){
+                                                $(this).removeAttr('required');
+                                            });
+                                        } 
+                                        
                         
                                     });
                         
@@ -1223,8 +1230,21 @@ function printprovinces($name, $selected = "", $isdisabled = "", $isrequired = f
                                                 //$('.nav-tabs li:not(.active)').each(function () {
                                                 //  $(this).hide();
                                             });
-                                            if(mem_type == '5' || mem_type == '7' || mem_type == '8'){
+                                            if(mem_type == '5' || mem_type == '7' || mem_type == '8' || mem_type=='9' || mem_type=='12'){
                                                 $('#driver_div').show();
+                                                if($(this).val() == '5' || $(this).val() == '7' || $(this).val() == '8'){
+                                                    $('#driver_div select').attr('required','required');
+                                                    $('.driver_license input').each(function(){
+                                                        $(this).attr('required','required');
+                                                    });
+                                                    }
+                                                    else
+                                                    {
+                                                       $('#driver_div select').removeAttr('required');
+                                                    $('.driver_license input').each(function(){
+                                                        $(this).removeAttr('required');
+                                                    }); 
+                                                    }
                                             } else {
                                                 $('#driver_div select').removeAttr('required');
                                                 $('.member_type').removeAttr('required');
@@ -1291,6 +1311,12 @@ function printprovinces($name, $selected = "", $isdisabled = "", $isrequired = f
                                             $('#retype_password').removeAttr('required');
                                             $('#password').removeAttr('required');
                                         }
+                                        if($('.hideusername').attr('style') == 'display:none;')
+                                        {
+                                            $('.hideusername input').each(function(){
+                                                $(this).removeAttr('required');
+                                            });
+                                        } 
         });
         
 
