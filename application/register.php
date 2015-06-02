@@ -18,6 +18,42 @@
         return $con;
     }
 
+    function insertdb($conn, $Table, $DataArray, $PrimaryKey = ""){
+        if (is_object($conn)){$DataArray = escapearray($conn, $DataArray);}
+        $query = "INSERT INTO " . $Table . " (" . getarrayasstring($DataArray, True) . ") VALUES (" . getarrayasstring($DataArray, False) . ")";
+        if($PrimaryKey) {
+            $query.= " ON DUPLICATE KEY UPDATE";
+            $delimeter = " ";
+            foreach($DataArray as $Key => $Value){
+                if($Key != $PrimaryKey){
+                    $query.= $delimeter . $Key . "='" . $Value . "'";
+                    $delimeter = ", ";
+                }
+            }
+        }
+        $query.=";";
+        if (is_object($conn)){mysqli_query($conn, $query);}
+        return $query;
+    }
+
+    function escapearray($conn, $DataArray){
+        foreach($DataArray as $Key => $Value) {
+            $DataArray[$Key] = mysqli_real_escape_string($conn, $Value);
+        }
+        return $DataArray;
+    }
+
+    function getarrayasstring($DataArray, $Keys = True){
+        if ($Keys) {
+            $DataArray = array_keys($DataArray);
+            return implode(", ", $DataArray);
+        } else {
+            $DataArray = array_values($DataArray);
+            $DataArray = implode("', '", $DataArray);
+            return "'" . $DataArray . "'";
+        }
+    }
+
     function first($query) {
         global $con;
         $result = $con->query($query);

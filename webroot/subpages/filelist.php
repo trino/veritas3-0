@@ -6,26 +6,22 @@
     $GLOBALS['webroot'] = $webroot = $this->request->webroot;
 
 //other values PATHINFO_DIRNAME (/mnt/files) | PATHINFO_BASENAME (??????.mp3) | PATHINFO_FILENAME (??????)
-    function getextension($path, $value = PATHINFO_EXTENSION)
-    {
+    function getextension($path, $value = PATHINFO_EXTENSION) {
         return strtolower(pathinfo($path, $value));
     }
 
-    function getattachments($OrderID)
-    {
+    function getattachments($OrderID) {
         $all_attachments = TableRegistry::get('doc_attachments');
         return $all_attachments->find()->where(['order_id' => $OrderID]);
     }
 
-    function loadclient($ClientID, $table = "clients")
-    {
+    function loadclient($ClientID, $table = "clients") {
         $table = TableRegistry::get($table);
         $results = $table->find('all', array('conditions' => array('id' => $ClientID)))->first();
         return $results;
     }
 
-    function getdocumentinfo($ID, $isOrder = false)
-    {
+    function getdocumentinfo($ID, $isOrder = false) {
         if ($isOrder) {
             $data = loadclient($ID, "orders");
         } else {
@@ -39,8 +35,7 @@
         }
     }
 
-    function PrintProfile($Description, $Profile, $webroot)
-    {
+    function PrintProfile($Description, $Profile, $webroot) {
         echo '<TR><Th>' . $Description . '</Th>';
         if (is_object($Profile)) {
             echo '<TD width="1%" align="center">' . $Profile->id . '</TD><TD>';
@@ -52,8 +47,39 @@
         }
     }
 
-    function printdocumentinfo($ID, $isOrder = false, $linktoOrder = false)
-    {
+    //gets all documents for a client
+    function getdocuments($ClientID){
+        $table = TableRegistry::get("documents");
+        return $table->find('all', array('conditions' => array('client_id'=>$ClientID)));
+    }
+    //takes getdocuments's results and spits out the document IDs into an array
+    function toconditionsarray($results, $key, $field){
+        $conditions = array();
+        foreach($results as $result){
+            $conditions[] = $result->$field;
+        }
+        return $conditions;
+    }
+    //prints all attachments for a client
+    function getclientattachments($ClientID){
+        $documents = toconditionsarray(getdocuments($ClientID), "document_id", "id");
+        $files = getfiles($documents);
+        listfiles($files, "attachments/", "attachment", false, 3);
+    }
+    //gets all attachments for an array of document IDs
+    function getfiles($DocID){
+        $Files = array();
+        $table = TableRegistry::get("doc_attachments");
+        foreach($DocID as $ID){
+            $results = $table->find('all', array('conditions' => array('document_id' => $ID)));
+            foreach($results as $result){
+                $Files[] = $result;
+            }
+        }
+        return $Files;
+    }
+
+    function printdocumentinfo($ID, $isOrder = false, $linktoOrder = false) {
         $data = getdocumentinfo($ID, $isOrder);
         $webroot = $GLOBALS['webroot'];//   profile: http://localhost/veritas3/profiles/view/[ID]   client:  http://localhost/veritas3/clients/edit/[ID]?view
         if (is_object($data)) {
@@ -93,16 +119,14 @@
         }
     }
 
-    function printanattachment($Filename)
-    {
+    function printanattachment($Filename) {
         if ($Filename) {
             $ret = geticon($Filename);
             return "<i class='fa fa-" . $ret["icon"] . "'></i> " . $Filename;
         }
     }
 
-    function geticon($extension)
-    {
+    function geticon($extension) {
         $ret = array();
         if (strpos($extension, ".")) {
             $extension = getextension($extension);
@@ -147,8 +171,7 @@
         return $ret;
     }
 
-    function listfiles($client_docs, $dir, $field_name = 'client_doc', $delete, $method = 1)
-    {
+    function listfiles($client_docs, $dir, $field_name = 'client_doc', $delete, $method = 1, $ShowUser = False) {
         $webroot = $GLOBALS['webroot'];
         if ($method == 2) {
             echo '<div class="portlet box grey-salsa"><div class="portlet-title"><div class="caption"><i class="fa fa-paperclip"></i>Attachments</div>';
@@ -196,14 +219,21 @@
                         case isset($cd->profile_id):
                             echo "<TD>" . loadclient($cd->profile_id, "profiles")->username . "</TD>";
                             break;
+                        case isset($cd->document_id) && $ShowUser:
+                            echo "<TD>";
+                            $Document = loadclient($cd->document_id, "documents");
+                            $User = loadclient($Document->user_id, "profiles");
+                            if (is_object($User)){
+                                echo '<A HREF="/profiles/view/' . $User->id .'" TITLE="' . $User->fname . " " . $User->lname . '">' . $User->username . "</A>";
+                            }
+                            echo "</TD>";
+                            break;
                     }
                     echo "<TD width='1%'>" . $extension . "</TD></TR>";
                 }
             }
             echo '</table>';
         } else {//old layout ?>
-
-
             <div class="form-group col-md-12">
                 <label class="control-label" id="attach_label">Attached Files: </label>
 
@@ -257,7 +287,5 @@
 
                 </div>
             </div>
-
-
         <?php }
     } ?>
