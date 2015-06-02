@@ -1119,10 +1119,22 @@ function printprovinces($name, $selected = "", $isdisabled = "", $isrequired = f
                                                     //alert($(this).attr('name'));
                                                 });
                                         
-                                                if($(this).val() == '5' || $(this).val() == '7' || $(this).val() == '8'){
+                                                if($(this).val() == '5' || $(this).val() == '7' || $(this).val() == '8' || $(this).val() == '9' || $(this).val() == '12'){
                                                     $('.driver_license').show();
                                                     $('#driver_div').show();
+                                                    if($(this).val() == '5' || $(this).val() == '7' || $(this).val() == '8'){
                                                     $('#driver_div select').attr('required','required');
+                                                    $('.driver_license input').each(function(){
+                                                        $(this).required();
+                                                    });
+                                                    }
+                                                    else
+                                                    {
+                                                       $('#driver_div select').removeAttr('required');
+                                                    $('.driver_license input').each(function(){
+                                                        $(this).removeAttr('required');
+                                                    }); 
+                                                    }
                                                     $('.placeofbirth').attr('required','required');
                                                     //$('#driver_div select').removeAttr('required');
                                                 } else{
