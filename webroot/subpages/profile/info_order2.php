@@ -536,8 +536,7 @@
                             {
                                 //check = k;
                                 $.ajax({
-                                    url:'<?php echo $this->request->webroot;?>orders/webservice/BUL/'+response['forms']+'/'+driv[k]+'/'+ord[k],
-
+                                    url:'<?php echo $this->request->webroot;?>orders/webservice/BUL/'+response['forms']+'/'+driv[k]+'/'+ord[k]
                                 });
                             }
                             setTimeout(function(){

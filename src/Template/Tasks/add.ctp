@@ -137,7 +137,7 @@ if(isset($isdisabled)) {$disabled = "disabled='disabled'";}
 			<?php if(!isset($isdisabled)){?>
 			<div class="form-actions right todo-form-actions">
                 <?php if (isset($event)){
-                    echo '<a href="../delete/' . $event->id . '" class="btn btn-danger delUrl" onclick="return confirm(' . "'Are you sure you want to delete this event?');" . '">Delete</a>';
+                    echo '<a href="../delete/' . $event->id . '" class="btn btn-danger delUrl" onclick="return confirm(' . "'" . $strings["tasks_confirmdelete"] . "');" . '">Delete</a>';
                 } ?>
 				<button class="btn btn-sm green-haze" type="submit" name="submit"><?= $strings["forms_savechanges"]; ?></button>
 			</div>

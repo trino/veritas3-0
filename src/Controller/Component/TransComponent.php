@@ -1,7 +1,7 @@
 <?php
 /**
  * Created by PhpStorm.
- * User: Van
+ * User: Roy
  * Date: 4/15/2015
  * Time: 1:44 PM
  */
@@ -12,10 +12,11 @@ use Cake\ORM\TableRegistry;
 
 
 class TransComponent extends Component {
+    public $components = ['Session'];//attempt to get session working
+    /*  code doesn't work for french
     //http://www.onlamp.com/pub/a/php/2002/06/13/php.html
     //http://stackoverflow.com/questions/1450037/how-to-load-language-with-gettext-in-php
     // I18N support information here
-    /*  code doesn't work for french
     function setup(){
         $language = $this->request->session()->read('Profile.language');
 
@@ -65,11 +66,14 @@ class TransComponent extends Component {
             } else {//is not a number, assume it's a language
                 return ucfirst($UserID);
             }
-        } else{//the user is logged in, use session variable
-            try {
-               // $Table = $this->request->session()->read('Profile.language');//Call to a member function session() on a non-object
-            } catch (Exception $e) {
-                $Table = false;
+        } else{//use current user
+            if (is_object($this->request->session())) {//the user is logged in, use session variable
+                $Table = $this->request->session()->read('Profile.language');//Call to a member function session() on a non-object
+                //if this attempt fails, try: (from DocumentComponent)
+                //$controller = $this->_registry->getController();
+                //$controller->request->session()->read('Profile.id');
+            } else { //the user is not logged in, use English or $GET["language"]
+                if (isset($_GET["language"])) { return $_GET["language"];}
             }
         }
         if(isset($Table)){return $Table;}

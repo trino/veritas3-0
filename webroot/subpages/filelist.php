@@ -126,7 +126,7 @@
         }
     }
 
-    function geticon($extension) {
+    function geticon($extension, $language = "English") {
         $ret = array();
         if (strpos($extension, ".")) {
             $extension = getextension($extension);
@@ -134,41 +134,64 @@
         switch (TRUE) {//file-excel-o,,
             case $extension == 'jpg' || $extension == 'jpeg' || $extension == 'png' || $extension == 'bmp' || $extension == 'gif';
                 $ret["type"] = "Image";
+                $ret["French"] = "Image";
                 $ret["icon"] = 'file-image-o';
                 break;
             case $extension == "pdf";
                 $ret["type"] = "Portable Document Format";
+                $ret["French"] = "Portable Document Format";
                 $ret["icon"] = 'file-pdf-o';
                 break;
             case $extension == 'zip' || $extension == 'rar';
                 $ret["type"] = "File Archive";
+                $ret["French"] = "Archive File";
                 $ret["icon"] = 'file-archive-o';
                 break;
             case $extension == 'wav' || $extension == 'mp3';
                 $ret["type"] = "Audio Recording";
+                $ret["French"] = "Enregistrement Audio";
                 $ret["icon"] = 'file-audio-o';
                 break;
             case $extension == 'docx' || $extension == 'doc';
                 $ret["type"] = "Microsoft Word Document";
+                $ret["French"] = "Document Microsoft Word";
                 $ret["icon"] = 'file-word-o';
                 break;
             case $extension == 'mp4' || $extension == 'avi';
                 $ret["type"] = "Video";
+                $ret["French"] = "Vidéo";
                 $ret["icon"] = 'file-video-o';
                 break;
             case $extension == 'php' || $extension == 'js' || $extension == 'ctp';
                 $ret["type"] = "Code Script";
+                $ret["French"] = "Script code";
                 $ret["icon"] = 'file-code-o';
                 break;
             case $extension == 'ppt' || $extension == 'pps';
                 $ret["type"] = "Powerpoint Presentation";
+                $ret["French"] = "Présentation Powerpoint";
                 $ret["icon"] = 'file-powerpoint-o';
                 break;
             default:
                 $ret["type"] = "Unknown";
+                $ret["French"] = "Inconnu";
                 $ret["icon"] = 'paperclip';
         }
+        if ($language!= "English"){
+            if ($language == "Debug"){
+                $ret["type"] .= " [Translated]";
+            } elseif ( isset($ret[$language])) {
+                $ret["type"] = $ret[$language];
+            } else {
+                $ret["type"] = $extension . " is missing the " . $language. " translation";
+            }
+        }
         return $ret;
+    }
+
+    function get($array, $key, $default){
+        if (isset($array[$key])) { return $array[$key]; }
+        return $default;
     }
 
     function listfiles($client_docs, $dir, $field_name = 'client_doc', $delete, $method = 1, $ShowUser = False) {
@@ -199,7 +222,7 @@
                     $extension = getextension($file);
                     $filename = getextension($file, PATHINFO_FILENAME);
                     echo "<TR><TD width='29' align='center'><i class='fa fa-";
-                    $ret = geticon($extension);
+                    $ret = geticon($extension, get($GLOBALS, "language", "English"));
                     $type = $ret["type"];
                     echo $ret["icon"];
 
@@ -210,7 +233,7 @@
                         echo "<TD>" . date('Y-m-d H:i:s', filemtime(getcwd() . $path)) . "</TD>";
                     } else {
                         echo "<TD>" . $filename . "<input type='hidden' value='" . $file . "' name='attach_doc[]' /></TD>";
-                        echo "<TD>File Missing</TD>";
+                        echo "<TD>File Missing</TD>";//NEEDS TRANSLATION
                     }
                     switch (TRUE) {
                         case isset($cd->client_id):

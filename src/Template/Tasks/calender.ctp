@@ -87,7 +87,7 @@ if ($this->request->session()->read('Profile.super') or $this->request->session(
 
 
                                                 </div>
-                                                 <div style="background: #fff; padding:10px;"><a href="" class="btn btn-danger delUrl" onclick="return confirm('Are you sure you want to delete this event?');">Delete</a></div>
+                                                 <div style="background: #fff; padding:10px;"><a href="" class="btn btn-danger delUrl" onclick="return confirm('<?= $strings["tasks_confirmdelete"]; ?>');">Delete</a></div>
                                                 </div>
 									<!-- END DRAGGABLE EVENTS PORTLET-->
 								</div>

@@ -41,6 +41,7 @@ $GLOBALS["islocal"] =$islocal;
 $GLOBALS["translated"] =false;
 $emailaddress= "info@" . getHost("isbmee.com");
 $GLOBALS["webroot"]="";
+$GLOBALS["language"] = "English";
 
 function translatedatepicker($Language='English', $_this) {
     $webroot = $_this->request->webroot;
@@ -218,6 +219,7 @@ function getIterator($Objects, $Fieldname, $Value){
 }
 
 function CacheTranslations($Language='English', $Text, $Variables = ""){
+    $GLOBALS["language"] = $Language;
     if (!is_array($Text)){
         $Text = array($Text);
     }
