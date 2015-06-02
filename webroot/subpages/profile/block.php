@@ -697,7 +697,7 @@
                             </tr>
 
 
-                            <tr>
+                            <!--<tr>
                                 <td class="vtop"> Auto Email Survey?</td>
                                 <td>
                                     <label class="uniform-inline">
@@ -712,7 +712,7 @@
                                         No </label>
                                     &emsp; (60 day survey goes to Drivers, 30 day goes to employee and sales) from hired date?
                                 </td>
-                            </tr>
+                            </tr>-->
 
 
                             <!--<tr>
