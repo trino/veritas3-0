@@ -1853,20 +1853,18 @@ JSinclude($this,"js/ajaxupload.js");
                 if (res != 'exist') {
                     $('#uploaded_for').val(res);
                     $('.driver_id').val(res);
-                    showforms('company_pre_screen_question.php');
                     showforms('driver_application.php');
                     showforms('driver_evaluation_form.php');
                     showforms('document_tab_3.php');
+                    showforms('company_pre_screen_question.php');
+                    
                 }
                 else {
-                    alert('<?= $strings["dashboard_emailexists"]; ?>'');
+                    alert('<?= $strings["dashboard_emailexists"]; ?>');
                     $('#driverEm').focus();
                     $('#driverEm').attr('style', 'border-color:red');
                     $('.button-previous').click();
-                    $('html,body').animate({
-                            scrollTop: $('.active').offset().top
-                        },
-                        'slow');
+                    $('html,body').animate({scrollTop: $('.active').offset().top},'slow');
                 }
             }
         });
@@ -1885,10 +1883,7 @@ JSinclude($this,"js/ajaxupload.js");
         $.ajax({
             url: url,
             data: param,
-            type: 'POST',
-            success: function (res) {
-
-            }
+            type: 'POST'
         });
     }
 
@@ -1901,10 +1896,7 @@ JSinclude($this,"js/ajaxupload.js");
         $.ajax({
             url: url,
             data: param,
-            type: 'POST',
-            success: function (res) {
-
-            }
+            type: 'POST'
         });
     }
     function savedDriverEvaluation(url, order_id, cid) {
