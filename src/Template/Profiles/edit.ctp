@@ -1,5 +1,4 @@
-<link href="<?php echo $this->request->webroot; ?>assets/admin/pages/css/profile.css" rel="stylesheet"
-      type="text/css"/> <!--REQUIRED-->
+<link href="<?php echo $this->request->webroot; ?>assets/admin/pages/css/profile.css" rel="stylesheet" type="text/css"/> <!--REQUIRED-->
 <style>
     @media print {
         .page-header {
@@ -30,8 +29,8 @@
             visibility: visible !important;
         }
     }
-
 </style>
+
 <?php
     $is_disabled = '';
     if (isset($disabled)) {
@@ -41,234 +40,82 @@
         $p = $profile;
     }
     $settings = $this->requestAction('settings/get_settings');
-    if (!isset($BypassLogin)) $BypassLogin = false;
-    if ($BypassLogin) {
-        $userID = 1;
-    } else {
-        $userID = $this->request->session()->read('Profile.id');
-    }
+    $userID = $this->request->session()->read('Profile.id');
 
     if($this->request->session()->read('Profile.super')){
         $sidebar = $this->requestAction("settings/all_settings/0/sidebar");
     }else{
         $sidebar = $this->requestAction("settings/all_settings/".$userID."/sidebar");
+    }
 
+    include_once('subpages/api.php');
+    $language = $this->request->session()->read('Profile.language');
+    $strings = CacheTranslations($language, array("profiles_%", "forms_%", "clients_addeditimage", "clients_enablerequalify", "theme_%"), $settings);
+    if($language == "Debug") { $Trans = " [Trans]";} else { $Trans = ""; }
+
+    $param = $this->request->params['action'];
+    $param2 = $strings["profiles_" . $param];
+
+    if ($userID == $this->request->params["pass"][0]) {
+        include_once('subpages/profile/theme.php');
     }
 ?>
 <!-- END SAMPLE PORTLET CONFIGURATION MODAL FORM-->
-<!-- BEGIN STYLE CUSTOMIZER -->
-<div class="theme-panel hidden-xs hidden-sm">
-    <?php if (strlen($is_disabled) == 0) {
-        if ($_SERVER['SERVER_NAME'] == 'localhost') {
-            echo '<div class="toggler"></div>';//doesn't work in view mode, so remove it and be done with it
-        }
-    } ?>
-    <div class="toggler-close">
-    </div>
 
-    <div class="theme-options">
-        <div class="theme-option theme-colors clearfix">
-						<span>
-						THEME COLOR </span>
-            <ul>
-                <li class="color-default <?php if ($settings->layout == 'default') echo "current"; ?> tooltips"
-                    data-style="default" onclick="change_layout('default');" data-container="body"
-                    data-original-title="Default">
-                </li>
-                <li class="color-darkblue tooltips <?php if ($settings->layout == 'darkblue') echo "current"; ?>"
-                    data-style="darkblue" onclick="change_layout('darkblue');" data-container="body"
-                    data-original-title="Dark Blue">
-                </li>
-                <li class="color-blue tooltips <?php if ($settings->layout == 'blue') echo "current"; ?>"
-                    data-style="blue" onclick="change_layout('blue');" data-container="body" data-original-title="Blue">
-                </li>
-                <li class="color-grey tooltips <?php if ($settings->layout == 'grey') echo "current"; ?>"
-                    data-style="grey" onclick="change_layout('grey');" data-container="body" data-original-title="Grey">
-                </li>
-                <li class="color-light tooltips <?php if ($settings->layout == 'light') echo "current"; ?>"
-                    data-style="light" onclick="change_layout('light');" data-container="body"
-                    data-original-title="Light">
-                </li>
-                <li class="color-light2 tooltips <?php if ($settings->layout == 'light2') echo "current"; ?>"
-                    data-style="light2" onclick="change_layout('light2');" data-container="body" data-html="true"
-                    data-original-title="Light 2">
-                </li>
-            </ul>
-        </div>
-        <div class="theme-option">
-						<span>
-						Theme Style </span>
-            <select class="layout-style-option form-control input-sm">
-                <option value="square" selected="selected">Square corners</option>
-                <option value="rounded">Rounded corners</option>
-            </select>
-        </div>
-        <div class="theme-option">
-						<span>
-						Layout </span>
-            <select class="layout-option form-control input-sm" onchange="change_box();" id="boxed">
-                <option value="fluid" selected="selected">Fluid</option>
-                <option value="boxed">Boxed</option>
-            </select>
-        </div>
-        <div class="theme-option">
-						<span>
-						Header </span>
-            <select class="page-header-option form-control input-sm" onchange="change_body();">
-                <option value="fixed" selected="selected">Fixed</option>
-                <option value="default">Default</option>
-            </select>
-        </div>
-        <div class="theme-option">
-						<span>
-						Top Menu Dropdown</span>
-            <select class="page-header-top-dropdown-style-option form-control input-sm" onchange="change_body();">
-                <option value="light" selected="selected">Light</option>
-                <option value="dark">Dark</option>
-            </select>
-        </div>
-        <div class="theme-option">
-						<span>
-						Sidebar Mode</span>
-            <select class="sidebar-option form-control input-sm" onchange="change_body();">
-                <option value="fixed">Fixed</option>
-                <option value="default" selected="selected">Default</option>
-            </select>
-        </div>
-        <div class="theme-option">
-						<span>
-						Sidebar Menu </span>
-            <select class="sidebar-menu-option form-control input-sm" onchange="change_body();">
-                <option value="accordion" selected="selected">Accordion</option>
-                <option value="hover">Hover</option>
-            </select>
-        </div>
-        <div class="theme-option">
-						<span>
-						Sidebar Style </span>
-            <select class="sidebar-style-option form-control input-sm" onchange="change_body();">
-                <option value="default" selected="selected">Default</option>
-                <option value="light">Light</option>
-            </select>
-        </div>
-        <div class="theme-option">
-						<span>
-						Sidebar Position </span>
-            <select class="sidebar-pos-option form-control input-sm" onchange="change_body();">
-                <option value="left" selected="selected">Left</option>
-                <option value="right">Right</option>
-            </select>
-        </div>
-        <div class="theme-option">
-						<span>
-						Footer </span>
-            <select class="page-footer-option form-control input-sm" onchange="change_body();">
-                <option value="fixed">Fixed</option>
-                <option value="default" selected="selected">Default</option>
-            </select>
-        </div>
-    </div>
-</div>
+
 <div class="clearfix"></div>
-<?php $param = $this->request->params['action'];
-    switch ($param) {
-        case 'add':
-            $param2 = 'Create';
-            break;
-        case 'view':
-            $param2 = 'View';
-            break;
-        case 'edit':
-            $param2 = 'Edit';
-            break;
-    }
-
-?>
-
 <h3 class="page-title">
-    <?php echo $param2 . ' ' . ucfirst($settings->profile); ?>
+    <?= $param2; ?>
 </h3>
 
 <div class="page-bar">
     <ul class="page-breadcrumb">
         <li>
             <i class="fa fa-home"></i>
-            <a href="<?php echo $this->request->webroot; ?>">Dashboard</a>
+            <a href="<?php echo $this->request->webroot; ?>"><?= $strings["dashboard_dashboard"]; ?></a>
             <i class="fa fa-angle-right"></i>
         </li>
         <li>
-            <a href=""><?php echo $param2 . ' ' . ucfirst($settings->profile); ?></a>
+            <a href=""><?= $param2; ?></a>
         </li>
     </ul>
 
-    <?php
-        if (isset($disabled)) { ?>
-            <a href="javascript:window.print();" class="floatright btn btn-info">Print</a>
-        <?php } ?>
-    <?php if (isset($profile) && $sidebar->profile_delete == '1') {
-        if ($this->request->session()->read('Profile.super') == '1') {
+<?php
+    if (isset($disabled)) {
+        echo '<a href="javascript:window.print();" class="floatright btn btn-info">' . $strings["dashboard_print"] . '</a>';
+    }
+    if (isset($profile) && $sidebar->profile_delete == '1') {
+        if ($this->request->session()->read('Profile.super') == '1' || ($this->request->session()->read('Profile.profile_type') == '2' && ($profile->profile_type == '5'))) {
             if ($this->request->session()->read('Profile.id') != $profile->id) {
                 ?>
-
-                <a href="<?php echo $this->request->webroot; ?>profiles/delete/<?php echo $profile->id; ?><?php echo (isset($_GET['draft'])) ? "?draft" : ""; ?>"
-                   onclick="return confirm('Are you sure you want to delete <?= ucfirst(h($profile->username)) ?>?');"
-                   class="floatright btn btn-danger btnspc">Delete</a>
-                </span>
-            <?php
+                    <a href="<?= $this->request->webroot; ?>profiles/delete/<?= $profile->id; ?><?php echo (isset($_GET['draft'])) ? "?draft" : ""; ?>"
+                       onclick="return confirm('<?= ProcessVariables($language, $strings["dashboard_confirmdelete"], array("name" => ucfirst(h($profile->username))));?>');"
+                       class="floatright btn btn-danger btnspc"><?= $strings["dashboard_delete"]; ?></a>
+                    </span>
+                <?php
             }
-        } else if ($this->request->session()->read('Profile.profile_type') == '2' && ($profile->profile_type == '5')) {
+        }
+    }
+    if (isset($profile)) {
+        $checker = $this->requestAction('settings/check_edit_permission/' . $this->request->session()->read('Profile.id') . '/' . $profile->id);
+        if ($sidebar->profile_edit == '1' && $param == 'view') {
+            echo $this->Html->link(__($strings["dashboard_edit"]), ['action' => 'edit', $profile->id], ['class' => 'floatright btn btn-primary btnspc']);
+        } else if ($param == 'edit') {
+            echo $this->Html->link(__($strings["dashboard_view"]), ['action' => 'view', $profile->id], ['class' => 'floatright btn btn-info btnspc']);
+        }
+    }
+    if ($sidebar->profile_edit == '1' && $param == 'view') {
+        $checker = $this->requestAction('settings/check_edit_permission/' . $this->request->session()->read('Profile.id') . '/' . $profile->id);
+        if ($checker == 1) {
             ?>
-            <a href="<?php echo $this->request->webroot; ?>profiles/delete/<?php echo $profile->id; ?><?php echo (isset($_GET['draft'])) ? "?draft" : ""; ?>"
-               onclick="return confirm('Are you sure you want to delete <?= ucfirst(h($profile->username)) ?>?');"
-               class="floatright btn btn-danger btnspc">Delete</a>
+            <a href="<?php
+                if ($profile->profile_type == '5') {$tag = "submitted_for_id";} else {$tag = "submitted_by_id";}
+                echo $this->request->webroot . 'documents/index?type=&' . $tag . '=' . $profile->id;
+            ?>" class=" floatright btn default btnspc"><?= $strings["profiles_mydocuments"]; ?></a>
         <?php
         }
-
     }
-    ?>
-    <?php
-        if (isset($profile)) {
-            $checker = $this->requestAction('settings/check_edit_permission/' . $this->request->session()->read('Profile.id') . '/' . $profile->id);
-            if ($sidebar->profile_edit == '1' && $param == 'view') {
-
-                //if ($checker == 1) {
-                echo $this->Html->link(__('Edit'), ['action' => 'edit', $profile->id], ['class' => 'floatright btn btn-primary btnspc']);
-
-                //}
-            } else if ($param == 'edit') {
-                echo $this->Html->link(__('View'), ['action' => 'view', $profile->id], ['class' => 'floatright btn btn-info btnspc']);
-            }
-        }
-    ?>
-
-
-    <?php
-
-
-        if ($sidebar->profile_edit == '1' && $param == 'view') {
-
-            $checker = $this->requestAction('settings/check_edit_permission/' . $this->request->session()->read('Profile.id') . '/' . $profile->id);
-
-            if ($checker == 1) {
-
-                ?>
-
-
-                <a href="<?php
-                    if ($profile->profile_type == '5') {
-                        echo $this->request->webroot . 'documents/index?type=&submitted_for_id=' . $profile->id;
-                    } else {
-                        echo $this->request->webroot . 'documents/index?type=&submitted_by_id=' . $profile->id;
-                    }
-                ?>" class=" floatright btn default btnspc">View My Documents</a>
-            <?php
-            }
-        }
-
-
-    ?>
-
-
+?>
 </div>
 
 
@@ -339,23 +186,24 @@
                                         if ($p->is_hired == '1') {
                                             echo " checked";
                                         }
-                                        echo '/> Was this applicant hired? <span class="hired_msg"></span></label>';
+                                        echo '/> ' . $strings["profiles_washired"] . ' <span class="hired_msg"></span></label>';
 
                                         echo '<br><label class="uniform-inline" style="clear:both;margin-bottom: 20px;">
                                         <input type="checkbox" name="" value="1" id="' . $profile->id . '" class="checkrequalify"';
                                          if ($p->requalify == '1') {
                                             echo " checked";
                                         }
-                                        echo '> Enable Re-qualify?<span class="req_msg"></span></label>';
+                                        echo '> ' . $strings["clients_enablerequalify"] . '<span class="req_msg"></span></label>';
 
                                         if ($sidebar->orders_create == 1) {
+                                            $title = getFieldname("Name", $language);
                                             foreach ($products as $product) {
                                                  $alias = $product->Sidebar_Alias;
                                                 if ($alias && $alias !="bulk") {
                                                     if ($sidebar->$alias == 1 && $product->Visible == 1) {
                                                         echo '<br><a href="' . $this->request->webroot . 'orders/productSelection?driver=' . $profile->id;
                                                         echo '&ordertype=' . $product->Acronym . '"';
-                                                        echo ' class="blue-stripe btn floatleft ' . $product->ButtonColor . '" style="margin-top:2px;width:75%;">' . $product->Name;
+                                                        echo ' class="blue-stripe btn floatleft ' . $product->ButtonColor . '" style="margin-top:2px;width:75%;">' . $product->$title . $Trans;
                                                         echo ' <i class="m-icon-swapright m-icon-white"></i></a>';
                                                     }
                                                 }
@@ -429,13 +277,13 @@
                                 <ul class="nav nav-tabs">
 
                                     <li  <?php activetab($activetab, "profile"); ?> >
-                                        <a href="#tab_1_1" data-toggle="tab">Profile</a>
+                                        <a href="#tab_1_1" data-toggle="tab"><?= $strings["profiles_profile"]; ?></a>
                                     </li>
                                     <?php
                                         if ($this->request['action'] == 'view' && ($profile->Ptype && $profile->Ptype->placesorders == 1)) {
                                             ?>
                                             <li <?php activetab($activetab, "scorecard"); ?>>
-                                                <a href="#tab_1_11" data-toggle="tab">View Scorecard</a>
+                                                <a href="#tab_1_11" data-toggle="tab"><?= $strings["profiles_viewscorecard"];?></a>
                                             </li>
                                         <?php
                                         }
@@ -445,7 +293,7 @@
                                             if ($this->request->params['action'] != 'add' && ($profile->profile_type == '5')) {
                                                 ?>
                                                 <li<?php activetab($activetab, "notes"); ?>>
-                                                    <a href="#tab_1_9" data-toggle="tab">Notes</a>
+                                                    <a href="#tab_1_9" data-toggle="tab"><?= $strings["profiles_notes"]; ?></a>
                                                 </li>
 
 
@@ -454,7 +302,7 @@
                                             if ($this->request->session()->read('Profile.super') == '1' || ($sidebar->profile_create == '1' && $sidebar->profile_edit == '1')) {
                                                 ?>
                                                 <li <?php activetab($activetab, "permissions"); ?>>
-                                                    <a href="#tab_1_7" data-toggle="tab">Permissions</a>
+                                                    <a href="#tab_1_7" data-toggle="tab"><?= $strings["profiles_permissions"]; ?></a>
                                                 </li>
 
                                             <?php } ?>
@@ -464,7 +312,7 @@
                                              if($gfs){
                                             ?>
                                             <li  <?php activetab($activetab, "feedback"); ?> >
-                                                <a href="#tab_1_8" data-toggle="tab">Feedback</a>
+                                                <a href="#tab_1_8" data-toggle="tab"><?= $strings["profiles_feedback"]; ?></a>
                                             </li>
 
 
@@ -560,12 +408,12 @@
                 }, 200);
             },
             onComplete: function (file, response) {
-                button.html('<i class="fa fa-image"></i> Add/Edit Image');
+                button.html('<i class="fa fa-image"></i> <?= $strings["clients_addeditimage"]; ?>');
                 window.clearInterval(interval);
                 this.enable();
                 $("#clientpic").attr("src", '<?php echo $this->request->webroot;?>img/profile/' + response);
                 $('#client_img').val(response);
-                alert('Image saved');
+                alert('<?= $strings["forms_datasaved"]; ?>');
             }
         });
     }
@@ -589,11 +437,11 @@
             var nameId = 'msg_' + $(this).val();
             if ($(this).is(':checked')) {
                 addclient = '1';
-                msg = '<span class="msg" style="color:#45B6AF"> Added</span>';
+                msg = '<span class="msg" style="color:#45B6AF"> <?= $strings["forms_added"]; ?></span>';
             }
             else {
                 addclient = '0';
-                msg = '<span class="msg" style="color:red"> Removed</span>';
+                msg = '<span class="msg" style="color:red"> <?= $strings["forms_removed"]; ?></span>';
             }
 
             $.ajax({
@@ -615,11 +463,11 @@
             var msg = '';
             $('.addclientz').each(function () {
                 if ($(this).is(':checked')) {
-                    msg = '<span class="msg" style="color:#45B6AF"> Added</span>';
+                    msg = '<span class="msg" style="color:#45B6AF"> <?= $strings["forms_added"]; ?></span>';
                     client_id = client_id + "," + $(this).val();
                 }
                 else {
-                    msg = '<span class="msg" style="color:red"> Removed</span>';
+                    msg = '<span class="msg" style="color:red"> <?= $strings["forms_removed"]; ?></span>';
                 }
             });
 
@@ -633,7 +481,7 @@
         ?>
         $('#save_client_p1').click(function () {
 
-            $('#save_client_p1').text('Saving..');
+            $('#save_client_p1').text('<?= $strings["forms_saving"]; ?>');
 
             $("#pass_form").validate({
                 rules: {
@@ -680,14 +528,14 @@
             if ($(this).is(":checked")) {
                 var hired = 1;
                 var hired_date = tday;
-                msg = '<span class="msg" style="color:#45B6AF"> Added</span>';
+                msg = '<span class="msg" style="color:#45B6AF"> <?= $strings["forms_added"]; ?></span>';
                 $('.date_hired').val(tday);
                 $('.hired_date').show();
             }
             else {
                 var hired = 0;
                 var hired_date = '0000-00-00';
-                msg = '<span class="msg" style="color:red"> Removed</span>';
+                msg = '<span class="msg" style="color:red"> <?= $strings["forms_removed"]; ?></span>';
                 $('.date_hired').val('0000-00-00');
                 $('.hired_date').hide();
             }
@@ -707,11 +555,11 @@
             var msgs = '';
             if ($(this).is(":checked")) {
                 var hired = 1;
-                msg = '<span class="msg" style="color:#45B6AF"> Added</span>';
+                msg = '<span class="msg" style="color:#45B6AF"> <?= $strings["forms_added"]; ?></span>';
             }
             else {
                 var hired = 0;
-                msg = '<span class="msg" style="color:red"> Removed</span>';
+                msg = '<span class="msg" style="color:red"> <?= $strings["forms_removed"]; ?></span>';
             }
 
             $.ajax({

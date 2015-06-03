@@ -200,8 +200,8 @@ $sidebar = $this->requestAction("settings/get_side/" . $this->Session->read('Pro
                                                     ?><a
                                                     href="<?php echo $this->request->webroot;?>orders/deleteorder/<?php echo $order->id;?><?php if(isset($_GET['draft']))echo "?draft";?>"
                                                     class="btn btn-danger"
-                                                    onclick="return confirm('Are you sure you want to delete <?= h($order->title) ?>?');">
-                                                        Delete</a>
+                                                    onclick="return confirm('<?= ProcessVariables($language, $strings["dashboard_confirmdelete"], array("name" => ucfirst(h($order->title))));?>');">
+                                                        <?= $strings["dashboard_delete"]; ?></a>
                                                 <?php
                                                 }
                                             }

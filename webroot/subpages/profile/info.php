@@ -11,22 +11,9 @@ if ($this->request->session()->read('debug')) {
 
 
 $userID = $this->Session->read('Profile.id');
-if(!$userID && isset($_GET["client"])){
-    $userID = 0;
-}
+if(!$userID && isset($_GET["client"])){$userID = 0;}
 
 $getProfileType = $this->requestAction('profiles/getProfileType/' . $userID);
-$sidebar = $this->requestAction("settings/all_settings/" . $userID . "/sidebar");
-$settings = $this->requestAction('settings/get_settings');
-
-if ($_SERVER['SERVER_NAME'] == "localhost" || $_SERVER['SERVER_NAME'] == "127.0.0.1") {
-    include_once('/subpages/api.php');
-} else {
-    include_once('subpages/api.php');
-}
-$language = $this->request->session()->read('Profile.language');
-$strings = CacheTranslations($language, "profiles_%",$settings);//,$registry);//$registry = $this->requestAction('/settings/getRegistry');
-
 
 function printoption($option, $selected, $value = ""){
     $tempstr = "";
@@ -61,8 +48,10 @@ function printoptions($name, $valuearray, $selected = "", $optionarray, $isdisab
     echo '</SELECT>';
 }
 
-function printprovinces($name, $selected = "", $isdisabled = "", $isrequired = false){
-    printoptions($name, array("", "AB", "BC", "MB", "NB", "NL", "NT", "NS", "NU", "ON", "PE", "QC", "SK", "YT"), $selected, array("Select Province", "Alberta", "British Columbia", "Manitoba", "New Brunswick", "Newfoundland and Labrador", "Northwest Territories", "Nova Scotia", "Nunavut", "Ontario", "Prince Edward Island", "Quebec", "Saskatchewan", "Yukon Territories"), $isdisabled, $isrequired);
+function printprovinces($language, $name, $selected = "", $isdisabled = "", $isrequired = false){
+    $acronyms = getprovinces("Acronyms");
+    $provinces = getprovinces($language);
+    printoptions($name, $acronyms, $selected, $provinces, $isdisabled, $isrequired);
 }
 
 ?>
@@ -87,7 +76,7 @@ function printprovinces($name, $selected = "", $isdisabled = "", $isrequired = f
                             <?php if(isset($p)){?>
                             <div class="col-md-6 hired_date"  style='display:<?php if($p->is_hired=='0')echo "none";?>;' >
                                 <div class="form-group">
-                                    <label class="control-label">Hired Date:</label>
+                                    <label class="control-label"><?= $strings["forms_hireddate"]; ?>:</label>
                                     <input type="text" name="hired_date" value="<?php if(isset($p))echo $p->hired_date;?>" disabled="disabled" class="form-control date_hired"/>
                                 </div>
                             </div>
@@ -95,8 +84,7 @@ function printprovinces($name, $selected = "", $isdisabled = "", $isrequired = f
                             <?php }?>
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label class="control-label"><?php echo ucfirst($settings->profile); ?>
-                                        Type: </label>
+                                    <label class="control-label"><?= $strings["profiles_profiletype"]; ?></label>
                                     <!--old code:  <input type="hidden" id="nProfileType" name="profile_type" value="<!php if(!isset($p) && isset($getProfileType->profile_type) && $getProfileType->profile_type == 2)echo "5"; else echo $p->profile_type;!>" <!php echo $is_disabled !> />-->
                                     <?php if (isset($p)) { ?>
                                         <input type="hidden" id="nProfileType" name="profile_type"
@@ -114,7 +102,7 @@ function printprovinces($name, $selected = "", $isdisabled = "", $isrequired = f
                                             } ?>" <?php if ((isset($id) && $this->request->session()->read('Profile.id') == $id)/* || ($this->request->session()->read('Profile.profile_type') == '2')*/) echo "disabled='disabled'"; ?>
                                             class="form-control member_type" required='required'
                                             onchange="$('#nProfileType').val($(this).val());">
-                                            <option value="">Select</option>
+                                            <option value=""><?= $strings["forms_select"]; ?></option>
 
                                             <?php
 
@@ -725,9 +713,9 @@ function printprovinces($name, $selected = "", $isdisabled = "", $isrequired = f
                                     <div class="form-group">
                                         <?php
                                         if (isset($p->province)) {
-                                            printprovinces("province", $p->province, $is_disabled, false);
+                                            printprovinces($language, "province", $p->province, $is_disabled, false);
                                         } else {
-                                            printprovinces("province", "", $is_disabled, false);
+                                            printprovinces($language, "province", "", $is_disabled, false);
                                         }
                                         ?>
 
@@ -792,9 +780,9 @@ function printprovinces($name, $selected = "", $isdisabled = "", $isrequired = f
 
                                         <?php
                                         if (isset($p->driver_province)) {
-                                            printprovinces("driver_province", $p->driver_province, $is_disabled, true);
+                                            printprovinces($language, "driver_province", $p->driver_province, $is_disabled, true);
                                         } else {
-                                            printprovinces("driver_province", "", $is_disabled, true);
+                                            printprovinces($language, "driver_province", "", $is_disabled, true);
                                         }
                                         ?>
 
@@ -974,7 +962,7 @@ function printprovinces($name, $selected = "", $isdisabled = "", $isrequired = f
                     res = res.trim();
                     if (res == '1') {
                         //alert(res);
-                        alert('Username already exists');
+                        alert('<?= $strings["profiles_usernameexists"]; ?>');
 
                         $('.uname').focus();
                         $('html,body').animate({
@@ -1089,7 +1077,7 @@ function printprovinces($name, $selected = "", $isdisabled = "", $isrequired = f
                 success: function (res) {
                     res = res.replace(' ', '');
                     if (res != 0 && !isNaN(res)) {
-                        $('#savepro').text("Save Changes");
+                        $('#savepro').text("<?= $strings["forms_savechanges"]; ?>");
                         $('.flash').show();
                         $('.flash').fadeOut(3500);
                         window.location.href = '<?php echo $this->request->webroot;?>profiles/edit/' + res;

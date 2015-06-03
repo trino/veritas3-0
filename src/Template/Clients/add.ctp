@@ -24,7 +24,6 @@
         $c = $client;
     }
 
-    $settings = $this->requestAction('settings/get_settings');
     $sidebar = $this->requestAction("settings/all_settings/" . $this->request->session()->read('Profile.id') . "/sidebar");
     $getprofile = $this->requestAction('clients/getProfile/' . $id);
     $getcontact = $this->requestAction('clients/getContact/' . $id);
@@ -269,26 +268,9 @@
                                                                     }
 
                                                                     function printprovinces($name, $selected, $Language = "English") {
-                                                                        $Trans="";
-                                                                        if($Language == "Debug"){
-                                                                            $Language = "English";
-                                                                            $Trans = " [TRANS]";
-                                                                        }
-                                                                        switch ($Language){
-                                                                            case "English":
-                                                                                $provinces = array("Select Province", "Alberta", "British Columbia", "Manitoba", "New Brunswick", "Newfoundland and Labrador", "Northwest Territories", "Nova Scotia", "Nunavut", "Ontario", "Prince Edward Island", "Quebec", "Saskatchewan", "Yukon Territories", "Alabama", "Alaska", "Arizona", "Arkansas", "California", "Colorado", "Connecticut", "Delaware", "Florida", "Georgia", "Hawaii", "Idaho", "Illinois", "Indiana", "Iowa", "Kansas", "Kentucky", "Louisiana", "Maine", "Maryland", "Massachusetts", "Michigan", "Minnesota", "Mississippi", "Missouri", "Montana", "Nebraska", "Nevada", "New Hampshire", "New Jersey", "New Mexico", "New York", "North Carolina", "North Dakota", "Ohio", "Oklahoma", "Oregon", "Pennsylvania", "Rhode Island", "South Carolina", "South Dakota", "Tennessee", "Texas", "Utah", "Vermont", "Virginia", "Washington", "Virginia", "Wisconsin", "Wyoming");
-                                                                                break;
-                                                                            case "French":
-                                                                                $provinces = array("Choisir la province", "Alberta", "la Colombie-Britannique", "Manitoba", "Nouveau-Brunswick", "Terre-Neuve-et-Labrador", "Territoires du Nord-Ouest", "la Nouvelle-Écosse", "Nunavut", "Ontario", "Prince-Édouard Island", "Le Québec", "Saskatchewan", "Yukon", "Alabama", "Alaska", "Arizona", "Arkansas", "California", "Colorado", "Connecticut", "Delaware", "Florida", "Georgia", "Hawaii", "Idaho", "Illinois", "Indiana", "Iowa", "Kansas", "Kentucky", "Louisiane", "Maine", "Maryland", "Massachusetts ", "Michigan", "Minnesota", "Mississippi", "Missouri", "Montana", "Nebraska", "Nevada", "New Hampshire", "New Jersey", "Nouveau-Mexique", "New York", "Nord Carolina", "le Dakota du Nord", "Ohio", "Oklahoma", "Oregon", "Pennsylvania", "Rhode Island", "Caroline du Sud", "Dakota du Sud", "Tennessee", "Texas", "Utah ", "Vermont", "Virginia", "Washington", "Virginia", "Wisconsin", "Wyoming");
-                                                                                break;
-                                                                            default:
-                                                                                echo "Please add support for " . $Language . " in Template/Clients/add.ctp (printprovinces)";
-                                                                                die();
-                                                                        }
-                                                                        $provinces = addTrans($provinces, $Trans);
-
-                                                                        printoptions($name, array("", "AB", "BC", "MB", "NB", "NL", "NT", "NS", "NU", "ON", "PE", "QC", "SK", "YT", "AL", "AK", "AZ", "AR", "CA", "CO", "CT", "DE", "FL", "GA", "HI", "ID", "IL", "IN", "IA", "KS", "KY", "LA", "ME", "MD", "MA", "MI", "MN", "MS", "MO", "MT", "NE", "NV", "NH", "NJ", "NM", "NY", "NC", "ND", "OH", "OK", "OR", "PA", "RI", "SC", "SD", "TN", "TX", "UT", "VT", "VA", "WA", "WV", "WI", "WY"), $selected, $provinces);
-
+                                                                        $acronyms = getprovinces("Acronyms", True);
+                                                                        $provinces = getprovinces($Language, True);
+                                                                        printoptions($name, $acronyms, $selected, $provinces);
                                                                     }
 
                                                                     printprovinces("province", $client->province, $language);
