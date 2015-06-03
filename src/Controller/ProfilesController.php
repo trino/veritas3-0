@@ -208,7 +208,7 @@ class ProfilesController extends AppController{
                         
                         //echo $p->id."</br>";
                         //echo $p->created_by;
-                        if($p->expiry_date!= "" && strtotime($p->expiry_date) > time())
+                        if($p->expiry_date!= "" && strtotime($p->expiry_date) < time())
                         {
                             $epired_profile .= $p->username.",";
                             
