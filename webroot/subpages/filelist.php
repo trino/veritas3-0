@@ -196,6 +196,21 @@
 
     function listfiles($client_docs, $dir, $field_name = 'client_doc', $delete, $method = 1, $ShowUser = False) {
         $webroot = $GLOBALS['webroot'];
+        $language =  get($GLOBALS, "language", "English");
+        if($language == "Debug"){$language = "English"; $Trans = " [Trans]";} else {$Trans = "";}
+        switch ($language){
+            case "English":
+                $strings = array("attached" => "Attached Files", "filemissing" => "File Missing", "download" => "Download", "delete" => "Delete");
+                break;
+            case "French":
+                $strings = array("attached" => "Fichiers Joints", "filemissing" => "Fichier Manquant", "download" => "Télécharger", "delete" => "Effacer");
+                break;
+            default:
+                echo "Please add support for " . $language . " in subpage/filelist.php (listfiles)";
+                die();
+        }
+        $strings = addTrans($strings, $Trans);
+
         if ($method == 2) {
             echo '<div class="portlet box grey-salsa"><div class="portlet-title"><div class="caption"><i class="fa fa-paperclip"></i>Attachments</div>';
             echo '</div><div class="portlet-body form" align="left">';
@@ -222,7 +237,7 @@
                     $extension = getextension($file);
                     $filename = getextension($file, PATHINFO_FILENAME);
                     echo "<TR><TD width='29' align='center'><i class='fa fa-";
-                    $ret = geticon($extension, get($GLOBALS, "language", "English"));
+                    $ret = geticon($extension, $language);
                     $type = $ret["type"];
                     echo $ret["icon"];
 
@@ -233,7 +248,7 @@
                         echo "<TD>" . date('Y-m-d H:i:s', filemtime(getcwd() . $path)) . "</TD>";
                     } else {
                         echo "<TD>" . $filename . "<input type='hidden' value='" . $file . "' name='attach_doc[]' /></TD>";
-                        echo "<TD>File Missing</TD>";//NEEDS TRANSLATION
+                        echo "<TD>" . $strings["filemissing"] . "</TD>";//NEEDS TRANSLATION
                     }
                     switch (TRUE) {
                         case isset($cd->client_id):
@@ -258,7 +273,9 @@
             echo '</table>';
         } else {//old layout ?>
             <div class="form-group col-md-12">
-                <label class="control-label" id="attach_label">Attached Files: </label>
+                <label class="control-label" id="attach_label"><?php
+                    echo $strings["attached"];
+                    ?>: </label>
 
                 <div class="row">
                     <!-- <a href="#" class="btn btn-primary">Browse</a> -->
@@ -292,10 +309,10 @@
                                             echo "<a href='" . $webroot . $dir . $file . "' target='_blank' class='uploaded'>" . $file . "</a>";
                                     ?><BR><?php echo $file;?><BR>
                                     <a href="<?php echo $webroot . $dir . $file ?>" download="<?= $file ?>"
-                                       class="btn btn-info">Download</a>
+                                       class="btn btn-info"><?= $strings["download"]; ?></a>
 							<span <?php if (($delete)) echo "style='display:none;'";?>>
 								<a href="javascript:void(0);" title="<?php echo $file?>&<?php echo $cd->id;?>"
-                                   class="btn btn-danger img_delete">Delete</a>
+                                   class="btn btn-danger img_delete"><?= $strings["delete"]; ?></a>
                             </span>
                                     <input type="hidden" name="<?php echo $field_name;?>[]" value="<?php echo $file;?>"
                                            class="moredocs"/>

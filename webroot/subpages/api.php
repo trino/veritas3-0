@@ -217,6 +217,14 @@ function getIterator($Objects, $Fieldname, $Value){
     }
     return false;
 }
+function addTrans($array, $Trans = ""){
+    if($Trans){
+        foreach($array as $Key => $Value){
+            $array[$Key] = $Value . $Trans;
+        }
+    }
+    return $array;
+}
 
 function CacheTranslations($Language='English', $Text, $Variables = ""){
     $GLOBALS["language"] = $Language;

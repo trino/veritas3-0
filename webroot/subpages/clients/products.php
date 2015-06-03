@@ -40,7 +40,7 @@ foreach($products as $product){
 function checkbox($name, $status, $onclick, $disabled = false){
     if ($status) {$status = " CHECKED"; }
     if ($disabled) { $disabled = " DISABLED";}
-    echo '<INPUT TYPE="CHECKBOX" ONCLICK="' . $onclick . '" ID="' . $name . '" NAME="' . $name . '" CLASS="' . $name . '"' . $status . $disabled . '>';
+    echo '<INPUT TYPE="CHECKBOX" ONCLICK="' . $onclick . '" ID="' . $name . '" NAME="' . $name . '" CLASS="' . $name . '"' . $status . $disabled . ' STYLE="WIDTH: 100%; HEIGHT: 100%;">';
     if($status) return true;
 }
 
@@ -60,6 +60,13 @@ checkbox("alllocal", $local, "selectall('local', 'alllocal', " . $id . ");");
 </tfoot>
 </TABLE>
 <SCRIPT>
+    var Language = '<?= $language; ?>';
+    var Trans = "";
+    if (Language == "Debug"){
+        Language = "English";
+        Trans = " [TRANS]";
+    }
+
     function Toast(Text){
         $('.toast').stop();
         $('.toast').fadeIn(1);
@@ -80,8 +87,19 @@ checkbox("alllocal", $local, "selectall('local', 'alllocal', " . $id . ");");
             dataType: "HTML",
             data: "Type=enabledocument&ClientID=" + ClientID + "&ProductID=" + ProductID + "&Value=" + element.checked,
             success: function (msg) {
-                if(element.checked){ word="enabled "; } else { word = "disabled ";}
-                Toast(productname(ProductID) + " was " + word + Name + "ly");
+                switch (Language) {
+                    case "English":
+                        if(element.checked){ word="enabled "; } else { word = "disabled ";}
+                        Toast(productname(ProductID) + " was " + word + Name + "ly" + Trans);
+                        break;
+                    case "French":
+                        if(element.checked){ word="activé "; } else { word = "désactivé ";}
+                        if(Name == "local"){ Name= "localement"} else { Name= "à l'échelle mondiale"}
+                        Toast(productname(ProductID) + " a été " + word + Name);
+                        break;
+                    default:
+                        Toast(Language + " is not supported!");
+                }
             }
         })
     }

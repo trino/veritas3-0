@@ -28,19 +28,19 @@ echo $strings["clients_requalifynotice"];
     </tr>
 
     <tr>
-        <td>Re-qualify Frequency?</td>
+        <td><?= $strings["forms_requalifyfrequency"];?></td>
         <td>
-            <input type="radio" <?php if(isset($client)&& $client->requalify_frequency=='1')echo "checked";?> value="1" name="requalify_frequency"> 1 Month
-            &nbsp;&nbsp;<input type="radio" <?php if(isset($client)&& $client->requalify_frequency=='3')echo "checked";?> value="3" name="requalify_frequency"> 3 Months
-            &nbsp;&nbsp;<input type="radio" <?php if(isset($client)&& $client->requalify_frequency=='6')echo "checked";?> value="6" name="requalify_frequency"> 6 Months
-            &nbsp;&nbsp;<input type="radio" <?php if(isset($client)&& $client->requalify_frequency=='12')echo "checked";?> value="12" name="requalify_frequency"> 12 Months
+            <input type="radio" <?php if(isset($client)&& $client->requalify_frequency=='1')echo "checked";?> value="1" name="requalify_frequency"> <?= $strings["forms_1month"];?>
+            &nbsp;&nbsp;<input type="radio" <?php if(isset($client)&& $client->requalify_frequency=='3')echo "checked";?> value="3" name="requalify_frequency"> <?= $strings["forms_3month"];?>
+            &nbsp;&nbsp;<input type="radio" <?php if(isset($client)&& $client->requalify_frequency=='6')echo "checked";?> value="6" name="requalify_frequency"> <?= $strings["forms_6month"];?>
+            &nbsp;&nbsp;<input type="radio" <?php if(isset($client)&& $client->requalify_frequency=='12')echo "checked";?> value="12" name="requalify_frequency"> <?= $strings["forms_12month"];?>
 
 
         </td>
     </tr>
 
     <tr>
-        <td>Products Included</td>
+        <td><?= $strings["forms_includedproducts"];?></td>
         <td>
         <?php
             function productname($products, $number, $language){
@@ -71,22 +71,22 @@ echo $strings["clients_requalifynotice"];
 </table>
  <div class="form-actions">
     <button  type="button" class="btn btn-primary requalify_submit" >
-        Submit <i class="m-icon-swapright m-icon-white"></i>
-    </a>
+        <?= $strings["forms_savechanges"];?> <i class="m-icon-swapright m-icon-white"></i>
+    </button>
  </div>
  <div class="margin-top-10 alert alert-success display-hide requalify_flash"  style="display: none;">
     <button class="close" data-close="alert"></button>
-    Data saved successfully
+     <?= $strings["forms_datasaved"];?>
 </div>
 <div class="clearfix"></div>
 </form>
 <div class="col-md-12">
     <table  class="table table-condensed  table-striped table-bordered table-hover dataTable no-footer">
         <tr>
-            <td>Driver (Username)</td>
-            <td>Hired Date</td>
-            <td>Enable Requalify?</td>
-            <td>Cron Orders Placed</td>
+            <td><?= $strings["forms_driverusername"];?></td>
+            <td><?= $strings["forms_hireddate"];?></td>
+            <td><?= $strings["clients_enablerequalify"];?></td>
+            <td><?= $strings["forms_cronorders"];?></td>
         </tr>
         <?php 
             $profiles = $this->requestAction('/rapid/getcronProfiles/'.$client->profile_id);

@@ -189,7 +189,7 @@
                                                             <input type="hidden" name="image" id="client_img"/>
                                                             <?php if ($settings->client_option == 0 && $settings->mee != "AFIMAC SMI") { ?>
                                                                 <div class="form-group col-md-4">
-                                                                    <label class="control-label">Customer Type</label>
+                                                                    <label class="control-label"><?= $strings["forms_customertype"];?></label>
                                                                     <select class="form-control" name="customer_type"
                                                                             id="customer_type">
                                                                         <option value="">Select</option>
@@ -229,8 +229,8 @@
                                                             <?php } ?>
                                                             <div class="form-group col-md-4">
                                                                 <label
-                                                                    class="control-label"> <?php echo ($settings->client_option == 0) ? "Company" : "Event"; ?>
-                                                                    Name</label>
+                                                                    class="control-label"> <?php echo ($settings->client_option == 0) ? $strings["forms_companyname"] : $strings["forms_eventname"]; ?>
+                                                                </label>
                                                                 <input required="required" type="text"
                                                                        class="form-control"
                                                                        name="company_name" <?php if (isset($client->company_name)) { ?> value="<?php echo $client->company_name; ?>" <?php } ?>/>
@@ -238,22 +238,21 @@
 
                                                             <?php if ($settings->client_option == 0) { ?>
                                                                 <div class="form-group col-md-4">
-                                                                    <label class="control-label">Address</label>
+                                                                    <label class="control-label"><?= $strings["forms_address"];?></label>
                                                                     <input type="text" class="form-control"
                                                                            name="company_address" <?php if (isset($client->billing_address)) { ?> value="<?php echo $client->billing_address; ?>" <?php } ?>/>
                                                                 </div>
                                                             <?php } ?>
                                                             <div class="form-group col-md-4">
-                                                                <label class="control-label">City</label>
+                                                                <label class="control-label"><?= $strings["forms_city"];?></label>
                                                                 <input type="text" class="form-control"
                                                                        name="city" <?php if (isset($client->city)) { ?> value="<?php echo $client->city; ?>" <?php } ?>/>
                                                             </div>
 
                                                             <div class="form-group col-md-4">
-                                                                <label class="control-label">Province/State</label>
+                                                                <label class="control-label"><?= $strings["forms_provincestate"];?></label>
                                                                 <?php
-                                                                    function printoption($value, $selected, $option)
-                                                                    {
+                                                                    function printoption($value, $selected, $option) {
                                                                         $tempstr = "";
                                                                         if ($option == $selected or $value == $selected) {
                                                                             $tempstr = " selected";
@@ -261,8 +260,7 @@
                                                                         echo '<OPTION VALUE="' . $value . '"' . $tempstr . ">" . $option . "</OPTION>";
                                                                     }
 
-                                                                    function printoptions($name, $valuearray, $selected, $optionarray)
-                                                                    {
+                                                                    function printoptions($name, $valuearray, $selected, $optionarray) {
                                                                         echo '<SELECT name="' . $name . '" class="form-control member_type" >';
                                                                         for ($temp = 0; $temp < count($valuearray); $temp += 1) {
                                                                             printoption($valuearray[$temp], $selected, $optionarray[$temp]);
@@ -270,25 +268,41 @@
                                                                         echo '</SELECT>';
                                                                     }
 
-                                                                    function printprovinces($name, $selected)
-                                                                    {
-                                                                        printoptions($name, array("", "AB", "BC", "MB", "NB", "NL", "NT", "NS", "NU", "ON", "PE", "QC", "SK", "YT", "AL", "AK", "AZ", "AR", "CA", "CO", "CT", "DE", "FL", "GA", "HI", "ID", "IL", "IN", "IA", "KS", "KY", "LA", "ME", "MD", "MA", "MI", "MN", "MS", "MO", "MT", "NE", "NV", "NH", "NJ", "NM", "NY", "NC", "ND", "OH", "OK", "OR", "PA", "RI", "SC", "SD", "TN", "TX", "UT", "VT", "VA", "WA", "WV", "WI", "WY"), $selected, array("Select Province", "Alberta", "British Columbia", "Manitoba", "New Brunswick", "Newfoundland and Labrador", "Northwest Territories", "Nova Scotia", "Nunavut", "Ontario", "Prince Edward Island", "Quebec", "Saskatchewan", "Yukon Territories", "Alabama", "Alaska", "Arizona", "Arkansas", "California", "Colorado", "Connecticut", "Delaware", "Florida", "Georgia", "Hawaii", "Idaho", "Illinois", "Indiana", "Iowa", "Kansas", "Kentucky", "Louisiana", "Maine", "Maryland", "Massachusetts", "Michigan", "Minnesota", "Mississippi", "Missouri", "Montana", "Nebraska", "Nevada", "New Hampshire", "New Jersey", "New Mexico", "New York", "North Carolina", "North Dakota", "Ohio", "Oklahoma", "Oregon", "Pennsylvania", "Rhode Island", "South Carolina", "South Dakota", "Tennessee", "Texas", "Utah", "Vermont", "Virginia", "Washington", "Virginia", "Wisconsin", "Wyoming"));
+                                                                    function printprovinces($name, $selected, $Language = "English") {
+                                                                        $Trans="";
+                                                                        if($Language == "Debug"){
+                                                                            $Language = "English";
+                                                                            $Trans = " [TRANS]";
+                                                                        }
+                                                                        switch ($Language){
+                                                                            case "English":
+                                                                                $provinces = array("Select Province", "Alberta", "British Columbia", "Manitoba", "New Brunswick", "Newfoundland and Labrador", "Northwest Territories", "Nova Scotia", "Nunavut", "Ontario", "Prince Edward Island", "Quebec", "Saskatchewan", "Yukon Territories", "Alabama", "Alaska", "Arizona", "Arkansas", "California", "Colorado", "Connecticut", "Delaware", "Florida", "Georgia", "Hawaii", "Idaho", "Illinois", "Indiana", "Iowa", "Kansas", "Kentucky", "Louisiana", "Maine", "Maryland", "Massachusetts", "Michigan", "Minnesota", "Mississippi", "Missouri", "Montana", "Nebraska", "Nevada", "New Hampshire", "New Jersey", "New Mexico", "New York", "North Carolina", "North Dakota", "Ohio", "Oklahoma", "Oregon", "Pennsylvania", "Rhode Island", "South Carolina", "South Dakota", "Tennessee", "Texas", "Utah", "Vermont", "Virginia", "Washington", "Virginia", "Wisconsin", "Wyoming");
+                                                                                break;
+                                                                            case "French":
+                                                                                $provinces = array("Choisir la province", "Alberta", "la Colombie-Britannique", "Manitoba", "Nouveau-Brunswick", "Terre-Neuve-et-Labrador", "Territoires du Nord-Ouest", "la Nouvelle-Écosse", "Nunavut", "Ontario", "Prince-Édouard Island", "Le Québec", "Saskatchewan", "Yukon", "Alabama", "Alaska", "Arizona", "Arkansas", "California", "Colorado", "Connecticut", "Delaware", "Florida", "Georgia", "Hawaii", "Idaho", "Illinois", "Indiana", "Iowa", "Kansas", "Kentucky", "Louisiane", "Maine", "Maryland", "Massachusetts ", "Michigan", "Minnesota", "Mississippi", "Missouri", "Montana", "Nebraska", "Nevada", "New Hampshire", "New Jersey", "Nouveau-Mexique", "New York", "Nord Carolina", "le Dakota du Nord", "Ohio", "Oklahoma", "Oregon", "Pennsylvania", "Rhode Island", "Caroline du Sud", "Dakota du Sud", "Tennessee", "Texas", "Utah ", "Vermont", "Virginia", "Washington", "Virginia", "Wisconsin", "Wyoming");
+                                                                                break;
+                                                                            default:
+                                                                                echo "Please add support for " . $Language . " in Template/Clients/add.ctp (printprovinces)";
+                                                                                die();
+                                                                        }
+                                                                        $provinces = addTrans($provinces, $Trans);
+
+                                                                        printoptions($name, array("", "AB", "BC", "MB", "NB", "NL", "NT", "NS", "NU", "ON", "PE", "QC", "SK", "YT", "AL", "AK", "AZ", "AR", "CA", "CO", "CT", "DE", "FL", "GA", "HI", "ID", "IL", "IN", "IA", "KS", "KY", "LA", "ME", "MD", "MA", "MI", "MN", "MS", "MO", "MT", "NE", "NV", "NH", "NJ", "NM", "NY", "NC", "ND", "OH", "OK", "OR", "PA", "RI", "SC", "SD", "TN", "TX", "UT", "VT", "VA", "WA", "WV", "WI", "WY"), $selected, $provinces);
 
                                                                     }
 
-                                                                    printprovinces("province", $client->province);
+                                                                    printprovinces("province", $client->province, $language);
                                                                 ?>
 
                                                             </div>
                                                             <?php if ($settings->client_option == 0) { ?>
                                                                 <div class="form-group col-md-4">
-                                                                    <label class="control-label">Postal/Zip Code</label>
+                                                                    <label class="control-label"><?= $strings["forms_postalzip"];?></label>
                                                                     <input type="text" class="form-control"
                                                                            name="postal" <?php if (isset($client->postal)) { ?> value="<?php echo $client->postal; ?>" <?php } ?>/>
                                                                 </div>
                                                                 <div class="form-group col-md-4">
-                                                                    <label class="control-label">Company's Phone
-                                                                        Number</label>
+                                                                    <label class="control-label"><?= $strings["forms_companyphone"];?></label>
                                                                     <input type="text" class="form-control"
                                                                            name="company_phone"
                                                                         <?php if (isset($client->company_phone)) { ?> value="<?php echo $client->company_phone; ?>" <?php } ?>
@@ -296,34 +310,31 @@
                                                                 </div>
                                                             <?php } ?>
                                                             <div class="form-group col-md-4">
-                                                                <label class="control-label">Website</label>
+                                                                <label class="control-label"><?= $strings["forms_website"];?></label>
                                                                 <input type="text" class="form-control"
                                                                        name="site" <?php if (isset($client->site)) { ?> value="<?php echo $client->site; ?>" <?php } ?>/>
                                                             </div>
                                                             <?php if ($settings->client_option == 0) { ?>
                                                                 <div class="form-group col-md-4">
-                                                                    <label class="control-label">Divisions </label>
+                                                                    <label class="control-label"><?= $strings["forms_divisions"];?></label>
                                                         <textarea name="division" id="division"
-                                                                  placeholder="One division per line"
+                                                                  placeholder="<?= $strings["forms_oneperline"];?>"
                                                                   class="form-control"><?php if (isset($client->division)) echo $client->division; ?></textarea>
                                                                 </div>
 
                                                                 <div class="form-group col-md-4">
-                                                                    <label class="control-label">Signatory's First
-                                                                        Name</label>
+                                                                    <label class="control-label"><?= $strings["forms_signatoryfirstname"];?></label>
                                                                     <input type="text" class="form-control"
                                                                            name="sig_fname" <?php if (isset($client->sig_fname)) { ?> value="<?php echo $client->sig_fname; ?>" <?php } ?>/>
                                                                 </div>
                                                                 <div class="form-group col-md-4">
-                                                                    <label class="control-label">Signatory's Last
-                                                                        Name</label>
+                                                                    <label class="control-label"><?= $strings["forms_signatorylastname"];?></label>
                                                                     <input type="text" class="form-control"
                                                                            name="sig_lname" <?php if (isset($client->sig_lname)) { ?> value="<?php echo $client->sig_lname; ?>" <?php } ?>/>
                                                                 </div>
 
                                                                 <div class="form-group col-md-4">
-                                                                    <label class="control-label">Signatory's Email
-                                                                        Address</label>
+                                                                    <label class="control-label"><?= $strings["forms_signatoryemail"];?></label>
                                                                     <input type="email" id="sig_email"
                                                                            class="form-control"
                                                                            name="sig_email" <?php if (isset($client->sig_email)) { ?> value="<?php echo $client->sig_email; ?>" <?php } ?>/>
@@ -332,14 +343,12 @@
 
 
                                                                 <div class="form-group col-md-4">
-                                                                    <label class="control-label">Start Date
-                                                                    </label>
+                                                                    <label class="control-label"><?= $strings["forms_startdate"];?></label>
                                                                     <input type="text" class="form-control date-picker"
                                                                            name="date_start" <?php if (isset($client->date_start)) { ?> value="<?php echo $client->date_start; ?>" <?php } ?>/>
                                                                 </div>
                                                                 <div class="form-group col-md-4">
-                                                                    <label class="control-label">End Date
-                                                                    </label>
+                                                                    <label class="control-label"><?= $strings["forms_enddate"];?></label>
                                                                     <input type="text" class="form-control date-picker"
                                                                            name="date_end" <?php if (isset($client->date_end)) { ?> value="<?php echo $client->date_end; ?>" <?php } ?>/>
                                                                 </div>
@@ -355,10 +364,9 @@
 
 
                                                                     <div class="form-group col-md-4">
-                                                                        <label class="control-label">Referred By</label>
-                                                                        <select class="form-control" name="referred_by"
-                                                                                id="referred_by">
-                                                                            <option value="">Select</option>
+                                                                        <label class="control-label"><?= $strings["forms_referredby"];?></label>
+                                                                        <select class="form-control" name="referred_by" id="referred_by">
+                                                                            <option value=""><?= $strings["forms_select"];?></option>
                                                                             <option
                                                                                 value="Transrep" <?php if (isset($client->referred_by) && $client->referred_by == "Transrep") { ?> selected="selected" <?php } ?> >
                                                                                 Transrep
@@ -387,20 +395,18 @@
                                                                     </div>
 
                                                                     <div class="form-group col-md-4">
-                                                                        <label class="control-label">ARIS Agreement
-                                                                            #</label>
+                                                                        <label class="control-label"><?= $strings["forms_arisagreement"];?></label>
                                                                         <input type="text" class="form-control"
                                                                                name="agreement_number" <?php if (isset($client->agreement_number)) { ?> value="<?php echo $client->agreement_number; ?>" <?php } ?>/>
                                                                     </div>
                                                                     <div class="form-group col-md-4">
-                                                                        <label class="control-label">ARIS
-                                                                            Re-verification</label>
+                                                                        <label class="control-label"><?= $strings["forms_arisreverification"];?></label>
                                                                         <input type="text"
                                                                                class="form-control form-control-inline date-picker"
                                                                                name="reverification" <?php if (isset($end_date)) { ?> value="<?php echo $end_date; ?>" <?php } ?>/>
                                                                     </div>
                                                                     <div class="form-group col-md-4">
-                                                                        <label class="control-label">SACC Number</label>
+                                                                        <label class="control-label"><?= $strings["forms_sacc"];?></label>
                                                                         <input type="text" class="form-control"
                                                                                name="sacc_number" <?php if (isset($client->sacc_number)) { ?> value="<?php echo $client->sacc_number; ?>" <?php } ?>/>
                                                                     </div>
@@ -413,42 +419,37 @@
 
                                                                     <div class="col-md-12">
                                                                         <div class="form-group">
-                                                                            <h3 class="block">Billing</h3>
+                                                                            <h3 class="block"><?= $strings["forms_billing"];?></h3>
                                                                         </div>
                                                                     </div>
 
 
                                                                     <div class="form-group col-md-4">
-                                                                        <label class="control-label">Billing
-                                                                            Contact</label>
+                                                                        <label class="control-label"><?= $strings["forms_billingcontact"];?></label>
                                                                         <input type="text" class="form-control"
-                                                                               name="billing_contact" <?php if (isset($client->billing_contact)) { ?> value="<?php echo $client->billing_contact; ?>" <?php } ?>/>
+                                                                               name="billing_contact" <?php if (isset($client->billing_contact)) { ?> value="<?= $client->billing_contact; ?>" <?php } ?>/>
                                                                     </div>
                                                                     <div class="form-group col-md-4">
-                                                                        <label class="control-label">Billing
-                                                                            Address</label>
+                                                                        <label class="control-label"><?= $strings["forms_billingaddress"];?></label>
                                                                         <input type="text" class="form-control"
-                                                                               name="billing_address" <?php if (isset($client->billing_address)) { ?> value="<?php echo $client->billing_address; ?>" <?php } ?>/>
+                                                                               name="billing_address" <?php if (isset($client->billing_address)) { ?> value="<?= $client->billing_address; ?>" <?php } ?>/>
                                                                     </div>
 
                                                                     <div class="form-group col-md-4">
-                                                                        <label class="control-label">Billing
-                                                                            City</label>
+                                                                        <label class="control-label"><?= $strings["forms_billingcity"];?></label>
                                                                         <input type="text" class="form-control"
                                                                                name="billing_city"
                                                                                value="<?php echo isset($client->billing_city) ? $client->billing_city : '' ?>"/>
                                                                     </div>
 
                                                                     <div class="form-group col-md-4">
-                                                                        <label class="control-label">Billing
-                                                                            Province/State</label>
-                                                                        <?php printprovinces("billing_province", $client->billing_province); ?>
+                                                                        <label class="control-label"><?= $strings["forms_billingcustomertype"];?></label>
+                                                                        <?php printprovinces("forms_provincestate", $client->billing_province, $language); ?>
 
 
                                                                     </div>
                                                                     <div class="form-group col-md-4">
-                                                                        <label class="control-label">Billing Postal
-                                                                            Code</label>
+                                                                        <label class="control-label"><?= $strings["forms_billingpostalcode"];?></label>
                                                                         <input type="text" class="form-control"
                                                                                name="billing_postal_code"
                                                                                value="<?php echo isset($client->billing_postal_code) ? $client->billing_postal_code : '' ?>"/>
@@ -456,44 +457,40 @@
 
 
                                                                     <div class="form-group col-md-4">
-                                                                        <label class="control-label">Invoice
-                                                                            Terms</label>
-                                                                        <select class="form-control"
-                                                                                name="invoice_terms"
-                                                                                id="invoice_terms">
-                                                                            <option value="">Select</option>
+                                                                        <label class="control-label"><?= $strings["forms_invoiceterms"];?></label>
+                                                                        <select class="form-control" name="invoice_terms" id="invoice_terms">
+                                                                            <option value=""><?= $strings["forms_select"];?></option>
                                                                             <option
                                                                                 value="weekly" <?php if (isset($client->invoice_terms) && $client->invoice_terms == 'weekly') { ?> selected="selected" <?php } ?>>
-                                                                                Weekly
+                                                                                <?= $strings["forms_weekly"];?>
                                                                             </option>
                                                                             <option
                                                                                 value="biweekly" <?php if (isset($client->invoice_terms) && $client->invoice_terms == 'biweekly') { ?> selected="selected" <?php } ?>>
-                                                                                Bi-weekly
+                                                                                <?= $strings["forms_biweekly"];?>
                                                                             </option>
                                                                             <option
                                                                                 value="monthly" <?php if (isset($client->invoice_terms) && $client->invoice_terms == 'monthly') { ?> selected="selected" <?php } ?>>
-                                                                                Monthly
+                                                                                <?= $strings["forms_monthly"];?>
                                                                             </option>
                                                                         </select>
                                                                     </div>
                                                                     <div class="form-group col-md-12">
-                                                                        <label class="control-label">Billing
-                                                                            Instructions</label>
+                                                                        <label class="control-label"><?= $strings["forms_billinginstructions"];?></label>
                                                                     </div>
                                                                     <div class="form-group col-md-4">
                                                                         <input type="radio"
                                                                                name="billing_instructions" <?php if (isset($client->billing_instructions) && $client->billing_instructions == "individual") { ?> checked="checked" <?php } ?>
-                                                                               value="individual"/> Individual&nbsp;&nbsp;
+                                                                               value="individual"/> <?= $strings["forms_individual"];?>&nbsp;&nbsp;
                                                                     </div>
                                                                     <div class="form-group col-md-4">
                                                                         <input type="radio"
                                                                                name="billing_instructions" <?php if (isset($client->billing_instructions) && $client->billing_instructions == "centralized") { ?> checked="checked" <?php } ?>
-                                                                               value="centralized"/> Centralized&nbsp;&nbsp;
+                                                                               value="centralized"/> <?= $strings["forms_centralized"];?>&nbsp;&nbsp;
                                                                     </div>
                                                                 <?php } ?>
                                                                 <div class="form-group col-md-12">
 
-                                                                    <label class="control-label">Description</label>
+                                                                    <label class="control-label"><?= $strings["forms_description"];?></label>
                                                         <textarea id="description" name="description"
                                                                   class="form-control"><?php if (isset($client->description)) {
                                                                 echo $client->description;
@@ -509,26 +506,15 @@
                                                             ?>
 
                                                             <div class="form-group row">
-
-
                                                                 <div class="docMore col-md-12" data-count="1">
-
                                                                     <div style="display:block;" class="col-md-12">
-
                                                                         <?php
                                                                             if ($action == "create") {
-                                                                                ?>
-
-                                                                                Attach Documents<br>
-
-                                                                            <?php
+                                                                                echo $strings["forms_attachdocs"] . "<br>";
                                                                             }
                                                                         ?>
-
-                                                                        <a href="javascript:void(0)" id="addMore1"
-                                                                           class="btn btn-primary clearfix">Browse</a>
-                                                                        <input type="hidden" name="client_doc[]"
-                                                                               value="" class="addMore1_doc moredocs"/>
+                                                                        <a href="javascript:void(0)" id="addMore1" class="btn btn-primary clearfix"><?= $strings["forms_browse"]; ?></a>
+                                                                        <input type="hidden" name="client_doc[]" value="" class="addMore1_doc moredocs"/>
                                                                         <span></span>
                                                                     </div>
                                                                 </div>
@@ -536,12 +522,9 @@
 
 
                                                             <div class="form-group col-md-12">
-
-                                                                <a href="javascript:void(0)" class="btn btn-info"
-                                                                   id="addMoredoc">
-                                                                    Add More
+                                                                <a href="javascript:void(0)" class="btn btn-info" id="addMoredoc">
+                                                                    <?= $strings["forms_addmore"];?>
                                                                 </a>
-
                                                             </div>
                                                             <div class="form-group col-md-12" align="right">
                                                                 <!--<center>-->
@@ -549,7 +532,7 @@
                                                                     class="margin-top-10 alert alert-success display-hide flash1"
                                                                     style="display: none;">
                                                                     <button class="close" data-close="alert"></button>
-                                                                    Data saved successfully
+                                                                    <?= $strings["forms_datasaved"];?>
                                                                 </div>
                                                             </div>
 
@@ -731,7 +714,7 @@
                                                                 class="margin-top-10 alert alert-success display-hide flash"
                                                                 style="display: none;">
                                                                 <button class="close" data-close="alert"></button>
-                                                                Data saved successfully
+                                                                <?= $strings["forms_datasaved"];?>
                                                             </div>
 
                                                             <div class="form-actions top chat-form"
@@ -857,7 +840,7 @@
                     ?>
                     $('.save_client_all').submit(function (event) {
                         event.preventDefault();
-                        $('#save_client_p1').text('Saving..');
+                        $('#save_client_p1').text('<?= $strings["forms_saving"];?>');
                         var str = '';
                         /*
                          $('.recruiters input').each(function () {
@@ -928,7 +911,7 @@
                                 else {
                                     alert('<?= $strings["clients_notsaved"]; ?>');
                                 }
-                                $('#save_client_p1').text(' Save ');
+                                $('#save_client_p1').text('<?= $strings["forms_save"];?>');
                             }
                         })
                     });
@@ -938,7 +921,7 @@
                     var total_count = $('.docMore').data('count');
                     $('.docMore').data('count', parseInt(total_count) + 1);
                     total_count = $('.docMore').data('count');
-                    var input_field = '<div  class="form-group"><div class="col-md-12" style="margin-top:10px;"><a href="javascript:void(0);" id="addMore' + total_count + '" class="btn btn-primary">Browse</a><input type="hidden" name="client_doc[]" value="" class="addMore' + total_count + '_doc moredocs" /><a href="javascript:void(0);" class = "btn btn-danger img_delete" id="delete_addMore' + total_count + '" title ="">Delete</a><span></span></div></div>';
+                    var input_field = '<div  class="form-group"><div class="col-md-12" style="margin-top:10px;"><a href="javascript:void(0);" id="addMore' + total_count + '" class="btn btn-primary"><?= $strings["forms_browse"]; ?></a><input type="hidden" name="client_doc[]" value="" class="addMore' + total_count + '_doc moredocs" /><a href="javascript:void(0);" class = "btn btn-danger img_delete" id="delete_addMore' + total_count + '" title =""><?= $strings["dashboard_delete"];?></a><span></span></div></div>';
                     $('.docMore').append(input_field);
                     initiate_ajax_upload('addMore' + total_count, 'doc');
 
@@ -978,11 +961,11 @@
                     var total_count = $('.docMore').data('count');
                     $('.docMore').data('count', parseInt(total_count) + 1);
                     total_count = $('.docMore').data('count');
-                    var input_field = '<div style="display:block;margin:5px;"><a href="javascript;void(0);" id="addMore' + total_count + '" class="btn btn-primary">Browse</a><span></span><input type="hidden" name="client_doc[]" value="" class="addMore' + total_count + '_doc moredocs" /></div>';
+                    var input_field = '<div style="display:block;margin:5px;"><a href="javascript;void(0);" id="addMore' + total_count + '" class="btn btn-primary"><?= $strings["forms_browse"]; ?></a><span></span><input type="hidden" name="client_doc[]" value="" class="addMore' + total_count + '_doc moredocs" /></div>';
                     $('.docMore').append(input_field);
                     if (parseInt(total_count) > 1 && removeLink == 0) {
                         removeLink = 1;
-                        $('#addMoredoc').after('<a href="#" id="removeMore" class="btn btn-danger" onclick="removeMore(event,this)">Remove last</a>');
+                        $('#addMoredoc').after('<a href="#" id="removeMore" class="btn btn-danger" onclick="removeMore(event,this)"><?= $strings["forms_removelast"];?></a>');
                         initiate_ajax_upload('addMore' + total_count, 'doc');
                     }
                 }
@@ -1022,7 +1005,7 @@
                                 if (text.length < 13) {
                                     button.text(text + '.');
                                 } else {
-                                    button.text('Uploading');
+                                    button.text('<?= $strings["forms_uploading"]; ?>');
                                 }
                             }, 200);
                         },

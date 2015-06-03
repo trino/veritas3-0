@@ -230,12 +230,12 @@
             var msg = '';
             var nameId = 'msg_'+$(this).val();
             if ($(this).is(':checked')) {
-                msg = '<span class="msg" style="color:#45B6AF"> Added</span>';
+                msg = '<span class="msg" style="color:#45B6AF"><?= $strings["forms_added"]; ?></span>';
                 
                 var url = '<?php echo $this->request->webroot;?>clients/assignProfile/' + $(this).val() + '/<?php if(isset($id) && $id)echo $id;else echo '0'?>/yes';
             }
             else {
-                msg = '<span class="msg" style="color:red">Removed</span>';
+                msg = '<span class="msg" style="color:red"><?= $strings["forms_removed"]; ?></span>';
                 var url = '<?php echo $this->request->webroot;?>clients/assignProfile/' + $(this).val() + '/<?php if(isset($id) && $id)echo $id;else echo '0'?>/no';
             }
             

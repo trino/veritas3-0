@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 02, 2015 at 11:10 PM
+-- Generation Time: Jun 03, 2015 at 06:00 PM
 -- Server version: 5.6.17
 -- PHP Version: 5.5.12
 
@@ -32,14 +32,14 @@ CREATE TABLE IF NOT EXISTS `strings` (
   `English` varchar(4096) NOT NULL,
   `French` varchar(4096) NOT NULL,
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=246 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=300 ;
 
 --
 -- Dumping data for table `strings`
 --
 
 INSERT INTO `strings` (`ID`, `Name`, `English`, `French`) VALUES
-(1, 'Date', '1433191920', '<-- This is used by the system to auto-update'),
+(1, 'Date', '1433279440', '<-- This is used by the system to auto-update'),
 (2, 'dashboard_affirmative', 'Yes', 'Oui'),
 (3, 'dashboard_negative', 'No', 'Non'),
 (4, 'dashboard_selectall', 'Select All', 'Tout Sélectionner'),
@@ -269,7 +269,7 @@ INSERT INTO `strings` (`ID`, `Name`, `English`, `French`) VALUES
 (232, 'clients_info', 'Info', 'Infos'),
 (233, 'clients_assigntoprofile', 'Assign to %Profile%', 'Attribuez au %profile%'),
 (234, 'clients_assignedto', 'Assigned To', 'Assigné À'),
-(235, 'clients_everyoneenabled', 'Enabled for everyone (Globally)', 'Activé pour tout le monde (tout le monde)'),
+(235, 'clients_everyoneenabled', 'Enabled for everyone (Globally)', 'Activé pour tout le monde (à l''échelle mondiale)'),
 (236, 'clients_clientenabled', 'Enabled for this %client% (Locally)', 'Activé pour ce %client% (local)'),
 (237, 'clients_all', 'All', 'Tous'),
 (238, 'clients_helpnotice', 'A product needs to be enabled both globally and locally for it to show up for a client', 'Un produit doit être activé à la fois globalement et localement pour qu''il apparaisse pour un %client%'),
@@ -279,7 +279,61 @@ INSERT INTO `strings` (`ID`, `Name`, `English`, `French`) VALUES
 (242, 'clients_requalifywhen', 'When would you like to run re-qualifications?', 'Quand souhaitez-vous afin de fonctionner re-qualifications?'),
 (243, 'clients_or', '- or -', '- Ou -'),
 (244, 'clients_anniversary', 'Anniversary Date (From date of hire)', 'Date anniversaire (De la date d''embauche)'),
-(245, 'clients_selectadate', 'Select a date:', 'Sélectionner une date:');
+(245, 'clients_selectadate', 'Select a date:', 'Sélectionner une date:'),
+(246, 'clients_addeditimage', 'Add/Edit Image', 'Ajouter/Modifier l''image'),
+(247, 'forms_browse', 'Browse', 'Feuilleter'),
+(248, 'forms_customertype', 'Customer Type', 'Type de client'),
+(249, 'forms_provincestate', 'Province/State', 'Province/État'),
+(250, 'forms_postalzip', 'Postal/Zip Code', 'Code postal/Zip'),
+(251, 'forms_companyphone', 'Company''s Phone Number', 'Le numéro de téléphone de l''entreprise'),
+(252, 'forms_website', 'Website', 'site Web'),
+(253, 'forms_divisions', 'Divisions', 'Divisions'),
+(254, 'forms_signatoryfirstname', 'Signatory''s First Name', 'Prénom du signataire'),
+(255, 'forms_signatorylastname', 'Signatory''s Last Name', 'Nom du signataire'),
+(256, 'forms_signatoryemail', 'Signatory''s Email Address', 'Adresse e-mail du signataire'),
+(257, 'forms_startdate', 'Start Date', 'Date De Début'),
+(258, 'forms_enddate', 'End Date', 'Date De Fin'),
+(259, 'forms_referredby', 'Referred By', 'Référencé Par'),
+(260, 'forms_arisagreement', 'ARIS Agreement #', 'Accord ARIS #'),
+(261, 'forms_arisreverification', 'ARIS Re-verification', 'ARIS revérification'),
+(262, 'forms_sacc', 'SACC Number ', 'Nombre SACC'),
+(263, 'forms_billing', 'Billing', 'Facturation'),
+(264, 'forms_billingcontact', 'Billing Contact', 'Contact de Facturation'),
+(265, 'forms_billingaddress', 'Billing Address', 'Adresse de Facturation'),
+(266, 'forms_billingcity', 'Billing City', 'Facturation Ville'),
+(267, 'forms_billingprovince', 'Billing Province/State', 'Province/État de Facturation'),
+(268, 'forms_billingpostalcode', 'Billing Postal Code', 'Facturation Code Postal'),
+(269, 'forms_invoiceterms', 'Invoice Terms', 'Conditions de Factures'),
+(270, 'forms_billinginstructions', 'Billing Instructions', 'Instructions de Facturation'),
+(271, 'forms_individual', 'Individual', 'Individuel'),
+(272, 'forms_centralized', 'Centralized', 'Centralisée'),
+(273, 'forms_description', 'Description ', 'Description'),
+(274, 'forms_addmore', 'Add More', 'Ajouter Plus'),
+(275, 'forms_oneperline', 'One division per line', 'Une division par ligne'),
+(276, 'forms_select', 'Select', 'Sélectionner'),
+(277, 'forms_weekly', 'Weekly', 'Hebdomadaire'),
+(278, 'forms_biweekly', 'Bi-weekly', 'Bi-hebdomadaire'),
+(279, 'forms_monthly', 'Monthly', 'Mensuel'),
+(280, 'forms_attachdocs', 'Attach Documents', 'Joindre des Documents'),
+(281, 'forms_datasaved', 'Data saved successfully', 'Les données sauvegardées avec succès'),
+(282, 'forms_saving', 'Saving...', 'Sauvegarde en cours...'),
+(283, 'forms_save', 'Save', 'Sauvegarder'),
+(284, 'forms_removelast', 'Remove Last', 'Retirer Dernière'),
+(285, 'forms_uploading', 'Uploading...', 'L''ajout...'),
+(286, 'forms_eventname', 'Event Name', 'Nom de l''événement'),
+(287, 'forms_attachedfiles', 'Attached Files', 'fichiers Joints'),
+(288, 'forms_billingcustomertype', 'Billing Customer Type', 'Type de facturation à la clientèle'),
+(289, 'forms_requalifyfrequency', 'Re-qualify Frequency?', 'Re-qualifier fréquence?'),
+(290, 'forms_1month', '1 Month', '1 Mois'),
+(291, 'forms_3month', '3 Months', '3 Mois'),
+(292, 'forms_6month', '6 Months', '6 Mois'),
+(293, 'forms_12month', '12 Months', '12 Mois'),
+(294, 'forms_includedproducts', 'Products Included', 'produits Inclus'),
+(295, 'forms_driverusername', 'Driver (Username)', 'Driver (Nom d''utilisateur)'),
+(296, 'forms_hireddate', 'Hired Date', 'date de louage'),
+(297, 'forms_cronorders', 'Cron Orders Placed', 'Les commandes cron Placé'),
+(298, 'forms_added', 'Added', 'Ajouté'),
+(299, 'forms_removed', 'Removed', 'Suppression');
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
