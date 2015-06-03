@@ -169,7 +169,90 @@ class ProfilesController extends AppController{
         $this->set("dates", $automatic);
         $cron = TableRegistry::get('client_crons')->find()->all();
         $this->set('requalify',$cron);
+        $maxdate = $cron->max('cron_date');
+        $p_type = "";
+        $mx = $maxdate->cron_date;
+        $profile_type = TableRegistry::get("profile_types")->find('all')->where(['placesorders' => 1]);
+        foreach ($profile_type as $ty) {
+            $p_type .= $ty->id . ",";
+        }
+        $p_types = substr($p_type, 0, strlen($p_type) - 1);
+        $clients = TableRegistry::get('clients')->find('all')->where(['requalify' => '1','requalify_date >'=>$mx]);
+        $reqs = array();
+        foreach ($clients as $c)
+        {
+            //echo "<pre>".$c."</pre><br/><br/><br/>";  
+            $frequency = $c->requalify_frequency;
+            if ($c->requalify_re == '0') {
+                $date = $c->requalify_date;
+            }
+            $epired_profile ="";
+            $profile = TableRegistry::get('profiles')->find('all')->where(['id IN(' . $c->profile_id . ')', 'profile_type IN(' . $p_types . ')', 'is_hired' => '1', 'requalify' => '1'])->order('created_by');
+                //debug($profile);
+                $temp = '';
+                foreach ($profile as $p) {
+                    
+                 
+                        //echo $p->expiry_date."<br/>" ;
+                    //echo strtotime($p->expiry_date)."<br/>".time();
+                    if(($p->profile_type=='5'|| $p->profile_type=='7'|| $p->profile_type=='8'))
+                    {
+                        
+                        //echo $p->id."</br>";
+                        //echo $p->created_by;
+                        if($p->expiry_date!= "" && strtotime($p->expiry_date) > time())
+                        {
+                            $epired_profile .= $p->username.",";
+                            
+                        }
+                        else
+                        {
+                            //echo "<pre>".$p."<pre/>";
+                            
+                            if ($c->requalify_re == '1') {
+                                $date = $p->hired_date;
+                            }
+                           
+                            if($date>=$mx && $date <= "2015-12-31")
+                            {
+                                
+                                 //echo $nxt_date = date('Y-m-d', strtotime($date . '+' . $frequency . ' months'));
+                                 for($i=$date;$i<='2015-12-31';$i= date('Y-m-d', strtotime($i . '+' . $frequency . ' months')))
+                                 {
+                                    
+                                    //echo $i."<br/>";
+                                    //echo $date."<br/>";
+                                     $n_req['cron_date']= $i;
+                                     $n_req['client_id'] = $c->id;
+                                     $n_req['profile_id'] = $p->id;
+                                      array_push($reqs,$n_req);
+                                       unset($n_req);
+                                     
+                                 }
+                              
+                               
+                            }
+                      
+                        }
+                    }
+            }
+            //var_dump($reqs);
             
+        }
+        $this->set('new_req',$reqs);
+            
+    }
+    function getnextdate($date, $frequency)
+    {
+        $maxdate = '2015-12-31';
+        $nxt_date = date('Y-m-d', strtotime($date . '+' . $frequency . ' months'));
+        if (strtotime($nxt_date) <= strtotime($maxdate))
+        {
+            $d = $this->getnextdate($nxt_date, $frequency);
+        } 
+        else
+            $d = $nxt_date;
+        return $d;
     }
 
     public function products(){
