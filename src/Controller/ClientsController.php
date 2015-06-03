@@ -349,6 +349,10 @@
         }
 
         public function saveClients($id = 0){
+            if (isset($_POST["image"]) && !$_POST["image"]){
+                unset($_POST["image"]);
+            }
+
             $settings = TableRegistry::get('settings');
             $setting = $settings->find()->first();
             $sub_sup = TableRegistry::get('subdocuments');
@@ -408,6 +412,9 @@
                 } else {
                     $_POST['profile_id'] = $this->request->session()->read('Profile.id');
                     $client = $clients->newEntity($_POST);
+
+
+
                     if ($this->request->is('post')) {
                         if ($clients->save($client)) {
                             $arr_s['client_id'] = $client->id;
@@ -418,7 +425,7 @@
                                 $sc = $sub_c->newEntity($arr_s);
                                 $sub_c->save($sc);
                             }
-                            if ($_POST['division'] != "") {//create new division list
+                            if ($_POST['division'] != "") {//create new division list THIS SHOULD USE OVERWRITE DIVISIONS!!!
                                 $division = nl2br(str_replace(",", "<br />", $_POST['division']));
                                 $division = str_replace(',', '<br />', $division);
                                 $dd = explode("<br />", $division);

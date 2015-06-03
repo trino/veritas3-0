@@ -100,12 +100,12 @@
                     ?>
 
                     <div class="form-group">
-                        <label class="sr-only" for="exampleInputEmail22">Add/Edit Image</label>
+                        <label class="sr-only" for="exampleInputEmail22"><?= $strings["clients_addeditimage"]; ?></label>
 
                         <div class="input-icon">
                             <a class="btn btn-xs btn-success" href="javascript:void(0)" id="clientimg">
                                 <i class="fa fa-image"></i>
-                                Add/Edit Image
+                                <?= $strings["clients_addeditimage"]; ?>
                             </a>
 
                         </div>
@@ -903,7 +903,7 @@
                         str = str + '&invoice_terms=' + $('#invoice_terms').val();
                         str = str + '&description=' + $('#description').val();
 
-
+//alert(str);
                         $.ajax({
                             url: '<?php echo $this->request->webroot;?>clients/saveClients/<?php echo $id?>',
                             data: str,
@@ -1006,10 +1006,11 @@
 
                 function initiate_ajax_upload(button_id, doc) {
                     var button = $('#' + button_id), interval;
-                    if (doc == 'doc')
+                    if (doc == 'doc') {
                         var act = "<?php echo $this->request->webroot;?>clients/upload_all/<?php if(isset($id))echo $id;?>";
-                    else
+                    } else {
                         var act = "<?php echo $this->request->webroot;?>clients/upload_img/<?php if(isset($id))echo $id;?>";
+                    }
                     new AjaxUpload(button, {
                         action: act,
                         name: 'myfile',
@@ -1026,10 +1027,11 @@
                             }, 200);
                         },
                         onComplete: function (file, response) {
-                            if (doc == "doc")
-                                button.html('Browse');
-                            else
-                                button.html('<i class="fa fa-image"></i> Add/Edit Image');
+                            if (doc == "doc") {
+                                button.html('<?= $strings["forms_browse"];?>');
+                            }else {
+                                button.html('<i class="fa fa-image"></i> <?= $strings["clients_addeditimage"]; ?>');
+                            }
 
                             window.clearInterval(interval);
                             this.enable();
