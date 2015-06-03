@@ -17,9 +17,10 @@
                 <thead>
                 <tr >
                     <th>Sn</th>
-                    <th>Date</th>
+                    <th>Scheduled Date</th>
                     <th>Client</th>
                     <th>Requalifed Profile</th>
+                    <th>Status</th>
                     
                     
                 </tr>
@@ -27,6 +28,7 @@
                 <tbody class="allct">
                 <?php
                 $today = date('Y-m-d');
+                $k=0;
                 foreach($requalify as $k=>$d)
                 {
                    
@@ -36,9 +38,21 @@
                         <td><?php echo $d->cron_date;?></td>
                         <td><?php echo $this->requestAction('/settings/getclient/'.$d->client_id);?></td>
                         <td><?php echo $this->requestAction('/settings/getprofile/'.$d->profile_id);?></td>
-                        
+                        <td>Requalifed</td>
                     </tr>        
                 <?php
+                }
+                foreach($new_req as $d)
+                {  ?>
+                    <tr>
+                        <td><?php echo ++$k;?></td>
+                        <td><?php echo $d['cron_date'];?></td>
+                        <td><?php echo $this->requestAction('/settings/getclient/'.$d['client_id']);?></td>
+                        <td><?php echo $this->requestAction('/settings/getprofile/'.$d['profile_id']);?></td>
+                        <td>Scheduled for requalification</td>
+                    </tr>        
+                <?php
+                    
                 }
                 ?>
         </tbody>

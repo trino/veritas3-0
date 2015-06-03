@@ -17,9 +17,9 @@
                 <thead>
                 <tr >
                     <th>Sn</th>
-                    <th>Date</th>
+                    <th>Hired Date</th>
                     <th>Profile</th>
-                    
+                    <th>Status</th>
                     
                 </tr>
                 </thead>
@@ -36,7 +36,7 @@
                         <td><?php echo $d->hired_date;?></td>
                         <td><?php if($d->hired_date < $today)
                                   {
-                                        echo "Cron Ran<br/>";
+                                        //echo "Cron Ran<br/>";
                                         if($d->automatic_sent== '1')
                                             echo "Sent for user:'";
                                         else
@@ -45,9 +45,25 @@
                                   }
                                   else
                                   {
-                                        echo "Cron Pending for user:'".$d->username."'";
+                                        echo "User:'".$d->username."'";
                                   }?>
                         </td>
+                        <td><?php if($d->hired_date < $today)
+                                  {
+                                        echo "Cron Ran on ";
+                                        if($d->profile_type == '9' || $d->profile_type == '12')
+                                        echo $thirty;
+                                    elseif($d->profile_type == '5' || $d->profile_type == '7'  || $d->profile_type == '8')
+                                        echo $sixty;
+                                  }
+                                  else
+                                  {
+                                    echo "Cron Pending Scheduled on ";
+                                    if($d->profile_type == '9' || $d->profile_type == '12')
+                                        echo $thirty;
+                                    elseif($d->profile_type == '5' || $d->profile_type == '7'  || $d->profile_type == '8')
+                                        echo $sixty;
+                                  }?></td>
                       
                         
                     </tr>        
