@@ -58,7 +58,7 @@
                                   }
                                   else
                                   {
-                                    echo "Cron Pending Scheduled on ";
+                                    echo "Cron Pending Scheduled for ";
                                     if($d->profile_type == '9' || $d->profile_type == '12')
                                         echo $thirty;
                                     elseif($d->profile_type == '5' || $d->profile_type == '7'  || $d->profile_type == '8')
