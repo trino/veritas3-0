@@ -18,7 +18,9 @@
                 <tr >
                     <th>Sn</th>
                     <th>Hired Date</th>
+                    <th>Client</th>
                     <th>Profile</th>
+                    <th>Survey</th>
                     <th>Status</th>
                     
                 </tr>
@@ -34,6 +36,7 @@
                     <tr>
                         <td><?php echo ++$k;?></td>
                         <td><?php echo $d->hired_date;?></td>
+                        <td><?php echo $this->requestAction('/settings/getclient/26');?></td>
                         <td><?php if($d->hired_date < $today)
                                   {
                                         //echo "Cron Ran<br/>";
@@ -47,6 +50,12 @@
                                   {
                                         echo "User:'".$d->username."'";
                                   }?>
+                        </td>
+                        <td><?php if($d->profile_type == '9' || $d->profile_type == '12')
+                                    echo "30 Day Survey";
+                                  elseif($d->profile_type == '5' || $d->profile_type == '7'  || $d->profile_type == '8')
+                                    echo "60 Day Survey";
+                             ?>
                         </td>
                         <td><?php if($d->hired_date < $today)
                                   {
@@ -64,6 +73,7 @@
                                     elseif($d->profile_type == '5' || $d->profile_type == '7'  || $d->profile_type == '8')
                                         echo $sixty;
                                   }?></td>
+                        
                       
                         
                     </tr>        

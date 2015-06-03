@@ -80,7 +80,7 @@ echo $strings["clients_requalifynotice"];
 </div>
 <div class="clearfix"></div>
 </form>
-<div class="col-md-12">
+<!--div class="col-md-12">
     <table  class="table table-condensed  table-striped table-bordered table-hover dataTable no-footer">
         <tr>
             <td><?= $strings["forms_driverusername"];?></td>
@@ -114,7 +114,7 @@ echo $strings["clients_requalifynotice"];
         ?>
     </table>
 </div>
-<div class="clearfix"></div>
+<div class="clearfix"></div-->
 <script>
 $(function(){
     $('.requalify_submit').click(function(){

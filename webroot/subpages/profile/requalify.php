@@ -43,16 +43,30 @@
                 <?php
                 }
                 foreach($new_req as $d)
-                {  ?>
+                {   
+                    $fname = explode(',',$d['forms']);
+                    $new_form = "";
+                    foreach($fname as $n)
+                    {
+                        if($n=='1')
+                            $nam = 'MVR';
+                        elseif($n=='14')
+                            $nam = 'CVOR';
+                        elseif($n=='72')
+                            $nam = 'DL';
+                        $new_form .=$nam.","; 
+                        
+                    }
+                    ?>
                     <tr>
                         <td><?php echo ++$k;?></td>
                         <td><?php echo $d['cron_date'];?></td>
                         <td><?php echo $this->requestAction('/settings/getclient/'.$d['client_id']);?></td>
-                        <td><?php echo $this->requestAction('/settings/getprofile/'.$d['profile_id']);?></td>
-                        <td>Scheduled for requalification</td>
+                        <td><a href="<?php echo $this->request->webroot;?>profiles/view/<?php echo $d['profile_id'];?>"><?php echo $this->requestAction('/settings/getprofile/'.$d['profile_id']);?></a></td>
+                        <td>Scheduled for requalification (products:<?php echo $new_form;?>)</td>
                     </tr>        
                 <?php
-                    
+                    unset($new_form);
                 }
                 ?>
         </tbody>

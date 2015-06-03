@@ -163,7 +163,9 @@ class ProfilesController extends AppController{
         $client = TableRegistry::get('clients')->find()->where(['id'=>26])->first();
         $ids = $client->profile_id;
         $table = TableRegistry::get('profiles');
-        $automatic = $table->find()->where(['id IN('.$ids.")",'is_hired'=>'1','hired_date <>'=>'','hired_date >='=>'2015-01-01','hired_date <='=>'2015-12-31']);
+        $today = date('Y-m-d');
+        $nyear = date('Y-m-d', strtotime($today . '+1 year'));
+        $automatic = $table->find()->where(['id IN('.$ids.")",'is_hired'=>'1','hired_date <>'=>'','hired_date >='=>$today,'hired_date <='=>$nyear]);
       //debug($automatic);
       //die();
         $this->set("dates", $automatic);
@@ -172,10 +174,9 @@ class ProfilesController extends AppController{
         $maxdate = $cron->max('cron_date');
         $p_type = "";
          $mx = $maxdate->cron_date;
-      if($mx ==""){
-
-          $mx = "2015-01-01";
-      }
+        if($mx ==""){
+            $mx = $today;
+        }
 
 
 
@@ -184,7 +185,7 @@ class ProfilesController extends AppController{
             $p_type .= $ty->id . ",";
         }
         $p_types = substr($p_type, 0, strlen($p_type) - 1);
-        $clients = TableRegistry::get('clients')->find('all')->where(['requalify' => '1','requalify_date >'=>$mx]);
+        $clients = TableRegistry::get('clients')->find('all')->where(['requalify' => '1']);
         $reqs = array();
         foreach ($clients as $c)
         {
@@ -220,11 +221,11 @@ class ProfilesController extends AppController{
                                 $date = $p->hired_date;
                             }
                            
-                            if($date>=$mx && $date <= "2015-12-31")
+                            if($date>=$mx && $date <= $nyear)
                             {
                                 
                                  //echo $nxt_date = date('Y-m-d', strtotime($date . '+' . $frequency . ' months'));
-                                 for($i=$date;$i<='2015-12-31';$i= date('Y-m-d', strtotime($i . '+' . $frequency . ' months')))
+                                 for($i=$date;$i<=$nyear;$i= date('Y-m-d', strtotime($i . '+' . $frequency . ' months')))
                                  {
                                     
                                     //echo $i."<br/>";
@@ -232,8 +233,9 @@ class ProfilesController extends AppController{
                                      $n_req['cron_date']= $i;
                                      $n_req['client_id'] = $c->id;
                                      $n_req['profile_id'] = $p->id;
-                                      array_push($reqs,$n_req);
-                                       unset($n_req);
+                                     $n_req['forms'] = $c->requalify_product;
+                                     array_push($reqs,$n_req);
+                                     unset($n_req);
                                      
                                  }
                               

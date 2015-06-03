@@ -829,10 +829,22 @@ function printprovinces($name, $selected = "", $isdisabled = "", $isrequired = f
                                 }
                                 ?>
                                 <div class="form-group col-md-12 col-sm-12">
-                                    <label class="control-label ">Where did you hear about us?</label>
-                                </div>
-                                <div class="form-group col-md-12 col-sm-12">
-                                    <textarea name="hear" class="form-control"><?php if (isset($p->hear)) echo $p->hear; ?></textarea>
+                                   
+               
+                                <label class="control-label col-md-6"> Where did you hear about us?</label> 
+                                    <div class="col-md-6">              
+                                        <select name="hear" class="form-control">
+                                            <option value="Referral" <?php if(isset($profile)&& $profile->hear=='Referral')echo 'selected';?>>Referral</option>
+                                            <option value="Company Website"  <?php if(isset($profile)&& $profile->hear=='Company Website')echo 'selected';?>>Company Website</option>
+                                            <option value="Workopolis"  <?php if(isset($profile)&& $profile->hear=='Workopolis')echo 'selected';?>>Workopolis</option>
+                                            <option value="Monster"  <?php if(isset($profile)&& $profile->hear=='Monster')echo 'selected';?>>Monster</option>
+                                            <option value="Nethire"  <?php if(isset($profile)&& $profile->hear=='Nethire')echo 'selected';?>>Nethire</option>
+                                            <option value="Indeed"  <?php if(isset($profile)&& $profile->hear=='Indeed')echo 'selected';?>>Indeed</option>
+                                            <option value="Newspaper"  <?php if(isset($profile)&& $profile->hear=='Newspaper')echo 'selected';?>>Newspaper</option>
+                                            <option value="Others"  <?php if(isset($profile)&& $profile->hear=='Others')echo 'selected';?>> Others</option>
+                                            
+                                        </select>
+                                    </div>
                                 </div>
                                 <!--div class="col-md-12">
                                     <div class="form-group">

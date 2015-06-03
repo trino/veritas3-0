@@ -415,16 +415,13 @@ else{
                 <label class="control-label col-md-6"> Where did you hear about us?</label> 
                         <div class="col-md-6">              
                             <select name="hear" class="form-control">
-                                <option value="Advertisement" <?php if(isset($profile)&& $profile->hear=='Advertisement')echo 'selected';?>>Advertisement</option>
-                                <option value="Email/Newsletter"  <?php if(isset($profile)&& $profile->hear=='Email/Newsletter')echo 'selected';?>>Email/Newsletter</option>
-                                <option value="Facebook"  <?php if(isset($profile)&& $profile->hear=='Facebook')echo 'selected';?>>Facebook</option>
-                                <option value="Family or Friend"  <?php if(isset($profile)&& $profile->hear=='Family or Friend')echo 'selected';?>>Family or Friend</option>
-                                <option value="Magazine Article"  <?php if(isset($profile)&& $profile->hear=='Magazine Article')echo 'selected';?>>Magazine Article</option>
-                                <option value="Newspaper Story"  <?php if(isset($profile)&& $profile->hear=='Newspaper Story')echo 'selected';?>>Newspaper Story</option>
-                                <option value="TV/Cable News"  <?php if(isset($profile)&& $profile->hear=='TV/Cable News')echo 'selected';?>>TV/Cable News</option>
-                                <option value="Twitter"  <?php if(isset($profile)&& $profile->hear=='')echo 'selected';?>>Twitter</option>
-                                <option value="Website/Search Engine"  <?php if(isset($profile)&& $profile->hear=='Website/Search Engine')echo 'selected';?>>Website/Search Engine</option>
-                                <option value="YouTube"  <?php if(isset($profile)&& $profile->hear=='YouTube')echo 'selected';?>>YouTube</option>
+                                <option value="Referral" <?php if(isset($profile)&& $profile->hear=='Referral')echo 'selected';?>>Referral</option>
+                                <option value="Company Website"  <?php if(isset($profile)&& $profile->hear=='Company Website')echo 'selected';?>>Company Website</option>
+                                <option value="Workopolis"  <?php if(isset($profile)&& $profile->hear=='Workopolis')echo 'selected';?>>Workopolis</option>
+                                <option value="Monster"  <?php if(isset($profile)&& $profile->hear=='Monster')echo 'selected';?>>Monster</option>
+                                <option value="Nethire"  <?php if(isset($profile)&& $profile->hear=='Nethire')echo 'selected';?>>Nethire</option>
+                                <option value="Indeed"  <?php if(isset($profile)&& $profile->hear=='Indeed')echo 'selected';?>>Indeed</option>
+                                <option value="Newspaper"  <?php if(isset($profile)&& $profile->hear=='Newspaper')echo 'selected';?>>Newspaper</option>
                                 <option value="Others"  <?php if(isset($profile)&& $profile->hear=='Others')echo 'selected';?>> Others</option>
                                 
                             </select>
