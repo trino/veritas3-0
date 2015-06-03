@@ -171,7 +171,14 @@ class ProfilesController extends AppController{
         $this->set('requalify',$cron);
         $maxdate = $cron->max('cron_date');
         $p_type = "";
-        $mx = $maxdate->cron_date;
+         $mx = $maxdate->cron_date;
+      if($mx ==""){
+
+          $mx = "2015-01-01";
+      }
+
+
+
         $profile_type = TableRegistry::get("profile_types")->find('all')->where(['placesorders' => 1]);
         foreach ($profile_type as $ty) {
             $p_type .= $ty->id . ",";
