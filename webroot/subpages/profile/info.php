@@ -834,14 +834,14 @@ function printprovinces($name, $selected = "", $isdisabled = "", $isrequired = f
                                 <label class="control-label col-md-6"> Where did you hear about us?</label> 
                                     <div class="col-md-6">              
                                         <select name="hear" class="form-control">
-                                            <option value="Referral" <?php if(isset($profile)&& $profile->hear=='Referral')echo 'selected';?>>Referral</option>
-                                            <option value="Company Website"  <?php if(isset($profile)&& $profile->hear=='Company Website')echo 'selected';?>>Company Website</option>
-                                            <option value="Workopolis"  <?php if(isset($profile)&& $profile->hear=='Workopolis')echo 'selected';?>>Workopolis</option>
-                                            <option value="Monster"  <?php if(isset($profile)&& $profile->hear=='Monster')echo 'selected';?>>Monster</option>
-                                            <option value="Nethire"  <?php if(isset($profile)&& $profile->hear=='Nethire')echo 'selected';?>>Nethire</option>
-                                            <option value="Indeed"  <?php if(isset($profile)&& $profile->hear=='Indeed')echo 'selected';?>>Indeed</option>
-                                            <option value="Newspaper"  <?php if(isset($profile)&& $profile->hear=='Newspaper')echo 'selected';?>>Newspaper</option>
-                                            <option value="Others"  <?php if(isset($profile)&& $profile->hear=='Others')echo 'selected';?>> Others</option>
+                                            <option value="Referral" <?php if(isset($p)&& $p->hear=='Referral')echo 'selected';?>>Referral</option>
+                                            <option value="Company Website"  <?php if(isset($p)&& $p->hear=='Company Website')echo 'selected';?>>Company Website</option>
+                                            <option value="Workopolis"  <?php if(isset($p)&& $p->hear=='Workopolis')echo 'selected';?>>Workopolis</option>
+                                            <option value="Monster"  <?php if(isset($p)&& $p->hear=='Monster')echo 'selected';?>>Monster</option>
+                                            <option value="Nethire"  <?php if(isset($p)&& $p->hear=='Nethire')echo 'selected';?>>Nethire</option>
+                                            <option value="Indeed"  <?php if(isset($p)&& $p->hear=='Indeed')echo 'selected';?>>Indeed</option>
+                                            <option value="Newspaper"  <?php if(isset($p)&& $p->hear=='Newspaper')echo 'selected';?>>Newspaper</option>
+                                            <option value="Others"  <?php if(isset($p)&& $p->hear=='Others')echo 'selected';?>> Others</option>
                                             
                                         </select>
                                     </div>
