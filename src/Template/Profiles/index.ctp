@@ -195,9 +195,7 @@ if($language == "Debug"){ $Trans = " [Translated]"; } else {$Trans = "";}
                                 $row_color_class = "odd";
 
                                 $isISB = (isset($sidebar) && $sidebar->client_option == 0);
-                                $profiletype = ['', 'Admin', 'Recruiter', 'External', 'Safety', 'Driver', 'Contact', 'Owner Operator', 'Owner Driver', 'Employee', 'Guest', 'Partner'];
-
-
+                               // $profiletype = ['', 'Admin', 'Recruiter', 'External', 'Safety', 'Driver', 'Contact', 'Owner Operator', 'Owner Driver', 'Employee', 'Guest', 'Partner'];
                                 if (count($profiles) == 0) {
                                     echo '<TR><TD COLSPAN="8" ALIGN="CENTER">' . $strings["profiles_nonefound"] . '</TD></TR>';
                                 }
@@ -255,7 +253,10 @@ if($language == "Debug"){ $Trans = " [Translated]"; } else {$Trans = "";}
 
                                         <td><?php
                                                 if (strlen($profile->profile_type) > 0) {
-                                                    echo h($this->requestAction("profiles/getTypeTitle/".$profile->profile_type . "/" . $language));
+                                                    $profiletype = getIterator($ptypes, "id", $profile->profile_type);
+                                                    echo $profiletype->$fieldname . $Trans;
+
+                                                    //echo h($this->requestAction("profiles/getTypeTitle/".$profile->profile_type . "/" . $language));
                                                     if ($profile->profile_type == 5) {//is a driver
                                                         $expires = strtotime($profile->expiry_date);
                                                         if ($expires) {

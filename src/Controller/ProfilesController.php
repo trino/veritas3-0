@@ -492,6 +492,8 @@ class ProfilesController extends AppController{
         } else {
             $this->set('profiles', $this->appendattachments($this->paginate($query)));
         }
+
+
     }
 
     /*
@@ -1927,20 +1929,24 @@ class ProfilesController extends AppController{
     }
 
 
-    function getProfileTypes($Language = "English") {
+    function getProfileTypes($Language = "English", $retasrequest = true) {
         $rec = TableRegistry::get('profile_types')->find();
         $query = array();
         $column="title";
+        if($Language == "Debug"){$Language = "English"; $Trans=" [Trans]"; } else {$Trans="";}
         if($Language != "English"){$column.=$Language;}
         foreach($rec as $Ptype){//id title enable ISB titleFrench placesorders
             $name= $Ptype->$column;
             if(!$name){$name=$Ptype->title . " (MISSING: " . $Language . ")";}
-            $query[$Ptype->id] = $name;
+            $query[$Ptype->id] = $name . $Trans;
             $query[$Ptype->id . ".canorder"] = $Ptype->placesorders;
         }
-        $this->response->body($query);
-        return $this->response;
-        die();
+        if ($retasrequest) {
+            $this->response->body($query);
+            return $this->response;
+            die();
+        }
+        return $query;
     }
 
     function getAjaxProfile($id = 0, $mode = 0) {
