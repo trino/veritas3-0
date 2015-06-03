@@ -945,15 +945,14 @@ function printprovinces($language, $name, $selected = "", $isdisabled = "", $isr
             if (client_id == "") {
 
             }
-            if($('.member_type').val()=='1'||$('.member_type').val()=='2')
-            {
-                 var un = $('.uname').val();
-               
+            if($('.member_type').val()=='1'||$('.member_type').val()=='2') {
+                var un = $('.uname').val();
+            } else if($('.member_type').val()!='5' && $('.member_type').val()=='7' && $('.member_type').val()=='8'){
+                //var un = $('.uname').val('xxx123145aafgxxxfasfsdgdfhdfh');
+                $('.req_driver').removeAttr('required');
             }
-            else if($('.member_type').val()!='5' && $('.member_type').val()=='7' && $('.member_type').val()=='8'){
-                 //var un = $('.uname').val('xxx123145aafgxxxfasfsdgdfhdfh');
-                 $('.req_driver').removeAttr('required');
-            }
+            var un = $('.uname').val();
+
             $.ajax({
                 url: '<?php echo $this->request->webroot;?>profiles/check_user/<?php echo $uid;?>',
                 data: 'username=' + $('.uname').val(),
@@ -962,7 +961,7 @@ function printprovinces($language, $name, $selected = "", $isdisabled = "", $isr
                     res = res.trim();
                     if (res == '1') {
                         //alert(res);
-                        alert('<?= $strings["profiles_usernameexists"]; ?>');
+                        alert('Username already exists');
 
                         $('.uname').focus();
                         $('html,body').animate({
@@ -983,7 +982,7 @@ function printprovinces($language, $name, $selected = "", $isdisabled = "", $isr
                                     res = res.trim();
                                     if (res == '1') {
                                         $('.email').focus();
-                                        alert('<?= $strings["dashboard_emailexists"]; ?>');
+                                        alert('Email already exists');
                                         $('html,body').animate({
                                                 scrollTop: $('.page-title').offset().top
                                             },
@@ -1016,10 +1015,9 @@ function printprovinces($language, $name, $selected = "", $isdisabled = "", $isr
         }
 
     }
-
     //I break for bad code
-    </SCRIPT>
-    <SCRIPT>
+</SCRIPT>
+<SCRIPT>
 
     $(function () {
         //initiate_ajax_upload1('addMore1', 'doc');

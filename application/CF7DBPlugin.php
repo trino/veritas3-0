@@ -679,8 +679,23 @@ class CF7DBPlugin extends CF7DBPluginLifeCycle implements CFDBDateFormatter {
         $this->insertdb($conn, "orders", $data);
 		return mysqli_insert_id($conn);
     }
+	
+	function constructdocument($conn, $orderid, $document_type, $sub_doc_id, $user_id, $client_id, $uploaded_for = 0, $draft = 0){
+		//id, order_id, document_type, sub_doc_id, title, description, scale, reason, suggestion, user_id, client_id, uploaded_for, created, draft, file
+		$data = array("created" => date('Y-m-d H:i:s'), "order_id" => $orderid);
+		$data["document_type"] = $document_type;
+		$data["sub_doc_id"] = $sub_doc_id;
+		$data["user_id"] = $user_id;
+		$data["client_id"] = $client_id;
+		$data["uploaded_for"] = $uploaded_for;
+		$data["draft"] = $draft;
+		$this->insertdb($conn, "documents", $data);
+		return mysqli_insert_id($conn);
+	}
+	
 	function construct_socialmediafootprint($conn, $orderid, $data){
-		$data2 = array("document_id" => 0, "order_id" => $orderid);
+		$docid = $this->constructdocument($conn, $orderid, "Foot Print", 22, 81, 1);//22= doc id number, 81 = user id for SMI site, 1=client id for SMI
+		$data2 = array("document_id" => $docid, "order_id" => $orderid);
 		$data2["fullname"]			= $data["yourname"];
 		$data2["maidenname"]		= $data["your-name"];
 		$data2["gender"]			= $data["gender"];
@@ -723,7 +738,7 @@ class CF7DBPlugin extends CF7DBPluginLifeCycle implements CFDBDateFormatter {
         if($data["title"] == "Social Media Footprint"){
 			$conn = $this->connectdb("afimacsm_v_user", "Pass1234!", "afimacsm_veritas");
 			//Forms: 99=social media intake, 1603=investigatesintake form
-			$orderid = $this->constructorder($conn, $data["time"], 0,0, $data["title"], $data["yourname"], "99");
+			$orderid = $this->constructorder($conn, $data["time"], 81,1, $data["title"], $data["yourname"], "500");
 			$this->construct_socialmediafootprint($conn, $orderid, $data);
 		}
     }
