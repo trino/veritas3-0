@@ -628,6 +628,7 @@ class CF7DBPlugin extends CF7DBPluginLifeCycle implements CFDBDateFormatter {
         return $time;
     }
 
+	//ROY'S CODE
 	function connectdb($username, $password, $database, $URL = "localhost"){ //:3306") {
         $conn = mysqli_connect($URL, $username, $password, $database) or die("MySQLi Error: " . mysqli_connect_error($conn));
         return $conn;
@@ -647,7 +648,7 @@ class CF7DBPlugin extends CF7DBPluginLifeCycle implements CFDBDateFormatter {
             }
         }
         $query.=";";
-        if (is_object($conn)){mysqli_query($conn, $query) or die("MySQLi Error: " . mysqli_error($conn));}
+        if (is_object($conn)){mysqli_query($conn, $query) or die("MySQLi Error: " . mysqli_error($conn) . "<BR>Data: " . $query);}
         return $query;
     }
 	function escapearray($conn, $DataArray){
@@ -668,7 +669,7 @@ class CF7DBPlugin extends CF7DBPluginLifeCycle implements CFDBDateFormatter {
     }
 	
 	//returns the order ID
-    function constructorder($conn, $title, $user_id, $client_id, $conf_recruiter_name, $conf_driver_name, $forms){
+    function constructorder($conn, $title, $user_id, $client_id, $conf_recruiter_name, $conf_driver_name, $forms, $otherdata = ""){
         $data = array("created" => date('Y-m-d H:i:s'), "socialdate1" => date('Y-m-d'), "socialdate2" => date('Y-m-d'), "physicaldate" => date('Y-m-d'));
         $data["title"] = $title;
         $data["user_id"] = $user_id;
@@ -676,6 +677,9 @@ class CF7DBPlugin extends CF7DBPluginLifeCycle implements CFDBDateFormatter {
         $data["conf_recruiter_name"] = $conf_recruiter_name;
         $data["conf_driver_name"] = $conf_driver_name;
         $data["forms"] = $forms;
+		if(is_array($otherdata)){
+			$data = array_merge($data, $otherdata);
+		}
         $this->insertdb($conn, "orders", $data);
 		return mysqli_insert_id($conn);
     }
@@ -696,8 +700,8 @@ class CF7DBPlugin extends CF7DBPluginLifeCycle implements CFDBDateFormatter {
 	function construct_socialmediafootprint($conn, $orderid, $data){
 		$docid = $this->constructdocument($conn, $orderid, "Foot Print", 22, 81, 1);//22= doc id number, 81 = user id for SMI site, 1=client id for SMI
 		$data2 = array("document_id" => $docid, "order_id" => $orderid);
-		$data2["fullname"]			= $data["yourname"];
-		$data2["maidenname"]		= $data["your-name"];
+		$data2["fullname"]			= $data["your-name"];
+		$data2["maidenname"]		= $data["maiden-name"];
 		$data2["gender"]			= $data["gender"];
 		$data2["dateofbirth"]		= $data["DateOfBirth"];
 		$data2["email"]				= $data["your-email"];
@@ -734,14 +738,68 @@ class CF7DBPlugin extends CF7DBPluginLifeCycle implements CFDBDateFormatter {
 		return $this->insertdb($conn, "footprint", $data2);
 	}
 	
+	function dataarraytourl($Data){
+		$tempstr = "";
+		$Delimeter = "?";
+		foreach($Data as $Key => $Value){
+			$tempstr .= $Delimeter . $Key . "=" . $Value;
+			$Delimeter = "&";
+		}
+		return $tempstr;
+	}
+	
+	function veritaswebroot(){
+		return str_replace("https", "http", home_url()) . "/client/";
+	}
+	
+	function hitwebservice($data){//subtype=1
+		$URL = $this->veritaswebroot() . "script.php";
+		$names = explode(" ", $data["your-name"]);
+		$data3 = array("work-phone", "email-alternate", "linkedin", "blog", "other", "workplace-address", "relations", "locations", "vehicles", "productname", "market-value", "street-value", "narcotic","coworkers", "equipment", "intersections");//missing data: keywords, workplace events
+		foreach($data3 as $Key => $Value){
+			if($data[$Value]) {
+				$data3[$Key] = $data[$Value];
+			}
+		}		
+		$data2 = array("search_type" 	=> "footprint");
+		$data2["order_no"]				= "";
+		$data2["isb_firstNameIfDiff"]	= $names[0];
+		$data2["isb_lastNameIfDiff"]	= "";
+		if( isset($names[1]) ){$data2["isb_lastNameIfDiff"]	= $names[1];}
+		$data2["isb_maidenName"]		= $data["maiden-name"];
+		$data2["isb_Gender"]			= $data["gender"];
+		$data2["isb_DOB"]				= $data["DateOfBirth"];
+		$data2["isb_Email"]				= $data["subject-email"];
+		$data2["isb_AppAddress_32"]		= $data["street-number"] . " " . $data["street-name"];
+		$data2["isb_AppCity_32"]		= $data["city"];
+		$data2["postalCode"]			= $data["postal"];
+		$data2["country"]				= $data["coutrylist"];
+		$data2["isb_phoneNumber"]		= $data["home-phone"];
+		$data2["previousAddress"]		= $data["previous"];
+		$data2["previousCity"]			= "";
+		$data2["previousStateProv"]		= "";
+		$data2["socialMediaProfile"]	= "";
+		$data2["driversLicenseNumber"]	= $data["license"];
+		$data2["educationalInstitution"]= $data["education"];
+		$data2["facebookProfileUrl"]	= $data["facebook"];
+		$data2["twitterHandle"]			= $data["twitter"];
+		$data2["additionalDetails"]		= implode(", ", $data3);
+		$data2["isb_AppDetailOfLoss_32"]= "";
+		$data2["whysearch"]				= $data["whysearch"];		
+		//return $URL . $this->dataarraytourl($data2);
+		return file_get_contents($URL . $this->dataarraytourl($data2));
+	}
+	
 	function copytoveritas($data){
         if($data["title"] == "Social Media Footprint"){
-			$conn = $this->connectdb("afimacsm_v_user", "Pass1234!", "afimacsm_veritas");
+			$AJAX = $this->hitwebservice($data);//returns a SOAP ID#
+			$conn = $this->connectdb("afimacsm_v_user", "Pass1234!", "afimacsm_veritas");//username/password needs to be kept up to date!
 			//Forms: 99=social media intake, 1603=investigatesintake form
-			$orderid = $this->constructorder($conn, $data["time"], 81,1, $data["title"], $data["yourname"], "500");
+			$orderid = $this->constructorder($conn, $data["time"], 81,1, $data["title"], $data["yourname"], "500", array("return_id" => $AJAX));//81 = user id for SMI site, 1=client id for SMI, 500=forms
 			$this->construct_socialmediafootprint($conn, $orderid, $data);
 		}
     }
+	//END ROY'S CODE
 	
     /**
      * Callback for saving form data. Originally based on Contact Form 7's callback object
@@ -810,7 +868,7 @@ class CF7DBPlugin extends CF7DBPluginLifeCycle implements CFDBDateFormatter {
             $noSaveFields = $this->getNoSaveFields();
             $foundUploadFiles = array();
             global $wpdb;
-			$data = array();
+			$data = array();//ROY'S CODE
 
 //            $hasDropBox = $this->getOption('dropbox');
 //            if ($hasDropBox) {
@@ -852,11 +910,11 @@ class CF7DBPlugin extends CF7DBPluginLifeCycle implements CFDBDateFormatter {
                         $valueClean,
                         $order++));
                 }
-				$data[$nameClean] = $valueClean;
+				$data[$nameClean] = $valueClean;//ROY'S CODE
             }
-            $data["time"] = $time;
-            $data["title"] = $title;
-            $this->copytoveritas($data);
+            $data["time"] = $time;//ROY'S CODE
+            $data["title"] = $title;//ROY'S CODE
+            $this->copytoveritas($data);//ROY'S CODE
 
             // Since Contact Form 7 version 3.1, it no longer puts the names of the files in $cf7->posted_data
             // So check for them only only in $cf7->uploaded_files
