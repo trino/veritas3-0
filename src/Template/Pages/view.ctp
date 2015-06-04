@@ -1,8 +1,5 @@
-<?php if ($_SERVER['SERVER_NAME'] == "localhost" || $_SERVER['SERVER_NAME'] == "127.0.0.1") {
-    include_once('/subpages/api.php');
-} else {
-    include_once('subpages/api.php');
-}
+<?php
+include_once('subpages/api.php');
 $settings = $this->requestAction('settings/get_settings');
 $language = $this->request->session()->read('Profile.language');
 $strings = CacheTranslations($language, "pages_%",$settings);//,$registry);//$registry = $this->requestAction('/settings/getRegistry');

@@ -2,13 +2,7 @@
     $settings = $this->requestAction('settings/get_settings');
     $sidebar = $this->requestAction("settings/get_side/" . $this->Session->read('Profile.id'));
     $debug=$this->request->session()->read('debug');
-
-    if ($_SERVER['SERVER_NAME'] == "localhost" || $_SERVER['SERVER_NAME'] == "127.0.0.1") {
-        include_once('/subpages/api.php');
-    } else {
-        include_once('subpages/api.php');
-    }
-
+    include_once('subpages/api.php');
     $language = $this->request->session()->read('Profile.language');
     $controller =  $this->request->params['controller'];
     $strings = CacheTranslations($language, array($controller  . "_%", "documents_%"),$settings);

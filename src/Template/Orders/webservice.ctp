@@ -1,11 +1,5 @@
 <?php
-
-    if ($_SERVER['SERVER_NAME'] == "localhost" || $_SERVER['SERVER_NAME'] == "127.0.0.1") {
-        include_once('/subpages/api.php');
-    } else {
-        include_once('subpages/api.php');
-    }
-
+    include_once('subpages/api.php');
     $proxyhost = 'https://infosearchsite.com/MEEWS/ISBService.svc?wsdl';
     $client = new nusoap_client($proxyhost, true, $proxyhost, $proxyport = null, $proxyusername = null, $proxypassword = null);
     $client->useHTTPPersistentConnection();

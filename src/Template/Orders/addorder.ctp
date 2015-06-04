@@ -2,11 +2,7 @@
 use Cake\ORM\TableRegistry;
 include_once 'subpages/filelist.php';
 $param = $this->request->params['action'];
-if ($_SERVER['SERVER_NAME'] == "localhost" || $_SERVER['SERVER_NAME'] == "127.0.0.1") {
-    include_once('/subpages/api.php');
-} else {
-    include_once('subpages/api.php');
-}
+include_once('subpages/api.php');
 
 $view = 'nope';
 $debugging=isset($_GET["debug"]);

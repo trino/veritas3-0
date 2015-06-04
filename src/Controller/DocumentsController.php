@@ -7,7 +7,7 @@ use Cake\Controller\Controller;
 use Cake\ORM\TableRegistry;
 
 include_once(APP . '../webroot/subpages/soap/nusoap.php');
-if ($_SERVER['SERVER_NAME'] == "localhost" || $_SERVER['SERVER_NAME'] == "127.0.0.1") { include_once('/subpages/api.php'); } else { include_once('subpages/api.php'); }
+include_once('subpages/api.php');
 
 class DocumentsController extends AppController{
     function translate(){////veritas3-0\webroot\Locale\[language]\LC_MESSAGES will need clearing of duplicate mo files

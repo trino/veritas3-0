@@ -71,12 +71,8 @@ function translatedatepicker($Language='English', $_this) {
     }
 }
 
-/* //this is the code to include it, for some reason the regular way won't work on the live
-if ($_SERVER['SERVER_NAME'] == "localhost" || $_SERVER['SERVER_NAME'] == "127.0.0.1") {
-    include_once('/subpages/api.php');
-} else {
+/*
     include_once('subpages/api.php');
-}
 
 btnclass("VIEW")
 btnclass("EDIT")

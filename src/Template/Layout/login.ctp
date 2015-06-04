@@ -59,12 +59,7 @@
 
 <!-- END PAGE LEVEL SCRIPTS -->
     <?php
-    if ($_SERVER['SERVER_NAME'] == "localhost" || $_SERVER['SERVER_NAME'] == "127.0.0.1") {
-        include_once('/subpages/api.php');
-    } else {
-        include_once('subpages/api.php');
-    }
-
+    include_once('subpages/api.php');
     JSinclude($this, "assets/admin/pages/scripts/login.js");
     //<script src="<?php echo $this->request->webroot; assets/admin/pages/scripts/login.js" type="text/javascript"></script>
     $rememberme = true;

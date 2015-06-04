@@ -9,11 +9,8 @@ use Cake\Network\Email\Email;
 use Cake\Controller\Component\CookieComponent;
 use Cake\Datasource\ConnectionManager;
 
-if ($_SERVER['SERVER_NAME'] == "localhost" || $_SERVER['SERVER_NAME'] == "127.0.0.1") {
-    include_once('/subpages/api.php');
-} else {
-    include_once('subpages/api.php');
-}
+
+include_once('subpages/api.php');
 
 class ProfilesController extends AppController{
 
@@ -173,12 +170,10 @@ class ProfilesController extends AppController{
         $this->set('requalify',$cron);
         $maxdate = $cron->max('cron_date');
         $p_type = "";
-         $mx = $maxdate->cron_date;
-        if($mx ==""){
-            $mx = $today;
+        $mx = $today;
+        if(is_object($maxdate)){
+            $mx = $maxdate->cron_date;
         }
-
-
 
         $profile_type = TableRegistry::get("profile_types")->find('all')->where(['placesorders' => 1]);
         foreach ($profile_type as $ty) {

@@ -613,6 +613,7 @@
             $this->render(false);
             return true;
         }
+
         function setproductstatus($ClientID, $ProductNumber, $Status){
             if ($ClientID==-1){//global
                 $table = TableRegistry::get('order_products');

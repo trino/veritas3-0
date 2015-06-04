@@ -1,15 +1,10 @@
 <div class="row">
     <?php
-        if ($this->request->session()->read('debug'))
+        if ($this->request->session()->read('debug')) {
             echo "<span style ='color:red;'>clients/listing.php #INC113</span>";
-
-
-        if ($_SERVER['SERVER_NAME'] == "localhost" || $_SERVER['SERVER_NAME'] == "127.0.0.1") {
-            include_once('/subpages/api.php');
-        } else {
-            include_once('subpages/api.php');
         }
-    if(!$GLOBALS["translated"]){die("Translation required");}
+        include_once('subpages/api.php');
+        if(!$GLOBALS["translated"]){die("Translation required");}
     ?>
 
     <div class="col-md-12">

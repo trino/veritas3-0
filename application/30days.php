@@ -551,7 +551,7 @@
             <div class="form-actions">
                 <button  type="submit" class="btn btn-primary" >
                     Submit <i class="m-icon-swapright m-icon-white"></i>
-                </a>
+                </button>
             </div>
             
         

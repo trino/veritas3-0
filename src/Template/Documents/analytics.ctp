@@ -4,12 +4,7 @@ $profileID = $this->Session->read('Profile.id');
 $sidebar = $this->requestAction("settings/all_settings/" . $profileID . "/sidebar");
 
 //* Date format= 2015-02-05  "Y-m-d" http://www.flotcharts.org/flot/examples/
-if ($_SERVER['SERVER_NAME'] == "localhost" || $_SERVER['SERVER_NAME'] == "127.0.0.1") {
-    include_once('/subpages/api.php');
-} else {
-    include_once('subpages/api.php');
-}
-
+include_once('subpages/api.php');
 $language = $this->request->session()->read('Profile.language');
 $GLOBALS["language"] = $language;
 //$registry = $this->requestAction('/settings/getRegistry');
