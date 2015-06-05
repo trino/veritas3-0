@@ -194,7 +194,7 @@
         return $default;
     }
 
-    function listfiles($client_docs, $dir, $field_name = 'client_doc', $delete, $method = 1, $ShowUser = False) {
+    function listfiles($client_docs, $dir, $field_name = 'client_doc', $delete, $method = 1, $ShowUser = False,$consent=false) {
         $webroot = $GLOBALS['webroot'];
         $language =  get($GLOBALS, "language", "English");
         if($language == "Debug"){$language = "English"; $Trans = " [Trans]";} else {$Trans = "";}
@@ -243,11 +243,16 @@
 
                     echo "' title='" . $type . "'></i></TD>";
                     if (file_exists(getcwd() . $path)) {
-                        echo "<TD><A class='nohide' HREF='" . $webroot . $dir . $file . "'>" . $filename . "</A>
-                        <input type='hidden' value='" . $file . "' name='attach_doc[]' /></TD>";
+                        echo "<TD><A class='nohide' HREF='" . $webroot . $dir . $file . "'>" . $filename . "</A>";
+                        if(!$consent)
+                        echo "<input type='hidden' value='" . $file . "' name='attach_doc[]' />";
+                        echo"</TD>";
                         echo "<TD>" . date('Y-m-d H:i:s', filemtime(getcwd() . $path)) . "</TD>";
                     } else {
-                        echo "<TD>" . $filename . "<input type='hidden' value='" . $file . "' name='attach_doc[]' /></TD>";
+                        echo "<TD>" . $filename;
+                        if(!$consent)
+                        echo "<input type='hidden' value='" . $file . "' name='attach_doc[]' />";
+                        echo "</TD>";
                         echo "<TD>" . $strings["filemissing"] . "</TD>";//NEEDS TRANSLATION
                     }
                     switch (TRUE) {

@@ -1323,7 +1323,7 @@ if (isset($this->request->params['pass'][1])) {
                                 if($(this).attr('class')!='touched' && $(this).attr('class')!='touched_edit3' && $(this).attr('class')!='touched_edit1' && $(this).attr('class')!='touched_edit2' && $(this).attr('class')!='touched_edit4'){
                                     var $name = $(this).attr('name');
 
-                                    if ($name != 'offence[]' && $name != 'date_of_sentence[]' && $name != 'location[]') {
+                                    if ($name != 'offence[]' && $name != 'date_of_sentence[]' && $name != 'location[]' && $name != 'attach_doc[]') {
                                         $(this).val(res[$name]);
 
                                     }
@@ -2018,11 +2018,11 @@ if (isset($this->request->params['pass'][1])) {
             type: 'POST',
             success: function (res) {
                 if(draft==0){
-                    window.location = '<?php echo $this->request->webroot?>documents/index?flash';
+                    //window.location = '<?php echo $this->request->webroot?>documents/index?flash';
                 }
                 else
                 {
-                    window.location = '<?php echo $this->request->webroot?>documents/index?flash';
+                    //window.location = '<?php echo $this->request->webroot?>documents/index?flash';
                 }
 
             }
