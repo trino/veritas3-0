@@ -1420,6 +1420,7 @@ class DocumentComponent extends Component
 
         public function saveAttachmentsEmployment($data = NULL, $count = 0)
         {
+
             $employment = TableRegistry::get('doc_attachments');
             if ($count == 1) {
                 $del = $employment->query();

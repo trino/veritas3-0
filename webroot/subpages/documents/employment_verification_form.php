@@ -7,7 +7,7 @@
 
         <?php
         include_once 'subpages/filelist.php';
-        if (isset($sub3['att'])) { listfiles($sub3['att'], "attachments/", "", false,3);}
+        if (isset($sub3['att'])) { listfiles($sub3['att'], "attachments/", "", false,3,false,'employment');}
         ?>
 
         <div class="form-group row">
