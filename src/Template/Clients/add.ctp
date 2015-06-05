@@ -381,7 +381,7 @@
                                                                         <label class="control-label"><?= $strings["forms_arisreverification"];?></label>
                                                                         <input type="text"
                                                                                class="form-control form-control-inline date-picker"
-                                                                               name="reverification" <?php if (isset($end_date)) { ?> value="<?php echo $end_date; ?>" <?php } ?>/>
+                                                                               name="reverification" <?php if (isset($client->reverification)) { ?> value="<?php echo $client->reverification; ?>" <?php } ?>/>
                                                                     </div>
                                                                     <div class="form-group col-md-4">
                                                                         <label class="control-label"><?= $strings["forms_sacc"];?></label>
