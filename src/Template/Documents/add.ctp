@@ -2018,11 +2018,11 @@ if (isset($this->request->params['pass'][1])) {
             type: 'POST',
             success: function (res) {
                 if(draft==0){
-                    //window.location = '<?php echo $this->request->webroot?>documents/index?flash';
+                    window.location = '<?php echo $this->request->webroot?>documents/index?flash';
                 }
                 else
                 {
-                    //window.location = '<?php echo $this->request->webroot?>documents/index?flash';
+                    window.location = '<?php echo $this->request->webroot?>documents/index?flash';
                 }
 
             }
