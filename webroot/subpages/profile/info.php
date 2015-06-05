@@ -486,12 +486,11 @@ function printprovinces($language, $name, $selected = "", $isdisabled = "", $isr
                                 <?php if (isset($p->password)) { ?>
                                     <input type="hidden" value="<?php $p->password ?>" name="hid_pass"/>
                                 <?php } ?>
-                                <div class="col-md-4 admin_rec" style="<?php echo (isset($p->profile_type) && ($p->profile_type=='1' || $p->profile_type=='2'))?'display:block':'display:none';?>">
+                                <div class="col-md-4 <?php if($p->profile_type!=3){?>admin_rec<?php }?>" style="<?php echo (isset($p->profile_type) && ($p->profile_type=='1' || $p->profile_type=='2'))?'display:block':'display:none';?>">
                                     <div class="form-group">
                                         <label class="control-label">Re-type Password: </label>
-                                        <input <?php if (isset($p->password) && $p->password){//do nothing
-                                        }else{ ?>required="required"<?php } ?>  <?php echo $is_disabled ?>
-                                               type="password" class="form-control <?php if (!isset($p->password)) {?>req_rec<?php }?>"
+                                        <input <?php echo $is_disabled ?>
+                                               type="password" class="form-control <?php if (!isset($p->password) && $p->profile_type!=3) {?>req_rec<?php }?>"
                                                id="retype_password" <?php //if (isset($p->password)) { ?> <?php // echo $p->password; ?>  <?php // } ?>/>
                             <span class="error passerror flashPass1"
                                   style="display: none;">Please enter the same password in both boxes</span>
@@ -1167,6 +1166,7 @@ function printprovinces($language, $name, $selected = "", $isdisabled = "", $isr
                                         } 
                                         }
                                         else {
+
                                             $('.nav-tabs li:not(.active)').each(function () {
                                                 $(this).show();
                                             });
@@ -1184,7 +1184,8 @@ function printprovinces($language, $name, $selected = "", $isdisabled = "", $isr
                                                     ?>
                                                     if (profile_type == '1' || profile_type == '2'){
                                                         $('#password').prop('required', "required");
-                                                        $('#retype_password').prop('required', "required");}
+                                                        //$('#retype_password').prop('required', "required");
+                                                    }
                                                     <?php
                                                 }
                                             ?>
@@ -1203,12 +1204,12 @@ function printprovinces($language, $name, $selected = "", $isdisabled = "", $isr
                                         {
                                              $('.admin_rec').hide();
                                         }
-                                        if($('.passwords').attr('style') == 'display: none;')
+                                        if($('.passwords').attr('style') == 'display: none;'|| $('.passwords').attr('style') == 'display:none;')
                                         {
                                             $('#retype_password').removeAttr('required');
                                             $('#password').removeAttr('required');
                                         } 
-                                        if($('.hideusername').attr('style') == 'display:none;')
+                                        if($('.hideusername').attr('style') == 'display:none;' || $('.hideusername').attr('style') == 'display: none;')
                                         {
                                             $('.hideusername input').each(function(){
                                                 $(this).removeAttr('required');
@@ -1291,7 +1292,7 @@ function printprovinces($language, $name, $selected = "", $isdisabled = "", $isr
                                                 ?>
                                                 if (mem_type == '1' || mem_type == '2'){
                                                     $('#password').prop('required', "required");
-                                                    $('#retype_password').prop('required', "required");}
+                                                    //$('#retype_password').prop('required', "required");}
                                                 <?php
                                             }
                                              ?>
@@ -1304,17 +1305,17 @@ function printprovinces($language, $name, $selected = "", $isdisabled = "", $isr
                                             $('.req_rec').prop('required', "required");
                                         }
                                     }
-                                    if($('.passwords').attr('style') == 'display: none;')
-                                        {
-                                            $('#retype_password').removeAttr('required');
-                                            $('#password').removeAttr('required');
-                                        }
-                                        if($('.hideusername').attr('style') == 'display:none;')
-                                        {
-                                            $('.hideusername input').each(function(){
-                                                $(this).removeAttr('required');
-                                            });
-                                        } 
+                                    if($('.passwords').attr('style') == 'display: none;'|| $('.passwords').attr('style') == 'display:none;')
+                                    {
+                                        $('#retype_password').removeAttr('required');
+                                        $('#password').removeAttr('required');
+                                    }
+                                    if($('.hideusername').attr('style') == 'display:none;' || $('.hideusername').attr('style') == 'display: none;')
+                                    {
+                                        $('.hideusername input').each(function(){
+                                            $(this).removeAttr('required');
+                                        });
+                                    }
         });
         
 
