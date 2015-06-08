@@ -9,93 +9,93 @@
 
     <div class="theme-options">
         <div class="theme-option theme-colors clearfix">
-            <span><?= $strings["theme_color"]; ?></span>
+            <span>THEME COLOR</span>
             <ul>
                 <li class="color-default <?php if ($settings->layout == 'default') echo "current"; ?> tooltips"
                     data-style="default" onclick="change_layout('default');" data-container="body"
-                    data-original-title="<?= $strings["theme_default"]; ?>">
+                    data-original-title="Default">
                 </li>
                 <li class="color-darkblue tooltips <?php if ($settings->layout == 'darkblue') echo "current"; ?>"
                     data-style="darkblue" onclick="change_layout('darkblue');" data-container="body"
-                    data-original-title="<?= $strings["theme_darkblue"]; ?>">
+                    data-original-title="Dark Blue">
                 </li>
                 <li class="color-blue tooltips <?php if ($settings->layout == 'blue') echo "current"; ?>"
-                    data-style="blue" onclick="change_layout('blue');" data-container="body" data-original-title="<?= $strings["theme_blue"]; ?>">
+                    data-style="blue" onclick="change_layout('blue');" data-container="body" data-original-title="Blue">
                 </li>
                 <li class="color-grey tooltips <?php if ($settings->layout == 'grey') echo "current"; ?>"
-                    data-style="grey" onclick="change_layout('grey');" data-container="body" data-original-title="<?= $strings["theme_grey"]; ?>">
+                    data-style="grey" onclick="change_layout('grey');" data-container="body" data-original-title="Grey">
                 </li>
                 <li class="color-light tooltips <?php if ($settings->layout == 'light') echo "current"; ?>"
                     data-style="light" onclick="change_layout('light');" data-container="body"
-                    data-original-title="<?= $strings["theme_light"]; ?>">
+                    data-original-title="Light">
                 </li>
                 <li class="color-light2 tooltips <?php if ($settings->layout == 'light2') echo "current"; ?>"
                     data-style="light2" onclick="change_layout('light2');" data-container="body" data-html="true"
-                    data-original-title="<?= $strings["theme_light2"]; ?>">
+                    data-original-title="Light 2">
                 </li>
             </ul>
         </div>
         <div class="theme-option">
-            <span><?= $strings["theme_style"]; ?></span>
+            <span>Theme Style</span>
             <select class="layout-style-option form-control input-sm">
-                <option value="square" selected="selected"><?= $strings["theme_squarecorners"]; ?></option>
-                <option value="rounded"><?= $strings["theme_roundcorners"]; ?></option>
+                <option value="square" selected="selected">Square corners</option>
+                <option value="rounded">Rounded  corners</option>
             </select>
         </div>
         <div class="theme-option">
-            <span><?= $strings["theme_layout"]; ?></span>
+            <span>Layout</span>
             <select class="layout-option form-control input-sm" onchange="change_box();" id="boxed">
-                <option value="fluid" selected="selected"><?= $strings["theme_fluid"]; ?></option>
-                <option value="boxed"><?= $strings["theme_boxed"]; ?></option>
+                <option value="fluid" selected="selected">Fluid</option>
+                <option value="boxed">Boxed</option>
             </select>
         </div>
         <div class="theme-option">
-            <span><?= $strings["theme_header"]; ?></span>
+            <span>Header</span>
             <select class="page-header-option form-control input-sm" onchange="change_body();">
-                <option value="fixed" selected="selected"><?= $strings["theme_fixed"]; ?></option>
-                <option value="default"><?= $strings["theme_default"]; ?></option>
+                <option value="fixed" selected="selected">Fixed</option>
+                <option value="default">Default</option>
             </select>
         </div>
         <div class="theme-option">
-            <span><?= $strings["theme_dropdown"]; ?></span>
+            <span>Top Menu Dropdown</span>
             <select class="page-header-top-dropdown-style-option form-control input-sm" onchange="change_body();">
-                <option value="light" selected="selected"><?= $strings["theme_light"]; ?></option>
-                <option value="dark"><?= $strings["theme_dark"]; ?></option>
+                <option value="light" selected="selected">Light</option>
+                <option value="dark">Dark</option>
             </select>
         </div>
         <div class="theme-option">
-            <span><?= $strings["theme_sidebarmode"]; ?></span>
+            <span>Sidebar Mode</span>
             <select class="sidebar-option form-control input-sm" onchange="change_body();">
-                <option value="fixed"><?= $strings["theme_fixed"]; ?></option>
-                <option value="default" selected="selected"><?= $strings["theme_default"]; ?></option>
+                <option value="fixed">Fixed</option>
+                <option value="default" selected="selected">Default</option>
             </select>
         </div>
         <div class="theme-option">
-            <span><?= $strings["theme_sidebarmenu"]; ?></span>
+            <span>Sidebar Menu</span>
             <select class="sidebar-menu-option form-control input-sm" onchange="change_body();">
-                <option value="accordion" selected="selected"><?= $strings["theme_accordion"]; ?></option>
-                <option value="hover"><?= $strings["theme_hover"]; ?></option>
+                <option value="accordion" selected="selected">Accordion</option>
+                <option value="hover">Hover</option>
             </select>
         </div>
         <div class="theme-option">
-            <span><?= $strings["theme_sidebarstyle"]; ?></span>
+            <span>Sidebar Style</span>
             <select class="sidebar-style-option form-control input-sm" onchange="change_body();">
-                <option value="default" selected="selected"><?= $strings["theme_default"]; ?></option>
-                <option value="light"><?= $strings["theme_light"]; ?></option>
+                <option value="default" selected="selected">Default</option>
+                <option value="light">Light</option>
             </select>
         </div>
         <div class="theme-option">
-            <span><?= $strings["theme_sidebarposition"]; ?></span>
+            <span>Sidebar Position</span>
             <select class="sidebar-pos-option form-control input-sm" onchange="change_body();">
-                <option value="left" selected="selected"><?= $strings["theme_left"]; ?></option>
-                <option value="right"><?= $strings["theme_right"]; ?></option>
+                <option value="left" selected="selected">Left</option>
+                <option value="right">Right</option>
             </select>
         </div>
         <div class="theme-option">
-            <span><?= $strings["theme_footer"]; ?></span>
+            <span>theme_footer</span>
             <select class="page-footer-option form-control input-sm" onchange="change_body();">
-                <option value="fixed"><?= $strings["theme_fixed"]; ?></option>
-                <option value="default" selected="selected"><?= $strings["theme_default"]; ?></option>
+                <option value="fixed">Fixed</option>
+                <option value="default" selected="selected">Default</option>
             </select>
         </div>
     </div>

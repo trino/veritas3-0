@@ -67,7 +67,7 @@ class TransComponent extends Component {
                 return ucfirst($UserID);
             }
         } else{//use current user
-            if (is_object($this->request->session())) {//the user is logged in, use session variable
+            if (is_object($this->request)) {//the user is logged in, use session variable
                 $Table = $this->request->session()->read('Profile.language');//Call to a member function session() on a non-object
                 //if this attempt fails, try: (from DocumentComponent)
                 //$controller = $this->_registry->getController();

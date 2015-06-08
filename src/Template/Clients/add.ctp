@@ -422,7 +422,7 @@
 
                                                                     <div class="form-group col-md-4">
                                                                         <label class="control-label"><?= $strings["forms_billingcustomertype"];?></label>
-                                                                        <?php printprovinces("forms_provincestate", $client->billing_province, $language); ?>
+                                                                        <?php printprovinces("province", $client->billing_province, $language); ?>
 
 
                                                                     </div>
