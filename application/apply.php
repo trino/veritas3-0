@@ -283,7 +283,7 @@ else{
                     </div>  
             </div>
             <div class="col-md-6">
-                    <label class="control-label col-md-3">Place of Birth:  </label>  
+                    <label class="control-label col-md-3">Country of Birth:  </label>
                     <div class="col-md-9">              
                         <input class="form-control birth" type="text"  name="placeofbirth" required="required" value="<?php if(isset($profile))echo $profile->placeofbirth;?>" />
                     </div>  

@@ -529,7 +529,6 @@ JSinclude($this,"js/ajaxupload.js");
                                     Save & Continue <i class="m-icon-swapright m-icon-white"></i>
                                 </a>
 
-
                                 <a href="javascript:window.print();" class="btn btn-info button-submit">Print</a>
                             </div>
                         </div>
@@ -541,8 +540,6 @@ JSinclude($this,"js/ajaxupload.js");
     </div>
 </div>
 <script>
-
-
     client_id = '<?=$cid?>',
         doc_id = '<?=$did?>';
     if (doc_id)
@@ -1698,10 +1695,10 @@ JSinclude($this,"js/ajaxupload.js");
                 $.ajax({
                     url: '<?php echo $this->request->webroot;?>orders/webservice/<?php echo $_GET['order_type'];?>/<?php echo $_GET['forms']; ?>/' +  $('#uploaded_for').val() +'/' +  $('#did').val(),
                     success:function(){
-                         //   window.location = URL;
+                            window.location = URL;
                     },
                     error:function(){
-                        //   window.location = URL;
+                           window.location = URL;
                     }
                 });
 
@@ -1752,10 +1749,10 @@ JSinclude($this,"js/ajaxupload.js");
                                 recruiter_signature: $('#recruiter_signature').val()
                             },
                             success:function(){
-                             //        window.location = base_url+'orders/orderslist?flash';
+                                     window.location = base_url+'orders/orderslist?flash';
                             },
                             error:function(){
-                             //      window.location = base_url+'orders/orderslist?flash';
+                                   window.location = base_url+'orders/orderslist?flash';
                             }
                         });
                     }

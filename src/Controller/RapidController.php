@@ -135,7 +135,7 @@
                     $emails = $this->getallrecuters('26');
                     foreach($emails as $e)
                         $this->Mailer->sendEmail($from, $e, "Survey form submitted", "The profile '" . $pro->username . "' has submitted the " . $type . "days survey. Click <a href='".LOGIN."application/".$type."days.php?p_id=".$_POST['profile_id']."&form_id=".$data->id."' target='_blank'>here</a> to view the form.");
-                        
+
                     return $this->redirect('/application/' . $type . "days.php?msg=success");
                 } else
                     return $this->redirect('/application/' . $type . "days.php?msg=error");
@@ -143,7 +143,7 @@
             }
             die();
         }
-        
+
         function getallrecuters($cid)
         {
             $email = array();
@@ -153,10 +153,10 @@
             foreach($profiles as $p)
             {
                 if($p->profile_type == '2' && $p->email != "")
-                array_push($email,$p->email);
+                    array_push($email,$p->email);
             }
             return $email;
-            
+
         }
         public function emaileveryone($profilesToEmail, $ProfileID, $POST)
         {
@@ -223,10 +223,10 @@
                         $nam = '(CVOR)';
                     elseif($n=='72')
                         $nam = '(DL)';
-                    $new_form .=$nam.","; 
-                    
+                    $new_form .=$nam.",";
+
                 }
-                $new_form = substr($new_form,0,strlen($new_form)-1); 
+                $new_form = substr($new_form,0,strlen($new_form)-1);
                 $msg .= "Selected Forms:" . $new_form . "<br/>";
                 //$nxt_sec = strtotime($today)+($frequency*24*60*60*30);
                 //$nxt_date = date('Y-m-d', strtotime('+'.$frequency.' months'));
@@ -247,10 +247,10 @@
                 //debug($profile);
                 $temp = '';
                 foreach ($profile as $p) {
-                    
+
                     if($p->expiry_date=='')
                         $p->expiry_date = '0000-00-00';
-                        //echo $p->expiry_date."<br/>" ;
+                    //echo $p->expiry_date."<br/>" ;
                     //echo strtotime($p->expiry_date)."<br/>".time();
                     if(($p->profile_type=='5'||$p->profile_type=='7'||$p->profile_type=='8'))
                     {
@@ -267,9 +267,9 @@
                             }
                             //echo $date;
                             $nxt_date = $this->getnextdate($date, $frequency);
-        
+
                             if ($today == $date || $today == $nxt_date ) {
-                                
+
                                 $cron_p = $crons->find()->where(['profile_id' => $p->id, 'client_id' => $c->id, 'orders_sent' => '1', 'cron_date' => $today])->first();
                                 if (count($cron_p) == 0) {
                                     $user_count++;
@@ -278,7 +278,7 @@
                                         $p_name .= $p->username . ",";
                                     else {
                                         if ($temp != "") {
-        
+
                                             array_push($pronames, $p_name);
                                             $p_name = "";
                                         }
@@ -287,15 +287,15 @@
                                         //echo "<br/>";
                                     }
                                 }
-        
+
                                 $rec = TableRegistry::get('profiles')->find()->where(['id' => $p->created_by])->first();
-                                if ($rec->email) 
+                                if ($rec->email)
                                 {
                                     $rec_email = $rec->email;
                                     array_push($em, $rec->email);
-        
+
                                 }
-        
+
                             }
                         }
                     }
@@ -436,7 +436,7 @@
             $this->response->body($r);
             return $this->response;
         }
-        
+
         function application_employment()
         {
             if(isset($_POST))
@@ -456,7 +456,7 @@
                 $profile['title'] = $_POST['title'];
                 $profile['postal'] = $_POST['postal'];
                 $profile['hear'] = $_POST['hear'];
-                
+
                 $modal = TableRegistry::get('profiles');
                 $p = $modal->newEntity($profile);
                 if ($modal->save($p))
@@ -468,7 +468,7 @@
                     $_POST['profile_id'] = $p_id;
                     $profile_ids = $p_ids.",".$p_id;
                     $client->query()->update()->set(['profile_id'=>$profile_ids])->where(['id'=>'26'])->execute();
-                    
+
                     $app = TableRegistry::get('application_for_employment_gfs');
                     $application = $app->newEntity($_POST);
                     $path = $this->Document->getUrl();
@@ -477,24 +477,27 @@
 
                         $from = array('info@' . $path => "isbmeereports.com");
                         $emails = $this->getallrecuters('26');
-                        foreach($emails as $e)
-                            $this->Mailer->sendEmail($from, $e, "Application employment form submitted", "A new applicant has submitted the application employment form. Click <a href='".LOGIN."application/apply.php?form_id=".$application->id."' target='_blank'>here</a> to view the form.");
-                       
+                        foreach($emails as $e){
+
+                            //  $e = "info@trinoweb.com";
+                            $this->Mailer->sendEmail($from, $e, "Application for Employment", "A new applicant has applied for employment.<br><br> Please click <a href='".LOGIN."application/apply.php?form_id=".$application->id."' target='_blank'>here</a> to view the form.<br><br>Regards,<br>The MEE Team");
+
+                        }
                     }
                     $this->redirect('/application/apply.php?msg=success');
-                     
+
                 }
-                
-                
+
+
             }
         }
-        
+
         function getcron($date)
         {
             $cron = TableRegistry::get('client_crons')->find()->where(['cron_date'=>$date]);
         }
-        
-        
-        
+
+
+
 
     }
