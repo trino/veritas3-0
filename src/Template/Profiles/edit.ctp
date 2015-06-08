@@ -56,9 +56,10 @@
     $param = $this->request->params['action'];
     $param2 = $strings["profiles_" . $param];
 
-    if ($userID == $this->request->params["pass"][0]) {
+    if ($param != "add" && $userID == $this->request->params["pass"][0]) {
         include_once('subpages/profile/theme.php');
     }
+
 ?>
 <!-- END SAMPLE PORTLET CONFIGURATION MODAL FORM-->
 
