@@ -245,15 +245,17 @@ if (isset($_GET["export"])){
     function a($text){
         return addslashes($text);
     }
+    $ID = $_GET["quizid"];
+    if($_GET["export"]){$ID = $_GET["export"];}
 
     echo "SQL:<BR><TEXTAREA STYLE='WIDTH: 100%; HEIGHT: 500px;'>";
-        echo "INSERT INTO `training_list` (`ID`, `Name`, `Description`, `Attachments`, `image`) VALUES ('" . $_GET["quizid"] . "', '" . addslashes($quiz->Name) . "', '" . addslashes($quiz->Description) . "', '" . addslashes($quiz->Attachments) . "', '" . addslashes($quiz->image) . "');";
-        echo "\r\nINSERT INTO `training_quiz` (`ID`, `QuizID`, `QuestionID`, `Answer`, `Choice0`, `Choice1`, `Choice2`, `Choice3`, `Picture`, `Question`, `Choice4`, `Choice5`) VALUES ";
+        echo "INSERT INTO `training_list` (`ID`, `Name`, `Description`, `Attachments`, `image`) VALUES ('" . $ID . "', '" . addslashes($quiz->Name) . "', '" . addslashes($quiz->Description) . "', '" . addslashes($quiz->Attachments) . "', '" . addslashes($quiz->image) . "');";
+        echo "\r\nINSERT INTO `training_quiz` (`QuizID`, `QuestionID`, `Answer`, `Choice0`, `Choice1`, `Choice2`, `Choice3`, `Picture`, `Question`, `Choice4`, `Choice5`) VALUES ";
         $index=0;
         $count = iterator_count($questions);
         foreach($questions as $q) {
             $index++;
-            echo "('" . a($q->ID) . "', '" . a($q->QuizID) . "', '" . a($q->QuestionID) . "', '" . a($q->Answer) . "', '" . a($q->Choice0) . "', '" . a($q->Choice1) . "', '" . a($q->Choice2) . "', '" . a($q->Choice3) . "', '" . a($q->Picture) . "', '" . a($q->Question) . "', '" . a($q->Choice4) . "', '" . a($q->Choice5) . "')";
+            echo "('" . $ID . "', '" . a($q->QuestionID) . "', '" . a($q->Answer) . "', '" . a($q->Choice0) . "', '" . a($q->Choice1) . "', '" . a($q->Choice2) . "', '" . a($q->Choice3) . "', '" . a($q->Picture) . "', '" . a($q->Question) . "', '" . a($q->Choice4) . "', '" . a($q->Choice5) . "')";
             if ($index < $count) { echo ",";}
         }
         echo ";";

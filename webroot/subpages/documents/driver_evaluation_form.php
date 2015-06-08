@@ -2,6 +2,7 @@
  if($this->request->session()->read('debug')){ echo "<span style ='color:red;'>subpages/documents/driver_evaluation_form.php #INC141</span>"; }
 include_once 'subpages/filelist.php';
 if( isset($sub['de_at'])){  listfiles($sub['de_at'], "attachments/", "", false,3); }
+$strings2 = CacheTranslations($language, "drivereval_%", "tasks_date", $settings);//,$registry);//$registry = $this->requestAction('/settings/getRegistry');
  ?>
 <form id="form_tab3">
 <input class="document_type" type="hidden" name="document_type" value="<?php echo $dx->title;?>" />
@@ -10,7 +11,7 @@ if( isset($sub['de_at'])){  listfiles($sub['de_at'], "attachments/", "", false,3
 <div class="clearfix"></div>
 <hr />
                                                 <div class="form-group row">
-													<label class="control-label col-md-3">Driver name <span class="required">
+													<label class="control-label col-md-3"><?= $strings2["drivereval_drivername"]; ?> <span class="required">
 													* </span>
 													</label>
 													<div class="col-md-6">
@@ -19,7 +20,7 @@ if( isset($sub['de_at'])){  listfiles($sub['de_at'], "attachments/", "", false,3
 													</div>
 												</div>
 												<div class="form-group row">
-													<label class="control-label col-md-3">D/L# <span class="required">
+													<label class="control-label col-md-3"><?= $strings["forms_driverslicense"]; ?># <span class="required">
 													* </span>
 													</label>
 													<div class="col-md-6">
@@ -28,7 +29,7 @@ if( isset($sub['de_at'])){  listfiles($sub['de_at'], "attachments/", "", false,3
 													</div>
 												</div>
 												<div class="form-group row">
-													<label class="control-label col-md-3">Date <span class="required">
+													<label class="control-label col-md-3"><?= $strings2["tasks_date"]; ?> <span class="required">
 													* </span>
 													</label>
 													<div class="col-md-6">

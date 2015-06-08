@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 08, 2015 at 04:06 PM
+-- Generation Time: Jun 08, 2015 at 11:03 PM
 -- Server version: 5.6.17
 -- PHP Version: 5.5.12
 
@@ -32,14 +32,14 @@ CREATE TABLE IF NOT EXISTS `strings` (
   `English` varchar(4096) NOT NULL,
   `French` varchar(4096) NOT NULL,
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=336 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=376 ;
 
 --
 -- Dumping data for table `strings`
 --
 
 INSERT INTO `strings` (`ID`, `Name`, `English`, `French`) VALUES
-(1, 'Date', '1433770431', '<-- This is used by the system to auto-update'),
+(1, 'Date', '1433772371', '<-- This is used by the system to auto-update'),
 (2, 'dashboard_affirmative', 'Yes', 'Oui'),
 (3, 'dashboard_negative', 'No', 'Non'),
 (4, 'dashboard_selectall', 'Select All', 'Tout Sélectionner'),
@@ -77,7 +77,7 @@ INSERT INTO `strings` (`ID`, `Name`, `English`, `French`) VALUES
 (38, 'dashboard_debug', 'Debug Mode', 'Mode Debug'),
 (39, 'dashboard_on', 'On', 'Activé'),
 (40, 'dashboard_off', 'Off', 'Désactivé'),
-(41, 'dashboard_confirmdelete', 'Are you sure you want to delete %name%?', 'Êtes-vous sûr de vouloir supprimer %name%?'),
+(41, 'dashboard_confirmdelete', 'Are you sure you want to delete &quot;%name%&quot;?', 'Êtes-vous sûr de vouloir supprimer &quot;%name%&quot;?'),
 (42, 'profiles_image', 'Image', 'Image'),
 (43, 'index_createclient', 'Create %Client%', 'Créer %Client%'),
 (44, 'index_listclients', 'List %Client%s', 'Liste %Client%s'),
@@ -369,7 +369,47 @@ INSERT INTO `strings` (`ID`, `Name`, `English`, `French`) VALUES
 (332, 'theme_left', 'Left', 'Gauche'),
 (333, 'theme_right', 'Right', 'Droite'),
 (334, 'theme_footer', 'Footer', 'Pied de page'),
-(335, 'profiles_usernameexists', 'Username exists already', 'Nom d''utilisateur existe déjà');
+(335, 'profiles_usernameexists', 'Username exists already', 'Nom d''utilisateur existe déjà'),
+(336, 'forms_drivertype', 'Driver Type', ''),
+(337, 'forms_selectdrivertype', 'Select Driver Type', ''),
+(338, 'forms_usernamerequired', 'Username is required', ''),
+(339, 'forms_firstname', 'First Name', ''),
+(340, 'forms_middlename', 'Middle Name', ''),
+(341, 'forms_lastname', 'Last Name', ''),
+(342, 'forms_title', 'Title', ''),
+(343, 'forms_mr', 'Mr.', 'M.'),
+(344, 'forms_mrs', 'Mrs.', 'Mme.'),
+(345, 'forms_ms', 'Ms.', 'Mlle.'),
+(346, 'forms_gender', 'Gender', 'Sexe'),
+(347, 'forms_male', 'Male', 'Mâle'),
+(348, 'forms_female', 'Female', 'Femelle'),
+(349, 'forms_selectgender', 'Select Gender', 'Sélectionnez Sexe'),
+(350, 'forms_placeofbirth', 'Place of Birth', 'Lieu de naissance'),
+(351, 'forms_dateofbirth', 'Date of Birth', 'Date de naissance'),
+(352, 'forms_country', 'Country', 'Pays'),
+(353, 'forms_driverslicense', 'Driver''s License', 'Permis de conduire'),
+(354, 'forms_provinceissued', 'Province issued', 'Province émis'),
+(355, 'forms_expirydate', 'Expiry Date', 'Date D''Expiration'),
+(356, 'forms_hearaboutus', 'Where did you hear about us?', 'Où avez-vous entendu parler de nous?'),
+(357, 'forms_password', 'Password', 'Mot de Passe'),
+(358, 'forms_retypepassword', 'Re-type Password', 'Retaper le Mot de Passe'),
+(359, 'forms_referral', 'Referral', 'Renvoi'),
+(360, 'forms_companywebsite', 'Company Website', 'Site Web de l''entreprise'),
+(361, 'forms_newspaper', 'Newspaper', 'Journal'),
+(362, 'forms_other', 'Other', 'Autre'),
+(363, 'forms_submit', 'Submit', 'Soumettre'),
+(364, 'forms_addnotes', 'Add driver notes here', 'Ajouter des notes du pilote ici'),
+(365, 'forms_notesaved', 'Note updated successfully', 'Remarque à jour avec succès'),
+(366, 'forms_notenotsaved', 'You can\\''t submit a blank note', 'Vous ne pouvez pas soumettre une note vierge'),
+(367, 'forms_notedeleted', 'Note deleted successfully!', 'Remarque supprimé avec succès!'),
+(368, 'drivereval_drivername', 'Driver Name', 'Nom du pilote'),
+(369, 'file_docinfo', '%Document% Information', ''),
+(370, 'orders_ordertype', 'Order Type', ''),
+(371, 'file_missingdata', 'Deleted or Missing Data', ''),
+(372, 'file_createdon', 'Created on', 'Créé sur'),
+(373, 'file_orderinfo', 'Order Information', 'Informations sur la commande'),
+(374, 'file_missing', 'File Missing', 'Fichier Manquant'),
+(375, 'file_download', 'Download', 'Télécharger');
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

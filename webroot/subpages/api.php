@@ -233,19 +233,20 @@ function addTrans($array, $Trans = ""){
     return $array;
 }
 
-function CacheTranslations($Language='English', $Text, $Variables = ""){
+function CacheTranslations($Language='English', $Text, $Variables = "", $Common = True) {
     $GLOBALS["language"] = $Language;
-    if (!is_array($Text)){
+    if (!is_array($Text)) {
         $Text = array($Text);
     }
-    if(is_object($Variables)){
-        $Variables=s($Variables);
+    if (is_object($Variables)) {
+        $Variables = s($Variables);
     }
 
-    $Text[] = "dashboard_%";//for all pages
-    $Text[] = "settings_%";//for all pages
-    $Text[] = "index_%";//for all pages
-
+    if ($Common) {
+        $Text[] = "dashboard_%";//for all pages
+        $Text[] = "settings_%";//for all pages
+        $Text[] = "index_%";//for all pages
+    }
     $table =  TableRegistry::get('strings');
 
     $query="Name = 'Date'";

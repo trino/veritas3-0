@@ -44,6 +44,11 @@ if (isset($this->request->params['pass'][1])) {
     $id2="?type=".$_GET['type'];
     if (isset($_GET['order_id'])) { $id2= '?order_id=' . $_GET['order_id']; }
 }
+
+include_once('subpages/api.php');
+$language = $this->request->session()->read('Profile.language');
+$strings = CacheTranslations($language, array("documents_%", "forms_%"), $settings);//,$registry);//$registry = $this->requestAction('/settings/getRegistry');
+if($language == "Debug") { $Trans = " [Trans]";} else { $Trans = ""; }
 ?>
 <h3 class="page-title">
     <?php echo $action . " " . ucfirst($settings->document); ?>
