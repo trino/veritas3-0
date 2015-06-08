@@ -2338,7 +2338,8 @@ class ProfilesController extends AppController{
                 
             </div>
             <div class="item-body">
-                <span id="desc' . $save->id . '">' . $_POST['description'] . '</span><br/><a href="javascript:void(0);" class="btn btn-small btn-primary editnote" style="padding: 0 8px;" id="note_' . $save->id . '">Edit</a> <a href="javascript:void(0);" class="btn btn-small btn-danger deletenote" style="padding: 0 8px;" id="dnote_' . $save->id . '" onclick="return confirm(\'' . $this->Trans->getString("dashboard_confirmdelete", array("name" => $_POST['description'])) . '\');">Delete</a><br/><br/>
+                <span id="desc' . $save->id . '">' . $_POST['description'] . '</span><br/><a href="javascript:void(0);" class="btn btn-small btn-primary editnote" style="padding: 0 8px;" id="note_' . $save->id . '">' . $this->Trans->getString("dashboard_edit") . '</a> <a href="javascript:void(0);" class="btn btn-small btn-danger deletenote" style="padding: 0 8px;" id="dnote_' . $save->id . '" onclick="return deletenote(' . $save->id  . ", '" . $this->Trans->getString("dashboard_confirmdelete", array("name" => $_POST['description'])) . '\');">' . $this->Trans->getString("dashboard_delete") . '</a><br/><br/>
+
             </div>
         </div>';
             }else {

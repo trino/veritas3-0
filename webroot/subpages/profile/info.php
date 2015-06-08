@@ -313,7 +313,7 @@ function printprovinces($language, $name, $selected = "", $isdisabled = "", $isr
                                      echo 'block'; else echo "none" ?>
                                      ;">
                                 <div class="form-group">
-                                    <label class="control-label">ISB Id: </label>
+                                    <label class="control-label">ISB ID: </label>
                                     <input <?php echo $is_disabled ?>
                                         name="isb_id" type="text"
                                         placeholder=""
@@ -431,7 +431,7 @@ function printprovinces($language, $name, $selected = "", $isdisabled = "", $isr
                                 ?>
                                    <div class="col-md-6 hideusername admin_rec" style="<?php echo (isset($p->profile_type) && ($p->profile_type=='1' || $p->profile_type=='2'))?'display:block':'display:none';?>">
                                     <div class="form-group">
-                                        <label class="control-label">Username: </label>
+                                        <label class="control-label"><?= $strings["profiles_username"]; ?>: </label>
                                         <input <?php echo $is_disabled ?> id="username_field" name="username" type="text"
                                                                           class="form-control req_driver req_rec uname" <?php if (isset($p->username)) { ?> value="<?php echo $p->username; ?>" <?php } ?>
                                             <?php
@@ -469,7 +469,7 @@ function printprovinces($language, $name, $selected = "", $isdisabled = "", $isr
                                 ?>
                                 <div class="col-md-4 admin_rec passwords" style="<?php echo (isset($p->profile_type) && ($p->profile_type=='1' || $p->profile_type=='2'))?'display:block':'display:none';?>">
                                     <div class="form-group">
-                                        <label class="control-label">Password: </label>
+                                        <label class="control-label"><?= $strings["forms_password"]; ?>: </label>
 
 
                                         <!-- <input  <?php echo $is_disabled ?> type="password" name="password" id="password" class="form-control"
@@ -490,7 +490,7 @@ function printprovinces($language, $name, $selected = "", $isdisabled = "", $isr
                                 <?php } ?>
                                 <div class="col-md-4 admin_rec" style="<?php echo (isset($p->profile_type) && ($p->profile_type=='1' || $p->profile_type=='2'))?'display:block':'display:none';?>">
                                     <div class="form-group">
-                                        <label class="control-label">Re-type Password: </label>
+                                        <label class="control-label"><?= $strings["forms_retypepassword"]; ?>: </label>
                                         <input <?php echo $is_disabled ?>
                                                type="password" class="form-control <?php if (!isset($p->password) || (isset($p) && $p->profile_type!= 3)) {?>req_rec<?php }?>"
                                                id="retype_password" <?php //if (isset($p->password)) { ?> <?php // echo $p->password; ?>  <?php // } ?>/>
@@ -759,13 +759,13 @@ function printprovinces($language, $name, $selected = "", $isdisabled = "", $isr
                                 <div class="driver_license" style="<?php if(isset($p) &&($p->profile_type=='5'||$p->profile_type=='7'||$p->profile_type=='8'))echo "display:block" ;else echo "display:none";?>">
                                 <div class="col-md-12">
                                     <div class="form-group">
-                                        <h3 class="block">Driver's License: </h3></div>
+                                        <h3 class="block"><?= $strings["forms_driverslicense"]; ?>: </h3></div>
                                 </div>
 
 
                                 <div class="col-md-4">
                                     <div class="form-group">
-                                        <label class="control-label">Driver's License #: </label>
+                                        <label class="control-label"><?= $strings["forms_driverslicense"]; ?> #: </label>
                                         <input <?php echo $is_disabled ?> name="driver_license_no" type="text"
                                                                           class="form-control req_driver" <?php if (isset($p->driver_license_no)) { ?>
                                             value="<?php echo $p->driver_license_no; ?>" <?php } ?> />
@@ -775,7 +775,7 @@ function printprovinces($language, $name, $selected = "", $isdisabled = "", $isr
 
                                 <div class="col-md-4">
                                     <div class="form-group">
-                                        <label class="control-label">Province issued: </label>
+                                        <label class="control-label"><?= $strings["forms_provinceissued"]; ?>: </label>
 
                                         <?php
                                         if (isset($p->driver_province)) {
@@ -792,7 +792,7 @@ function printprovinces($language, $name, $selected = "", $isdisabled = "", $isr
 
                                 <div class="col-md-4">
                                     <div class="form-group">
-                                        <label class="control-label">Expiry Date: </label>
+                                        <label class="control-label"><?= $strings["forms_expirydate"]; ?>: </label>
                                         <input <?php echo $is_disabled ?> name="expiry_date" type="text"
                                                                           class="form-control req_driver date-picker"
                                                                           value="<?php if (isset($p->expiry_date)) echo $p->expiry_date; ?>"/>
@@ -818,17 +818,17 @@ function printprovinces($language, $name, $selected = "", $isdisabled = "", $isr
                                 <div class="form-group col-md-12 col-sm-12">
                                    
                
-                                <label class="control-label col-md-6"> Where did you hear about us?</label> 
+                                <label class="control-label col-md-6"> <?= $strings["forms_hearaboutus"]; ?></label>
                                     <div class="col-md-6">              
                                         <select name="hear" class="form-control">
-                                            <option value="Referral" <?php if(isset($p)&& $p->hear=='Referral')echo 'selected';?>>Referral</option>
-                                            <option value="Company Website"  <?php if(isset($p)&& $p->hear=='Company Website')echo 'selected';?>>Company Website</option>
-                                            <option value="Workopolis"  <?php if(isset($p)&& $p->hear=='Workopolis')echo 'selected';?>>Workopolis</option>
-                                            <option value="Monster"  <?php if(isset($p)&& $p->hear=='Monster')echo 'selected';?>>Monster</option>
-                                            <option value="Nethire"  <?php if(isset($p)&& $p->hear=='Nethire')echo 'selected';?>>Nethire</option>
-                                            <option value="Indeed"  <?php if(isset($p)&& $p->hear=='Indeed')echo 'selected';?>>Indeed</option>
-                                            <option value="Newspaper"  <?php if(isset($p)&& $p->hear=='Newspaper')echo 'selected';?>>Newspaper</option>
-                                            <option value="Others"  <?php if(isset($p)&& $p->hear=='Others')echo 'selected';?>> Others</option>
+                                            <option value="Referral" <?php if(isset($p)&& $p->hear=='Referral')echo 'selected';?>><?= $strings["forms_hearaboutus"]; ?></option>
+                                            <option value="Company Website"  <?php if(isset($p)&& $p->hear=='Company Website')echo 'selected';?>><?= $strings["forms_companywebsite"]; ?></option>
+                                            <option value="Workopolis"  <?php if(isset($p)&& $p->hear=='Workopolis')echo 'selected';?>>Workopolis.com</option>
+                                            <option value="Monster"  <?php if(isset($p)&& $p->hear=='Monster')echo 'selected';?>>Monster.ca</option>
+                                            <option value="Nethire"  <?php if(isset($p)&& $p->hear=='Nethire')echo 'selected';?>>Nethireinc.com</option>
+                                            <option value="Indeed"  <?php if(isset($p)&& $p->hear=='Indeed')echo 'selected';?>>Indeed.ca</option>
+                                            <option value="Newspaper"  <?php if(isset($p)&& $p->hear=='Newspaper')echo 'selected';?>><?= $strings["forms_newspaper"]; ?></option>
+                                            <option value="Others"  <?php if(isset($p)&& $p->hear=='Others')echo 'selected';?>><?= $strings["forms_other"]; ?></option>
                                             
                                         </select>
                                     </div>
