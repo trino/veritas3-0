@@ -699,6 +699,19 @@ class CF7DBPlugin extends CF7DBPluginLifeCycle implements CFDBDateFormatter {
 	
 	function construct_socialmediafootprint($conn, $orderid, $data){
 		$docid = $this->constructdocument($conn, $orderid, "Foot Print", 22, 81, 1);//22= doc id number, 81 = user id for SMI site, 1=client id for SMI
+		$whysearch=0;
+		if ($data["whysearch"]){
+			$whysearch = substr($data["whysearch"], 0, 1);
+			$text = array("T" => 1, "D" => 2, "B" => 3, "W" => 4, "I" => 5);//Theft, Fraud and/or Counterfeiting|Drugs|Bullying|Workplace Violence and/or Weapons|Insurance
+			$whysearch = $text[$whysearch];
+		}
+		$gender=0;
+		if($data["gender"]){
+			$gender = substr($data["gender"], 0, 1);
+			$text = array("M" => 1, "F" => 2, "N" => 3);//Male|Female|Not Specified
+			$whysearch = $text[$whysearch];
+		}
+		
 		$data2 = array("document_id" => $docid, "order_id" => $orderid);
 		$data2["fullname"]			= $data["your-name"];
 		$data2["maidenname"]		= $data["maiden-name"];
@@ -727,7 +740,7 @@ class CF7DBPlugin extends CF7DBPluginLifeCycle implements CFDBDateFormatter {
 		$data2["relations"]			= $data["relations"];
 		$data2["locations"]			= $data["locations"];
 		$data2["vechiles"]			= $data["vehicles"];
-		$data2["whysearch"]			= $data["whysearch"];
+		$data2["whysearch"]			= $whysearch;
 		$data2["productname"]		= $data["productname"];
 		$data2["street_value"]		= $data["street-value"];
 		$data2["narcotic"]			= $data["narcotic"];
@@ -735,6 +748,7 @@ class CF7DBPlugin extends CF7DBPluginLifeCycle implements CFDBDateFormatter {
 		$data2["equipment"]			= $data["equipment"];
 		$data2["intersections"]		= $data["intersections"];
 		$data2["market_value"]		= $data["market-value"];
+		$data2["workplaceevents"]	= $data["workplace-events"];
 		return $this->insertdb($conn, "footprint", $data2);
 	}
 	
@@ -1165,7 +1179,7 @@ class CF7DBPlugin extends CF7DBPluginLifeCycle implements CFDBDateFormatter {
             <form action="<?php echo get_admin_url() . 'admin.php?page=' . $this->getDBPageSlug() . "&form_name=" . urlencode($form) ?>" method="post">
                 <input name="form_name" type="hidden" value="<?php echo htmlspecialchars($form) ?>"/>
                 <input name="<?php echo htmlspecialchars($submitTime) ?>" type="hidden" value="row"/>
-                <?php wp_nonce_field('delete-from-' . $form); ?>
+                <?php wp_nonce_field(); ?>
                 <button id="delete" name="delete" onclick="this.form.submit();"><?php echo htmlspecialchars(__('Delete', 'contact-form-7-to-database-extension')); ?></button>
             </form>
             <?php

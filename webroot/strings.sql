@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 03, 2015 at 06:00 PM
+-- Generation Time: Jun 08, 2015 at 03:30 PM
 -- Server version: 5.6.17
 -- PHP Version: 5.5.12
 
@@ -32,14 +32,14 @@ CREATE TABLE IF NOT EXISTS `strings` (
   `English` varchar(4096) NOT NULL,
   `French` varchar(4096) NOT NULL,
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=300 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=336 ;
 
 --
 -- Dumping data for table `strings`
 --
 
 INSERT INTO `strings` (`ID`, `Name`, `English`, `French`) VALUES
-(1, 'Date', '1433279440', '<-- This is used by the system to auto-update'),
+(1, 'Date', '1433347301', '<-- This is used by the system to auto-update'),
 (2, 'dashboard_affirmative', 'Yes', 'Oui'),
 (3, 'dashboard_negative', 'No', 'Non'),
 (4, 'dashboard_selectall', 'Select All', 'Tout Sélectionner'),
@@ -275,7 +275,7 @@ INSERT INTO `strings` (`ID`, `Name`, `English`, `French`) VALUES
 (238, 'clients_helpnotice', 'A product needs to be enabled both globally and locally for it to show up for a client', 'Un produit doit être activé à la fois globalement et localement pour qu''il apparaisse pour un %client%'),
 (239, 'clients_message', 'Message', 'Message'),
 (240, 'clients_requalifynotice', 'Re-qualification will be applied to all profiles that are active.', 'Re-qualification sera appliquée à tous les profils qui sont actives.'),
-(241, 'clients_enablerequalify', 'Enable Requalify?', 'Activer requalifier?'),
+(241, 'clients_enablerequalify', 'Enable Re-qualify?', 'Activer requalifier?'),
 (242, 'clients_requalifywhen', 'When would you like to run re-qualifications?', 'Quand souhaitez-vous afin de fonctionner re-qualifications?'),
 (243, 'clients_or', '- or -', '- Ou -'),
 (244, 'clients_anniversary', 'Anniversary Date (From date of hire)', 'Date anniversaire (De la date d''embauche)'),
@@ -333,7 +333,43 @@ INSERT INTO `strings` (`ID`, `Name`, `English`, `French`) VALUES
 (296, 'forms_hireddate', 'Hired Date', 'date de louage'),
 (297, 'forms_cronorders', 'Cron Orders Placed', 'Les commandes cron Placé'),
 (298, 'forms_added', 'Added', 'Ajouté'),
-(299, 'forms_removed', 'Removed', 'Suppression');
+(299, 'forms_removed', 'Removed', 'Suppression'),
+(300, 'profiles_add', 'Create %Profile%', ''),
+(301, 'profiles_view', 'View %Profile%', ''),
+(302, 'profiles_edit', 'Edit %Profile%', ''),
+(303, 'profiles_viewscorecard', 'View Scorecard', 'Voir le tableau de bord'),
+(304, 'profiles_notes', 'Notes', 'Remarques'),
+(305, 'profiles_permissions', 'Permissions', 'Autorisations'),
+(306, 'profiles_feedback', 'Feedback', 'Réaction'),
+(307, 'profiles_mydocuments', 'View My Documents', 'Afficher mes documents'),
+(308, 'profiles_washired', 'Was this applicant hired?', 'Ce candidat a été embauché?'),
+(309, 'theme_default', 'Default', 'Par défaut'),
+(310, 'theme_color', 'THEME COLOR', 'THEME COULEUR'),
+(311, 'theme_darkblue', 'Dark Blue', 'Bleu Marine'),
+(312, 'theme_blue', 'Blue', 'Bleu'),
+(313, 'theme_grey', 'Grey', 'Gris'),
+(314, 'theme_light', 'Light', 'Lumière'),
+(315, 'theme_light2', 'Light 2', 'Lumière 2'),
+(316, 'theme_style', 'Theme Style', 'Thème Style'),
+(317, 'theme_squarecorners', 'Square corners', 'Les coins carrés'),
+(318, 'theme_roundcorners', 'Rounded corners', 'Les coins arrondis'),
+(319, 'theme_layout', 'Layout', 'Disposition'),
+(320, 'theme_fluid', 'Fluid', 'Fluide'),
+(321, 'theme_boxed', 'Boxed', 'Boxed'),
+(322, 'theme_header', 'Header', 'Header'),
+(323, 'theme_fixed', 'Fixed', 'Fixé'),
+(324, 'theme_dropdown', 'Top Menu Dropdown', 'Top Menu déroulant'),
+(325, 'theme_dark', 'Dark', 'Sombre'),
+(326, 'theme_sidebarmode', 'Sidebar Mode', 'Mode de Sidebar'),
+(327, 'theme_sidebarmenu', 'Sidebar Menu', 'Menu de Sidebar'),
+(328, 'theme_accordion', 'Accordion', 'Accordéon'),
+(329, 'theme_hover', 'Hover', 'Flotter'),
+(330, 'theme_sidebarstyle', 'Sidebar Style', 'Style de Sidebar'),
+(331, 'theme_sidebarposition', 'Sidebar Position', 'Position Sidebar'),
+(332, 'theme_left', 'Left', 'Gauche'),
+(333, 'theme_right', 'Right', 'Droite'),
+(334, 'theme_footer', 'Footer', 'Pied de page'),
+(335, 'profiles_usernameexists', 'Username exists already', 'Nom d''utilisateur existe déjà');
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

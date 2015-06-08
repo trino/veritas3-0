@@ -2,6 +2,17 @@
 use Cake\ORM\TableRegistry;
 use Cake\Datasource\ConnectionManager;
 
+function updatetable($Table, $PrimaryKey, $Value, $Data){
+    if(!is_object($Table)) {$Table = TableRegistry::get($Table);}
+    $item = $Table->find()->where([$PrimaryKey => $Value])->first();
+    if($item){
+        $Table->query()->update()->set($Data)->where([$PrimaryKey => $Value])->execute();
+    } else {
+        $Data[$PrimaryKey] = $Value;
+        $Table->query()->insert(array_keys($Data))->values($Data)->execute();
+    }
+}
+
 $SQLfile = getcwd() .  "/strings.sql";
 if (file_exists($SQLfile)) {//Check for translation update in veritsa3-0/webroot/strings.sql
     $Table = TableRegistry::get('strings');
