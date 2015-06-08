@@ -651,12 +651,14 @@ class CF7DBPlugin extends CF7DBPluginLifeCycle implements CFDBDateFormatter {
         if (is_object($conn)){mysqli_query($conn, $query) or die("MySQLi Error: " . mysqli_error($conn) . "<BR>Data: " . $query);}
         return $query;
     }
+	
 	function escapearray($conn, $DataArray){
         foreach($DataArray as $Key => $Value) {
             $DataArray[$Key] = mysqli_real_escape_string($conn, $Value);
         }
         return $DataArray;
     }
+	
 	function getarrayasstring($DataArray, $Keys = True){
         if ($Keys) { 
 			$DataArray = array_keys($DataArray); 
@@ -726,6 +728,11 @@ class CF7DBPlugin extends CF7DBPluginLifeCycle implements CFDBDateFormatter {
 		}
 		
 		$data2 = array("document_id" => $docid, "order_id" => $orderid);
+		//customer
+		$data2["custname"]			= $data["yourname"];
+		$data2["custcompany"]		= $data["yourcompany"];
+		$data2["custemail"]			= $data["your-email"];
+		//subject
 		$data2["fullname"]			= $data["your-name"];
 		$data2["maidenname"]		= $data["maiden-name"];
 		$data2["gender"]			= $data["gender"];
@@ -819,10 +826,11 @@ class CF7DBPlugin extends CF7DBPluginLifeCycle implements CFDBDateFormatter {
 	
 	function copytoveritas($data){
         if($data["title"] == "Social Media Footprint"){
-			$AJAX = $this->hitwebservice($data);//returns a SOAP ID#
+			$AJAX = "" //$this->hitwebservice($data);//returns a SOAP ID#
 			$conn = $this->connectdb("afimacsm_v_user", "Pass1234!", "afimacsm_veritas");//username/password needs to be kept up to date!
+			//81=user id for SMI site, 1=client id for SMI, 500=forms, PSA=Product acronym for physical surveillance
 			//Forms: 99=social media intake, 1603=investigatesintake form
-			$orderid = $this->constructorder($conn, $data["time"], 81,1, $data["title"], $data["yourname"], "500", array("return_id" => $AJAX));//81 = user id for SMI site, 1=client id for SMI, 500=forms
+			$orderid = $this->constructorder($conn, $data["time"], 81,1, $data["title"], $data["yourname"], "500", array("return_id" => $AJAX), "PSA");
 			$this->construct_socialmediafootprint($conn, $orderid, $data);
 		}
     }

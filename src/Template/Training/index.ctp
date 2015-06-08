@@ -197,11 +197,13 @@
                                         if (isset($results)) {
                                             PrintResults($results, $user);
                                         }
-                                        if (!$hasusertakenquiz && strlen($quiz->Attachments) > 0 && $QuizID == $quiz->ID) {
-                                            echo '<div class="" align="left"><strong>Please go through each attachment in sequential order to view the quiz:</strong></div><br>';
-                                        }
                                         $attachments = "";
                                         if (quizmiddle($QuizID, $quiz->ID)) {
+                                            if (!$hasusertakenquiz && strlen($quiz->Attachments) > 0 && $QuizID == $quiz->ID) {
+                                                echo '<div class="col-md-10" align="left">';
+                                                echo '<strong>Please go through each attachment in sequential order to view the quiz:</strong>';
+                                                echo '</div><div class="col-md-2"></div>';
+                                            }
                                             echo '<div class="col-md-5" align="left">';
                                             $attachments = explode(",", $quiz->Attachments);
                                             $attachmentJS = "";

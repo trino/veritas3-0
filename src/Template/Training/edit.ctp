@@ -72,6 +72,7 @@ if (isset($quiz)){
         </ul>
         <a href="javascript:window.print();" class="floatright btn btn-info">Print</a>
         <?php if ($canedit && isset($quiz)) {
+            if (!isset($_GET["export"])){ echo '<a href="' . $this->request->webroot . 'training/edit?export&quizid=' . $quiz->ID . '" class="floatright btn btn-primary btnspc">Export</a>';}
             echo '<a href="' . $this->request->webroot . 'training?action=delete&quizid=' . $quiz->ID . '" onclick="return confirm(' . "'Are you sure you want to delete this quiz?'" . ');" class="floatright btn btn-danger btnspc">Delete</a>';
             $QuizID="&quizid=" . $_GET['quizid'];
         }?>
@@ -88,7 +89,7 @@ if (isset($quiz)){
 </div>
 <div class="col-md-6">
     <div class="form-group">
-        <label class="control-label">Image:</label>
+        <label class="control-label" TITLE="webroot\img">Image:</label>
         <SELECT NAME="image" ID="image" class="form-control" SELECTED="<?= $quiz->image; ?>">
         <?php
             //<!--input name="image" id="image" class="form-control" value="<?php if (isset($quiz)) { echo $quiz->image; } else {echo "training.png";} " /-->
@@ -106,7 +107,7 @@ if (isset($quiz)){
 </div>
 <div class="col-md-6">
     <div class="form-group">
-        <label class="control-label">Attachments:</label><BR>
+        <label class="control-label" TITLE="webroot\assets\global">Attachments:</label><BR>
         <small>Separate your attachments with a comma</small>
         <textarea name="Attachments" class="form-control" rows="9"><?php if (isset($quiz)) { echo $quiz->Attachments; } ?></textarea>
     </div>
@@ -240,5 +241,22 @@ if (isset($quiz)){
     </div>
     </div>
 <?php }}
+if (isset($_GET["export"])){
+    function a($text){
+        return addslashes($text);
+    }
 
+    echo "SQL:<BR><TEXTAREA STYLE='WIDTH: 100%; HEIGHT: 500px;'>";
+        echo "INSERT INTO `training_list` (`ID`, `Name`, `Description`, `Attachments`, `image`) VALUES ('" . $_GET["quizid"] . "', '" . addslashes($quiz->Name) . "', '" . addslashes($quiz->Description) . "', '" . addslashes($quiz->Attachments) . "', '" . addslashes($quiz->image) . "');";
+        echo "\r\nINSERT INTO `training_quiz` (`ID`, `QuizID`, `QuestionID`, `Answer`, `Choice0`, `Choice1`, `Choice2`, `Choice3`, `Picture`, `Question`, `Choice4`, `Choice5`) VALUES ";
+        $index=0;
+        $count = iterator_count($questions);
+        foreach($questions as $q) {
+            $index++;
+            echo "('" . a($q->ID) . "', '" . a($q->QuizID) . "', '" . a($q->QuestionID) . "', '" . a($q->Answer) . "', '" . a($q->Choice0) . "', '" . a($q->Choice1) . "', '" . a($q->Choice2) . "', '" . a($q->Choice3) . "', '" . a($q->Picture) . "', '" . a($q->Question) . "', '" . a($q->Choice4) . "', '" . a($q->Choice5) . "')";
+            if ($index < $count) { echo ",";}
+        }
+        echo ";";
+    echo "</TEXTAREA>";
+}
 ?>
