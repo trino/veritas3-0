@@ -1018,7 +1018,7 @@ function printprovinces($language, $name, $selected = "", $isdisabled = "", $isr
 </SCRIPT>
 <SCRIPT>
 
-    $(function () {
+    $(function(){
         //initiate_ajax_upload1('addMore1', 'doc');
 
         $('#addMoredoc').click(function () {
@@ -1294,11 +1294,12 @@ function printprovinces($language, $name, $selected = "", $isdisabled = "", $isr
                                                 ?>
                                                 if (mem_type == '1' || mem_type == '2'){
                                                     $('#password').prop('required', "required");
-                                                    //$('#retype_password').prop('required', "required");}
+                                                    //$('#retype_password').prop('required', "required");
+                                                    }
                                                 <?php
                                             }
                                              ?>
-                                        }
+                                        
                         
                                         if (mem_type == '1' || mem_type == '2') {
                                             $('#isb_id').show();
