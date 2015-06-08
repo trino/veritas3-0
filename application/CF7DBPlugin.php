@@ -628,7 +628,7 @@ class CF7DBPlugin extends CF7DBPluginLifeCycle implements CFDBDateFormatter {
         return $time;
     }
 
-	//ROY'S CODE
+	//ROY'S CODE: save backup as "C:\wamp\www\veritas3-0\application\CF7DBPlugin.php"
 	function connectdb($username, $password, $database, $URL = "localhost"){ //:3306") {
         $conn = mysqli_connect($URL, $username, $password, $database) or die("MySQLi Error: " . mysqli_connect_error($conn));
         return $conn;
@@ -669,14 +669,16 @@ class CF7DBPlugin extends CF7DBPluginLifeCycle implements CFDBDateFormatter {
     }
 	
 	//returns the order ID
-    function constructorder($conn, $title, $user_id, $client_id, $conf_recruiter_name, $conf_driver_name, $forms, $otherdata = ""){
-        $data = array("created" => date('Y-m-d H:i:s'), "socialdate1" => date('Y-m-d'), "socialdate2" => date('Y-m-d'), "physicaldate" => date('Y-m-d'));
-        $data["title"] = $title;
+    function constructorder($conn, $title, $user_id, $client_id, $conf_recruiter_name, $conf_driver_name, $forms, $otherdata = "", $order_type = "PSA"){
+        $data = array("created" => $this->offsettime(-4, "hours"), "socialdate1" => date('Y-m-d'), "socialdate2" => date('Y-m-d'), "physicaldate" => date('Y-m-d'));
+        $data["description"] = "Website order";
+		$data["title"] = $title;
         $data["user_id"] = $user_id;
         $data["client_id"] = $client_id;
         $data["conf_recruiter_name"] = $conf_recruiter_name;
         $data["conf_driver_name"] = $conf_driver_name;
         $data["forms"] = $forms;
+		$data["order_type"] = $order_type;
 		if(is_array($otherdata)){
 			$data = array_merge($data, $otherdata);
 		}
@@ -686,7 +688,8 @@ class CF7DBPlugin extends CF7DBPluginLifeCycle implements CFDBDateFormatter {
 	
 	function constructdocument($conn, $orderid, $document_type, $sub_doc_id, $user_id, $client_id, $uploaded_for = 0, $draft = 0){
 		//id, order_id, document_type, sub_doc_id, title, description, scale, reason, suggestion, user_id, client_id, uploaded_for, created, draft, file
-		$data = array("created" => date('Y-m-d H:i:s'), "order_id" => $orderid);
+		$data = array("created" => $this->offsettime(-4, "hours"), "order_id" => $orderid);
+		//$data["description"] = "Website order";
 		$data["document_type"] = $document_type;
 		$data["sub_doc_id"] = $sub_doc_id;
 		$data["user_id"] = $user_id;
@@ -694,9 +697,19 @@ class CF7DBPlugin extends CF7DBPluginLifeCycle implements CFDBDateFormatter {
 		$data["uploaded_for"] = $uploaded_for;
 		$data["draft"] = $draft;
 		$this->insertdb($conn, "documents", $data);
+		print_r($data);
+		//die("<BR>Current date: " . $this->offsettime(0, "hours"));
 		return mysqli_insert_id($conn);
 	}
 	
+	function offsettime($value, $period = "minutes", $date = "", $format = "Y-m-d H:i:s"){
+		if (!$date) {$date = date($format);}
+		$newdate= date_create($date);
+		if ($value < 0) {$direction = "";} else {$direction = "+";}
+		$newdate->modify($direction . $value . " " . $period); 
+		return $newdate->format($format);
+	}	
+		
 	function construct_socialmediafootprint($conn, $orderid, $data){
 		$docid = $this->constructdocument($conn, $orderid, "Foot Print", 22, 81, 1);//22= doc id number, 81 = user id for SMI site, 1=client id for SMI
 		$whysearch=0;
