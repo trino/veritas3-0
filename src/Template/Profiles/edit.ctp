@@ -50,7 +50,7 @@
 
     include_once('subpages/api.php');
     $language = $this->request->session()->read('Profile.language');
-    $strings = CacheTranslations($language, array("profiles_%", "forms_%", "clients_addeditimage", "clients_enablerequalify", "theme_%"), $settings);
+    $strings = CacheTranslations($language, array("profiles_%", "forms_%", "clients_addeditimage", "clients_enablerequalify", "theme_%", "month_long%"), $settings);
     if($language == "Debug") { $Trans = " [Trans]";} else { $Trans = ""; }
 
     $param = $this->request->params['action'];
