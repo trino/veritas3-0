@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 09, 2015 at 09:20 PM
+-- Generation Time: Jun 09, 2015 at 10:52 PM
 -- Server version: 5.6.17
 -- PHP Version: 5.5.12
 
@@ -32,14 +32,14 @@ CREATE TABLE IF NOT EXISTS `strings` (
   `English` varchar(4096) NOT NULL,
   `French` varchar(4096) NOT NULL,
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=528 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=559 ;
 
 --
 -- Dumping data for table `strings`
 --
 
 INSERT INTO `strings` (`ID`, `Name`, `English`, `French`) VALUES
-(1, 'Date', '1433797420', '<-- This is used by the system to auto-update'),
+(1, 'Date', '1433877637', '<-- This is used by the system to auto-update'),
 (2, 'dashboard_affirmative', 'Yes', 'Oui'),
 (3, 'dashboard_negative', 'No', 'Non'),
 (4, 'dashboard_selectall', 'Select All', 'Tout Sélectionner'),
@@ -555,7 +555,38 @@ INSERT INTO `strings` (`ID`, `Name`, `English`, `French`) VALUES
 (524, 'upload_uploadresu', 'Upload Resume', 'Déposez votre CV'),
 (525, 'upload_uploadcert', 'Upload Certifications', 'Ajouter Certifications'),
 (526, 'upload_step2', '<STRONG>Step 2: </STRONG> Upload Abstract Consent Form (Above)', '<STRONG>Étape 2: </STRONG> Télécharger Résumé formulaire de consentement (Ci-dessus)'),
-(527, 'upload_step1', '<STRONG>Step 1: </STRONG> Please download, fill out, and upload', '<STRONG>Étape 2: </STRONG> S''il vous plaît télécharger, remplir, et télécharger');
+(527, 'upload_step1', '<STRONG>Step 1: </STRONG> Please download, fill out, and upload', '<STRONG>Étape 2: </STRONG> S''il vous plaît télécharger, remplir, et télécharger'),
+(528, 'orders_view', 'View Order', 'Voir Commander'),
+(529, 'orders_create', 'Create Order', 'Créer une commande'),
+(530, 'orders_edit', 'Edit Order', 'Modifier la commande'),
+(531, 'orders_confirmation', 'Confirmation', 'Confirmation'),
+(532, 'orders_success', 'Success', 'succès'),
+(533, 'addorder_pleasewait', 'Please wait...', 'S''il vous plaît, attendez ...'),
+(534, 'addorder_back', 'Back', 'dos'),
+(535, 'addorder_skip', 'Skip', 'sauter'),
+(536, 'addorder_savecontinue', 'Save & Continue', 'Enregistrer et Continuer'),
+(537, 'addorder_errors', 'You have some form errors. Please check below.', 'Vous avez des erreurs de forme. S''il vous plaît vérifier ci-dessous.'),
+(538, 'addorder_success', 'Your form validation is successful', 'Votre validation de formulaire est réussie'),
+(539, 'addorder_orderdraft', 'Your Order Has Been Saved As Draft', 'Votre commande a été enregistré comme brouillon'),
+(540, 'addorder_ordersubmit', 'Your Order Has Been Submitted!', 'Votre commande a été envoyée!'),
+(541, 'addorder_youcanedit', 'You can edit the order by visiting the orders section inside draft.', 'Vous pouvez modifier l''ordre en visitant la section des commandes à l''intérieur de projet.'),
+(542, 'addorder_problem', 'There was problem saving the signatures, please go back and re-submit the consent form.', 'Il était d''enregistrer les signatures de problème, s''il vous plaît revenir en arrière et re-soumettre le formulaire de consentement.'),
+(543, 'addorder_uploading', 'Uploading', 'ajout'),
+(544, 'addorder_invalidfile', 'Invalid file type.', 'Type de fichier non valide.'),
+(545, 'addorder_next', 'Next', 'Suivant'),
+(546, 'addorder_orderforms', 'Order Forms', 'Bons de commande'),
+(547, 'addorder_notified', 'You will be notified once it\\''s processed.', 'Vous serez averti une fois qu\\''il est traité.'),
+(548, 'upload_none', 'No attachments', 'Pas de pièces jointes'),
+(549, 'forms_selectone', 'Please select at least one option', 'S''il vous plaît sélectionner au moins une option'),
+(550, 'forms_signplease', 'Please provide your signature to confirm.', 'S''il vous plaît fournir votre signature pour confirmer.'),
+(551, 'forms_missingid', 'Missing the required piece of ID', 'Manquer la pièce d''identité requise'),
+(552, 'forms_missingabstract', 'Missing the abstract consent form', 'Manque le formulaire de consentement abstraite'),
+(553, 'forms_pleaseconfirm', 'Please confirm that you have read the conditions.', 'S''il vous plaît confirmer que vous avez lu les conditions.'),
+(554, 'forms_fillall', 'Please fill out all the required fields.', 'S''il vous plaît remplir tous les champs obligatoires.'),
+(555, 'forms_savesig', 'Please save the signature before you proceed.', 'S''il vous plaît enregistrer la signature avant de poursuivre.'),
+(556, 'forms_datetime', 'Date/Time', 'Date/Heure'),
+(557, 'forms_clear', 'Clear', 'Effacer'),
+(558, 'forms_nosig', 'No signature supplied', 'Pas de signature fourni');
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

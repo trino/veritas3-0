@@ -1,11 +1,13 @@
-<?php if ($this->request->session()->read('debug')) {echo "<span style ='color:red;'>subpages/documents/mee_attach.php #INC203</span>";} 
- if(isset($_GET['order_id'])) {
-     $dii = $_GET['order_id'];
- } else {
-     $dii = $did;
- }
-copy2globals($strings, array("forms_browse", "dashboard_delete"));
-$strings2 = CacheTranslations($language, array("upload_%"), $settings, False);
+<?php
+    if ($this->request->session()->read('debug')) {echo "<span style ='color:red;'>subpages/documents/mee_attach.php #INC203</span>";}
+     if(isset($_GET['order_id'])) {
+         $dii = $_GET['order_id'];
+     } else {
+         $dii = $did;
+     }
+    copy2globals($strings, array("forms_browse", "dashboard_delete"));
+    $strings2 = CacheTranslations($language, array("upload_%"), $settings, False);
+    copy2globals($strings2, array("upload_none"));
 ?>
 
 <form id="form_tab15">
@@ -60,7 +62,7 @@ $strings2 = CacheTranslations($language, array("upload_%"), $settings, False);
 
         function nodocs($docsprinted){
             if($docsprinted==0){
-                echo '<div class="form-group row"><div class="col-md-12" align="center">No attachments</div></div>';
+                echo '<div class="form-group row"><div class="col-md-12" align="center">' . $GLOBALS["upload_none"] . '</div></div>';
             }
         }
 
@@ -288,7 +290,7 @@ $strings2 = CacheTranslations($language, array("upload_%"), $settings, False);
         if (printdivrequired($action, $forms, "id_piece", $DriverProvince, getattachment($mee_att, "id_piece1") . getattachment($mee_att, "id_piece2"))) {
             $docsprinted+=1; ?>
             <div class="col-md-12" style="margin-top: 15px;">
-                <div class="col-md-4" align="right">Upload 2 pieces of ID: </div>
+                <div class="col-md-4" align="right"><?= $strings2["upload_uploadpiec"]; ?>: </div>
                 <div class="col-md-8">
                     <span><a href="javascript:void(0)" class="btn btn-primary" id="mee_att_1"><?= $strings["forms_browse"]; ?></a>
                     &nbsp;<span class="uploaded">

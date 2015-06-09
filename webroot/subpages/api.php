@@ -415,8 +415,20 @@ function getprovinces($Language = "English", $IncludeUSA = False){
 
 function includejavascript($strings){
 ?>
-<SCRIPT>
+<SCRIPT>//pass data to form-wizard.js
     var language = '<?= $GLOBALS["language"]; ?>';
+    var SaveAndContinue = '<?= $strings["addorder_savecontinue"]; ?>';
+    var SaveAsDraft = '<?= $strings["forms_savedraft"]; ?>';
+    var Submit = '<?= $strings["forms_submit"]; ?>';
+    var Select = '<?= $strings["forms_select"]; ?>';
+    var SelectOne = '<?= $strings["forms_selectone"]; ?>';
+    var SignPlease = '<?= $strings["forms_signplease"]; ?>';
+    var MissingID = '<?= $strings["forms_missingid"]; ?>';
+    var MissingAbstract = '<?= $strings["forms_missingabstract"]; ?>';
+    var FillAll = '<?= $strings["forms_fillall"]; ?>';
+    var SaveSig = '<?= $strings["forms_savesig"]; ?>';
+    var Success = '<?= $strings["orders_success"]; ?>';
+
     function confirmdelete(Name){
         var text = "<?= $strings["dashboard_confirmdelete"]; ?>";
         return confirm(text.replace("%name%", Name));

@@ -81,7 +81,7 @@ $strings2 = CacheTranslations($language, array("verifs_%", "tasks_date", "file_a
                             <div class="col-md-3">
                                 <input type="text" class="form-control" name="supervisor_name[]" value="<?php echo $emp->address;?>" value="<?php echo $emp->supervisor_name;?>"/>
                             </div>
-                            <label class="control-label col-md-3"><?= $strings["forms_provincephone"]; ?>: </label>
+                            <label class="control-label col-md-3"><?= $strings["forms_phone"]; ?>: </label>
                             <div class="col-md-3">
                                 <input type="text" class="form-control" name="supervisor_phone[]" value="<?php echo $emp->supervisor_phone;?>"/>
                             </div>
@@ -190,7 +190,7 @@ $strings2 = CacheTranslations($language, array("verifs_%", "tasks_date", "file_a
                         </div>
 
                         <div class="form-group col-md-12">
-                        <label class="control-label col-md-3"><? $strings["tasks_date"]; ?>: </label>
+                        <label class="control-label col-md-3"><? $strings2["tasks_date"]; ?>: </label>
                         <div class="col-md-9">
                         <input type="text" class="form-control date-picker" name="signature_datetime[]" value="<?php echo $emp->signature_datetime;?>"/>
                         </div>

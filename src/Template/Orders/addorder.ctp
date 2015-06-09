@@ -14,7 +14,6 @@ if ($action == "Addorder") {
     $action = "Create" ;
     if ($did>0){ $action = "Edit";}
 }
-
 $doc_ext = array('pdf', 'doc', 'docx', 'txt', 'csv', 'xls', 'xlsx');
 $img_ext = array('jpg', 'jpeg', 'png', 'bmp', 'gif');
 if($did) {
@@ -44,10 +43,12 @@ $is_disabled = '';
 if (isset($disabled)){ $is_disabled = 'disabled="disabled"';}
 $settings = $this->requestAction('settings/get_settings');
 $language = $this->request->session()->read('Profile.language');
-$strings = CacheTranslations($language, array("orders_%", "forms_%", "documents_%"), $settings);
+$strings = CacheTranslations($language, array("orders_%", "forms_%", "documents_%", "profiles_null", "clients_addeditimage", "addorder_%"), $settings);
+if($language=="Debug"){$Trans = " [Trans]";} else {$Trans = "";}
+$title = $strings["orders_" . strtolower($action)];
 //<script src="<?php echo $this->request->webroot;  js/jquery.easyui.min.js" type="text/javascript"></script>
 //<script src="<?php echo $this->request->webroot;  js/ajaxupload.js" type="text/javascript"></script>
-
+includejavascript($strings);
 JSinclude($this,"js/jquery.easyui.min.js");
 JSinclude($this,"js/ajaxupload.js");
     ?>
@@ -68,7 +69,7 @@ JSinclude($this,"js/ajaxupload.js");
 <input type="hidden" id="tablename" value="<?php echo $table; ?>"/>
 
 <h3 class="page-title">
-    <?php echo $action;?> Order
+    <?= $title;?>
 </h3>
 <input type="hidden" id="dr" value="<?php if (isset($dr)) echo $dr; ?>"/>
 <div class="page-bar">
@@ -80,7 +81,7 @@ JSinclude($this,"js/ajaxupload.js");
         </li>
         <li>
             <a href="">
-                <?php echo $action;?>  Order
+                <?= $title; ?>
             </a>
         </li>
     </ul>
@@ -205,7 +206,7 @@ JSinclude($this,"js/ajaxupload.js");
                 $tab = 'nodisplay';
                 ?>
                 <div class="caption">
-                    <i class="fa fa-clipboard"></i>Order Forms
+                    <i class="fa fa-clipboard"></i><?= $strings ["addorder_orderforms"]; ?>
                 </div>
 
             </div>
@@ -228,7 +229,7 @@ JSinclude($this,"js/ajaxupload.js");
 												<span class="number">
 												1</span><br/>
 												<span class="desc">
-												<i class="fa fa-check"  align="center"></i> Applicant </span>
+												<i class="fa fa-check"  align="center"></i> <?= $strings["profiles_null"]; ?> </span>
                                         </a>
                                     </li>
                                 <?php }?>
@@ -267,6 +268,7 @@ JSinclude($this,"js/ajaxupload.js");
                                 //http://localhost/veritas3-0/profiles/edit/118
                                 //product settings
                                 //http://localhost/veritas3-0/profiles/settings
+                                $Fieldname = getFieldname("title", $language);
 
                                 foreach ($subdoccli as $sd) {
                                     $index+=1;
@@ -308,7 +310,7 @@ JSinclude($this,"js/ajaxupload.js");
                                                         <span class="number">
                                                         <?php echo $i; ?> </span><br/>
                                                         <span class="desc">
-                                                        <i class="fa fa-check"></i> <?php echo ucfirst($d->title); ?> </span>
+                                                        <i class="fa fa-check"></i> <?php echo ucfirst($d->$Fieldname) . $Trans; ?> </span>
                                                 </a>
                                             </li>
                                             <?php
@@ -325,7 +327,7 @@ JSinclude($this,"js/ajaxupload.js");
 												<span class="number">
 												<?php echo $i++;?></span><br/>
 												<span class="desc">
-												<i class="fa fa-check"></i> Confirmation </span>
+												<i class="fa fa-check"></i> <?= $strings["orders_confirmation"]; ?> </span>
                                     </a>
                                 </li>
                                 <li style="display: none;">
@@ -333,7 +335,7 @@ JSinclude($this,"js/ajaxupload.js");
 												<span class="number">
 												<?php echo $i++;?></span><br/>
 												<span class="desc">
-												<i class="fa fa-check"></i> Success </span>
+												<i class="fa fa-check"></i> <?= $strings["orders_success"]; ?> </span>
                                     </a>
                                 </li>
 
@@ -359,7 +361,7 @@ JSinclude($this,"js/ajaxupload.js");
                                     <br/>
                                     <br/>
                                     <br/>
-                                    <strong style="color: #111;font-size: 36px;">Please wait...</strong>
+                                    <strong style="color: #111;font-size: 36px;"><?= $strings["addorder_pleasewait"]; ?></strong>
                                     <br/><br/>
 
                                     <img
@@ -374,22 +376,22 @@ JSinclude($this,"js/ajaxupload.js");
                                 <div class="col-md-offset-3 col-md-9">
                                     <a href="javascript:;" class="btn default button-previous"
                                        onclick="$('#skip').val('0');">
-                                        <i class="m-icon-swapleft"></i> Back </a>
+                                        <i class="m-icon-swapleft"></i> <?= $strings["addorder_back"]; ?> </a>
 
                                     <a href="javascript:;" class="btn red button-next skip cont"
                                        onclick="$('#skip').val('1');">
-                                        Skip <i class="m-icon-swapdown m-icon-white"></i>
+                                        <?= $strings["addorder_skip"]; ?> <i class="m-icon-swapdown m-icon-white"></i>
                                     </a>
 
                                     <input type="hidden" id="skip" value="0"/>
                                     <a href="javascript:;" class="btn blue button-next cont"
                                        onclick="$('#skip').val('0');">
-                                        Save & Continue <i class="m-icon-swapright m-icon-white"></i>
+                                        <?= $strings["addorder_savecontinue"]; ?> <i class="m-icon-swapright m-icon-white"></i>
                                     </a>
 
 
                                     <a href="javascript:window.print();" class="btn btn-info button-submit"
-                                       onclick="$('#skip').val('0');">Print</a>
+                                       onclick="$('#skip').val('0');"><?= $strings["dashboard_print"]; ?></a>
                                 </div>
                             </div>
                         </div>
@@ -397,11 +399,11 @@ JSinclude($this,"js/ajaxupload.js");
 
                             <div class="alert alert-danger display-none">
                                 <button class="close" data-dismiss="alert"></button>
-                                You have some form errors. Please check below.
+                                <?= $strings["addorder_errors"]; ?>
                             </div>
                             <div class="alert alert-success display-none">
                                 <button class="close" data-dismiss="alert"></button>
-                                Your form validation is successful!
+                                <?= $strings["addorder_success"]; ?>
                             </div>
 
                             <div class="form-group col-md-12 uploaded_for">
@@ -462,10 +464,10 @@ JSinclude($this,"js/ajaxupload.js");
 
                             <?php
                             $k_c = 0;
-                            if(!isset($show_all2))
-                            {
+                            if(!isset($show_all2)) {
                                 $show_all2='all';
                             }
+
                             foreach ($subdoccli as $sd) {
                                 $d = $this->requestAction('/clients/getFirstSub/'.$sd->sub_id);
                                 $dx = $this->requestAction('/orders/getSubDetail/'.$sd->sub_id);
@@ -487,7 +489,7 @@ JSinclude($this,"js/ajaxupload.js");
                                                 $k_co = $tab_count;
                                         }
                                         ?>
-                                        <div class="tabber <?php echo $tab; ?>" id="tab<?php echo $tab_count; ?>">
+                                        <div class="tabber <?= $tab; ?>" id="tab<?php echo $tab_count; ?>">
                                             <?php
                                             if ($action == "View") {printdocumentinfo($d->id);}
                                             include('subpages/documents/' . $d->form); ?>
@@ -515,10 +517,10 @@ JSinclude($this,"js/ajaxupload.js");
                         <div class="row">
                             <div class="col-md-offset-3 col-md-9">
                                 <a href="javascript:;" class="btn default button-previous" onclick="$('#skip').val('0');">
-                                    <i class="m-icon-swapleft"></i> Back </a>
+                                    <i class="m-icon-swapleft"></i> <?= $strings["addorder_back"]; ?> </a>
 
                                 <a href="javascript:;" class="btn red button-next skip cont" onclick="$('#skip').val('1');">
-                                    Skip <i class="m-icon-swapdown m-icon-white"></i>
+                                    <?= $strings["addorder_skip"]; ?> <i class="m-icon-swapdown m-icon-white"></i>
                                 </a>
                                 <!--<a href="javascript:;" class="btn red skip" id="submit_dra"
                                            onclick="$('#skip').val('1');" style="display: inline-block;">
@@ -526,10 +528,10 @@ JSinclude($this,"js/ajaxupload.js");
                                         </a>-->
 
                                 <a href="javascript:;" class="btn blue button-next cont" onclick="$('#skip').val('0');">
-                                    Save & Continue <i class="m-icon-swapright m-icon-white"></i>
+                                    <?= $strings["addorder_savecontinue"]; ?> <i class="m-icon-swapright m-icon-white"></i>
                                 </a>
 
-                                <a href="javascript:window.print();" class="btn btn-info button-submit">Print</a>
+                                <a href="javascript:window.print();" class="btn btn-info button-submit"><?= $strings["dashboard_print"]; ?></a>
                             </div>
                         </div>
                     </div>
@@ -1407,7 +1409,7 @@ JSinclude($this,"js/ajaxupload.js");
         $('.tab-content button').hide();
         $('.tab-content a').hide();
         $('.nav a').show();
-        $('.cont').html('Next <i class="m-icon-swapright m-icon-white"></i>');
+        $('.cont').html('<?= $strings2["addorder_next"]; ?> <i class="m-icon-swapright m-icon-white"></i>');
         $('.cont').parent().find('.red').remove();
         $('.cont').each(function () {
             $(this).attr('id', 'nextview');
@@ -1480,13 +1482,13 @@ JSinclude($this,"js/ajaxupload.js");
             }
             if(draft==1)
             {
-                $('.blockmsg').html('<h4 class="block">Your Order Has Been Saved As Draft!</h4>'+
-                '<p>You can edit your order anytime.</p>')
+                $('.blockmsg').html('<h4 class="block"><?= $strings["addorder_orderdraft"]; ?>!</h4>'+
+                '<p><?= $strings["addorder_youcanedit"]; ?></p>')
             }
             else
             {
-                $('.blockmsg').html('<h4 class="block">Your Order Has Been Submitted!</h4>'+
-                '<p>You will be notified once it\'s processed.</p>')
+                $('.blockmsg').html('<h4 class="block"><?= $strings["addorder_ordersubmit"]; ?>!</h4>'+
+                '<p><?= $strings["addorder_notified"]; ?></p>')
             }
 
             var type = $(".tabber.active").prev('.tabber').find("input[name='document_type']").val();
@@ -1734,7 +1736,7 @@ JSinclude($this,"js/ajaxupload.js");
                     url: '<?php echo $this->request->webroot;?>orders/savedoc/<?php echo $cid;?>/' + $('#did').val() + '?draft=1&order_type=<?php if(isset($_GET['order_type']))echo $_GET['order_type'];?>&forms=<?php if(isset($_GET['forms']))echo $_GET['forms'];?>',
                     success: function (res) {
                         $('#did').val(res);
-                        var draftmode = '<h4 class="block">Your order has been saved as draft.</h4><p> You can edit the order by visiting the orders section inside draft. </p>'
+                        var draftmode = '<h4 class="block"><?= $strings["addorder_orderdraft"]; ?></h4><p> <?= $strings["addorder_youcanedit"]; ?> </p>'
                         $('#tab6 .note').html(draftmode);
                         $.ajax({
                             url: '<?php echo $this->request->webroot;?>orders/savedoc/<?php echo $cid;?>/' + $('#did').val() + '?draft=1&order_type=<?php if(isset($_GET['order_type']))echo $_GET['order_type'];?>&forms=<?php if(isset($_GET['forms']))echo $_GET['forms'];?>',
@@ -1803,7 +1805,7 @@ JSinclude($this,"js/ajaxupload.js");
                 $.post('<?php echo $this->request->webroot; ?>canvas/image_save.php', {imagedata: imageData}, function (response) {
                     if(response=='' && (numb=='3' || numb=='5' || numb=='4' || numb=='6'))
                     {
-                        alert('There was problem saving the signatures, please go back and re-submit the consent form.');
+                        alert('<?= $strings["addorder_problem"]; ?>');
                     }
                     if (numb == '1') {
 
@@ -1938,7 +1940,7 @@ JSinclude($this,"js/ajaxupload.js");
                         }
                         else
                         {
-                            alert('There was problem saving the signatures, please go back and re-submit the consent form.');
+                            alert('<?= $strings["addorder_problem"]; ?>');
                             $('#loading5').hide();
 
                         }
@@ -2042,7 +2044,7 @@ JSinclude($this,"js/ajaxupload.js");
         var total_count = $('.'+idname).data('count');
         $('.'+idname).data('count', parseInt(total_count) + 1);
         total_count = $('.'+idname).data('count');
-        var input_field = '<div  class="form-group col-md-12" style="padding-left:0;"><div class="col-md-12"><a href="javascript:void(0);" id="'+idname + total_count + '" class="btn btn-primary">Browse</a><input type="hidden" name="attach_doc[]" value="" class="'+idname + total_count + '_doc moredocs" /> <a href="javascript:void(0);" class = "btn btn-danger img_delete" id="delete_'+idname + total_count + '" title ="">Delete</a><span></span></div></div>';
+        var input_field = '<div  class="form-group col-md-12" style="padding-left:0;"><div class="col-md-12"><a href="javascript:void(0);" id="'+idname + total_count + '" class="btn btn-primary">Browse</a><input type="hidden" name="attach_doc[]" value="" class="'+idname + total_count + '_doc moredocs" /> <a href="javascript:void(0);" class = "btn btn-danger img_delete" id="delete_'+idname + total_count + '" title =""><?= $strings["dashboard_delete"]; ?></a><span></span></div></div>';
         $('.'+idname).append(input_field);
         initiate_ajax_upload1(idname + total_count, 'doc');
     }
@@ -2090,7 +2092,7 @@ JSinclude($this,"js/ajaxupload.js");
                 var id = f[1];
             }
 
-            var con = confirm('Are you sure you want to delete "' + file + '"?');
+            var con = confirmdelete(file);//confirm('Are you sure you want to delete "' + file + '"?');
             if (con == true) {
                 $.ajax({
                     type: "post",
@@ -2118,22 +2120,22 @@ JSinclude($this,"js/ajaxupload.js");
             action: act,
             name: 'myfile',
             onSubmit: function (file, ext) {
-                button.text('Uploading');
+                button.text('<?= $strings["addorder_uploading"]; ?>');
                 this.disable();
                 interval = window.setInterval(function () {
                     var text = button.text();
                     if (text.length < 13) {
                         button.text(text + '.');
                     } else {
-                        button.text('Uploading');
+                        button.text('<?= $strings["addorder_uploading"]; ?>');
                     }
                 }, 200);
             },
             onComplete: function (file, response) {
                 if (doc == "doc")
-                    button.html('Browse');
+                    button.html('<?= $strings["forms_browse"]; ?>');
                 else
-                    button.html('<i class="fa fa-image"></i> Add/Edit Image');
+                    button.html('<i class="fa fa-image"></i> <?= $strings["clients_addeditimage"]; ?>');
 
                 window.clearInterval(interval);
                 this.enable();
@@ -2195,7 +2197,7 @@ JSinclude($this,"js/ajaxupload.js");
                     $('.' + ID).val(response);
                 }
                 else {
-                    alert('Invalid file type.');
+                    alert('<?= $strings["addorder_invalidfile"]; ?>');
                 }
 
                 /* $("#picture").text("Select");
