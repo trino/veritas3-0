@@ -220,7 +220,7 @@ else{
         <div class="clearfix"></div>
         
         <div class="col-md-12">
-            <div class="col-md-6"><img src="<?php echo $webroot;?>img/gfs.png" style="width: 120px;" /></div>
+            <div class="col-md-6"><img src="<?php echo $webroot;?>img/gfs.png" style="width: 330px;" /></div>
             <div class="clearfix"></div>
         </div>
         <div class="clearfix"></div>
