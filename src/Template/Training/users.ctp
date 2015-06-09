@@ -71,9 +71,11 @@ Users
             <TH>Username</TH>
 
             <?php
+                $cols=0;
                 if($settings->mee == "ASAP Secured Training"){
                     $isASAP =true;
                     echo '<TH>Site Name</TH><TH>Division</TH>';
+                    $cols = 2;
                 }
             ?>
 
@@ -90,6 +92,7 @@ Users
                         if($isASAP){
                             echo $user->sitename . '</TD><TD>' . $user->asapdivision . '</TD><TD>';
                         }
+                        debug($user);
                         return true;
                     }
 
@@ -140,9 +143,9 @@ Users
                     }
 
                     if ($usercount==0) {
-                        echo '<TR><TD colspan="7" align="center">No one has taken this course yet</TD></TR>';
+                        echo '<TR><TD colspan="' . (5+$cols) . '" align="center">No one has taken this course yet</TD></TR>';
                     } else {
-                        echo '<TR><TD colspan="5" align="right">Average:</TD><TD>' . round($total/$usercount,2) . "%</TD><TD></TD></TR>";
+                        echo '<TR><TD colspan="' . (3+$cols) . '" align="right">Average:</TD><TD>' . round($total/$usercount,2) . "%</TD><TD></TD></TR>";
                     }
                 } else {
             ?>

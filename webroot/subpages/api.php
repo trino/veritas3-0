@@ -413,4 +413,21 @@ function getprovinces($Language = "English", $IncludeUSA = False){
     return $provinces;
 }
 
+function includejavascript($strings){
+?>
+<SCRIPT>
+    var language = '<?= $GLOBALS["language"]; ?>';
+    function confirmdelete(Name){
+        var text = "<?= $strings["dashboard_confirmdelete"]; ?>";
+        return confirm(text.replace("%name%", Name));
+    }
+</SCRIPT>
+<?php
+}
+
+function copy2globals($strings, $values){
+    foreach($values as $value){
+        $GLOBALS[$value] = $strings[$value];
+    }
+}
 ?>

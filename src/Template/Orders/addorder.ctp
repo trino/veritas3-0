@@ -44,7 +44,7 @@ $is_disabled = '';
 if (isset($disabled)){ $is_disabled = 'disabled="disabled"';}
 $settings = $this->requestAction('settings/get_settings');
 $language = $this->request->session()->read('Profile.language');
-$strings = CacheTranslations($language, "orders_%", $settings);
+$strings = CacheTranslations($language, array("orders_%", "forms_%", "documents_%"), $settings);
 //<script src="<?php echo $this->request->webroot;  js/jquery.easyui.min.js" type="text/javascript"></script>
 //<script src="<?php echo $this->request->webroot;  js/ajaxupload.js" type="text/javascript"></script>
 
@@ -75,7 +75,7 @@ JSinclude($this,"js/ajaxupload.js");
     <ul class="page-breadcrumb">
         <li>
             <i class="fa fa-home"></i>
-            <a href="<?php echo $this->request->webroot; ?>">Dashboard</a>
+            <a href="<?php echo $this->request->webroot; ?>"><?= $strings["dashboard_dashboard"]; ?></a>
             <i class="fa fa-angle-right"></i>
         </li>
         <li>
@@ -174,7 +174,7 @@ JSinclude($this,"js/ajaxupload.js");
     }
 
     if (isset($disabled)) { ?>
-        <a href="javascript:window.print();" class="floatright btn btn-primary">Print</a>
+        <a href="javascript:window.print();" class="floatright btn btn-primary"><?= $strings["dashboard_print"]; ?></a>
 
         <!--a href="" class="floatright btn btn-success">Re-Qualify</a>
         <a href="" class="floatright btn btn-info">Add to Task List</a-->
