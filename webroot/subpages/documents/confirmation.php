@@ -45,10 +45,10 @@
     $p = $forms_arr;
 
     $strings2 = CacheTranslations($language, array("score_products", "confirm_%", "forms_signplease"), $settings, False);
+//confirm_confirm
 ?>
 <div class="note note-success">
-    <h3 class="block col-md-12">MEE Order: <?php if(isset($_GET['order_type']))echo $_GET['order_type'];?> Confirmation
-    </h3>
+    <h3 class="block col-md-12"><?= ProcessVariables($language, $strings2["confirm_confirm"], array("name" => getpost("order_type"))); ?></h3>
 
     <div class="clearfix"></div>
 </div>

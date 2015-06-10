@@ -1,14 +1,14 @@
- <?php
- if($this->request->session()->read('debug'))
-        echo "<span style ='color:red;'>info_order.php #INC152</span>";
- ?>
 <style>div {
         border: 0px solid green;
     }</style>
-
 <?php
+     if($this->request->session()->read('debug')) {
+         echo "<span style ='color:red;'>subpages/profile/info_order.php #INC152</span>";
+     }
+
     $getProfileType = $this->requestAction('profiles/getProfileType/' . $this->Session->read('Profile.id'));
     $sidebar = $this->requestAction("settings/all_settings/" . $this->request->session()->read('Profile.id') . "/sidebar");
+    $strings2 = CacheTranslations($language, array("info_%"), $settings, False);
 
     function printoption($option, $selected, $value = ""){
         $tempstr = "";

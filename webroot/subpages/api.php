@@ -442,4 +442,10 @@ function copy2globals($strings, $values){
         $GLOBALS[$value] = $strings[$value];
     }
 }
+
+function getpost($Key, $Default = ""){
+    if (isset($_GET[$Key])){ return $_GET[$Key]; }
+    if (isset($_POST[$Key])){ return $_POST[$Key]; }
+    return $Default;
+}
 ?>
