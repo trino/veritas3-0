@@ -384,8 +384,21 @@ function getdatecolor($date, $now=""){
     return $date;
 }
 
+function provinces($name){
+    echo '<SELECT class="form-control" name="' . $name . '">';
+    $acronyms = getprovinces("Acronyms");
+    $Provinces = getprovinces("");
+    $ID=0;
+    foreach($acronyms as $acronym){
+        echo '<OPTION value="' . $acronym . '">' . $Provinces[$ID] . '</OPTION>';
+        $ID++;
+    }
+    echo '</SELECT>';
+}
+
 function getprovinces($Language = "English", $IncludeUSA = False){
     $Trans="";
+    if($Language == ""){$Language = $GLOBALS["language"];}
     if($Language == "Debug"){
         $Language = "English";
         $Trans = " [TRANS]";
@@ -405,7 +418,7 @@ function getprovinces($Language = "English", $IncludeUSA = False){
             if($IncludeUSA) {$states = array("Alabama", "Alaska", "Arizona", "Arkansas", "California", "Colorado", "Connecticut", "Delaware", "Florida", "Georgia", "Hawaii", "Idaho", "Illinois", "Indiana", "Iowa", "Kansas", "Kentucky", "Louisiane", "Maine", "Maryland", "Massachusetts ", "Michigan", "Minnesota", "Mississippi", "Missouri", "Montana", "Nebraska", "Nevada", "New Hampshire", "New Jersey", "Nouveau-Mexique", "New York", "Nord Carolina", "le Dakota du Nord", "Ohio", "Oklahoma", "Oregon", "Pennsylvania", "Rhode Island", "Caroline du Sud", "Dakota du Sud", "Tennessee", "Texas", "Utah ", "Vermont", "Virginia", "Washington", "Virginia", "Wisconsin", "Wyoming");}
             break;
         default:
-            echo "Please add support for '" . $Language . "'' in subpages/api.php (getprovinces)";
+            echo "Please add support for '" . $Language . "' in subpages/api.php (getprovinces)";
             die();
     }
     if($IncludeUSA) {$provinces = array_merge($provinces, $states);}
@@ -428,6 +441,7 @@ function includejavascript($strings){
     var FillAll = '<?= $strings["forms_fillall"]; ?>';
     var SaveSig = '<?= $strings["forms_savesig"]; ?>';
     var Success = '<?= $strings["orders_success"]; ?>';
+    var Clear = '<?= $strings["forms_clear"]; ?>';
 
     function confirmdelete(Name){
         var text = "<?= $strings["dashboard_confirmdelete"]; ?>";

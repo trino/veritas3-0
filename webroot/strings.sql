@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 09, 2015 at 10:52 PM
+-- Generation Time: Jun 10, 2015 at 10:34 PM
 -- Server version: 5.6.17
 -- PHP Version: 5.5.12
 
@@ -32,14 +32,14 @@ CREATE TABLE IF NOT EXISTS `strings` (
   `English` varchar(4096) NOT NULL,
   `French` varchar(4096) NOT NULL,
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=559 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=563 ;
 
 --
 -- Dumping data for table `strings`
 --
 
 INSERT INTO `strings` (`ID`, `Name`, `English`, `French`) VALUES
-(1, 'Date', '1433877637', '<-- This is used by the system to auto-update'),
+(1, 'Date', '1433883145', '<-- This is used by the system to auto-update'),
 (2, 'dashboard_affirmative', 'Yes', 'Oui'),
 (3, 'dashboard_negative', 'No', 'Non'),
 (4, 'dashboard_selectall', 'Select All', 'Tout Sélectionner'),
@@ -586,7 +586,10 @@ INSERT INTO `strings` (`ID`, `Name`, `English`, `French`) VALUES
 (555, 'forms_savesig', 'Please save the signature before you proceed.', 'S''il vous plaît enregistrer la signature avant de poursuivre.'),
 (556, 'forms_datetime', 'Date/Time', 'Date/Heure'),
 (557, 'forms_clear', 'Clear', 'Effacer'),
-(558, 'forms_nosig', 'No signature supplied', 'Pas de signature fourni');
+(558, 'forms_nosig', 'No signature supplied', 'Pas de signature fourni'),
+(560, 'confirm_confirm', 'MEE Order: %name% Confirmation', 'MEE Ordre: %name% Confirmation'),
+(561, 'upload_required', 'Required', 'Requis'),
+(562, 'forms_signhere', 'Please sign here then click save before proceeding', 'S''il vous plaît signer ici puis cliquez sur Enregistrer avant de continuer');
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

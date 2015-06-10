@@ -245,7 +245,7 @@
             $get_prov = $this->requestAction('/profiles/getDriverProv/'.$_GET['driver']);
             if(($this->request->params['action'] == 'addorder' || $this->request->params['action'] == 'add') && !$mee_more && in_array($get_prov,$lprov))
             {
-                makeBrowseButton(7, true, false, '<FONT COLOR="RED">* Required</FONT>');
+                makeBrowseButton(7, true, false, '<FONT COLOR="RED">* ' . $strings2["upload_required"] . '</FONT>');
             }
             if($did  && in_array($get_prov,$lprov)){
                 

@@ -3,7 +3,8 @@
         echo "<span style ='color:red;'>subpages/documents/consent_form.php #INC139</span>";
     //include_once 'subpages/filelist.php';
     if (isset($sub2)) { listfiles($sub2['con_at'], "attachments/", "", false, 3,false,'consent');     }
-    
+    includejavascript($strings);
+    $strings2 = CacheTranslations($language, array("consent_%", "file_attachfile", "tasks_date", "profiles_name"), $settings, False);
 ?>
 <form id="form_consent">
     <div class="form-group row">
@@ -12,15 +13,15 @@
     <div class="gndn">
         <div class="form-group row">
 
-            <div class="col-md-4"><label class="control-label">Surname: </label>
+            <div class="col-md-4"><label class="control-label"><?= $strings["forms_lastname"]; ?>: </label>
                 <input type="text" class="form-control required" name="last_name" value="<?php if (isset($consent_detail))echo $consent_detail->last_name;?>"/>
             </div>
 
-            <div class="col-md-4"><label class="control-label">First Name: </label>
+            <div class="col-md-4"><label class="control-label"><?= $strings["forms_firstname"]; ?>: </label>
                 <input type="text" class="form-control required" name="first_name" value="<?php if (isset($consent_detail))echo $consent_detail->first_name;?>"/>
             </div>
 
-            <div class="col-md-4"><label class="control-label">Middle Name: </label>
+            <div class="col-md-4"><label class="control-label"><?= $strings["forms_middlename"]; ?>: </label>
                 <input type="text" class="form-control" name="mid_name" value="<?php if (isset($consent_detail))echo $consent_detail->mid_name;?>"/>
             </div>
 
@@ -30,21 +31,21 @@
                 <input type="text" class="form-control" name="previous_last_name" value="<?php if (isset($consent_detail))echo $consent_detail->previous_last_name;?>"/>
             </div>
 
-            <div class="col-md-4"><label class="control-label">Place of Birth (Country): </label>
+            <div class="col-md-4"><label class="control-label"><?= $strings["forms_placeofbirth"]; ?> (<?= $strings["forms_country"]; ?>): </label>
                 <input type="text" class="form-control" name="place_birth_country" value="<?php if (isset($consent_detail))echo $consent_detail->place_birth_country;?>"/>
             </div>
 
 
-            <div class="col-md-4"><label class="control-label">Date of Birth: </label>
+            <div class="col-md-4"><label class="control-label"><?= $strings["forms_dateofbirth"]; ?>: </label>
                 <input type="text" class="form-control date-picker required" placeholder="YYYY-MM-DD" value="<?php if (isset($consent_detail))echo $consent_detail->birth_date;?>"
                        name="birth_date"/>
             </div>
 
-            <div class="col-md-4"><label class="control-label">Sex: </label>
+            <div class="col-md-4"><label class="control-label"><?= $strings["forms_gender"]; ?>: </label>
                 <input type="text" class="form-control" name="sex" value="<?php if (isset($consent_detail))echo $consent_detail->sex;?>"/>
             </div>
 
-            <div class="col-md-4"><label class="control-label">Phone Number: </label>
+            <div class="col-md-4"><label class="control-label"><?= $strings["forms_phone"]; ?>: </label>
                 <input type="text" class="form-control" name="phone" value="<?php if (isset($consent_detail))echo $consent_detail->phone;?>"/>
             </div>
 
@@ -80,13 +81,13 @@
                 <input type="text" class="form-control" placeholder="Apt/Unit" name="current_apt_unit" value="<?php if (isset($consent_detail))echo $consent_detail->current_apt_unit;?>"/>
             </div>
             <div class="col-md-2">
-                <input type="text" class="form-control required" placeholder="City" name="current_city" value="<?php if (isset($consent_detail))echo $consent_detail->current_city;?>"/>
+                <input type="text" class="form-control required" placeholder="<?= $strings["forms_city"]; ?>" name="current_city" value="<?php if (isset($consent_detail))echo $consent_detail->current_city;?>"/>
             </div>
             <div class="col-md-2">
                 <?php provinces("current_province"); ?>
             </div>
             <div class="col-md-3">
-                <input type="text" class="form-control required" placeholder="Postal Code" name="current_postal_code" value="<?php if (isset($consent_detail))echo $consent_detail->current_postal_code;?>"/>
+                <input type="text" class="form-control required" placeholder="<?= $strings["forms_postalcode"]; ?>" name="current_postal_code" value="<?php if (isset($consent_detail))echo $consent_detail->current_postal_code;?>"/>
             </div>
         </div>
 
@@ -102,14 +103,14 @@
                 <input type="text" class="form-control" placeholder="Apt/Unit" name="previous_apt_unit" value="<?php if (isset($consent_detail))echo $consent_detail->previous_apt_unit;?>"/>
             </div>
             <div class="col-md-2">
-                <input type="text" class="form-control" placeholder="City" name="previous_city" value="<?php if (isset($consent_detail))echo $consent_detail->previous_city;?>"/>
+                <input type="text" class="form-control" placeholder="<?= $strings["forms_city"]; ?>" name="previous_city" value="<?php if (isset($consent_detail))echo $consent_detail->previous_city;?>"/>
             </div>
             <div class="col-md-2">
                 <?php provinces("previous_province"); ?>
                 <!-- <input type="text" class="form-control" placeholder="Province" name="previous_province"/> -->
             </div>
             <div class="col-md-3">
-                <input type="text" class="form-control" placeholder="Postal Code" name="previous_postal_code" value="<?php if (isset($consent_detail))echo $consent_detail->last_name;?>"/>
+                <input type="text" class="form-control" placeholder="<?= $strings["forms_postalcode"]; ?>" name="previous_postal_code" value="<?php if (isset($consent_detail))echo $consent_detail->last_name;?>"/>
             </div>
         </div>
 
@@ -201,7 +202,7 @@
                 <input type="text" class="form-control" name="printed_name_company_witness" value="<?php if (isset($consent_detail))echo $consent_detail->printed_name_company_witness;?>"/>
             </div>
 
-            <div class="col-md-4"><label class="control-label">Company Location (Country): </label>
+            <div class="col-md-4"><label class="control-label">Company Location (<?= $strings["forms_country"]; ?>): </label>
                 <input type="text" class="form-control" name="company_location" value="<?php if (isset($consent_detail))echo $consent_detail->company_location;?>"/>
             </div>
 
@@ -239,21 +240,21 @@
                     <input type="text" class="form-control" name="criminal_given_name" value="<?php if (isset($consent_detail))echo $consent_detail->criminal_given_name;?>"/>
                 </div>
 
-                <div class="col-md-4"><label class="control-label">Sex: </label>
+                <div class="col-md-4"><label class="control-label"><?= $strings["forms_gender"]; ?>: </label>
                     <SELECT name="criminal_sex" class="form-control" >
-                        <OPTION>Male</OPTION>
-                        <OPTION>Female</OPTION>
+                        <OPTION><?= $strings["forms_male"]; ?></OPTION>
+                        <OPTION><?= $strings["forms_female"]; ?></OPTION>
                     </SELECT>
                     <!--<input type="text" class="form-control" name="criminal_sex"/>-->
                 </div>
 
 
-                <div class="col-md-4"><label class="control-label">Date of Birth: </label>
+                <div class="col-md-4"><label class="control-label"><?= $strings["forms_dateofbirth"]; ?>: </label>
                     <input type="text" class="form-control date-picker" placeholder="YYYY-MM-DD" value="<?php if (isset($consent_detail))echo $consent_detail->criminal_date_birth;?>"
                            name="criminal_date_birth"/>
                 </div>
 
-                <div class="col-md-4"><label class="control-label">Date: </label>
+                <div class="col-md-4"><label class="control-label"><?= $strings2["tasks_date"]; ?>: </label>
                     <input type="text" class="form-control date-picker" placeholder="YYYY-MM-DD" name="criminal_date" value="<?php if (isset($consent_detail))echo $consent_detail->criminal_date;?>"
                            value="<?php echo date("Y-m-d"); ?>"/>
                 </div>
@@ -264,14 +265,14 @@
                 <label class="control-label col-md-3">Current Address: </label>
 
                 <div class="col-md-3">
-                    <input type="text" class="form-control" placeholder="Address" name="criminal_current_address" value="<?php if (isset($consent_detail))echo $consent_detail->criminal_current_address;?>"/>
+                    <input type="text" class="form-control" placeholder="<?= $strings["forms_address"]; ?>" name="criminal_current_address" value="<?php if (isset($consent_detail))echo $consent_detail->criminal_current_address;?>"/>
                 </div>
                 <div class="col-md-3">
                     <?php provinces("criminal_current_province"); ?>
                     <!--                 <input type="text" class="form-control" placeholder="Province" name="criminal_current_province"/>-->
                 </div>
                 <div class="col-md-3">
-                    <input type="text" class="form-control" placeholder="Postal Code" value="<?php if (isset($consent_detail))echo $consent_detail->criminal_current_postal_code;?>"
+                    <input type="text" class="form-control" placeholder="<?= $strings["forms_postalcode"]; ?>" value="<?php if (isset($consent_detail))echo $consent_detail->criminal_current_postal_code;?>"
                            name="criminal_current_postal_code"/>
                 </div>
             </div>
@@ -468,7 +469,7 @@
                     and/or
                     affiliates to obtain the information authorized above.</p>
 
-                <label class="control-label col-md-2">Date: </label>
+                <label class="control-label col-md-2"><?= $strings2["tasks_date"]; ?>: </label>
 
                 <div class="col-md-2">
                     <input type="text" class="form-control date-picker" name="authorize_date"/>
@@ -479,7 +480,7 @@
                 </div>-->
                 <input type="hidden" class="form-control" name="authorize_signature" />
 
-                <label class="control-label col-md-3"> Name (Please Print): </label>
+                <label class="control-label col-md-3"> <?= $strings2["profiles_name"]; ?>: </label>
 
                 <div class="col-md-5">
                     <input type="text" class="form-control" name="authorize_name" value="<?php if (isset($consent_detail))echo $consent_detail->authorize_name;?>"/>
@@ -588,14 +589,14 @@
                                 $at++;
                                 ?>
                                 <div class="del_append_consent">
-                                    <label class="control-label col-md-3">Attach File: </label>
+                                    <label class="control-label col-md-3"><?= $strings2["file_attachfile"]; ?>: </label>
 
                                     <div class="col-md-6 pad_bot">
                                         <input type="hidden" class="consent<?php echo $at; ?>" name="attach_doc[]"
                                                value="<?php echo $pa->attachment; ?>"/>
-                                        <a href="#" id="consent<?php echo $at; ?>" class="btn btn-primary">Browse</a>
+                                        <a href="#" id="consent<?php echo $at; ?>" class="btn btn-primary"><?= $strings["forms_browse"]; ?></a>
                                         <a href="javascript:void(0);" class="btn btn-danger" id="delete_doc"
-                                           onclick="$(this).parent().remove();">Delete</a>
+                                           onclick="$(this).parent().remove();"><?= $strings["dashboard_delete"]; ?></a>
                                     <span class="uploaded"><?php echo $pa->attachment; ?>  <?php if ($pa->attachment) {
                                             $ext_arr = explode('.', $pa->attachment);
                                             $ext = end($ext_arr);
@@ -613,7 +614,7 @@
                                                     <source
                                                         src="<?php echo $this->request->webroot; ?>attachments/<?php echo str_replace('.mp4', '.ogg', $pa->attachment); ?>"
                                                         type="video/ogg">
-                                                    Your browser does not support the video tag.
+                                                    <?= $strings["forms_novideo"]; ?>
                                                 </video>
                                             <?php }
                                         } ?></span>
@@ -636,8 +637,7 @@
                 <div class="col-md-3">
                 </div>
                 <div class="col-md-9">
-                    <a href="javascript:void(0);" class="btn btn-success moremore" id="add_more_consent_doc">Add
-                        More</a>
+                    <a href="javascript:void(0);" class="btn btn-success moremore" id="add_more_consent_doc"><?= $strings["forms_addmore"]; ?></a>
                 </div>
             </div>
 

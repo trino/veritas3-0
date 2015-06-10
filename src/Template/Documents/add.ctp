@@ -12,25 +12,6 @@ if (isset($disabled)) {
     $view = "view";
 }
 
-function provinces($name){
-    echo '<SELECT class="form-control" name="' . $name . '">';
-    echo '<OPTION>Province</OPTION>';
-    echo '<OPTION value="AB">Alberta</OPTION>';
-    echo '<OPTION value="BC">British Columbia</OPTION>';
-    echo '<OPTION value="MB">Manitoba</OPTION>';
-    echo '<OPTION value="NB">New Brunswick</OPTION>';
-    echo '<OPTION value="NL">Newfoundland and Labrador</OPTION>';
-    echo '<OPTION value="NT">Northwest Territories</OPTION>';
-    echo '<OPTION value="NS">Nova Scotia</OPTION>';
-    echo '<OPTION value="NU">Nunavut</OPTION>';
-    echo '<OPTION value="ON">Ontario</OPTION>';
-    echo '<OPTION value="PE">Prince Edward Island</OPTION>';
-    echo '<OPTION value="QC">Quebec</OPTION>';
-    echo '<OPTION value="SK">Saskatchewan</OPTION>';
-    echo '<OPTION value="YT">Yukon</OPTION>';
-    echo '</SELECT>';
-}
-
 $settings = $this->requestAction('settings/get_settings');
 $action = ucfirst($param);
 if ($action == "Add") {

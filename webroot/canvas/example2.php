@@ -51,7 +51,7 @@ $_GET['num']=2;?>
     		<div class="links" style="margin-top: 5px;">
     			<strong style="display: none;">OPTIONS:</strong>
     			<a href="#" onclick='addImage();' style="display: none;">Add Image</a>
-    			<a href="javascript:void(0)" onclick='$("#test<?php echo $_GET['num'];?>").data("jqScribble").clear();'>Clear</a> 			
+    			<a href="javascript:void(0)" onclick='$("#test<?php echo $_GET['num'];?>").data("jqScribble").clear();'><?= $strings["forms_clear"]; ?></a>
                 <br /><br />
                 
     		</div>
