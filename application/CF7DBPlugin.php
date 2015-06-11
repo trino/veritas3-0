@@ -699,7 +699,6 @@ class CF7DBPlugin extends CF7DBPluginLifeCycle implements CFDBDateFormatter {
 		$data["uploaded_for"] = $uploaded_for;
 		$data["draft"] = $draft;
 		$this->insertdb($conn, "documents", $data);
-		print_r($data);
 		//die("<BR>Current date: " . $this->offsettime(0, "hours"));
 		return mysqli_insert_id($conn);
 	}
@@ -724,18 +723,18 @@ class CF7DBPlugin extends CF7DBPluginLifeCycle implements CFDBDateFormatter {
 		if($data["gender"]){
 			$gender = substr($data["gender"], 0, 1);
 			$text = array("M" => 1, "F" => 2, "N" => 3);//Male|Female|Not Specified
-			$whysearch = $text[$whysearch];
+			$gender = $text[$gender];
 		}
 		
 		$data2 = array("document_id" => $docid, "order_id" => $orderid);
 		//customer
-		$data2["custname"]			= $data["yourname"];
+		$data2["custname"]			= $data["yourfirstname"] . " " . $data["yourlastname"];
 		$data2["custcompany"]		= $data["yourcompany"];
 		$data2["custemail"]			= $data["your-email"];
 		//subject
 		$data2["fullname"]			= $data["your-name"];
 		$data2["maidenname"]		= $data["maiden-name"];
-		$data2["gender"]			= $data["gender"];
+		$data2["gender"]			= $gender;
 		$data2["dateofbirth"]		= $data["DateOfBirth"];
 		$data2["email"]				= $data["your-email"];
 		$data2["email1"]			= $data["subject-email"] . ", " . $data["email-alternate"];
@@ -788,7 +787,6 @@ class CF7DBPlugin extends CF7DBPluginLifeCycle implements CFDBDateFormatter {
 	
 	function hitwebservice($data){//subtype=1
 		$URL = $this->veritaswebroot() . "script.php";
-		$names = explode(" ", $data["your-name"]);
 		$data3 = array("work-phone", "email-alternate", "linkedin", "blog", "other", "workplace-address", "relations", "locations", "vehicles", "productname", "market-value", "street-value", "narcotic","coworkers", "equipment", "intersections");//missing data: keywords, workplace events
 		foreach($data3 as $Key => $Value){
 			if($data[$Value]) {
@@ -797,9 +795,8 @@ class CF7DBPlugin extends CF7DBPluginLifeCycle implements CFDBDateFormatter {
 		}		
 		$data2 = array("search_type" 	=> "footprint");
 		$data2["order_no"]				= "";
-		$data2["isb_firstNameIfDiff"]	= $names[0];
-		$data2["isb_lastNameIfDiff"]	= "";
-		if( isset($names[1]) ){$data2["isb_lastNameIfDiff"]	= $names[1];}
+		$data2["isb_firstNameIfDiff"]	= $data["yourfirstname"];
+		$data2["isb_lastNameIfDiff"]	= $data["yourlastname"];
 		$data2["isb_maidenName"]		= $data["maiden-name"];
 		$data2["isb_Gender"]			= $data["gender"];
 		$data2["isb_DOB"]				= $data["DateOfBirth"];
@@ -826,7 +823,7 @@ class CF7DBPlugin extends CF7DBPluginLifeCycle implements CFDBDateFormatter {
 	
 	function copytoveritas($data){
         if($data["title"] == "Social Media Footprint"){
-			$AJAX = "" //$this->hitwebservice($data);//returns a SOAP ID#
+			$AJAX = ""; //$this->hitwebservice($data);//returns a SOAP ID#
 			$conn = $this->connectdb("afimacsm_v_user", "Pass1234!", "afimacsm_veritas");//username/password needs to be kept up to date!
 			//81=user id for SMI site, 1=client id for SMI, 500=forms, PSA=Product acronym for physical surveillance
 			//Forms: 99=social media intake, 1603=investigatesintake form
