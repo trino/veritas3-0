@@ -1685,7 +1685,7 @@ JSinclude($this,"js/ajaxupload.js");
                     }
                 });
 
-            }, 1000);
+            }, 5000);
 
         });
 
