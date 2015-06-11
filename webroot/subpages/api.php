@@ -427,8 +427,8 @@ function getprovinces($Language = "English", $IncludeUSA = False){
 }
 
 function includejavascript($strings = "", $settings = ""){
-
-    $variables = array("SaveAndContinue" => "addorder_savecontinue", "SaveAsDraft" => "forms_savedraft", "Submit" => "forms_submit", "Select" => "forms_select", "SelectOne" => "forms_selectone", "SignPlease" => "forms_signplease", "MissingID" => "forms_missingid", "MissingAbstract" => "forms_missingabstract", "FillAll" => "forms_fillall", "SaveSig" => "forms_savesig", "Success" => "orders_success", "Clear" => "forms_clear");
+    $language =  $GLOBALS["language"];
+    $variables = array("SaveAndContinue" => "addorder_savecontinue", "SaveAsDraft" => "forms_savedraft", "Submit" => "forms_submit", "Select" => "forms_select", "SelectOne" => "forms_selectone", "SignPlease" => "forms_signplease", "MissingID" => "forms_missingid", "MissingAbstract" => "forms_missingabstract", "FillAll" => "forms_fillall", "SaveSig" => "forms_savesig", "Success" => "orders_success", "Clear" => "forms_clear", "ConfDelete" => "dashboard_confirmdelete", "FillAll" => "forms_fillall", "SelOne" => "forms_selectone");
     if (!$strings){
         $strings = CacheTranslations($GLOBALS["language"], array_values($variables), $settings, False);
     }
@@ -442,22 +442,19 @@ function includejavascript($strings = "", $settings = ""){
     }
     echo "\r\n";
 ?>
-    var language = '<?= $GLOBALS["language"]; ?>';
+    var language = '<?= $language; ?>';
 
     function confirmdelete(Name){
         var text = "<?= addslashes($strings["dashboard_confirmdelete"]); ?>";
         return confirm(text.replace("%name%", Name));
     }
-</SCRIPT>
-<SCRIPT>
-    $(document).ready(function () {
-        <?php
-          //  changevalidation("INPUT", $strings["forms_fillall"]);
-          //  changevalidation("SELECT", $strings["forms_selectone"]);
-        ?>
-    });
-</SCRIPT>
-<?php
+    <?php if($language != "English" && $language != "Debug") {
+        echo '$(document).ready(function () {';
+        changevalidation("INPUT", $strings["forms_fillall"]);
+        changevalidation("SELECT", $strings["forms_selectone"]);
+        echo '});';
+    }
+    echo '</SCRIPT>';
     $strings["hasJS"] = true;
     return true;
 }
