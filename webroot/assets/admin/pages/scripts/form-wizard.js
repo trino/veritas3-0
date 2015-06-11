@@ -64,7 +64,7 @@ var FormWizard = function () {
             }
 
             $("#country_list").select2({
-                placeholder: Select,
+                placeholder: 'Select',
                 allowClear: true,
                 formatResult: format,
                 formatSelection: format,
@@ -146,8 +146,8 @@ var FormWizard = function () {
 
                 messages: { // custom messages for radio buttons and checkboxes
                     'payment[]': {
-                        required: SelectOne,
-                        minlength: jQuery.validator.format(SelectOne)
+                        required: 'SelectOne',
+                        minlength: jQuery.validator.format('SelectOne')
                     }
                 },
 
