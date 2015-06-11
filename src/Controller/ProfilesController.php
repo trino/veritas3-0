@@ -1361,19 +1361,18 @@ class ProfilesController extends AppController{
                         $from = 'info@' . $path;// 'array('info@' . $path => "ISB MEE");
                         $to = $em;
 
-                        $sub = 'Profile Created: ' . $_POST['username'];
-                        $msg = 'Domain: ' . $path .
-                            '<br/>Created By: ' . $uq->username .
-                            '<br/>On: ' . date('Y-m-d') .
-                            '<br>Profile Type: ' . $protype .
-                            '<br/>Username: ' . $_POST['username'];
+                        $sub = "Welcome to MEE";
+                        $msg = "Thank you for registering with Making Eligibility Easy. You are now able to login, navigate and place orders on the MEE system.<br><br>Your login credentials are as follows:<br>" .
+                            "<br>Login: <a href='https://isbmeereports.com'>https://isbmeereports.com</a>" .
+                            "<br/>Username: "  . $_POST['username'];
+
                         $this->Mailer->sendEmail($from, $to, $sub, $msg);
                         //$this->sendEmail($to, $sub, $msg);
                         if (isset($_POST["emailcreds"]) && $_POST["emailcreds"] == "on" && strlen(trim($_POST["email"])) > 0) {
 
                             if ($password) {
                                 $msg .= "<br/>Password: " . $password;
-                                $msg .= "<br />Click <a href='" . LOGIN . "'>here</a> to login<br /><br /> Regards,<br /> The " . $settings->mee . " Team";
+                                $msg .= "<br><br>If you have questions or would like training on how to use the system please contact your Account Manager, Paul Clement- pclement@isbc.ca, who will be happy to assist.<br><br>Regards,<br>The MEE Team";
                             }
 
                             $this->Mailer->sendEmail($from, $_POST["email"], $sub, $msg);

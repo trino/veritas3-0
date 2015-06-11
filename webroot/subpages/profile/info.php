@@ -815,11 +815,11 @@ function printprovinces($language, $name, $selected = "", $isdisabled = "", $isr
                                     //   listfiles($client_docs, "img/jobs/",'profile_doc',$delete);
                                 }
                                 ?>
-                                <div class="form-group col-md-12 col-sm-12">
+                                <div class="form-group col-md-4 col-sm-4">
                                    
                
-                                <label class="control-label col-md-6"> <?= $strings["forms_hearaboutus"]; ?></label>
-                                    <div class="col-md-6">              
+                                <!--label class="control-label col-md-6"> <?= $strings["forms_hearaboutus"]; ?></label-->
+                                    <div class="">
                                         <select name="hear" class="form-control">
                                             <option value="Referral" <?php if(isset($p)&& $p->hear=='Referral')echo 'selected';?>><?= $strings["forms_hearaboutus"]; ?></option>
                                             <option value="Company Website"  <?php if(isset($p)&& $p->hear=='Company Website')echo 'selected';?>><?= $strings["forms_companywebsite"]; ?></option>
