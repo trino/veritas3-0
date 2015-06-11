@@ -192,7 +192,7 @@
 
                                 <?php if ($settings->mee == "MEE") { ?>
 
-                                <th title="Order ID" style="max-width: 58px;"><?= $this->Paginator->sort('oid', $strings["documents_orderid"]); ?></th>
+                                <th title="Order ID" ><?= $this->Paginator->sort('oid', $strings["documents_orderid"]); ?></th>
                                 <?php } ?>
 
                                 <th><?= $this->Paginator->sort('user_id', $strings["documents_submittedby"]); ?><?php if (isset($end)) echo $end;
