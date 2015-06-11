@@ -576,7 +576,7 @@ $strings2 = CacheTranslations($language, array("verifs_%", "file_attachfile", "t
                     $('#add_more_edu_doc').click(function () {
                         var count = $('.more_edu_doc').data('edu');
                         $('.more_edu_doc').data('edu', parseInt(count) + 1);
-                        $('.more_edu_doc').append('<div class="del_append_edu"><label class="control-label col-md-3"></label><div class="col-md-6 pad_bot"><input type="hidden" name="attach_doc[]" class="edu' + $('.more_edu_doc').data('edu') + '" /><a href="javascript:void(0);" id="edu' + $('.more_edu_doc').data('edu') + '" class="btn btn-primary"><?= $strings["forms_browse"]; ?></a> <a  href="javascript:void(0);" class="btn btn-danger delete_edu_doc">Delete</a> <span class="uploaded"></span></div></div><div class="clearfix"></div>');
+                        $('.more_edu_doc').append('<div class="del_append_edu"><label class="control-label col-md-3"></label><div class="col-md-6 pad_bot"><input type="hidden" name="attach_doc[]" class="edu' + $('.more_edu_doc').data('edu') + '" /><a href="javascript:void(0);" id="edu' + $('.more_edu_doc').data('edu') + '" class="btn btn-primary"><?= addslashes($strings["forms_browse"]); ?></a> <a  href="javascript:void(0);" class="btn btn-danger delete_edu_doc">Delete</a> <span class="uploaded"></span></div></div><div class="clearfix"></div>');
                         fileUpload('edu' + $('.more_edu_doc').data('edu'));
                     });
 

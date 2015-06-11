@@ -5,6 +5,8 @@
             $CRLF = "\r\n";
             echo "page=". $page . $CRLF;
             echo "language=". $language . $CRLF;
+        } elseif(isset($text)) {
+            echo $text;
         }
         ?></TEXTAREA>
     <BR>

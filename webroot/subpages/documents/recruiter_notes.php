@@ -69,7 +69,7 @@
                 url: '<?php echo $this->request->webroot;?>profiles/deleteNote/'+ID,
                 success: function (response) {
                     $('#dnote_'+ID).parent().parent().remove();
-                    alert('<?= $strings["forms_notedeleted"]; ?>');
+                    alert('<?= addslashes($strings["forms_notedeleted"]); ?>');
                 }
             });
         }
@@ -89,7 +89,7 @@
         });
         $('#add_recruiter').click(function () {
             if ($('#recruiter_notes').val() == '') {
-                alert('<?= $strings["forms_notenotsaved"]; ?>');
+                alert('<?= addslashes($strings["forms_notenotsaved"]); ?>');
                 $('#recruiter_notes').focus();
             }
             else {
@@ -105,7 +105,7 @@
                                 //alert('Note added successfully');
                             } else {
                                 $('#desc'+$('#rid').val()).html($('#recruiter_notes').val());
-                                alert('<?= $strings["forms_notesaved"]; ?>');
+                                alert('<?= addslashes($strings["forms_notesaved"]); ?>');
                             }
                             $('#rid').val('0');
                             $('#recruiter_notes').val('');

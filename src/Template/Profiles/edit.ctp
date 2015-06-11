@@ -59,7 +59,7 @@
     if ($param != "add" && $userID == $this->request->params["pass"][0]) {
         include_once('subpages/profile/theme.php');
     }
-
+    //includejavascript($strings);
 ?>
 <!-- END SAMPLE PORTLET CONFIGURATION MODAL FORM-->
 
@@ -409,12 +409,12 @@
                 }, 200);
             },
             onComplete: function (file, response) {
-                button.html('<i class="fa fa-image"></i> <?= $strings["clients_addeditimage"]; ?>');
+                button.html('<i class="fa fa-image"></i> <?= addslashes($strings["clients_addeditimage"]); ?>');
                 window.clearInterval(interval);
                 this.enable();
                 $("#clientpic").attr("src", '<?php echo $this->request->webroot;?>img/profile/' + response);
                 $('#client_img').val(response);
-                alert('<?= $strings["forms_datasaved"]; ?>');
+                alert('<?= addslashes($strings["forms_datasaved"]); ?>');
             }
         });
     }
@@ -438,11 +438,11 @@
             var nameId = 'msg_' + $(this).val();
             if ($(this).is(':checked')) {
                 addclient = '1';
-                msg = '<span class="msg" style="color:#45B6AF"> <?= $strings["forms_added"]; ?></span>';
+                msg = '<span class="msg" style="color:#45B6AF"> <?= addslashes($strings["forms_added"]); ?></span>';
             }
             else {
                 addclient = '0';
-                msg = '<span class="msg" style="color:red"> <?= $strings["forms_removed"]; ?></span>';
+                msg = '<span class="msg" style="color:red"> <?= addslashes($strings["forms_removed"]); ?></span>';
             }
 
             $.ajax({
@@ -464,11 +464,11 @@
             var msg = '';
             $('.addclientz').each(function () {
                 if ($(this).is(':checked')) {
-                    msg = '<span class="msg" style="color:#45B6AF"> <?= $strings["forms_added"]; ?></span>';
+                    msg = '<span class="msg" style="color:#45B6AF"> <?= addslashes($strings["forms_added"]); ?></span>';
                     client_id = client_id + "," + $(this).val();
                 }
                 else {
-                    msg = '<span class="msg" style="color:red"> <?= $strings["forms_removed"]; ?></span>';
+                    msg = '<span class="msg" style="color:red"> <?= addslashes($strings["forms_removed"]); ?></span>';
                 }
             });
 
@@ -482,7 +482,7 @@
         ?>
         $('#save_client_p1').click(function () {
 
-            $('#save_client_p1').text('<?= $strings["forms_saving"]; ?>');
+            $('#save_client_p1').text('<?= addslashes($strings["forms_saving"]); ?>');
 
             $("#pass_form").validate({
                 rules: {
@@ -529,14 +529,14 @@
             if ($(this).is(":checked")) {
                 var hired = 1;
                 var hired_date = tday;
-                msg = '<span class="msg" style="color:#45B6AF"> <?= $strings["forms_added"]; ?></span>';
+                msg = '<span class="msg" style="color:#45B6AF"> <?= addslashes($strings["forms_added"]); ?></span>';
                 $('.date_hired').val(tday);
                 $('.hired_date').show();
             }
             else {
                 var hired = 0;
                 var hired_date = '0000-00-00';
-                msg = '<span class="msg" style="color:red"> <?= $strings["forms_removed"]; ?></span>';
+                msg = '<span class="msg" style="color:red"> <?= addslashes($strings["forms_removed"]); ?></span>';
                 $('.date_hired').val('0000-00-00');
                 $('.hired_date').hide();
             }
@@ -556,11 +556,11 @@
             var msgs = '';
             if ($(this).is(":checked")) {
                 var hired = 1;
-                msg = '<span class="msg" style="color:#45B6AF"> <?= $strings["forms_added"]; ?></span>';
+                msg = '<span class="msg" style="color:#45B6AF"> <?= addslashes($strings["forms_added"]); ?></span>';
             }
             else {
                 var hired = 0;
-                msg = '<span class="msg" style="color:red"> <?= $strings["forms_removed"]; ?></span>';
+                msg = '<span class="msg" style="color:red"> <?= addslashes($strings["forms_removed"]); ?></span>';
             }
 
             $.ajax({

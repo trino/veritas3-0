@@ -29,7 +29,7 @@ if($language=="Debug"){$Trans = " [Trans]";} else {$Trans = "";}
 $title = $strings["orders_" . strtolower($action)];
 //<script src="<?php echo $this->request->webroot;  js/jquery.easyui.min.js" type="text/javascript"></script>
 //<script src="<?php echo $this->request->webroot;  js/ajaxupload.js" type="text/javascript"></script>
-includejavascript($strings);
+//includejavascript($strings);
 JSinclude($this,"js/jquery.easyui.min.js");
 JSinclude($this,"js/ajaxupload.js");
     ?>
@@ -1390,7 +1390,7 @@ JSinclude($this,"js/ajaxupload.js");
         $('.tab-content button').hide();
         $('.tab-content a').hide();
         $('.nav a').show();
-        $('.cont').html('<?= $strings2["addorder_next"]; ?> <i class="m-icon-swapright m-icon-white"></i>');
+        $('.cont').html('<?= addslashes($strings2["addorder_next"]); ?> <i class="m-icon-swapright m-icon-white"></i>');
         $('.cont').parent().find('.red').remove();
         $('.cont').each(function () {
             $(this).attr('id', 'nextview');
@@ -1463,13 +1463,13 @@ JSinclude($this,"js/ajaxupload.js");
             }
             if(draft==1)
             {
-                $('.blockmsg').html('<h4 class="block"><?= $strings["addorder_orderdraft"]; ?>!</h4>'+
-                '<p><?= $strings["addorder_youcanedit"]; ?></p>')
+                $('.blockmsg').html('<h4 class="block"><?= addslashes($strings["addorder_orderdraft"]); ?>!</h4>'+
+                '<p><?= addslashes($strings["addorder_youcanedit"]); ?></p>')
             }
             else
             {
-                $('.blockmsg').html('<h4 class="block"><?= $strings["addorder_ordersubmit"]; ?>!</h4>'+
-                '<p><?= $strings["addorder_notified"]; ?></p>')
+                $('.blockmsg').html('<h4 class="block"><?= addslashes($strings["addorder_ordersubmit"]); ?>!</h4>'+
+                '<p><?= addslashes($strings["addorder_notified"]); ?></p>')
             }
 
             var type = $(".tabber.active").prev('.tabber').find("input[name='document_type']").val();
@@ -1717,7 +1717,7 @@ JSinclude($this,"js/ajaxupload.js");
                     url: '<?php echo $this->request->webroot;?>orders/savedoc/<?php echo $cid;?>/' + $('#did').val() + '?draft=1&order_type=<?php if(isset($_GET['order_type']))echo $_GET['order_type'];?>&forms=<?php if(isset($_GET['forms']))echo $_GET['forms'];?>',
                     success: function (res) {
                         $('#did').val(res);
-                        var draftmode = '<h4 class="block"><?= $strings["addorder_orderdraft"]; ?></h4><p> <?= $strings["addorder_youcanedit"]; ?> </p>'
+                        var draftmode = '<h4 class="block"><?= addslashes($strings["addorder_orderdraft"]); ?></h4><p> <?= addslashes($strings["addorder_youcanedit"]); ?> </p>'
                         $('#tab6 .note').html(draftmode);
                         $.ajax({
                             url: '<?php echo $this->request->webroot;?>orders/savedoc/<?php echo $cid;?>/' + $('#did').val() + '?draft=1&order_type=<?php if(isset($_GET['order_type']))echo $_GET['order_type'];?>&forms=<?php if(isset($_GET['forms']))echo $_GET['forms'];?>',
@@ -1786,7 +1786,7 @@ JSinclude($this,"js/ajaxupload.js");
                 $.post('<?php echo $this->request->webroot; ?>canvas/image_save.php', {imagedata: imageData}, function (response) {
                     if(response=='' && (numb=='3' || numb=='5' || numb=='4' || numb=='6'))
                     {
-                        alert('<?= $strings["addorder_problem"]; ?>');
+                        alert('<?= addslashes($strings["addorder_problem"]); ?>');
                     }
                     if (numb == '1') {
                         $('#recruiter_signature').val(response);
@@ -1835,7 +1835,7 @@ JSinclude($this,"js/ajaxupload.js");
                     
                 }
                 else {
-                    alert('<?= $strings["dashboard_emailexists"]; ?>');
+                    alert('<?= addslashes($strings["dashboard_emailexists"]); ?>');
                     $('#driverEm').focus();
                     $('#driverEm').attr('style', 'border-color:red');
                     $('.button-previous').click();
@@ -1920,7 +1920,7 @@ JSinclude($this,"js/ajaxupload.js");
                         }
                         else
                         {
-                            alert('<?= $strings["addorder_problem"]; ?>');
+                            alert('<?= addslashes($strings["addorder_problem"]); ?>');
                             $('#loading5').hide();
 
                         }
@@ -2024,7 +2024,7 @@ JSinclude($this,"js/ajaxupload.js");
         var total_count = $('.'+idname).data('count');
         $('.'+idname).data('count', parseInt(total_count) + 1);
         total_count = $('.'+idname).data('count');
-        var input_field = '<div  class="form-group col-md-12" style="padding-left:0;"><div class="col-md-12"><a href="javascript:void(0);" id="'+idname + total_count + '" class="btn btn-primary">Browse</a><input type="hidden" name="attach_doc[]" value="" class="'+idname + total_count + '_doc moredocs" /> <a href="javascript:void(0);" class = "btn btn-danger img_delete" id="delete_'+idname + total_count + '" title =""><?= $strings["dashboard_delete"]; ?></a><span></span></div></div>';
+        var input_field = '<div  class="form-group col-md-12" style="padding-left:0;"><div class="col-md-12"><a href="javascript:void(0);" id="'+idname + total_count + '" class="btn btn-primary">Browse</a><input type="hidden" name="attach_doc[]" value="" class="'+idname + total_count + '_doc moredocs" /> <a href="javascript:void(0);" class = "btn btn-danger img_delete" id="delete_'+idname + total_count + '" title =""><?= addslashes($strings["dashboard_delete"]); ?></a><span></span></div></div>';
         $('.'+idname).append(input_field);
         initiate_ajax_upload1(idname + total_count, 'doc');
     }
@@ -2100,22 +2100,22 @@ JSinclude($this,"js/ajaxupload.js");
             action: act,
             name: 'myfile',
             onSubmit: function (file, ext) {
-                button.text('<?= $strings["addorder_uploading"]; ?>');
+                button.text('<?= addslashes($strings["addorder_uploading"]); ?>');
                 this.disable();
                 interval = window.setInterval(function () {
                     var text = button.text();
                     if (text.length < 13) {
                         button.text(text + '.');
                     } else {
-                        button.text('<?= $strings["addorder_uploading"]; ?>');
+                        button.text('<?= addslashes($strings["addorder_uploading"]); ?>');
                     }
                 }, 200);
             },
             onComplete: function (file, response) {
                 if (doc == "doc")
-                    button.html('<?= $strings["forms_browse"]; ?>');
+                    button.html('<?= addslashes($strings["forms_browse"]); ?>');
                 else
-                    button.html('<i class="fa fa-image"></i> <?= $strings["clients_addeditimage"]; ?>');
+                    button.html('<i class="fa fa-image"></i> <?= addslashes(addslashes($strings["clients_addeditimage"])); ?>');
 
                 window.clearInterval(interval);
                 this.enable();
@@ -2177,7 +2177,7 @@ JSinclude($this,"js/ajaxupload.js");
                     $('.' + ID).val(response);
                 }
                 else {
-                    alert('<?= $strings["addorder_invalidfile"]; ?>');
+                    alert('<?= addslashes($strings["addorder_invalidfile"]); ?>');
                 }
 
                 /* $("#picture").text("Select");

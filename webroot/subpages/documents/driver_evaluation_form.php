@@ -3718,7 +3718,7 @@ $strings2 = CacheTranslations($language, array("drivereval_%", "tasks_date", "fi
        $('#add_more_driver_doc').click(function(){
         var count = $('#more_driver_doc').data('road');
         $('#more_driver_doc').data('road',parseInt(count)+1);
-        $('#more_driver_doc').append('<div class="del_append_driver"><label class="control-label col-md-4"></label><div class="col-md-8 pad_bot"><input type="hidden" class="road'+$('#more_driver_doc').data('road')+'" name="attach_doc[]" /><a href="#" id="road'+$('#more_driver_doc').data('road')+'" class="btn btn-primary"><?= $strings["forms_browse"]; ?></a> <a  href="javascript:void(0);" class="btn btn-danger" id="delete_driver_doc">Delete</a> <span class="uploaded"></span></div></div><div class="clearfix"></div>');
+        $('#more_driver_doc').append('<div class="del_append_driver"><label class="control-label col-md-4"></label><div class="col-md-8 pad_bot"><input type="hidden" class="road'+$('#more_driver_doc').data('road')+'" name="attach_doc[]" /><a href="#" id="road'+$('#more_driver_doc').data('road')+'" class="btn btn-primary"><?= addslashes($strings["forms_browse"]); ?></a> <a  href="javascript:void(0);" class="btn btn-danger" id="delete_driver_doc">Delete</a> <span class="uploaded"></span></div></div><div class="clearfix"></div>');
         fileUpload('road'+$('#more_driver_doc').data('road'));
        }); 
        

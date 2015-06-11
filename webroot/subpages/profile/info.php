@@ -17,7 +17,7 @@ $getProfileType = $this->requestAction('profiles/getProfileType/' . $userID);
 
 function printoption($option, $selected, $value = ""){
     $tempstr = "";
-    if ($option == $selected) {
+    if ($option == $selected || $value == $selected) {
         $tempstr = " selected";
     }
     if (strlen($value) > 0) {
@@ -1058,7 +1058,7 @@ function printprovinces($language, $name, $selected = "", $isdisabled = "", $isr
         });
         $('#save_clientz').submit(function (event) {
             event.preventDefault();
-            $('#savepro').text("Saving...");
+            $('#savepro').text("<?= addslashes($strings["forms_saving"]); ?>");
             var strs = $(this).serialize();
             $('#save_clientz').each(function () {
                 strs = strs + '&' + $(this).attr('name') + '=' + $(this).val();
@@ -1074,7 +1074,7 @@ function printprovinces($language, $name, $selected = "", $isdisabled = "", $isr
                 success: function (res) {
                     res = res.replace(' ', '');
                     if (res != 0 && !isNaN(res)) {
-                        $('#savepro').text("<?= $strings["forms_savechanges"]; ?>");
+                        $('#savepro').text("<?= addslashes($strings["forms_savechanges"]); ?>");
                         $('.flash').show();
                         $('.flash').fadeOut(3500);
                         window.location.href = '<?php echo $this->request->webroot;?>profiles/edit/' + res;

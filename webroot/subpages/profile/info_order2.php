@@ -544,7 +544,7 @@
                     return;
                 }
                 if ($('.selecting_driver').val() == '') {
-                    alert('<?= $strings["infoorder_alertselectdriver"];?>');
+                    alert('<?= addslashes($strings["infoorder_alertselectdriver"]);?>');
                     $('#s2id_selecting_driver .select2-choice').attr('style', 'border:1px solid red;');
                     $('html,body').animate({scrollTop: $('#s2id_selecting_driver .select2-choice').offset().top}, 'slow');
                     return false;

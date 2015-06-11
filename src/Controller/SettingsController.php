@@ -345,6 +345,24 @@ class SettingsController extends AppController {
         return false;
     }
 
+    function printtable($Table, $columnname = "title", $language = "French"){
+        $data = "table=" . $Table;
+        $data .= "\r\nlanguage=" . $language;
+        $data .= "\r\ncolumnname=" . $columnname;
+        $columns =  TableRegistry::get($Table)->find('all');
+        $col2 = $columnname . $language;
+        foreach($columns as $column){
+            if (isset($_GET["noequals"])){
+                if(!$column->$col2){
+                    $data .= "\r\n" . $column->$columnname;
+                }
+            } else {
+                $data .= "\r\n" . $column->$columnname . "=" . $column->$col2;
+            }
+        }
+        return $data;
+    }
+
     function translate(){
         if (isset($_GET["fixorders"])){
             $this->fixorders();
@@ -355,8 +373,17 @@ class SettingsController extends AppController {
         $Page = "";
         $Language="English";
         $Data = "";
+        $Table = "";
         $CRLF = "\r\n";
         $ditit=0;
+        $columnname = "title";
+        if (isset($_GET["table"]))  {
+            if (isset($_GET["column"])) {
+                $columnname = $_GET["column"];
+            }
+            $this->set("text", $this->printtable($_GET["table"], $columnname));
+            $table=$_GET["table"];
+        }
         if (isset($_POST["data"])){
             $variables = explode($CRLF, $_POST["data"]);
             $CRLF="<BR>";
@@ -364,6 +391,16 @@ class SettingsController extends AppController {
                 if(trim($line)) {
                     $columns = explode("=", $line);
                     switch (strtolower($columns[0])){
+                        case "table":
+                            $Page = "";
+                            $table=$columns[1];
+                            $Data.=$CRLF . "Table set to: " . $table;
+                            $Table = TableRegistry::get($table);
+                            break;
+                        case "columnname":
+                            $columnname = $columns[1];
+                            $Data.=$CRLF . "Columnn set to: " . $columnname;
+                            break;
                         case "page":
                             $Page=$columns[1];
                             if (substr($Page,-1) != "_") { $Page.="_";}
@@ -374,25 +411,30 @@ class SettingsController extends AppController {
                             $Data.=$CRLF . "Language set to: " . $Language;
                             break;
                         default:
-                            foreach($columns as $column){
-                                $column = trim($column);
-                            }
-                            if(count($columns)==1) {
-                                $columns[1]=$columns[0];
-                            }
-                            $columns[0] = strtolower(str_replace(" " , "", $columns[0]));
-                            $ditit++;
-                            if(count($columns)==2) {
-                                if($this->tablehaskey($Table, 'Name', $Page . $columns[0])){
-                                    $Table->query()->update()->set([$Language =>  $columns[1]])->where(['Name' => $Page . $columns[0]])->execute();
-                                    $Data .= $CRLF . $ditit . ") update " . $Page . $columns[0] . "(" . $Language . ") = " . $columns[1];
-                                } else {
-                                    $Table->query()->insert(['Name', $Language])->values(['Name' => $Page . $columns[0], $Language => $columns[1]])->execute();
-                                    $Data .= $CRLF . $ditit . ") insert " . $Page . $columns[0] . "(" . $Language . ") = " . $columns[1];
+                            if($table){
+                                $Table->query()->update()->set([$columnname . $Language  => $columns[1]])->where([$columnname => $columns[0]])->execute();
+                                $Data .= $CRLF . ") update " . $columns[0] . "(" . $Language . ") = " . $columns[1];
+                            } elseif ($Page) {
+                                foreach ($columns as $column) {
+                                    $column = trim($column);
                                 }
-                            } else {
-                                $Table->query()->insert(['Name', 'English', 'French'])->values(['Name' => $Page . $columns[0], 'English' => $columns[1], 'French' => $columns[2]])->execute();
-                                $Data.=$CRLF . $ditit . ") insert " . $Page . $columns[0] . "(English) = '" . $columns[1] . "' (French) = '" . $columns[2] . "'";
+                                if (count($columns) == 1) {
+                                    $columns[1] = $columns[0];
+                                }
+                                $columns[0] = strtolower(str_replace(" ", "", $columns[0]));
+                                $ditit++;
+                                if (count($columns) == 2) {
+                                    if ($this->tablehaskey($Table, 'Name', $Page . $columns[0])) {
+                                        $Table->query()->update()->set([$Language => $columns[1]])->where(['Name' => $Page . $columns[0]])->execute();
+                                        $Data .= $CRLF . $ditit . ") update " . $Page . $columns[0] . "(" . $Language . ") = " . $columns[1];
+                                    } else {
+                                        $Table->query()->insert(['Name', $Language])->values(['Name' => $Page . $columns[0], $Language => $columns[1]])->execute();
+                                        $Data .= $CRLF . $ditit . ") insert " . $Page . $columns[0] . "(" . $Language . ") = " . $columns[1];
+                                    }
+                                } else {
+                                    $Table->query()->insert(['Name', 'English', 'French'])->values(['Name' => $Page . $columns[0], 'English' => $columns[1], 'French' => $columns[2]])->execute();
+                                    $Data .= $CRLF . $ditit . ") insert " . $Page . $columns[0] . "(English) = '" . $columns[1] . "' (French) = '" . $columns[2] . "'";
+                                }
                             }
                     }
                 }

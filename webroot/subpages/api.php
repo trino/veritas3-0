@@ -426,29 +426,56 @@ function getprovinces($Language = "English", $IncludeUSA = False){
     return $provinces;
 }
 
-function includejavascript($strings){
+function includejavascript($strings = "", $settings = ""){
+
+    $variables = array("SaveAndContinue" => "addorder_savecontinue", "SaveAsDraft" => "forms_savedraft", "Submit" => "forms_submit", "Select" => "forms_select", "SelectOne" => "forms_selectone", "SignPlease" => "forms_signplease", "MissingID" => "forms_missingid", "MissingAbstract" => "forms_missingabstract", "FillAll" => "forms_fillall", "SaveSig" => "forms_savesig", "Success" => "orders_success", "Clear" => "forms_clear");
+    if (!$strings){
+        $strings = CacheTranslations($GLOBALS["language"], array_values($variables), $settings, False);
+    }
+    echo "\r\n<SCRIPT>//pass data to form-wizard.js";
+    foreach($variables as $key => $value){
+        if (isset($strings[$value])) {
+            echo "\r\n" . '    var ' . $key . ' = "' . addslashes($strings[$value]) . '";';
+        } else {
+
+        }
+    }
+    echo "\r\n";
 ?>
-<SCRIPT>//pass data to form-wizard.js
     var language = '<?= $GLOBALS["language"]; ?>';
-    var SaveAndContinue = '<?= $strings["addorder_savecontinue"]; ?>';
-    var SaveAsDraft = '<?= $strings["forms_savedraft"]; ?>';
-    var Submit = '<?= $strings["forms_submit"]; ?>';
-    var Select = '<?= $strings["forms_select"]; ?>';
-    var SelectOne = '<?= $strings["forms_selectone"]; ?>';
-    var SignPlease = '<?= $strings["forms_signplease"]; ?>';
-    var MissingID = '<?= $strings["forms_missingid"]; ?>';
-    var MissingAbstract = '<?= $strings["forms_missingabstract"]; ?>';
-    var FillAll = '<?= $strings["forms_fillall"]; ?>';
-    var SaveSig = '<?= $strings["forms_savesig"]; ?>';
-    var Success = '<?= $strings["orders_success"]; ?>';
-    var Clear = '<?= $strings["forms_clear"]; ?>';
 
     function confirmdelete(Name){
-        var text = "<?= $strings["dashboard_confirmdelete"]; ?>";
+        var text = "<?= addslashes($strings["dashboard_confirmdelete"]); ?>";
         return confirm(text.replace("%name%", Name));
     }
 </SCRIPT>
+<SCRIPT>
+    $(document).ready(function () {
+        <?php
+          //  changevalidation("INPUT", $strings["forms_fillall"]);
+          //  changevalidation("SELECT", $strings["forms_selectone"]);
+        ?>
+    });
+</SCRIPT>
 <?php
+    $strings["hasJS"] = true;
+    return true;
+}
+
+function changevalidation($inputtype, $message){
+    ?>
+        var intputElements = document.getElementsByTagName("<?= $inputtype; ?>");
+        for (var i = 0; i < intputElements.length; i++) {
+            element = intputElements[i];
+            intputElements[i].oninvalid = function (e) {
+                e.target.setCustomValidity("");
+                if (!e.target.validity.valid) {
+                    var message = "<?= addslashes($message); ?>";
+                    e.target.setCustomValidity(message);
+                }
+            }
+        }
+    <?php
 }
 
 function copy2globals($strings, $values){

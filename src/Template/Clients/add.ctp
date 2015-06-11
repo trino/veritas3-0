@@ -33,6 +33,7 @@
         $action = "Create";
     }
     $title = $strings["clients_" . strtolower($action) . "client"];
+    //includejavascript($strings);
 ?>
 
 <h3 class="page-title">
@@ -875,7 +876,7 @@
                                     window.location = '<?php echo $this->request->webroot;?>clients/edit/' + res + '?flash';
                                 }
                                 else if (res == 'email') {
-                                    alert('<?= $strings["dashboard_emailexists"]; ?>');
+                                    alert('<?= addslashes($strings["dashboard_emailexists"]); ?>');
                                 }
                                 else if (res == 'Invalid Email') {
                                     $('#tab_1_1 input[type="email"]').focus();
@@ -887,9 +888,9 @@
                                 }
 
                                 else {
-                                    alert('<?= $strings["clients_notsaved"]; ?>');
+                                    alert('<?= addslashes($strings["clients_notsaved"]); ?>');
                                 }
-                                $('#save_client_p1').text('<?= $strings["forms_save"];?>');
+                                $('#save_client_p1').text('<?= addslashes($strings["forms_save"]);?>');
                             }
                         })
                     });
@@ -899,7 +900,7 @@
                     var total_count = $('.docMore').data('count');
                     $('.docMore').data('count', parseInt(total_count) + 1);
                     total_count = $('.docMore').data('count');
-                    var input_field = '<div  class="form-group"><div class="col-md-12" style="margin-top:10px;"><a href="javascript:void(0);" id="addMore' + total_count + '" class="btn btn-primary"><?= $strings["forms_browse"]; ?></a><input type="hidden" name="client_doc[]" value="" class="addMore' + total_count + '_doc moredocs" /><a href="javascript:void(0);" class = "btn btn-danger img_delete" id="delete_addMore' + total_count + '" title =""><?= $strings["dashboard_delete"];?></a><span></span></div></div>';
+                    var input_field = '<div  class="form-group"><div class="col-md-12" style="margin-top:10px;"><a href="javascript:void(0);" id="addMore' + total_count + '" class="btn btn-primary"><?= addslashes($strings["forms_browse"]); ?></a><input type="hidden" name="client_doc[]" value="" class="addMore' + total_count + '_doc moredocs" /><a href="javascript:void(0);" class = "btn btn-danger img_delete" id="delete_addMore' + total_count + '" title =""><?= $strings["dashboard_delete"];?></a><span></span></div></div>';
                     $('.docMore').append(input_field);
                     initiate_ajax_upload('addMore' + total_count, 'doc');
 
@@ -939,11 +940,11 @@
                     var total_count = $('.docMore').data('count');
                     $('.docMore').data('count', parseInt(total_count) + 1);
                     total_count = $('.docMore').data('count');
-                    var input_field = '<div style="display:block;margin:5px;"><a href="javascript;void(0);" id="addMore' + total_count + '" class="btn btn-primary"><?= $strings["forms_browse"]; ?></a><span></span><input type="hidden" name="client_doc[]" value="" class="addMore' + total_count + '_doc moredocs" /></div>';
+                    var input_field = '<div style="display:block;margin:5px;"><a href="javascript;void(0);" id="addMore' + total_count + '" class="btn btn-primary"><?= addslashes($strings["forms_browse"]); ?></a><span></span><input type="hidden" name="client_doc[]" value="" class="addMore' + total_count + '_doc moredocs" /></div>';
                     $('.docMore').append(input_field);
                     if (parseInt(total_count) > 1 && removeLink == 0) {
                         removeLink = 1;
-                        $('#addMoredoc').after('<a href="#" id="removeMore" class="btn btn-danger" onclick="removeMore(event,this)"><?= $strings["forms_removelast"];?></a>');
+                        $('#addMoredoc').after('<a href="#" id="removeMore" class="btn btn-danger" onclick="removeMore(event,this)"><?= addslashes($strings["forms_removelast"]);?></a>');
                         initiate_ajax_upload('addMore' + total_count, 'doc');
                     }
                 }
@@ -983,15 +984,15 @@
                                 if (text.length < 13) {
                                     button.text(text + '.');
                                 } else {
-                                    button.text('<?= $strings["forms_uploading"]; ?>');
+                                    button.text('<?= addslashes($strings["forms_uploading"]); ?>');
                                 }
                             }, 200);
                         },
                         onComplete: function (file, response) {
                             if (doc == "doc") {
-                                button.html('<?= $strings["forms_browse"];?>');
+                                button.html('<?= addslashes($strings["forms_browse"]);?>');
                             }else {
-                                button.html('<i class="fa fa-image"></i> <?= $strings["clients_addeditimage"]; ?>');
+                                button.html('<i class="fa fa-image"></i> <?= addslashes($strings["clients_addeditimage"]); ?>');
                             }
 
                             window.clearInterval(interval);

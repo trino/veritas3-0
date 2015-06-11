@@ -504,7 +504,7 @@
             }
             else
             {
-                var strings = '<div><span><a style="margin-bottom:5px;" href="javascript:void(0)" class="btn btn-primary additional" id="mee_att_'+last_id+'"><?= $strings["forms_browse"]; ?></a>&nbsp;<a style="margin-bottom:5px;" class="btn btn-danger" href="javascript:void(0);" onclick="$(this).parent().parent().remove();"><?= $GLOBALS["dashboard_delete"]; ?></a>&nbsp;<span class="uploaded"></span></span>'+
+                var strings = '<div><span><a style="margin-bottom:5px;" href="javascript:void(0)" class="btn btn-primary additional" id="mee_att_'+last_id+'"><?= addslashes($strings["forms_browse"]); ?></a>&nbsp;<a style="margin-bottom:5px;" class="btn btn-danger" href="javascript:void(0);" onclick="$(this).parent().parent().remove();"><?= $GLOBALS["dashboard_delete"]; ?></a>&nbsp;<span class="uploaded"></span></span>'+
                     '<input type="hidden" name="mee_attachments[]" class="mee_att_'+last_id+'" /></div>';
 
                 $('.mee_more').append(strings);

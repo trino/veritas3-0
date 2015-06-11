@@ -705,7 +705,7 @@ $(function(){
   $('#add_more_employ_doc').click(function(){
     var count = $('#more_employ_doc').data('emp');
     $('#more_employ_doc').data('emp',parseInt(count)+1);
-        $('#more_employ_doc').append('<div class="del_append_employ"><label class="control-label col-md-3"></label><div class="col-md-6 pad_bot"><input type="hidden" name="attach_doc[]" class="emp'+$('#more_employ_doc').data('emp')+'" /><a href="javascript:void(0);" id="emp'+$('#more_employ_doc').data('emp')+'" class="btn btn-primary"><?= $strings["forms_browse"]; ?></a> <a  href="javascript:void(0);" class="btn btn-danger" id="delete_employ_doc"><?= $strings["dashboard_delete"]; ?></a> <span class="uploaded"></span></div></div><div class="clearfix"></div>');
+        $('#more_employ_doc').append('<div class="del_append_employ"><label class="control-label col-md-3"></label><div class="col-md-6 pad_bot"><input type="hidden" name="attach_doc[]" class="emp'+$('#more_employ_doc').data('emp')+'" /><a href="javascript:void(0);" id="emp'+$('#more_employ_doc').data('emp')+'" class="btn btn-primary"><?= addslashes($strings["forms_browse"]); ?></a> <a  href="javascript:void(0);" class="btn btn-danger" id="delete_employ_doc"><?= $strings["dashboard_delete"]; ?></a> <span class="uploaded"></span></div></div><div class="clearfix"></div>');
         fileUpload('emp'+$('#more_employ_doc').data('emp'));
        }); 
        

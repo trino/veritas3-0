@@ -1457,7 +1457,7 @@ $title = $strings["index_" . strtolower($action) . "document"];
         var total_count = $('.'+idname).data('count');
             $('.'+idname).data('count', parseInt(total_count) + 1);
             total_count = $('.'+idname).data('count');
-            var input_field = '<div  class="form-group col-md-12" style="padding-left:15px;"><div class="col-md-12"><a href="javascript:void(0);" id="'+idname + total_count + '" class="btn btn-primary">Browse</a><input type="hidden" name="attach_doc[]" value="" class="'+idname + total_count + '_doc moredocs" /> <a href="javascript:void(0);" class = "btn btn-danger img_delete" id="delete_'+idname + total_count + '" title =""><?= $strings["dashboard_delete"]; ?></a><span></span></div></div>';
+            var input_field = '<div  class="form-group col-md-12" style="padding-left:15px;"><div class="col-md-12"><a href="javascript:void(0);" id="'+idname + total_count + '" class="btn btn-primary"><?= addslashes($strings["forms_browse"]); ?></a><input type="hidden" name="attach_doc[]" value="" class="'+idname + total_count + '_doc moredocs" /> <a href="javascript:void(0);" class = "btn btn-danger img_delete" id="delete_'+idname + total_count + '" title =""><?= addslashes($strings["dashboard_delete"]); ?></a><span></span></div></div>';
             $('.'+idname).append(input_field);
             initiate_ajax_upload1(idname + total_count, 'doc');
     }
@@ -1928,7 +1928,7 @@ $title = $strings["index_" . strtolower($action) . "document"];
         });
         $('#addfiles').click(function () {
             //alert("ssss");
-            $('#doc').append('<div style="padding-top:10px;"><a href="#" class="btn btn-success">Browse</a> <a href="javascript:void(0);" class="btn btn-danger" onclick="$(this).parent().remove();"><?= $strings["dashboard_delete"]; ?></a><br/></div>');
+            $('#doc').append('<div style="padding-top:10px;"><a href="#" class="btn btn-success">Browse</a> <a href="javascript:void(0);" class="btn btn-danger" onclick="$(this).parent().remove();"><?= addslashes($strings["dashboard_delete"]); ?></a><br/></div>');
         });
         $('.nohide').show();
     });
@@ -2154,7 +2154,7 @@ $title = $strings["index_" . strtolower($action) . "document"];
         /* image upload ends */
     }
 </script>
-<?php includejavascript($strings);?>
+<?php //includejavascript($strings);?>
 <script>
     function changeclient_onchange(){
         var id = $('#changeclient').val();
@@ -2221,7 +2221,7 @@ $title = $strings["index_" . strtolower($action) . "document"];
                 if (doc == "doc")
                     button.html('Browse');
                 else
-                    button.html('<i class="fa fa-image"></i> <?= $strings["clients_addeditimage"]; ?>');
+                    button.html('<i class="fa fa-image"></i> <?= addslashes($strings["clients_addeditimage"]); ?>');
 
                 window.clearInterval(interval);
                 this.enable();
