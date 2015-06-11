@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 10, 2015 at 10:34 PM
+-- Generation Time: Jun 11, 2015 at 03:29 PM
 -- Server version: 5.6.17
 -- PHP Version: 5.5.12
 
@@ -32,14 +32,14 @@ CREATE TABLE IF NOT EXISTS `strings` (
   `English` varchar(4096) NOT NULL,
   `French` varchar(4096) NOT NULL,
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=563 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=583 ;
 
 --
 -- Dumping data for table `strings`
 --
 
 INSERT INTO `strings` (`ID`, `Name`, `English`, `French`) VALUES
-(1, 'Date', '1433883145', '<-- This is used by the system to auto-update'),
+(1, 'Date', '1433968493', '<-- This is used by the system to auto-update'),
 (2, 'dashboard_affirmative', 'Yes', 'Oui'),
 (3, 'dashboard_negative', 'No', 'Non'),
 (4, 'dashboard_selectall', 'Select All', 'Tout Sélectionner'),
@@ -589,7 +589,27 @@ INSERT INTO `strings` (`ID`, `Name`, `English`, `French`) VALUES
 (558, 'forms_nosig', 'No signature supplied', 'Pas de signature fourni'),
 (560, 'confirm_confirm', 'MEE Order: %name% Confirmation', 'MEE Ordre: %name% Confirmation'),
 (561, 'upload_required', 'Required', 'Requis'),
-(562, 'forms_signhere', 'Please sign here then click save before proceeding', 'S''il vous plaît signer ici puis cliquez sur Enregistrer avant de continuer');
+(562, 'forms_signhere', 'Please sign here then click save before proceeding', 'S''il vous plaît signer ici puis cliquez sur Enregistrer avant de continuer'),
+(563, 'consent_consent', 'Consent Form', 'Formulaire De Consentement'),
+(564, 'consent_release', 'Consent for the release of police information and disclosure of personal information', 'Consentement pour la divulgation de renseignements de la police et de la divulgation de renseignements personnels'),
+(565, 'consent_currentadd', 'Current Address', 'Adresse Actuelle'),
+(566, 'consent_previousad', 'Previous Address (if you have not lived at Current Address for more than 5 years)', 'Adresse précédente (si vous ne l''avez pas vécu à l''adresse actuelle depuis plus de 5 ans)'),
+(567, 'consent_streetandn', 'Street and Number', 'Rue et numéro'),
+(568, 'consent_apartmentu', 'Apartment/Unit', 'Appartement/Unité'),
+(569, 'consent_companynam', 'Company Name Requesting Search', 'Nom de la société Demande de Recherche'),
+(570, 'consent_printednam', 'Printed Name of Company Witness', 'Nom de la société Imprimé Témoin'),
+(571, 'consent_companyloc', 'Company Location', 'entreprise Région'),
+(572, 'consent_surname', 'Surname', 'nom de famille'),
+(573, 'consent_givenname', 'Given Name', 'Prénom'),
+(574, 'consent_offence', 'Offence', 'Infraction'),
+(575, 'consent_dateofsent', 'Date of Sentence', 'Date de la sentence'),
+(576, 'consent_location', 'Location', 'emplacement'),
+(577, 'consent_sigapplica', 'Signature of Applicant', 'Signature du demandeur'),
+(578, 'consent_sigwitness', 'Signature of Company Witness', 'Signature de la Compagnie de témoin'),
+(579, 'consent_lastupdate', 'LAST UPDATED', 'DERNIÈRE MISE À JOUR'),
+(580, 'consent_prevname', 'Previous Surname(s) or Maiden Name(s)', 'Nom Précédent(s) ou Nom de jeune fille(s)'),
+(581, 'consent_aliases', 'Aliases', 'Alias'),
+(582, 'consent_attachid', 'Attach ID', 'Fixez ID');
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

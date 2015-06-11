@@ -1,6 +1,7 @@
 <?php
- if($this->request->session()->read('debug'))
-        echo "<span style ='color:red;'>subpages/documents/document_tab3.php #INC139</span>";
+ if($this->request->session()->read('debug')) {
+     echo "<span style ='color:red;'>subpages/documents/document_tab3.php #INC139</span>";
+ }
  ?>
 <div id="form_tab4">
 <input class="document_type" type="hidden" name="document_type" value="<?php echo $dx->title;?>" />
@@ -31,7 +32,7 @@
                                                     
                                 						
                                 							
-                                								<h2>Consent Form</h2>
+
                                 							
 
                                 						

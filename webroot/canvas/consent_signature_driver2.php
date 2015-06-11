@@ -36,7 +36,7 @@ if ($this->request->session()->read('debug')) {
             <input type="hidden" name="criminal_signature_applicant2" id="criminal_signature_applicant2" />
             <input type="hidden" class="touched" value="0" />
             <input type="hidden" class="touched_edit2" value="<?php if(isset($consent_detail) && $consent_detail->criminal_signature_applicant2){?>1<?php }else{?>0<?php }?>" />
-            <label class="control-label">Signature of Applicant</label><br>
+            <label class="control-label"><?= $strings2["consent_sigapplica"]; ?></label><br>
             <?php if($this->request->params['action']!= 'vieworder' && $this->request->params['action']!= 'view'){?>
     		<canvas id="test5" style="border: 1px solid silver;border-radius: 5px;"></canvas>
             <?php }?>
