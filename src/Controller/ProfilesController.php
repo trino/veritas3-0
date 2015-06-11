@@ -1116,9 +1116,26 @@ class ProfilesController extends AppController{
         }
     }
 
+    public function getfirstrow($Table, $PrimaryKey, $Value){
+        return TableRegistry::get($Table)->find('all', array('conditions' => array($PrimaryKey=>$Value)))->first();
+    }
 
-    function sendEmail($To, $Subject, $Message)
-    {
+    function refreshsession(){
+        $userid = $this->request->session()->read('Profile.id');
+        $q = $this->getfirstrow("profiles", "id", $userid);
+        //$this->request->session()->write('Profile.id',$q->id);
+        $this->request->session()->write('Profile.username',$q->username);
+        $this->request->session()->write('Profile.fname',$q->fname);
+        $this->request->session()->write('Profile.lname',$q->lname);
+        $this->request->session()->write('Profile.isb_id',$q->isb_id);
+        $this->request->session()->write('Profile.mname',$q->mname);
+        $this->request->session()->write('Profile.profile_type',$q->profile_type);
+        $this->request->session()->write('Profile.language', $q->language);
+        $this->request->session()->write('Profile.email',$q->email);
+    }
+
+
+    function sendEmail($To, $Subject, $Message) {
         $settings = TableRegistry::get('settings');
         $setting = $settings->find()->first();
         $path = $this->Document->getUrl();
@@ -1150,8 +1167,7 @@ class ProfilesController extends AppController{
         return $language;
     }
 
-    function saveprofile($add = "")
-    {
+    function saveprofile($add = "") {
         $settings = $this->Settings->get_settings();
         $profiles = TableRegistry::get('Profiles');
         $path = $this->Document->getUrl();
@@ -1455,8 +1471,8 @@ class ProfilesController extends AppController{
                     echo "0";
                 }
             }
-
         }
+        $this->refreshsession();
         die();
     }
 

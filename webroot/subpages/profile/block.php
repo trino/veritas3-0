@@ -1510,6 +1510,7 @@
                     $('.flash').show();
                     $('.flash').fadeOut(7000);
                     $('#save_blocks').text(' Save Changes ');
+                    window.location.reload();
                 }
             })
         });

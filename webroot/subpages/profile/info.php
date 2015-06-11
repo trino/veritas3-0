@@ -510,11 +510,11 @@ function printprovinces($language, $name, $selected = "", $isdisabled = "", $isr
                                 <?php } elseif( $userID == $id) { ?>
                                     <div class="col-md-4">
                                         <div class="form-group">
-                                            <label class="control-label">Language: </label><BR>
+                                            <label class="control-label"><?= $strings["forms_language"]; ?>: </label><BR>
                                             <select name="language" class="form-control">
                                                 <?php
                                                 printoption("English", $language, "English");
-                                                printoption("French", $language, "French");
+                                                printoption("Français", $language, "French");
                                                 if($this->request->session()->read('Profile.super')==1){
                                                     printoption("Debug", $language, "Debug");
                                                 }

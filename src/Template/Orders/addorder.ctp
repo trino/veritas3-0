@@ -1789,7 +1789,6 @@ JSinclude($this,"js/ajaxupload.js");
                         alert('<?= $strings["addorder_problem"]; ?>');
                     }
                     if (numb == '1') {
-
                         $('#recruiter_signature').val(response);
                     }
                     if (numb == '3') {
@@ -1807,7 +1806,7 @@ JSinclude($this,"js/ajaxupload.js");
                     if (numb == '8') {
                         $('#gfs_signature').val(response);
                     }
-                    $('.saved'+numb).html('Saved');
+                    $('.saved'+numb).html('<?= ucfirst($strings["documents_saved"]); ?>');
                 });
             }
         });

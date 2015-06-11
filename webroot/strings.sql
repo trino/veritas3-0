@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 11, 2015 at 03:29 PM
+-- Generation Time: Jun 11, 2015 at 03:48 PM
 -- Server version: 5.6.17
 -- PHP Version: 5.5.12
 
@@ -32,14 +32,14 @@ CREATE TABLE IF NOT EXISTS `strings` (
   `English` varchar(4096) NOT NULL,
   `French` varchar(4096) NOT NULL,
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=583 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=584 ;
 
 --
 -- Dumping data for table `strings`
 --
 
 INSERT INTO `strings` (`ID`, `Name`, `English`, `French`) VALUES
-(1, 'Date', '1433968493', '<-- This is used by the system to auto-update'),
+(1, 'Date', '1434029376', '<-- This is used by the system to auto-update'),
 (2, 'dashboard_affirmative', 'Yes', 'Oui'),
 (3, 'dashboard_negative', 'No', 'Non'),
 (4, 'dashboard_selectall', 'Select All', 'Tout Sélectionner'),
@@ -609,7 +609,8 @@ INSERT INTO `strings` (`ID`, `Name`, `English`, `French`) VALUES
 (579, 'consent_lastupdate', 'LAST UPDATED', 'DERNIÈRE MISE À JOUR'),
 (580, 'consent_prevname', 'Previous Surname(s) or Maiden Name(s)', 'Nom Précédent(s) ou Nom de jeune fille(s)'),
 (581, 'consent_aliases', 'Aliases', 'Alias'),
-(582, 'consent_attachid', 'Attach ID', 'Fixez ID');
+(582, 'consent_attachid', 'Attach ID', 'Fixez ID'),
+(583, 'forms_language', 'Language', 'Langue');
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
