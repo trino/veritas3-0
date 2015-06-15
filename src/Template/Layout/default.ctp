@@ -232,7 +232,9 @@
             .form-group {
                 width: 100%;
             }
-
+            a[href]:after {
+                content: none !important;
+            }
         <?php
         for($i=1;$i<13;$i++)
         {

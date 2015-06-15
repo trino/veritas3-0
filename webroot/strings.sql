@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 11, 2015 at 03:48 PM
+-- Generation Time: Jun 15, 2015 at 09:33 PM
 -- Server version: 5.6.17
 -- PHP Version: 5.5.12
 
@@ -32,20 +32,20 @@ CREATE TABLE IF NOT EXISTS `strings` (
   `English` varchar(4096) NOT NULL,
   `French` varchar(4096) NOT NULL,
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=584 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=585 ;
 
 --
 -- Dumping data for table `strings`
 --
 
 INSERT INTO `strings` (`ID`, `Name`, `English`, `French`) VALUES
-(1, 'Date', '1434029376', '<-- This is used by the system to auto-update'),
+(1, 'Date', '1434030529', '<-- This is used by the system to auto-update'),
 (2, 'dashboard_affirmative', 'Yes', 'Oui'),
 (3, 'dashboard_negative', 'No', 'Non'),
 (4, 'dashboard_selectall', 'Select All', 'Tout Sélectionner'),
 (5, 'langswitched', 'Your language has been switched to English. Refreshing in 5 seconds', 'Votre langue est passé à français. Rafraîchissant dans cinq secondes'),
 (6, 'langswitch', 'Passer au français', 'Switch to English'),
-(7, 'name', 'English', 'français'),
+(7, 'name', 'English', 'Français'),
 (8, 'analytics_title', 'MEE Analytics', 'Analytique MEE'),
 (9, 'analytics_start', 'Start', 'Début'),
 (10, 'analytics_finish', 'to', 'à'),
@@ -169,14 +169,14 @@ INSERT INTO `strings` (`ID`, `Name`, `English`, `French`) VALUES
 (132, 'documents_orderid', 'Order ID', 'Numéro de commande'),
 (133, 'documents_submittedby', 'Submitted by', 'Proposé par'),
 (134, 'documents_submittedfor', 'Submitted for', 'Soumis pour'),
-(135, 'documents_created', 'Created', 'établi'),
+(135, 'documents_created', 'Created', 'Établi'),
 (136, 'documents_status', 'Status', 'Statut'),
 (137, 'documents_search', 'Search %Document%s', 'Rechercher des %Document%s'),
 (138, 'documents_noresults', 'No %Document%s found', 'Aucun %Document% trouvé'),
-(139, 'documents_draft', 'draft', 'avant-projet'),
-(140, 'documents_saved', 'saved', 'sauvé'),
-(141, 'documents_pending', 'pending', 'en attendant'),
-(142, 'documents_complete', 'complete', 'complet'),
+(139, 'documents_draft', 'draft', 'Avant-projet'),
+(140, 'documents_saved', 'saved', 'Sauvé'),
+(141, 'documents_pending', 'pending', 'En attendant'),
+(142, 'documents_complete', 'complete', 'Complet'),
 (143, 'orders_search', 'Search Orders', 'Ordres de recherche'),
 (144, 'orders_division', 'Division', 'Division'),
 (145, 'orders_ordertype', 'Order Type', 'Type d''ordre'),
@@ -286,7 +286,7 @@ INSERT INTO `strings` (`ID`, `Name`, `English`, `French`) VALUES
 (249, 'forms_provincestate', 'Province/State', 'Province/État'),
 (250, 'forms_postalzip', 'Postal/Zip Code', 'Code postal/Zip'),
 (251, 'forms_companyphone', 'Company''s Phone Number', 'Le numéro de téléphone de l''entreprise'),
-(252, 'forms_website', 'Website', 'site Web'),
+(252, 'forms_website', 'Website', 'Site Web'),
 (253, 'forms_divisions', 'Divisions', 'Divisions'),
 (254, 'forms_signatoryfirstname', 'Signatory''s First Name', 'Prénom du signataire'),
 (255, 'forms_signatorylastname', 'Signatory''s Last Name', 'Nom du signataire'),
@@ -321,16 +321,16 @@ INSERT INTO `strings` (`ID`, `Name`, `English`, `French`) VALUES
 (284, 'forms_removelast', 'Remove Last', 'Retirer Dernière'),
 (285, 'forms_uploading', 'Uploading...', 'L''ajout...'),
 (286, 'forms_eventname', 'Event Name', 'Nom de l''événement'),
-(287, 'forms_attachedfiles', 'Attached Files', 'fichiers Joints'),
+(287, 'forms_attachedfiles', 'Attached Files', 'Fichiers Joints'),
 (288, 'forms_billingcustomertype', 'Billing Customer Type', 'Type de facturation à la clientèle'),
 (289, 'forms_requalifyfrequency', 'Re-qualify Frequency?', 'Re-qualifier fréquence?'),
 (290, 'forms_1month', '1 Month', '1 Mois'),
 (291, 'forms_3month', '3 Months', '3 Mois'),
 (292, 'forms_6month', '6 Months', '6 Mois'),
 (293, 'forms_12month', '12 Months', '12 Mois'),
-(294, 'forms_includedproducts', 'Products Included', 'produits Inclus'),
+(294, 'forms_includedproducts', 'Products Included', 'Produits Inclus'),
 (295, 'forms_driverusername', 'Driver (Username)', 'Driver (Nom d''utilisateur)'),
-(296, 'forms_hireddate', 'Hired Date', 'date de louage'),
+(296, 'forms_hireddate', 'Hired Date', 'Date de Louage'),
 (297, 'forms_cronorders', 'Cron Orders Placed', 'Les commandes cron Placé'),
 (298, 'forms_added', 'Added', 'Ajouté'),
 (299, 'forms_removed', 'Removed', 'Suppression'),
@@ -479,7 +479,7 @@ INSERT INTO `strings` (`ID`, `Name`, `English`, `French`) VALUES
 (448, 'drivereval_rec4full', 'Recommended as Full trainee', 'Recommandé comme stagiaire complet'),
 (449, 'drivereval_rec4fire', 'Recommended fire hire with trainee', 'Location de feu recommandée avec stagiaire'),
 (450, 'drivereval_comments', 'Comments', 'Commentaires'),
-(451, 'drivereval_sightsidec', 'Fails to', 'échoue à'),
+(451, 'drivereval_sightsidec', 'Fails to', 'Échoue à'),
 (452, 'file_attachfile', 'Attach File', 'Pièce Jointe'),
 (453, 'index_editdocument', 'Edit %Document%', 'Modifier %Document%'),
 (454, 'index_viewdocument', 'View %Document%', 'Voir le %Document%'),
@@ -505,8 +505,8 @@ INSERT INTO `strings` (`ID`, `Name`, `English`, `French`) VALUES
 (474, 'score_idealcandidate', 'IDEAL CANDIDATE', 'CANDIDAT IDEAL'),
 (475, 'score_incomplete', 'INCOMPLETE', 'INCOMPLET'),
 (476, 'score_satisfactory', 'SATISFACTORY', 'SATISFAISANT'),
-(477, 'score_requiresattention', 'REQUIRES ATTENTION', 'nécessite une attention'),
-(478, 'score_duplicateorder', 'DUPLICATE ORDER', 'double commande'),
+(477, 'score_requiresattention', 'REQUIRES ATTENTION', 'NÉCESSITE UNE ATTENTION'),
+(478, 'score_duplicateorder', 'DUPLICATE ORDER', 'DOUBLE COMMANDE'),
 (479, 'forms_novideo', 'Your browser does not support the video tag.', 'Votre navigateur ne supporte pas la balise video.'),
 (480, 'verifs_pasteducat', 'Past Education', 'Education passées'),
 (481, 'verifs_schoolcoll', 'School/College Name', 'École / Nom Collège'),
@@ -519,9 +519,9 @@ INSERT INTO `strings` (`ID`, `Name`, `English`, `French`) VALUES
 (488, 'verifs_dateclaims', 'Date Claims Occurred', 'Date de sinistres passés'),
 (489, 'verifs_educationh', 'Education history confirmed by (Verifier Use Only)', 'Histoire de l''enseignement confirmée par (Verifier utilisation uniquement)'),
 (490, 'verifs_highestgra', 'Highest grade completed', 'Plus haut niveau atteint'),
-(491, 'verifs_highschool', 'High School', 'lycée'),
+(491, 'verifs_highschool', 'High School', 'Lycée'),
 (492, 'verifs_yearsatten', '(years attended)', '(années ont assisté)'),
-(493, 'verifs_college', 'College', 'collège'),
+(493, 'verifs_college', 'College', 'Collège'),
 (494, 'verifs_lastschool', 'Last School attended', 'Dernière école fréquentée'),
 (495, 'verifs_didtheempl', 'Did the employee have any safety or performance issues?', 'L''employé ne possède pas de problèmes de sécurité ou de performance?'),
 (496, 'forms_signature', 'Signature', 'Signature'),
@@ -537,8 +537,8 @@ INSERT INTO `strings` (`ID`, `Name`, `English`, `French`) VALUES
 (506, 'verifs_decks', 'Decks', 'Decks'),
 (507, 'verifs_superbs', 'Super B''s', 'Super B de'),
 (508, 'verifs_straighttr', 'Straight Truck', 'Camion porteur'),
-(509, 'verifs_others', 'Others', 'autres'),
-(510, 'verifs_local', 'Local', 'local'),
+(509, 'verifs_others', 'Others', 'Autres'),
+(510, 'verifs_local', 'Local', 'Local'),
 (511, 'verifs_canada', 'Canada', 'Canada'),
 (512, 'verifs_canadarock', 'Canada: Rocky Mountains', 'Canada: Montagnes Rocheuses'),
 (513, 'verifs_usa', 'USA', 'USA'),
@@ -560,10 +560,10 @@ INSERT INTO `strings` (`ID`, `Name`, `English`, `French`) VALUES
 (529, 'orders_create', 'Create Order', 'Créer une commande'),
 (530, 'orders_edit', 'Edit Order', 'Modifier la commande'),
 (531, 'orders_confirmation', 'Confirmation', 'Confirmation'),
-(532, 'orders_success', 'Success', 'succès'),
+(532, 'orders_success', 'Success', 'Succès'),
 (533, 'addorder_pleasewait', 'Please wait...', 'S''il vous plaît, attendez ...'),
-(534, 'addorder_back', 'Back', 'dos'),
-(535, 'addorder_skip', 'Skip', 'sauter'),
+(534, 'addorder_back', 'Back', 'Dos'),
+(535, 'addorder_skip', 'Skip', 'Sauter'),
 (536, 'addorder_savecontinue', 'Save & Continue', 'Enregistrer et Continuer'),
 (537, 'addorder_errors', 'You have some form errors. Please check below.', 'Vous avez des erreurs de forme. S''il vous plaît vérifier ci-dessous.'),
 (538, 'addorder_success', 'Your form validation is successful', 'Votre validation de formulaire est réussie'),
@@ -571,7 +571,7 @@ INSERT INTO `strings` (`ID`, `Name`, `English`, `French`) VALUES
 (540, 'addorder_ordersubmit', 'Your Order Has Been Submitted!', 'Votre commande a été envoyée!'),
 (541, 'addorder_youcanedit', 'You can edit the order by visiting the orders section inside draft.', 'Vous pouvez modifier l''ordre en visitant la section des commandes à l''intérieur de projet.'),
 (542, 'addorder_problem', 'There was problem saving the signatures, please go back and re-submit the consent form.', 'Il était d''enregistrer les signatures de problème, s''il vous plaît revenir en arrière et re-soumettre le formulaire de consentement.'),
-(543, 'addorder_uploading', 'Uploading', 'ajout'),
+(543, 'addorder_uploading', 'Uploading', 'Ajout'),
 (544, 'addorder_invalidfile', 'Invalid file type.', 'Type de fichier non valide.'),
 (545, 'addorder_next', 'Next', 'Suivant'),
 (546, 'addorder_orderforms', 'Order Forms', 'Bons de commande'),
@@ -598,19 +598,20 @@ INSERT INTO `strings` (`ID`, `Name`, `English`, `French`) VALUES
 (568, 'consent_apartmentu', 'Apartment/Unit', 'Appartement/Unité'),
 (569, 'consent_companynam', 'Company Name Requesting Search', 'Nom de la société Demande de Recherche'),
 (570, 'consent_printednam', 'Printed Name of Company Witness', 'Nom de la société Imprimé Témoin'),
-(571, 'consent_companyloc', 'Company Location', 'entreprise Région'),
-(572, 'consent_surname', 'Surname', 'nom de famille'),
+(571, 'consent_companyloc', 'Company Location', 'Entreprise Région'),
+(572, 'consent_surname', 'Surname', 'Nom de famille'),
 (573, 'consent_givenname', 'Given Name', 'Prénom'),
 (574, 'consent_offence', 'Offence', 'Infraction'),
 (575, 'consent_dateofsent', 'Date of Sentence', 'Date de la sentence'),
-(576, 'consent_location', 'Location', 'emplacement'),
+(576, 'consent_location', 'Location', 'Emplacement'),
 (577, 'consent_sigapplica', 'Signature of Applicant', 'Signature du demandeur'),
 (578, 'consent_sigwitness', 'Signature of Company Witness', 'Signature de la Compagnie de témoin'),
 (579, 'consent_lastupdate', 'LAST UPDATED', 'DERNIÈRE MISE À JOUR'),
 (580, 'consent_prevname', 'Previous Surname(s) or Maiden Name(s)', 'Nom Précédent(s) ou Nom de jeune fille(s)'),
 (581, 'consent_aliases', 'Aliases', 'Alias'),
 (582, 'consent_attachid', 'Attach ID', 'Fixez ID'),
-(583, 'forms_language', 'Language', 'Langue');
+(583, 'forms_language', 'Language', 'Langue'),
+(584, 'flash_clientdeleted', '%Client% deleted', '%Client% supprimé');
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
