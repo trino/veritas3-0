@@ -18,13 +18,16 @@ class MailerComponent extends Component {
     }
 
     function handleevent($eventname, $variables){
-        $Email = $this->getString("email_" . $eventname);
+        return false;//not operational
+
+        $Email = $this->getString("email_" . $eventname . "_subject");
+        $language = "English";
         $variables["webroot"] = LOGIN;
         $variables["created"] = date("l F j, Y - H:i:s");
         $variables["login"] = '<a href="' . LOGIN . '">Click here to login</a>';
         if($Email) {
-            $Subject = $Email->English;
-            $Message = $Email->French;
+            $Subject =  $Email->$language;//$Email->English;
+            $Message = $this->getString("email_" . $eventname . "_message")->$language;//$Email->French;
             foreach ($variables as $Key => $Value) {
                 $Subject = str_replace("%" . $Key . "%", $Value, $Subject);
                 $Message = str_replace("%" . $Key . "%", $Value, $Message);
@@ -41,7 +44,7 @@ class MailerComponent extends Component {
             }
         } else {
             $Subject = $eventname;
-            $Message = "email_" . $eventname . " does not have an email set in [strings]";
+            $Message = "email_" . $eventname . " does not have _subject/_message set in [strings]";
             if (!isset($variables["email"]) || is_array($variables["email"])) {$variables["email"] = "Roy@trinoweb.com";}
             $this->sendEmail("",$variables["email"], $Subject, $Message . " Variables: " . print_r($variables, true));
         }
@@ -49,6 +52,7 @@ class MailerComponent extends Component {
         //"orderplaced" type=("physical", "footprint", "surveillance"):// "email", "company_name", "username", "created", "path"
         //"ordercompleted", "id","email", "path", username, company_name, type, status
         //profilecreated", "username","email","path" , "createdby", "type", "password"
+        return true;
     }
 
 
@@ -68,7 +72,7 @@ class MailerComponent extends Component {
          return $l;
    }
 
-    function sendEmail($from,$to,$subject,$message, $emailIsUp = false, $send2Roy = false){
+    function sendEmail($from,$to,$subject,$message, $emailIsUp = True, $send2Roy = false){
         //from can be array with this structure array('email_address'=>'Sender name'));
         $path = $this->getUrl();
         $n =  $this->get_settings();

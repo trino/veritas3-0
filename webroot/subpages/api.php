@@ -489,4 +489,33 @@ function getpost($Key, $Default = ""){
     if (isset($_POST[$Key])){ return $_POST[$Key]; }
     return $Default;
 }
+
+function cleanit($array){
+    return str_replace("\r\n", "", str_replace('\"', '"', addslashes(implode('", "',$array))));
+}
+function loadstringsJS($strings){
+    echo 'var stringnames = ["' . cleanit(array_keys($strings)) . '"];' . "\r\n";
+    echo '    var stringvalues = ["' . cleanit(array_values($strings)) . '"];' . "\r\n";
+    ?>
+    function getstring(Name){
+        for (index = 0; index < stringnames.length; index++) {
+            if (stringnames[index] == Name){
+                return stringvalues[index];
+            }
+        }
+    }
+    function translate(){
+        var elements = document.body.getElementsByTagName("translate");
+        var key = "";
+        for (id = 0; id < elements.length; id++) {
+            element = elements[id];
+            key = element.innerHTML;
+            if (key.indexOf("_") > 0){
+                value = getstring(key);
+                element.innerHTML = value;
+            }
+        }
+    }
+    <?php
+}
 ?>

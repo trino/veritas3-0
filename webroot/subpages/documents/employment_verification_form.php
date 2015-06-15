@@ -667,6 +667,7 @@ $strings2 = CacheTranslations($language, array("verifs_%", "tasks_date", "file_a
 
 </form>
 <script>
+    <?php loadstringsJS(array_merge($strings, $strings2)); ?>
 $(function(){
     <?php
         if(($this->request->params['action']=='addorder' || $this->request->params['action']=='add')&&!count($sub3['att']))
@@ -679,7 +680,7 @@ $(function(){
    // 
   $("#add_more").click(function(){
     $.ajax({
-       url:"<?php echo $this->request->webroot;?>subpages/documents/past_employer.php",
+       url:"<?php echo $this->request->webroot;?>subpages/documents/past_employer.php?language=" + language + "&debug=<?= $this->request->session()->read('debug'); ?>",
        success:function(res){
         $("#more_div").append(res);
         var c = $('#count_past_emp').val();
