@@ -1134,30 +1134,6 @@ class ProfilesController extends AppController{
         $this->request->session()->write('Profile.email',$q->email);
     }
 
-
-    function sendEmail($To, $Subject, $Message) {
-        $settings = TableRegistry::get('settings');
-        $setting = $settings->find()->first();
-        $path = $this->Document->getUrl();
-        $replace = array("%PATH%" => $path, "%CRLF%" => "\r\n");//auto-replace these terms
-        foreach ($replace as $key => $value) {
-            $Subject = str_replace($key, $value, $Subject);
-            $Message = str_replace($key, $value, $Message);
-        }
-
-        //method 1
-        //$email = new Email('default');
-        //$res = $email->from(['info@'. $path => "ISB MEE"])->to($To)->subject($Subject)->send($Message);
-
-        //method 2, needs a transport set up
-        //Email::deliver($To,$Subject, $Message, ['info@'. $path => "ISB MEE"]);
-
-        //method 3 actually uses method 1
-        $from = array('info@' . $path => $setting->mee);
-        $this->Mailer->sendEmail($from, $To, $Subject, $Message);
-        file_put_contents("royslog.txt", "To: " . $To . " Subject: " . $Subject . " Mesage: " . $Message, FILE_APPEND);
-    }
-
     function updatelanguage($post){
         $language = "English";
         if(isset($post["language"])){
@@ -1358,207 +1334,214 @@ class ProfilesController extends AppController{
                                 $protype = '';
                         } else
                             $protype = '';
-                        $from = 'info@' . $path;// 'array('info@' . $path => "ISB MEE");
-                        $to = $em;
 
-                        $sub = "Welcome to MEE";
-                        $msg = "Thank you for registering with Making Eligibility Easy. You are now able to login, navigate and place orders on the MEE system.<br><br>Your login credentials are as follows:<br>" .
-                            "<br>Login: <a href='https://isbmeereports.com'>https://isbmeereports.com</a>" .
-                            "<br/>Username: "  . $_POST['username'];
+                        $this->Mailer->handleevent("profilecreated", array("username" => $_POST['username'],"email" => array("super", $em), "path" =>$path, "createdby" => $uq->username, "type" => $protype, "password" => $password ));
 
-                        $this->Mailer->sendEmail($from, $to, $sub, $msg);
-                        //$this->sendEmail($to, $sub, $msg);
-                        if (isset($_POST["emailcreds"]) && $_POST["emailcreds"] == "on" && strlen(trim($_POST["email"])) > 0) {
+//                        $this->Mailer->handleevent("profilecreated", array("username" => $_POST['username'],"email" => array("roy")));
 
-                            if ($password) {
-                                $msg .= "<br/>Password: " . $password;
-                                $msg .= "<br><br>If you have questions or would like training on how to use the system please contact your Account Manager, Paul Clement- pclement@isbc.ca, who will be happy to assist.<br><br>Regards,<br>The MEE Team";
-                            }
+                        /*
+                    $from = 'info@' . $path;// 'array('info@' . $path => "ISB MEE");
+                    $to = $em;
 
-                            $this->Mailer->sendEmail($from, $_POST["email"], $sub, $msg);
+                    $sub = "Welcome to MEE";
+                    $msg = "Thank you for registering with Making Eligibility Easy. You are now able to login, navigate and place orders on the MEE system.<br><br>Your login credentials are as follows:<br>" .
+                        "<br>Login: <a href='https://isbmeereports.com'>https://isbmeereports.com</a>" .
+                        "<br/>Username: "  . $_POST['username'];
 
-                            // $this->sendEmail($_POST["email"], $sub, $msg);
-                            //file_put_contents("royslog.txt",$to . " " .  $_POST["email"] . ": " .  $sub . " - " . $msg, FILE_APPEND);
+                    $this->Mailer->sendEmail($from, $to, $sub, $msg);
+                    //$this->sendEmail($to, $sub, $msg);
+                    if (isset($_POST["emailcreds"]) && $_POST["emailcreds"] == "on" && strlen(trim($_POST["email"])) > 0) {
+
+                        if ($password) {
+                            $msg .= "<br/>Password: " . $password;
+                            $msg .= "<br><br>If you have questions or would like training on how to use the system please contact your Account Manager, Paul Clement- pclement@isbc.ca, who will be happy to assist.<br><br>Regards,<br>The MEE Team";
                         }
-                        $this->Flash->success($this->Trans->getString("flash_profilesaved"));
 
+                        $this->Mailer->sendEmail($from, $_POST["email"], $sub, $msg);
+
+                        // $this->sendEmail($_POST["email"], $sub, $msg);
+                        //file_put_contents("royslog.txt",$to . " " .  $_POST["email"] . ": " .  $sub . " - " . $msg, FILE_APPEND);
                     }
-                    echo $profile->id;
+                        */
+                    $this->Flash->success($this->Trans->getString("flash_profilesaved"));
 
-                } else
-                    echo "0";
+                }
+                echo $profile->id;
+
+            } else
+                echo "0";
+        }
+    } else {
+        $profile = $this->Profiles->get($add, ['contain' => []]);
+        if ($this->request->is(['patch', 'post', 'put'])) {
+            if (isset($_POST['password']) && $_POST['password'] == '') {
+                $this->request->data['password'] = $profile->password;
+            } else {
+                if (isset($_POST['password'])) {
+                    $this->request->data['password'] = md5($_POST['password']);
+                }
             }
-        } else {
-            $profile = $this->Profiles->get($add, ['contain' => []]);
-            if ($this->request->is(['patch', 'post', 'put'])) {
-                if (isset($_POST['password']) && $_POST['password'] == '') {
-                    $this->request->data['password'] = $profile->password;
-                } else {
-                    if (isset($_POST['password'])) {
-                        $this->request->data['password'] = md5($_POST['password']);
-                    }
-                }
-                if (isset($_POST['profile_type']) && $_POST['profile_type'] == 1) {
-                    $this->request->data['admin'] = 1;
-                } else {
-                    $this->request->data['admin'] = 0;
-                }
-                $this->request->data['dob'] = $_POST['doby'] . "-" . $_POST['dobm'] . "-" . $_POST['dobd'];
-                if (isset($this->request->data['username']) && $this->request->data['username'] == 5) {
-                    unset($this->request->data['username']);
-                }
-                //var_dump($this->request->data); die();//echo $_POST['admin'];die();
-                $profile = $this->Profiles->patchEntity($profile, $this->request->data);
-                if ($this->Profiles->save($profile)) {
-                    $this->loadModel('ProfileDocs');
-                    $this->ProfileDocs->deleteAll(['profile_id' => $profile->id]);
-                    if (isset($_POST['profile_doc'])) {
-                        $profile_docs = array_unique($_POST['profile_doc']);
-                        foreach ($profile_docs as $d) {
-                            if ($d != "") {
-                                $docs = TableRegistry::get('profile_docs');
-                                $ds['profile_id'] = $profile->id;
-                                $ds['file'] = $d;
-                                $doc = $docs->newEntity($ds);
-                                $docs->save($doc);
-                                unset($doc);
-                            }
+            if (isset($_POST['profile_type']) && $_POST['profile_type'] == 1) {
+                $this->request->data['admin'] = 1;
+            } else {
+                $this->request->data['admin'] = 0;
+            }
+            $this->request->data['dob'] = $_POST['doby'] . "-" . $_POST['dobm'] . "-" . $_POST['dobd'];
+            if (isset($this->request->data['username']) && $this->request->data['username'] == 5) {
+                unset($this->request->data['username']);
+            }
+            //var_dump($this->request->data); die();//echo $_POST['admin'];die();
+            $profile = $this->Profiles->patchEntity($profile, $this->request->data);
+            if ($this->Profiles->save($profile)) {
+                $this->loadModel('ProfileDocs');
+                $this->ProfileDocs->deleteAll(['profile_id' => $profile->id]);
+                if (isset($_POST['profile_doc'])) {
+                    $profile_docs = array_unique($_POST['profile_doc']);
+                    foreach ($profile_docs as $d) {
+                        if ($d != "") {
+                            $docs = TableRegistry::get('profile_docs');
+                            $ds['profile_id'] = $profile->id;
+                            $ds['file'] = $d;
+                            $doc = $docs->newEntity($ds);
+                            $docs->save($doc);
+                            unset($doc);
                         }
                     }
-                    echo $profile->id;
-                    if (isset($_POST['profile_type']) && $_POST['profile_type'] == 5) {
-                        $username = 'driver_' . $profile->id;
-                        $queries = TableRegistry::get('Profiles');
-                        $queries->query()->update()->set(['username' => $username])
-                            ->where(['id' => $profile->id])
-                            ->execute();
-                    } else {
-                        if(isset($_POST['profile_type']))
-                        {
+                }
+                echo $profile->id;
+                if (isset($_POST['profile_type']) && $_POST['profile_type'] == 5) {
+                    $username = 'driver_' . $profile->id;
+                    $queries = TableRegistry::get('Profiles');
+                    $queries->query()->update()->set(['username' => $username])
+                        ->where(['id' => $profile->id])
+                        ->execute();
+                } else {
+                    if(isset($_POST['profile_type']))
+                    {
 
-                            if ($_POST['profile_type'] == '7'){
-                                $username = 'owner_operator_' . $profile->id;
+                        if ($_POST['profile_type'] == '7'){
+                            $username = 'owner_operator_' . $profile->id;
+                            $queries = TableRegistry::get('Profiles');
+                            $queries->query()->update()->set(['username' => $username])
+                                ->where(['id' => $profile->id])
+                                ->execute();
+                        }
+                        else
+                            if ($_POST['profile_type'] == '8'){
+                                $username = 'owner_driver_' . $profile->id;
                                 $queries = TableRegistry::get('Profiles');
                                 $queries->query()->update()->set(['username' => $username])
                                     ->where(['id' => $profile->id])
                                     ->execute();
                             }
                             else
-                                if ($_POST['profile_type'] == '8'){
-                                    $username = 'owner_driver_' . $profile->id;
+                                if ($_POST['profile_type'] == '11'){
+                                    $username = 'employee_' . $profile->id;
                                     $queries = TableRegistry::get('Profiles');
                                     $queries->query()->update()->set(['username' => $username])
                                         ->where(['id' => $profile->id])
                                         ->execute();
                                 }
-                                else
-                                    if ($_POST['profile_type'] == '11'){
-                                        $username = 'employee_' . $profile->id;
-                                        $queries = TableRegistry::get('Profiles');
-                                        $queries->query()->update()->set(['username' => $username])
-                                            ->where(['id' => $profile->id])
-                                            ->execute();
-                                    }
-                        }
                     }
-                    if (isset($_POST['drafts']) && ($_POST['drafts'] == '1')) {
-                        $this->Flash->success($this->Trans->getString("flash_profilesaveddraft"));
-                    } else {
-                        $this->Flash->success($this->Trans->getString("flash_profilesaved"));
-                    }
-                } else {
-                    echo "0";
                 }
-            }
-        }
-        $this->refreshsession();
-        die();
-    }
-
-    public function saveDriver()
-    {
-        //echo $client_id = $_POST['cid'];die() ;
-        $arr_post = explode('&', $_POST['inputs']);
-        //var_dump($arr_post);die();
-        foreach ($arr_post as $ap) {
-            $arr_ap = explode('=', $ap);
-            if (isset($arr_ap[1])) {
-                $post[$arr_ap[0]] = urldecode($arr_ap[1]);
-                $post[$arr_ap[0]] = str_replace('Select Gender', '', urldecode($arr_ap[1]));
-            }
-        }
-        //var_dump($post);die();
-        $que = $this->Profiles->find()->where(['email' => $post['email'], 'id <> ' => $post['id']])->first();
-
-        if ($que) {
-            //echo count($que);
-            echo 'exist';
-            die();
-        }
-        //$post = $_POST['inputs'];
-        // var_dump($post);die();
-        $profiles = TableRegistry::get('Profiles');
-
-        if ($this->request->is('post')) {
-
-            //var_dump($_POST['inputs']);die();
-            $post['dob'] = $post['doby'] . "-" . $post['dobm'] . "-" . $post['dobd'];
-            //debug($_POST);die();
-            if ($post['id'] == 0 || $post['id'] == '0') {
-                $post['created'] = date('Y - m - d');
-                unset($post['id']);
-                $profile = $profiles->newEntity($post);
-                if ($profiles->save($profile)) {
-                    $this->checkusername( $profile->id, $post);
-
-                    if ($post['client_ids'] != "") {
-                        $client_id = explode(",", $post['client_ids']);
-                        foreach ($client_id as $cid) {
-                            $query = TableRegistry::get('clients');
-                            $q = $query->find()->where(['id' => $cid])->first();
-                            $profile_id = $q->profile_id;
-                            $pros = explode(",", $profile_id);
-
-                            $p_ids = "";
-
-                            array_push($pros, $profile->id);
-                            $pro_id = array_unique($pros);
-
-                            foreach ($pro_id as $k => $p) {
-                                if (count($pro_id) == $k + 1)
-                                    $p_ids .= $p;
-                                else
-                                    $p_ids .= $p . ",";
-                            }
-
-                            $query->query()->update()->set(['profile_id' => $p_ids])
-                                ->where(['id' => $cid])
-                                ->execute();
-                        }
-                    }
-                    echo $profile->id;
-                    die();
-
+                if (isset($_POST['drafts']) && ($_POST['drafts'] == '1')) {
+                    $this->Flash->success($this->Trans->getString("flash_profilesaveddraft"));
+                } else {
+                    $this->Flash->success($this->Trans->getString("flash_profilesaved"));
                 }
             } else {
+                echo "0";
+            }
+        }
+    }
+    $this->refreshsession();
+    die();
+}
 
-                //var_dump($post);
-                $id = $post['id'];
-                unset($post['id']);
-                unset($post['profile_type']);
+public function saveDriver()
+{
+    //echo $client_id = $_POST['cid'];die() ;
+    $arr_post = explode('&', $_POST['inputs']);
+    //var_dump($arr_post);die();
+    foreach ($arr_post as $ap) {
+        $arr_ap = explode('=', $ap);
+        if (isset($arr_ap[1])) {
+            $post[$arr_ap[0]] = urldecode($arr_ap[1]);
+            $post[$arr_ap[0]] = str_replace('Select Gender', '', urldecode($arr_ap[1]));
+        }
+    }
+    //var_dump($post);die();
+    $que = $this->Profiles->find()->where(['email' => $post['email'], 'id <> ' => $post['id']])->first();
 
-                $pro = $this->Profiles->get($id, [
-                    'contain' => []
-                ]);
-                $pros = $this->Profiles->patchEntity($pro, $post);
-                $this->Profiles->save($pros);
+    if ($que) {
+        //echo count($que);
+        echo 'exist';
+        die();
+    }
+    //$post = $_POST['inputs'];
+    // var_dump($post);die();
+    $profiles = TableRegistry::get('Profiles');
 
-                echo $id;
-                /*$username = 'driver_' . $id;
-                $queries = TableRegistry::get('Profiles');
-                $queries->query()->update()->set(['username' => $username])
-                    ->where(['id' => $id])
-                    ->execute();*/
+    if ($this->request->is('post')) {
+
+        //var_dump($_POST['inputs']);die();
+        $post['dob'] = $post['doby'] . "-" . $post['dobm'] . "-" . $post['dobd'];
+        //debug($_POST);die();
+        if ($post['id'] == 0 || $post['id'] == '0') {
+            $post['created'] = date('Y - m - d');
+            unset($post['id']);
+            $profile = $profiles->newEntity($post);
+            if ($profiles->save($profile)) {
+                $this->checkusername( $profile->id, $post);
+
+                if ($post['client_ids'] != "") {
+                    $client_id = explode(",", $post['client_ids']);
+                    foreach ($client_id as $cid) {
+                        $query = TableRegistry::get('clients');
+                        $q = $query->find()->where(['id' => $cid])->first();
+                        $profile_id = $q->profile_id;
+                        $pros = explode(",", $profile_id);
+
+                        $p_ids = "";
+
+                        array_push($pros, $profile->id);
+                        $pro_id = array_unique($pros);
+
+                        foreach ($pro_id as $k => $p) {
+                            if (count($pro_id) == $k + 1)
+                                $p_ids .= $p;
+                            else
+                                $p_ids .= $p . ",";
+                        }
+
+                        $query->query()->update()->set(['profile_id' => $p_ids])
+                            ->where(['id' => $cid])
+                            ->execute();
+                    }
+                }
+                echo $profile->id;
+                die();
+
+            }
+        } else {
+
+            //var_dump($post);
+            $id = $post['id'];
+            unset($post['id']);
+            unset($post['profile_type']);
+
+            $pro = $this->Profiles->get($id, [
+                'contain' => []
+            ]);
+            $pros = $this->Profiles->patchEntity($pro, $post);
+            $this->Profiles->save($pros);
+
+            echo $id;
+            /*$username = 'driver_' . $id;
+            $queries = TableRegistry::get('Profiles');
+            $queries->query()->update()->set(['username' => $username])
+                ->where(['id' => $id])
+                ->execute();*/
                 die();
 
             }
@@ -2511,13 +2494,12 @@ class ProfilesController extends AppController{
 
 /////////////////////////////////////////////////////////////////////////////////////process order
     function cron() {//////////////////////////////////send out emails
+        $path = $this->Document->getUrl();
         if (isset($_GET["testemail"])) {
             $email = $this->request->session()->read('Profile.email');
-            echo "Test email sent<BR>" . $this->Mailer->sendEmail("", $email, "TEST EMAIL", "THIS IS A TEST AT: " . date_timestamp_get(date_create()));
-            die();
+            $this->sendtaskreminder($email, "test", $path, "(TEST EMAIL)");
         }
 
-        $path = $this->Document->getUrl();
         $q = TableRegistry::get('events');
         $que = $q->find();
         //$query = $que->select()->where(['(date LIKE "%' . $date . '%" OR date LIKE "%' . $date2 . '%")', 'sent' => 0])->limit(200);
@@ -2689,13 +2671,18 @@ class ProfilesController extends AppController{
                     $profile1 = $table->find()->where(['id' => $o->user_id])->first();
 
                     if ($profile1->email) {
+
                         $settings = TableRegistry::get('settings');
                         $setting = $settings->find()->first();
+                        $this->Mailer->handleevent("cronordercomplete", array("site" => $setting->mee,"email" => $profile1->email));
+
+                        /*
                         $from = array('info@' . $path => $setting->mee);
                         $to = $profile1->email;
                         $sub = 'Order Completed';
                         $msg = 'Your order has been processed and   ready to download.<br /><br /> Please login <a href="' . LOGIN . '">here</a> to retrieve your score card.<br /><br /> Regards,<br /> The ISB MEE Team';
                         $this->Mailer->sendEmail($from, $to, $sub, $msg);
+                        */
                     }
                 }
             }
@@ -2774,12 +2761,17 @@ class ProfilesController extends AppController{
     {
         $settings = TableRegistry::get('settings');
         $setting = $settings->find()->first();
+
+        $this->Mailer->handleevent("cron", array("title" => $todo->title,"email" => $email, "description" => $todo->description, "dueby" => $todo->date, "domain" => getHost("isbmee.com") , "site" =>  $setting->mee ));
+
+/*
         $from = array('info@' . $path => $setting->mee);
         $to = trim($email);
         $sub = 'Tasks Reminder';
         $msg = 'Domain: ' . getHost("isbmee.com") . ' <br /><br />Reminder, you have following task due:<br/><br/>Title: ' . $todo->title . '<br />Description: ' . $todo->description . '<br />Due By: ' . $todo->date . '<br /><br /> Regards,<br />The ' . $setting->mee . ' team';
         echo "<hR>From: " . $from . "<BR>To: " . $to . " " . $name . "<BR>Subject: " . $sub . "<BR>Message: " . $msg;
         $this->Mailer->sendEmail($from, $to, $sub, $msg);
+*/
     }
 
     function getDriverById($id)
@@ -2811,415 +2803,418 @@ class ProfilesController extends AppController{
             $new_pwd = $this->generateRandomString(6);
             $p = TableRegistry::get('profiles');
             if ($p->query()->update()->set(['password' => md5($new_pwd)])->where(['id' => $profile->id])->execute()) {
-                $from = array('info@' . $path => $setting->mee);
-                $to = $profile->email;
-                $sub = 'Password reset successful';
-                $msg = 'Your password has been reset.<br /> Your login details are:<br /> Username: ' . $profile->username . '<br /> Password: ' . $new_pwd . '<br /> Please <a href="' . LOGIN . '">click here</a> to login.<br /> Regards,<br /> The ' . $setting->mee . ' Team';
-                $this->Mailer->sendEmail($from, $to, $sub, $msg);
-                echo "Password has been reset succesfully. Please check your email for the new password.";
-            }
-        } else {
-            echo "Sorry, the email address does not exist.";
-        }
-        die();
-    }
-
-    function generateRandomString($length = 10)
-    {
-        $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-        $charactersLength = strlen($characters);
-        $randomString = '';
-        for ($i = 0; $i < $length; $i++) {
-            $randomString .= $characters[rand(0, $charactersLength - 1)];
-        }
-        return $randomString;
-    }
-
-    function cleardb()
-    {
-        if ($this->request->session()->read('Profile.super') == 1) {
-
-            //$query = $conn->query("show tables");
-
-            //WHITELIST//
-            $this->DeleteAttachment(-1, "attachments", "/attachments/");
-            $this->DeleteAttachment(-1, "client_docs", "/img/jobs/");
-            $this->DeleteAttachment(-1, "profiles", "/img/profile/");
-            $this->DeleteAttachment(-1, "doc_attachments", "/attachments/");
-            $this->DeleteUser(-1);//deletes all users
-            $this->DeleteTables(array("clients", "clientssubdocument", "client_divison", "client_sub_order", "client_products"));//deletes clients
-            //deletes documents
-            $this->DeleteTables(array("audits", "consent_form", "consent_form_criminal", "documents", "driver_application", "road_test", "survey"));
-            $this->DeleteTables(array("abstract_forms", "bc_forms", "quebec_forms", "education_verification", "employment_verification", "feedbacks", "orders"));
-            $this->DeleteTables(array("driver_application_accident", "driver_application_licenses", "clientssubdocument", "mee_attachments"));
-            $this->DeleteTables(array("pre_screening", "generic_forms", "pre_employment_road_test", "past_employment_survey", "application_for_employment_gfs"));
-            $this->DeleteTables(array("basic_mee_platform"));
-
-            //do not delete settings, contents, logos, subdocuments, order_products, color_class, client_types, profile_types, training_quiz, training_list,
-
-            $this->DeleteDir(getcwd() . "/canvas", ".png");//deletes all signatures
-            $this->DeleteDir(getcwd() . "/attachments");//deletes all document attachments
-            $this->DeleteDir(getcwd() . "/img/jobs");//deletes all client pictures
-            $this->DeleteDir(getcwd() . "/img/certificates", ".pdf", "certificate.jpg");//deletes pdf certificates, leaves the jpg
-            $this->DeleteDir(getcwd() . "/img/profile", "", array("female.png", "male.png", "default.png"), "image");//deletes profile pics
-            $this->DeleteDir(getcwd() . "/orders", "", "", "", true);//deletes the pdfs and their sub-directories
-            $this->DeleteDir(getcwd() . "/pdfs");//deletes the pdfs
-
-            //die();
-            $this->layout = "blank";
-        }
-    }
-
-    function DeleteTables($Table)
-    {
-        if (is_array($Table)) {
-            foreach ($Table as $table) {
-                $this->DeleteTables($table);
-            }
-        } else {
-            switch ($Table) {
-                case "clients":
-                    $table = TableRegistry::get("clients")->find('all');
-                    foreach ($table as $client) {
-                        unlink(getcwd() . "/img/jobs/" . $client->image); //delete image
+                $this->Mailer->handleevent("passwordreset", array("email" =>  $profile->email, "username" => $profile->username, "password" => $new_pwd, "site" => $setting->mee));
+                                      /*
+                                $from = array('info@' . $path => $setting->mee);
+                                $to = $profile->email;
+                                $sub = 'Password reset successful';
+                                $msg = 'Your password has been reset.<br /> Your login details are:<br /> Username: ' . $profile->username . '<br /> Password: ' . $new_pwd . '<br /> Please <a href="' . LOGIN . '">click here</a> to login.<br /> Regards,<br /> The ' . $setting->mee . ' Team';
+                                $this->Mailer->sendEmail($from, $to, $sub, $msg);
+                                      */
+                                echo "Password has been reset succesfully. Please check your email for the new password.";
+                            }
+                        } else {
+                            echo "Sorry, the email address does not exist.";
+                        }
+                        die();
                     }
-                    break;
-                case "settings":
-                    echo "<BR> Cannot delete settings";
-                    return false;
-                    break;
-            }
-            $conn = ConnectionManager::get('default');
-            $conn->query("TRUNCATE TABLE " . $Table);
-            echo "<BR>Deleted table: " . $Table;
-        }
-    }
 
-    function DeleteUser($ID)
-    {
-        $table = TableRegistry::get("profiles");
-        if ($ID == -1) {
-            $users = $table->find('all', array('conditions' => array(['super' => 0])));
-            foreach ($users as $user) {
-                $this->DeleteUser($user->id);
-            }
-            //clean up any nonexistent users still in the database
-            $this->CleanUsers("blocks");
-            $this->CleanUsers("sidebar");
-            $this->CleanUsers("events");
-            $this->CleanUsers("profilessubdocument", "profile_id");
-            $this->CleanUsers("profile_docs", "profile_id");
-            $this->CleanUsers("recruiter_notes", "driver_id");
-            $this->CleanUsers("recruiter_notes", "recruiter_id");
-            $this->CleanUsers("training_answers", "UserID");
-            $this->CleanUsers("training_enrollments", "UserID");
-            $this->CleanUsers("training_enrollments", "EnrolledBy");
+                    function generateRandomString($length = 10)
+                    {
+                        $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+                        $charactersLength = strlen($characters);
+                        $randomString = '';
+                        for ($i = 0; $i < $length; $i++) {
+                            $randomString .= $characters[rand(0, $charactersLength - 1)];
+                        }
+                        return $randomString;
+                    }
 
-            if (!$this->loadprofile(0)) {
-                $this->DeleteUser(0);
-            }
-        } else if (is_numeric($ID) > 0) {
-            $user = $this->loadprofile($ID);
-            if ($user) {
-                if ($user->super == 1) {
-                    return false;
-                }//cannot delete supers
-                unlink(getcwd() . "/img/profile/" . $user - image);
-            }//delete image
-            $attachments = TableRegistry::get("profile_docs")->find('all', array('conditions' => array(['profile_id' => $ID])));
-            foreach ($attachments as $attachment) {
-                $this->DeleteAttachment($attachment->id, "profile_docs", "/img/jobs/");
-            }
+                    function cleardb()
+                    {
+                        if ($this->request->session()->read('Profile.super') == 1) {
 
-            TableRegistry::get("blocks")->deleteAll(array('user_id' => $ID), false);
-            TableRegistry::get("sidebar")->deleteAll(array('user_id' => $ID), false);
-            TableRegistry::get("events")->deleteAll(array('user_id' => $ID), false);
-            TableRegistry::get("profilessubdocument")->deleteAll(array('profile_id' => $ID), false);
-            TableRegistry::get("recruiter_notes")->deleteAll(array('driver_id' => $ID), false);
-            TableRegistry::get("recruiter_notes")->deleteAll(array('recruiter_id' => $ID), false);
-            TableRegistry::get("training_answers")->deleteAll(array('UserID' => $ID), false);
-            TableRegistry::get("training_enrollments")->deleteAll(array('UserID' => $ID), false);
+                            //$query = $conn->query("show tables");
 
-            $table->deleteAll(array('id' => $ID), false);
-            echo "<BR>Deleted User: " . $ID;
-        }
-    }
+                            //WHITELIST//
+                            $this->DeleteAttachment(-1, "attachments", "/attachments/");
+                            $this->DeleteAttachment(-1, "client_docs", "/img/jobs/");
+                            $this->DeleteAttachment(-1, "profiles", "/img/profile/");
+                            $this->DeleteAttachment(-1, "doc_attachments", "/attachments/");
+                            $this->DeleteUser(-1);//deletes all users
+                            $this->DeleteTables(array("clients", "clientssubdocument", "client_divison", "client_sub_order", "client_products"));//deletes clients
+                            //deletes documents
+                            $this->DeleteTables(array("audits", "consent_form", "consent_form_criminal", "documents", "driver_application", "road_test", "survey"));
+                            $this->DeleteTables(array("abstract_forms", "bc_forms", "quebec_forms", "education_verification", "employment_verification", "feedbacks", "orders"));
+                            $this->DeleteTables(array("driver_application_accident", "driver_application_licenses", "clientssubdocument", "mee_attachments"));
+                            $this->DeleteTables(array("pre_screening", "generic_forms", "pre_employment_road_test", "past_employment_survey", "application_for_employment_gfs"));
+                            $this->DeleteTables(array("basic_mee_platform"));
 
-    function CleanUsers($tablename, $fieldname = "user_id")
-    {
-        $table = TableRegistry::get($tablename);
-        $users = $table->find('all');
-        foreach ($users as $user) {
-            $user2 = $this->loadprofile($user->$fieldname);
-            if (!is_object($user2)) {//delete any non-existent profile
-                $this->DeleteUser($user->$fieldname);
-            }
-        }
-    }
+                            //do not delete settings, contents, logos, subdocuments, order_products, color_class, client_types, profile_types, training_quiz, training_list,
 
-    function DeleteDir($path, $like = "", $notlike = "", $fieldname = "", $recursive = false)
-    {
-        if (is_dir($path)) {
-            $files = scandir($path);
-            echo "<BR>Deleting Directory: " . $path;
-            foreach ($files as $file) { // iterate files
-                $doit = true;
-                if ($file != "." && $file != "..") {
-                    if ($fieldname) {//blocks the delete of any file that can be found in profiles.$fieldname
-                        if ($this->loadprofile($file, $fieldname)) {
-                            $doit = false;
+                            $this->DeleteDir(getcwd() . "/canvas", ".png");//deletes all signatures
+                            $this->DeleteDir(getcwd() . "/attachments");//deletes all document attachments
+                            $this->DeleteDir(getcwd() . "/img/jobs");//deletes all client pictures
+                            $this->DeleteDir(getcwd() . "/img/certificates", ".pdf", "certificate.jpg");//deletes pdf certificates, leaves the jpg
+                            $this->DeleteDir(getcwd() . "/img/profile", "", array("female.png", "male.png", "default.png"), "image");//deletes profile pics
+                            $this->DeleteDir(getcwd() . "/orders", "", "", "", true);//deletes the pdfs and their sub-directories
+                            $this->DeleteDir(getcwd() . "/pdfs");//deletes the pdfs
+
+                            //die();
+                            $this->layout = "blank";
                         }
                     }
-                    if ($like) {//only allows the delete of any file containing $like
-                        if (is_array($like)) {
-                            $doit = false;
-                            foreach ($like as $pattern) {
-                                if ($file == $pattern || stripos($file, $pattern)) {
-                                    $doit = true;
+
+                    function DeleteTables($Table)
+                    {
+                        if (is_array($Table)) {
+                            foreach ($Table as $table) {
+                                $this->DeleteTables($table);
+                            }
+                        } else {
+                            switch ($Table) {
+                                case "clients":
+                                    $table = TableRegistry::get("clients")->find('all');
+                                    foreach ($table as $client) {
+                                        unlink(getcwd() . "/img/jobs/" . $client->image); //delete image
+                                    }
+                                    break;
+                                case "settings":
+                                    echo "<BR> Cannot delete settings";
+                                    return false;
+                                    break;
+                            }
+                            $conn = ConnectionManager::get('default');
+                            $conn->query("TRUNCATE TABLE " . $Table);
+                            echo "<BR>Deleted table: " . $Table;
+                        }
+                    }
+
+                    function DeleteUser($ID)
+                    {
+                        $table = TableRegistry::get("profiles");
+                        if ($ID == -1) {
+                            $users = $table->find('all', array('conditions' => array(['super' => 0])));
+                            foreach ($users as $user) {
+                                $this->DeleteUser($user->id);
+                            }
+                            //clean up any nonexistent users still in the database
+                            $this->CleanUsers("blocks");
+                            $this->CleanUsers("sidebar");
+                            $this->CleanUsers("events");
+                            $this->CleanUsers("profilessubdocument", "profile_id");
+                            $this->CleanUsers("profile_docs", "profile_id");
+                            $this->CleanUsers("recruiter_notes", "driver_id");
+                            $this->CleanUsers("recruiter_notes", "recruiter_id");
+                            $this->CleanUsers("training_answers", "UserID");
+                            $this->CleanUsers("training_enrollments", "UserID");
+                            $this->CleanUsers("training_enrollments", "EnrolledBy");
+
+                            if (!$this->loadprofile(0)) {
+                                $this->DeleteUser(0);
+                            }
+                        } else if (is_numeric($ID) > 0) {
+                            $user = $this->loadprofile($ID);
+                            if ($user) {
+                                if ($user->super == 1) {
+                                    return false;
+                                }//cannot delete supers
+                                unlink(getcwd() . "/img/profile/" . $user - image);
+                            }//delete image
+                            $attachments = TableRegistry::get("profile_docs")->find('all', array('conditions' => array(['profile_id' => $ID])));
+                            foreach ($attachments as $attachment) {
+                                $this->DeleteAttachment($attachment->id, "profile_docs", "/img/jobs/");
+                            }
+
+                            TableRegistry::get("blocks")->deleteAll(array('user_id' => $ID), false);
+                            TableRegistry::get("sidebar")->deleteAll(array('user_id' => $ID), false);
+                            TableRegistry::get("events")->deleteAll(array('user_id' => $ID), false);
+                            TableRegistry::get("profilessubdocument")->deleteAll(array('profile_id' => $ID), false);
+                            TableRegistry::get("recruiter_notes")->deleteAll(array('driver_id' => $ID), false);
+                            TableRegistry::get("recruiter_notes")->deleteAll(array('recruiter_id' => $ID), false);
+                            TableRegistry::get("training_answers")->deleteAll(array('UserID' => $ID), false);
+                            TableRegistry::get("training_enrollments")->deleteAll(array('UserID' => $ID), false);
+
+                            $table->deleteAll(array('id' => $ID), false);
+                            echo "<BR>Deleted User: " . $ID;
+                        }
+                    }
+
+                    function CleanUsers($tablename, $fieldname = "user_id")
+                    {
+                        $table = TableRegistry::get($tablename);
+                        $users = $table->find('all');
+                        foreach ($users as $user) {
+                            $user2 = $this->loadprofile($user->$fieldname);
+                            if (!is_object($user2)) {//delete any non-existent profile
+                                $this->DeleteUser($user->$fieldname);
+                            }
+                        }
+                    }
+
+                    function DeleteDir($path, $like = "", $notlike = "", $fieldname = "", $recursive = false)
+                    {
+                        if (is_dir($path)) {
+                            $files = scandir($path);
+                            echo "<BR>Deleting Directory: " . $path;
+                            foreach ($files as $file) { // iterate files
+                                $doit = true;
+                                if ($file != "." && $file != "..") {
+                                    if ($fieldname) {//blocks the delete of any file that can be found in profiles.$fieldname
+                                        if ($this->loadprofile($file, $fieldname)) {
+                                            $doit = false;
+                                        }
+                                    }
+                                    if ($like) {//only allows the delete of any file containing $like
+                                        if (is_array($like)) {
+                                            $doit = false;
+                                            foreach ($like as $pattern) {
+                                                if ($file == $pattern || stripos($file, $pattern)) {
+                                                    $doit = true;
+                                                }
+                                            }
+                                        } else {
+                                            $doit = $file == $like || stripos($file, $like);
+                                        }
+                                    }
+                                    if ($notlike) {//blocks the delete of any file containing $notlike
+                                        if (is_array($notlike)) {
+                                            foreach ($notlike as $pattern) {
+                                                if ($file == $pattern || stripos($file, $pattern)) {
+                                                    $doit = false;
+                                                }
+                                            }
+                                        } else {
+                                            if ($file == $notlike || stripos($file, $notlike)) {
+                                                $doit = false;
+                                            }
+                                        }
+                                    }
+                                    if ($doit) {//if approved, delete the file
+                                        $file = $path . "/" . $file;
+                                        if (is_file($file)) {// delete file}
+                                            unlink($file);
+                                            echo "<BR>Deleting file: " . $file;
+                                        } else if ($recursive && is_dir($file)) {//deletes sub directories
+                                            $this->DeleteDir($file, $like, $notlike, $fieldname, $recursive);
+                                            rmdir($file);
+                                        }
+                                    }
                                 }
                             }
                         } else {
-                            $doit = $file == $like || stripos($file, $like);
+                            echo "<BR>" . $path . " Was not a directory";
                         }
                     }
-                    if ($notlike) {//blocks the delete of any file containing $notlike
-                        if (is_array($notlike)) {
-                            foreach ($notlike as $pattern) {
-                                if ($file == $pattern || stripos($file, $pattern)) {
-                                    $doit = false;
-                                }
+
+                    function DeleteAttachment($ID, $TableName = 'attachments', $Path = "/attachments/")
+                    {//$ID=-1 deletes all attachments
+                        $table = TableRegistry::get($TableName);
+                        if ($ID == -1) {
+                            echo "<BR>Deleting all attachments from " . $TableName;
+                            $table = $table->find('all');
+                            foreach ($table as $attachment) {
+                                $this->DeleteAttachment($attachment->id, $TableName, $Path);
                             }
                         } else {
-                            if ($file == $notlike || stripos($file, $notlike)) {
-                                $doit = false;
+                            $attachment = $table->find()->where(['id' => $ID])->first();
+                            $filename = "";
+                            if (isset($attachment->title)) {
+                                $filename = $attachment->title;
+                            }
+                            if (isset($attachment->file)) {
+                                $filename = $attachment->file;
+                            }
+                            if (isset($attachment->attachment)) {
+                                $filename = $attachment->attachment;
+                            }
+                            if ($filename) {
+                                if (file_exists(getcwd() . $Path . $filename) && is_file(getcwd() . $Path . $filename)) {
+                                    echo "<BR>Deleted file " . $Path . $filename;
+                                    unlink(getcwd() . $Path . $filename);
+                                }
+                            } else {
+                                echo "<BR>No file to delete " . $ID . " in " . $TableName;
+                            }
+                            if ($TableName != "profiles") $table->deleteAll(array('id' => $ID), false);
+                        }
+                    }
+
+                    function sproduct($id = '0'){
+                        if (isset($_POST)) {
+                            $p = TableRegistry::get('order_products');
+                            $title = $_POST['title'];
+                            if ($id != 0) {
+                                if ($p->query()->update()->set(['title' => $title])->where(['id' => $id])->execute()) {
+                                    echo $title;
+                                }
+                            } else {
+                                $profile = $p->newEntity($_POST);
+                                if ($p->save($profile)) {
+                                    echo '<tr>
+                                            <!--td>' . $profile->id . '</td-->
+                                            <td class="title_' . $profile->id . '">' . $title . '</td>
+                                            <td><input type="checkbox" id="chk_' . $profile->id . '" class="enable"/></td>
+                                            <td><span  class="btn btn-info editpro" id="edit_' . $profile->id . '">Edit</span></td>
+                                        </tr>';
+                                }
                             }
                         }
+                        die();
                     }
-                    if ($doit) {//if approved, delete the file
-                        $file = $path . "/" . $file;
-                        if (is_file($file)) {// delete file}
-                            unlink($file);
-                            echo "<BR>Deleting file: " . $file;
-                        } else if ($recursive && is_dir($file)) {//deletes sub directories
-                            $this->DeleteDir($file, $like, $notlike, $fieldname, $recursive);
-                            rmdir($file);
+
+                    function ptypes($id = '0'){
+                        if (isset($_POST)) {
+                            $p = TableRegistry::get('profile_types');
+                            $title = $_POST['title'];
+                            $titleFrench = $_POST['titleFrench'];
+                            if ($id != 0) {
+                                if ($p->query()->update()->set(['title' => $title, 'titleFrench' => $titleFrench])->where(['id' => $id])->execute()) {
+                                    echo $title;
+                                }
+                            } else {
+                                $profile = $p->newEntity($_POST);
+                                if ($p->save($profile)) {
+                                    echo '<tr>
+                                            <td>' . $profile->id . '</td>
+                                            <td class="titleptype_' . $profile->id . '">' . $title . '</td>
+                                            <td class="titleptypeFrench_' . $profile->id . '">' . $titleFrench . '</td>
+                                            <td><input type="checkbox" id="pchk_' . $profile->id . '" class="penable"/><span class="span_' . $profile->id . '"></span></td>
+                                            <td><span  class="btn btn-info editptype" id="editptype_' . $profile->id . '">Edit</span></td>
+                                        </tr>';
+                                }
+                            }
                         }
+                        die();
                     }
-                }
-            }
-        } else {
-            echo "<BR>" . $path . " Was not a directory";
-        }
-    }
 
-    function DeleteAttachment($ID, $TableName = 'attachments', $Path = "/attachments/")
-    {//$ID=-1 deletes all attachments
-        $table = TableRegistry::get($TableName);
-        if ($ID == -1) {
-            echo "<BR>Deleting all attachments from " . $TableName;
-            $table = $table->find('all');
-            foreach ($table as $attachment) {
-                $this->DeleteAttachment($attachment->id, $TableName, $Path);
-            }
-        } else {
-            $attachment = $table->find()->where(['id' => $ID])->first();
-            $filename = "";
-            if (isset($attachment->title)) {
-                $filename = $attachment->title;
-            }
-            if (isset($attachment->file)) {
-                $filename = $attachment->file;
-            }
-            if (isset($attachment->attachment)) {
-                $filename = $attachment->attachment;
-            }
-            if ($filename) {
-                if (file_exists(getcwd() . $Path . $filename) && is_file(getcwd() . $Path . $filename)) {
-                    echo "<BR>Deleted file " . $Path . $filename;
-                    unlink(getcwd() . $Path . $filename);
-                }
-            } else {
-                echo "<BR>No file to delete " . $ID . " in " . $TableName;
-            }
-            if ($TableName != "profiles") $table->deleteAll(array('id' => $ID), false);
-        }
-    }
+                    function ctypes($id = '0'){
+                        if (isset($_POST)) {
+                            $p = TableRegistry::get('client_types');
+                            $title = $_POST['title'];
+                            $titleFrench = $_POST['titleFrench'];
+                            if ($id != 0) {
+                                if ($p->query()->update()->set(['title' => $title, 'titleFrench' => $titleFrench])->where(['id' => $id])->execute()) {
+                                    echo $title;
+                                }
+                            } else {
+                                $profile = $p->newEntity($_POST);
+                                if ($p->save($profile)) {
+                                    echo '<tr>
+                                            <td>' . $profile->id . '</td>
+                                            <td class="titlectype_' . $profile->id . '">' . $title . '</td>
+                                            <td class="titlectypeFrench_' . $profile->id . '">' . $titleFrench . '</td>
+                                            <td><input type="checkbox" id="cchk_' . $profile->id . '" class="cenable"/><span class="span_' . $profile->id . '"></span></td>
+                                            <td><span  class="btn btn-info editctype" id="editctype_' . $profile->id . '">Edit</span></td>
+                                        </tr>';
+                                }
+                            }
+                        }
+                        die();
+                    }
 
-    function sproduct($id = '0'){
-        if (isset($_POST)) {
-            $p = TableRegistry::get('order_products');
-            $title = $_POST['title'];
-            if ($id != 0) {
-                if ($p->query()->update()->set(['title' => $title])->where(['id' => $id])->execute()) {
-                    echo $title;
-                }
-            } else {
-                $profile = $p->newEntity($_POST);
-                if ($p->save($profile)) {
-                    echo '<tr>
-                            <!--td>' . $profile->id . '</td-->
-                            <td class="title_' . $profile->id . '">' . $title . '</td>
-                            <td><input type="checkbox" id="chk_' . $profile->id . '" class="enable"/></td>
-                            <td><span  class="btn btn-info editpro" id="edit_' . $profile->id . '">Edit</span></td>
-                        </tr>';
-                }
-            }
-        }
-        die();
-    }
+                    function enableproduct($id) {
+                        $p = TableRegistry::get('order_products');
+                        $enable = $_POST['enable'];
+                        if ($p->query()->update()->set(['enable' => $enable])->where(['id' => $id])->execute()) {
+                            echo $enable;
+                        }
+                        die();
+                    }
 
-    function ptypes($id = '0'){
-        if (isset($_POST)) {
-            $p = TableRegistry::get('profile_types');
-            $title = $_POST['title'];
-            $titleFrench = $_POST['titleFrench'];
-            if ($id != 0) {
-                if ($p->query()->update()->set(['title' => $title, 'titleFrench' => $titleFrench])->where(['id' => $id])->execute()) {
-                    echo $title;
-                }
-            } else {
-                $profile = $p->newEntity($_POST);
-                if ($p->save($profile)) {
-                    echo '<tr>
-                            <td>' . $profile->id . '</td>
-                            <td class="titleptype_' . $profile->id . '">' . $title . '</td>
-                            <td class="titleptypeFrench_' . $profile->id . '">' . $titleFrench . '</td>
-                            <td><input type="checkbox" id="pchk_' . $profile->id . '" class="penable"/><span class="span_' . $profile->id . '"></span></td>
-                            <td><span  class="btn btn-info editptype" id="editptype_' . $profile->id . '">Edit</span></td>
-                        </tr>';
-                }
-            }
-        }
-        die();
-    }
+                    function ptypesenable($id, $field = "enable")
+                    {
+                        $p = TableRegistry::get('profile_types');
+                        $enable = $_POST['enable'];
+                        if ($p->query()->update()->set([$field => $enable])->where(['id' => $id])->execute()) {
+                            if ($enable == '1')
+                                echo "Added";
+                            else
+                                echo "Removed";
+                        }
 
-    function ctypes($id = '0'){
-        if (isset($_POST)) {
-            $p = TableRegistry::get('client_types');
-            $title = $_POST['title'];
-            $titleFrench = $_POST['titleFrench'];
-            if ($id != 0) {
-                if ($p->query()->update()->set(['title' => $title, 'titleFrench' => $titleFrench])->where(['id' => $id])->execute()) {
-                    echo $title;
-                }
-            } else {
-                $profile = $p->newEntity($_POST);
-                if ($p->save($profile)) {
-                    echo '<tr>
-                            <td>' . $profile->id . '</td>
-                            <td class="titlectype_' . $profile->id . '">' . $title . '</td>
-                            <td class="titlectypeFrench_' . $profile->id . '">' . $titleFrench . '</td>
-                            <td><input type="checkbox" id="cchk_' . $profile->id . '" class="cenable"/><span class="span_' . $profile->id . '"></span></td>
-                            <td><span  class="btn btn-info editctype" id="editctype_' . $profile->id . '">Edit</span></td>
-                        </tr>';
-                }
-            }
-        }
-        die();
-    }
+                        die();
+                    }
 
-    function enableproduct($id) {
-        $p = TableRegistry::get('order_products');
-        $enable = $_POST['enable'];
-        if ($p->query()->update()->set(['enable' => $enable])->where(['id' => $id])->execute()) {
-            echo $enable;
-        }
-        die();
-    }
+                    function ctypesenable($id){
+                        $p = TableRegistry::get('client_types');
+                        $enable = $_POST['enable'];
+                        if ($p->query()->update()->set(['enable' => $enable])->where(['id' => $id])->execute()) {
+                            if ($enable == '1') {
+                                echo "Added";
+                            }else {
+                                echo "Removed";
+                            }
+                        }
+                        die();
+                    }
 
-    function ptypesenable($id, $field = "enable")
-    {
-        $p = TableRegistry::get('profile_types');
-        $enable = $_POST['enable'];
-        if ($p->query()->update()->set([$field => $enable])->where(['id' => $id])->execute()) {
-            if ($enable == '1')
-                echo "Added";
-            else
-                echo "Removed";
-        }
+                    function ctypesenb($id){
+                        $ctype = "";
+                        foreach ($_POST['ctypes'] as $k => $v) {
+                            if (count($_POST['ctypes']) == $k + 1) {
+                                $ctype .= $v;
+                            }else {
+                                $ctype .= $v . ",";
+                            }
+                        }
+                        $p = TableRegistry::get('profiles');
+                        $p->query()->update()->set(['ctypes' => $ctype])->where(['id' => $id])->execute();
+                        die();
+                    }
 
-        die();
-    }
+                    function ptypesenb($id){
+                        $ptype = "";
+                        foreach ($_POST['ptypes'] as $k => $v) {
+                            if (count($_POST['ptypes']) == $k + 1) {
+                                $ptype .= $v;
+                            }else {
+                                $ptype .= $v . ",";
+                            }
+                        }
+                        $p = TableRegistry::get('profiles');
+                        $p->query()->update()->set(['ptypes' => $ptype])->where(['id' => $id])->execute();
+                        die();
+                    }
 
-    function ctypesenable($id){
-        $p = TableRegistry::get('client_types');
-        $enable = $_POST['enable'];
-        if ($p->query()->update()->set(['enable' => $enable])->where(['id' => $id])->execute()) {
-            if ($enable == '1') {
-                echo "Added";
-            }else {
-                echo "Removed";
-            }
-        }
-        die();
-    }
+                    function gettypes($type, $uid){
+                        $p = TableRegistry::get('profiles');
+                        $profile = $p->find()->where(['id' => $uid])->first();
 
-    function ctypesenb($id){
-        $ctype = "";
-        foreach ($_POST['ctypes'] as $k => $v) {
-            if (count($_POST['ctypes']) == $k + 1) {
-                $ctype .= $v;
-            }else {
-                $ctype .= $v . ",";
-            }
-        }
-        $p = TableRegistry::get('profiles');
-        $p->query()->update()->set(['ctypes' => $ctype])->where(['id' => $id])->execute();
-        die();
-    }
+                        if ($type == 'ptypes') {
+                            $this->response->body(($profile->ptypes));
+                        } elseif ($type == "ctypes") {
+                            $this->response->body(($profile->ctypes));
+                        }
+                        return $this->response;
+                    }
 
-    function ptypesenb($id){
-        $ptype = "";
-        foreach ($_POST['ptypes'] as $k => $v) {
-            if (count($_POST['ptypes']) == $k + 1) {
-                $ptype .= $v;
-            }else {
-                $ptype .= $v . ",";
-            }
-        }
-        $p = TableRegistry::get('profiles');
-        $p->query()->update()->set(['ptypes' => $ptype])->where(['id' => $id])->execute();
-        die();
-    }
+                    /*  getDocumentcountz()
+                      {
+                          $doc = TableRegistry::get('Subdocuments');
+                          $query = $doc->find();
+                          $query = $query->where(['display' => 1]);
+                          $q = $query->all();
+                          $q = count($q);
+                          $this->response->body($q);
+                          return $this->response;
+                      }
 
-    function gettypes($type, $uid){
-        $p = TableRegistry::get('profiles');
-        $profile = $p->find()->where(['id' => $uid])->first();
+                      getuserDocumentcountz($id)
+                     {
+                          $doc = TableRegistry::get('Subdocuments');
+                          $query = $doc->find();
+                          $query = $query->where(['display' => 1])->all();
+                          $cnt = 0;
+                          foreach ($query as $q) {
+                              $subdoc = TableRegistry::get('profilessubdocument');
+                              if ($query1 = $subdoc->find()->where(['profile_id' => $id, 'subdoc_id' => $q->id, 'display <>' => 0])->first())
+                                  $cnt++;
+                          }
 
-        if ($type == 'ptypes') {
-            $this->response->body(($profile->ptypes));
-        } elseif ($type == "ctypes") {
-            $this->response->body(($profile->ctypes));
-        }
-        return $this->response;
-    }
-
-    /*  getDocumentcountz()
-      {
-          $doc = TableRegistry::get('Subdocuments');
-          $query = $doc->find();
-          $query = $query->where(['display' => 1]);
-          $q = $query->all();
-          $q = count($q);
-          $this->response->body($q);
-          return $this->response;
-      }
-
-      getuserDocumentcountz($id)
-     {
-          $doc = TableRegistry::get('Subdocuments');
-          $query = $doc->find();
-          $query = $query->where(['display' => 1])->all();
-          $cnt = 0;
-          foreach ($query as $q) {
-              $subdoc = TableRegistry::get('profilessubdocument');
-              if ($query1 = $subdoc->find()->where(['profile_id' => $id, 'subdoc_id' => $q->id, 'display <>' => 0])->first())
-                  $cnt++;
-          }
-
-          $this->response->body($cnt);
-          return $this->response;
-     } */
+                          $this->response->body($cnt);
+                          return $this->response;
+                     } */
     public function appendattachments($query){
         foreach ($query as $client) {
             $client->hasattachments = $this->hasattachments($client->id);

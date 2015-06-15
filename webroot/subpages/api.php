@@ -285,7 +285,7 @@ function Translate($ID, $Language, $Variables = ""){
         return $ID . "." . $Language . " is missing a translation";
     }
 }
-function ProcessVariables($ID, $Text, $Variables = ""){
+function ProcessVariables($ID, $Text, $Variables = "", $addSlashes = false){
     if (is_array($Variables)) {
         foreach ($Variables as $Key => $Value) {
             if (substr($Key, 0, 1) != "%") {$Key = "%" . $Key;}
@@ -296,6 +296,9 @@ function ProcessVariables($ID, $Text, $Variables = ""){
                 $Text = str_replace($Key, $Value, $Text);
             }
         }
+    }
+    if($addSlashes) {//&apos;
+       $Text = str_replace("d&#039;", "\'", addslashes($Text));//d&#039; breaks javascript
     }
     if($Text) {return $Text;}
     return $ID;

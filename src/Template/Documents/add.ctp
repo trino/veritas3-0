@@ -182,8 +182,8 @@ $title = $strings["index_" . strtolower($action) . "document"];
 <?php
     function docname($ID, $subdoccli, $language) {
         $keyname = getFieldname("title", $language);
-        $object = getIterator($subdoccli, "sub_id", $ID);
-        if ($language == 'Debug') { return $object->$keyname . " [Trans]";}
+        $object = getIterator($subdoccli, "sub_id", $ID)->subtype;
+        if ($language == 'Debug') { return $object->English . " [Trans]";}
         return $object->$keyname;
     }
 ?>
@@ -487,7 +487,7 @@ $title = $strings["index_" . strtolower($action) . "document"];
                         if($controller == 'documents' ) {
                             $colr = $this->requestAction('/documents/getColorId/'.$dx->id);
                             if(!$colr) {$colr = $class[9];}
-                            makeportlet($did, $colr,$dx->title);
+                            makeportlet($did, $colr,$dx->$keyname);
                         } else {
 
                         }
@@ -2206,14 +2206,14 @@ $title = $strings["index_" . strtolower($action) . "document"];
             action: act,
             name: 'myfile',
             onSubmit: function (file, ext) {
-                button.text('Uploading');
+                button.text('<?= addslashes($strings["forms_uploading"]); ?>');
                 this.disable();
                 interval = window.setInterval(function () {
                     var text = button.text();
                     if (text.length < 13) {
                         button.text(text + '.');
                     } else {
-                        button.text('Uploading');
+                        button.text('<?= addslashes($strings["forms_uploading"]); ?>');
                     }
                 }, 200);
             },

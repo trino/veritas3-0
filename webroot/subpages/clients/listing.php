@@ -147,7 +147,7 @@
 
                                                         if ($sidebar->client_delete == '1') { ?>
                                                             <a href="<?php echo $this->request->webroot; ?>clients/delete/<?php echo $clients->id; ?><?php echo (isset($_GET['draft'])) ? "?draft" : ""; ?>"
-                                                               onclick="return confirm('<?= ProcessVariables($language, $strings["dashboard_confirmdelete"], array("name" =>  h($clients->company_name))); ?>');"
+                                                               onclick="return confirm('<?= ProcessVariables($language, $strings["dashboard_confirmdelete"], array("name" =>  h($clients->company_name)), true); ?>');"
                                                                class="<?= btnclass("DELETE") . '">' . $strings["dashboard_delete"] ?></a>
 
                                                         <?php }

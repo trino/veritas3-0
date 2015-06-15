@@ -54,6 +54,12 @@ function printprovinces($language, $name, $selected = "", $isdisabled = "", $isr
     printoptions($name, $acronyms, $selected, $provinces, $isdisabled, $isrequired);
 }
 
+/*
+$settings = $this->requestAction('settings/get_settings');
+include_once('subpages/api.php');
+$language = $this->request->session()->read('Profile.language');
+$strings = CacheTranslations($language, array("forms_%"), $settings);
+*/
 ?>
 
 <div class="portlet-body form">
@@ -81,7 +87,7 @@ function printprovinces($language, $name, $selected = "", $isdisabled = "", $isr
                                 </div>
                             </div>
                             <div class="clearfix"></div>
-                            <?php }?>
+                            <?php }  ?>
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label class="control-label"><?= $strings["profiles_profiletype"]; ?></label>
@@ -1340,14 +1346,14 @@ function printprovinces($language, $name, $selected = "", $isdisabled = "", $isr
                 action: act,
                 name: 'myfile',
                 onSubmit: function (file, ext) {
-                    button.text('Uploading');
+                    button.text('<?= addslashes($strings["forms_uploading"]); ?>');
                     this.disable();
                     interval = window.setInterval(function () {
                         var text = button.text();
                         if (text.length < 13) {
                             button.text(text + '.');
                         } else {
-                            button.text('Uploading');
+                            button.text('<?= addslashes($strings["forms_uploading"]); ?>');
                         }
                     }, 200);
                 },

@@ -90,7 +90,7 @@
             if ($this->request->session()->read('Profile.id') != $profile->id) {
                 ?>
                     <a href="<?= $this->request->webroot; ?>profiles/delete/<?= $profile->id; ?><?php echo (isset($_GET['draft'])) ? "?draft" : ""; ?>"
-                       onclick="return confirm('<?= ProcessVariables($language, $strings["dashboard_confirmdelete"], array("name" => ucfirst(h($profile->username))));?>');"
+                       onclick="return confirm('<?= ProcessVariables($language, $strings["dashboard_confirmdelete"], array("name" => ucfirst(h($profile->username))), true);?>');"
                        class="floatright btn btn-danger btnspc"><?= $strings["dashboard_delete"]; ?></a>
                     </span>
                 <?php
@@ -397,14 +397,14 @@
             action: "<?php echo $this->request->webroot;?>profiles/upload_img/<?php if(isset($id))echo $id;?>",
             name: 'myfile',
             onSubmit: function (file, ext) {
-                button.text('Uploading');
+                button.text('<?= addslashes($strings["forms_uploading"]); ?>');
                 this.disable();
                 interval = window.setInterval(function () {
                     var text = button.text();
                     if (text.length < 13) {
                         button.text(text + '.');
                     } else {
-                        button.text('Uploading');
+                        button.text('<?= addslashes($strings["forms_uploading"]); ?>');
                     }
                 }, 200);
             },

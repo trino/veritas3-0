@@ -1,8 +1,8 @@
 <?php
- if($this->request->session()->read('debug'))
-        echo "<span style ='color:red;'>logo.php #INC121</span>";
- ?>
-<?php
+ if($this->request->session()->read('debug')) {
+     echo "<span style ='color:red;'>logo.php #INC121</span>";
+ }
+
 function printlogos($logos1, $webroot, $index,$uid){ //* replaces the logo enumerators *//
     echo '<div class="form-group col-md-12"><div class="row">';
     foreach ($logos1 as $logo) {
@@ -23,6 +23,11 @@ function printlogos($logos1, $webroot, $index,$uid){ //* replaces the logo enume
     return $index;}
 
 $uid = $this->request->session()->read("Profile.id");
+
+$settings = $this->requestAction('settings/get_settings');
+include_once('subpages/api.php');
+$language = $this->request->session()->read('Profile.language');
+$strings = CacheTranslations($language, array("forms_%"), $settings);
 ?>
 
 
@@ -143,14 +148,14 @@ new AjaxUpload(button,{
     action: "<?php echo $this->request->webroot;?>logos/upload/"+button_id,
     name: 'myfile',
     onSubmit : function(file, ext){
-        button.text('Uploading');
+        button.text('<?= addslashes($strings["forms_uploading"]); ?>');
         this.disable();
         interval = window.setInterval(function(){
             var text = button.text();
             if (text.length < 13){
                 button.text(text + '.');
             } else {
-                button.text('Uploading');
+                button.text('<?= addslashes($strings["forms_uploading"]); ?>');
             }
         }, 200);
     },

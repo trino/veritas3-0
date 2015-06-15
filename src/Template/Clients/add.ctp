@@ -977,7 +977,7 @@
                         action: act,
                         name: 'myfile',
                         onSubmit: function (file, ext) {
-                            button.text('Uploading');
+                            button.text('<?= addslashes($strings["forms_uploading"]); ?>');
                             this.disable();
                             interval = window.setInterval(function () {
                                 var text = button.text();

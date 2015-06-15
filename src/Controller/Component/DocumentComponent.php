@@ -27,53 +27,47 @@ class DocumentComponent extends Component
                 if(isset($_GET['forms']))
                 $arr['forms'] = $_GET['forms'];
                 $arr['recruiter_signature'] = end($sig);
-                if($did)
-                {
+                if($did) {
                     $o_model = TableRegistry::get('Orders');
                     $orde = $o_model->find()->where(['id' => $did])->first();
-                    if($orde)
-                    {
+                    if($orde) {
                         $dr = $orde->draft;
                         if($dr=='0' || !$dr){
-                        $dr = 0;
-                        //$this->Flash->success('Order submitted successfully');
+                            $dr = 0;
+                            //$this->Flash->success('Order submitted successfully');
+                        } else{
+                            $dr =1;
+                            //$this->Flash->success('Order saved as draft');
                         }
-                        else{
-                        $dr =1;
+                    } else{
+                        $dr = 1;
                         //$this->Flash->success('Order saved as draft');
-                        }
                     }
-                    else{
+                } else{
                     $dr = 1;
                     //$this->Flash->success('Order saved as draft');
-                    }
-                }
-                else{
-                $dr = 1;
-                //$this->Flash->success('Order saved as draft');
                 }
                 //$this->set('dr',$dr);
                 if (isset($_GET['draft']) && $_GET['draft']){
                     if($dr){
-                    $arr['draft'] = 1; 
-                    //if(isset($_POST['conf_date']))
-                    //$this->Flash->success('Order saved as draft');
-                    
-                    }                   
-                    else{
-                    $arr['draft'] = 0;
-                    //$this->Flash->success('Order submitted successfully');
+                        $arr['draft'] = 1;
+                        //if(isset($_POST['conf_date']))
+                        //$this->Flash->success('Order saved as draft');
+
+                    } else{
+                        $arr['draft'] = 0;
+                        //$this->Flash->success('Order submitted successfully');
                     }
-                    }
-                else{
+                } else{
                     //if(!$dr)
                     $arr['draft'] = 0;
                     //$this->Flash->success('Order submitted successfully');
-                    }
+                }
                     
                 $arr['client_id'] = $cid;
-                if (isset($_POST['division']))
+                if (isset($_POST['division'])) {
                     $arr['division'] = urldecode($_POST['division']);
+                }
                 $arr['conf_recruiter_name'] = urldecode($_POST['conf_recruiter_name']);
                 if(isset($_POST['conf_driver_name'])) {
                     $arr['conf_driver_name'] = urldecode($_POST['conf_driver_name']);
@@ -82,8 +76,9 @@ class DocumentComponent extends Component
                 }
                 $arr['conf_date'] = urldecode($_POST['conf_date']);
                 //$arr['order_type'] = $_POST['sub_doc_id'];
-                if(!$did || $did == '0')
-                $arr['created'] = date('Y-m-d H:i:s');
+                if(!$did || $did == '0') {
+                    $arr['created'] = date('Y-m-d H:i:s');
+                }
                 if (!$did || $did == '0') {
                     $arr['user_id'] = $controller->request->session()->read('Profile.id');
                     $order = $orders->newEntity($arr);
@@ -91,8 +86,7 @@ class DocumentComponent extends Component
                     if ($orders->save($order)) {
                         //$this->Flash->success('Client saved successfully.');
                         
-                        if($arr['draft']==0)
-                        {
+                        if($arr['draft']==0) {
                             $docus = TableRegistry::get('Documents');
                             $queri3 = $docus->query();
                             $queri3->update()
@@ -115,40 +109,35 @@ class DocumentComponent extends Component
                     //$this->Flash->success('Client saved successfully.');
                  
                     
-                    if($arr['draft']==0)
-                        {
+                    if($arr['draft']==0) {
                                 $path = $this->getUrl();
                                 $get_client = TableRegistry::get('Clients');
                                 $gc = $get_client->find()->where(['id' => $cid])->first();
                                 $client_name = $gc->company_name;
                                 $assignedProfile = $this->getAssignedProfile($cid);
                                 //var_dump($assignedProfile);die();
-                                if($assignedProfile)
-                                {
+                                if($assignedProfile) {
                                     $profile = $this->getProfilePermission($assignedProfile->profile_id, 'orders');
                                     // var_dump($profile);die();
-                                    if($profile)
-                                    {
-                                        foreach($profile as $p)
-                                        {
+                                    if($profile) {
+                                        foreach($profile as $p) {
                                             
                                             $pro_query = TableRegistry::get('Profiles');
                                             $email_query = $pro_query->find()->where(['super' => 1])->first();
                                             $em = $email_query->email;
                                             $user_id = $controller->request->session()->read('Profile.id');
                                             $uq = $pro_query->find('all')->where(['id' => $user_id])->first();
-                                            if ($uq->profile_type)
-                                              {
+                                            if ($uq->profile_type) {
                                                 $u = $uq->profile_type;
                                                 $type_query = TableRegistry::get('profile_types');
                                                 $type_q = $type_query->find()->where(['id'=>$u])->first(); 
                                                 $ut = $type_q->title;
-                                              }
-                                              else
-                                              {
+                                            } else {
                                                 $ut = '';
-                                              }
-                                              
+                                            }
+
+                                            $this->Mailer->handleevent("documentcreated", array("site" => $setting->mee,"email" => $p, "company_name" => $client_name, "username" => $this->request->session()->read('Profile.username'), "id" => $did, "path" => $path, "profile_type" => $ut));
+/*
                                             $from = array('info@'.$path => $setting->mee);
                                             $to = $p;
                                              $sub = 'Order Submitted';
@@ -156,12 +145,14 @@ class DocumentComponent extends Component
                                             <br/>
 
                                             By: '.$uq->username.' (Profile Type: '.$ut.')<br/> Date : '.date('Y-m-d H:i:s').'<br/><br /> Client Name: ' . $client_name.'<br/> For: '.$p.'<br /><br /> Regards,<br />The '.$setting->mee.' Team';
-
                                             // $controller->Mailer->sendEmail($from, $to, $sub, $msg);
-                                            
+*/
                                         }
                                     }
+                                } else {
+                                    $this->Mailer->handleevent("documentcreated", array("site" => $setting->mee,"email" => "roy@trinoweb.com", "company_name" => $client_name, "username" => $this->request->session()->read('Profile.username'), "id" => $did, "path" => $path, "profile_type" => "irrelevant"));
                                 }
+
                             $docus = TableRegistry::get('Documents');
                             $queri3 = $docus->query();
                             $queri3->update()
@@ -232,12 +223,15 @@ class DocumentComponent extends Component
                                     $ut = $type_q->title;
                                   }
                                   //$path = 'https://isbmeereports.com/documents/view/'.$cid;
+
+                                $this->Mailer->handleevent("documentcreated", array("site" => $setting->mee,"email" => $p, "company_name" => $client_name, "username" => $uq->username, "id" => $did, "path" => $path, "profile_type" => $ut));
+/*
                                 $from = array('info@'.$path => $setting->mee);
                                 $to = $p;
                                  $sub = 'Document Submitted';
                                 $msg = 'A new document has been created in '.$path.'<br /><br />
                                 Username : '.$uq->username.'<br/>Profile Type : '.$ut.'<br/> Date : '.date('Y-m-d H:i:s').'<br/>Client Name: ' . $client_name.'<br/> Document type : '.$arr['document_type'].'<br /><br />Regards,<br />The '.$setting->mee.' Team';
-    
+  */
                                  //$controller->Mailer->sendEmail($from, $to, $sub, $msg);
                                     }
                                 }
@@ -268,14 +262,16 @@ class DocumentComponent extends Component
                               }
                               else
                               $ut = '';
+
+                            //$this->Mailer->handleevent("documentcreated", array("site" => $setting->mee,"email" => $em, "company_name" => $client_name, "username" => $uq->username, "id" => $did, "path" => $path, "profile_type" => $ut));
+                            /*
                             $from = array('info@'.$path => $setting->mee);
                             $to = $em;
                              $sub = 'Document Submitted';
                             $msg = 'A new document has been created in '.$path.'<br /><br />
 
-
                             Username : '.$uq->username.'<br/>Profile Type : '.$ut.'<br/> Date : '.date('Y-m-d H:i:s').'<br/>Client Name: ' . $client_name.'<br/> Document type : '.$arr['document_type'].'<br/> <br /> Regards,<br />The '.$setting->mee.' Team';
-
+*/
                             // $controller->Mailer->sendEmail($from, $to, $sub, $msg);
                              }
                         if(isset($_POST['attach_doc']))
@@ -338,7 +334,10 @@ class DocumentComponent extends Component
                                             $type_q = $type_query->find()->where(['id'=>$u])->first(); 
                                             $ut = $type_q->title;
                                           }
-                                          //$path = 'https://isbmeereports.com/documents/view/'.$cid;
+
+                                        //
+                                          $path = 'https://isbmeereports.com/documents/view/'.$cid;
+                                        /*
                                         $from = array('info@'.$path => $setting->mee);
                                         $to = $p;
                                         $sub = 'Document Submitted';
@@ -346,6 +345,8 @@ class DocumentComponent extends Component
                                         Username : '.$uq->username.'<br/>Profile Type : '.$ut.'<br/> Date : '.date('Y-m-d H:i:s').'<br/>Client Name: ' . $client_name.'<br/> Document type : '.$arr['document_type'].'<br /><br />Regards,<br />The '.$setting->mee.' Team';
             
                                         //$controller->Mailer->sendEmail($from, $to, $sub, $msg);
+*/
+                                        $this->Mailer->handleevent("documentcreated", array("site" => $setting->mee,"email" => $p, "company_name" => $client_name, "username" => $this->request->session()->read('Profile.username'), "id" => $did, "path" => $path, "profile_type" => $ut));
                                     }
                                 }
                             }

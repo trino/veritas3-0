@@ -1677,7 +1677,8 @@ JSinclude($this,"js/ajaxupload.js");
             setTimeout(function(){
                 $.ajax({
                     url: '<?php echo $this->request->webroot;?>orders/webservice/<?php echo $_GET['order_type'];?>/<?php echo $_GET['forms']; ?>/' +  $('#uploaded_for').val() +'/' +  $('#did').val(),
-                    success:function(){
+                    success:function(msg){
+                            //alert("Order saved: " + msg);
                             window.location = URL;
                     },
                     error:function(){

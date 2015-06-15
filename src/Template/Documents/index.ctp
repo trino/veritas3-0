@@ -406,14 +406,14 @@
                                 if (isset($_GET['draft'])) {
                                     ?>
                                     <a href="<?php echo $this->request->webroot; ?>documents/delete/<?php echo $docs->id; ?>/draft"
-                                       onclick="return confirm('<?= ProcessVariables($language, $strings["dashboard_confirmdelete"], array("name" => $docname)); ?>');"
+                                       onclick="return confirm('<?= ProcessVariables($language, $strings["dashboard_confirmdelete"], array("name" => $docname), true); ?>');"
                                        class="<?= btnclass("DELETE") ?>"><?= $strings["dashboard_delete"]; ?></a>
 
                                 <?php
                                 } else {
                                     ?>
                                     <a href="<?php echo $this->request->webroot; ?>documents/delete/<?php echo $docs->id; ?>"
-                                       onclick="return confirm('<?= ProcessVariables($language, $strings["dashboard_confirmdelete"], array("name" => $docname)); ?>');"
+                                       onclick="return confirm('<?= ProcessVariables($language, $strings["dashboard_confirmdelete"], array("name" => $docname), true); ?>');"
                                        class="<?= btnclass("DELETE") ?>"><?= $strings["dashboard_delete"]; ?></a>
                                 <?php
                                 }

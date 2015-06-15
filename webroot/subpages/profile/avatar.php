@@ -1,6 +1,11 @@
  <?php
- if($this->request->session()->read('debug'))
-        echo "<span style ='color:red;'>avatar.php #INC150</span>";
+     if($this->request->session()->read('debug')) {
+         echo "<span style ='color:red;'>avatar.php #INC150</span>";
+     }
+     $settings = $this->requestAction('settings/get_settings');
+     include_once('subpages/api.php');
+     $language = $this->request->session()->read('Profile.language');
+     $strings = CacheTranslations($language, array("forms_%"), $settings);
  ?>
                                 <form role="form" action="" method="post">
                                     <div class="form-group">
@@ -43,14 +48,14 @@
                     action: base_url+"profiles/upload_img/<?php if(isset($id))echo $id;?>",                      
                     name: 'myfile',
                     onSubmit : function(file, ext){
-                        button.text('Uploading');
+                        button.text('<?= addslashes($strings["forms_uploading"]); ?>');
                         this.disable();
                         interval = window.setInterval(function(){
                             var text = button.text();
                             if (text.length < 13){
                                 button.text(text + '.');					
                             } else {
-                                button.text('Uploading');				
+                                button.text('<?= addslashes($strings["forms_uploading"]); ?>');
                             }
                         }, 200);
                     },

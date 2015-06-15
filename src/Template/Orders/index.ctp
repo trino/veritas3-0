@@ -1,5 +1,7 @@
 <?php $settings = $this->requestAction('settings/get_settings');
-$sidebar = $this->requestAction("settings/get_side/" . $this->Session->read('Profile.id'));?>
+$sidebar = $this->requestAction("settings/get_side/" . $this->Session->read('Profile.id'));
+//this page is bypassed to orders/orderslist
+?>
 
 <h3 class="page-title">
     Orders <?php if(isset($_GET['draft'])){?>(Draft)<?php }?>
@@ -200,30 +202,25 @@ $sidebar = $this->requestAction("settings/get_side/" . $this->Session->read('Pro
                                                     ?><a
                                                     href="<?php echo $this->request->webroot;?>orders/deleteorder/<?php echo $order->id;?><?php if(isset($_GET['draft']))echo "?draft";?>"
                                                     class="btn btn-danger"
-                                                    onclick="return confirm('<?= ProcessVariables($language, $strings["dashboard_confirmdelete"], array("name" => ucfirst(h($order->title))));?>');">
+                                                    onclick="return confirm('<?= ProcessVariables($language, $strings["dashboard_confirmdelete"], array("name" => ucfirst(h($order->title))), true);?>');">
                                                         <?= $strings["dashboard_delete"]; ?></a>
                                                 <?php
                                                 }
                                             }
-                                        ?>
+                                        //clients_requalify orders_scorecard documents_complete documents_pending documents_draft
+                                         if ($sidebar->orders_requalify == '1' && $order->draft == '0') echo $this->Html->link(__($strings["clients_requalify"]), ['controller' => 'orders', 'action' => 'addorder', $order->client_id, $order->id], ['class' => 'btn btn-warning']);
 
-
-                                        <?php if ($sidebar->orders_requalify == '1' && $order->draft == '0') echo $this->Html->link(__('Re-Qualify'), ['controller' => 'orders', 'action' => 'addorder', $order->client_id, $order->id], ['class' => 'btn btn-warning']);
-
-
-
-                                        ?>
-                                        <?php if (!isset($_GET['draft'])) echo $this->Html->link(__('View Score Card'), ['controller' => 'orders', 'action' => 'viewReport', $order->client_id, $order->id], ['class' => 'btn btn-success']);?>
+                                        if (!isset($_GET['draft'])) echo $this->Html->link(__($strings["orders_scorecard"]), ['controller' => 'orders', 'action' => 'viewReport', $order->client_id, $order->id], ['class' => 'btn btn-success']);?>
                                     </TD><td valign="middle">
                                         <?php if (!isset($_GET['draft'])) { ?>
                                             <?php if (isset($order->bright_planet_html_binary)) { ?>
                                                 <span class="label label-sm label-success"
-                                                      style="float:right;padding:4px;">order completed</span>
+                                                      style="float:right;padding:4px;"><?= $strings["documents_complete"] ?></span>
                                             <?php } else { ?>
-                                                <span class="label label-sm label-primary" style="float:right;padding:4px;">order pending</span>
+                                                <span class="label label-sm label-primary" style="float:right;padding:4px;"><?= $strings["documents_pending"] ?></span>
                                             <?php }
                                         }else{?>
-                                            <span class="label label-sm label-primary" style="float:right;padding:4px;">draft</span>
+                                            <span class="label label-sm label-primary" style="float:right;padding:4px;"><?= $strings["documents_draft"] ?></span>
 
                                         <?php } ?>
 

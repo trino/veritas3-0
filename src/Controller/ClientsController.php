@@ -478,6 +478,10 @@
                                 $username = '';
                                 $ut = '';
                             }
+
+                            $this->Mailer->handleevent("clientcreated", array("email" => $em, "company_name" => $_POST['company_name'], "profile_type" => $ut, "username" => $username, "path" => $path));
+
+                            /*
                             $from = array('info@'.$path => $setting->mee);
                             $to = $em;//use: $email_id
                             //$sub = 'Client Created: ' . $_POST['company_name'];
@@ -486,6 +490,7 @@
                             $msg = $this->Trans->getString("flash_newclientmessage", array("name" =>  $_POST['company_name'], "path" => $path, "username" => $username, "ut" => $ut, "created" => $_POST['created']), $email_id);
 
                             $this->Mailer->sendEmail($from, $to, $sub, $msg);
+                            */
                         } else {
                             $this->Flash->error($this->Trans->getString("flash_clientnotsaved"));
                             echo "e";
@@ -1218,17 +1223,6 @@
             $this->layout = 'blank';
         }
 
-        function sendCEmail($from, $to, $subject, $message){
-            //from can be array with this structure array('email_address'=>'Sender name'));
-            $email = new Email('default');
-
-            $email->from($from)
-                ->emailFormat('html')
-                ->to($to)
-                ->subject($subject)
-                ->send($message);
-        }
-
         function forOrder(){
             $sub_sup = TableRegistry::get('subdocuments');
             $sub_sup_count = $sub_sup->find()->count();
@@ -1529,25 +1523,21 @@
                 $rec = array();
                 $profile = TableRegistry::get('profiles')->find('all')->where(['id IN('.$c->profile_id.')','requalify'=>'1', 'profile_type IN('.$p_types.')']);
                   
-                  foreach($profile as $p)
-                  {
-                    if($c->requalify_re == '1')
-                    {
+                  foreach($profile as $p) {
+                    if($c->requalify_re == '1') {
                          $date = $p->hired_date;
                     }
-                    
-                    if($today == $date || $date == $nxt_date)
-                    {
+                    if($today == $date || $date == $nxt_date) {
                         $pro .=$p->id.","; 
                         $p_name .= $p->username.",";
-                        if($p->profile_type == '2' && $p->email!="")
-                        {
+                        if($p->profile_type == '2' && $p->email!="") {
                             array_push($p->email, $rec);
                             $emails .= $p->email.",";
-                            $this->Mailer->sendEmail("", $p->email, $Subject, $Message);
+
+
+                            $this->Mailer->sendEmail("", $p->email, $Subject, $msg);//what is the subject?
                         }
                     }
-                    
                   }
                   
                   $emails = substr($emails,0,strlen($emails)-1);

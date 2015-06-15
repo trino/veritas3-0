@@ -442,9 +442,11 @@ class DocumentsController extends AppController{
         }
     }
 
-    public function savedoc($cid = 0, $did = 0)
-    {
+    public function savedoc($cid = 0, $did = 0) {
         $this->set('doc_comp',$this->Document);
+
+        //$this->Mailer->handleevent("documentcreatedb", array("site" => "","email" => "roy", "company_name" => "", "username" => $this->request->session()->read('Profile.username'), "id" => $did, "path" => "", "profile_type" => ""));
+
         $this->Document->savedoc($cid,$did);
         die();
     }
@@ -578,7 +580,7 @@ class DocumentsController extends AppController{
                         ->set($arr)
                         ->where(['id' => $did])
                         ->execute();
-                    $this->Flash->success($this->Trans->getString("flash_docsaved"));
+                    $this->Flash->success( $this->Trans->getString("flash_docsaved"));
                     $this->redirect('/documents');
                 }
             }
@@ -628,6 +630,7 @@ class DocumentsController extends AppController{
                         ->set($arr)
                         ->where(['id' => $did])
                         ->execute();
+
                     $this->Flash->success($this->Trans->getString("flash_docsaved"));
                     $this->redirect('/documents');
                 }
@@ -878,7 +881,10 @@ class DocumentsController extends AppController{
             else if($u == 8)
                 $ut = 'Owner Driver';
         }
+        $path = $this->Document->getUrl();
+        $this->Mailer->handleevent("clientcreated", array("email" => $em, "company_name" => $_POST['company_name'], "profile_type" => $ut, "username" => $uq->username, "created" =>$_POST['created'], "path" => $path, "site" => $setting->mee));
 
+        /*
         //NEEDS TRANSLATION
         $from = array('info@' . getHost("isbmee.com") => "Admin");;// $emailaddress;//'info@isbmee.com';
         $to = $em;
@@ -889,6 +895,7 @@ class DocumentsController extends AppController{
             Username : '.$uq->username.'<br/>Profile Type : '.$ut.'<br/> Dated on : '.$_POST['created'].'<br/>With client details<br /> Client Name: ' . $_POST['company_name'].'<br/><br /> Regards,<br />The '.$setting->mee.' Team';
 
         $this->Mailer->sendEmail($from, $to, $sub, $msg);
+        */
     }
 
 
@@ -2516,7 +2523,7 @@ class DocumentsController extends AppController{
             }
         }
     }
-    function investigation($cid, $did){
+    function investigation($cid, $did){//why are you in veritas?
         $this->set('doc_comp',$this->Document);
         if (isset($_POST)) {
             if (isset($_GET['draft']) && $_GET['draft']) {

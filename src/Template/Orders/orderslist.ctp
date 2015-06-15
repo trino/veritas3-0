@@ -382,7 +382,7 @@ echo $this->Html->link(__('Edit'), ['controller' => 'orders', 'action' => 'addor
                                                     ?><a
                                                     href="<?php echo $this->request->webroot; ?>orders/deleteorder/<?php echo $order->id; ?><?php if (isset($_GET['draft'])) echo "?draft"; ?>"
                                                     class="<?= btnclass("DELETE") ?>"
-                                                    onclick="return confirm('<?= ProcessVariables($language, $strings["dashboard_confirmdelete"], array("name" => $order->id)); ?>');">
+                                                    onclick="return confirm('<?= ProcessVariables($language, $strings["dashboard_confirmdelete"], array("name" => $order->id), true); ?>');">
                                                         <?= $strings["dashboard_delete"];?></a>
                                                 <?php
                                                 }

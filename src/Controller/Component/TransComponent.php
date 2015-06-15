@@ -36,6 +36,18 @@ class TransComponent extends Component {
         textdomain($domain);
     }
     */
+
+    function translatedate($language = "English", $date, $longform = true){
+        if($language != "English" && $language != "Debug"){
+            if($longform){$longform = "long";} else {$longform = "short";}
+            $months = TableRegistry::get('strings')->find()->select()->where(["name like" => "month_" . $longform . "%"]);
+            foreach($months as $month){
+                $date = str_replace($month->$language, $month->English, $date);
+            }
+        }
+        return $date;
+    }
+
     function getVariables($settings, $language = "English"){
         $variables = $this->Sadd("client", $language, $settings);
         $variables = array_merge($variables,$this->Sadd("document", $language, $settings));
