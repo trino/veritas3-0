@@ -373,7 +373,7 @@ class SettingsController extends AppController {
         $Page = "";
         $Language="English";
         $Data = "";
-        $Table = "";
+        $table = "";
         $CRLF = "\r\n";
         $ditit=0;
         $columnname = "title";

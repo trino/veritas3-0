@@ -2708,12 +2708,14 @@ public function saveDriver()
 
              
                 if($auto->profile_type == '9' || $auto->profile_type == '12' && $today==$thirty && $auto->email){
+                    $this->Mailer->handleevent("survey", array("email" => $auto->email, "days" => "30", "id" => $auto->id, "path" => LOGIN . 'application/30days.php?p_id='.$auto->id));
+                    /*
                     $from = array('info@' . $path => $setting->mee);
                     $to = $auto->email;
                     $sub = 'MEE - Survey';
                     $msg = 'This is an automated email reminding you to complete your survey.<br><br>Click <a href="' . LOGIN . 'application/30days.php?p_id='.$auto->id.'">here</a> to complete your survey.<br /><br /> Regards,<br><br>The MEE Team';
                     $this->Mailer->sendEmail($from, $to, $sub, $msg);
-                   
+                   */
                     $queries = TableRegistry::get('Profiles');
                     $queries->query()->update()->set(['automatic_sent' => '1'])
                         ->where(['id' => $auto->id])
@@ -2721,11 +2723,14 @@ public function saveDriver()
                 }
 
                 if($auto->profile_type == '5' || $auto->profile_type == '7'  || $auto->profile_type == '8'  && $today==$sixty && $auto->email){
+                    $this->Mailer->handleevent("survey", array("email" => $auto->email, "days" => "60", "id" => $auto->id, "path" => LOGIN . 'application/60days.php?p_id='.$auto->id));
+                    /*
                     $from = array('info@' . $path => $setting->mee);
                     $to = $auto->email;
                     $sub = 'MEE - Survey';
                     $msg = 'This is an automated email reminding you to complete your survey.<br><br>Click <a href="' . LOGIN . 'application/60days.php?p_id='.$auto->id.'">here</a> to complete your survey.<br /><br /> Regards,<br><br>The MEE Team';
                     $this->Mailer->sendEmail($from, $to, $sub, $msg);
+                    */
                     $queries = TableRegistry::get('Profiles');
                     $queries->query()->update()->set(['automatic_sent' => '1'])
                         ->where(['id' => $auto->id])
@@ -2762,7 +2767,7 @@ public function saveDriver()
         $settings = TableRegistry::get('settings');
         $setting = $settings->find()->first();
 
-        $this->Mailer->handleevent("cron", array("title" => $todo->title,"email" => $email, "description" => $todo->description, "dueby" => $todo->date, "domain" => getHost("isbmee.com") , "site" =>  $setting->mee ));
+        $this->Mailer->handleevent("taskreminder", array("title" => $todo->title,"email" => $email, "description" => $todo->description, "dueby" => $todo->date, "domain" => getHost("isbmee.com") , "site" =>  $setting->mee ));
 
 /*
         $from = array('info@' . $path => $setting->mee);

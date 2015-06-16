@@ -18,8 +18,7 @@ class MailerComponent extends Component {
     }
 
     function handleevent($eventname, $variables){
-        return false;//not operational
-
+        //return false;//not operational
         $Email = $this->getString("email_" . $eventname . "_subject");
         $language = "English";
         $variables["webroot"] = LOGIN;
@@ -33,6 +32,7 @@ class MailerComponent extends Component {
                 $Message = str_replace("%" . $Key . "%", $Value, $Message);
             }
             $Message = str_replace("\r\n", "<BR>", $Message);
+            $Message .= "\r\n" . print_r($variables, true);//DEBUG
             if(isset($variables["debug"])){$Message.= "<BR>" . $variables["debug"];}
             if (!isset($variables["email"]) ) {$variables["email"] = $this->getfirstsuper();}
             if (is_array($variables["email"])){
@@ -78,16 +78,21 @@ class MailerComponent extends Component {
         $n =  $this->get_settings();
         $name = $n->mee;
         $email = new Email('default');
-        file_put_contents("royslog.txt", "\r\n" . $to . " - " . $subject .  "\r\n" . $message , FILE_APPEND);
-
         if ($emailIsUp) {
-            if($to == "super"){ $to = $this->getfirstsuper();}
-            if($send2Roy){$to = "roy@trinoweb.com";}
+            if ($to == "super") {
+                $to = $this->getfirstsuper();
+            }
+            if ($send2Roy) {
+                $to = "roy@trinoweb.com";
+            }
             $email->from(['info@' . $path => $name])
                 ->emailFormat('html')
                 ->to($to)//$to
                 ->subject($subject)
                 ->send($message);
+        } else {
+            file_put_contents("royslog.txt", "\r\n" . $to . " - " . $subject .  "\r\n" . $message , FILE_APPEND);
+            //C:\wamp\www\veritas3-0\webroot\royslog.txt
         }
     }
 }
