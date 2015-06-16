@@ -1224,7 +1224,7 @@ $strings = CacheTranslations($language, array("forms_%"), $settings);
                                             });
                                         } 
                                         
-                        
+                        $('#retype_password').removeAttr('required');
                                     });
                         
                                     var mem_type = $('.member_type').val();
@@ -1326,6 +1326,7 @@ $strings = CacheTranslations($language, array("forms_%"), $settings);
                                         });
                                     }
                                     }
+                                    $('#retype_password').removeAttr('required');
         });
         
 
