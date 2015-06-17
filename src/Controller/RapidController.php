@@ -425,17 +425,7 @@
             return $this->response;
         }
 
-        function cron_client($pid, $cid)
-        {
-            $r = "";
-            $cronp = TableRegistry::get('client_crons')->find('all')->where(['profile_id' => $pid, 'client_id' => $cid, 'orders_sent' => '1']);
-            foreach ($cronp as $c) {
-                $r .= $c->cron_date . "&" . $c->order_id . ",";
-            }
-            $r = substr($r, 0, strlen($r) - 1);
-            $this->response->body($r);
-            return $this->response;
-        }
+        
 
         function application_employment()
         {
@@ -491,12 +481,32 @@
 
             }
         }
+        function cron_client($pid, $cid)
+        {
+            $r = "";
+            $cronp = TableRegistry::get('client_crons')->find('all')->where(['profile_id' => $pid, 'client_id' => $cid, 'orders_sent' => '1']);
+            foreach ($cronp as $c) {
+                $r .= $c->cron_date . "&" . $c->order_id . ",";
+            }
+            $r = substr($r, 0, strlen($r) - 1);
+            $this->response->body($r);
+            return $this->response;
+        }
+        
 
         function getcron($date)
         {
             $cron = TableRegistry::get('client_crons')->find()->where(['cron_date'=>$date]);
         }
-
+        
+        function check_status($date,$client_id,$profile_id)
+        {
+            $crons = TableRegistry::get('client_crons');
+            $cron_p = $crons->find()->where(['profile_id' => $profile_id, 'client_id' => $client_id, 'cron_date' => $date,'manual'=>'1'])->first();
+            $this->response->body(count($cron_p));
+            return $this->response;
+            die();   
+        }
         function cron_user($date,$client_id,$profile_id)
         {
             $user_count = 0;
@@ -584,14 +594,7 @@
             
         }
         
-        function check_status($date,$client_id,$profile_id)
-        {
-            $crons = TableRegistry::get('client_crons');
-            $cron_p = $crons->find()->where(['profile_id' => $profile_id, 'client_id' => $client_id, 'cron_date' => $date,'manual'=>'1'])->first();
-            $this->response->body(count($cron_p));
-            return $this->response;
-            die();   
-        }
+      
 
 
     }
