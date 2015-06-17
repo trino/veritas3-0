@@ -79,6 +79,13 @@ $title = $strings["index_" . strtolower($action) . "document"];
             printdocumentinfo($did);
         }
     }
+
+    function docname($ID, $subdoccli, $language) {
+        $keyname = getFieldname("title", $language);
+        $object = getIterator($subdoccli, "sub_id", $ID)->subtype;
+        if ($language == 'Debug') { return $object->English . " [Trans]";}
+        return $object->$keyname;
+    }
     ?>
 
 
@@ -177,20 +184,6 @@ $title = $strings["index_" . strtolower($action) . "document"];
                         </select>
 
                     </div>
-
-
-<?php
-    function docname($ID, $subdoccli, $language) {
-        $keyname = getFieldname("title", $language);
-        $object = getIterator($subdoccli, "sub_id", $ID)->subtype;
-        if ($language == 'Debug') { return $object->English . " [Trans]";}
-        return $object->$keyname;
-    }
-?>
-
-
-
-
 
 
                         <div class="col-md-12" style="margin: 10px 0;padding:0 ;">
@@ -542,7 +535,9 @@ $title = $strings["index_" . strtolower($action) . "document"];
 
 
 <script>
-
+    var readTOS = '<?= addslashes($strings["forms_pleaseconfirm"]); ?>';
+    var giveSIG = '<?= addslashes($strings["forms_signplease"]); ?>';
+    var fillALL = '<?= addslashes($strings["forms_fillall"]); ?>';
 
     client_id = '<?=$cid?>',
     doc_id = '<?=$did?>';
@@ -1629,7 +1624,7 @@ $title = $strings["index_" . strtolower($action) . "document"];
             switch(type) {
                 case 'Driver Application':
                     if(!$('#confirm_check').is(':checked')) {
-                        alert('Please confirm that you have read the conditions.');
+                        alert(readTOS);
                         $('#confirm_check').focus();
                         $('html,body').animate({scrollTop: $('#confirm_check').offset().top}, 'slow');
                         return false;
@@ -1642,7 +1637,7 @@ $title = $strings["index_" . strtolower($action) . "document"];
             if($('.sub_docs_id').val() == 18)
             {
                 if ($('.touched').val() != '1' && $('.touched_edit8').val() != '1') {
-                            alert('Please provide your signature to confirm.');
+                            alert(giveSIG);
                             $('html,body').animate({
                                         scrollTop: $('#sig8').offset().top},
                                     'slow');
@@ -1665,7 +1660,7 @@ $title = $strings["index_" . strtolower($action) . "document"];
                 });
                 if($('#sig2 .touched').val()!='1' && $('#sig2 .touched_edit2').val()!='1')
                 {
-                    alert('Please provide your signature to confirm.');
+                    alert(giveSIG);
                     $('html,body').animate({
                             scrollTop: $('#sig2').offset().top},
                         'slow');
@@ -1674,7 +1669,7 @@ $title = $strings["index_" . strtolower($action) . "document"];
                 else
                 if($('#sig4 .touched').val()!='1' && $('#sig4 .touched_edit4').val()!='1')
                 {
-                    alert('Please provide your signature to confirm.');
+                    alert(giveSIG);
                     $('html,body').animate({
                             scrollTop: $('#sig4').offset().top},
                         'slow');
@@ -1683,7 +1678,7 @@ $title = $strings["index_" . strtolower($action) . "document"];
                 else
                 if($('#sig1 .touched').val()!='1' && $('#sig1 .touched_edit1').val()!='1')
                 {
-                    alert('Please provide your signature to confirm.');
+                    alert(giveSIG);
                     $('html,body').animate({
                             scrollTop: $('#sig1').offset().top},
                         'slow');
@@ -1693,7 +1688,7 @@ $title = $strings["index_" . strtolower($action) . "document"];
                 else
                 if($('#sig3 .touched').val()!='1' && $('#sig3 .touched_edit3').val()!='1')
                 {
-                    alert('Please provide your signature to confirm.');
+                    alert(giveSIG);
                     $('html,body').animate({
                             scrollTop: $('#sig3').offset().top},
                         'slow');
@@ -1705,7 +1700,7 @@ $title = $strings["index_" . strtolower($action) . "document"];
                 if(er){
                     $('.cont').removeAttr('disabled');
                     if(er==1){
-                        alert('Please fill out all required fields in the consent form.');
+                        alert(fillALL);
                         $('html,body').animate({
                                 scrollTop: $('.myerror').offset().top},
                             'slow');
