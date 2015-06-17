@@ -493,6 +493,101 @@
         {
             $cron = TableRegistry::get('client_crons')->find()->where(['cron_date'=>$date]);
         }
+        function cron_user($date,$client_id,$profile_id)
+        {
+            $user_count = 0;
+            $client = TableRegistry::get('clients')->find()->where(['id'=> $client_id])->first();
+            $forms = $client->requalify_product;
+            $profile = TableRegistry::get('profiles')->find()->where(['id'=>$profile_id])->first();
+            $crons = TableRegistry::get('client_crons');
+            $cron_p = $crons->find()->where(['profile_id' => $profile_id, 'client_id' => $client_id, 'orders_sent' => '1', 'cron_date' => $date])->first();
+            if (count($cron_p) == 0) {
+                $user_count++;
+                $pro = $profile_id;
+                
+           
+
+            $rec = TableRegistry::get('profiles')->find()->where(['id' => $profile->created_by])->first();
+            if ($rec->email) 
+            {
+                $e = $rec->email;
+                
+
+            }
+                    if ($profile_id != "") {
+
+                    $drivers = explode(',', $profile_id);
+                    //$forms = $_POST['forms'];
+                    $arr['forms'] = $forms;
+                    $arr['order_type'] = 'REQ';
+                    $arr['draft'] = 0;
+                    $arr['title'] = 'order_' . date('Y-m-d H:i:s');
+
+                    $arr['client_id'] = $client_id;
+                    $arr['created'] = date('Y-m-d H:i:s');
+                    //$arr['division'] = $_POST['division'];
+                    //$arr['user_id'] = $this->request->session()->read('Profile.id');
+                    $arr['driver'] = '';
+                    $arr['order_id'] = '';
+
+                    foreach ($drivers as $driver) {
+
+                        $arr['uploaded_for'] = $driver;
+                        $ord = TableRegistry::get('orders');
+                        $doc = $ord->newEntity($arr);
+                        $ord->save($doc);
+
+                        //$this->webservice('BUL', $arr['forms'], $arr['user_id'], $doc->id);
+                        if ($arr['driver']) {
+                            $arr['driver'] = $arr['driver'] . ',' . $driver;
+                        } else {
+                            $arr['driver'] = $driver;
+                        }
+                        if ($arr['order_id']) {
+                            $arr['order_id'] = $arr['order_id'] . ',' . $doc->id;
+                        } else {
+                            $arr['order_id'] = $doc->id;
+                        }
+
+                        $cron['order_id'] = $doc->id;
+                        $cron['profile_id'] = $driver;
+                        $cron['orders_sent'] = '1';
+                        $cron['cron_date'] = $date;
+                        $cron['client_id'] = $client->id;
+                        $cron['manual'] = 1;
+
+                        $s = $crons->newEntity($cron);
+                        $crons->save($s);
+                        unset($cron);
+
+                    }
+                    
+                    
+                }
+                 
+                $i = 0;
+
+                
+                    $mesg = "Profile: '".$profile->username."' have been re-qualified on " . $date . " for client: " . $client->company_name . ".<br /><br />Click <a href='" . LOGIN . "'>here</a> to login to view the reports.<br /><br />Regards,<br />The MEE Team";
+                    //$this->Mailer->sendEmail("", $e, "Driver Re-qualified (" . $client->company_name . ")", $mesg);
+              
+            $a = TableRegistry::get('profiles')->find()->where(['super' => '1'])->first();
+            $admin_email = $a->email;
+            //$this->Mailer->sendEmail("", $admin_email, 'Driver Re-qualification Cron', "Cron date:" . $date . "</br>" . $msg);
+            }
+            $this->set('profiles', 1);
+            $this->set('arr', $arr);
+            
+        }
+        
+        function check_status($date,$client_id,$profile_id)
+        {
+            $crons = TableRegistry::get('client_crons');
+            $cron_p = $crons->find()->where(['profile_id' => $profile_id, 'client_id' => $client_id, 'cron_date' => $date,'manual'=>'1'])->first();
+            $this->response->body(count($cron_p));
+            return $this->response;
+            die();   
+        }
         
         
         

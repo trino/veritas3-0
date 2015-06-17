@@ -63,7 +63,8 @@
                         <td><?php echo $d['cron_date'];?></td>
                         <td><?php echo $this->requestAction('/settings/getclient/'.$d['client_id']);?></td>
                         <td><a href="<?php echo $this->request->webroot;?>profiles/view/<?php echo $d['profile_id'];?>"><?php echo $this->requestAction('/settings/getprofile/'.$d['profile_id']);?></a></td>
-                        <td>Scheduled for requalification (products:<?php echo $new_form;?>)</td>
+                        <td><?php $status= $this->requestAction('/rapid/check_status/'.$d['cron_date'].'/'.$d['client_id'].'/'.$d['profile_id']); if($status=='0'){?>Scheduled for requalification (products:<?php echo $new_form;?>)   <a href="<?php echo $this->request->webroot."rapid/cron_user/".$d['cron_date']."/".$d['client_id']."/".$d['profile_id'];?>" class="btn btn-primary">Send Now</a><?php }else echo "Manually Requalifed";?></td>
+
                     </tr>        
                 <?php
                     unset($new_form);
