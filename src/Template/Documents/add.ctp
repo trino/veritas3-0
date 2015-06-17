@@ -12,25 +12,6 @@ if (isset($disabled)) {
     $view = "view";
 }
 
-function provinces($name){
-    echo '<SELECT class="form-control" name="' . $name . '">';
-    echo '<OPTION>Province</OPTION>';
-    echo '<OPTION value="AB">Alberta</OPTION>';
-    echo '<OPTION value="BC">British Columbia</OPTION>';
-    echo '<OPTION value="MB">Manitoba</OPTION>';
-    echo '<OPTION value="NB">New Brunswick</OPTION>';
-    echo '<OPTION value="NL">Newfoundland and Labrador</OPTION>';
-    echo '<OPTION value="NT">Northwest Territories</OPTION>';
-    echo '<OPTION value="NS">Nova Scotia</OPTION>';
-    echo '<OPTION value="NU">Nunavut</OPTION>';
-    echo '<OPTION value="ON">Ontario</OPTION>';
-    echo '<OPTION value="PE">Prince Edward Island</OPTION>';
-    echo '<OPTION value="QC">Quebec</OPTION>';
-    echo '<OPTION value="SK">Saskatchewan</OPTION>';
-    echo '<OPTION value="YT">Yukon</OPTION>';
-    echo '</SELECT>';
-}
-
 $settings = $this->requestAction('settings/get_settings');
 $action = ucfirst($param);
 if ($action == "Add") {
@@ -44,26 +25,32 @@ if (isset($this->request->params['pass'][1])) {
     $id2="?type=".$_GET['type'];
     if (isset($_GET['order_id'])) { $id2= '?order_id=' . $_GET['order_id']; }
 }
+
+include_once('subpages/api.php');
+$language = $this->request->session()->read('Profile.language');
+$strings = CacheTranslations($language, array("documents_%", "forms_%", "clients_addeditimage"), $settings);//,$registry);//$registry = $this->requestAction('/settings/getRegistry');
+if($language == "Debug") { $Trans = " [Trans]";} else { $Trans = ""; }
+$title = $strings["index_" . strtolower($action) . "document"];
 ?>
 <h3 class="page-title">
-    <?php echo $action . " " . ucfirst($settings->document); ?>
+    <?= $title; ?>
 </h3>
 <div class="page-bar">
     <ul class="page-breadcrumb">
         <li>
             <i class="fa fa-home"></i>
-            <a href="<?php echo $this->request->webroot; ?>">Dashboard</a>
+            <a href="<?php echo $this->request->webroot; ?>"><?= $strings["dashboard_dashboard"]; ?></a>
             <i class="fa fa-angle-right"></i>
         </li>
         <li>
-            <a href=""><?php echo $action . " " . ucfirst($settings->document); ?>
+            <a href=""><?= $title; ?>
             </a>
         </li>
     </ul>
 
     <?php
     if (isset($disabled)) {
-        echo ' <a href="javascript:window.print();" class="floatright btn btn-primary">Print</a>';
+        echo ' <a href="javascript:window.print();" class="floatright btn btn-primary">' . $strings["dashboard_print"] . '</a>';
     }
     $opposite = "edit"; $url="add";
     if ($action=="Edit"){ $opposite = "view"; $url= "view";}
@@ -72,7 +59,7 @@ if (isset($this->request->params['pass'][1])) {
     $sep = '?';
     else
     $sep = '&';}
-    if (isset($this->request->params['pass'][1])&& !isset($_GET['order_id'])) { echo '<a href="../../' . $url . '/' . $id0 . "/" . $id1 . $id2 .$sep. 'type='.$_GET['type'].'" class="floatright btn btn-info btnspc">' . ucfirst($opposite) . '</a>'; }
+    if (isset($this->request->params['pass'][1])&& !isset($_GET['order_id'])) { echo '<a href="../../' . $url . '/' . $id0 . "/" . $id1 . $id2 .$sep. 'type='.$_GET['type'].'" class="floatright btn btn-info btnspc">' . $strings["dashboard_" . $opposite] . '</a>'; }
 
 
     function makeportlet($did, $color="", $Title=""){
@@ -135,7 +122,7 @@ if (isset($this->request->params['pass'][1])) {
   padding-left: 0;">
                         <div class="portlet box blue" style="border:0;">
                             <div class="portlet-title">
-                                <div class="caption"> Document Options </div>
+                                <div class="caption"> <?= $strings["documents_docoptions"]; ?> </div>
                             </div>
                             <div class="portlet-body form" >
 
@@ -177,12 +164,13 @@ if (isset($this->request->params['pass'][1])) {
                                         $end = 0;
                                         $k_c=0;
                                         $index=0;
+                                        $keyname = getFieldname("title", $language);
 
                                         foreach ($subdoccli as $sd) {
                                             $index+=1;
                                             $d = $sd->subtype;//$this->requestAction('/clients/getFirstSub/'.$sd->sub_id);
                                           ?>
-                                    <option value="<?php echo $d->id;?>" <?php if($_GET['type'] ==$d->id)echo "selected='selected'";?>><?php echo ucfirst(str_replace('_',' ',$d->title));?></option>
+                                    <option value="<?php echo $d->id;?>" <?php if($_GET['type'] ==$d->id)echo "selected='selected'";?>><?php echo ucfirst(str_replace('_',' ',$d->$keyname . $Trans));?></option>
                                 <?php
                             }
                             ?>
@@ -191,6 +179,14 @@ if (isset($this->request->params['pass'][1])) {
                     </div>
 
 
+<?php
+    function docname($ID, $subdoccli, $language) {
+        $keyname = getFieldname("title", $language);
+        $object = getIterator($subdoccli, "sub_id", $ID)->subtype;
+        if ($language == 'Debug') { return $object->English . " [Trans]";}
+        return $object->$keyname;
+    }
+?>
 
 
 
@@ -202,7 +198,7 @@ if (isset($this->request->params['pass'][1])) {
                         <?php $dr_cl = $doc_comp->getDriverClient(0, $cid);?>
                         <select class="form-control select2me" data-placeholder="No Driver"
                                 id="selecting_driver" <?php if ($driver || $this->request->params['action']=='view' ){ ?>disabled="disabled"<?php } ?>>
-                            <option value="0">No Driver
+                            <option value="0"><?= $strings["documents_nodriver"]; ?>
                             </option>
                             <?php
 
@@ -261,7 +257,7 @@ if (isset($this->request->params['pass'][1])) {
                             if($controller == 'documents' ) {
                                 $colr = $this->requestAction('/documents/getColorId/1');
                                 if(!$colr){$colr = $class[0];}
-                                makeportlet($did, $colr,"Driver Pre-Screen Questions");
+                                makeportlet($did, $colr,docname(1, $subdoccli, $language));
                             } else {
 
                             }
@@ -297,7 +293,8 @@ if (isset($this->request->params['pass'][1])) {
 
                                 $colr = $this->requestAction('/documents/getColorId/3');
                                 if(!$colr){$colr = $class[2];}
-                                makeportlet($did, $colr,"Road Test");
+
+                                makeportlet($did, $colr, docname(3, $subdoccli, $language) );
                             } else {
 
                             }
@@ -318,7 +315,7 @@ if (isset($this->request->params['pass'][1])) {
                             if($controller == 'documents' ) {
                                 $colr = $this->requestAction('/documents/getColorId/4');
                                 if(!$colr) {$colr = $class[3];}
-                                makeportlet($did, $colr,"Consent Form");
+                                makeportlet($did, $colr,docname(4, $subdoccli, $language));
                             }
                             else {
 
@@ -340,7 +337,7 @@ if (isset($this->request->params['pass'][1])) {
                             if($controller == 'documents' ) {
                                 $colr = $this->requestAction('/documents/getColorId/5');
                                 if(!$colr) {$colr = $class[4];}
-                                makeportlet($did, $colr,"Survey");
+                                makeportlet($did, $colr,docname(5, $subdoccli, $language));
                             } else {
 
                             }
@@ -364,7 +361,7 @@ if (isset($this->request->params['pass'][1])) {
 
                                 $colr = $this->requestAction('/documents/getColorId/6');
                                 if(!$colr) {$colr = $class[5];}
-                                makeportlet($did, $colr,"Feedback");
+                                makeportlet($did, $colr,docname(6, $subdoccli, $language));
                             }
                             else {
 
@@ -388,7 +385,7 @@ if (isset($this->request->params['pass'][1])) {
                             if($controller == 'documents' ) {
                                 $colr = $this->requestAction('/documents/getColorId/7');
                                 if(!$colr) {$colr = $class[6];}
-                                makeportlet($did, $colr,"Attachments");
+                                makeportlet($did, $colr,docname(7, $subdoccli, $language));
                             }
                             else {
 
@@ -412,7 +409,7 @@ if (isset($this->request->params['pass'][1])) {
                             if($controller == 'documents' ) {
                                 $colr = $this->requestAction('/documents/getColorId/8');
                                 if(!$colr) {$colr = $class[7];}
-                                makeportlet($did, $colr,"Audits");
+                                makeportlet($did, $colr,docname(8, $subdoccli, $language));
                             } else {
 
                             }
@@ -435,7 +432,7 @@ if (isset($this->request->params['pass'][1])) {
                             if($controller == 'documents' ) {
                                 $colr = $this->requestAction('/documents/getColorId/9');
                                 if(!$colr) {$colr = $class[8];}
-                                makeportlet($did, $colr,"Employment Verification");
+                                makeportlet($did, $colr,docname(9, $subdoccli, $language));
                             } else {
 
                             }
@@ -463,7 +460,7 @@ if (isset($this->request->params['pass'][1])) {
 
                                 $colr = $this->requestAction('/documents/getColorId/10');
                                 if(!$colr) {$colr = $class[9];}
-                                makeportlet($did, $colr,"Education Verification");
+                                makeportlet($did, $colr,docname(10, $subdoccli, $language));
                              } else {
 
                             }
@@ -490,7 +487,7 @@ if (isset($this->request->params['pass'][1])) {
                         if($controller == 'documents' ) {
                             $colr = $this->requestAction('/documents/getColorId/'.$dx->id);
                             if(!$colr) {$colr = $class[9];}
-                            makeportlet($did, $colr,$dx->title);
+                            makeportlet($did, $colr,$dx->$keyname);
                         } else {
 
                         }
@@ -513,7 +510,7 @@ if (isset($this->request->params['pass'][1])) {
                         <div class="col-md-offset-3 col-md-9 btndocs" <?php if(!isset($_GET['type'])){?>style="display: none;"<?php }?>>
 
 
-                            <a href="javascript:void(0)" class="btn green cont">Save</a>
+                            <a href="javascript:void(0)" class="btn green cont"><?= $strings["forms_save"]; ?></a>
 
                             <?php
                             if(!isset($_GET['order_id']))
@@ -521,14 +518,14 @@ if (isset($this->request->params['pass'][1])) {
                                 ?>
 
                                 <a href="javascript:;" id="draft" class="btn blue cont">
-                                    Save As Draft <i class="m-icon-swapright m-icon-white"></i>
+                                    <?= $strings["forms_savedraft"]; ?> <i class="m-icon-swapright m-icon-white"></i>
                                 </a>
                             <?php
                             }
                             ?>
                             <div class="margin-top-10 alert alert-success display-hide flashDoc" style="display: none;">
                                 <button class="close" data-close="alert"></button>
-                                <?php echo ucfirst($settings->document); ?> uploaded successfully
+                                <?php echo ucfirst($settings->document); ?> <?= $strings["forms_uploaded"]; ?>
                             </div>
 
 
@@ -1460,7 +1457,7 @@ if (isset($this->request->params['pass'][1])) {
         var total_count = $('.'+idname).data('count');
             $('.'+idname).data('count', parseInt(total_count) + 1);
             total_count = $('.'+idname).data('count');
-            var input_field = '<div  class="form-group col-md-12" style="padding-left:15px;"><div class="col-md-12"><a href="javascript:void(0);" id="'+idname + total_count + '" class="btn btn-primary">Browse</a><input type="hidden" name="attach_doc[]" value="" class="'+idname + total_count + '_doc moredocs" /> <a href="javascript:void(0);" class = "btn btn-danger img_delete" id="delete_'+idname + total_count + '" title ="">Delete</a><span></span></div></div>';
+            var input_field = '<div  class="form-group col-md-12" style="padding-left:15px;"><div class="col-md-12"><a href="javascript:void(0);" id="'+idname + total_count + '" class="btn btn-primary"><?= addslashes($strings["forms_browse"]); ?></a><input type="hidden" name="attach_doc[]" value="" class="'+idname + total_count + '_doc moredocs" /> <a href="javascript:void(0);" class = "btn btn-danger img_delete" id="delete_'+idname + total_count + '" title =""><?= addslashes($strings["dashboard_delete"]); ?></a><span></span></div></div>';
             $('.'+idname).append(input_field);
             initiate_ajax_upload1(idname + total_count, 'doc');
     }
@@ -1931,7 +1928,7 @@ if (isset($this->request->params['pass'][1])) {
         });
         $('#addfiles').click(function () {
             //alert("ssss");
-            $('#doc').append('<div style="padding-top:10px;"><a href="#" class="btn btn-success">Browse</a> <a href="javascript:void(0);" class="btn btn-danger" onclick="$(this).parent().remove();">Delete</a><br/></div>');
+            $('#doc').append('<div style="padding-top:10px;"><a href="#" class="btn btn-success">Browse</a> <a href="javascript:void(0);" class="btn btn-danger" onclick="$(this).parent().remove();"><?= addslashes($strings["dashboard_delete"]); ?></a><br/></div>');
         });
         $('.nohide').show();
     });
@@ -2157,6 +2154,7 @@ if (isset($this->request->params['pass'][1])) {
         /* image upload ends */
     }
 </script>
+<?php //includejavascript($strings);?>
 <script>
     function changeclient_onchange(){
         var id = $('#changeclient').val();
@@ -2180,7 +2178,7 @@ if (isset($this->request->params['pass'][1])) {
                 var id = f[1];
             }
 
-            var con = confirm('Are you sure you want to delete "' + file + '"?');
+            var con = confirmdelete(file); // confirm('Are you sure you want to delete "' + file + '"?');
             if (con == true) {
                 $.ajax({
                     type: "post",
@@ -2208,14 +2206,14 @@ if (isset($this->request->params['pass'][1])) {
             action: act,
             name: 'myfile',
             onSubmit: function (file, ext) {
-                button.text('Uploading');
+                button.text('<?= addslashes($strings["forms_uploading"]); ?>');
                 this.disable();
                 interval = window.setInterval(function () {
                     var text = button.text();
                     if (text.length < 13) {
                         button.text(text + '.');
                     } else {
-                        button.text('Uploading');
+                        button.text('<?= addslashes($strings["forms_uploading"]); ?>');
                     }
                 }, 200);
             },
@@ -2223,7 +2221,7 @@ if (isset($this->request->params['pass'][1])) {
                 if (doc == "doc")
                     button.html('Browse');
                 else
-                    button.html('<i class="fa fa-image"></i> Add/Edit Image');
+                    button.html('<i class="fa fa-image"></i> <?= addslashes($strings["clients_addeditimage"]); ?>');
 
                 window.clearInterval(interval);
                 this.enable();

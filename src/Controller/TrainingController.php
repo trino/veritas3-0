@@ -217,9 +217,8 @@ class TrainingController extends AppController {
     public function savequiz($post){//ID Name Description Attachments image
         $table = TableRegistry::get('training_list');
         $post=$_POST;
-        $ID = str_replace('"', "", $post["ID"]);
-
-        if (isset($ID)){
+        if (isset($post["ID"])){
+            $ID = str_replace('"', "", $post["ID"]);
             $table->query()->update()->set(['Name' => $post["Name"], 'Description' =>  $post["Description"], 'Attachments' => $post['Attachments'], 'image' => $post['image']])
                 ->where(['ID' => $ID])
                 ->execute();

@@ -19,8 +19,8 @@
 
     <div class="">
         <input type="hidden" id="rid" value="0"  />
-        <textarea id="recruiter_notes" placeholder="Add driver notes here..." rows="2" class="form-control"></textarea>
-        <a href="javascript:void(0);" class="btn btn-success" id="add_recruiter" style="float:right;margin:5px 0;" >Submit</a>
+        <textarea id="recruiter_notes" placeholder="<?= $strings["forms_addnotes"]; ?>..." rows="2" class="form-control"></textarea>
+        <a href="javascript:void(0);" class="btn btn-success" id="add_recruiter" style="float:right;margin:5px 0;" ><?= $strings["forms_submit"]; ?></a>
 
     </div>
     <div class="">
@@ -46,8 +46,8 @@
                             </div>
                             <div class="item-body">
                                 <span id="desc<?php echo $n->id;?>"><?php echo $n->description; ?></span><br />
-                                <a href="javascript:void(0);" class="btn btn-small btn-primary editnote" style="padding: 0 8px;" id="note_<?php echo $n->id;?>">Edit</a>
-                                <a href="javascript:void(0);" class="btn btn-small btn-danger deletenote" style="padding: 0 8px;" id="dnote_<?php echo $n->id;?>" onclick="return confirm('Are you sure you want to delete &quot;<?php echo $n->description; ?>&quot;');" >Delete</a>
+                                <a href="javascript:void(0);" class="btn btn-small btn-primary editnote" style="padding: 0 8px;" id="note_<?php echo $n->id;?>"><?= $strings["dashboard_edit"]; ?></a>
+                                <a href="javascript:void(0);" class="btn btn-small btn-danger deletenote" style="padding: 0 8px;" id="dnote_<?= $n->id;?>" onclick="return deletenote(<?= $n->id . ", '" . ProcessVariables($language, $strings["dashboard_confirmdelete"], array("name" => ucfirst(h($n->description))));?>');" ><?= $strings["dashboard_delete"]; ?></a>
                                 <br><br>
                             </div>
 
@@ -63,6 +63,18 @@
 </div>
 
 <script>
+    function deletenote(ID, Message){
+        if (confirm(Message)){
+            $.ajax({
+                url: '<?php echo $this->request->webroot;?>profiles/deleteNote/'+ID,
+                success: function (response) {
+                    $('#dnote_'+ID).parent().parent().remove();
+                    alert('<?= addslashes($strings["forms_notedeleted"]); ?>');
+                }
+            });
+        }
+    }
+
     $(function () {
         $('.editnote').live('click',function(){
             var id_note = $(this).attr('id');
@@ -71,35 +83,18 @@
             $('#recruiter_notes').val($('#desc'+id_note).html());
             
         });
-        $('.deletenote').live('click',function() {
-            var id_note = $(this).attr('id');
-            id_note = id_note.replace('dnote_','');
 
-            
-            $.ajax({
-                url: '<?php echo $this->request->webroot;?>profiles/deleteNote/'+id_note,
-                success: function (response) {
-                    
-                    $('#dnote_'+id_note).parent().parent().remove();
-                    alert('Note deleted successfully!');
-                }
-            });
-
-
-
-
-        });
         $('.recruiter_notes').slimScroll({
             height: '200px'
         });
         $('#add_recruiter').click(function () {
             if ($('#recruiter_notes').val() == '') {
-                alert('You can\'t submit a blank note');
+                alert('<?= addslashes($strings["forms_notenotsaved"]); ?>');
                 $('#recruiter_notes').focus();
             }
             else {
                 $.ajax({
-                    url: '<?php echo $this->request->webroot;?>profiles/saveNote/<?php echo $pid;?>/'+$('#rid').val(),
+                    url: '<?php echo $this->request->webroot;?>profiles/saveNote/<?php echo $pid;?>/'+$('#rid').val() + '/<?= $language ?>',
                     data: 'description=' + $('#recruiter_notes').val(),
                     type: 'post',
                     success: function (response) {
@@ -110,7 +105,7 @@
                                 //alert('Note added successfully');
                             } else {
                                 $('#desc'+$('#rid').val()).html($('#recruiter_notes').val());
-                                alert('Note updated successfully');
+                                alert('<?= addslashes($strings["forms_notesaved"]); ?>');
                             }
                             $('#rid').val('0');
                             $('#recruiter_notes').val('');

@@ -5,6 +5,11 @@
     }
     $GLOBALS['webroot'] = $webroot = $this->request->webroot;
 
+    $language = $this->request->session()->read('Profile.language');
+    $settings = $this->requestAction('settings/get_settings');
+    include_once("api.php");
+    $GLOBALS["strings"] = CacheTranslations($language, array("file_%", "orders_ordertype", "documents_submittedby", "documents_submittedfor", "settings_client", "dashboard_delete", "forms_attachedfiles"), $settings, False);//,$registry);//$registry = $this->requestAction('/settings/getRegistry');
+
 //other values PATHINFO_DIRNAME (/mnt/files) | PATHINFO_BASENAME (??????.mp3) | PATHINFO_FILENAME (??????)
     function getextension($path, $value = PATHINFO_EXTENSION) {
         return strtolower(pathinfo($path, $value));
@@ -43,7 +48,7 @@
             echo ucfirst($Profile->fname) . ' ' . ucfirst($Profile->lname) . ' (' . ucfirst($Profile->fname) . ')';
             echo '</A></TD></TR>';
         } else {
-            echo '<TD colspan="2">Deleted or Missing Data</TD></TR>';
+            echo '<TD colspan="2">' . $GLOBALS["strings"]["file_missingdata"] . '</TD></TR>';
         }
     }
 
@@ -85,7 +90,7 @@
         if (is_object($data)) {
             echo '<table class="table-condensed table-striped table-bordered table-hover dataTable no-footer"><TR><TH colspan="3">';
             if ($isOrder) {
-                echo 'Order Information (ID: ' . $ID . ')';
+                echo $GLOBALS["strings"]["file_orderinfo"] . ' (ID: ' . $ID . ')';
                 if ($linktoOrder) {
                     /*
                     echo '<a style="float:right;" href="' . $webroot . 'orders/vieworder/' . $data->client_id . '/' . $data->id ;
@@ -95,23 +100,23 @@
                     */
                 }
             } else {
-                echo 'Document Information (ID: ' . $ID . ')';
+                echo $GLOBALS["strings"]["file_docinfo"] . ' (ID: ' . $ID . ')';
             }
 
-            echo '</TH></TR><TR><Th width="25%">Created on</Th><TD colspan="2">' . $data->created . '</TD></TR>';
+            echo '</TH></TR><TR><Th width="25%">' . $GLOBALS["strings"]["file_createdon"] . '</Th><TD colspan="2">' . $data->created . '</TD></TR>';
 
             if ($isOrder) {
-                echo '<TR><Th>Order Type</Th><TD COLSPAN="2">' . ucfirst($data->order_type) . '</TD></TR>';
+                echo '<TR><Th>' . $GLOBALS["strings"]["orders_ordertype"] . '</Th><TD COLSPAN="2">' . ucfirst($data->order_type) . '</TD></TR>';
             }
 
-            PrintProfile('Submitted by', $data->submitter, $webroot);
-            PrintProfile('Submitted for', $data->reciever, $webroot);
+            PrintProfile($GLOBALS["strings"]["documents_submittedby"], $data->submitter, $webroot);
+            PrintProfile($GLOBALS["strings"]["documents_submittedfor"], $data->reciever, $webroot);
 
-            echo '<TR><Th>Client</Th>';
+            echo '<TR><Th>' . $GLOBALS["strings"]["settings_client"] . '</Th>';
             if (is_object($data->client)) {
                 echo '<TD align="center">' . $data->client->id . '</TD><TD>' . ucfirst($data->client->company_name);
             } else {
-                echo '<TD colspan="2">Deleted or Missing Data';
+                echo '<TD colspan="2">' . $GLOBALS["strings"]["file_missingdata"];
             }
             echo '</TD></TR>';
             echo '</table>';
@@ -194,22 +199,16 @@
         return $default;
     }
 
+    function pulltranslation($values){
+        $ret = array();
+        foreach($values as $value){
+            $ret[$value] = $GLOBALS["strings"][$value];
+        }
+    }
+
     function listfiles($client_docs, $dir, $field_name = 'client_doc', $delete, $method = 1, $ShowUser = False,$consent=false) {
         $webroot = $GLOBALS['webroot'];
-        $language =  get($GLOBALS, "language", "English");
-        if($language == "Debug"){$language = "English"; $Trans = " [Trans]";} else {$Trans = "";}
-        switch ($language){
-            case "English":
-                $strings = array("attached" => "Attached Files", "filemissing" => "File Missing", "download" => "Download", "delete" => "Delete");
-                break;
-            case "French":
-                $strings = array("attached" => "Fichiers Joints", "filemissing" => "Fichier Manquant", "download" => "Télécharger", "delete" => "Effacer");
-                break;
-            default:
-                echo "Please add support for " . $language . " in subpage/filelist.php (listfiles)";
-                die();
-        }
-        $strings = addTrans($strings, $Trans);
+        $strings = pulltranslation(array("forms_attachedfiles", "file_missing", "file_download", "dashboard_delete"));
 
         if ($method == 2) {
             echo '<div class="portlet box grey-salsa"><div class="portlet-title"><div class="caption"><i class="fa fa-paperclip"></i>Attachments</div>';
@@ -237,7 +236,7 @@
                     $extension = getextension($file);
                     $filename = getextension($file, PATHINFO_FILENAME);
                     echo "<TR><TD width='29' align='center'><i class='fa fa-";
-                    $ret = geticon($extension, $language);
+                    $ret = geticon($extension,  $GLOBALS["language"]);
                     $type = $ret["type"];
                     echo $ret["icon"];
 

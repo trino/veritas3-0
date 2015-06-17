@@ -36,6 +36,18 @@ class TransComponent extends Component {
         textdomain($domain);
     }
     */
+
+    function translatedate($language = "English", $date, $longform = true){
+        if($language != "English" && $language != "Debug"){
+            if($longform){$longform = "long";} else {$longform = "short";}
+            $months = TableRegistry::get('strings')->find()->select()->where(["name like" => "month_" . $longform . "%"]);
+            foreach($months as $month){
+                $date = str_replace($month->$language, $month->English, $date);
+            }
+        }
+        return $date;
+    }
+
     function getVariables($settings, $language = "English"){
         $variables = $this->Sadd("client", $language, $settings);
         $variables = array_merge($variables,$this->Sadd("document", $language, $settings));
@@ -67,7 +79,7 @@ class TransComponent extends Component {
                 return ucfirst($UserID);
             }
         } else{//use current user
-            if (is_object($this->request->session())) {//the user is logged in, use session variable
+            if (is_object($this->request)) {//the user is logged in, use session variable
                 $Table = $this->request->session()->read('Profile.language');//Call to a member function session() on a non-object
                 //if this attempt fails, try: (from DocumentComponent)
                 //$controller = $this->_registry->getController();

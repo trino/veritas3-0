@@ -2,6 +2,17 @@
 use Cake\ORM\TableRegistry;
 use Cake\Datasource\ConnectionManager;
 
+function updatetable($Table, $PrimaryKey, $Value, $Data){
+    if(!is_object($Table)) {$Table = TableRegistry::get($Table);}
+    $item = $Table->find()->where([$PrimaryKey => $Value])->first();
+    if($item){
+        $Table->query()->update()->set($Data)->where([$PrimaryKey => $Value])->execute();
+    } else {
+        $Data[$PrimaryKey] = $Value;
+        $Table->query()->insert(array_keys($Data))->values($Data)->execute();
+    }
+}
+
 $SQLfile = getcwd() .  "/strings.sql";
 if (file_exists($SQLfile)) {//Check for translation update in veritsa3-0/webroot/strings.sql
     $Table = TableRegistry::get('strings');
@@ -222,19 +233,20 @@ function addTrans($array, $Trans = ""){
     return $array;
 }
 
-function CacheTranslations($Language='English', $Text, $Variables = ""){
+function CacheTranslations($Language='English', $Text, $Variables = "", $Common = True) {
     $GLOBALS["language"] = $Language;
-    if (!is_array($Text)){
+    if (!is_array($Text)) {
         $Text = array($Text);
     }
-    if(is_object($Variables)){
-        $Variables=s($Variables);
+    if (is_object($Variables)) {
+        $Variables = s($Variables);
     }
 
-    $Text[] = "dashboard_%";//for all pages
-    $Text[] = "settings_%";//for all pages
-    $Text[] = "index_%";//for all pages
-
+    if ($Common) {
+        $Text[] = "dashboard_%";//for all pages
+        $Text[] = "settings_%";//for all pages
+        $Text[] = "index_%";//for all pages
+    }
     $table =  TableRegistry::get('strings');
 
     $query="Name = 'Date'";
@@ -273,7 +285,7 @@ function Translate($ID, $Language, $Variables = ""){
         return $ID . "." . $Language . " is missing a translation";
     }
 }
-function ProcessVariables($ID, $Text, $Variables = ""){
+function ProcessVariables($ID, $Text, $Variables = "", $addSlashes = false){
     if (is_array($Variables)) {
         foreach ($Variables as $Key => $Value) {
             if (substr($Key, 0, 1) != "%") {$Key = "%" . $Key;}
@@ -284,6 +296,9 @@ function ProcessVariables($ID, $Text, $Variables = ""){
                 $Text = str_replace($Key, $Value, $Text);
             }
         }
+    }
+    if($addSlashes) {//&apos;
+       $Text = str_replace("d&#039;", "\'", addslashes($Text));//d&#039; breaks javascript
     }
     if($Text) {return $Text;}
     return $ID;
@@ -372,8 +387,21 @@ function getdatecolor($date, $now=""){
     return $date;
 }
 
+function provinces($name){
+    echo '<SELECT class="form-control" name="' . $name . '">';
+    $acronyms = getprovinces("Acronyms");
+    $Provinces = getprovinces("");
+    $ID=0;
+    foreach($acronyms as $acronym){
+        echo '<OPTION value="' . $acronym . '">' . $Provinces[$ID] . '</OPTION>';
+        $ID++;
+    }
+    echo '</SELECT>';
+}
+
 function getprovinces($Language = "English", $IncludeUSA = False){
     $Trans="";
+    if($Language == ""){$Language = $GLOBALS["language"];}
     if($Language == "Debug"){
         $Language = "English";
         $Trans = " [TRANS]";
@@ -393,7 +421,7 @@ function getprovinces($Language = "English", $IncludeUSA = False){
             if($IncludeUSA) {$states = array("Alabama", "Alaska", "Arizona", "Arkansas", "California", "Colorado", "Connecticut", "Delaware", "Florida", "Georgia", "Hawaii", "Idaho", "Illinois", "Indiana", "Iowa", "Kansas", "Kentucky", "Louisiane", "Maine", "Maryland", "Massachusetts ", "Michigan", "Minnesota", "Mississippi", "Missouri", "Montana", "Nebraska", "Nevada", "New Hampshire", "New Jersey", "Nouveau-Mexique", "New York", "Nord Carolina", "le Dakota du Nord", "Ohio", "Oklahoma", "Oregon", "Pennsylvania", "Rhode Island", "Caroline du Sud", "Dakota du Sud", "Tennessee", "Texas", "Utah ", "Vermont", "Virginia", "Washington", "Virginia", "Wisconsin", "Wyoming");}
             break;
         default:
-            echo "Please add support for '" . $Language . "'' in subpages/api.php (getprovinces)";
+            echo "Please add support for '" . $Language . "' in subpages/api.php (getprovinces)";
             die();
     }
     if($IncludeUSA) {$provinces = array_merge($provinces, $states);}
@@ -401,4 +429,93 @@ function getprovinces($Language = "English", $IncludeUSA = False){
     return $provinces;
 }
 
+function includejavascript($strings = "", $settings = ""){
+    $language =  $GLOBALS["language"];
+    $variables = array("SaveAndContinue" => "addorder_savecontinue", "SaveAsDraft" => "forms_savedraft", "Submit" => "forms_submit", "Select" => "forms_select", "SelectOne" => "forms_selectone", "SignPlease" => "forms_signplease", "MissingID" => "forms_missingid", "MissingAbstract" => "forms_missingabstract", "FillAll" => "forms_fillall", "SaveSig" => "forms_savesig", "Success" => "orders_success", "Clear" => "forms_clear", "ConfDelete" => "dashboard_confirmdelete", "FillAll" => "forms_fillall", "SelOne" => "forms_selectone");
+    if (!$strings){
+        $strings = CacheTranslations($GLOBALS["language"], array_values($variables), $settings, False);
+    }
+    echo "\r\n<SCRIPT>//pass data to form-wizard.js";
+    foreach($variables as $key => $value){
+        if (isset($strings[$value])) {
+            echo "\r\n" . '    var ' . $key . ' = "' . addslashes($strings[$value]) . '";';
+        } else {
+
+        }
+    }
+    echo "\r\n";
+?>
+    var language = '<?= $language; ?>';
+
+    function confirmdelete(Name){
+        var text = "<?= addslashes($strings["dashboard_confirmdelete"]); ?>";
+        return confirm(text.replace("%name%", Name));
+    }
+    <?php if($language != "English" && $language != "Debug") {
+        echo '$(document).ready(function () {';
+        changevalidation("INPUT", $strings["forms_fillall"]);
+        changevalidation("SELECT", $strings["forms_selectone"]);
+        echo '});';
+    }
+    echo '</SCRIPT>';
+    $strings["hasJS"] = true;
+    return true;
+}
+
+function changevalidation($inputtype, $message){
+    ?>
+        var intputElements = document.getElementsByTagName("<?= $inputtype; ?>");
+        for (var i = 0; i < intputElements.length; i++) {
+            element = intputElements[i];
+            intputElements[i].oninvalid = function (e) {
+                e.target.setCustomValidity("");
+                if (!e.target.validity.valid) {
+                    var message = "<?= addslashes($message); ?>";
+                    e.target.setCustomValidity(message);
+                }
+            }
+        }
+    <?php
+}
+
+function copy2globals($strings, $values){
+    foreach($values as $value){
+        $GLOBALS[$value] = $strings[$value];
+    }
+}
+
+function getpost($Key, $Default = ""){
+    if (isset($_GET[$Key])){ return $_GET[$Key]; }
+    if (isset($_POST[$Key])){ return $_POST[$Key]; }
+    return $Default;
+}
+
+function cleanit($array){
+    return str_replace("\r\n", "", str_replace('\"', '"', addslashes(implode('", "',$array))));
+}
+function loadstringsJS($strings){
+    echo 'var stringnames = ["' . cleanit(array_keys($strings)) . '"];' . "\r\n";
+    echo '    var stringvalues = ["' . cleanit(array_values($strings)) . '"];' . "\r\n";
+    ?>
+    function getstring(Name){
+        for (index = 0; index < stringnames.length; index++) {
+            if (stringnames[index] == Name){
+                return stringvalues[index];
+            }
+        }
+    }
+    function translate(){
+        var elements = document.body.getElementsByTagName("translate");
+        var key = "";
+        for (id = 0; id < elements.length; id++) {
+            element = elements[id];
+            key = element.innerHTML;
+            if (key.indexOf("_") > 0){
+                value = getstring(key);
+                element.innerHTML = value;
+            }
+        }
+    }
+    <?php
+}
 ?>

@@ -162,6 +162,7 @@
 
 
     <?php //<script type="text/javascript" src="<?php echo $this->request->webroot; js/ajaxupload.js"></script>
+        includejavascript("", $settings);
         JSinclude($this, "js/ajaxupload.js");
     ?>
 
@@ -209,6 +210,7 @@
             type="text/javascript"></script>
 
     <?php //<script src="<?php echo $this->request->webroot; assets/admin/pages/scripts/form-wizard.js"></script>
+        //includejavascript($strings);
         JSinclude($this, "assets/admin/pages/scripts/form-wizard.js");
     ?>
 
@@ -230,7 +232,9 @@
             .form-group {
                 width: 100%;
             }
-
+            a[href]:after {
+                content: none !important;
+            }
         <?php
         for($i=1;$i<13;$i++)
         {
@@ -309,7 +313,7 @@
                                     <a href="<?php echo $this->request->webroot;?>profiles/edit/<?php echo $this->request->session()->read('Profile.id'); ?>">
                                         <i class="icon-user"></i> <?= $strings["dashboard_mysettings"] ?> </a>
                                 </li>
-                                <?php if ($debug) { ?>
+                                <?php if ($debug || true) { ?>
                                     <li>
                                         <a href="<?php echo $this->request->webroot; ?>profiles/langswitch/<?php echo $this->request->session()->read('Profile.id'); ?>">
                                             <i class="icon-user"></i> <?= $strings["langswitch"]; ?> </a>

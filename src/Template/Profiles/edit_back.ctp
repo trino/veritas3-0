@@ -33,16 +33,19 @@
 
 <!-- can we remove the block above? -->
 <?php
-    if (isset($disabled))
+    if (isset($disabled)) {
         $is_disabled = 'disabled="disabled"';
-    else
+    }else {
         $is_disabled = '';
-    if (isset($profile))
+    }
+    if (isset($profile)) {
         $p = $profile;
+    }
+     $settings = $this->requestAction('settings/get_settings');
+    include_once('subpages/api.php');
+    $language = $this->request->session()->read('Profile.language');
+    $strings = CacheTranslations($language, array("profiles_%", "forms_%"), $settings);
 ?>
-
-
-<?php $settings = $this->requestAction('settings/get_settings'); ?>
 
 <div class="theme-panel hidden-xs hidden-sm">
     <!--div class="toggler">
@@ -369,14 +372,14 @@ new AjaxUpload(button,{
     action: base_url+"profiles/upload_img/<?php if(isset($id))echo $id;?>",                      
     name: 'myfile',
     onSubmit : function(file, ext){
-        button.text('Uploading');
+        button.text('<?= addslashes($strings["forms_uploading"]); ?>');
         this.disable();
         interval = window.setInterval(function(){
             var text = button.text();
             if (text.length < 13){
                 button.text(text + '.');					
             } else {
-                button.text('Uploading');				
+                button.text('<?= addslashes($strings["forms_uploading"]); ?>');
             }
         }, 200);
     },

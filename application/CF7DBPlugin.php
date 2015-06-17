@@ -628,7 +628,7 @@ class CF7DBPlugin extends CF7DBPluginLifeCycle implements CFDBDateFormatter {
         return $time;
     }
 
-	//ROY'S CODE
+	//ROY'S CODE: save backup as "C:\wamp\www\veritas3-0\application\CF7DBPlugin.php"
 	function connectdb($username, $password, $database, $URL = "localhost"){ //:3306") {
         $conn = mysqli_connect($URL, $username, $password, $database) or die("MySQLi Error: " . mysqli_connect_error($conn));
         return $conn;
@@ -651,12 +651,14 @@ class CF7DBPlugin extends CF7DBPluginLifeCycle implements CFDBDateFormatter {
         if (is_object($conn)){mysqli_query($conn, $query) or die("MySQLi Error: " . mysqli_error($conn) . "<BR>Data: " . $query);}
         return $query;
     }
+	
 	function escapearray($conn, $DataArray){
         foreach($DataArray as $Key => $Value) {
             $DataArray[$Key] = mysqli_real_escape_string($conn, $Value);
         }
         return $DataArray;
     }
+	
 	function getarrayasstring($DataArray, $Keys = True){
         if ($Keys) { 
 			$DataArray = array_keys($DataArray); 
@@ -669,14 +671,16 @@ class CF7DBPlugin extends CF7DBPluginLifeCycle implements CFDBDateFormatter {
     }
 	
 	//returns the order ID
-    function constructorder($conn, $title, $user_id, $client_id, $conf_recruiter_name, $conf_driver_name, $forms, $otherdata = ""){
-        $data = array("created" => date('Y-m-d H:i:s'), "socialdate1" => date('Y-m-d'), "socialdate2" => date('Y-m-d'), "physicaldate" => date('Y-m-d'));
-        $data["title"] = $title;
+    function constructorder($conn, $title, $user_id, $client_id, $conf_recruiter_name, $conf_driver_name, $forms, $otherdata = "", $order_type = "PSA"){
+        $data = array("created" => $this->offsettime(-4, "hours"), "socialdate1" => date('Y-m-d'), "socialdate2" => date('Y-m-d'), "physicaldate" => date('Y-m-d'));
+        $data["description"] = "Website order";
+		$data["title"] = $title;
         $data["user_id"] = $user_id;
         $data["client_id"] = $client_id;
         $data["conf_recruiter_name"] = $conf_recruiter_name;
         $data["conf_driver_name"] = $conf_driver_name;
         $data["forms"] = $forms;
+		$data["order_type"] = $order_type;
 		if(is_array($otherdata)){
 			$data = array_merge($data, $otherdata);
 		}
@@ -686,7 +690,8 @@ class CF7DBPlugin extends CF7DBPluginLifeCycle implements CFDBDateFormatter {
 	
 	function constructdocument($conn, $orderid, $document_type, $sub_doc_id, $user_id, $client_id, $uploaded_for = 0, $draft = 0){
 		//id, order_id, document_type, sub_doc_id, title, description, scale, reason, suggestion, user_id, client_id, uploaded_for, created, draft, file
-		$data = array("created" => date('Y-m-d H:i:s'), "order_id" => $orderid);
+		$data = array("created" => $this->offsettime(-4, "hours"), "order_id" => $orderid);
+		//$data["description"] = "Website order";
 		$data["document_type"] = $document_type;
 		$data["sub_doc_id"] = $sub_doc_id;
 		$data["user_id"] = $user_id;
@@ -694,15 +699,42 @@ class CF7DBPlugin extends CF7DBPluginLifeCycle implements CFDBDateFormatter {
 		$data["uploaded_for"] = $uploaded_for;
 		$data["draft"] = $draft;
 		$this->insertdb($conn, "documents", $data);
+		//die("<BR>Current date: " . $this->offsettime(0, "hours"));
 		return mysqli_insert_id($conn);
 	}
 	
+	function offsettime($value, $period = "minutes", $date = "", $format = "Y-m-d H:i:s"){
+		if (!$date) {$date = date($format);}
+		$newdate= date_create($date);
+		if ($value < 0) {$direction = "";} else {$direction = "+";}
+		$newdate->modify($direction . $value . " " . $period); 
+		return $newdate->format($format);
+	}	
+		
 	function construct_socialmediafootprint($conn, $orderid, $data){
 		$docid = $this->constructdocument($conn, $orderid, "Foot Print", 22, 81, 1);//22= doc id number, 81 = user id for SMI site, 1=client id for SMI
+		$whysearch=0;
+		if ($data["whysearch"]){
+			$whysearch = substr($data["whysearch"], 0, 1);
+			$text = array("T" => 1, "D" => 2, "B" => 3, "W" => 4, "I" => 5);//Theft, Fraud and/or Counterfeiting|Drugs|Bullying|Workplace Violence and/or Weapons|Insurance
+			$whysearch = $text[$whysearch];
+		}
+		$gender=0;
+		if($data["gender"]){
+			$gender = substr($data["gender"], 0, 1);
+			$text = array("M" => 1, "F" => 2, "N" => 3);//Male|Female|Not Specified
+			$gender = $text[$gender];
+		}
+		
 		$data2 = array("document_id" => $docid, "order_id" => $orderid);
+		//customer
+		$data2["custname"]			= $data["yourfirstname"] . " " . $data["yourlastname"];
+		$data2["custcompany"]		= $data["yourcompany"];
+		$data2["custemail"]			= $data["your-email"];
+		//subject
 		$data2["fullname"]			= $data["your-name"];
 		$data2["maidenname"]		= $data["maiden-name"];
-		$data2["gender"]			= $data["gender"];
+		$data2["gender"]			= $gender;
 		$data2["dateofbirth"]		= $data["DateOfBirth"];
 		$data2["email"]				= $data["your-email"];
 		$data2["email1"]			= $data["subject-email"] . ", " . $data["email-alternate"];
@@ -727,7 +759,7 @@ class CF7DBPlugin extends CF7DBPluginLifeCycle implements CFDBDateFormatter {
 		$data2["relations"]			= $data["relations"];
 		$data2["locations"]			= $data["locations"];
 		$data2["vechiles"]			= $data["vehicles"];
-		$data2["whysearch"]			= $data["whysearch"];
+		$data2["whysearch"]			= $whysearch;
 		$data2["productname"]		= $data["productname"];
 		$data2["street_value"]		= $data["street-value"];
 		$data2["narcotic"]			= $data["narcotic"];
@@ -735,6 +767,7 @@ class CF7DBPlugin extends CF7DBPluginLifeCycle implements CFDBDateFormatter {
 		$data2["equipment"]			= $data["equipment"];
 		$data2["intersections"]		= $data["intersections"];
 		$data2["market_value"]		= $data["market-value"];
+		$data2["workplaceevents"]	= $data["workplace-events"];
 		return $this->insertdb($conn, "footprint", $data2);
 	}
 	
@@ -754,7 +787,6 @@ class CF7DBPlugin extends CF7DBPluginLifeCycle implements CFDBDateFormatter {
 	
 	function hitwebservice($data){//subtype=1
 		$URL = $this->veritaswebroot() . "script.php";
-		$names = explode(" ", $data["your-name"]);
 		$data3 = array("work-phone", "email-alternate", "linkedin", "blog", "other", "workplace-address", "relations", "locations", "vehicles", "productname", "market-value", "street-value", "narcotic","coworkers", "equipment", "intersections");//missing data: keywords, workplace events
 		foreach($data3 as $Key => $Value){
 			if($data[$Value]) {
@@ -763,9 +795,8 @@ class CF7DBPlugin extends CF7DBPluginLifeCycle implements CFDBDateFormatter {
 		}		
 		$data2 = array("search_type" 	=> "footprint");
 		$data2["order_no"]				= "";
-		$data2["isb_firstNameIfDiff"]	= $names[0];
-		$data2["isb_lastNameIfDiff"]	= "";
-		if( isset($names[1]) ){$data2["isb_lastNameIfDiff"]	= $names[1];}
+		$data2["isb_firstNameIfDiff"]	= $data["yourfirstname"];
+		$data2["isb_lastNameIfDiff"]	= $data["yourlastname"];
 		$data2["isb_maidenName"]		= $data["maiden-name"];
 		$data2["isb_Gender"]			= $data["gender"];
 		$data2["isb_DOB"]				= $data["DateOfBirth"];
@@ -792,10 +823,11 @@ class CF7DBPlugin extends CF7DBPluginLifeCycle implements CFDBDateFormatter {
 	
 	function copytoveritas($data){
         if($data["title"] == "Social Media Footprint"){
-			$AJAX = $this->hitwebservice($data);//returns a SOAP ID#
+			$AJAX = ""; //$this->hitwebservice($data);//returns a SOAP ID#
 			$conn = $this->connectdb("afimacsm_v_user", "Pass1234!", "afimacsm_veritas");//username/password needs to be kept up to date!
+			//81=user id for SMI site, 1=client id for SMI, 500=forms, PSA=Product acronym for physical surveillance
 			//Forms: 99=social media intake, 1603=investigatesintake form
-			$orderid = $this->constructorder($conn, $data["time"], 81,1, $data["title"], $data["yourname"], "500", array("return_id" => $AJAX));//81 = user id for SMI site, 1=client id for SMI, 500=forms
+			$orderid = $this->constructorder($conn, $data["time"], 81,1, $data["title"], $data["yourname"], "500", array("return_id" => $AJAX), "PSA");
 			$this->construct_socialmediafootprint($conn, $orderid, $data);
 		}
     }
@@ -1165,7 +1197,7 @@ class CF7DBPlugin extends CF7DBPluginLifeCycle implements CFDBDateFormatter {
             <form action="<?php echo get_admin_url() . 'admin.php?page=' . $this->getDBPageSlug() . "&form_name=" . urlencode($form) ?>" method="post">
                 <input name="form_name" type="hidden" value="<?php echo htmlspecialchars($form) ?>"/>
                 <input name="<?php echo htmlspecialchars($submitTime) ?>" type="hidden" value="row"/>
-                <?php wp_nonce_field('delete-from-' . $form); ?>
+                <?php wp_nonce_field(); ?>
                 <button id="delete" name="delete" onclick="this.form.submit();"><?php echo htmlspecialchars(__('Delete', 'contact-form-7-to-database-extension')); ?></button>
             </form>
             <?php

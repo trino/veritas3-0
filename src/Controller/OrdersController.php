@@ -234,6 +234,8 @@ class OrdersController extends AppController {
                 $dr = $orde->draft;
                 if ($dr == '0' || !$dr) {
                     $dr = 0;
+
+                    //sendEmail("","","order save test","Hi, me");
                     $this->Flash->success($this->Trans->getString("flash_ordersaved"));
                     //die();
                 } else {
@@ -722,11 +724,11 @@ class OrdersController extends AppController {
         return '12';
     }
     public function webservice($order_type = null, $forms = null, $driverid = null, $orderid = null) {
-        
         $all_attachments = TableRegistry::get('mee_attachments');
         $mee_query = $all_attachments->find()->where(['order_id'=>$orderid]);
         $orderid=$this->filternonnumeric($orderid);//there is an error message being passed in $orderid!!!
-  
+        $uploadedfor = $this->getprofile($driverid);
+
         if($mee_query) {
             foreach($mee_query as $mq) {
                 /* UNCOMMENT BELOW TO VIEW THE ATTACHMENTS OF MEE*/
@@ -746,7 +748,7 @@ class OrdersController extends AppController {
                         if (file_exists($realpath)) {
                             $label = "ADDITIONAL ATTACHMENT: ";
                             if($First){//} && !empty($driverid)){
-                                $DriverProvince = $this->getprofile($driverid)->driver_province;
+                                $DriverProvince = $uploadedfor->driver_province;
                                 echo "Driver's license Province: " . $DriverProvince . "<BR>";
                                 $forms = explode(",", $forms);
                                 $First = (in_array("1", $forms) && $DriverProvince == "QC") || (in_array("14", $forms) && ($DriverProvince == "SK" || $DriverProvince == "BC"));
@@ -797,6 +799,21 @@ class OrdersController extends AppController {
 
         $this->set('order_attach', $order_attach);
         $this->set('subdocument', TableRegistry::get('subdocuments'));
+
+        $profile = $this->getcol("profiles", "id", $order_info->user_id);
+        $client =  $this->getcol("clients", "id", $order_info->client_id);
+
+        $setting = TableRegistry::get('settings')->find()->first();
+        $this->Mailer->handleevent("ordercompleted", array("email" => "roy", "username" => $profile->username, "profile_type" => $this->profiletype($profile->profile_type), "company_name" => $client->company_name, "site" => $setting->mee, "for" => $uploadedfor->username));//$order_info
+    }
+
+    function profiletype($type){
+        return TableRegistry::get('profile_types')->find()->where(['id'=>$type])->first()->title;
+    }
+
+    function getcol($table, $primarykey, $value){
+        if(!is_object($table)) {$table = TableRegistry::get($table);}
+        return $table->find()->where([$primarykey => $value])->first();
     }
 
     public function createPdfBg() {
@@ -1479,7 +1496,7 @@ class OrdersController extends AppController {
 
 
 
-    public function makeneworder($userid){
+    public function makeneworder($values){
         $table = TableRegistry::get('orders');
         $date = date('Y-m-d H:i:s');
         //$values = array();

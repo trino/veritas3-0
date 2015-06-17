@@ -1,14 +1,14 @@
- <?php
- if($this->request->session()->read('debug'))
-        echo "<span style ='color:red;'>info_order.php #INC152</span>";
- ?>
 <style>div {
         border: 0px solid green;
     }</style>
-
 <?php
+     if($this->request->session()->read('debug')) {
+         echo "<span style ='color:red;'>subpages/profile/info_order.php #INC152</span>";
+     }
+
     $getProfileType = $this->requestAction('profiles/getProfileType/' . $this->Session->read('Profile.id'));
     $sidebar = $this->requestAction("settings/all_settings/" . $this->request->session()->read('Profile.id') . "/sidebar");
+    $strings2 = CacheTranslations($language, array("info_%", "profiles_profiletype"), $settings, False);
 
     function printoption($option, $selected, $value = ""){
         $tempstr = "";
@@ -32,7 +32,7 @@
     }
 
     function printprovinces($name, $selected = "", $isdisabled = "disabled='disabled'"){
-        printoptions($name, array("", "AB", "BC", "MB", "NB", "NL", "NT", "NS", "NU", "ON", "PE", "QC", "SK", "YT"), $selected, array("Select Province", "Alberta", "British Columbia", "Manitoba", "New Brunswick", "Newfoundland and Labrador", "Northwest Territories", "Nova Scotia", "Nunavut", "Ontario", "Prince Edward Island", "Quebec", "Saskatchewan", "Yukon Territories"), $isdisabled);
+        printoptions($name,getprovinces("Acronyms"), $selected, getprovinces(""), $isdisabled);
     }
 
 ?>
@@ -64,11 +64,11 @@
 
                             <div class="clearfix"></div>
                             <input type="hidden" name="created_by"
-                                   value="<?php echo $this->request->session()->read('Profile.id') ?>"/>
+                                   value="<?= $this->request->session()->read('Profile.id') ?>"/>
                             
                             <div class="col-md-4">
                                 <div class="form-group">
-                                    <label class="control-label">Profile Type</label>
+                                    <label class="control-label"><?= $strings2["profiles_profiletype"]; ?>:</label>
 
                                     <select name="profile_type" class="form-control member_type required" disabled="disabled">
                                         <option
@@ -101,9 +101,9 @@
                                 <div class="col-md-4" id="driver_div"
                                      style="">
                                     <div class="form-group">
-                                        <label class="control-label">Driver Type</label>
+                                        <label class="control-label"><?= $strings["forms_drivertype"]; ?>:</label>
                                         <select name="driver" class="form-control select_driver required">
-                                            <option value="">Select Driver Type</option>
+                                            <option value=""><?= $strings["forms_selectdrivertype"]; ?></option>
                                             <option
                                                 value="1" <?php if (isset($p) && $p->driver == 1) echo "selected='selected'"; ?>
                                                 >BC - BC FTL AB/BC
@@ -183,7 +183,7 @@
 
                             <div class="col-md-4">
                                 <div class="form-group">
-                                    <label class="control-label">Email</label>
+                                    <label class="control-label"><?= $strings["forms_email"]; ?>:</label>
                                     <input <?php echo $is_disabled ?> name="email" id="driverEm" type="email"
                                                                       placeholder="eg. test@domain.com"
                                                                       class="form-control un email required" <?php if (isset($p->email)) { ?> value="<?php echo $p->email; ?>" <?php } ?>/>
@@ -200,15 +200,15 @@
                             <?php if ($sidebar->client_option == 0) { ?>
                             <div class="col-md-4">
                                 <div class="form-group">
-                                    <label class="control-label">Title</label><BR>
+                                    <label class="control-label"><?= $strings["forms_title"]; ?>:</label><BR>
                                     <SELECT <?php echo $is_disabled ?> name="title" class="form-control "><?php
                                             $title = "";
                                             if (isset($p->title)) {
                                                 $title = $p->title;
                                             }
-                                            printoption("Mr.", $title, "Mr");
-                                            printoption("Mrs.", $title, "Mrs");
-                                            printoption("Ms.", $title, "Ms");
+                                            printoption($strings["forms_mr"], $title, "Mr");
+                                            printoption($strings["forms_mrs"], $title, "Mrs");
+                                            printoption($strings["forms_ms"], $title, "Ms");
                                         ?></SELECT>
 
                                 </div>
@@ -216,7 +216,7 @@
                             <div class="col-md-4">
                                 <div class="form-group">
 
-                                    <label class="control-label">First Name</label>
+                                    <label class="control-label"><?= $strings["forms_firstname"]; ?>:</label>
                                     <input <?php echo $is_disabled ?> name="fname" type="text"
                                                                       placeholder="eg. John"
                                                                       class="form-control req_driver required" <?php if (isset($p->fname)) { ?> value="<?php echo $p->fname; ?>" <?php } ?>/>
@@ -227,7 +227,7 @@
                             <div class="col-md-4">
                                 <div class="form-group">
 
-                                    <label class="control-label">Middle Name</label>
+                                    <label class="control-label"><?= $strings["forms_middlename"]; ?>:</label>
                                     <input <?php echo $is_disabled ?> name="mname" type="text"
                                                                       placeholder=""
                                                                       class="form-control" <?php if (isset($p->mname)) { ?> value="<?php echo $p->mname; ?>" <?php } ?>/>
@@ -237,7 +237,7 @@
 
                             <div class="col-md-4">
                                 <div class="form-group">
-                                    <label class="control-label">Last Name</label>
+                                    <label class="control-label"><?= $strings["forms_lastname"]; ?>:</label>
                                     <input <?php echo $is_disabled ?> name="lname" type="text"
                                                                       placeholder="eg. Doe"
                                                                       class="form-control req_driver required" <?php if (isset($p->lname)) { ?> value="<?php echo $p->lname; ?>" <?php } ?>/>
@@ -248,7 +248,7 @@
                             <div class="col-md-4">
                                 <div class="form-group">
 
-                                    <label class="control-label">Phone Number</label>
+                                    <label class="control-label"><?= $strings["forms_phone"]; ?>:</label>
                                     <input <?php echo $is_disabled ?> name="phone" type="text"
                                                                       placeholder="eg. +1 646 580 6284"
                                                                       class="form-control req_driver required" <?php if (isset($p->phone)) { ?> value="<?php echo $p->phone; ?>" <?php } ?>/>
@@ -259,16 +259,15 @@
                             <div class="col-md-4">
                                 <div class="form-group">
 
-                                    <label class="control-label">Gender</label>
+                                    <label class="control-label"><?= $strings["forms_gender"]; ?>:</label>
                                     <SELECT <?php echo $is_disabled ?> name="gender" class="form-control "><?php
                                             $gender = "";
                                             if (isset($p->gender)) {
                                                 $gender = $p->gender;
                                             }
-                                            echo '<!-- selected option is ' . $gender . '-->';
-                                            printoption("Select Gender", "");
-                                            printoption("Male", $gender, "Male");
-                                            printoption("Female", $gender, "Female");
+                                            printoption($strings["forms_selectgender"], "");
+                                            printoption($strings["forms_male"], $gender, "Male");
+                                            printoption($strings["forms_female"], $gender, "Female");
                                         ?></SELECT>
                                 </div>
                             </div>
@@ -277,7 +276,7 @@
                             <div class="col-md-4">
                                 <div class="form-group">
 
-                                    <label class="control-label">Place of Birth</label>
+                                    <label class="control-label"><?= $strings["forms_placeofbirth"]; ?>:</label>
                                     <input <?php echo $is_disabled ?> name="placeofbirth" type="text"
                                                                       placeholder=""
                                                                       class="form-control" <?php if (isset($p->placeofbirth)) { ?> value="<?php echo $p->placeofbirth; ?>" <?php } ?>/>
@@ -287,7 +286,7 @@
                             <div class="col-md-8">
 
                                 <div class="form-group">
-                                    <label class="control-label">Date of Birth (YYYY MM DD)</label><BR>
+                                    <label class="control-label"><?= $strings["forms_dateofbirth"]; ?>: (YYYY MM DD)</label><BR>
 
                                     <div class="row">
 
@@ -343,7 +342,7 @@
 
                                 <div class="col-md-12">
                                     <div class="form-group">
-                                        <h3 class="block">Address</h3>
+                                        <h3 class="block"><?= $strings["forms_address"]; ?></h3>
                                     </div>
                                 </div>
 
@@ -351,7 +350,7 @@
                                 <div class="col-md-8">
                                     <div class="form-group">
                                         <input <?php echo $is_disabled ?> name="street" type="text"
-                                                                          placeholder="Street"
+                                                                          placeholder="<?= $strings["forms_address"]; ?>"
                                                                           class="form-control req_driver required" <?php if (isset($p->street)) { ?> value="<?php echo $p->street; ?>" <?php } ?>/>
                                     </div>
                                 </div>
@@ -359,7 +358,7 @@
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <input <?php echo $is_disabled ?> name="city" type="text"
-                                                                          placeholder="City"
+                                                                          placeholder="<?= $strings["forms_city"]; ?>"
                                                                           class="form-control req_driver required" <?php if (isset($p->city)) { ?> value="<?php echo $p->city; ?>" <?php } ?>/>
                                     </div>
                                 </div>
@@ -381,7 +380,7 @@
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <input <?php echo $is_disabled ?>  type="text"
-                                                                           placeholder="Postal code"
+                                                                           placeholder="<?= $strings["forms_postalcode"]; ?>"
                                                                            class="form-control req_driver required"
                                                                            name="postal"  <?php if (isset($p->postal)) { ?> value="<?php echo $p->postal; ?>" <?php } ?>/>
                                     </div>
@@ -390,7 +389,7 @@
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <input <?php echo $is_disabled ?>  type="text"
-                                                                           placeholder="Country" value="Canada"
+                                                                           placeholder="<?= $strings["forms_country"]; ?>" value="Canada"
                                                                            class="form-control req_driver required"
                                                                            name="country" <?php if (isset($p->country)) { ?> value="<?php echo $p->country; ?>" <?php } ?>/>
                                     </div>
@@ -399,13 +398,13 @@
 
                                 <div class="col-md-12">
                                     <div class="form-group">
-                                        <h3 class="block">Driver's License</h3></div>
+                                        <h3 class="block"><?= $strings["forms_driverslicense"]; ?></h3></div>
                                 </div>
 
 
                                 <div class="col-md-4">
                                     <div class="form-group">
-                                        <label class="control-label">Driver License #</label>
+                                        <label class="control-label"><?= $strings["forms_driverslicense"]; ?> #:</label>
                                         <input <?php echo $is_disabled ?> name="driver_license_no" type="text"
                                                                           class="form-control req_driver" <?php if (isset($p->driver_license_no)) { ?> value="<?php echo $p->driver_license_no; ?>" <?php } ?> disabled="disabled" />
                                     </div>
@@ -414,7 +413,7 @@
 
                                 <div class="col-md-4">
                                     <div class="form-group">
-                                        <label class="control-label">Province issued</label>
+                                        <label class="control-label"><?= $strings["forms_provinceissued"]; ?>:</label>
 
                                         <?php
                                             if (isset($p->driver_province))
@@ -430,7 +429,7 @@
 
                                 <div class="col-md-4">
                                     <div class="form-group">
-                                        <label class="control-label">Expiry Date</label>
+                                        <label class="control-label"><?= $strings["forms_expirydate"]; ?>:</label>
                                         <input <?php echo $is_disabled ?> name="expiry_date" type="text"
                                                                           class="form-control date-picker" <?php if (isset($p->expiry_date)) { ?> value="<?php echo $p->expiry_date; ?>" <?php } ?> disabled="disabled" />
 

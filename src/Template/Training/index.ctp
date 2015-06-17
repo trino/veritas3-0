@@ -197,11 +197,13 @@
                                         if (isset($results)) {
                                             PrintResults($results, $user);
                                         }
-                                        if (!$hasusertakenquiz && strlen($quiz->Attachments) > 0 && $QuizID == $quiz->ID) {
-                                            echo '<div class="" align="left"><strong>Please go through each attachment in sequential order to view the quiz:</strong></div><br>';
-                                        }
                                         $attachments = "";
                                         if (quizmiddle($QuizID, $quiz->ID)) {
+                                            if (!$hasusertakenquiz && strlen($quiz->Attachments) > 0 && $QuizID == $quiz->ID) {
+                                                echo '<div class="col-md-10" align="left">';
+                                                echo '<strong>Please go through each attachment in sequential order to view the quiz:</strong>';
+                                                echo '</div><div class="col-md-2"></div>';
+                                            }
                                             echo '<div class="col-md-5" align="left">';
                                             $attachments = explode(",", $quiz->Attachments);
                                             $attachmentJS = "";
@@ -231,7 +233,7 @@
                                                         $download .= ' download="' . basename($attachment) . '" TITLE="Internet Explorer users need to right-click, then click Save Target As"';
                                                     }
 
-                                                    echo '<input type="checkbox" id="chk' . $id . '" disabled' . $checked . '></input>' . ($id + 1) . ' <a href="' . $attachment . $download . ' class="btn btn-xs btn-warning" onclick="return check(';
+                                                    echo '<input type="checkbox" name="chk' . $id . '" id="chk' . $id . '" disabled' . $checked . '></input>' . ($id + 1) . ' <a href="' . $attachment . $download . ' class="btn btn-xs btn-warning chk' . $id . '" onclick="return check(';
                                                     echo "'chk" . $id . "', '" . $attachment . $Q . ');" title="Please follow these steps in sequential order before you can take the quiz"' . $checked . '>' . $name . '</a>';
                                                     $id += 1;
                                                 }
@@ -330,20 +332,30 @@
                                 var canceled = !cb.dispatchEvent(evt);
                             }
 
+                            function ffclick(name){
+                                var cb = $('#' + name);
+                                cb.prop('checked', true);
+                            }
+
                             function check(name, filename) {
                                 var element = document.getElementById(name);
                                 element.disabled = false;
-                                //if (is_firefox){
+                                if (is_firefox){
+                                    //element.setAttribute('checked', 'checked');
+                                    ffclick(name);
+                                } else {
                                     simulateClick(name);
-                                //} else {
-                                //    element.click();
-                                //    element.checked = true;
-                               // }
+                                    //element.click();
+                                    //element.checked = true;
+                                 }
                                 element.disabled = true;
                                 return true;//if it's IE, stop the link from working
                             }
+
                             function checkboxes() {
-                                return <?= $attachmentJS; ?>;
+                                var Value = <?= $attachmentJS; ?>;
+                                if(!Value){alert("Please go through each attachment in sequential order to view the quiz");}
+                                return Value;
                             }
 
                             function checkboxesold(name1, name2) {

@@ -64,7 +64,7 @@ var FormWizard = function () {
             }
 
             $("#country_list").select2({
-                placeholder: "Select",
+                placeholder: 'Select',
                 allowClear: true,
                 formatResult: format,
                 formatSelection: format,
@@ -146,8 +146,8 @@ var FormWizard = function () {
 
                 messages: { // custom messages for radio buttons and checkboxes
                     'payment[]': {
-                        required: "Please select at least one option",
-                        minlength: jQuery.validator.format("Please select at least one option")
+                        required: 'SelectOne',
+                        minlength: jQuery.validator.format('SelectOne')
                     }
                 },
 
@@ -244,9 +244,9 @@ var FormWizard = function () {
                 {
 
                     
-                    $('.cont').html('Submit Order');
+                    $('.cont').html(Submit);
                     $('.cont').attr('onclick','return false;');
-                    $('.skip').html('Save as draft');
+                    $('.skip').html(SaveAsDraft);
                     
                     $('.skip').removeClass('button-next');
                     $('.nextview').each(function(){
@@ -265,14 +265,14 @@ var FormWizard = function () {
                     // $('.cont').attr('id','');
                 }
                 else{
-                    $('.skip').html('Save as draft');
+                    $('.skip').html(SaveAsDraft);
                     
                     //$('.skip').removeClass('button-next');
                     //$('.skip').removeClass('save_as_draft');
                     $('.cont').not('.skip').each(function(){
                        if($(this).attr('id')!='submit_dra')
                        {
-                        $(this).html('Save & Continue <i class="m-icon-swapright m-icon-white"></i>');
+                        $(this).html(SaveAndContinue + ' <i class="m-icon-swapright m-icon-white"></i>');
                         $(this).attr('id','draft');
                        } 
                     });
@@ -354,14 +354,14 @@ var FormWizard = function () {
                         //alert($('.tabber.active .touched_edit').val());
                         if($('.tabber.active').attr('class').replace('confirmation') != $('.tabber.active').attr('class')){
                         if ($('.tabber.active .touched').val() != '1' && $('.tabber.active .touched_edit').val() != '1') {
-                            alert('Please provide your signature to confirm.');
+                            alert(SignPlease);
                             return false;
                         }
                         }
                         else
                         {
                          if ($('.tabber.active .touched').val() != '1' && $('.tabber.active .touched_edit8').val() != '1') {
-                            alert('Please provide your signature to confirm.');
+                            alert(SignPlease);
                             $('html,body').animate({
                                         scrollTop: $('#sig8').offset().top},
                                     'slow');
@@ -387,13 +387,13 @@ var FormWizard = function () {
                         for(var i = 0; i < Forms.length; i++){//loop through product numbers
                             if(Forms[i] == 1603) {//Premium National Criminal Record Check
                                 if ($('.mee_att_1').val().length == 0 && $('.mee_att_2').val().length == 0) {//pieces of ID
-                                    MissingData = "Missing the required piece of ID";
+                                    MissingData = MissingID;
                                 }
                             }
 
                             if($('#mee_att_7').length>0){
                                 if ($('.mee_att_7').val().length == 0) {//abstract form
-                                    MissingData = "Missing the abstract consent form";
+                                    MissingData = MissingAbstract;
                                 }
                             }
 
@@ -418,7 +418,7 @@ var FormWizard = function () {
                         if(!$('#confirm_check').is(':checked') && $('.button-next').attr('id')!='nextview')
                         {
                             
-                            alert('Please confirm that you have read the conditions.');
+                            alert(PleaseConfirm);
                             $('#confirm_check').focus();
                             $('html,body').animate({
                                         scrollTop: $('#confirm_check').offset().top},
@@ -437,7 +437,7 @@ var FormWizard = function () {
                         if(!$('#confirm_check1').is(':checked') )
                         {
                             
-                            alert('Please confirm that you have read the conditions.');
+                            alert(PleaseConfirm);
                             $('#confirm_check1').focus();
                             $('html,body').animate({
                                         scrollTop: $('#confirm_check1').offset().top},
@@ -494,7 +494,7 @@ var FormWizard = function () {
                                 $('#divison').removeAttr('style');
                         }
                         if(er){
-                            alert('Please fill out all the required fields.');
+                            alert(FillAll);
                             $('html,body').animate({
                                         scrollTop: $('.myerror').offset().top},
                                     'slow');
@@ -507,7 +507,7 @@ var FormWizard = function () {
 
                                 if($('#sig2 .touched').val()!='1' && $('#sig2 .touched_edit2').val()!='1')
                                 {
-                                    alert('Please save the signature before you proceed.');
+                                    alert(SaveSig);
                                     $('html,body').animate({
                                         scrollTop: $('#sig2').offset().top},
                                     'slow');
@@ -516,7 +516,7 @@ var FormWizard = function () {
                                 else
                                 if($('#sig4 .touched').val()!='1' && $('#sig4 .touched_edit4').val()!='1')
                                 {
-                                    alert('Please save the signature before you proceed.');
+                                    alert(SaveSig);
                                     $('html,body').animate({
                                         scrollTop: $('#sig4').offset().top},
                                     'slow');
@@ -525,7 +525,7 @@ var FormWizard = function () {
                                 else
                                 if($('#sig1 .touched').val()!='1' && $('#sig1 .touched_edit1').val()!='1')
                                 {
-                                    alert('Please save the signature before you proceed.');
+                                    alert(SaveSig);
                                     $('html,body').animate({
                                         scrollTop: $('#sig1').offset().top},
                                     'slow');
@@ -535,7 +535,7 @@ var FormWizard = function () {
                                 else
                                 if($('#sig3 .touched').val()!='1' && $('#sig3 .touched_edit3').val()!='1')
                                 {
-                                    alert('Please save the signature before you proceed.');
+                                    alert(SaveSig);
                                     $('html,body').animate({
                                         scrollTop: $('#sig3').offset().top},
                                     'slow');
@@ -590,7 +590,7 @@ var FormWizard = function () {
             if(table==0)
             $('#form_wizard_1').find('.button-previous').hide();
             $('#form_wizard_1 .button-submit').click(function () {
-                alert('Done!');
+                alert(Success);
             }).hide();
         }
 

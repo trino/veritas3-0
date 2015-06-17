@@ -2,6 +2,7 @@
  if($this->request->session()->read('debug')){ echo "<span style ='color:red;'>subpages/documents/driver_evaluation_form.php #INC141</span>"; }
 include_once 'subpages/filelist.php';
 if( isset($sub['de_at'])){  listfiles($sub['de_at'], "attachments/", "", false,3); }
+$strings2 = CacheTranslations($language, array("drivereval_%", "tasks_date", "file_attachfile"), $settings, False);
  ?>
 <form id="form_tab3">
 <input class="document_type" type="hidden" name="document_type" value="<?php echo $dx->title;?>" />
@@ -10,7 +11,7 @@ if( isset($sub['de_at'])){  listfiles($sub['de_at'], "attachments/", "", false,3
 <div class="clearfix"></div>
 <hr />
                                                 <div class="form-group row">
-													<label class="control-label col-md-3">Driver name <span class="required">
+													<label class="control-label col-md-3"><?= $strings2["drivereval_drivername"]; ?> <span class="required">
 													* </span>
 													</label>
 													<div class="col-md-6">
@@ -19,7 +20,7 @@ if( isset($sub['de_at'])){  listfiles($sub['de_at'], "attachments/", "", false,3
 													</div>
 												</div>
 												<div class="form-group row">
-													<label class="control-label col-md-3">D/L# <span class="required">
+													<label class="control-label col-md-3"><?= $strings["forms_driverslicense"]; ?># <span class="required">
 													* </span>
 													</label>
 													<div class="col-md-6">
@@ -28,7 +29,7 @@ if( isset($sub['de_at'])){  listfiles($sub['de_at'], "attachments/", "", false,3
 													</div>
 												</div>
 												<div class="form-group row">
-													<label class="control-label col-md-3">Date <span class="required">
+													<label class="control-label col-md-3"><?= $strings2["tasks_date"]; ?> <span class="required">
 													* </span>
 													</label>
 													<div class="col-md-6">
@@ -37,68 +38,44 @@ if( isset($sub['de_at'])){  listfiles($sub['de_at'], "attachments/", "", false,3
 													</div>
 												</div>
 												<div class="form-group row">
-													<label class="control-label col-md-3">Transmission <span class="required">
+													<label class="control-label col-md-3"><?= $strings2["drivereval_transmissi"]; ?> <span class="required">
 													* </span>
 													</label>
 													<div class="col-md-9">
                                                         <div class="checkbox-list col-md-3 nopad">
 															<label>
                                                             <?php 
-                                                            if($this->request->params['action'] == 'vieworder'  || $this->request->params['action']== 'view')
-                                                            {
-                                                                if(isset($deval_detail) && $deval_detail->transmission_manual_shift =='1')
-                                                                {
-                                                                    ?>
-                                                                    &#9745;
-                                                                    <?php
-                                                                }
-                                                                else 
-                                                                {
-                                                                    ?>
-                                                                    &#9744;
-                                                                    <?php
+                                                            if($this->request->params['action'] == 'vieworder'  || $this->request->params['action']== 'view') {
+                                                                if(isset($deval_detail) && $deval_detail->transmission_manual_shift =='1') {
+                                                                    echo '&#9745;';
+                                                                } else {
+                                                                    echo '&#9744;';
                                                                 } 
-                                                            }
-                                                            else
-                                                            {
-                                                                ?>                                      
-                                                                <input type="checkbox" id="transmission_manual_shift_1" name="transmission_manual_shift" value="1"/> 
-                                                                <?php
+                                                            } else {
+                                                                echo '<input type="checkbox" id="transmission_manual_shift_1" name="transmission_manual_shift" value="1"/>';
                                                             }
                                                          ?>
-															 Manual Shift </label></div><div class="checkbox-list col-md-3 nopad">
+                                                            <?= $strings2["drivereval_manualshif"]; ?> </label></div><div class="checkbox-list col-md-3 nopad">
 															<label>
                                                             <?php 
-                                                            if($this->request->params['action'] == 'vieworder'  || $this->request->params['action']== 'view')
-                                                            {
-                                                                if(isset($deval_detail) && $deval_detail->transmission_auto_shift =='2')
-                                                                {
-                                                                    ?>
-                                                                    &#9745;
-                                                                    <?php
-                                                                }
-                                                                else 
-                                                                {
-                                                                    ?>
-                                                                    &#9744;
-                                                                    <?php
+                                                            if($this->request->params['action'] == 'vieworder'  || $this->request->params['action']== 'view') {
+                                                                if(isset($deval_detail) && $deval_detail->transmission_auto_shift =='2') {
+                                                                    echo '&#9745;';
+                                                                } else {
+                                                                    echo '&#9744;';
                                                                 } 
-                                                            }
-                                                            else
-                                                            {
-                                                                ?>                                      
-                                                                <input type="checkbox" id="transmission_auto_shift_2" name="transmission_auto_shift" value="2"/> 
-                                                                <?php
+                                                            } else {
+                                                                echo '<input type="checkbox" id="transmission_auto_shift_2" name="transmission_auto_shift" value="2"/>';
                                                             }
                                                          ?>
-															 Auto Shift </label>
+                                                            <?= $strings2["drivereval_autoshifta"]; ?> </label>
 														</div>
 														<div id="form_payment_error">
 														</div>
 													</div>
 												</div>
                                                 <div class="form-group row">
-													<label class="control-label col-md-3">Name of evaluator <span class="required">
+													<label class="control-label col-md-3"><?= $strings2["drivereval_nameofeval"]; ?> <span class="required">
 													* </span>
 													</label>
 													<div class="col-md-6">
@@ -114,7 +91,7 @@ if( isset($sub['de_at'])){  listfiles($sub['de_at'], "attachments/", "", false,3
 												</div>
                                                 
                                                 <div class="form-group row">
-													<label class="control-label col-md-3">Select <span class="required">
+													<label class="control-label col-md-3"><?= $strings["forms_select"]; ?> <span class="required">
 													* </span>
 													</label>
 													<div class="col-md-9">
@@ -143,7 +120,7 @@ if( isset($sub['de_at'])){  listfiles($sub['de_at'], "attachments/", "", false,3
                                                                 <?php
                                                             }
                                                          ?>
-															 Pre Hire </label>
+                                                                <?= $strings2["drivereval_prehireloc"]; ?> </label>
 															<label>
                                                             <?php 
                                                             if($this->request->params['action'] == 'vieworder'  || $this->request->params['action']== 'view')
@@ -168,7 +145,7 @@ if( isset($sub['de_at'])){  listfiles($sub['de_at'], "attachments/", "", false,3
                                                                 <?php
                                                             }
                                                          ?>
-															 Post Accident </label>
+                                                                <?= $strings2["drivereval_postaccide"]; ?> </label>
 														</div>
 														<div class="checkbox-list col-md-3 nopad">
 															<label>
@@ -195,7 +172,7 @@ if( isset($sub['de_at'])){  listfiles($sub['de_at'], "attachments/", "", false,3
                                                                 <?php
                                                             }
                                                          ?>
-															 Post Injury </label>
+                                                                <?= $strings2["drivereval_postinjury"]; ?> </label>
 															<label>
                                                             <?php 
                                                             if($this->request->params['action'] == 'vieworder'  || $this->request->params['action']== 'view')
@@ -220,7 +197,7 @@ if( isset($sub['de_at'])){  listfiles($sub['de_at'], "attachments/", "", false,3
                                                                 <?php
                                                             }
                                                          ?>
-															 Post Training </label>
+                                                                <?= $strings2["drivereval_posttraini"]; ?> </label>
 														</div>
                                                         <div class="checkbox-list col-md-3 nopad">
 															<label>
@@ -247,7 +224,7 @@ if( isset($sub['de_at'])){  listfiles($sub['de_at'], "attachments/", "", false,3
                                                                 <?php
                                                             }
                                                          ?>
-															 Annual </label>
+                                                                <?= $strings2["drivereval_annualannu"]; ?> </label>
 															<label>
                                                             <?php 
                                                             if($this->request->params['action'] == 'vieworder'  || $this->request->params['action']== 'view')
@@ -272,7 +249,7 @@ if( isset($sub['de_at'])){  listfiles($sub['de_at'], "attachments/", "", false,3
                                                                 <?php
                                                             }
                                                          ?>
-															 Skill Verification </label>
+                                                                <?= $strings2["drivereval_skillverif"]; ?> </label>
 														</div>
 													</div>
 												</div>
@@ -283,7 +260,7 @@ if( isset($sub['de_at'])){  listfiles($sub['de_at'], "attachments/", "", false,3
                                                     <div class="col-md-6">
                                                         <div class="portlet box blue">
                                                             <div class="portlet-title">
-                                                                <div class="caption"><strong>Pre-trip Inspection:</strong> Fails to check the following</div>
+                                                                <div class="caption"><strong><?= $strings2["drivereval_pretripins"]; ?>:</strong> <?= $strings2["drivereval_failstoche"]; ?></div>
                                                             </div>
                                                             
                                                             <div class="portlet-body" id="firstcheck">
@@ -312,7 +289,7 @@ if( isset($sub['de_at'])){  listfiles($sub['de_at'], "attachments/", "", false,3
                                                                 <?php
                                                             }
                                                          ?>
-        															 Fuel tank </label>
+                                                                        <?= $strings2["drivereval_fueltankrs"]; ?> </label>
         															<label>
                                                                     <?php 
                                                             if($this->request->params['action'] == 'vieworder'  || $this->request->params['action']== 'view')
@@ -337,7 +314,7 @@ if( isset($sub['de_at'])){  listfiles($sub['de_at'], "attachments/", "", false,3
                                                                 <?php
                                                             }
                                                          ?>
-        															 All Gauges </label>
+                                                                        <?= $strings2["drivereval_allgaugest"]; ?> </label>
                                                                     <label>
                                                                     <?php 
                                                             if($this->request->params['action'] == 'vieworder'  || $this->request->params['action']== 'view')
@@ -362,7 +339,7 @@ if( isset($sub['de_at'])){  listfiles($sub['de_at'], "attachments/", "", false,3
                                                                 <?php
                                                             }
                                                          ?>
-        															 Audible Air Leaks </label>
+                                                                        <?= $strings2["drivereval_audibleair"]; ?> </label>
         															<label>
                                                                     <?php 
                                                             if($this->request->params['action'] == 'vieworder'  || $this->request->params['action']== 'view')
@@ -387,7 +364,7 @@ if( isset($sub['de_at'])){  listfiles($sub['de_at'], "attachments/", "", false,3
                                                                 <?php
                                                             }
                                                          ?>
-        															 Wheels Tires </label>
+                                                                        <?= $strings2["drivereval_wheelstire"]; ?>  </label>
                                                                     <label>
                                                                     <?php 
                                                             if($this->request->params['action'] == 'vieworder'  || $this->request->params['action']== 'view')
@@ -412,7 +389,7 @@ if( isset($sub['de_at'])){  listfiles($sub['de_at'], "attachments/", "", false,3
                                                                 <?php
                                                             }
                                                          ?>
-        															 Trailer Brakes </label>
+                                                                        <?= $strings2["drivereval_trailerbra"]; ?> </label>
                                                                     <label>
                                                                     <?php 
                                                             if($this->request->params['action'] == 'vieworder'  || $this->request->params['action']== 'view')
@@ -437,7 +414,7 @@ if( isset($sub['de_at'])){  listfiles($sub['de_at'], "attachments/", "", false,3
                                                                 <?php
                                                             }
                                                          ?>
-        															 Trailer Airlines </label>
+                                                                        <?= $strings2["drivereval_trailerair"]; ?> </label>
                                                                     <label>
                                                                     <?php 
                                                             if($this->request->params['action'] == 'vieworder'  || $this->request->params['action']== 'view')
@@ -462,7 +439,7 @@ if( isset($sub['de_at'])){  listfiles($sub['de_at'], "attachments/", "", false,3
                                                                 <?php
                                                             }
                                                          ?>
-        															 Inspect 5th Wheel </label>
+                                                                        <?= $strings2["drivereval_inspectthw"]; ?> </label>
                                                                     <label>
                                                                     <?php 
                                                             if($this->request->params['action'] == 'vieworder'  || $this->request->params['action']== 'view')
@@ -487,7 +464,7 @@ if( isset($sub['de_at'])){  listfiles($sub['de_at'], "attachments/", "", false,3
                                                                 <?php
                                                             }
                                                          ?>
-        															 Cold Check </label>
+                                                                        <?= $strings2["drivereval_coldcheckv"]; ?> </label>
 
                                                                     <label>
                                                                     <?php 
@@ -513,7 +490,7 @@ if( isset($sub['de_at'])){  listfiles($sub['de_at'], "attachments/", "", false,3
                                                                 <?php
                                                             }
                                                          ?>
-        															 Seat and Mirror set up </label></div>
+                                                                        <?= $strings2["drivereval_seatandmir"]; ?> </label></div>
                                                                 <div class="col-md-6">
         															<label>
                                                                     <?php 
@@ -539,7 +516,7 @@ if( isset($sub['de_at'])){  listfiles($sub['de_at'], "attachments/", "", false,3
                                                                 <?php
                                                             }
                                                          ?>
-        															 Coupling&nbsp; &nbsp; &nbsp; &nbsp;</label>
+                                                                        <?= $strings2["drivereval_couplingac"]; ?>&nbsp; &nbsp; &nbsp; &nbsp;</label>
 
         															<label>
                                                                     <?php 
@@ -565,7 +542,7 @@ if( isset($sub['de_at'])){  listfiles($sub['de_at'], "attachments/", "", false,3
                                                                 <?php
                                                             }
                                                          ?>
-        															 Lights/ABS Lamps </label>
+                                                                        <?= $strings2["drivereval_lightsabsl"]; ?> </label>
                                                                     <label>
                                                                     <?php 
                                                             if($this->request->params['action'] == 'vieworder'  || $this->request->params['action']== 'view')
@@ -590,7 +567,7 @@ if( isset($sub['de_at'])){  listfiles($sub['de_at'], "attachments/", "", false,3
                                                                 <?php
                                                             }
                                                          ?>
-        															 Annual Inspection Stickers </label>
+                                                                        <?= $strings2["drivereval_annualinsp"]; ?> </label>
                                                                     <label>
                                                                     <?php 
                                                             if($this->request->params['action'] == 'vieworder'  || $this->request->params['action']== 'view')
@@ -615,7 +592,7 @@ if( isset($sub['de_at'])){  listfiles($sub['de_at'], "attachments/", "", false,3
                                                                 <?php
                                                             }
                                                          ?>
-        															 In cab air brake checks </label>
+                                                                        <?= $strings2["drivereval_incabairbr"]; ?> </label>
                                                                     <label>
                                                                     <?php 
                                                             if($this->request->params['action'] == 'vieworder'  || $this->request->params['action']== 'view')
@@ -640,7 +617,7 @@ if( isset($sub['de_at'])){  listfiles($sub['de_at'], "attachments/", "", false,3
                                                                 <?php
                                                             }
                                                          ?>
-        															 Landing Gear </label>
+                                                                        <?= $strings2["drivereval_landinggea"]; ?> </label>
                                                                     <label>
                                                                     <?php 
                                                             if($this->request->params['action'] == 'vieworder'  || $this->request->params['action']== 'view')
@@ -665,7 +642,7 @@ if( isset($sub['de_at'])){  listfiles($sub['de_at'], "attachments/", "", false,3
                                                                 <?php
                                                             }
                                                          ?>
-        															 Emergency exit </label>
+                                                                        <?= $strings2["drivereval_emergencye"]; ?> </label>
                                                                     <label>
                                                                     <?php 
                                                             if($this->request->params['action'] == 'vieworder'  || $this->request->params['action']== 'view')
@@ -690,7 +667,7 @@ if( isset($sub['de_at'])){  listfiles($sub['de_at'], "attachments/", "", false,3
                                                                 <?php
                                                             }
                                                          ?>
-                                                                         Paperwork </label>
+                                                                        <?= $strings2["drivereval_paperworkp"]; ?> </label>
                                                                 </div>
                                                                 <div class="clearfix"></div>
                                                                 <input class="form-control" type="hidden" name="total1" id="total1" <?php if(!$did){?>value="0"<?php }?> />
@@ -699,13 +676,13 @@ if( isset($sub['de_at'])){  listfiles($sub['de_at'], "attachments/", "", false,3
 
                                                             <div class="portlet box blue">
                                                                 <div class="portlet-title">
-                                                                    <div class="caption"><strong>Cornering:</strong></div>
+                                                                    <div class="caption"><strong><?= $strings2["drivereval_corneringv"]; ?>:</strong></div>
                                                                 </div>
 
                                                                 <div class="portlet-body">
                                                                     <div>
                                                                         <div class="col-md-12">
-                                                                            Signaling: not used / late / not cancelled
+                                                                            <?= $strings2["drivereval_signalings"]; ?>
                                                                         </div>
                                                                         <div class="col-md-12 radio-list">
                                                                             <label class="radio-inline">2
@@ -814,7 +791,7 @@ if( isset($sub['de_at'])){  listfiles($sub['de_at'], "attachments/", "", false,3
 
                                                                     <div>
                                                                         <div class="col-md-12">
-                                                                            Speed:  too fast / too slow/momentum
+                                                                            <?= $strings2["drivereval_speedvites"]; ?>
                                                                         </div>
                                                                         <div class="col-md-12 radio-list">
                                                                             <label class="radio-inline">2
@@ -923,7 +900,7 @@ if( isset($sub['de_at'])){  listfiles($sub['de_at'], "attachments/", "", false,3
 
                                                                     <div>
                                                                         <div class="col-md-12">
-                                                                            Fails to get into proper:   lane / late / position
+                                                                            <?= $strings2["drivereval_failstoget"]; ?>
                                                                         </div>
                                                                         <div class="col-md-12 radio-list">
                                                                             <label class="radio-inline">2
@@ -1032,7 +1009,7 @@ if( isset($sub['de_at'])){  listfiles($sub['de_at'], "attachments/", "", false,3
 
                                                                     <div>
                                                                         <div class="col-md-12">
-                                                                            Proper set up for turn
+                                                                            <?= $strings2["drivereval_propersetu"]; ?>
                                                                         </div>
                                                                         <div class="col-md-12 radio-list">
                                                                             <label class="radio-inline">2
@@ -1141,7 +1118,7 @@ if( isset($sub['de_at'])){  listfiles($sub['de_at'], "attachments/", "", false,3
 
                                                                     <div>
                                                                         <div class="col-md-12">
-                                                                            Turns too: wide / cuts corner / jumps curb
+                                                                            <?= $strings2["drivereval_turns"]; ?>
                                                                         </div>
                                                                         <div class="col-md-12 radio-list">
                                                                             <label class="radio-inline">2
@@ -1250,7 +1227,7 @@ if( isset($sub['de_at'])){  listfiles($sub['de_at'], "attachments/", "", false,3
 
                                                                     <div>
                                                                         <div class="col-md-12">
-                                                                            Use of wrong lane / impede traffic
+                                                                            <?= $strings2["drivereval_useofwrong"]; ?>
                                                                         </div>
                                                                         <div class="col-md-12 radio-list">
                                                                             <label class="radio-inline">2
@@ -1362,13 +1339,13 @@ if( isset($sub['de_at'])){  listfiles($sub['de_at'], "attachments/", "", false,3
                                                             </div>
                                                         <div class="portlet box blue">
                                                             <div class="portlet-title">
-                                                                <div class="caption"><strong>Shifting:</strong> Fails to perform the following</div>
+                                                                <div class="caption"><strong><?= $strings2["drivereval_shifting"]; ?>:</strong> <?= $strings2["drivereval_failstoper"]; ?></div>
                                                             </div>
 
                                                             <div class="portlet-body">
                                                                 <div>
                                                                     <div class="col-md-12">
-                                                                        Smooth take off's
+                                                                        <?= $strings2["drivereval_smoothtake"]; ?>
                                                                     </div>
                                                                     <div class="col-md-12 radio-list">
                                                                         <label class="radio-inline">1
@@ -1477,7 +1454,7 @@ if( isset($sub['de_at'])){  listfiles($sub['de_at'], "attachments/", "", false,3
 
                                                                 <div>
                                                                     <div class="col-md-12">
-                                                                        Proper gear selection
+                                                                        <?= $strings2["drivereval_propergear"]; ?>
                                                                     </div>
                                                                     <div class="col-md-12 radio-list">
                                                                         <label class="radio-inline">1
@@ -1587,7 +1564,7 @@ if( isset($sub['de_at'])){  listfiles($sub['de_at'], "attachments/", "", false,3
 
                                                                 <div>
                                                                     <div class="col-md-12">
-                                                                        Proper clutching
+                                                                        <?= $strings2["drivereval_properclut"]; ?>
                                                                     </div>
                                                                     <div class="col-md-12 radio-list">
                                                                         <label class="radio-inline">1
@@ -1696,7 +1673,7 @@ if( isset($sub['de_at'])){  listfiles($sub['de_at'], "attachments/", "", false,3
 
                                                                 <div>
                                                                     <div class="col-md-12">
-                                                                        Gear recovery
+                                                                        <?= $strings2["drivereval_gearrecove"]; ?>
                                                                     </div>
                                                                     <div class="col-md-12 radio-list">
                                                                         <label class="radio-inline">1
@@ -1805,7 +1782,7 @@ if( isset($sub['de_at'])){  listfiles($sub['de_at'], "attachments/", "", false,3
 
                                                                 <div>
                                                                     <div class="col-md-12">
-                                                                        Up/down shifting
+                                                                        <?= $strings2["drivereval_updownshif"]; ?>
                                                                     </div>
                                                                     <div class="col-md-12 radio-list">
                                                                         <label class="radio-inline">1
@@ -1920,13 +1897,13 @@ if( isset($sub['de_at'])){  listfiles($sub['de_at'], "attachments/", "", false,3
                                                     <div class="col-md-6">
                                                         <div class="portlet box blue">
                                                             <div class="portlet-title">
-                                                                <div class="caption"><strong>Driving:</strong></div>
+                                                                <div class="caption"><strong><?= $strings2["drivereval_driving"]; ?>:</strong></div>
                                                             </div>
                                                             
                                                             <div class="portlet-body" id="secondcheck">
                                                                 <div>
                                                                     <div class="col-md-12">
-            															Follows too closely 
+                                                                        <?= $strings2["drivereval_followstoo"]; ?>
                                                                     </div>
                                                                         <div class="col-md-12 radio-list">
 					                                                   <label class="radio-inline">2
@@ -2035,7 +2012,7 @@ if( isset($sub['de_at'])){  listfiles($sub['de_at'], "attachments/", "", false,3
                                                                 
                                                                 <div>
                                                                     <div class="col-md-12">
-            															Improper choice of Lane 
+                                                                        <?= $strings2["drivereval_improperch"]; ?>
                                                                     </div>
                                                                     <div class="col-md-12 radio-list">
 					                                                   <label class="radio-inline">2
@@ -2144,7 +2121,7 @@ if( isset($sub['de_at'])){  listfiles($sub['de_at'], "attachments/", "", false,3
                                                                 
                                                                 <div>
                                                                     <div class="col-md-12">
-            															Fails to use mirrors properly 
+                                                                        <?= $strings2["drivereval_failstouse"]; ?>
                                                                     </div>
                                                                     <div class="col-md-12 radio-list">
 					                                                   <label class="radio-inline">2
@@ -2253,7 +2230,7 @@ if( isset($sub['de_at'])){  listfiles($sub['de_at'], "attachments/", "", false,3
                                                                 
                                                                 <div>
                                                                     <div class="col-md-12">
-            															Signal: wrong / late / not used / not cancelled
+                                                                        <?= $strings2["drivereval_signal"]; ?>
                                                                     </div>
                                                                     <div class="col-md-12 radio-list">
 					                                                   <label class="radio-inline">2
@@ -2362,7 +2339,7 @@ if( isset($sub['de_at'])){  listfiles($sub['de_at'], "attachments/", "", false,3
                                                                 
                                                                 <div>
                                                                     <div class="col-md-12">
-            															Fails to use caution at R.R. Xing	
+                                                                        <?= $strings2["drivereval_failstous2"]; ?>
                                                                     </div>
                                                                     <div class="col-md-12 radio-list">
 					                                                   <label class="radio-inline">2
@@ -2471,7 +2448,7 @@ if( isset($sub['de_at'])){  listfiles($sub['de_at'], "attachments/", "", false,3
                                                                 
                                                                  <div>
                                                                     <div class="col-md-12">
-            															Speed: too fast / too slow  	
+                                                                        <?= $strings2["drivereval_speed"]; ?>
                                                                     </div>
                                                                     <div class="col-md-12 radio-list">
 					                                                   <label class="radio-inline">
@@ -2584,7 +2561,7 @@ if( isset($sub['de_at'])){  listfiles($sub['de_at'], "attachments/", "", false,3
                                                                 
                                                                 <div>
                                                                     <div class="col-md-12">
-            															Incorrect use of: clutch / brakes		
+                                                                        <?= $strings2["drivereval_incorrectu"]; ?>
                                                                     </div>
                                                                     <div class="col-md-12 radio-list">
 					                                                   <label class="radio-inline">
@@ -2697,7 +2674,7 @@ if( isset($sub['de_at'])){  listfiles($sub['de_at'], "attachments/", "", false,3
                                                                 
                                                                 <div>
                                                                     <div class="col-md-12">
-            															Accelerator / gears / steering		
+                                                                        <?= $strings2["drivereval_accelerato"]; ?>
                                                                     </div>
                                                                     <div class="col-md-12 radio-list">
 					                                                   <label class="radio-inline">
@@ -2810,7 +2787,7 @@ if( isset($sub['de_at'])){  listfiles($sub['de_at'], "attachments/", "", false,3
                                                                 
                                                                 <div>
                                                                     <div class="col-md-12">
-            															Incorrect observation skills	
+                                                                        <?= $strings2["drivereval_incorrecto"]; ?>
                                                                     </div>
                                                                     <div class="col-md-12 radio-list">
 					                                                   <label class="radio-inline">
@@ -2923,7 +2900,7 @@ if( isset($sub['de_at'])){  listfiles($sub['de_at'], "attachments/", "", false,3
                                                                 
                                                                 <div>
                                                                     <div class="col-md-12">
-            															Doesn't respond to instruction	
+                                                                        <?= $strings2["drivereval_doesntresp"]; ?>
                                                                     </div>
                                                                     <div class="col-md-12 radio-list">
 					                                                   <label class="radio-inline">
@@ -3038,13 +3015,13 @@ if( isset($sub['de_at'])){  listfiles($sub['de_at'], "attachments/", "", false,3
                                                         </div>
                                                         <div class="portlet box blue">
                                                             <div class="portlet-title">
-                                                                <div class="caption"><strong>Backing:</strong> sight side / blind side | <em>Fails to</em></div>
+                                                                <div class="caption"><strong><?= $strings2["drivereval_backing"]; ?>:</strong> <?= $strings2["drivereval_sightsideb"]; ?> | <em><?= $strings2["drivereval_sightsidec"]; ?></em></div>
                                                             </div>
 
                                                             <div class="portlet-body">
                                                                 <div>
                                                                     <div class="col-md-12">
-                                                                        Uses proper set up
+                                                                        <?= $strings2["drivereval_usesproper"]; ?>
                                                                     </div>
                                                                     <div class="col-md-12 radio-list">
                                                                         <label class="radio-inline">
@@ -3079,7 +3056,7 @@ if( isset($sub['de_at'])){  listfiles($sub['de_at'], "attachments/", "", false,3
 
                                                                 <div>
                                                                     <div class="col-md-12">
-                                                                        Check vehicle path before / while backing
+                                                                        <?= $strings2["drivereval_checkvehic"]; ?>
                                                                     </div>
                                                                     <div class="col-md-12 radio-list">
                                                                         <label class="radio-inline">
@@ -3140,7 +3117,7 @@ if( isset($sub['de_at'])){  listfiles($sub['de_at'], "attachments/", "", false,3
 
                                                                 <div>
                                                                     <div class="col-md-12">
-                                                                        Use of 4 way flashers / city horn
+                                                                        <?= $strings2["drivereval_useofwayfl"]; ?>
                                                                     </div>
                                                                     <div class="col-md-12 radio-list">
                                                                         <label class="radio-inline">
@@ -3201,7 +3178,7 @@ if( isset($sub['de_at'])){  listfiles($sub['de_at'], "attachments/", "", false,3
 
                                                                 <div>
                                                                     <div class="col-md-12">
-                                                                        Shows certainty while steering
+                                                                        <?= $strings2["drivereval_showscerta"]; ?>
                                                                     </div>
                                                                     <div class="col-md-12 radio-list">
                                                                         <label class="radio-inline">
@@ -3262,7 +3239,7 @@ if( isset($sub['de_at'])){  listfiles($sub['de_at'], "attachments/", "", false,3
 
                                                                 <div>
                                                                     <div class="col-md-12">
-                                                                        Continually uses mirrors
+                                                                        <?= $strings2["drivereval_continuall"]; ?>
                                                                     </div>
                                                                     <div class="col-md-12 radio-list">
                                                                         <label class="radio-inline">
@@ -3322,7 +3299,7 @@ if( isset($sub['de_at'])){  listfiles($sub['de_at'], "attachments/", "", false,3
                                                                 </div>
                                                                 <div>
                                                                     <div class="col-md-12">
-                                                                        Maintain proper speed
+                                                                        <?= $strings2["drivereval_maintainpr"]; ?>
                                                                     </div>
                                                                     <div class="col-md-12 radio-list">
                                                                         <label class="radio-inline">
@@ -3356,7 +3333,7 @@ if( isset($sub['de_at'])){  listfiles($sub['de_at'], "attachments/", "", false,3
                                                                 </div>
                                                                 <div>
                                                                     <div class="col-md-12">
-                                                                        Complete in a reasonable time and fashion
+                                                                        <?= $strings2["drivereval_completein"]; ?>
                                                                     </div>
                                                                     <div class="col-md-12 radio-list">
                                                                         <label class="radio-inline">
@@ -3408,34 +3385,34 @@ if( isset($sub['de_at'])){  listfiles($sub['de_at'], "attachments/", "", false,3
                                                 <div class="form-group row">
 
 													<div class="col-md-4">
-                                                        <label class="control-label">Total score<span class="required"> * </span> </label>
+                                                        <label class="control-label"><?= $strings2["drivereval_totalscore"]; ?><span class="required"> * </span> </label>
 														<input type="text" id="total_score" class="form-control" name="total_score"  <?php if(!$did){?>value="0"<?php }?>/>
 														
 													</div>
 
 
 													<div class="col-md-4">
-                                                        <label class="control-label">Auto shift<span class="required"> * </span> </label>
+                                                        <label class="control-label"><?= $strings2["drivereval_autoshifta"]; ?><span class="required"> * </span> </label>
 														<input type="text" class="form-control" name="auto_shift"/>
 														
 													</div>
 
 													<div class="col-md-4">
-                                                        <label class="control-label">Manual<span class="required"> * </span></label>
+                                                        <label class="control-label"><?= $strings2["drivereval_manualshif"]; ?><span class="required"> * </span></label>
 														<input type="text" class="form-control" name="manual"/>
 														
 													</div>
 												</div>
 
                                                 <div class="form-group row">
-													<p class="center col-md-12 fontRed">The total score must be less than 20 to pass for Autoshift and 24 for Manual. Pass for a full trainee is less than 30</p>
+													<p class="center col-md-12 fontRed"><?= $strings2["drivereval_thetotalsc"]; ?></p>
 												</div>
                                                 <hr />
                                                 <div class="form-group row">
-                                                    <p class="control-label col-md-6"><strong>Summary</strong></p>
+                                                    <p class="control-label col-md-6"><strong><?= $strings2["drivereval_summary"]; ?></strong></p>
                                                 </div>
                                                 <div class="form-group row">
-													<label class="control-label col-md-4">Recommended for hire <span class="required">
+													<label class="control-label col-md-4"><?= $strings2["drivereval_rec4hire"]; ?> <span class="required">
 													* </span>
 													</label>
 													<div class="col-md-8 radio-list">
@@ -3464,7 +3441,7 @@ if( isset($sub['de_at'])){  listfiles($sub['de_at'], "attachments/", "", false,3
                                                                                 <?php
                                                                             }
                                                                              ?> 
-															 Yes </label>
+															 <?= $strings["dashboard_affirmative"]; ?> </label>
                                                             </div>
                                                             <div class="checkbox-list col-md-3 nopad">
 															<label class="radio-inline">
@@ -3490,15 +3467,15 @@ if( isset($sub['de_at'])){  listfiles($sub['de_at'], "attachments/", "", false,3
                                                                                 <input type="radio" id="recommended_for_hire_2" name="recommended_for_hire" value="0"/> 
                                                                                 <?php
                                                                             }
-                                                                             ?> 
-                                                             No </label>
+                                                                             ?>
+                                                                <?= $strings["dashboard_negative"]; ?> </label>
 														</div>
 														<div id="form_payment_error">
 														</div>
 													</div>
 												</div>
                                                 <div class="form-group row">
-													<label class="control-label col-md-4">Recommended as Full trainee <span class="required">
+													<label class="control-label col-md-4"><?= $strings2["drivereval_rec4full"]; ?> <span class="required">
 													* </span>
 													</label>
 													<div class="col-md-8 radio-list">
@@ -3526,8 +3503,8 @@ if( isset($sub['de_at'])){  listfiles($sub['de_at'], "attachments/", "", false,3
                                                                                 <input type="radio" id="recommended_full_trainee_1" name="recommended_full_trainee" value="1"/> 
                                                                                 <?php
                                                                             }
-                                                                             ?> 
-															 Yes </label></div><div class="checkbox-list col-md-3 nopad">
+                                                                             ?>
+                                                                <?= $strings["dashboard_affirmative"]; ?> </label></div><div class="checkbox-list col-md-3 nopad">
 															<label class="radio-inline">
                                                              <?php 
                                                                             if($this->request->params['action'] == 'vieworder'  || $this->request->params['action']== 'view')
@@ -3551,15 +3528,15 @@ if( isset($sub['de_at'])){  listfiles($sub['de_at'], "attachments/", "", false,3
                                                                                 <input type="radio" id="recommended_full_trainee_0" name="recommended_full_trainee" value="0"/> 
                                                                                 <?php
                                                                             }
-                                                                             ?> 
-															 No </label>
+                                                                             ?>
+                                                                <?= $strings["dashboard_negative"]; ?> </label>
 														</div>
 														<div id="form_payment_error">
 														</div>
 													</div>
 												</div>
                                                 <div class="form-group row">
-													<label class="control-label col-md-4">Recommended fire hire with trainee <span class="required">
+													<label class="control-label col-md-4"><?= $strings2["drivereval_rec4fire"]; ?> <span class="required">
 													* </span>
 													</label>
 													<div class="col-md-8 radio-list">
@@ -3587,8 +3564,8 @@ if( isset($sub['de_at'])){  listfiles($sub['de_at'], "attachments/", "", false,3
                                                                                 <input type="radio" id="recommended_fire_hire_trainee_1" name="recommended_fire_hire_trainee" value="1"/> 
                                                                                 <?php
                                                                             }
-                                                                             ?> 
-															 Yes </label></div><div class="checkbox-list col-md-3 nopad">
+                                                                             ?>
+                                                                <?= $strings["dashboard_affirmative"]; ?> </label></div><div class="checkbox-list col-md-3 nopad">
 															<label class="radio-inline">
                                                              <?php 
                                                                             if($this->request->params['action'] == 'vieworder'  || $this->request->params['action']== 'view')
@@ -3612,8 +3589,8 @@ if( isset($sub['de_at'])){  listfiles($sub['de_at'], "attachments/", "", false,3
                                                                                 <input type="radio" id="recommended_fire_hire_trainee_0" name="recommended_fire_hire_trainee" value="0"/> 
                                                                                 <?php
                                                                             }
-                                                                             ?> 
-															 No </label>
+                                                                             ?>
+                                                                <?= $strings["dashboard_negative"]; ?> </label>
 														</div>
 														<div id="form_payment_error">
 														</div>
@@ -3621,7 +3598,7 @@ if( isset($sub['de_at'])){  listfiles($sub['de_at'], "attachments/", "", false,3
 												</div>
                                                 
                                                 <div class="form-group row">
-													<label class="control-label col-md-4">Comments <span class="required">
+													<label class="control-label col-md-4"><?= $strings2["drivereval_comments"]; ?> <span class="required">
 													* </span>
 													</label>
 													<div class="col-md-6">
@@ -3639,10 +3616,10 @@ if( isset($sub['de_at'])){  listfiles($sub['de_at'], "attachments/", "", false,3
                                                         
                                                         if(!count($sub['de_at'])){?>
                                                 <div class="form-group row" style="display:block;margin-top:5px; margin-bottom: 5px;">
-                                                    <label class="control-label col-md-4">Attach File: </label>
+                                                    <label class="control-label col-md-4"><?= $strings2["file_attachfile"]; ?>: </label>
                                                     <div class="col-md-8">
                                                     <input type="hidden" class="road1" name="attach_doc[]" />
-                                                    <a href="#" id="road1" class="btn btn-primary">Browse</a> <span class="uploaded"></span>
+                                                    <a href="#" id="road1" class="btn btn-primary"><?= $strings["forms_browse"]; ?></a> <span class="uploaded"></span>
                                                     </div>
                                                    </div>
                                                    <?php }?>
@@ -3657,7 +3634,7 @@ if( isset($sub['de_at'])){  listfiles($sub['de_at'], "attachments/", "", false,3
                                                                 if($pa->attachment){
                                                                 $at++;
                                                                 ?>
-                                                                <div class="del_append_driver"><label class="control-label col-md-4">Attach File: </label><div class="col-md-6 pad_bot"><input type="hidden" class="road<?php echo $at;?>" name="attach_doc[]" value="<?php echo $pa->attachment;?>" /><a href="#" id="road<?php echo $at;?>" class="btn btn-primary">Browse</a> <?php if($at>1){?><a  href="javascript:void(0);" class="btn btn-danger" id="delete_driver_doc" onclick="$(this).parent().remove();">Delete</a><?php }?>
+                                                                <div class="del_append_driver"><label class="control-label col-md-4">Attach File: </label><div class="col-md-6 pad_bot"><input type="hidden" class="road<?php echo $at;?>" name="attach_doc[]" value="<?php echo $pa->attachment;?>" /><a href="#" id="road<?php echo $at;?>" class="btn btn-primary"><?= $strings["forms_browse"]; ?></a> <?php if($at>1){?><a  href="javascript:void(0);" class="btn btn-danger" id="delete_driver_doc" onclick="$(this).parent().remove();">Delete</a><?php }?>
                                                                 <span class="uploaded"><?php echo $pa->attachment;?>  <?php if($pa->attachment){$ext_arr = explode('.',$pa->attachment);$ext = end($ext_arr);$ext = strtolower($ext);if(in_array($ext,$img_ext)){?><img src="<?php echo $this->request->webroot;?>attachments/<?php echo $pa->attachment;?>" style="max-width:120px;" /><?php }elseif(in_array($ext,$doc_ext)){?><a class="dl" href="<?php echo $this->request->webroot;?>attachments/<?php echo $pa->attachment;?>">Download</a><?php }else{?><br />
                                                                 <video width="320" height="240" controls>
                                                                 <source src="<?php echo $this->request->webroot;?>attachments/<?php echo $pa->attachment;?>" type="video/mp4">
@@ -3684,7 +3661,7 @@ if( isset($sub['de_at'])){  listfiles($sub['de_at'], "attachments/", "", false,3
                                                     <div class="col-md-4">
                                                     </div>
                                                     <div class="col-md-8">
-                                                        <a href="javascript:void(0);" class="btn btn-success" id="add_more_driver_doc">Add More</a>
+                                                        <a href="javascript:void(0);" class="btn btn-success" id="add_more_driver_doc"><?= $strings["forms_addmore"]; ?></a>
                                                     </div>
                                                   </div>
                                                   </div>
@@ -3741,7 +3718,7 @@ if( isset($sub['de_at'])){  listfiles($sub['de_at'], "attachments/", "", false,3
        $('#add_more_driver_doc').click(function(){
         var count = $('#more_driver_doc').data('road');
         $('#more_driver_doc').data('road',parseInt(count)+1);
-        $('#more_driver_doc').append('<div class="del_append_driver"><label class="control-label col-md-4"></label><div class="col-md-8 pad_bot"><input type="hidden" class="road'+$('#more_driver_doc').data('road')+'" name="attach_doc[]" /><a href="#" id="road'+$('#more_driver_doc').data('road')+'" class="btn btn-primary">Browse</a> <a  href="javascript:void(0);" class="btn btn-danger" id="delete_driver_doc">Delete</a> <span class="uploaded"></span></div></div><div class="clearfix"></div>');
+        $('#more_driver_doc').append('<div class="del_append_driver"><label class="control-label col-md-4"></label><div class="col-md-8 pad_bot"><input type="hidden" class="road'+$('#more_driver_doc').data('road')+'" name="attach_doc[]" /><a href="#" id="road'+$('#more_driver_doc').data('road')+'" class="btn btn-primary"><?= addslashes($strings["forms_browse"]); ?></a> <a  href="javascript:void(0);" class="btn btn-danger" id="delete_driver_doc">Delete</a> <span class="uploaded"></span></div></div><div class="clearfix"></div>');
         fileUpload('road'+$('#more_driver_doc').data('road'));
        }); 
        

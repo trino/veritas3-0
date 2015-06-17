@@ -1,8 +1,13 @@
-<?php if ($this->request->session()->read('debug')) {echo "<span style ='color:red;'>subpages/documents/mee_attach.php #INC203</span>";} 
- if(isset($_GET['order_id']))
- $dii = $_GET['order_id'];
- else
- $dii = $did;
+<?php
+    if ($this->request->session()->read('debug')) {echo "<span style ='color:red;'>subpages/documents/mee_attach.php #INC203</span>";}
+     if(isset($_GET['order_id'])) {
+         $dii = $_GET['order_id'];
+     } else {
+         $dii = $did;
+     }
+    copy2globals($strings, array("forms_browse", "dashboard_delete"));
+    $strings2 = CacheTranslations($language, array("upload_%"), $settings, False);
+    copy2globals($strings2, array("upload_none"));
 ?>
 
 <form id="form_tab15">
@@ -29,8 +34,9 @@
 
         function makeBrowseButton($ID, $Display, $Remove = true, $text=""){
             if(!$Display){$Display=' style="display: none;"';} else{ $Display="";}
-            echo '<div' . $Display . '><span><a style="margin-bottom:5px;" href="javascript:void(0)" class="btn btn-primary additional" id="mee_att_' . $ID . '">Browse</a>&nbsp';
-            if ($Remove) { echo '<a style="margin-bottom:5px;" class="btn btn-danger" href="javascript:void(0);" onclick="$(this).parent().parent().remove();">Remove</a>';}        echo '<span class="uploaded"></span></span><input type="hidden" name="mee_attachments[]" class="mee_att_' . $ID . '" /> ' . $text . '</div>';
+            echo '<div' . $Display . '><span><a style="margin-bottom:5px;" href="javascript:void(0)" class="btn btn-primary additional" id="mee_att_' . $ID . '">';
+            echo $GLOBALS["forms_browse"] . '</a>&nbsp';
+            if ($Remove) { echo '<a style="margin-bottom:5px;" class="btn btn-danger" href="javascript:void(0);" onclick="$(this).parent().parent().remove();">' . $GLOBALS["dashboard_delete"] . '</a>';}        echo '<span class="uploaded"></span></span><input type="hidden" name="mee_attachments[]" class="mee_att_' . $ID . '" /> ' . $text . '</div>';
         }
 
         if (!isset($mee_att)) {$mee_att = array();}
@@ -56,7 +62,7 @@
 
         function nodocs($docsprinted){
             if($docsprinted==0){
-                echo '<div class="form-group row"><div class="col-md-12" align="center">No attachments</div></div>';
+                echo '<div class="form-group row"><div class="col-md-12" align="center">' . $GLOBALS["upload_none"] . '</div></div>';
             }
         }
 
@@ -149,10 +155,10 @@
                     ?>
                     <div>
                                     <span><a style="margin-bottom:5px;" href="javascript:void(0)"
-                                             class="btn btn-primary additional" id="mee_att_<?php echo $cc;?>">Browse</a>&nbsp;
+                                             class="btn btn-primary additional" id="mee_att_<?php echo $cc;?>"><?= $GLOBALS["forms_browse"]; ?></a>&nbsp;
                                              <?php if(!$rem){?>
                                           <a style="margin-bottom:5px;" class="btn btn-danger" href="javascript:void(0);"
-                                             onclick="$(this).parent().parent().remove();">Remove</a>
+                                             onclick="$(this).parent().parent().remove();"><?= $GLOBALS["dashboard_delete"]; ?></a>
                                              <?php }?>
                                           <span class="uploaded nohide">
                                                 <a class="dl nohide"
@@ -173,19 +179,19 @@
     <div class="col-md-12">
         <hr/>
 
-        <strong>Please upload the appropriate document or item to the associated field below. </strong><br><br>
+        <strong><?= $strings2["upload_pleaseuplo"]; ?></strong><br><br>
         <ul>
-            <li>Note that two pieces of Identification will be mandatory for any order including a Premium Criminal Record Check.</li>
-            <li>British Columbia, Quebec and Saskatchewan require specific consent for Driver’s Record Abstracts and CVOR’s to be obtained. Please download the form found below and upload the signed consent in the proper field displayed below.</li>
-            <li>ISB Canada is unable to obtain <strong>Alberta</strong> Driver’s Record Abstracts and CVOR’s. Please upload driver provided documentation for <strong>Alberta or any other province (optional)</strong> if you wish to include these products in the driver’s Score Card.</li>
-            <li>We will contact you if a requested product has further requirements.</li>
+            <li><?= $strings2["upload_notethattw"]; ?></li>
+            <li><?= $strings2["upload_britishcol"]; ?></li>
+            <li><?= $strings2["upload_isbcanadai"]; ?></li>
+            <li><?= $strings2["upload_wewillcont"]; ?></li>
         </ul>
 
         <?php
             $id_count = 7;
-            $mand = "Optional";//isrequired($forms, $AttachmentName, $DriversProvince, $attachments = 0){
-            if (count($attachment) > 0 || isrequired($forms, "id_piece", $DriverProvince, 0, True)) { $mand = "Mandatory"; }
-            echo '<HR></div><div class="col-md-12"><strong>The following form(s) are ' . $mand . '</strong></div>';
+            $mand = "upload_optional";//isrequired($forms, $AttachmentName, $DriversProvince, $attachments = 0){
+            if (count($attachment) > 0 || isrequired($forms, "id_piece", $DriverProvince, 0, True)) { $mand = "upload_mandatory"; }
+            echo '<HR></div><div class="col-md-12"><strong>' . $strings2[$mand] . '</strong></div>';
 
             //printdivrequired needs to know if there are attachments BEFORE hand
             $morecount=0;
@@ -198,7 +204,7 @@
             $docsprinted=0;
             if (printdivrequired($action, $forms, "attachments", $DriverProvince, count($attachment))) {
             $doit = false;
-            $description = '<strong>Step 2: </strong>Upload Abstract Consent Form (Above)';
+            $description = $strings2["upload_step2"];//Upload Abstract Consent Form (Above)
             $docsprinted+=1;
             echo '</DIV>';
             if ($action == "View" || $action == "Vieworder") {
@@ -214,7 +220,7 @@
                 $doit = true;
                 if (count($attachment) > 0) {
                     echo '<div class="form-group row"><div class="col-md-12">';
-                    echo '<label class="control-label col-md-4" align="right"><strong>Step 1: </strong>Please download, fill out, and upload: </label><div class="col-md-8">';
+                    echo '<label class="control-label col-md-4" align="right">' . $strings2["upload_step1"] . ': </label><div class="col-md-8">';
                     foreach ($attachment as $name => $file) {//C:\wamp\www\veritas3-0\webroot\ http://localhost/veritas3-0/webroot/img/certificates/certificate71-1.pdf
                         echo '<A class="btn btn-info" DOWNLOAD="' . $name . '.pdf" HREF="' . $this->request->webroot . 'webroot/img/pdfs/' . $file . '">';
                         echo '<i class="fa fa-floppy-o"></i> ' . $name . ' </A> ';
@@ -239,7 +245,7 @@
             $get_prov = $this->requestAction('/profiles/getDriverProv/'.$_GET['driver']);
             if(($this->request->params['action'] == 'addorder' || $this->request->params['action'] == 'add') && !$mee_more && in_array($get_prov,$lprov))
             {
-                makeBrowseButton(7, true, false, '<FONT COLOR="RED">* Required</FONT>');
+                makeBrowseButton(7, true, false, '<FONT COLOR="RED">* ' . $strings2["upload_required"] . '</FONT>');
             }
             if($did  && in_array($get_prov,$lprov)){
                 
@@ -260,7 +266,7 @@
 <?php } ?>
                 <div class="clearfix"></div>
                 <!--p>&nbsp;</p>
-                <div class="col-md-4">&nbsp;</div><div class="col-md-8"><a href="javascript:void(0);" id="mee_att_more" class="btn btn-success">Add More</a></div-->
+                <div class="col-md-4">&nbsp;</div><div class="col-md-8"><a href="javascript:void(0);" id="mee_att_more" class="btn btn-success"><?= $strings["forms_addmore"]; ?></a></div-->
             </div>
         </div>
 
@@ -284,9 +290,9 @@
         if (printdivrequired($action, $forms, "id_piece", $DriverProvince, getattachment($mee_att, "id_piece1") . getattachment($mee_att, "id_piece2"))) {
             $docsprinted+=1; ?>
             <div class="col-md-12" style="margin-top: 15px;">
-                <div class="col-md-4" align="right">Upload 2 pieces of ID: </div>
+                <div class="col-md-4" align="right"><?= $strings2["upload_uploadpiec"]; ?>: </div>
                 <div class="col-md-8">
-                    <span><a href="javascript:void(0)" class="btn btn-primary" id="mee_att_1">Browse</a>
+                    <span><a href="javascript:void(0)" class="btn btn-primary" id="mee_att_1"><?= $strings["forms_browse"]; ?></a>
                     &nbsp;<span class="uploaded">
 
                     <?php
@@ -296,7 +302,7 @@
 
 
                </span>
-               <span><a href="javascript:void(0)" class="btn btn-primary" id="mee_att_2">Browse</a>&nbsp;<span class="uploaded"><?php if (isset($mee_att['attach_doc']) && $mee_att['attach_doc']->id_piece2) { ?>
+               <span><a href="javascript:void(0)" class="btn btn-primary" id="mee_att_2"><?= $strings["forms_browse"]; ?></a>&nbsp;<span class="uploaded"><?php if (isset($mee_att['attach_doc']) && $mee_att['attach_doc']->id_piece2) { ?>
                 <a class="dl"
                    href="<?php echo $this->request->webroot; ?>documents/download/<?php echo $mee_att['attach_doc']->id_piece2; ?>"><?php echo printanattachment($mee_att['attach_doc']->id_piece2); ?></a><?php } ?></span>
                </span>
@@ -322,16 +328,16 @@
 
         nodocs($docsprinted);
         if ($mand != "Optional") {
-            echo '<div class="col-md-12"><hr></div><div class="col-md-12"><strong>The following form(s) are Optional</strong><br><br></div>';
+            echo '<div class="col-md-12"><hr></div><div class="col-md-12"><strong>' . $strings2["upload_optional"] . '</strong><br><br></div>';
         }
 
         $docsprinted=0;
         if (printdivrequired($action, $forms, "driver_record_abstract", $DriverProvince, getattachment($mee_att, "driver_record_abstract"))) {
             $docsprinted+=1;?>
             <div class="col-md-12">
-                 <div class="col-md-4" align="right">Upload Driver's Record Abstract: </div>
+                 <div class="col-md-4" align="right"><?= $strings2["upload_uploaddriv"]; ?>: </div>
                 <div class="col-md-8">
-                    <span><a href="javascript:void(0)" class="btn btn-primary" id="mee_att_3">Browse</a>&nbsp;<span class="uploaded"><?php if (isset($mee_att['attach_doc']) && $mee_att['attach_doc']->driver_record_abstract) { ?>
+                    <span><a href="javascript:void(0)" class="btn btn-primary" id="mee_att_3"><?= $strings["forms_browse"]; ?></a>&nbsp;<span class="uploaded"><?php if (isset($mee_att['attach_doc']) && $mee_att['attach_doc']->driver_record_abstract) { ?>
                 <a class="dl"
                    href="<?php echo $this->request->webroot; ?>documents/download/<?php echo $mee_att['attach_doc']->driver_record_abstract; ?>"><?php echo  printanattachment($mee_att['attach_doc']->driver_record_abstract); ?></a><?php } ?></span></span>
                     <input type="hidden" name="driver_record_abstract" class="mee_att_3" value="<?php if (isset($mee_att['attach_doc']) && $mee_att['attach_doc']->driver_record_abstract) {
@@ -352,10 +358,10 @@
         if (printdivrequired($action, $forms, "cvor", $DriverProvince, getattachment($mee_att, 'cvor'))) {
             $docsprinted+=1;?>
             <div class="col-md-12">
-            <div class="col-md-4" align="right">Upload CVOR:  </div>
+            <div class="col-md-4" align="right"><?= $strings2["upload_uploadcvor"]; ?>:  </div>
                 <!--label class="control-label col-md-4">Upload CVOR: </label-->
                 <div class="col-md-8">
-                    <span><a href="javascript:void(0)" class="btn btn-primary" id="mee_att_4">Browse</a>&nbsp;<span class="uploaded"><?php if (isset($mee_att['attach_doc']) && $mee_att['attach_doc']->cvor) { ?>
+                    <span><a href="javascript:void(0)" class="btn btn-primary" id="mee_att_4"><?= $strings["forms_browse"]; ?></a>&nbsp;<span class="uploaded"><?php if (isset($mee_att['attach_doc']) && $mee_att['attach_doc']->cvor) { ?>
                 <a class="dl"
                    href="<?php echo $this->request->webroot; ?>documents/download/<?php echo $mee_att['attach_doc']->cvor; ?>"><?php echo printanattachment($mee_att['attach_doc']->cvor); ?></a><?php } ?></span></span>
                     <input type="hidden" name="cvor" class="mee_att_4" value="<?php if (isset($mee_att['attach_doc']) && $mee_att['attach_doc']->cvor) {
@@ -377,9 +383,9 @@
             $docsprinted+=1;
             ?>
             <div class="col-md-12">
-            <div class="col-md-4" align="right">Upload Resume: </div>
+            <div class="col-md-4" align="right"><?= $strings2["upload_uploadresu"]; ?>: </div>
                 <div class="col-md-8">
-                    <span><a href="javascript:void(0)" class="btn btn-primary" id="mee_att_5">Browse</a>&nbsp;<span class="uploaded"><?php if (isset($mee_att['attach_doc']) && $mee_att['attach_doc']->resume) { ?>
+                    <span><a href="javascript:void(0)" class="btn btn-primary" id="mee_att_5"><?= $strings["forms_browse"]; ?></a>&nbsp;<span class="uploaded"><?php if (isset($mee_att['attach_doc']) && $mee_att['attach_doc']->resume) { ?>
                 <a class="dl"
                    href="<?php echo $this->request->webroot; ?>documents/download/<?php echo $mee_att['attach_doc']->resume; ?>"><?php echo printanattachment($mee_att['attach_doc']->resume); ?></a><?php } ?></span></span>
                     <input type="hidden" name="resume" class="mee_att_5" value="<?php if (isset($mee_att['attach_doc']) && $mee_att['attach_doc']->resume) {
@@ -401,9 +407,9 @@
             $docsprinted+=1;
             ?>
             <div class="col-md-12">
-            <div class="col-md-4" align="right">Upload Certifications: </div>
+            <div class="col-md-4" align="right"><?= $strings2["upload_uploadcert"]; ?>: </div>
                 <div class="col-md-8">
-                    <span><a href="javascript:void(0)" class="btn btn-primary" id="mee_att_6">Browse</a>&nbsp;<span class="uploaded"><?php if (isset($mee_att['attach_doc']) && $mee_att['attach_doc']->certification) { ?>
+                    <span><a href="javascript:void(0)" class="btn btn-primary" id="mee_att_6"><?= $strings["forms_browse"]; ?></a>&nbsp;<span class="uploaded"><?php if (isset($mee_att['attach_doc']) && $mee_att['attach_doc']->certification) { ?>
                 <a class="dl"
                    href="<?php echo $this->request->webroot; ?>documents/download/<?php echo $mee_att['attach_doc']->certification; ?>"><?php echo printanattachment($mee_att['attach_doc']->certification); ?></a><?php } ?></span></span>
                     <input type="hidden" name="certification" class="mee_att_6" value="<?php if (isset($mee_att['attach_doc']) && $mee_att['attach_doc']->certification) {
@@ -449,10 +455,10 @@
                                 if ($h<>7){ ?>
                                     <div style="display: none;">
                             <span><a style="margin-bottom:5px;" href="javascript:void(0)" class="btn btn-primary additional"
-                                     id="mee_att_<?php echo $h; ?>">Browse</a>&nbsp;<a style="margin-bottom:5px;"
+                                     id="mee_att_<?php echo $h; ?>"><?= $strings["forms_browse"]; ?></a>&nbsp;<a style="margin-bottom:5px;"
                                                                                        class="btn btn-danger"
                                                                                        href="javascript:void(0);"
-                                                                                       onclick="$(this).parent().parent().remove();">Remove</a> <span
+                                                                                       onclick="$(this).parent().parent().remove();"><?= $GLOBALS["dashboard_delete"]; ?></a> <span
                                     class="uploaded"></span></span>
                                         <input type="hidden" name="mee_attachments[]" class="mee_att_<?php echo $h; ?>"/>
                                     </div>
@@ -463,7 +469,7 @@
                     ?>
 
                 </div>
-                <a href="javascript:void(0)" class="btn btn-success" id="mee_att_more">Add More</a>
+                <a href="javascript:void(0)" class="btn btn-success" id="mee_att_more"><?= $strings["forms_addmore"]; ?></a>
             </div>
         </div>
     </div>
@@ -498,7 +504,7 @@
             }
             else
             {
-                var strings = '<div><span><a style="margin-bottom:5px;" href="javascript:void(0)" class="btn btn-primary additional" id="mee_att_'+last_id+'">Browse</a>&nbsp;<a style="margin-bottom:5px;" class="btn btn-danger" href="javascript:void(0);" onclick="$(this).parent().parent().remove();">Remove</a>&nbsp;<span class="uploaded"></span></span>'+
+                var strings = '<div><span><a style="margin-bottom:5px;" href="javascript:void(0)" class="btn btn-primary additional" id="mee_att_'+last_id+'"><?= addslashes($strings["forms_browse"]); ?></a>&nbsp;<a style="margin-bottom:5px;" class="btn btn-danger" href="javascript:void(0);" onclick="$(this).parent().parent().remove();"><?= $GLOBALS["dashboard_delete"]; ?></a>&nbsp;<span class="uploaded"></span></span>'+
                     '<input type="hidden" name="mee_attachments[]" class="mee_att_'+last_id+'" /></div>';
 
                 $('.mee_more').append(strings);

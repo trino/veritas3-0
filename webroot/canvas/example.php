@@ -1,4 +1,8 @@
-        <?php $_GET['num']=1;?>
+<?php
+if ($this->request->session()->read('debug')) {
+    echo "<span style ='color:red;'>subpages/canvas/example.php #INC???</span>";
+}
+$_GET['num']=1;?>
 		<meta name="viewport" content="width=device-width;initial-scale=1.0;maximum-scale=1.0;user-scalable=0;"/>
 		<meta name="apple-mobile-web-app-capable" content="yes"/>
 		<meta name="apple-mobile-web-app-status-bar-style" content="black"/>
@@ -47,7 +51,7 @@
     		<div class="links" style="margin-top: 5px;">
     			<strong style="display: none;">OPTIONS:</strong>
     			<a href="#" onclick='addImage();' style="display: none;">Add Image</a>
-    			<a href="javascript:void(0)" onclick='$("#test<?php echo $_GET['num'];?>").data("jqScribble").clear();'>Clear</a> 			
+    			<a href="javascript:void(0)" onclick='$("#test<?php echo $_GET['num'];?>").data("jqScribble").clear();'><?= $strings["forms_clear"]; ?></a>
                 <br /><br />
                 
     		</div>

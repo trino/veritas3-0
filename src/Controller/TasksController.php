@@ -1,15 +1,11 @@
 <?php 
 namespace App\Controller;
 
-
 use App\Controller\AppController;
 use Cake\Event\Event;
 use Cake\Controller\Controller;
 use Cake\ORM\TableRegistry;
 use Cake\I18n\Time;
-
-
-
 
 class TasksController extends AppController {
 
@@ -63,21 +59,24 @@ class TasksController extends AppController {
  * @return void
  */
 	public function add() {
-	   if(isset($_POST['submit']))
-       {
+	   if(isset($_POST['submit'])) {
         date_default_timezone_set('Canada/Central');
            $offset = -$_POST['offset'];
-            foreach($_POST as $k=>$v)
-            {
+
+           $language = $this->request->session()->read('Profile.language');
+           $_POST["date"] = $this->Trans->translatedate($language, $_POST["date"]);
+
+            foreach($_POST as $k=>$v) {
                 if($k == 'date') {
                     $k = $this->offsettime($k, $offset);
                     $arr[$k] = date('Y-m-d H:i:s', strtotime(trim(str_replace("-", " ", $v)) . ":00"));
                 } else if ($k != "timezoneoffset" && $k != "offset" && $k != "submit") {
-                    $arr[$k] = $v;
+                    $arr[$k] = addslashes($v);
                 }
             }
             $events = TableRegistry::get('Events');
     	    $arr['user_id'] = $this->request->session()->read('Profile.id');
+
             $event = $events->newEntity($arr);
     
             if ($events->save($event)) {

@@ -41,13 +41,14 @@
     }
 
     
-        $forms_arr = explode(',', $forms);
-    
+    $forms_arr = explode(',', $forms);
     $p = $forms_arr;
+
+    $strings2 = CacheTranslations($language, array("score_products", "confirm_%", "forms_signplease"), $settings, False);
+//confirm_confirm
 ?>
 <div class="note note-success">
-    <h3 class="block col-md-12">MEE Order: <?php if(isset($_GET['order_type']))echo $_GET['order_type'];?> Confirmation
-    </h3>
+    <h3 class="block col-md-12"><?= ProcessVariables($language, $strings2["confirm_confirm"], array("name" => getpost("order_type"))); ?></h3>
 
     <div class="clearfix"></div>
 </div>
@@ -58,7 +59,7 @@
 <div class="row col-md-4">
 
     <div class="form-group">
-        <label class="control-label col-md-12">Submitted By: </label>
+        <label class="control-label col-md-12"><?= $strings["documents_submittedby"]; ?>: </label>
 
         <div class="col-md-12">
             <input disabled="disabled" type="text" class="form-control" name="conf_recruiter_name"
@@ -67,7 +68,7 @@
         </div>
 
 
-        <label class="control-label col-md-12" style="margin-top: 5px;">Submitted For: </label>
+        <label class="control-label col-md-12" style="margin-top: 5px;"><?= $strings["documents_submittedfor"]; ?>: </label>
 
         <div class="col-md-12">
             <input type="text" class="form-control" name="conf_driver_name" id="conf_driver_name"
@@ -75,7 +76,7 @@
         </div>
 
 
-        <label class="control-label col-md-12" style="margin-top: 5px;">Date/Time: </label>
+        <label class="control-label col-md-12" style="margin-top: 5px;"><?= $strings["forms_datetime"]; ?>: </label>
 
         <div class="col-md-12">
             <input disabled="disabled" type="text" class="form-control date-picker" name="conf_date" id="conf_date"
@@ -90,7 +91,7 @@
 </div>
 
 
-<div class="col-md-4"><label>Products Ordered:</label>
+<div class="col-md-4"><label><?= $strings2["score_products"]; ?>:</label>
 
     <div class="clearfix"></div>
 
@@ -130,10 +131,11 @@
         }
 
         if ($p) {
+            $fieldname = getFieldname("title", $language);
             foreach ($p as $pp) {
                 $title = $this->requestAction('/orders/getProductTitle/' . $pp);
                 if (is_object($title)) {
-                    $lineclass = PrintLine($lineclass, $title->title, "prem_nat", $pp);
+                    $lineclass = PrintLine($lineclass, $title->$fieldname . $Trans, "prem_nat", $pp);
                 }
             }
         }
@@ -156,7 +158,7 @@
 <div class="row col-md-12">
     <div class="form-group">
 
-        <label class="control-label col-md-12">Please sign here to confirm your submission:</label>
+        <label class="control-label col-md-12"><?= $strings2["forms_signplease"]; ?>:</label>
         <input type="hidden" name="recruiter_signature" id="recruiter_signature"
                value="<?php if (isset($modal->recruiter_signature) && $modal->recruiter_signature) echo $modal->recruiter_signature; ?>"/>
 

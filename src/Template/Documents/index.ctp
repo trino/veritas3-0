@@ -192,7 +192,7 @@
 
                                 <?php if ($settings->mee == "MEE") { ?>
 
-                                <th title="Order ID" style="max-width: 58px;"><?= $this->Paginator->sort('oid', $strings["documents_orderid"]); ?></th>
+                                <th title="Order ID" ><?= $this->Paginator->sort('oid', $strings["documents_orderid"]); ?></th>
                                 <?php } ?>
 
                                 <th><?= $this->Paginator->sort('user_id', $strings["documents_submittedby"]); ?><?php if (isset($end)) echo $end;
@@ -406,14 +406,14 @@
                                 if (isset($_GET['draft'])) {
                                     ?>
                                     <a href="<?php echo $this->request->webroot; ?>documents/delete/<?php echo $docs->id; ?>/draft"
-                                       onclick="return confirm('<?= ProcessVariables($language, $strings["dashboard_confirmdelete"], array("name" => $docname)); ?>');"
+                                       onclick="return confirm('<?= ProcessVariables($language, $strings["dashboard_confirmdelete"], array("name" => $docname), true); ?>');"
                                        class="<?= btnclass("DELETE") ?>"><?= $strings["dashboard_delete"]; ?></a>
 
                                 <?php
                                 } else {
                                     ?>
                                     <a href="<?php echo $this->request->webroot; ?>documents/delete/<?php echo $docs->id; ?>"
-                                       onclick="return confirm('<?= ProcessVariables($language, $strings["dashboard_confirmdelete"], array("name" => $docname)); ?>');"
+                                       onclick="return confirm('<?= ProcessVariables($language, $strings["dashboard_confirmdelete"], array("name" => $docname), true); ?>');"
                                        class="<?= btnclass("DELETE") ?>"><?= $strings["dashboard_delete"]; ?></a>
                                 <?php
                                 }

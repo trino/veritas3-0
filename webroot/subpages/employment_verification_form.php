@@ -1,3 +1,9 @@
+<?php
+if($this->request->session()->read('debug')){ echo "<span style ='color:red;'>subpages/employment_verification_form.php #INC???</span>"; }
+$strings2 = CacheTranslations($language, array("verifs_%"), $settings, False);
+die("Don't use this one.");
+?>
+
 <div class="portlet box blue ">
 						<div class="portlet-title">
 							<div class="caption">
@@ -102,10 +108,11 @@
 </div>
 
 <script>
+    <?php loadstringsJS(array_merge($strings, $strings2)); ?>
 $(function(){
   $("#add_more").click(function(){
     $.ajax({
-       url:"<?php echo $this->request->webroot;?>subpages/past_employer.php",
+       url:"<?php echo $this->request->webroot;?>subpages/past_employer.php?language=" + language + "&debug=<?= $this->request->session()->read('debug'); ?>",
        success:function(res){
         $("#more_div").append(res);
        }

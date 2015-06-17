@@ -1,21 +1,24 @@
 <?php
-    if ($this->request->session()->read('debug')) {
-        echo "<span style ='color:red;'>subpages/documents/forview.php #INC144</span>";
-    }
-    include_once 'subpages/filelist.php';
-    $includeabove = true;
+if ($this->request->session()->read('debug')) {
+    echo "<span style ='color:red;'>subpages/documents/forview.php #INC144</span>";
+}
+include_once 'subpages/filelist.php';
+$includeabove = true;
 
 function dotest($Number, $pp, $order, $duplicate_log, $ins2 = "ins"){
     $ins = $ins2 . "_" . $Number ;
     if ($pp == $Number) {
         if ($order->$ins == "Duplicate Order") {
-            $duplicate_log = "Duplicate Order";
+            $duplicate_log = $GLOBALS["score_dupe"];
         } else {
             get_color($order->$ins);
         }
     }
     return $duplicate_log;
 }
+
+$strings2 = CacheTranslations($language, array("score_%", "orders_noresults", "file_download", "documents_pending"), $settings, False);
+copy2globals($strings2, array("score_dupe", "score_submitted", "score_submitted", "score_notattached", "score_pass", "score_discrepancies", "score_coachingrequired", "score_verified", "score_potentialtosucceed", "score_idealcandidate", "score_incomplete", "score_satisfactory", "score_requiresattention", "score_duplicateorder"));
 ?>
 <style>
     @media print {
@@ -35,248 +38,275 @@ function dotest($Number, $pp, $order, $duplicate_log, $ins2 = "ins"){
 
 </style>
 <?php
+{
+
+    //include('subpages/documents/forprofileview.php');
+    function PrintLine($lineclass, $name, $cnt, $doc_id, $c_id, $o_id, $webroot, $bypass = false,$sub=0)
     {
-
-        //include('subpages/documents/forprofileview.php');
-        function PrintLine($lineclass, $name, $cnt, $doc_id, $c_id, $o_id, $webroot, $bypass = false,$sub=0)
-        {
-            if ($cnt > 0 || $bypass) {
-                echo '<tr class="' . $lineclass . '" role="row"><td><span class="icon-notebook"></span></td>';
-                if ($doc_id) {
-                    echo '<td><a href="' . $webroot . 'documents/view/' . $c_id . '/' . $doc_id . '/?order_id=' . $o_id . '&type='.$sub.'">' . $name . '</a></td>';
-                } else
-                    echo '<td>' . $name . '</td>';
-                echo '<td class="actions">';
-                if ($cnt > 0) {
-                    echo '<span style="" class="label label-sm label-success">Submitted</span>';
-                } else { //should not occur
-                    echo '<span style="" class="label label-sm label-danger">Skipped</span>';
-                }
-                echo "</TD></TR>";
-                if ($lineclass == "even") {
-                    $lineclass = "odd";
-                } else {
-                    $lineclass = "even";
-                }
+        if ($cnt > 0 || $bypass) {
+            echo '<tr class="' . $lineclass . '" role="row"><td><span class="icon-notebook"></span></td>';
+            if ($doc_id) {
+                echo '<td><a href="' . $webroot . 'documents/view/' . $c_id . '/' . $doc_id . '/?order_id=' . $o_id . '&type='.$sub.'">' . $name . '</a></td>';
+            } else
+                echo '<td>' . $name . '</td>';
+            echo '<td class="actions">';
+            if ($cnt > 0) {
+                echo '<span style="" class="label label-sm label-success">' . $GLOBALS["score_submitted"] . '</span>';
+            } else { //should not occur
+                echo '<span style="" class="label label-sm label-danger">' . $GLOBALS["score_skipped"] . '</span>';
             }
-            return $lineclass;
+            echo "</TD></TR>";
+            if ($lineclass == "even") {
+                $lineclass = "odd";
+            } else {
+                $lineclass = "even";
+            }
         }
+        return $lineclass;
+    }
 
-        function get_color($result_string)
-        {
+    function get_colorOLD($result_string) {
+        $return_color = '<span  class="label label-sm label-warning" style="float:right;padding:4px;">' . $result_string . '</span>';
 
-            $return_color = '<span  class="label label-sm label-warning" style="float:right;padding:4px;">' . $result_string . '</span>';
+        switch (strtoupper(trim($result_string))) {
+            case 'NOT ATTACHED':
+                echo $return_color = '<span  class="label label-sm label-danger" style="float:right;padding:4px;">' . $result_string . '</span>';;
+                break;
+            case 'PASS':
+                echo $return_color = '<span  class="label label-sm label-success" style="float:right;padding:4px;">' . $result_string . '</span>';
+                break;
+            case 'DISCREPANCIES':
+                echo $return_color = '<span  class="label label-sm label-warning" style="float:right;padding:4px;">' . $result_string . '</span>';
+                break;
+            case 'COACHING REQUIRED':
+                echo $return_color = '<span  class="label label-sm label-warning" style="float:right;padding:4px;">' . $result_string . '</span>';
+                break;
+            case 'VERIFIED':
+                echo $return_color = '<span  class="label label-sm label-success" style="float:right;padding:4px;">' . $result_string . '</span>';
+                break;
+            case 'POTENTIAL TO SUCCEED':
+                echo $return_color = '<span  class="label label-sm label-warning" style="float:right;padding:4px;">' . $result_string . '</span>';
+                break;
+            case 'IDEAL CANDIDATE':
+                echo $return_color = '<span  class="label label-sm label-success" style="float:right;padding:4px;">' . $result_string . '</span>';
+                break;
+            case 'INCOMPLETE':
+                echo $return_color = '<span  class="label label-sm label-danger" style="float:right;padding:4px;">' . $result_string . '</span>';
+                break;
+            case 'SATISFACTORY':
+                echo $return_color = '<span  class="label label-sm label-warning" style="float:right;padding:4px;">' . $result_string . '</span>';
+                break;
+            case 'REQUIRES ATTENTION':
+                echo $return_color = '<span  class="label label-sm label-warning" style="float:right;padding:4px;">' . $result_string . '</span>';
+                break;
+            case 'DUPLICATE ORDER':
+                echo $return_color = '<span  class="label label-sm label-warning" style="float:right;padding:4px;">' . $result_string . '</span>';
+                break;
+        }
+    }
 
+    function get_color($result_string) {
+        //get_colorOLD($result_string);return;
+        $result_string = "score_" . str_replace(" ", "",strtolower($result_string));
+        if (isset($GLOBALS[$result_string])) {
+            $result_string=$GLOBALS[$result_string];
+            $color = "warning";
             switch (strtoupper(trim($result_string))) {
                 case 'NOT ATTACHED':
-                    echo $return_color = '<span  class="label label-sm label-danger" style="float:right;padding:4px;">' . $result_string . '</span>';;
+                    $color = 'danger';;
                     break;
                 case 'PASS':
-                    echo $return_color = '<span  class="label label-sm label-success" style="float:right;padding:4px;">' . $result_string . '</span>';
-                    break;
-                case 'DISCREPANCIES':
-                    echo $return_color = '<span  class="label label-sm label-warning" style="float:right;padding:4px;">' . $result_string . '</span>';
-                    break;
-                case 'COACHING REQUIRED':
-                    echo $return_color = '<span  class="label label-sm label-warning" style="float:right;padding:4px;">' . $result_string . '</span>';
+                    $color = 'success';
                     break;
                 case 'VERIFIED':
-                    echo $return_color = '<span  class="label label-sm label-success" style="float:right;padding:4px;">' . $result_string . '</span>';
-                    break;
-                case 'POTENTIAL TO SUCCEED':
-                    echo $return_color = '<span  class="label label-sm label-warning" style="float:right;padding:4px;">' . $result_string . '</span>';
+                    $color = 'success';
                     break;
                 case 'IDEAL CANDIDATE':
-                    echo $return_color = '<span  class="label label-sm label-success" style="float:right;padding:4px;">' . $result_string . '</span>';
+                    $color = 'success';
                     break;
                 case 'INCOMPLETE':
-                    echo $return_color = '<span  class="label label-sm label-danger" style="float:right;padding:4px;">' . $result_string . '</span>';
+                    $color = 'danger';
                     break;
-                case 'SATISFACTORY':
-                    echo $return_color = '<span  class="label label-sm label-warning" style="float:right;padding:4px;">' . $result_string . '</span>';
-                    break;
-                case 'REQUIRES ATTENTION':
-                    echo $return_color = '<span  class="label label-sm label-warning" style="float:right;padding:4px;">' . $result_string . '</span>';
-                    break;
-                case 'DUPLICATE ORDER':
-                    echo $return_color = '<span  class="label label-sm label-warning" style="float:right;padding:4px;">' . $result_string . '</span>';
-                    break;
-
             }
+            if ($GLOBALS["language"] == "Debug") {$result_string .= " [Trans]";}
+            $return_color = '<span class="label label-sm label-' . $color . '" style="float:right;padding:4px;">' . $result_string . '</span>';
+            echo $return_color;
+            return $return_color;
         }
+    }
 
-        /*
-                function get_string_between($string, $start, $end)
-                {
-                    $string = " " . $string;
-                    $ini = strpos($string, $start);
-                    if ($ini == 0) return "";
-                    $ini += strlen($start);
-                    $len = strpos($string, $end, $ini) - $ini;
-                    return substr($string, $ini, $len);
-                }
-
-                function get_mee_results_binary($bright_planet_html_binary, $document_type)
-                {
-                    return (get_string_between(base64_decode($bright_planet_html_binary), $document_type, '</tr>'));
-                }
-        */
-
-        function return_link($pdi, $order_id)
-        {
-            if (file_exists("orders/order_" . $order_id . '/' . $pdi . '.pdf')) {
-                $link = "orders/order_" . $order_id . '/' . $pdi . '.pdf';
-                return $link;
-
-            } else if (file_exists("orders/order_" . $order_id . '/' . $pdi . '.html')) {
-                $link = "orders/order_" . $order_id . '/' . $pdi . '.html';
-                return $link;
-
-            } else if (file_exists("orders/order_" . $order_id . '/' . $pdi . '.txt')) {
-                $link = "orders/order_" . $order_id . '/' . $pdi . '.txt';
-                return $link;
-
+    /*
+            function get_string_between($string, $start, $end)
+            {
+                $string = " " . $string;
+                $ini = strpos($string, $start);
+                if ($ini == 0) return "";
+                $ini += strlen($start);
+                $len = strpos($string, $end, $ini) - $ini;
+                return substr($string, $ini, $len);
             }
-            return false;
+
+            function get_mee_results_binary($bright_planet_html_binary, $document_type)
+            {
+                return (get_string_between(base64_decode($bright_planet_html_binary), $document_type, '</tr>'));
+            }
+    */
+
+    function return_link($pdi, $order_id)
+    {
+        if (file_exists("orders/order_" . $order_id . '/' . $pdi . '.pdf')) {
+            $link = "orders/order_" . $order_id . '/' . $pdi . '.pdf';
+            return $link;
+
+        } else if (file_exists("orders/order_" . $order_id . '/' . $pdi . '.html')) {
+            $link = "orders/order_" . $order_id . '/' . $pdi . '.html';
+            return $link;
+
+        } else if (file_exists("orders/order_" . $order_id . '/' . $pdi . '.txt')) {
+            $link = "orders/order_" . $order_id . '/' . $pdi . '.txt';
+            return $link;
+
         }
+        return false;
+    }
 
-        /*
-                function create_files_from_binary($order_id, $pdi, $binary)
-                {
-                    $createfile_pdf = "orders/order_" . $order_id . '/' . $pdi . '.pdf';
-                    $createfile_html = "orders/order_" . $order_id . '/' . $pdi . 'html';
-                    $createfile_text = "orders/order_" . $order_id . '/' . $pdi . 'txt';
+    /*
+            function create_files_from_binary($order_id, $pdi, $binary)
+            {
+                $createfile_pdf = "orders/order_" . $order_id . '/' . $pdi . '.pdf';
+                $createfile_html = "orders/order_" . $order_id . '/' . $pdi . 'html';
+                $createfile_text = "orders/order_" . $order_id . '/' . $pdi . 'txt';
 
-                    if (!file_exists($createfile_pdf) && !file_exists($createfile_text) && !file_exists($createfile_html)) {
+                if (!file_exists($createfile_pdf) && !file_exists($createfile_text) && !file_exists($createfile_html)) {
 
-                        if (isset($binary) && $binary != "") {
-                            file_put_contents('unknown_file', base64_decode($binary));
-                            $finfo = finfo_open(FILEINFO_MIME_TYPE);
-                            $mime = finfo_file($finfo, 'unknown_file');
+                    if (isset($binary) && $binary != "") {
+                        file_put_contents('unknown_file', base64_decode($binary));
+                        $finfo = finfo_open(FILEINFO_MIME_TYPE);
+                        $mime = finfo_file($finfo, 'unknown_file');
 
-                            if ($mime == "application/pdf") {
-                                rename("unknown_file", "orders/order_" . $order_id . '/' . $pdi . '.pdf');
-                            } elseif ($mime == "text/html") {
-                                rename("unknown_file", "orders/order_" . $order_id . '/' . $pdi . '.html');
-                            } elseif ($mime == "text/plain") {
-                                rename("unknown_file", "orders/order_" . $order_id . '/' . $pdi . '.html');
-                            } else {
-                                rename("unknown_file", "orders/order_" . $order_id . '/' . $pdi . '.html');
-                            }
+                        if ($mime == "application/pdf") {
+                            rename("unknown_file", "orders/order_" . $order_id . '/' . $pdi . '.pdf');
+                        } elseif ($mime == "text/html") {
+                            rename("unknown_file", "orders/order_" . $order_id . '/' . $pdi . '.html');
+                        } elseif ($mime == "text/plain") {
+                            rename("unknown_file", "orders/order_" . $order_id . '/' . $pdi . '.html');
+                        } else {
+                            rename("unknown_file", "orders/order_" . $order_id . '/' . $pdi . '.html');
                         }
                     }
                 }
-        */
-        $counting = 0;
-        $drcl_d = $orders;
-        foreach ($drcl_d as $drcld) {
-            if (isset($order)) {
-                if (is_object($order)) {
-                    if ($order->draft == 0) {
-                        $counting++;
-                    }
+            }
+    */
+    $counting = 0;
+    $drcl_d = $orders;
+    foreach ($drcl_d as $drcld) {
+        if (isset($order)) {
+            if (is_object($order)) {
+                if ($order->draft == 0) {
+                    $counting++;
                 }
             }
         }
+    }
 
-        $k = 0;
-        foreach ($orders as $order) {
-            $forms = $order->forms;
+    $k = 0;
+    foreach ($orders as $order) {
+        $forms = $order->forms;
 
-            //  var_dump($forms);
-            if (!$forms) {
-                $forms_arr[0] = 1;
-                $forms_arr[1] = 2;
-                $forms_arr[2] = 3;
-                $forms_arr[3] = 4;
-                $forms_arr[4] = 5;
-                $forms_arr[5] = 6;
-                $forms_arr[6] = 7;
-                //$forms_arr[7] = 8;
-            } else {
-                $forms_arr = explode(',', $forms);
+        //  var_dump($forms);
+        if (!$forms) {
+            $forms_arr[0] = 1;
+            $forms_arr[1] = 2;
+            $forms_arr[2] = 3;
+            $forms_arr[3] = 4;
+            $forms_arr[4] = 5;
+            $forms_arr[5] = 6;
+            $forms_arr[6] = 7;
+            //$forms_arr[7] = 8;
+        } else {
+            $forms_arr = explode(',', $forms);
 
-            }
-            $p = $forms_arr;
-            // var_dump($p);
-            if ($order->draft == 0) {
-                $k++;
+        }
+        $p = $forms_arr;
+        // var_dump($p);
+        if ($order->draft == 0) {
+            $k++;
 
-                $settings = $this->requestAction('settings/get_settings');
-                $uploaded_by = $doc_comp->getUser($order->user_id);
+            $settings = $this->requestAction('settings/get_settings');
+            $uploaded_by = $doc_comp->getUser($order->user_id);
 
-                /*
-                if ($order->bright_planet_html_binary && $order->bright_planet_html_binary != "done") {
-                    create_files_from_binary($order->id, 'bright_planet_html', $order->bright_planet_html_binary);
+            /*
+            if ($order->bright_planet_html_binary && $order->bright_planet_html_binary != "done") {
+                create_files_from_binary($order->id, 'bright_planet_html', $order->bright_planet_html_binary);
 
-                    foreach ($p as $pp) {
-                        if ($pp == 1) {
-                            $sendit = strip_tags(trim(get_mee_results_binary($order->bright_planet_html_binary, "Driver's Record Abstract")));
-                            $this->requestAction('orders/save_bright_planet_grade/' . $order->id . '/ins_1/' . $sendit);
-                        } elseif ($pp == 77) {
-                            $sendit = strip_tags(trim(get_mee_results_binary($order->bright_planet_html_binary, "Pre-employment Screening Program Report")));
-                            $this->requestAction('orders/save_bright_planet_grade/' . $order->id . '/ins_77/' . $sendit);
-                        } elseif ($pp == 14) {
-                            $sendit = strip_tags(trim(get_mee_results_binary($order->bright_planet_html_binary, "CVOR")));
-                            $this->requestAction('orders/save_bright_planet_grade/' . $order->id . '/ins_14/' . $sendit);
-                        } elseif ($pp == 1603) {
-                            $sendit = strip_tags(trim(get_mee_results_binary($order->bright_planet_html_binary, "Premium National Criminal Record Check")));
-                            $this->requestAction('orders/save_bright_planet_grade/' . $order->id . '/ebs_1603/' . $sendit);
-                        } elseif ($pp == 1650) {
-                            $sendit = strip_tags(trim(get_mee_results_binary($order->bright_planet_html_binary, "Certifications")));
-                            $this->requestAction('orders/save_bright_planet_grade/' . $order->id . '/ebs_1650/' . $sendit);
-                        } elseif ($pp == 78) {
-                            $sendit = strip_tags(trim(get_mee_results_binary($order->bright_planet_html_binary, "TransClick")));
-                            $this->requestAction('orders/save_bright_planet_grade/' . $order->id . '/ins_78/' . $sendit);
-                        } elseif ($pp == 1627) {
-                            $sendit = strip_tags(trim(get_mee_results_binary($order->bright_planet_html_binary, "Letter Of Experience")));
-                            $this->requestAction('orders/save_bright_planet_grade/' . $order->id . '/ebs_1627/' . $sendit);
-                        } elseif ($pp == 72) {
-                            $sendit = strip_tags(trim(get_mee_results_binary($order->bright_planet_html_binary, "Letter Of Experience")));
-                            $this->requestAction('orders/save_bright_planet_grade/' . $order->id . '/ins_72/' . $sendit);
-                        }
-
+                foreach ($p as $pp) {
+                    if ($pp == 1) {
+                        $sendit = strip_tags(trim(get_mee_results_binary($order->bright_planet_html_binary, "Driver's Record Abstract")));
+                        $this->requestAction('orders/save_bright_planet_grade/' . $order->id . '/ins_1/' . $sendit);
+                    } elseif ($pp == 77) {
+                        $sendit = strip_tags(trim(get_mee_results_binary($order->bright_planet_html_binary, "Pre-employment Screening Program Report")));
+                        $this->requestAction('orders/save_bright_planet_grade/' . $order->id . '/ins_77/' . $sendit);
+                    } elseif ($pp == 14) {
+                        $sendit = strip_tags(trim(get_mee_results_binary($order->bright_planet_html_binary, "CVOR")));
+                        $this->requestAction('orders/save_bright_planet_grade/' . $order->id . '/ins_14/' . $sendit);
+                    } elseif ($pp == 1603) {
+                        $sendit = strip_tags(trim(get_mee_results_binary($order->bright_planet_html_binary, "Premium National Criminal Record Check")));
+                        $this->requestAction('orders/save_bright_planet_grade/' . $order->id . '/ebs_1603/' . $sendit);
+                    } elseif ($pp == 1650) {
+                        $sendit = strip_tags(trim(get_mee_results_binary($order->bright_planet_html_binary, "Certifications")));
+                        $this->requestAction('orders/save_bright_planet_grade/' . $order->id . '/ebs_1650/' . $sendit);
+                    } elseif ($pp == 78) {
+                        $sendit = strip_tags(trim(get_mee_results_binary($order->bright_planet_html_binary, "TransClick")));
+                        $this->requestAction('orders/save_bright_planet_grade/' . $order->id . '/ins_78/' . $sendit);
+                    } elseif ($pp == 1627) {
+                        $sendit = strip_tags(trim(get_mee_results_binary($order->bright_planet_html_binary, "Letter Of Experience")));
+                        $this->requestAction('orders/save_bright_planet_grade/' . $order->id . '/ebs_1627/' . $sendit);
+                    } elseif ($pp == 72) {
+                        $sendit = strip_tags(trim(get_mee_results_binary($order->bright_planet_html_binary, "Letter Of Experience")));
+                        $this->requestAction('orders/save_bright_planet_grade/' . $order->id . '/ins_72/' . $sendit);
                     }
-                    $this->requestAction('orders/save_bright_planet_grade/' . $order->id . '/bright_planet_html_binary/done');
+
                 }
+                $this->requestAction('orders/save_bright_planet_grade/' . $order->id . '/bright_planet_html_binary/done');
+            }
 
 
 
-                if ($order->ebs_1603_binary && $order->ebs_1603_binary != "done") {
-                    create_files_from_binary($order->id, '1603', $order->ebs_1603_binary);
-                    $this->requestAction('orders/save_bright_planet_grade/' . $order->id . '/ebs_1603_binary/done');
-                }
-                if ($order->ins_1_binary && $order->ins_1_binary != "done") {
-                    create_files_from_binary($order->id, '1', $order->ins_1_binary);
-                    $this->requestAction('orders/save_bright_planet_grade/' . $order->id . '/ins_1_binary/done');
-                }
-                if ($order->ins_14_binary && $order->ins_14_binary != "done") {
-                    create_files_from_binary($order->id, '14', $order->ins_14_binary);
-                    $this->requestAction('orders/save_bright_planet_grade/' . $order->id . '/ins_14_binary/done');
-                }
-                if ($order->ins_77_binary && $order->ins_77_binary != "done") {
-                    create_files_from_binary($order->id, '77', $order->ins_77_binary);
-                    $this->requestAction('orders/save_bright_planet_grade/' . $order->id . '/ins_77_binary/done');
-                }
-                if ($order->ins_78_binary && $order->ins_78_binary != "done") {
-                    create_files_from_binary($order->id, '78', $order->ins_78_binary);
-                    $this->requestAction('orders/save_bright_planet_grade/' . $order->id . '/ins_78_binary/done');
-                }
-                if ($order->ebs_1650_binary && $order->ebs_1650_binary != "done") {
-                    create_files_from_binary($order->id, '1650', $order->ebs_1650_binary);
-                    $this->requestAction('orders/save_bright_planet_grade/' . $order->id . '/ebs_1650_binary/done');
-                }
-                if ($order->ebs_1627_binary && $order->ebs_1627_binary != "done") {
-                    create_files_from_binary($order->id, '1627', $order->ebs_1627_binary);
-                    $this->requestAction('orders/save_bright_planet_grade/' . $order->id . '/ebs_1627_binary/done');
-                }
-                if ($order->ins_72_binary && $order->ins_72_binary != "done") {
-                    create_files_from_binary($order->id, '72', $order->ins_72_binary);
-                    $this->requestAction('orders/save_bright_planet_grade/' . $order->id . '/ins_72_binary/done');
-                }
+            if ($order->ebs_1603_binary && $order->ebs_1603_binary != "done") {
+                create_files_from_binary($order->id, '1603', $order->ebs_1603_binary);
+                $this->requestAction('orders/save_bright_planet_grade/' . $order->id . '/ebs_1603_binary/done');
+            }
+            if ($order->ins_1_binary && $order->ins_1_binary != "done") {
+                create_files_from_binary($order->id, '1', $order->ins_1_binary);
+                $this->requestAction('orders/save_bright_planet_grade/' . $order->id . '/ins_1_binary/done');
+            }
+            if ($order->ins_14_binary && $order->ins_14_binary != "done") {
+                create_files_from_binary($order->id, '14', $order->ins_14_binary);
+                $this->requestAction('orders/save_bright_planet_grade/' . $order->id . '/ins_14_binary/done');
+            }
+            if ($order->ins_77_binary && $order->ins_77_binary != "done") {
+                create_files_from_binary($order->id, '77', $order->ins_77_binary);
+                $this->requestAction('orders/save_bright_planet_grade/' . $order->id . '/ins_77_binary/done');
+            }
+            if ($order->ins_78_binary && $order->ins_78_binary != "done") {
+                create_files_from_binary($order->id, '78', $order->ins_78_binary);
+                $this->requestAction('orders/save_bright_planet_grade/' . $order->id . '/ins_78_binary/done');
+            }
+            if ($order->ebs_1650_binary && $order->ebs_1650_binary != "done") {
+                create_files_from_binary($order->id, '1650', $order->ebs_1650_binary);
+                $this->requestAction('orders/save_bright_planet_grade/' . $order->id . '/ebs_1650_binary/done');
+            }
+            if ($order->ebs_1627_binary && $order->ebs_1627_binary != "done") {
+                create_files_from_binary($order->id, '1627', $order->ebs_1627_binary);
+                $this->requestAction('orders/save_bright_planet_grade/' . $order->id . '/ebs_1627_binary/done');
+            }
+            if ($order->ins_72_binary && $order->ins_72_binary != "done") {
+                create_files_from_binary($order->id, '72', $order->ins_72_binary);
+                $this->requestAction('orders/save_bright_planet_grade/' . $order->id . '/ins_72_binary/done');
+            }
 
-                */
-                ?>
+            */
+            ?>
 
                 <!-- BEGIN PROFILE CONTENT -->
                 <div class="">
@@ -291,34 +321,34 @@ function dotest($Number, $pp, $order, $duplicate_log, $ins2 = "ins"){
                                     <div class="portlet-title">
                                         <div class="caption">
                                             <A name="<?php echo $order->created; ?>"/></A>
-                                            <i class="fa fa-folder-open-o"></i>Order Score Sheet
+                                            <i class="fa fa-folder-open-o"></i><?= $strings2["score_score"]; ?>
                                             - <?php echo $order->created; ?>
                                         </div>
 
                                             <a style="float:right; display:none;"
                                        href="<?php echo $this->request->webroot; ?>orders/vieworder/<?php echo $order->client_id; ?>/<?php echo $order->id; ?>?order_type=<?php echo $order->order_type;
-                if ($order->forms) {
-                    echo '?forms=' . $order->forms;
-                } ?>"
-                                       class="btn  small">View Order</a>
+            if ($order->forms) {
+                echo '?forms=' . $order->forms;
+            } ?>"
+                                       class="btn  small"><?= $strings2["score_view"]; ?></a>
                                     </div>
                                     <div class="portlet-body">
                                         <div oldclass="table-scrollable">
 
                                             <?php
-                if ($includeabove) {
-                    echo '<div class="col-sm-12">';
-                    printdocumentinfo($order->id, true, true);
-                    ?>
-                    <div style="float:right; margin-top: 10px;">
-                        <a href="#" class="btn btn-lg default yellow-stripe">
-                            Road Test Score </a><a href="#" class="btn btn-lg yellow">
-                            <i class="fa fa-bar-chart-o"></i> <?php if (isset($order->road_test[0]->total_score)) echo $order->road_test[0]->total_score; ?>
-                        </a></div></div>
+            if ($includeabove) {
+                echo '<div class="col-sm-12">';
+                printdocumentinfo($order->id, true, true);
+                ?>
+                <div style="float:right; margin-top: 10px;">
+                    <a href="#" class="btn btn-lg default yellow-stripe">
+                        <?= $strings2["score_road"]; ?> </a><a href="#" class="btn btn-lg yellow">
+                        <i class="fa fa-bar-chart-o"></i> <?php if (isset($order->road_test[0]->total_score)) echo $order->road_test[0]->total_score; ?>
+                    </a></div></div>
 
-                <?php } else { ?>
-                    <div class="col-sm-6" style="padding-top:10px;"
-                         oldstyle="border: 1px solid #E5E5E5;">
+            <?php } else { //skipped, translation not required?>
+                <div class="col-sm-6" style="padding-top:10px;"
+                     oldstyle="border: 1px solid #E5E5E5;">
                         <span class="profile-desc-text">   <p>Driver:
                                 <strong>
                                     <?php echo $order->profile->fname . ' ' . $order->profile->lname; ?>
@@ -338,31 +368,31 @@ function dotest($Number, $pp, $order, $duplicate_log, $ins2 = "ins"){
 
             			</span>
 
-                    </div>
-                    <div class="col-sm-6" style="paddng-left: 0; padding-right: 0;">
-                        <TABLE align="right" style="float;right;">
-                            <TR>
-                                <TD>
+                </div>
+                <div class="col-sm-6" style="paddng-left: 0; padding-right: 0;">
+                    <TABLE align="right" style="float;right;">
+                        <TR>
+                            <TD>
                                <SPAN style="white-space:nowrap"><a style="float;right;" href="#"
                                                                    class=" btn btn-lg default yellow-stripe">
                                        Road Test Score </a><a href="#" class="btn btn-lg yellow">
                                        <i class="fa fa-bar-chart-o"></i> <?php if (isset($order->road_test[0]->total_score)) echo $order->road_test[0]->total_score; ?>
                                    </a></SPAN></TD>
-                            </TR>
-                            <TR>
-                                <TD>
+                        </TR>
+                        <TR>
+                            <TD>
 
-                                </TD>
-                            </TR>
-                        </TABLE>
-                    </div>
-                <?php } ?>
+                            </TD>
+                        </TR>
+                    </TABLE>
+                </div>
+            <?php } ?>
 
                     <div class="clearfix"></div>
                     <div class="col-md-12" style="margin-bottom: 8px;">
                     <H4 style=""><i class="icon-doc font-blue-hoki"></i>
                     <span class="caption-subject bold font-blue-hoki uppercase">
-                    Products Ordered </span></H4>
+                    <?= $strings2["score_products"]; ?> </span></H4>
                     </div>
 
                     <div class="clearfix"></div>
@@ -371,50 +401,51 @@ function dotest($Number, $pp, $order, $duplicate_log, $ins2 = "ins"){
                     <tbody>
 
                 <?php
-                foreach ($p as $pp) {
-                    $title_pr = $this->requestAction('/orders/getProductTitle/' . $pp);
-                    ?>
-                    <tr class="even" role="row">
-                        <td>
-                            <span class="icon-notebook"></span>
-                        </td>
-                        <td>
-                            <?php
-                                echo $title_pr->title;
-                                $duplicate_log = "";
-                                $duplicate_log = dotest(1,  $pp, $order, $duplicate_log);
-                                $duplicate_log = dotest(77,  $pp, $order, $duplicate_log);
-                                $duplicate_log = dotest(14,  $pp, $order, $duplicate_log);
-                                $duplicate_log = dotest(1603,  $pp, $order, $duplicate_log);//, "ebs");
-                                $duplicate_log = dotest(1650,  $pp, $order, $duplicate_log);//, "ebs");
-                                $duplicate_log = dotest(78,  $pp, $order, $duplicate_log);
-                                $duplicate_log = dotest(1627,  $pp, $order, $duplicate_log);//, "ebs");
-                                $duplicate_log = dotest(72,  $pp, $order, $duplicate_log);
-                                //  echo $duplicate_log;
-                            ?>
-                        </td>
-
-                        <td class="actions">
-                            <?php
-                                if ($duplicate_log == "Duplicate Order") {
-                                    ?>
-                                    <span class="label label-danger">Duplicate Order  </span>
-                                <?php
-                                } elseif (return_link($pp, $order->id) == false) { ?>
-                                    <span class="label label-info">Pending </span>
-                                <? } else { ?>
-                                    <a target="_blank"
-                                       href="<? echo $this->request->webroot . return_link($pp, $order->id); ?>"
-                                       class="btn btn-primary dl">Download</a>
-                                <? } ?>
-
-                        </td>
-                    </tr>
-                    <?php
-                    $duplicate_log = "";
-
-                }
+            $Fieldname = getFieldname("title", $language);
+            foreach ($p as $pp) {
+                $title_pr = $this->requestAction('/orders/getProductTitle/' . $pp);
                 ?>
+                <tr class="even" role="row">
+                    <td>
+                        <span class="icon-notebook"></span>
+                    </td>
+                    <td>
+                        <?php
+                        echo $title_pr->$Fieldname . $Trans;
+                        $duplicate_log = "";
+                        $duplicate_log = dotest(1,  $pp, $order, $duplicate_log);
+                        $duplicate_log = dotest(77,  $pp, $order, $duplicate_log);
+                        $duplicate_log = dotest(14,  $pp, $order, $duplicate_log);
+                        $duplicate_log = dotest(1603,  $pp, $order, $duplicate_log);//, "ebs");
+                        $duplicate_log = dotest(1650,  $pp, $order, $duplicate_log);//, "ebs");
+                        $duplicate_log = dotest(78,  $pp, $order, $duplicate_log);
+                        $duplicate_log = dotest(1627,  $pp, $order, $duplicate_log);//, "ebs");
+                        $duplicate_log = dotest(72,  $pp, $order, $duplicate_log);
+                        //  echo $duplicate_log;
+                        ?>
+                    </td>
+
+                    <td class="actions">
+                        <?php
+                        if ($duplicate_log == "Duplicate Order") {
+                            ?>
+                            <span class="label label-danger"><?= $strings2["score_dupe"]; ?>  </span>
+                        <?php
+                        } elseif (return_link($pp, $order->id) == false) { ?>
+                            <span class="label label-info"><?= $strings2["documents_pending"]; ?> </span>
+                        <? } else { ?>
+                            <a target="_blank"
+                               href="<? echo $this->request->webroot . return_link($pp, $order->id); ?>"
+                               class="btn btn-primary dl"><?= $strings2["file_download"]; ?></a>
+                        <? } ?>
+
+                    </td>
+                </tr>
+                <?php
+                $duplicate_log = "";
+
+            }
+            ?>
 
                                                     <TR>
                                                         <TD colspan="3">
@@ -422,7 +453,7 @@ function dotest($Number, $pp, $order, $duplicate_log, $ins2 = "ins"){
                                                             <H4 style="margin-left: -7px;"><i
                                                                     class="icon-doc font-blue-hoki"></i>
 								<span class="caption-subject bold font-blue-hoki uppercase">
-								Documents Submitted </span></H4>
+								<?= $strings2["score_docs"]; ?> </span></H4>
 
                                                             <div class="clearfix"></div>
                                                         </TD>
@@ -431,59 +462,59 @@ function dotest($Number, $pp, $order, $duplicate_log, $ins2 = "ins"){
 
 
                                                     <?php
-                $line = "even";
-                $doc = $this->requestAction('/orders/getSubDocs');
-                $docfind = 0;
-                //var_dump($doc); die();
-                if ($doc) {
-                    foreach ($doc as $d) {
-                        $title = ucfirst($d->title);
-                        $sub_doc_id = $d->id;//Document ID
-                        $o_id = $order->id;//Order ID
-                        $c_id = $order->client_id;
+            $line = "even";
+            $doc = $this->requestAction('/orders/getSubDocs');
+            $docfind = 0;
+            //var_dump($doc); die();
+            if ($doc) {
+                foreach ($doc as $d) {
+                    $title = ucfirst($d->$Fieldname) . $Trans;
+                    $sub_doc_id = $d->id;//Document ID
+                    $o_id = $order->id;//Order ID
+                    $c_id = $order->client_id;
 
-                        $d_id = $this->requestAction("/orders/getdocid/" . $sub_doc_id . "/" . $o_id);
-                        if ($d_id) {
-                            //echo "<BR>Checking: sub_doc_id " . $sub_doc_id . " for order " . $o_id . " got " . $d_id;
-                            $docfind++;
-                            $docu_id = $d_id->id;
-                            $cnt = $this->requestAction("/orders/getprocessed/" . $d->table_name . "/" . $order->id);
-                            $line = PrintLine($line, $title, $cnt, $docu_id, $c_id, $o_id, $this->request->webroot, true,$sub_doc_id);
-                        }
+                    $d_id = $this->requestAction("/orders/getdocid/" . $sub_doc_id . "/" . $o_id);
+                    if ($d_id) {
+                        //echo "<BR>Checking: sub_doc_id " . $sub_doc_id . " for order " . $o_id . " got " . $d_id;
+                        $docfind++;
+                        $docu_id = $d_id->id;
+                        $cnt = $this->requestAction("/orders/getprocessed/" . $d->table_name . "/" . $order->id);
+                        $line = PrintLine($line, $title, $cnt, $docu_id, $c_id, $o_id, $this->request->webroot, true,$sub_doc_id);
                     }
-                    //die();
-
                 }
-                if (!$docfind) {
-                    ?>
-                    <tr>
-                        <td colspan="3">None</td>
-                    </tr>
-                <?php
-                }
+                //die();
 
-                $files = getattachments($order->id);
-                if (!$includeabove) {
-                    printdocumentinfo($order->id, true);
-                }
-                listfiles($files, "attachments/", "", false, 3);
-
-                /*
-               $cnt = $this->requestAction("/orders/getprocessed/pre_screening/" . $order->id);
-                    $line = PrintLine($line, "Pre-Screening", $cnt);
-
-               $cnt = $this->requestAction("/orders/getprocessed/driver_application/" . $order->id);
-                   $line = PrintLine($line, "Driver Application", $cnt);
-
-               $cnt = $this->requestAction("/orders/getprocessed/road_test/" . $order->id);
-                   $line = PrintLine($line, "Road Test", $cnt);
-
-               $cnt = $this->requestAction("/orders/getprocessed/consent_form/" . $order->id);
-                   $line = PrintLine($line, "Consent Form", $cnt);
-               */
-                //    $line = PrintLine($line, "Confirmation", 1 - $order->draft, '', '', '', '', true)
-
+            }
+            if (!$docfind) {
                 ?>
+                <tr>
+                    <td colspan="3"><?= $strings2["score_none"]; ?></td>
+                </tr>
+            <?php
+            }
+
+            $files = getattachments($order->id);
+            if (!$includeabove) {
+                printdocumentinfo($order->id, true);
+            }
+            listfiles($files, "attachments/", "", false, 3);
+
+            /*
+           $cnt = $this->requestAction("/orders/getprocessed/pre_screening/" . $order->id);
+                $line = PrintLine($line, "Pre-Screening", $cnt);
+
+           $cnt = $this->requestAction("/orders/getprocessed/driver_application/" . $order->id);
+               $line = PrintLine($line, "Driver Application", $cnt);
+
+           $cnt = $this->requestAction("/orders/getprocessed/road_test/" . $order->id);
+               $line = PrintLine($line, "Road Test", $cnt);
+
+           $cnt = $this->requestAction("/orders/getprocessed/consent_form/" . $order->id);
+               $line = PrintLine($line, "Consent Form", $cnt);
+           */
+            //    $line = PrintLine($line, "Confirmation", 1 - $order->draft, '', '', '', '', true)
+
+            ?>
                                                     <TR>
                                                         <TD colspan="3"></TD>
                                                     </TR>
@@ -511,45 +542,25 @@ function dotest($Number, $pp, $order, $duplicate_log, $ins2 = "ins"){
                 </div>
 
             <?php }
-        }
+    }
 
-        if ($k == 0) {
-            ?>
-            <table class="table table-condensed table-striped table-bordered table-hover dataTable no-footer">
-                <thead>
-                </thead>
-                <tbody>
-                <tr class="even" role="row">
-                    <td colspan="3" align="center">
-                        No orders found
-                    </td>
-                </tr>
-                <?php if ($sidebar->orders_create == 1 && false) {
-                    echo '<TR class="odd" role="row">';
-                    if ($sidebar->orders_mee == 1) {
-                        ?>
-                        <TD align="center"><a
-                                href="<?php echo $this->request->webroot; ?>orders/productSelection?driver=<?= $profile["id"]; ?>&ordertype=MEE">Order
-                                Mee</a></td>
-                    <?php }
-                    if ($sidebar->orders_products == 1) { ?>
-                        <TD align="center"><a
-                                href="<?php echo $this->request->webroot; ?>orders/productSelection?driver=<?= $profile["id"]; ?>&ordertype=CART">Order
-                                Products </a></TD>
-                    <?php }
-                    if ($sidebar->order_requalify == 1) { ?>
-                        <TD align="center"><a
-                                href="<?php echo $this->request->webroot; ?>orders/productSelection?driver=<?= $profile["id"]; ?>&ordertype=QUA">Re-Qualify </a>
-                        </TD>
-                    <?php }
-                    echo "</tr>";
-                } ?>
-                </tbody>
-            </table>
-
-        <?
-        }
+    if ($k == 0) {
         ?>
+        <table class="table table-condensed table-striped table-bordered table-hover dataTable no-footer">
+            <thead>
+            </thead>
+            <tbody>
+            <tr class="even" role="row">
+                <td colspan="3" align="center">
+                    <?= $strings2["orders_noresults"]; ?>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
+    <?
+    }
+    ?>
         <!-- END PROFILE CONTENT -->
     <?php
-    }
+}

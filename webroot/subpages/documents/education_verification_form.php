@@ -1,6 +1,9 @@
 <?php
-    //if ($this->request->session()->read('debug'))
-      //  echo "<span style ='color:red;'>subpages/documents/education_verification_form.php #INC142</span>";
+    if ($this->request->session()->read('debug')) {
+        echo "<span style ='color:red;'>subpages/documents/education_verification_form.php #INC142</span>";
+    }
+$strings2 = CacheTranslations($language, array("verifs_%", "file_attachfile", "tasks_date"), $settings, False);
+
 ?>
 <div id="form_tab10">
     <input class="document_type" type="hidden" name="document_type" value="<?php echo $dx->title;?>"/>
@@ -9,7 +12,6 @@
     <div class="tab-content">
         <div class="tab-pane active" id="subtab_2_3">
             <form id="form_education">
-
                 <?php
                     include_once 'subpages/filelist.php';
                     if (isset($sub4['att'])) {listfiles($sub4['att'], "attachments/", "", false, 3);}
@@ -60,7 +62,7 @@
                                     <input type="text" class="form-control" name="supervisior_name[]"
                                            value="<?php echo $emp->supervisior_name;?>"/>
                                 </div>
-                                <label class="control-label col-md-3">Phone #</label>
+                                <label class="control-label col-md-3"><?= $strings["forms_phone"]; ?></label>
 
                                 <div class="col-md-3">
                                     <input type="text" class="form-control" name="supervisior_phone[]"
@@ -234,7 +236,7 @@
                             </div>
 
                             <div class="form-group row">
-                                <label class="col-md-3 control-label">Date:</label>
+                                <label class="col-md-3 control-label"><?= $strings2["tasks_date"]; ?>:</label>
 
                                 <div class="col-md-3">
                                     <input type="text" class="form-control date-picker" name="date_time[]"
@@ -278,10 +280,12 @@
                     } else {
                         ?>
                         <div class="form-group row">
-                            <h4 class="control-label col-md-12">Past Education</h4>
+                            <div class="col-md-2">
+                                <h4 class="control-label col-md-12"><?= $strings2["verifs_pasteducat"]; ?></h4>
+                            </div>
                         </div>
                         <div class="form-group row">
-                            <label class="control-label col-md-3">School/College Name: </label>
+                            <label class="control-label col-md-3"><?= $strings2["verifs_schoolcoll"]; ?>: </label>
 
                             <div class="col-md-9">
                                 <input type="text" class="form-control" name="college_school_name[]"/>
@@ -289,7 +293,7 @@
                         </div>
 
                         <div class="form-group row">
-                            <label class="control-label col-md-3">Address: </label>
+                            <label class="control-label col-md-3"><?= $strings["forms_address"]; ?>: </label>
 
                             <div class="col-md-9">
                                 <input type="text" class="form-control" name="address[]"/>
@@ -297,12 +301,12 @@
                         </div>
 
                         <div class="form-group row">
-                            <label class="control-label col-md-3">Supervisor's Name: </label>
+                            <label class="control-label col-md-3"><?= $strings2["verifs_supername"]; ?>: </label>
 
                             <div class="col-md-3">
                                 <input type="text" class="form-control" name="supervisior_name[]"/>
                             </div>
-                            <label class="control-label col-md-3">Phone #: </label>
+                            <label class="control-label col-md-3"><?= $strings["forms_phone"]; ?>: </label>
 
                             <div class="col-md-3">
                                 <input type="text" class="form-control" name="supervisior_phone[]"/>
@@ -311,12 +315,12 @@
 
 
                         <div class="form-group row">
-                            <label class="control-label col-md-3">Supervisor's Email: </label>
+                            <label class="control-label col-md-3"><?= $strings2["verifs_superemail"]; ?>: </label>
 
                             <div class="col-md-3">
                                 <input type="text" class="form-control email1" name="supervisior_email[]"/>
                             </div>
-                            <label class="control-label col-md-3">Secondary Email: </label>
+                            <label class="control-label col-md-3"><?= $strings2["verifs_secondarye"]; ?>: </label>
 
                             <div class="col-md-3">
                                 <input type="text" class="form-control email1" name="supervisior_secondary_email[]"/>
@@ -324,12 +328,12 @@
                         </div>
 
                         <div class="form-group row">
-                            <label class="control-label col-md-3">Education Start Date: </label>
+                            <label class="control-label col-md-3"><?= $strings2["verifs_educations"]; ?>: </label>
 
                             <div class="col-md-3">
                                 <input type="text" class="form-control date-picker" name="education_start_date[]"/>
                             </div>
-                            <label class="control-label col-md-3">Education End Date: </label>
+                            <label class="control-label col-md-3"><?= $strings2["verifs_educatione"]; ?>: </label>
 
                             <div class="col-md-3">
                                 <input type="text" class="form-control date-picker" name="education_end_date[]"/>
@@ -337,13 +341,13 @@
                         </div>
 
                         <div class="form-group row">
-                            <label class="control-label col-md-3">Claims with this Tutor: </label>
+                            <label class="control-label col-md-3"><?= $strings2["verifs_claimswith"]; ?>: </label>
 
                             <div class="col-md-3">
-                                &nbsp;&nbsp;<input type="radio" name="claim_tutor[]" value="1"/>&nbsp;&nbsp;Yes&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input
-                                    type="radio" name="claim_tutor[]" value="0"/>&nbsp;&nbsp;&nbsp;&nbsp;No
+                                &nbsp;&nbsp;<input type="radio" name="claim_tutor[]" value="1"/>&nbsp;&nbsp;<?= $strings["dashboard_affirmative"]; ?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input
+                                    type="radio" name="claim_tutor[]" value="0"/>&nbsp;&nbsp;&nbsp;&nbsp;<?= $strings["dashboard_negative"]; ?>
                             </div>
-                            <label class="control-label col-md-3">Date Claims Occurred: </label>
+                            <label class="control-label col-md-3"><?= $strings2["verifs_dateclaims"]; ?>: </label>
 
                             <div class="col-md-3">
                                 <input type="text" class="form-control date-picker" name="date_claims_occur[]"/>
@@ -351,7 +355,7 @@
                         </div>
 
                         <div class="form-group row">
-                            <label class="control-label col-md-3">Education history confirmed by (Verifier Use Only)
+                            <label class="control-label col-md-3"><?= $strings2["verifs_educationh"]; ?>
                                : </label>
 
                             <div class="col-md-9">
@@ -361,7 +365,7 @@
 
                         <div class="form-group row">
 
-                            <label class="col-md-3 control-label">Highest grade completed: </label>
+                            <label class="col-md-3 control-label"><?= $strings2["verifs_highestgra"]; ?>: </label>
 
                             <div class="col-md-3">
                                 <select name="highest_grade_completed[]" class="form-control">
@@ -374,8 +378,8 @@
                                     ?>
                                 </select>
                             </div>
-                            <label class="col-md-3 control-label">High School
-                                <small>(years attended)</small>
+                            <label class="col-md-3 control-label"><?= $strings2["verifs_highschool"]; ?>
+                                <small><?= $strings2["verifs_yearsatten"]; ?></small>
                                : </label>
 
                             <div class="col-md-3">
@@ -394,7 +398,7 @@
 
 
                         <div class="form-group row">
-                            <label class="col-md-3 control-label">College (years attended): </label>
+                            <label class="col-md-3 control-label"><?= $strings2["verifs_college"]; ?> <small><?= $strings2["verifs_yearsatten"]; ?></small>: </label>
 
                             <div class="col-md-3">
                                 <select name="college[]" class="form-control">
@@ -407,25 +411,25 @@
                                     ?>
                                 </select>
                             </div>
-                            <label class="col-md-3 control-label">Last School attended: </label>
+                            <label class="col-md-3 control-label"><?= $strings2["verifs_lastschool"]; ?>: </label>
 
                             <div class="col-md-3">
                                 <input type="text" class="form-control" name="last_school_attended[]"/>
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label class="col-md-3 control-label">Did the employee have any safety or performance issues?</label>
+                            <label class="col-md-3 control-label"><?= $strings2["verifs_didtheempl"]; ?></label>
                             <div class="col-md-6">
                                 <textarea class="form-control" name="performance_issue[]" ></textarea>
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label class="col-md-3 control-label">Date: </label>
+                            <label class="col-md-3 control-label"><?= $strings2["tasks_date"]; ?>: </label>
 
                             <div class="col-md-3">
                                 <input type="text" class="form-control date-picker" name="date_time[]"/>
                             </div>
-                            <label class="col-md-3 control-label" style="display: none;">Signature:</label>
+                            <label class="col-md-3 control-label" style="display: none;"><?= $strings["forms_signature"]; ?>:</label>
 
                             <div class="col-md-3">
                                 <input type="text" class="form-control" style="display: none;" name="signature[]"/>
@@ -437,7 +441,7 @@
                 <div id="add_more_edu">
                     <p>&nbsp;</p>
                     <input type="hidden" name="count_more_edu" id="count_more_edu" value="<?php if(isset($counter))echo $counter;?>">
-                    <a href="javascript:void(0);" class="btn green add_more_edu">Add More</a>
+                    <a href="javascript:void(0);" class="btn green add_more_edu"><?= $strings["forms_addmore"]; ?></a>
                 </div>
                 <div class="allattach">
                 <?php
@@ -446,11 +450,11 @@
                     if (!count($sub4['att'])) {
                         ?>
                         <div class="form-group row" style="display:block;margin-top:5px; margin-bottom: 5px;">
-                            <label class="control-label col-md-3">Attach File: </label>
+                            <label class="control-label col-md-3"><?= $strings2["file_attachfile"]; ?>: </label>
 
                             <div class="col-md-9">
                                 <input type="hidden" name="attach_doc[]" class="edu1"/>
-                                <a href="javascript:void(0);" id="edu1" class="btn btn-primary">Browse</a> <span
+                                <a href="javascript:void(0);" id="edu1" class="btn btn-primary"><?= $strings["forms_browse"]; ?></a> <span
                                     class="uploaded"></span>
 
                             </div>
@@ -477,7 +481,7 @@
                                         <div class="col-md-6 pad_bot"><input type="hidden" class="edu<?php echo $at;?>"
                                                                              name="attach_doc[]"
                                                                              value="<?php echo $pa->attachment;?>"/><a
-                                                href="#" id="edu<?php echo $at;?>" class="btn btn-primary">Browse</a>
+                                                href="#" id="edu<?php echo $at;?>" class="btn btn-primary"><?= $strings["forms_browse"]; ?></a>
                                             <?php if ($at > 1) { ?><a href="javascript:void(0);"
                                                                       class="btn btn-danger delete_edu_doc"
                                                                       onclick="$(this).parent().remove();">Delete</a><?php }?>
@@ -499,7 +503,7 @@
                                                             <source
                                                                 src="<?php echo $this->request->webroot; ?>attachments/<?php echo str_replace('.mp4', '.ogg', $pa->attachment); ?>"
                                                                 type="video/ogg">
-                                                            Your browser does not support the video tag.
+                                                            <?= $strings["forms_novideo"]; ?>
                                                         </video>
                                                     <?php }
                                                 }?></span>
@@ -524,8 +528,7 @@
                     </div>
                     <div class="col-md-9">
                         <input type="hidden" name="count_more_edu_doc" id="count_more_edu_doc" value="1">
-                        <a href="javascript:void(0);" class="btn btn-success moremore" id="add_more_edu_doc">Add
-                            More</a>
+                        <a href="javascript:void(0);" class="btn btn-success moremore" id="add_more_edu_doc"><?= $strings["forms_addmore"]; ?></a>
                     </div>
                 </div>
 
@@ -573,7 +576,7 @@
                     $('#add_more_edu_doc').click(function () {
                         var count = $('.more_edu_doc').data('edu');
                         $('.more_edu_doc').data('edu', parseInt(count) + 1);
-                        $('.more_edu_doc').append('<div class="del_append_edu"><label class="control-label col-md-3"></label><div class="col-md-6 pad_bot"><input type="hidden" name="attach_doc[]" class="edu' + $('.more_edu_doc').data('edu') + '" /><a href="javascript:void(0);" id="edu' + $('.more_edu_doc').data('edu') + '" class="btn btn-primary">Browse</a> <a  href="javascript:void(0);" class="btn btn-danger delete_edu_doc">Delete</a> <span class="uploaded"></span></div></div><div class="clearfix"></div>');
+                        $('.more_edu_doc').append('<div class="del_append_edu"><label class="control-label col-md-3"></label><div class="col-md-6 pad_bot"><input type="hidden" name="attach_doc[]" class="edu' + $('.more_edu_doc').data('edu') + '" /><a href="javascript:void(0);" id="edu' + $('.more_edu_doc').data('edu') + '" class="btn btn-primary"><?= addslashes($strings["forms_browse"]); ?></a> <a  href="javascript:void(0);" class="btn btn-danger delete_edu_doc">Delete</a> <span class="uploaded"></span></div></div><div class="clearfix"></div>');
                         fileUpload('edu' + $('.more_edu_doc').data('edu'));
                     });
 
