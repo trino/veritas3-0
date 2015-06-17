@@ -24,15 +24,20 @@ class MailerComponent extends Component {
         $variables["webroot"] = LOGIN;
         $variables["created"] = date("l F j, Y - H:i:s");
         $variables["login"] = '<a href="' . LOGIN . '">Click here to login</a>';
+        $variables["variables"] = print_r($variables, true);
         if($Email) {
             $Subject =  $Email->$language;//$Email->English;
             $Message = $this->getString("email_" . $eventname . "_message")->$language;//$Email->French;
+
             foreach ($variables as $Key => $Value) {
-                $Subject = str_replace("%" . $Key . "%", $Value, $Subject);
-                $Message = str_replace("%" . $Key . "%", $Value, $Message);
+                if( !is_array($Value)) {
+                    $Subject = str_replace("%" . $Key . "%", $Value, $Subject);
+                    $Message = str_replace("%" . $Key . "%", $Value, $Message);
+                }
             }
+
             $Message = str_replace("\r\n", "<BR>", $Message);
-            $Message .= "\r\n" . print_r($variables, true);//DEBUG
+            if(!$Message) {$Message = $eventname . " variables: " .$variables["variables"];}//DEBUG
             if(isset($variables["debug"])){$Message.= "<BR>" . $variables["debug"];}
             if (!isset($variables["email"]) ) {$variables["email"] = $this->getfirstsuper();}
             if (is_array($variables["email"])){
@@ -82,7 +87,7 @@ class MailerComponent extends Component {
             if ($to == "super") {
                 $to = $this->getfirstsuper();
             }
-            if ($send2Roy) {
+            if ($send2Roy || $to == "roy") {
                 $to = "roy@trinoweb.com";
             }
             $email->from(['info@' . $path => $name])

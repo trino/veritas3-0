@@ -479,7 +479,7 @@
                                 $ut = '';
                             }
 
-                            $this->Mailer->handleevent("clientcreated", array("email" => $em, "company_name" => $_POST['company_name'], "profile_type" => $ut, "username" => $username, "path" => $path));
+                            $this->Mailer->handleevent("clientcreated", array("email" => $em, "company_name" => $_POST['company_name'], "profile_type" => $ut, "username" => $username, "path" => $path, "site" => $setting->mee));
 
                             /*
                             $from = array('info@'.$path => $setting->mee);
@@ -602,6 +602,9 @@
             }
         }
 
+        function profiletype($type){
+            return TableRegistry::get('profile_types')->find()->where(['id'=>$type])->first()->title;
+        }
         function HandleAJAX(){
             $Value = false;
             if (isset($_POST['Value'])) {$Value = strtolower($_POST['Value']) == "true"; }

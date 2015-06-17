@@ -1153,7 +1153,7 @@ class ProfilesController extends AppController{
         if ($add == '0') {
             $profile_type = $this->request->session()->read('Profile.profile_type');
             $_POST['created'] = date('Y-m-d');
-
+            $username = $_POST["username"];
             if (isset($_POST['password']) && $_POST['password'] == '') {
                 $password = '';
                 unset($_POST['password']);
@@ -1188,41 +1188,27 @@ class ProfilesController extends AppController{
                             }
                         }
                     }
-                    if (isset($_POST['profile_type']) && $_POST['profile_type'] == 5) {
-                        $username = 'driver_' . $profile->id;
+
+                    if(!$username) {
+                        $profiletype = "driver";//these should not be hard coded :/
+                        if (isset($_POST['profile_type'])) {
+                            if ($_POST['profile_type'] == '7') {
+                                $profiletype = 'owner_operator';
+                            } else if ($_POST['profile_type'] == '8') {
+                                $profiletype = 'owner_driver';
+                            } else if ($_POST['profile_type'] == '11') {
+                                $profiletype = 'employee';
+                            }
+                        }
+
                         $queries = TableRegistry::get('Profiles');
+                        $username = $profiletype . "_" . $profile->id;
                         $queries->query()->update()->set(['username' => $username])
                             ->where(['id' => $profile->id])
                             ->execute();
-                    } else {
-                        if(isset($_POST['profile_type']))
-                        {
-
-                            if ($_POST['profile_type'] == '7'){
-                                $username = 'owner_operator_' . $profile->id;
-                                $queries = TableRegistry::get('Profiles');
-                                $queries->query()->update()->set(['username' => $username])
-                                    ->where(['id' => $profile->id])
-                                    ->execute();
-                            }
-                            else
-                                if ($_POST['profile_type'] == '8'){
-                                    $username = 'owner_driver_' . $profile->id;
-                                    $queries = TableRegistry::get('Profiles');
-                                    $queries->query()->update()->set(['username' => $username])
-                                        ->where(['id' => $profile->id])
-                                        ->execute();
-                                }
-                                else
-                                    if ($_POST['profile_type'] == '11'){
-                                        $username = 'employee_' . $profile->id;
-                                        $queries = TableRegistry::get('Profiles');
-                                        $queries->query()->update()->set(['username' => $username])
-                                            ->where(['id' => $profile->id])
-                                            ->execute();
-                                    }
-                        }
                     }
+
+
                     if ($profile_type == 2) {
                         //save profiles to clients if recruiter
                         $clients_id = $this->Settings->getAllClientsId($this->request->session()->read('Profile.id'));
@@ -1335,7 +1321,7 @@ class ProfilesController extends AppController{
                         } else
                             $protype = '';
 
-                        $this->Mailer->handleevent("profilecreated", array("username" => $_POST['username'],"email" => array("super", $em), "path" =>$path, "createdby" => $uq->username, "type" => $protype, "password" => $password ));
+                        $this->Mailer->handleevent("profilecreated", array("username" => $username,"email" => array("super", $em), "path" =>$path, "createdby" => $uq->username, "type" => $protype, "password" => $password ));
 
 //                        $this->Mailer->handleevent("profilecreated", array("username" => $_POST['username'],"email" => array("roy")));
 
@@ -2500,6 +2486,7 @@ public function saveDriver()
             $this->sendtaskreminder($email, "test", $path, "(TEST EMAIL)");
         }
 
+        $setting = TableRegistry::get('settings')->find()->first();
         $q = TableRegistry::get('events');
         $que = $q->find();
         //$query = $que->select()->where(['(date LIKE "%' . $date . '%" OR date LIKE "%' . $date2 . '%")', 'sent' => 0])->limit(200);
@@ -2672,8 +2659,7 @@ public function saveDriver()
 
                     if ($profile1->email) {
 
-                        $settings = TableRegistry::get('settings');
-                        $setting = $settings->find()->first();
+
                         $this->Mailer->handleevent("cronordercomplete", array("site" => $setting->mee,"email" => $profile1->email));
 
                         /*
@@ -2708,7 +2694,7 @@ public function saveDriver()
 
              
                 if($auto->profile_type == '9' || $auto->profile_type == '12' && $today==$thirty && $auto->email){
-                    $this->Mailer->handleevent("survey", array("email" => $auto->email, "days" => "30", "id" => $auto->id, "path" => LOGIN . 'application/30days.php?p_id='.$auto->id));
+                    $this->Mailer->handleevent("survey", array("email" => $auto->email, "username" => $auto->username, "days" => "30", "%monthsFrench%" => "mois", "%months%" => "month", "id" => $auto->id, "path" => LOGIN . 'application/30days.php?p_id='.$auto->id, "site" => $setting->mee));
                     /*
                     $from = array('info@' . $path => $setting->mee);
                     $to = $auto->email;
@@ -2723,7 +2709,7 @@ public function saveDriver()
                 }
 
                 if($auto->profile_type == '5' || $auto->profile_type == '7'  || $auto->profile_type == '8'  && $today==$sixty && $auto->email){
-                    $this->Mailer->handleevent("survey", array("email" => $auto->email, "days" => "60", "id" => $auto->id, "path" => LOGIN . 'application/60days.php?p_id='.$auto->id));
+                    $this->Mailer->handleevent("survey", array("site" => $setting->mee, "username" => $auto->username , "email" => $auto->email, "%monthsFrench%" => "quelques mois", "%months%" => "few months", "days" => "60", "id" => $auto->id, "path" => LOGIN . 'application/60days.php?p_id='.$auto->id));
                     /*
                     $from = array('info@' . $path => $setting->mee);
                     $to = $auto->email;
@@ -2762,10 +2748,8 @@ public function saveDriver()
         return false;
     }
 
-    function sendtaskreminder($email, $todo, $path, $name)
-    {
-        $settings = TableRegistry::get('settings');
-        $setting = $settings->find()->first();
+    function sendtaskreminder($email, $todo, $path, $name) {
+        $setting = TableRegistry::get('settings')->find()->first();
 
         $this->Mailer->handleevent("taskreminder", array("title" => $todo->title,"email" => $email, "description" => $todo->description, "dueby" => $todo->date, "domain" => getHost("isbmee.com") , "site" =>  $setting->mee ));
 

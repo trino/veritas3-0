@@ -135,8 +135,8 @@ class DocumentComponent extends Component
                                             } else {
                                                 $ut = '';
                                             }
-
-                                            $this->Mailer->handleevent("documentcreated", array("site" => $setting->mee,"email" => $p, "company_name" => $client_name, "username" => $this->request->session()->read('Profile.username'), "id" => $did, "path" => $path, "profile_type" => $ut));
+//$arr['document_type'] = urldecode($_GET['document']);
+                                            $this->Mailer->handleevent("documentcreated", array("site" => $setting->mee,"email" => $p, "company_name" => $client_name, "username" => $this->request->session()->read('Profile.username'), "id" => $did, "path" => $path, "profile_type" => $ut, "place" => 1));
 /*
                                             $from = array('info@'.$path => $setting->mee);
                                             $to = $p;
@@ -150,7 +150,8 @@ class DocumentComponent extends Component
                                         }
                                     }
                                 } else {
-                                    $this->Mailer->handleevent("documentcreated", array("site" => $setting->mee,"email" => "roy@trinoweb.com", "company_name" => $client_name, "username" => $this->request->session()->read('Profile.username'), "id" => $did, "path" => $path, "profile_type" => "irrelevant"));
+                                    $ut = $this->getprofiletype();
+                                    $this->Mailer->handleevent("documentcreated", array("site" => $setting->mee,"email" => "roy@trinoweb.com", "company_name" => $client_name, "username" => $this->request->session()->read('Profile.username'), "id" => $did, "path" => $path, "profile_type" => $ut, "place" => 2));
                                 }
 
                             $docus = TableRegistry::get('Documents');
@@ -224,7 +225,7 @@ class DocumentComponent extends Component
                                   }
                                   //$path = 'https://isbmeereports.com/documents/view/'.$cid;
 
-                                $this->Mailer->handleevent("documentcreated", array("site" => $setting->mee,"email" => $p, "company_name" => $client_name, "username" => $uq->username, "id" => $did, "path" => $path, "profile_type" => $ut));
+                                $this->Mailer->handleevent("documentcreated", array("site" => $setting->mee,"email" => $p, "company_name" => $client_name, "username" => $uq->username, "id" => $did, "path" => $path, "profile_type" => $ut, "place" => 3));
 /*
                                 $from = array('info@'.$path => $setting->mee);
                                 $to = $p;
@@ -321,11 +322,12 @@ class DocumentComponent extends Component
                                 {
                                     foreach($profile as $p)
                                     {
-                                        
+                                        //these will get the same results every time, why are they in a loop?
                                         $pro_query = TableRegistry::get('Profiles');
                                         $email_query = $pro_query->find()->where(['super' => 1])->first();
                                         $em = $email_query->email;
-                                        $user_id = $controller->request->session()->read('Profile.id');
+
+                                        $user_id = $controller->request->session()->read('Profile.id');//shouldn't this be $p?
                                         $uq = $pro_query->find('all')->where(['id' => $user_id])->first();
                                         if (isset($uq->profile_type))
                                           {
@@ -346,7 +348,7 @@ class DocumentComponent extends Component
             
                                         //$controller->Mailer->sendEmail($from, $to, $sub, $msg);
 */
-                                        $this->Mailer->handleevent("documentcreated", array("site" => $setting->mee,"email" => $p, "company_name" => $client_name, "username" => $this->request->session()->read('Profile.username'), "id" => $did, "path" => $path, "profile_type" => $ut));
+                                        $this->Mailer->handleevent("documentcreated", array("site" => $setting->mee,"email" => $p, "company_name" => $client_name, "username" => $this->request->session()->read('Profile.username'), "id" => $did, "path" => $path, "profile_type" => $ut, "place" => 4));
                                     }
                                 }
                             }
@@ -375,9 +377,17 @@ class DocumentComponent extends Component
             }
             die();
         }
-        public function saveDocForOrder($arr)
-        {
-            
+
+        public function getprofiletype($user_id=""){
+            if(!$user_id) {
+                $controller = $this->_registry->getController();
+                $user_id = $controller->request->session()->read('Profile.id');
+            }
+            $u = TableRegistry::get('Profiles')->find('all')->where(['id' => $user_id])->first()->profile_type;
+            return TableRegistry::get('profile_types')->find()->where(['id'=>$u])->first()->title;
+        }
+
+        public function saveDocForOrder($arr) {
                 $docs = TableRegistry::get('Documents');
                 $orders = TableRegistry::get('Orders');
                 $ord = $orders->find()->where(['id'=>$arr['order_id']])->first();

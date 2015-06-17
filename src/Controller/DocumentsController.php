@@ -864,22 +864,7 @@ class DocumentsController extends AppController{
         if (isset($uq->profile_type))
         {
             $u = $uq->profile_type;
-            if($u == 1)
-                $ut = 'Admin';
-            else if($u == 2)
-                $ut = 'Recruiter';
-            else if($u == 3)
-                $ut = 'External';
-            else if($u == 4)
-                $ut = 'Safety';
-            else if($u == 5)
-                $ut = 'Driver';
-            else if($u == 6)
-                $ut = 'Contact';
-            else if($u == 7)
-                $ut = 'Owner Operator';
-            else if($u == 8)
-                $ut = 'Owner Driver';
+            $ut = $this->profiletype($u);
         }
         $path = $this->Document->getUrl();
         $this->Mailer->handleevent("clientcreated", array("email" => $em, "company_name" => $_POST['company_name'], "profile_type" => $ut, "username" => $uq->username, "created" =>$_POST['created'], "path" => $path, "site" => $setting->mee));
@@ -898,6 +883,9 @@ class DocumentsController extends AppController{
         */
     }
 
+    function profiletype($type){
+        return TableRegistry::get('profile_types')->find()->where(['id'=>$type])->first()->title;
+    }
 
     public function delete($id = null, $type = ""){
         $settings = $this->Settings->get_settings();

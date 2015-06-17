@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 15, 2015 at 09:33 PM
+-- Generation Time: Jun 17, 2015 at 07:45 PM
 -- Server version: 5.6.17
 -- PHP Version: 5.5.12
 
@@ -32,14 +32,14 @@ CREATE TABLE IF NOT EXISTS `strings` (
   `English` varchar(4096) NOT NULL,
   `French` varchar(4096) NOT NULL,
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=585 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=601 ;
 
 --
 -- Dumping data for table `strings`
 --
 
 INSERT INTO `strings` (`ID`, `Name`, `English`, `French`) VALUES
-(1, 'Date', '1434030529', '<-- This is used by the system to auto-update'),
+(1, 'Date', '1434396832', '<-- This is used by the system to auto-update'),
 (2, 'dashboard_affirmative', 'Yes', 'Oui'),
 (3, 'dashboard_negative', 'No', 'Non'),
 (4, 'dashboard_selectall', 'Select All', 'Tout Sélectionner'),
@@ -611,7 +611,23 @@ INSERT INTO `strings` (`ID`, `Name`, `English`, `French`) VALUES
 (581, 'consent_aliases', 'Aliases', 'Alias'),
 (582, 'consent_attachid', 'Attach ID', 'Fixez ID'),
 (583, 'forms_language', 'Language', 'Langue'),
-(584, 'flash_clientdeleted', '%Client% deleted', '%Client% supprimé');
+(584, 'flash_clientdeleted', '%Client% deleted', '%Client% supprimé'),
+(585, 'email_profilecreated_subject', 'Profile Created: %username%', ''),
+(586, 'email_profilecreated_message', 'Thank you for registering with Making Eligibility Easy. <BR>\nYou are now able to login, navigate and place orders on the MEE system.<BR>\n<BR>\nYour login credentials are as follows:<BR>\n<BR>\nLogin: %webroot%<BR>\nUsername: %username%<BR>\nPassword: %password%<BR>\n<BR>\nIf you have questions or would like training on how to use the system please contact your Account Manager, Paul Clement- pclement@isbc.ca, who will be happy to assist.<BR>\n<BR>\nRegards,<BR>\nThe %site% Team', ''),
+(587, 'email_clientcreated_subject', 'Client Created: %company_name%', ''),
+(588, 'email_clientcreated_message', 'Domain: %webroot%<BR>\nClient Name: %company_name%<BR>\nCreated by: %username% (Profile Type: %profile_type%)<BR>\nOn: %created%<BR>\n<BR><BR>\nRegards<BR>\nThe %site% Team', ''),
+(589, 'email_taskreminder_subject', 'Tasks Reminder', ''),
+(590, 'email_taskreminder_message', 'Domain: %webroot%<BR>\n<BR>\nReminder, you have following task due:<BR>\n<BR>\nTitle: %title%<BR>\nDescription: %description%<BR>\nDue By: %dueby%<BR>\n<BR>\nRegards,<BR>\nThe %site% team', ''),
+(591, 'email_passwordreset_subject', 'Password reset successful', ''),
+(592, 'email_passwordreset_message', 'Your password has been reset.<BR>\nYour login details are:<BR>\n<BR>\nUsername: %username%<BR>\nPassword: %password%<BR>\n<BR>\n%login%<BR>\nRegards<BR>\nThe %site% Team', ''),
+(593, 'email_ordercompleted_subject', 'Order Completed', ''),
+(594, 'email_ordercompleted_message', 'A new order has been created in %webroot%<BR>\n<BR>\nBy: %username% (Profile Type: %profile_type%)<BR>\nDate: %created%<BR>\nClient Name: %company_name%<BR>\nFor: %for%<BR>\n<BR>\nRegards,<BR>\nThe %site% Team', ''),
+(595, 'email_cronordercomplete_subject', 'Order Completed', ''),
+(596, 'email_cronordercomplete_message', 'Your MEE order has been processed and is ready to download<BR>\n<A HREF="%webroot%">Please login here to retrieve your score card.</A><BR>\n<BR>\nRegards,<BR>\nThe ISB %site% Team<BR>', ''),
+(597, 'email_survey_subject', 'Complete your survey', ''),
+(598, 'email_survey_message', 'Hello %username%, We hope you have enjoyed your first %months% of employment with Gordon Food Service. Your feedback is important to us at GFS and with that in mind we would like you to fill out the following online survey. Please click the following link to proceed with the survey. Thank you in advance.', ''),
+(599, 'email_documentcreated_subject', 'Document Submitted %place%', ''),
+(600, 'email_documentcreated_message', 'A new document has been created in %webroot%\nUsername: %username%\nProfile Type: %profile_type%\nDate: %created%\nClient Name: %company_name%\nDocument type: %document_type%\n\nRegards,\nThe %site% Team', '');
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
