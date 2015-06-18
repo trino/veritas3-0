@@ -184,7 +184,7 @@ class ProfilesController extends AppController{
         $reqs = array();
         foreach ($clients as $c)
         {
-            //echo "<pre>".$c."</pre><br/><br/><br/>";  
+            //echo "<pre>".$c."</pre><br/><br/><br/>";
             $frequency = $c->requalify_frequency;
             if ($c->requalify_re == '0') {
                 $date = $c->requalify_date;
@@ -240,7 +240,7 @@ class ProfilesController extends AppController{
                         }
                     }
             }
-            //var_dump($reqs);
+            //var_dump($reqs);die();
             
         }
         $this->set('new_req',$reqs);
