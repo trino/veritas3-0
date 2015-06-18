@@ -69,9 +69,12 @@
                                   {
                                     echo "Cron Pending Scheduled for ";
                                     if($d->profile_type == '9' || $d->profile_type == '12')
-                                        echo $thirty;
+                                        echo $type =$thirty;
                                     elseif($d->profile_type == '5' || $d->profile_type == '7'  || $d->profile_type == '8')
-                                        echo $sixty;
+                                        echo $type =$sixty;
+                                        ?>
+                                        <a href="javascript:void(0);" class="send_now btn btn-primary" title="<?php echo $type."_".$d->id;?>">Send Now</a>
+                                        <?php
                                   }?></td>
                         
                       
@@ -86,3 +89,23 @@
     </div>
     </div>
 </div>
+<script>
+$(function(){
+    $('.send_now').click(function(){
+        var tis = $(this);
+        var title = $(this).attr('title');
+        var t = title.split("_");
+        $.ajax({
+          url:"<?php echo $this->request->webroot;?>profiles/ajax_cron/"+t[0]+"/"+t[1],
+          success:function(msg){
+              if(msg=='1')
+              {
+                tis.text("Sent");
+                tis.attr('disabled','disabled');
+              }
+          }  
+        })
+    })
+})
+
+</script>

@@ -162,7 +162,7 @@ class ProfilesController extends AppController{
         $table = TableRegistry::get('profiles');
         $today = date('Y-m-d');
         $nyear = date('Y-m-d', strtotime($today . '+1 year'));
-        $automatic = $table->find()->where(['id IN('.$ids.")",'is_hired'=>'1','hired_date <>'=>'','hired_date >='=>$today,'hired_date <='=>$nyear]);
+        $automatic = $table->find()->where(['id IN('.$ids.")",'is_hired'=>'1','hired_date <>'=>'','hired_date <='=>$nyear,'automatic_sent'=>'0']);
       //debug($automatic);
       //die();
         $this->set("dates", $automatic);
@@ -2727,19 +2727,36 @@ public function saveDriver()
             }
         }
 
-
-
-
-
-
-
-
-
-
-
         die();
     }
+    
+    function ajax_cron($type, $profile_id )
+    {
+        $path = $this->Document->getUrl();
+          $setting = TableRegistry::get('settings')->find()->first();
+          $profile = TableRegistry::get('profiles')->find()->where(['id'=>$profile_id])->first();
+            if($profile->email)
+            {
+                //$this->Mailer->handleevent("survey", array("email" => $profile->email, "username" => $profile->username, "days" => $type, "%monthsFrench%" => "mois", "%months%" => "month", "id" => $profile->id, "path" => LOGIN . 'application/30days.php?p_id='.$profile->id, "site" => $setting->mee));
+                
+                $from = array('info@' . $path => $setting->mee);
+                $to = $profile->email;
+                $sub = 'MEE - Survey';
+                $msg = 'This is an automated email reminding you to complete your survey.<br><br>Click <a href="' . LOGIN . 'application/30days.php?p_id='.$profile->id.'">here</a> to complete your survey.<br /><br /> Regards,<br><br>The MEE Team';
+                $this->Mailer->sendEmail($from, $to, $sub, $msg);
+               
+                $queries = TableRegistry::get('Profiles');
+                $queries->query()->update()->set(['automatic_sent' => '1'])
+                    ->where(['id' => $profile->id])
+                    ->execute();
+                if($queries)
+                    echo "1";
+            }
+        die();
 
+           
+            
+    }
     public function loadprofile($UserID, $fieldname = "id")
     {
         $table = TableRegistry::get("profiles");
