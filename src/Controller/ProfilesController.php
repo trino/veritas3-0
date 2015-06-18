@@ -174,7 +174,7 @@ class ProfilesController extends AppController{
         if(is_object($maxdate)){
             $mx = $maxdate->cron_date;
         }
-
+        //echo $mx;
         $profile_type = TableRegistry::get("profile_types")->find('all')->where(['placesorders' => 1]);
         foreach ($profile_type as $ty) {
             $p_type .= $ty->id . ",";
@@ -191,7 +191,7 @@ class ProfilesController extends AppController{
             }
             $epired_profile ="";
             $profile = TableRegistry::get('profiles')->find('all')->where(['id IN(' . $c->profile_id . ')', 'profile_type IN(' . $p_types . ')', 'is_hired' => '1', 'requalify' => '1'])->order('created_by');
-                //debug($profile);
+                //debug($profile);die();
                 $temp = '';
                 foreach ($profile as $p) {
                     
@@ -205,7 +205,7 @@ class ProfilesController extends AppController{
                         //echo $p->created_by;
                         if($p->expiry_date!= "" && strtotime($p->expiry_date) < time())
                         {
-                            $epired_profile .= $p->username.",";
+                           $epired_profile .= $p->username.",";
                             
                         }
                         else
@@ -215,32 +215,34 @@ class ProfilesController extends AppController{
                             if ($c->requalify_re == '1') {
                                 $date = $p->hired_date;
                             }
-                           
-                            if($date>=$mx && $date <= $nyear)
-                            {
+                            //echo "<br/>".$date;
+                            
                                 
                                  //echo $nxt_date = date('Y-m-d', strtotime($date . '+' . $frequency . ' months'));
                                  for($i=$date;$i<=$nyear;$i= date('Y-m-d', strtotime($i . '+' . $frequency . ' months')))
                                  {
-                                    
-                                    //echo $i."<br/>";
-                                    //echo $date."<br/>";
-                                     $n_req['cron_date']= $i;
-                                     $n_req['client_id'] = $c->id;
-                                     $n_req['profile_id'] = $p->id;
-                                     $n_req['forms'] = $c->requalify_product;
-                                     array_push($reqs,$n_req);
-                                     unset($n_req);
+                                    if($i>=$mx && $i <= $nyear)
+                                    {
+                                        //echo $i."<br/>";
+                                        //echo $date."<br/>";
+                                         $n_req['cron_date']= $i;
+                                         $n_req['client_id'] = $c->id;
+                                         $n_req['profile_id'] = $p->id;
+                                         $n_req['forms'] = $c->requalify_product;
+                                         array_push($reqs,$n_req);
+                                         unset($n_req);
                                      
-                                 }
+                                    }
                               
                                
-                            }
+                                }
                       
                         }
                     }
             }
+
             //var_dump($reqs);die();
+
             
         }
         $this->set('new_req',$reqs);
