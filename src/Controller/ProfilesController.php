@@ -2570,6 +2570,26 @@ public function saveDriver()
                 }
 
 
+				
+				if ($o->ins_31 && $o->ins_31_binary == null) {
+				$complete = 0;
+				echo "ins 31 not complete<br>";
+				} else if ($o->ins_31 && $o->ins_31_binary != "done") {
+				$this->create_files_from_binary($o->id, "31", $o->ins_31_binary);
+				$this->save_bright_planet_grade($o->id, 'ins_31_binary', 'done');
+				echo "ins 31 complete<br>";
+				}
+
+
+				if ($o->ins_32 && $o->ins_32_binary == null) {
+				$complete = 0;
+				echo "ins 32 not complete<br>";
+				} else if ($o->ins_32 && $o->ins_32_binary != "done") {
+				$this->create_files_from_binary($o->id, "32", $o->ins_32_binary);
+				$this->save_bright_planet_grade($o->id, 'ins_32_binary', 'done');
+				echo "ins 32 complete<br>";
+				}
+
                 if ($o->ins_78 && $o->ins_78_binary == null) {
                     $complete = 0;
                     echo "ins 78 not complete<br>";
