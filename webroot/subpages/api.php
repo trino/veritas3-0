@@ -317,12 +317,12 @@ function getFieldname($Fieldname, $Language){
 }
 
 function getField($Object, $Fieldname, $Language){
-    if($Language!="English") {
-        $newField = $Fieldname . $Language;
-        if ($Object->$newField){return $Object->$newField;}
-        return "[" . $Object->$Fieldname . "]";//untranslated notifier
-    }
     if(is_object($Object)) {
+        if($Language!="English") {
+            $newField = $Fieldname . $Language;
+            if ($Object->$newField){return $Object->$newField;}
+            return "[" . $Object->$Fieldname . "]";//untranslated notifier
+        }
         return $Object->$Fieldname;
     }
 }
