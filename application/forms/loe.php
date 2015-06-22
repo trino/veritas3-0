@@ -131,7 +131,7 @@
                     } else {
                         ?>
                         <input type="radio" name="claims_with_employer_<?php $rand = rand(0, 100);
-                        echo $rand; ?>[]" value="1"
+                        echo $rand; //um, why? ?>[]" value="1"
                                <?php if ($emp->claims_with_employer == 1){ ?>checked="checked"<?php }?>/>
                     <?php
                     }
@@ -678,11 +678,12 @@
                    id="add_more_employ_doc"><?= $strings["forms_addmore"]; ?></a>
             </div>
         </div>
+
+        <INPUT TYPE="SUBMIT" class="btn btn-info" STYLE="float: right;">
+
         <div class="clearfix"></div>
     </div>
 
-    <INPUT TYPE="SUBMIT" class="btn btn-info" STYLE="float: right;">
-    </form>
     <script>
         <?php loadstringsJS(array_merge($strings, $strings2)); ?>
         $(function () {
@@ -735,3 +736,4 @@
         });
     </script>
 </div></div></div></div>
+</form>

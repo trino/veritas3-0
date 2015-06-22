@@ -31,7 +31,7 @@ function insertdb($conn, $Table, $DataArray, $PrimaryKey = "", $Execute = True){
     }
     $query.=";";
     if($Execute && is_object($conn)) {
-        mysqli_query($conn, $query);
+        mysqli_query($conn, $query) or die ('Unable to execute query. '. mysqli_error($conn) . "<P>Query: " . $query);
     }
     return $query;
 }
