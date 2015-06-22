@@ -1,5 +1,7 @@
 <?php
     $strings2 = CacheTranslations($language, array("verifs_%", "tasks_date", "file_attachfile", "file_download"), $settings, False);
+
+$datetype = "text";
 ?>
 <div class="menu-toggler sidebar-toggler"></div>
 
@@ -7,7 +9,6 @@
     <h3 class="col-md-12"><?= $strings2["verifs_pastemploy"]; ?></h3>
 </div>
 <div class="gndn">
-
     <?php
     $counter = 0;
     if (isset($sub3['emp']) && count($sub3['emp'])) {
@@ -29,7 +30,6 @@
             <?php
             }
             ?>
-
 
             <div class="form-group row">
                 <label class="control-label col-md-3"><?= $strings["forms_companyname"]; ?>: </label>
@@ -87,13 +87,13 @@
                 <label class="control-label col-md-3"><?= $strings2["verifs_superemail"]; ?>: </label>
 
                 <div class="col-md-3">
-                    <input type="text" class="form-control email1" name="supervisor_email[]"
+                    <input type="email" class="form-control email1" name="supervisor_email[]"
                            value="<?php echo $emp->supervisor_email;?>"/>
                 </div>
                 <label class="control-label col-md-3"><?= $strings2["verifs_secondarye"]; ?>: </label>
 
                 <div class="col-md-3">
-                    <input type="text" class="form-control email1" name="supervisor_secondary_email[]"
+                    <input type="email" class="form-control email1" name="supervisor_secondary_email[]"
                            value="<?php echo $emp->supervisor_secondary_email;?>"/>
                 </div>
             </div>
@@ -102,13 +102,15 @@
                 <label class="control-label col-md-3"><?= $strings2["verifs_employment"]; ?>: </label>
 
                 <div class="col-md-3">
-                    <input type="text" class="form-control date-picker" name="employment_start_date[]"
+                    <input type="<?= $datetype; ?>" class="form-control datepicker" name="employment_start_date[]"
+                           placeholder="mm/dd/yyyy"
                            value="<?php echo $emp->employment_start_date;?>"/>
                 </div>
                 <label class="control-label col-md-3"><?= $strings2["verifs_employment2"]; ?>: </label>
 
                 <div class="col-md-3">
-                    <input type="text" class="form-control date-picker" name="employment_end_date[]"
+                    <input type="<?= $datetype; ?>" class="form-control datepicker" name="employment_end_date[]"
+                           placeholder="mm/dd/yyyy"
                            value="<?php echo $emp->employment_end_date;?>"/>
                 </div>
             </div>
@@ -117,6 +119,7 @@
 
                 <div class="col-md-3 radio-list">
                     &nbsp;&nbsp;
+                    <label class="radio-inline">
                     <?php
                     if ($this->request->params['action'] == 'vieworder' || $this->request->params['action'] == 'view') {
                         if ($emp->claims_with_employer == 1) {
@@ -130,15 +133,16 @@
                         }
                     } else {
                         ?>
-                        <input type="radio" name="claims_with_employer_<?php $rand = rand(0, 100);
-                        echo $rand; //um, why? ?>[]" value="1"
+                        <!--php $rand = rand(0, 100); echo $rand; //um, why? -->
+                        <input type="radio" name="claims_with_employer[]" value="1"
                                <?php if ($emp->claims_with_employer == 1){ ?>checked="checked"<?php }?>/>
                     <?php
                     }
                     ?>
-                    <label class="radio-inline">
+
                         <?= $strings["dashboard_affirmative"]; ?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                     </label>
+                    <label class="radio-inline">
                     <?php
                     if ($this->request->params['action'] == 'vieworder' || $this->request->params['action'] == 'view') {
                         if ($emp->claims_with_employer == 0) {
@@ -152,19 +156,19 @@
                         }
                     } else {
                         ?>
-                        <input type="radio" name="claims_with_employer_<?php echo $rand;?>[]" value="0"
+                        <input type="radio" name="claims_with_employer<?php //echo "_" . $rand;?>[]" value="0"
                                <?php if ($emp->claims_with_employer == 0){ ?>checked="checked"<?php }?>/>
                     <?php
                     }
                     ?>
-                    <label class="radio-inline">
                         <?= $strings["dashboard_negative"]; ?>
                     </label>
                 </div>
                 <label class="control-label col-md-3"><?= $strings2["verifs_dateclaims"]; ?>: </label>
 
                 <div class="col-md-3">
-                    <input type="text" class="form-control date-picker" name="claims_recovery_date[]"
+                    <input type="<?= $datetype; ?>" class="form-control datepicker" name="claims_recovery_date[]"
+                           placeholder="mm/dd/yyyy"
                            value="<?php echo $emp->claims_recovery_date;?>"/>
                 </div>
             </div>
@@ -198,7 +202,8 @@
                 <label class="control-label col-md-3"><? $strings2["tasks_date"]; ?>: </label>
 
                 <div class="col-md-9">
-                    <input type="text" class="form-control date-picker" name="signature_datetime[]"
+                    <input type="<?= $datetype; ?>" class="form-control datepicker" name="signature_datetime[]"
+                           placeholder="mm/dd/yyyy"
                            value="<?php echo $emp->signature_datetime;?>"/>
                 </div>
             </div>
@@ -500,26 +505,27 @@
             <label class="control-label col-md-3"><?= $strings2["verifs_employment"]; ?>:</label>
 
             <div class="col-md-3">
-                <input type="text" class="form-control date-picker" name="employment_start_date[]"/>
+                <input type="<?= $datetype; ?>" class="form-control datepicker" name="employment_start_date[]" placeholder="mm/dd/yyyy"/>
             </div>
             <label class="control-label col-md-3"><?= $strings2["verifs_employment2"]; ?>:</label>
 
             <div class="col-md-3">
-                <input type="text" class="form-control date-picker" name="employment_end_date[]"/>
+                <input type="<?= $datetype; ?>" class="form-control datepicker" name="employment_end_date[]" placeholder="mm/dd/yyyy"/>
             </div>
         </div>
         <div class="form-group row">
             <label class="control-label col-md-3"><?= $strings2["verifs_claimswith"]; ?>:</label>
 
-            <div class="col-md-3">
+            <div class="col-md-3"> <label class="radio-inline">
                 &nbsp;&nbsp;<input type="radio" name="claims_with_employer_<?php $rand = rand(10000, 99999);
-                echo $rand; ?>[]" value="1"/>&nbsp;&nbsp;<?= $strings["dashboard_affirmative"]; ?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                <input type="radio" name="claims_with_employer_<?php echo $rand;?>[]" value="0"/>&nbsp;&nbsp;&nbsp;&nbsp;<?= $strings["dashboard_negative"]; ?>
+                echo $rand; ?>[]" value="1"/>&nbsp;&nbsp;<?= $strings["dashboard_affirmative"]; ?></lable>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <label class="radio-inline">
+                <input type="radio" name="claims_with_employer_<?php echo $rand;?>[]" value="0"/>&nbsp;&nbsp;&nbsp;&nbsp;<?= $strings["dashboard_negative"]; ?></label>
             </div>
             <label class="control-label col-md-3"><?= $strings2["verifs_dateclaims"]; ?>:</label>
 
             <div class="col-md-3">
-                <input type="text" class="form-control date-picker" name="claims_recovery_date[]"/>
+                <input type="<?= $datetype; ?>" class="form-control datepicker" name="claims_recovery_date[]" placeholder="mm/dd/yyyy"/>
             </div>
         </div>
 
@@ -546,36 +552,29 @@
             <label class="control-label col-md-3"><?= $strings2["tasks_date"]; ?>:</label>
 
             <div class="col-md-3">
-                <input type="text" class="form-control date-picker" name="signature_datetime[]"/>
+                <input type="<?= $datetype; ?>" class="form-control datepicker" name="signature_datetime[]" placeholder="mm/dd/yyyy"/>
             </div>
         </div>
         <div class="form-group row">
             <label class="control-label col-md-3"><?= $strings2["verifs_equipmento"]; ?>: </label>
 
             <div class="col-md-9">
-                <input type="checkbox" name="equipment_vans[]" value="1"/>&nbsp;<?= $strings2["verifs_vans"]; ?>&nbsp;
-                <input type="checkbox" name="equipment_reefer[]" value="1"/>&nbsp;<?= $strings2["verifs_reefers"]; ?>
-                &nbsp;
-                <input type="checkbox" name="equipment_decks[]" value="1"/>&nbsp;<?= $strings2["verifs_decks"]; ?>&nbsp;
-                <input type="checkbox" name="equipment_super[]" value="1"/>&nbsp;<?= $strings2["verifs_superbs"]; ?>
-                &nbsp;
-                <input type="checkbox" name="equipment_straight_truck[]"
-                       value="1"/>&nbsp;<?= $strings2["verifs_straighttr"]; ?>&nbsp;
-                <input type="checkbox" name="equipment_others[]" value="1"/>&nbsp;<?= $strings2["verifs_others"]; ?>:
+                <label class="radio-inline"><input type="checkbox" name="equipment_vans[]" value="1"/>&nbsp;<?= $strings2["verifs_vans"]; ?></label>&nbsp;
+                <label class="radio-inline"><input type="checkbox" name="equipment_reefer[]" value="1"/>&nbsp;<?= $strings2["verifs_reefers"]; ?></label>&nbsp;
+                <label class="radio-inline"><input type="checkbox" name="equipment_decks[]" value="1"/>&nbsp;<?= $strings2["verifs_decks"]; ?></label>&nbsp;
+                <label class="radio-inline"><input type="checkbox" name="equipment_super[]" value="1"/>&nbsp;<?= $strings2["verifs_superbs"]; ?></label>&nbsp;
+                <label class="radio-inline"><input type="checkbox" name="equipment_straight_truck[]" value="1"/>&nbsp;<?= $strings2["verifs_straighttr"]; ?></label>&nbsp;
+                <label class="radio-inline"><input type="checkbox" name="equipment_others[]" value="1"/>&nbsp;<?= $strings2["verifs_others"]; ?></label>
             </div>
         </div>
         <div class="form-group row">
             <label class="control-label col-md-3"><?= $strings2["verifs_drivingexp"]; ?>: </label>
 
             <div class="col-md-9">
-                <input type="checkbox" name="driving_experince_local[]"
-                       value="1"/>&nbsp;<?= $strings2["verifs_local"]; ?>&nbsp;
-                <input type="checkbox" name="driving_experince_canada[]"
-                       value="1"/>&nbsp;<?= $strings2["verifs_canada"]; ?>&nbsp;
-                <input type="checkbox" name="driving_experince_canada_rocky_mountains[]"
-                       value="1"/>&nbsp;<?= $strings2["verifs_canadarock"]; ?>&nbsp;
-                <input type="checkbox" name="driving_experince_usa[]" value="1"/>&nbsp;<?= $strings2["verifs_usa"]; ?>
-                &nbsp;
+                <label class="radio-inline"><input type="checkbox" name="driving_experince_local[]" value="1"/>&nbsp;<?= $strings2["verifs_local"]; ?>&nbsp;</label>
+                <label class="radio-inline"><input type="checkbox" name="driving_experince_canada[]" value="1"/>&nbsp;<?= $strings2["verifs_canada"]; ?>&nbsp;</label>
+                <label class="radio-inline"><input type="checkbox" name="driving_experince_canada_rocky_mountains[]" value="1"/>&nbsp;<?= $strings2["verifs_canadarock"]; ?>&nbsp;</label>
+                <label class="radio-inline"><input type="checkbox" name="driving_experince_usa[]" value="1"/>&nbsp;<?= $strings2["verifs_usa"]; ?>&nbsp;</label>
             </div>
 
         </div>
@@ -584,14 +583,14 @@
     }
     ?>
 
-    <div id="add_more_div">
+    <div id="add_more_div" <?= $AllowUploads; ?>>
         <p>&nbsp;</p>
         <input type="hidden" name="count_past_emp" id="count_past_emp" value="<?php if (isset($sub3['emp'])) {
             echo count($sub3['emp']);
         } else { ?>1<?php }?>">
         <a href="javascript:void(0);" class="btn green" id="add_more"><?= $strings["forms_addmore"]; ?></a>
     </div>
-    <div class="allattach">
+    <div class="allattach" <?= $AllowUploads; ?>>
         <?php
 
         if (!isset($sub3['att']))
@@ -612,7 +611,7 @@
 
 
         ?>
-        <div class="form-group row">
+        <div class="form-group row" >
             <div id="more_employ_doc"
                  data-emp="<?php if (count($sub3['att'])) echo count($sub3['att']); else echo '1';?>">
                 <?php
@@ -670,7 +669,7 @@
             </div>
         </div>
 
-        <div class="form-group row">
+        <div class="form-group row" <?= $AllowUploads; ?>>
             <div class="col-md-3">
             </div>
             <div class="col-md-9">
@@ -679,32 +678,33 @@
             </div>
         </div>
 
-        <INPUT TYPE="SUBMIT" class="btn btn-info" STYLE="float: right;">
-
         <div class="clearfix"></div>
     </div>
 
-    <script>
-        <?php loadstringsJS(array_merge($strings, $strings2)); ?>
+
+
+    <!--script>
+    /*
+        <!--php loadstringsJS(array_merge($strings, $strings2)); >
         $(function () {
-            <?php
+            <!--php
                 if(($this->request->params['action']=='addorder' || $this->request->params['action']=='add')&&!count($sub3['att']))
                 {
                     ?>
             fileUpload('emp1');
-            <?php
+            <!--php
         }
         ?>
             //
             $("#add_more").click(function () {
                 $.ajax({
-                    url: "<?php echo $webroot;?>subpages/documents/past_employer.php?language=" + language + "&debug=<?= $this->request->session()->read('debug'); ?>",
+                    url: "<!--php echo $webroot;?>subpages/documents/past_employer.php?language=" + language + "&debug=false",
                     success: function (res) {
                         $("#more_div").append(res);
                         var c = $('#count_past_emp').val();
                         var counter = parseInt(c) + 1;
                         $('#count_past_emp').attr('value', counter);
-                        $('.date-picker').datepicker({
+                        $('.datepicker').datepicker({
                             rtl: Metronic.isRTL(),
                             orientation: "left",
                             autoclose: true,
@@ -734,6 +734,6 @@
                 $(this).closest('.del_append_employ').remove();
             });
         });
-    </script>
-</div></div></div></div>
-</form>
+        */
+    </script-->
+</div>

@@ -1,7 +1,11 @@
+<!DOCTYPE html><TITLE>Uniform</TITLE>
 <?php
 //include_once ($dirroot . '/../webroot/subpages/api.php');
 include_once ('api.php');
 $offsethours = 0;
+$AllowUploads = ' style="display: none"';
+$doback = true;
+$dosubmit = true;
 
 function offsettime($value, $period = "minutes", $date = "", $format = "Y-m-d H:i:s"){
     if (!$date) {$date = date($format);}
@@ -45,17 +49,28 @@ function constructdocument($orderid, $document_type, $sub_doc_id, $user_id, $cli
     return $data;
 }
 
-function constructsubdoc($data, $docID, $userID, $clientID, $orderid=0, $Execute = True){
+function constructsubdoc($data, $formID, $userID, $clientID, $orderid=0, $Execute = True){
     global $con;
-    $subdocinfo = first("SELECT * from subdocuments WHERE id = " . $docID);
+    $subdocinfo = first("SELECT * from subdocuments WHERE id = " . $formID);
     $table = $subdocinfo["table_name"];
     $docTitle = $subdocinfo["title"];
-    $docid = constructdocument($orderid, $docTitle, $docID, $userID, $clientID, 0,0, $Execute);//22= doc id number, 81 = user id for SMI site, 1=client id for SMI
+    $docid = constructdocument($orderid, $docTitle, $formID, $userID, $clientID, 0,0, $Execute);//22= doc id number, 81 = user id for SMI site, 1=client id for SMI
     $data["document_id"] = $docid;
     $data["order_id"] = $orderid;
     $data["client_id"] = $clientID;
     $data["user_id"] = $userID;
     if(!$Execute){$data["document_id"] = " -- No Document ID --- ";}
+    $remove = "";
+    switch ($formID){
+        case 9:
+            $remove = array("count_past_emp", "attach_doc");
+            break;
+    }
+    if (is_array($remove)){
+        foreach($remove as $key){
+            unset($data[$key]);
+        }
+    }
     $data = insertdb($con, $table, $data, "", $Execute);
     if($Execute){return $data;}
     return $docid . "<BR>" . $data;
@@ -76,16 +91,18 @@ if (count($_POST) > 0) {
         <div class="content" style="width:60%">
             Thank you for your submission!<P></P>
             <?php
+            $dosubmit = false;
             $client = first("SELECT * FROM clients WHERE company_name LIKE 'GFS%' OR company_name LIKE 'Gordon%'");//Find gordon food services
             $userID = get("user_id", 81);//TEST DATA
             $clientID = $client["id"];
             $Execute = true;//False = test mode
             $query = constructsubdoc($_POST, $_GET["form"], $userID, $clientID, 0, $Execute);
+            $Execute= false;
             if(!$Execute){
                 echo "<P>" . $query . "<P>";
             }
             ?>
-        </div>
+
     <?php
 } else {
     includeCSS("login");
@@ -105,13 +122,13 @@ if (count($_POST) > 0) {
 
     switch (get("form")){
         case 9:
-            include("forms/loe.php");
+            include("forms/loe.php");//works!
         break;
         case 4:
             include("forms/consent.php");
         break;
         default:
-
+            $doback = false;
             foreach($_POST as $Key => $Value){//it's doing some weird thing where values are put in arrays instead
                 if (is_array($Value)){
                     if (count($Value) == 1) {
@@ -121,7 +138,6 @@ if (count($_POST) > 0) {
             }
 
             ?>
-
                     Please select a form:
                     <UL>
                         <LI><A HREF="<?= getq("form=9"); ?>">Letter of Experience</A></LI>
@@ -139,4 +155,23 @@ function getq($data){
         return "?" . $data;
     }
 }
-?></div></form></BODY>
+?>
+<SCRIPT>
+    $(function () {
+            $(".datepicker").datepicker({
+                changeMonth: true,
+                changeYear: true,
+                yearRange: '1980:2020',
+                dateFormat: 'mm/dd/yy'
+            });
+        });
+</SCRIPT>
+<?php if($doback){
+    if ($dosubmit){ ?>
+        <INPUT TYPE="SUBMIT" class="btn btn-info" STYLE="float: right;">
+        <div class="clearfix"></div>
+    <?php } ?>
+    <DIV align="center"><A HREF="uniform.php">Go Back</A></DIV>
+<?php } ?>
+</div></form>
+</BODY>

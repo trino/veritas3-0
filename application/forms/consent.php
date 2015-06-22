@@ -380,9 +380,9 @@
             <div class="form-group col-md-6">
                 <!php include('canvas/consent_signature_witness.php'); !>
             </div-->
-
+<?php return; ?>
             <div class="clearfix"></div>
-            <div class="allattach">
+            <div class="allattach" <?= $AllowUploads; ?>>
                 <?php
                 if (!isset($sub2['con_at'])) {
                     $sub2['con_at'] = array();
@@ -399,7 +399,7 @@
                         </div>
                     </div>
                 <?php } ?>
-                <div class="form-group col-md-12">
+                <div class="form-group col-md-12" >
                     <div id="more_consent_doc"
                          data-consent="<?php if (count($sub2['con_at'])) echo count($sub2['con_at']); else echo '1'; ?>">
                         <?php
@@ -454,7 +454,7 @@
                     </div>
                 </div>
 
-                <div class="form-group col-md-12">
+                <div class="form-group col-md-12" <?= $AllowUploads; ?>>
                     <div class="col-md-3">
                     </div>
                     <div class="col-md-9">
@@ -464,10 +464,8 @@
 
                 <div class="clearfix"></div>
 
-                <INPUT TYPE="SUBMIT" class="btn btn-info" STYLE="float: right;">
-            </div>
-        </div>
-        <script>
+
+        <!--script>
             $(function () {
                 <?php if($this->request->params['action'] != 'vieworder' && $this->request->params['action']!= 'view'){?>
                 $("#test3").jqScribble();
@@ -497,4 +495,4 @@
                     $(this).closest('.del_append_consent').remove();
                 });
             });
-        </script></div>
+        </script-->
