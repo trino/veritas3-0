@@ -1,68 +1,9 @@
 <!DOCTYPE html><TITLE>Register with MEE</TITLE>
 <?php
-    $webroot = $_SERVER["REQUEST_URI"];
-    $start = strpos($webroot, "/", 1) + 1;
-    $webroot = substr($webroot, 0, $start);
-
-    error_reporting(E_ERROR | E_PARSE);//suppress warnings
-    include("../config/app.php");//config file is not meant to be run without cake, thus error reporting needs to be suppressed
-    error_reporting(E_ALL);//re-enable warnings
-
-    $con = "";
     $logo = 'img/logos/';
     $company_name = "";
 
-    function connectdb() {
-        global $con, $config;
-        $con = mysqli_connect("localhost:3306", $config['Datasources']['default']['username'], $config['Datasources']['default']['password'], $config['Datasources']['default']['database']) or die("Error " . mysqli_error($con));
-        return $con;
-    }
-
-    function insertdb($conn, $Table, $DataArray, $PrimaryKey = ""){
-        if (is_object($conn)){$DataArray = escapearray($conn, $DataArray);}
-        $query = "INSERT INTO " . $Table . " (" . getarrayasstring($DataArray, True) . ") VALUES (" . getarrayasstring($DataArray, False) . ")";
-        if($PrimaryKey) {
-            $query.= " ON DUPLICATE KEY UPDATE";
-            $delimeter = " ";
-            foreach($DataArray as $Key => $Value){
-                if($Key != $PrimaryKey){
-                    $query.= $delimeter . $Key . "='" . $Value . "'";
-                    $delimeter = ", ";
-                }
-            }
-        }
-        $query.=";";
-        if (is_object($conn)){mysqli_query($conn, $query);}
-        return $query;
-    }
-
-    function escapearray($conn, $DataArray){
-        foreach($DataArray as $Key => $Value) {
-            $DataArray[$Key] = mysqli_real_escape_string($conn, $Value);
-        }
-        return $DataArray;
-    }
-
-    function getarrayasstring($DataArray, $Keys = True){
-        if ($Keys) {
-            $DataArray = array_keys($DataArray);
-            return implode(", ", $DataArray);
-        } else {
-            $DataArray = array_values($DataArray);
-            $DataArray = implode("', '", $DataArray);
-            return "'" . $DataArray . "'";
-        }
-    }
-
-    function first($query) {
-        global $con;
-        $result = $con->query($query);
-        while ($row = mysqli_fetch_array($result)) {
-            return $row;
-        }
-    }
-
-    $con = connectdb();
+   include_once("api.php");
 
     if (isset($_GET["client"])) {
         $row = first("SELECT * FROM clients where id = " . $_GET["client"]);
