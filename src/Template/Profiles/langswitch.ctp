@@ -14,6 +14,6 @@
                 // redirect to site root
                 window.location.href = '..';
             }
-        }, 100);
+        }, 3000);
     }, 2000);
 </SCRIPT>
