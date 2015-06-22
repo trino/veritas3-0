@@ -37,11 +37,12 @@
     $sms_ins_32 = false;                                    // 32   social media search
     $creditcheck_ins_31 = false;                            // 31 Credit Check
 
-    if ($order_info->order_type == "Driver Order") {
+    echo $order_info->order_type;
+    if ($order_info->order_type == "MEE" || $order_info->order_type == "GDO") {
         $driver_order_79 = true; // only TRUE if complete mee orders  - DONT CHANGE
         $ordertype = "MEE";
     }
-
+  //  echo  $ordertype;die();
     $myArray = explode(',', $order_info->forms);
 
     foreach ($myArray as $splitArray) {
