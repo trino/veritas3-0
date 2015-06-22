@@ -72,33 +72,60 @@ function constructsubdoc($data, $formID, $userID, $clientID, $orderid=0, $Execut
         }
     }
     $data = insertdb($con, $table, $data, "", $Execute);
-    if($Execute){return $data;}
+    if($Execute){return $docid;}
     return $docid . "<BR>" . $data;
+}
+
+function converge($array){
+    foreach($array as $Key => $Value){//it's doing some weird thing where values are put in arrays instead
+        if (is_array($Value)){
+            if (count($Value) == 1) {
+                $array[$Key] = $Value[0];
+            }
+        }
+    }
+    return $array;
 }
 
 if (count($_POST) > 0) {
     includeCSS("login");
-    foreach($_POST as $Key => $Value){//it's doing some weird thing where values are put in arrays instead
-        if (is_array($Value)){
-            if (count($Value) == 1) {
-                $_POST[$Key] = $Value[0];
-            }
-        }
-    }
-
+    $_POST = converge($_POST);
     ?>
         <div class="logo"></div>
         <div class="content" style="width:60%">
             Thank you for your submission!<P></P>
             <?php
+            switch ($_GET["form"]) {
+                case 4:////offence, date_of_sentence, location go into consent_form_criminal, then unset them
+                    $offences = $_POST["offence"];
+                    $date_of_sentences = $_POST["date_of_sentence"];
+                    $locations = $_POST["location"];
+                    unset($_POST["offence"]);
+                    unset($_POST["date_of_sentence"]);
+                    unset($_POST["location"]);
+                    break;
+            }
+
             $dosubmit = false;
             $client = first("SELECT * FROM clients WHERE company_name LIKE 'GFS%' OR company_name LIKE 'Gordon%'");//Find gordon food services
             $userID = get("user_id", 81);//TEST DATA
             $clientID = $client["id"];
             $Execute = true;//False = test mode
             $query = constructsubdoc($_POST, $_GET["form"], $userID, $clientID, 0, $Execute);
-            $Execute= false;
-            if(!$Execute){
+            if($Execute) {
+                echo "<P>Document ID:" . $query . "<P>";
+                switch ($_GET["form"]) {
+                    case 4:////offence, date_of_sentence, location go into consent_form_criminal
+                        $data = array("consent_form_id" => mysqli_insert_id($con));//might use $query instead
+                        foreach($offences as $ID => $offense){
+                            $data["offence"] = $offense;
+                            $data["date_of_sentence"] = $date_of_sentences[$ID];
+                            $data["location"] = $locations[$ID];
+                            insertdb($con, "consent_form_criminal", $data, "", $Execute);
+                        }
+                        break;
+                }
+            } else {
                 echo "<P>" . $query . "<P>";
             }
             ?>
@@ -129,14 +156,6 @@ if (count($_POST) > 0) {
         break;
         default:
             $doback = false;
-            foreach($_POST as $Key => $Value){//it's doing some weird thing where values are put in arrays instead
-                if (is_array($Value)){
-                    if (count($Value) == 1) {
-                        $_POST[$Key] = $Value[0];
-                    }
-                }
-            }
-
             ?>
                     Please select a form:
                     <UL>
