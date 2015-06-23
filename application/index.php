@@ -163,7 +163,8 @@ if (count($_POST) > 0) {
             //print_r ($profile);
         }
     } else {
-        echo '<div class="alert alert-danger display-hide" style="display: block;">Warning: user_id is not specified.</div>';
+        $dosubmit= false;
+        echo '<div class="alert alert-danger display-hide" style="display: block;">' . $strings["uniform_nouserid"] . '</div>';
     }
 
     echo '<DIV ALIGN="CENTER"><img src="' . $webroot . 'img/gfs.png" style="width: 330px;" /></DIV>';

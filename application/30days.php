@@ -13,7 +13,9 @@
     function connectdb()
     {
         global $con, $config;
-        $con = mysqli_connect("localhost:3306", $config['Datasources']['default']['username'], $config['Datasources']['default']['password'], $config['Datasources']['default']['database']) or die("Error " . mysqli_error($con));
+        $localhost = "localhost";
+        if ( $_SERVER["SERVER_NAME"] == "localhost"){$localhost.= ":3306";}
+        $con = mysqli_connect($localhost, $config['Datasources']['default']['username'], $config['Datasources']['default']['password'], $config['Datasources']['default']['database']) or die("Error " . mysqli_error($con));
         return $con;
     }
 
@@ -71,9 +73,9 @@
          
          if((!isset($_GET['msg']) || (isset($_GET['msg']) && $_GET['msg']=='error'))&&(isset($row)&& ($row['profile_type']=='9'||$row['profile_type']=='12'))){
             if(isset($_GET['msg']) && $_GET['msg']=='error')
-             echo '<div class="clearfix"></div><div class="alert alert-info display-hide" style="display: block;">
+             echo '<div class="clearfix"></div><div class="alert alert-danger display-hide" style="display: block;">
                         <button class="close" data-close="alert"></button>
-                        Couldnot submit the form. Please try again.
+                        Could not submit the form. Please try again.
                         </div>';    
         ?>
  		<form method="post" action="<?php echo $webroot;?>rapid/days/30" class="formz" >
@@ -559,14 +561,14 @@
             <?php }
             elseif(!isset($row)&&!isset($_GET['msg']))
             {
-                 echo '<div class="clearfix"></div><div class="alert alert-info display-hide" style="display: block;">
+                 echo '<div class="clearfix"></div><div class="alert alert-danger display-hide" style="display: block;">
                                 <button class="close" data-close="alert"></button>
                                 Sorry, the profile does not exist.
                                 </div>'; 
             }
             elseif(isset($row)&&($row['profile_type']!='9' && $row['profile_type']!='12')&&!isset($_GET['msg']))
             {
-                 echo '<div class="clearfix"></div><div class="alert alert-info display-hide" style="display: block;">
+                 echo '<div class="clearfix"></div><div class="alert alert-danger display-hide" style="display: block;">
                                 <button class="close" data-close="alert"></button>
                             User can not submit this form.
                         </div>';
