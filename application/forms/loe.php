@@ -517,10 +517,9 @@ $datetype = "text";
             <label class="control-label col-md-3"><?= $strings2["verifs_claimswith"]; ?>:</label>
 
             <div class="col-md-3"> <label class="radio-inline">
-                &nbsp;&nbsp;<input type="radio" name="claims_with_employer_<?php $rand = rand(10000, 99999);
-                echo $rand; ?>[]" value="1"/>&nbsp;&nbsp;<?= $strings["dashboard_affirmative"]; ?></lable>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                &nbsp;&nbsp;<input type="radio" name="claims_with_employer[]" value="1"/>&nbsp;&nbsp;<?= $strings["dashboard_affirmative"]; ?></lable>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                     <label class="radio-inline">
-                <input type="radio" name="claims_with_employer_<?php echo $rand;?>[]" value="0"/>&nbsp;&nbsp;&nbsp;&nbsp;<?= $strings["dashboard_negative"]; ?></label>
+                <input type="radio" name="claims_with_employer[]" value="0"/>&nbsp;&nbsp;&nbsp;&nbsp;<?= $strings["dashboard_negative"]; ?></label>
             </div>
             <label class="control-label col-md-3"><?= $strings2["verifs_dateclaims"]; ?>:</label>
 

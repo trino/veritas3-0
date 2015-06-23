@@ -204,13 +204,15 @@ function includeCSS($Class = ""){
     }
 }
 
-function provinces($name){
+function provinces($name, $value = ""){
     echo '<SELECT class="form-control" name="' . $name . '">';
     $acronyms = getprovinces("Acronyms");
     $Provinces = getprovinces("");
     $ID=0;
     foreach($acronyms as $acronym){
-        echo '<OPTION value="' . $acronym . '">' . $Provinces[$ID] . '</OPTION>';
+        echo '<OPTION value="' . $acronym . '"';
+        if ($value == $acronym || $value == $Provinces[$ID]) { echo " SELECTED";}
+        echo '>' . $Provinces[$ID] . '</OPTION>';
         $ID++;
     }
     echo '</SELECT>';
@@ -252,5 +254,20 @@ function addTrans($array, $Trans = ""){
         }
     }
     return $array;
+}
+
+function printoption($option, $selected, $value = ""){
+    $tempstr = "";
+    if ($option == $selected) {$tempstr = " selected";}
+    if (strlen($value) > 0) {$value = " value='" . $value . "'";}
+    echo '<option' . $value . $tempstr . ">" . $option . "</option>";
+}
+
+function printoptions($name, $valuearray, $selected = "", $optionarray, $isdisabled = ""){
+    echo '<SELECT ' . $isdisabled . ' name="' . $name . '" class="form-control member_type" >';
+    for ($temp = 0; $temp < count($valuearray); $temp += 1) {
+        printoption2($valuearray[$temp], $selected, $optionarray[$temp]);
+    }
+    echo '</SELECT>';
 }
 ?>

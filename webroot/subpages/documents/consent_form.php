@@ -207,8 +207,8 @@
 
                 <div class="col-md-4"><label class="control-label"><?= $strings["forms_gender"]; ?>: </label>
                     <SELECT name="criminal_sex" class="form-control" >
-                        <OPTION><?= $strings["forms_male"]; ?></OPTION>
-                        <OPTION><?= $strings["forms_female"]; ?></OPTION>
+                        <OPTION VALUE="Male"><?= $strings["forms_male"]; ?></OPTION>
+                        <OPTION VALUE="Female"><?= $strings["forms_female"]; ?></OPTION>
                     </SELECT>
                     <!--<input type="text" class="form-control" name="criminal_sex"/>-->
                 </div>

@@ -445,6 +445,20 @@
                 msg = '<span class="msg" style="color:red"> <?= addslashes($strings["forms_removed"]); ?></span>';
             }
 
+            <?php if($profile->admin == 0 & $profile->super == 0){; ?>
+            $('.addclientz').each(function () {
+                if($(this).val() != client_id){
+                    $(this).prop( "disabled", addclient ==1 );
+                    var parent = $(this).parent().parent();
+                    if(addclient ==1){
+                        parent.addClass("disabled");
+                    } else {
+                        parent.removeClass("disabled");
+                    }
+                }
+            });
+            <?php } ?>
+
             $.ajax({
                 type: "post",
                 data: "client_id=" + client_id + "&add=" + addclient + "&user_id=" +<?php echo $id;?>,

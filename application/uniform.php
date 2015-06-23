@@ -147,6 +147,15 @@ if (count($_POST) > 0) {
         }
     }
 
+    if (isset($_GET["user_id"])){
+        if(get("form")) {
+            $profile = first("SELECT * FROM profiles WHERE id = " . $_GET["user_id"]);
+            //print_r ($profile);
+        }
+    } else {
+        echo '<div class="alert alert-danger display-hide" style="display: block;">Warning: user_id is not specified.</div>';
+    }
+
     switch (get("form")){
         case 9:
             include("forms/loe.php");//works!
@@ -169,7 +178,7 @@ if (count($_POST) > 0) {
 
 function getq($data){
     if( $_SERVER['QUERY_STRING']){
-        return  $_SERVER['QUERY_STRING'] . "&" .  $data;
+        return "?" . $_SERVER['QUERY_STRING'] . "&" .  $data;
     } else {
         return "?" . $data;
     }
@@ -190,7 +199,11 @@ function getq($data){
         <INPUT TYPE="SUBMIT" class="btn btn-info" STYLE="float: right;">
         <div class="clearfix"></div>
     <?php } ?>
-    <DIV align="center"><A HREF="uniform.php">Go Back</A></DIV>
+    <DIV align="center"><A HREF="uniform.php<?php
+        if (isset($_GET["user_id"])){
+            echo "?user_id=" . $_GET["user_id"];
+        }
+    ?>">Go Back</A></DIV>
 <?php } ?>
 </div></form>
 </BODY>

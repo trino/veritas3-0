@@ -5,22 +5,14 @@
     $uid = ($this->request['action'] == 'add') ? "0" : $this->request['pass'][0];
     $sidebar = $this->requestAction("settings/all_settings/" . $uid . "/sidebar");
     $block = $this->requestAction("settings/all_settings/" . $uid . "/blocks");
-    if (!isset($is_disabled1)) {
-        $is_disabled1 = "";
-    }//something is wrong with this variable
+    $isadmin = $profile->admin == 1 || $profile->super == 1;
+    if (!isset($is_disabled1)) {$is_disabled1 = "";}//something is wrong with this variable
 
+    $activetab = "config";
     if ($activetab == "permissions") {
-        if ((isset($Clientcount) && $Clientcount == 0) || $this->request->session()->read('Profile.profile_type') == '2') {
-            $activetab = "assign";
-        } else {
-            $activetab = "config";
-        }
+        if ((isset($Clientcount) && $Clientcount == 0) || $this->request->session()->read('Profile.profile_type') == '2') {$activetab = "assign";}
     } else {
-        if ($this->request->session()->read('Profile.profile_type') == '2') {
-            $activetab = "assign";
-        } else {
-            $activetab = "config";
-        }
+        if ($this->request->session()->read('Profile.profile_type') == '2') {$activetab = "assign";}
     }
 
 ?>
@@ -1248,9 +1240,18 @@
                             $clients = $this->requestAction('/clients/getAllClient/');
                             $count = 0;
                             if ($clients) {
+                                $clientcount=0;
+                                if(!$isadmin) {
+                                    foreach ($clients as $o) {
+                                        $pro_ids = explode(",", $o->profile_id);
+                                        if (in_array($id, $pro_ids)) {$clientcount++;}
+                                    }
+                                }
+
+
                                 foreach ($clients as $o) {
                                     $pro_ids = explode(",", $o->profile_id);
-
+                                    $isassigned = in_array($id, $pro_ids);
                                     ?>
 
                                     <tr>
@@ -1259,9 +1260,13 @@
                                                 <?php if ($this->request->session()->read('Profile.profile_type') == 2 && $this->request->session()->read('Profile.id') == $id){ ?>disabled=""<?php } ?>
                                                 id="c_<?= $count ?>"
                                                 type="checkbox" value="<?php echo $o->id; ?>"
-                                                class="addclientz" <?php if (in_array($id, $pro_ids)) {
+                                                class="addclientz" <?php if ($isassigned) {
                                                 echo "checked";
-                                            } ?>  <?php echo $is_disabled ?> />
+                                            } ?>  <?php echo $is_disabled;
+                                             if(!$isassigned && $clientcount >0){
+                                                 echo " disabled";
+                                             }
+                                            ?> />
                                         </TD><TD width="50"> <?php if (strlen($o->image) > 0) {
                                                 echo '<img height="32" src="' . $this->request->webroot . 'img/jobs/' . $o->image . '">';
                                             } else {
