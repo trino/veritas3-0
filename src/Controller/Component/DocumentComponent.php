@@ -151,7 +151,9 @@ class DocumentComponent extends Component
                                     }
                                 } else {
                                     $ut = $this->getprofiletype();
-                                    $Mailer->handleevent("documentcreated", array("site" => $setting->mee,"email" => "super", "company_name" => $client_name, "username" => $this->request->session()->read('Profile.username'), "id" => $did, "path" => $path, "profile_type" => $ut, "place" => 2));
+                                    $username =   $user_id = $controller->request->session()->read('username.id');
+
+                                    $Mailer->handleevent("documentcreated", array("site" => $setting->mee,"email" => "super", "company_name" => $client_name, "username" => $username, "id" => $did, "path" => $path, "profile_type" => $ut, "place" => 2));
                                 }
 
                             $docus = TableRegistry::get('Documents');
@@ -348,7 +350,8 @@ class DocumentComponent extends Component
             
                                         //$controller->Mailer->sendEmail($from, $to, $sub, $msg);
 */
-                                        $Mailer->handleevent("documentcreated", array("site" => $setting->mee,"email" => $p, "company_name" => $client_name, "username" => $this->request->session()->read('Profile.username'), "id" => $did, "path" => $path, "profile_type" => $ut, "place" => 4));
+                                        $username =   $user_id = $controller->request->session()->read('username.id');
+                                        $Mailer->handleevent("documentcreated", array("site" => $setting->mee,"email" => $p, "company_name" => $client_name, "username" => $username, "id" => $did, "path" => $path, "profile_type" => $ut, "place" => 4));
                                     }
                                 }
                             }
