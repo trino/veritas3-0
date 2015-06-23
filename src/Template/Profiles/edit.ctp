@@ -213,7 +213,7 @@
 
                                         if($clients && isset($client)){
                                             echo '<P><a href="' . $this->request->webroot . 'clients/quickcontact?Type=emailout';
-                                            echo ' class="blue-stripe btn floatleft ' . $product->ButtonColor . '" style="margin-top:2px;width:75%;">' . $product->$title . $Trans;
+                                            echo ' class="blue-stripe btn floatleft grey-cascade" style="margin-top:2px;width:75%;">' . "Send forms via email";
                                             echo ' <i class="icon-doc"></i></a>';
                                         }
                                     } elseif (!$profile->Ptype) {

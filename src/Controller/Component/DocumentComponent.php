@@ -136,7 +136,7 @@ class DocumentComponent extends Component
                                             }
 //$arr['document_type'] = urldecode($_GET['document']);
 
-                                            $Mailer->handleevent("documentcreated", array("site" => $setting->mee,"email" => $p, "company_name" => $client_name, "username" => $this->request->session()->read('Profile.username'), "id" => $did, "path" => $path, "profile_type" => $ut, "place" => 1));
+                                            $Mailer->handleevent("documentcreated", array("site" => $setting->mee,"email" => $em, "company_name" => $client_name, "username" => $this->request->session()->read('Profile.username'), "id" => $did, "path" => $path, "profile_type" => $ut, "place" => 1));
 /*
                                             $from = array('info@'.$path => $setting->mee);
                                             $to = $p;
@@ -151,7 +151,7 @@ class DocumentComponent extends Component
                                     }
                                 } else {
                                     $ut = $this->getprofiletype();
-                                    $Mailer->handleevent("documentcreated", array("site" => $setting->mee,"email" => "roy@trinoweb.com", "company_name" => $client_name, "username" => $this->request->session()->read('Profile.username'), "id" => $did, "path" => $path, "profile_type" => $ut, "place" => 2));
+                                    $Mailer->handleevent("documentcreated", array("site" => $setting->mee,"email" => "super", "company_name" => $client_name, "username" => $this->request->session()->read('Profile.username'), "id" => $did, "path" => $path, "profile_type" => $ut, "place" => 2));
                                 }
 
                             $docus = TableRegistry::get('Documents');

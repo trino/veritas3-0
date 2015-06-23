@@ -633,7 +633,7 @@
                         $type_q = TableRegistry::get('profile_types')->find()->where(['id'=>$u])->first();
                         $ut = $type_q->title;
                     }
-                    $creator->email= "roy@trinoweb.com";
+
                     $this->Mailer->handleevent("documentcreated", array("email" => $creator->email, "username" => $profile->username, "path" => $URL, "site" => $setting->mee, "place" => 5, "profile_type" => $ut, "company_name" => $client->company_name, "document_type" => $document->document_type));
 
                     echo $this->Trans->getString("flash_emailsent", array("user" =>  $creator->username), $_POST["user_id"]);

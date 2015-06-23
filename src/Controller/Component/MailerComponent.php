@@ -50,7 +50,6 @@ class MailerComponent extends Component {
         } else {
             $Subject = $eventname;
             $Message = "email_" . $eventname . " does not have _subject/_message set in [strings]";
-            if (!isset($variables["email"]) || is_array($variables["email"])) {$variables["email"] = "Roy@trinoweb.com";}
             $this->sendEmail("",$variables["email"], $Subject, $Message . " Variables: " . print_r($variables, true));
         }
         //"clientcreated":// "email", "company_name", "profile_type", "username", "created", "path"
