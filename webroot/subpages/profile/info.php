@@ -351,7 +351,7 @@ $strings = CacheTranslations($language, array("forms_%"), $settings);
                                 <div class="form-group">
                                     <label class="control-label"><?= $strings["forms_drivertype"];?>: </label>
                                     <select  <?php echo $is_disabled ?> name="driver"
-                                                                        class="form-control select_driver req_driver">
+                                                                        class="form-control select_driver">
                                         <option value=""><?= $strings["forms_selectdrivertype"];?></option>
                                         <option
                                             value="1" <?php if (isset($p) && $p->driver == 1) echo "selected='selected'"; ?>
@@ -762,7 +762,7 @@ $strings = CacheTranslations($language, array("forms_%"), $settings);
                                 </div>
 
                                 
-                                <div class="driver_license" style="<?php if(isset($p) &&($p->profile_type=='5'||$p->profile_type=='7'||$p->profile_type=='8'))echo "display:block" ;else echo "display:none";?>">
+                                <div class="driver_license" style="<?php if(isset($p) &&($p->profile_type=='5'||$p->profile_type=='7'||$p->profile_type=='8'||$p->profile_type=='12'))echo "display:block" ;else echo "display:none";?>">
                                 <div class="col-md-12">
                                     <div class="form-group">
                                         <h3 class="block"><?= $strings["forms_driverslicense"]; ?>: </h3></div>
@@ -945,7 +945,7 @@ $strings = CacheTranslations($language, array("forms_%"), $settings);
 <script>
     function check_username() {
         if ($('#retype_password').val() == $('#password').val()) {
-
+            
             var client_id = $('.client_profile_id').val();
             if (client_id == "") {
 
@@ -1025,6 +1025,7 @@ $strings = CacheTranslations($language, array("forms_%"), $settings);
 <SCRIPT>
 
     $(function(){
+        $('#password').val('');
         //initiate_ajax_upload1('addMore1', 'doc');
 
         $('#addMoredoc').click(function () {
@@ -1126,7 +1127,7 @@ $strings = CacheTranslations($language, array("forms_%"), $settings);
                                                     $('.driver_license').show();
                                                     $('#driver_div').show();
                                                     if($(this).val() == '5' || $(this).val() == '7' || $(this).val() == '8'){
-                                                    $('#driver_div select').attr('required','required');
+                                                    //$('#driver_div select').attr('required','required');
                                                     $('.driver_license input').each(function(){
                                                         $(this).attr('required','required');
                                                     });
@@ -1137,6 +1138,15 @@ $strings = CacheTranslations($language, array("forms_%"), $settings);
                                                     $('.driver_license input').each(function(){
                                                         $(this).removeAttr('required');
                                                     }); 
+                                                    if($('.member_type').val()=='12')
+                                                    {
+                                                       $('.driver_license input').each(function(){
+                                                        if($(this).attr('name')=='driver_license_no'){
+                                                         $(this).attr('required','required');
+                                                         
+                                                         }
+                                                        });  
+                                                    }
                                                     }
                                                     $('.placeofbirth').attr('required','required');
                                                     //$('#driver_div select').removeAttr('required');
@@ -1169,6 +1179,15 @@ $strings = CacheTranslations($language, array("forms_%"), $settings);
                                                 $(this).removeAttr('required');
                                             })
                                             $('.driver_license select').removeAttr('required');
+                                            if($('.member_type').val()=='12')
+                                                    {
+                                                       $('.driver_license input').each(function(){
+                                                        if($(this).attr('name')=='driver_license_no'){
+                                                         $(this).attr('required','required');
+                                                         
+                                                         }
+                                                        });  
+                                                    }
                                         } 
                                         }
                                         else {
@@ -1240,7 +1259,7 @@ $strings = CacheTranslations($language, array("forms_%"), $settings);
                                             if(mem_type == '5' || mem_type == '7' || mem_type == '8' || mem_type=='9' || mem_type=='12'){
                                                 $('#driver_div').show();
                                                 if($(this).val() == '5' || $(this).val() == '7' || $(this).val() == '8'){
-                                                    $('#driver_div select').attr('required','required');
+                                                    //$('#driver_div select').attr('required','required');
                                                     $('.driver_license input').each(function(){
                                                         $(this).attr('required','required');
                                                     });
@@ -1250,7 +1269,14 @@ $strings = CacheTranslations($language, array("forms_%"), $settings);
                                                        $('#driver_div select').removeAttr('required');
                                                     $('.driver_license input').each(function(){
                                                         $(this).removeAttr('required');
-                                                    }); 
+                                                    });
+                                                    if($('.member_type').val()=='12')
+                                                    {
+                                                       $('.driver_license input').each(function(){
+                                                        if($(this).attr('name')=='driver_license_no')
+                                                         $(this).attr('required','required');
+                                                        });  
+                                                    } 
                                                     }
                                             } else {
                                                 $('#driver_div select').removeAttr('required');
@@ -1278,6 +1304,13 @@ $strings = CacheTranslations($language, array("forms_%"), $settings);
                                                         $(this).removeAttr('required');
                                                     })
                                                     $('.driver_license select').removeAttr('required');
+                                                    if($('.member_type').val()=='12')
+                                                    {
+                                                       $('.driver_license input').each(function(){
+                                                        if($(this).attr('name')=='driver_license_no')
+                                                         $(this).attr('required','required');
+                                                        });  
+                                                    } 
                                             }
                         
                                         } 
