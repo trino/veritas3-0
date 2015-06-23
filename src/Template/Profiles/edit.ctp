@@ -212,9 +212,11 @@
                                         }
 
                                         if($clients && isset($client)){
-                                            echo '<P><P><a href="' . $this->request->webroot . 'clients/quickcontact?Type=emailout&user_id=' . ;
-                                            echo '" class="blue-stripe btn floatleft grey-cascade" style="margin-top:2px;width:75%;">' . $strings["profiles_sendforms"];
-                                            echo ' <i class="icon-doc m-icon-white"></i></a>';
+                                            if (stristr("gordon food service", $client->company_name) || stristr("gfs", $client->company_name)) {
+                                                echo '<P><P><a TITLE="' . $client->company_name . '" href="';
+                                                echo '" onclick="return sendemails();" class="blue-stripe btn floatleft grey-cascade" style="margin-top:2px;width:75%;">' . $strings["profiles_sendforms"];
+                                                echo ' <i class="icon-doc m-icon-white"></i></a>';
+                                            }
                                         }
                                     } elseif (!$profile->Ptype) {
                                         echo "Profile type: " . $profile->profile_type . " is missing";
@@ -658,6 +660,21 @@
 
     });
 </script>
+<SCRIPT>
+    // $this->request->webroot . 'clients/quickcontact?Type=emailout&user_id=' . $profile->id
+    function sendemails() {
+        $.ajax({
+            url: '<?php echo $this->request->webroot;?>clients/quickcontact',
+            data: 'Type=emailout&user_id=' + <?= $profile->id; ?>,
+            type: 'get',
+            success: function (res) {
+                alert(res);
+            }
+        });
+        return false;
+    }
+</SCRIPT>
+
 <style>
     .portlet-body {
         min-height: 250px !important;

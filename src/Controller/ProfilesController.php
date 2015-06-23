@@ -1667,7 +1667,7 @@ public function saveDriver()
         $this->set('clients', $clients_id);
         $clients = explode(",", $clients_id);
         if (count($clients) == 1){
-            $this->set('client', TableRegistry::get('clients')->find()->where(['id' => $clients[0]]));
+            $this->set('client', TableRegistry::get('clients')->find()->where(['id' => $clients[0]])->first());
         }
     }
 

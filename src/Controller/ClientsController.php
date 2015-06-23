@@ -609,6 +609,7 @@
             $Value = false;
             $this->copyGETtoPOST();
             if (isset($_POST['Value'])) {$Value = strtolower($_POST['Value']) == "true"; }
+            $setting = TableRegistry::get('settings')->find()->first();
             switch ($_POST["Type"]) {
                 case "enabledocument":
                     $this->setproductstatus($_POST["ClientID"], $_POST["ProductID"], $Value);
@@ -625,7 +626,6 @@
                     $URL = LOGIN . "documents/view/" . $_POST["client_id"] . "/" . $_POST["doc_id"] . "?type=" . $_POST["form"];
 
                     //echo print_r($profile, true) . "<p>" .  print_r($creator, true)  . "<p>" .  print_r($_POST, true)  . "<P>" . $URL;
-                    $setting = TableRegistry::get('settings')->find()->first();
 
                     $ut = '';
                     if ($profile->profile_type) {
@@ -637,6 +637,12 @@
                     $this->Mailer->handleevent("documentcreated", array("email" => $creator->email, "username" => $profile->username, "path" => $URL, "site" => $setting->mee, "place" => 5, "profile_type" => $ut, "company_name" => $client->company_name, "document_type" => $document->document_type));
 
                     echo $this->Trans->getString("flash_emailsent", array("user" =>  $creator->username), $_POST["user_id"]);
+                    break;
+                case "emailout"://user_id
+                    $profile = $this->loadprofile($_POST["user_id"]);
+                    $URL = LOGIN . "application/uniform.php?user_id=" . $profile->id . "&form=";
+                    $this->Mailer->handleevent("gfs", array("email" => $profile->email, "path1" => $URL . 4, "path2" => $URL . 9, "site" => $setting->mee));
+                    echo $this->Trans->getString("flash_emailwassent");
                     break;
                 default:
                     echo $_POST["Type"] . " is not a handled AJAX type (ClientsController - HandleAJAX)";
