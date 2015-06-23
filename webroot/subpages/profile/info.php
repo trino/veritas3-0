@@ -1140,11 +1140,17 @@ $strings = CacheTranslations($language, array("forms_%"), $settings);
                                                     if($('.member_type').val()=='12')
                                                     {
                                                        $('.driver_license input').each(function(){
-                                                        if($(this).attr('name')=='driver_license_no'){
+                                                        
                                                          $(this).attr('required','required');
                                                          
-                                                         }
-                                                        });  
+                                                         
+                                                        }); 
+                                                        $('.driver_license select').each(function(){
+                                                        if($(this).attr('name')=='driver_province')
+                                                         $(this).attr('required','required');
+                                                         
+                                                         
+                                                        });
                                                     }
                                                     }
                                                     $('.placeofbirth').attr('required','required');
@@ -1181,11 +1187,18 @@ $strings = CacheTranslations($language, array("forms_%"), $settings);
                                             if($('.member_type').val()=='12')
                                                     {
                                                        $('.driver_license input').each(function(){
-                                                        if($(this).attr('name')=='driver_license_no'){
+                                                        
                                                          $(this).attr('required','required');
                                                          
-                                                         }
-                                                        });  
+                                                         
+                                                        }); 
+                                                        $('.driver_license select').each(function(){
+                                                        if($(this).attr('name')=='driver_province')
+                                                         $(this).attr('required','required');
+                                                         
+                                                         
+                                                        }); 
+                                                        // $('#driver_div select').attr('required','required'); 
                                                     }
                                         } 
                                         }
@@ -1275,7 +1288,8 @@ $strings = CacheTranslations($language, array("forms_%"), $settings);
                                                        $('.driver_license input').each(function(){
                                                         if($(this).attr('name')=='driver_license_no')
                                                          $(this).attr('required','required');
-                                                        });  
+                                                        }); 
+                                                         
                                                     } 
                                                     }
                                             } else {
@@ -1310,6 +1324,12 @@ $strings = CacheTranslations($language, array("forms_%"), $settings);
                                                         if($(this).attr('name')=='driver_license_no')
                                                          $(this).attr('required','required');
                                                         });  
+                                                        $('.driver_license select').each(function(){
+                                                        if($(this).attr('name')=='driver_province')
+                                                         $(this).attr('required','required');
+                                                         
+                                                         
+                                                        });
                                                     } 
                                             }
                         
