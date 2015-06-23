@@ -18,19 +18,6 @@
         $logo = "";//default logo here
     }
 
-
-    function printoption($option, $selected, $value = "")
-    {
-        $tempstr = "";
-        if ($option == $selected) {
-            $tempstr = " selected";
-        }
-        if (strlen($value) > 0) {
-            $value = " value='" . $value . "'";
-        }
-        echo '<option' . $value . $tempstr . ">" . $option . "</option>";
-    }
-
     function printoption2($value, $selected = "", $option)
     {
         $tempstr = "";
@@ -40,20 +27,6 @@
         echo '<OPTION VALUE="' . $value . '"' . $tempstr . ">" . $option . "</OPTION>";
     }
 
-    function printoptions($name, $valuearray, $selected = "", $optionarray, $isdisabled = "", $isrequired = false)
-    {
-        if ($name == 'profile_type') {
-            echo '<SELECT ' . $isdisabled . ' name="' . $name . '" class="form-control member_type req_driver"';
-        } else {
-            echo '<SELECT ' . $isdisabled . ' name="' . $name . '" class="form-control req_driver"';
-        }
-        echo '>';
-
-        for ($temp = 0; $temp < count($valuearray); $temp += 1) {
-            printoption2($valuearray[$temp], $selected, $optionarray[$temp]);
-        }
-        echo '</SELECT>';
-    }
 
     function printprovinces($name, $selected = "", $isdisabled = "", $isrequired = false, $Title = "Province")
     {

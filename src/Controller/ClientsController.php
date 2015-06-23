@@ -640,8 +640,8 @@
                     break;
                 case "emailout"://user_id
                     $profile = $this->loadprofile($_POST["user_id"]);
-                    $URL = LOGIN . "application/uniform.php?user_id=" . $profile->id . "&form=";
-                    $this->Mailer->handleevent("gfs", array("email" => $profile->email, "path1" => $URL . 4, "path2" => $URL . 9, "site" => $setting->mee));
+                    $URL = LOGIN . "application/index.php?user_id=" . $profile->id . "&form=";
+                    $this->Mailer->handleevent("gfs", array("email" => $profile->email, "path1" => $URL . 4, "path2" => $URL . 9, "site" => $setting->mee, "username" => $this->request->session()->read('Profile.username')));
                     echo $this->Trans->getString("flash_emailwassent");
                     break;
                 default:

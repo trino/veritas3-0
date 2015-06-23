@@ -183,6 +183,10 @@ if (count($_POST) > 0) {
                 $form = first("SELECT * FROM subdocuments WHERE id = " . $formID);
                 echo '<LI><A HREF="' . getq("form=" . $formID) . '">'. $form[$fieldname] . '</A></LI>';
             }
+            echo '<LI><A HREF="30days.php">30 days</A></LI>';
+            echo '<LI><A HREF="60days.php">60 days</A></LI>';
+            echo '<LI><A HREF="apply.php">Apply</A></LI>';
+            echo '<LI><A HREF="register.php">Register</A></LI>';
             echo "</UL>";
     }
 }

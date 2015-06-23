@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 23, 2015 at 09:04 PM
+-- Generation Time: Jun 23, 2015 at 09:42 PM
 -- Server version: 5.6.17
 -- PHP Version: 5.5.12
 
@@ -39,7 +39,7 @@ CREATE TABLE IF NOT EXISTS `strings` (
 --
 
 INSERT INTO `strings` (`ID`, `Name`, `English`, `French`) VALUES
-(1, 'Date', '1435066642', '<-- This is used by the system to auto-update'),
+(1, 'Date', '1435086283', '<-- This is used by the system to auto-update'),
 (2, 'dashboard_affirmative', 'Yes', 'Oui'),
 (3, 'dashboard_negative', 'No', 'Non'),
 (4, 'dashboard_selectall', 'Select All', 'Tout Sélectionner'),
@@ -685,7 +685,7 @@ INSERT INTO `strings` (`ID`, `Name`, `English`, `French`) VALUES
 (654, 'uniform_pleaseselect', 'Please select a form', 'S''il vous plaît sélectionner un formulaire'),
 (655, 'profiles_sendforms', 'Send forms via email', 'Envoyer par e-mail les formes'),
 (656, 'email_gfs_subject', 'Please fill out these forms', ''),
-(657, 'email_gfs_message', '<A HREF="%path1%">1</A> and <A HREF="%path2%">2</A><BR>\r\n<BR>\r\nRegards,<BR>\r\nThe %site% team', ''),
+(657, 'email_gfs_message', '%username% has requested that you fill out these forms at your earliest convenience<BR>\n<A HREF="%path1%">Consent</A> and <A HREF="%path2%">Letter of experience</A><BR>\n<BR>\nRegards,<BR>\nThe %site% team', ''),
 (658, 'flash_emailwassent', 'The forms have been sent out', 'Les formulaires ont été envoyés');
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

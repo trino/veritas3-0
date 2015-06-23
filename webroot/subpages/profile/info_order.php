@@ -7,12 +7,13 @@
      }
 
     $getProfileType = $this->requestAction('profiles/getProfileType/' . $this->Session->read('Profile.id'));
+    $profiletypes = $this->requestAction('profiles/getProfileTypes/' . $language);
     $sidebar = $this->requestAction("settings/all_settings/" . $this->request->session()->read('Profile.id') . "/sidebar");
     $strings2 = CacheTranslations($language, array("info_%", "profiles_profiletype"), $settings, False);
 
     function printoption($option, $selected, $value = ""){
         $tempstr = "";
-        if ($option == $selected) {$tempstr = " selected";}
+        if ($option == $selected || $value == $selected) {$tempstr = " selected";}
         if (strlen($value) > 0) {$value = " value='" . $value . "'";}
         echo '<option' . $value . $tempstr . ">" . $option . "</option>";
     }
@@ -34,7 +35,6 @@
     function printprovinces($name, $selected = "", $isdisabled = "disabled='disabled'"){
         printoptions($name,getprovinces("Acronyms"), $selected, getprovinces(""), $isdisabled);
     }
-
 ?>
 
 <div>
@@ -71,26 +71,15 @@
                                     <label class="control-label"><?= $strings2["profiles_profiletype"]; ?>:</label>
 
                                     <select name="profile_type" class="form-control member_type required" disabled="disabled">
-                                        <option
-                                            value="5" <?php if (isset($p) && $p->profile_type == 5) { ?> selected="selected" <?php }?>>
-                                            Driver
-                                        </option>
-                                        <option
-                                            value="7" <?php if (isset($p) && $p->profile_type == 7) { ?> selected="selected" <?php }?>>
-                                            Owner Operator
-                                        </option>
-                                        <option
-                                            value="8" <?php if (isset($p) && $p->profile_type == 8) { ?> selected="selected" <?php }?>>
-                                            Owner Driver
-                                        </option>
-                                        <option
-                                            value="11" <?php if (isset($p) && $p->profile_type == 11) {?> selected="selected" <?php }?>>
-                                            Employee
-                                        </option>
-                                        <option
-                                            value="12" <?php if (isset($p) && $p->profile_type == 12) {?> selected="selected" <?php }?>>
-                                            Sales
-                                        </option>
+                                        <?php
+                                            foreach($profiletypes as $Key => $Value){
+                                                if(!strpos($Key, ".")){
+                                                    printoption($Value, $p->profile_type, $Key);
+                                                }
+                                                //
+
+                                            }
+                                        ?>
                                     </select>
 
                                 </div>

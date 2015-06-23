@@ -211,9 +211,9 @@
                                             }
                                         }
 
-                                        if($clients && isset($client)){
+                                        if($clients && isset($client) && $profile->email){
                                             if (stristr("gordon food service", $client->company_name) || stristr("gfs", $client->company_name)) {
-                                                echo '<P><P><a TITLE="' . $client->company_name . '" href="';
+                                                echo '<P><P><a href="';
                                                 echo '" onclick="return sendemails();" class="blue-stripe btn floatleft grey-cascade" style="margin-top:2px;width:75%;">' . $strings["profiles_sendforms"];
                                                 echo ' <i class="icon-doc m-icon-white"></i></a>';
                                             }
@@ -669,6 +669,9 @@
             type: 'get',
             success: function (res) {
                 alert(res);
+            },
+            failure: function (res){
+                alert("Error: " + res);
             }
         });
         return false;
