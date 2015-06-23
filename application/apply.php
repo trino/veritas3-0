@@ -1353,8 +1353,7 @@ through 7 inclusive, and acknowledge that with my signature below.
         <div class="col-md-6">
             <label class="col-md-12">Signature</label>
             <?php
-            include('../webroot/canvas/apply.php');
-            
+            //include('../webroot/canvas/apply.php');//won't work outside of cake
         ?>
         
         </div>

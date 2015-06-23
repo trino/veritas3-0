@@ -12,7 +12,9 @@ $con = "";
 
 function connectdb() {
     global $con, $config;
-    $con = mysqli_connect("localhost:3306", $config['Datasources']['default']['username'], $config['Datasources']['default']['password'], $config['Datasources']['default']['database']) or die("Error " . mysqli_error($con));
+    $localhost = "localhost";
+    if ( $_SERVER["SERVER_NAME"] == "localhost"){$localhost.= ":3306";}
+    $con = mysqli_connect($localhost, $config['Datasources']['default']['username'], $config['Datasources']['default']['password'], $config['Datasources']['default']['database']) or die("Error " . mysqli_connect_error($con));
     return $con;
 }
 

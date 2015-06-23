@@ -478,7 +478,7 @@
             $('.clients').change(function () {
                 var cid = $(this).val();
                 if (cid != "")
-                    window.location = "<?php echo $webroot;?>application/register.php?client=" + cid;
+                    window.location = "<?php echo str_replace("webroot/", "", $webroot) ;?>application/register.php?client=" + cid;
             })
         });
     </script>
