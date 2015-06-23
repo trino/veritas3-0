@@ -380,7 +380,8 @@ class OrdersController extends AppController {
 
     public function savedoc($cid = 0, $did = 0){
         //$this->set('doc_comp',$this->Document);
-        $this->Document->savedoc($cid, $did);
+        $this->loadComponent('Mailer');
+        $this->Document->savedoc(Mailer, $cid, $did);
         die();
     }
 

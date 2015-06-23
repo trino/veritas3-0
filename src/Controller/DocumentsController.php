@@ -444,10 +444,10 @@ class DocumentsController extends AppController{
 
     public function savedoc($cid = 0, $did = 0) {
         $this->set('doc_comp',$this->Document);
-
+        $this->loadComponent('Mailer');
         //$this->Mailer->handleevent("documentcreatedb", array("site" => "","email" => "roy", "company_name" => "", "username" => $this->request->session()->read('Profile.username'), "id" => $did, "path" => "", "profile_type" => ""));
 
-        $this->Document->savedoc($cid,$did);
+        $this->Document->savedoc(Mailer, $cid,$did);
         die();
     }
 

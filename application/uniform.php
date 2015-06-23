@@ -7,6 +7,9 @@ $AllowUploads = ' style="display: none"';
 $doback = true;
 $dosubmit = true;
 
+$language = get("language", "English");
+$settings = array();
+
 function offsettime($value, $period = "minutes", $date = "", $format = "Y-m-d H:i:s"){
     if (!$date) {$date = date($format);}
     $newdate= date_create($date);
@@ -87,57 +90,64 @@ function converge($array){
     return $array;
 }
 
+function AJAX($Query){
+    $URL =  "http://" . $_SERVER["SERVER_NAME"].$_SERVER["REQUEST_URI"];
+    $Q = strpos($URL, "?");
+    if($Q){$URL = substr($URL, 0, $Q);}
+    $URL = str_replace("application/uniform.php", "", $URL);//must be updated to the current path of the file
+    return file_get_contents($URL . $Query );
+}
+
 if (count($_POST) > 0) {
+    $strings = CacheTranslations($language, array("uniform_%", "addorder_back"), $settings);
     includeCSS("login");
     $_POST = converge($_POST);
-    ?>
-        <div class="logo"></div>
-        <div class="content" style="width:60%">
-            Thank you for your submission!<P></P>
-            <?php
-            switch ($_GET["form"]) {
-                case 4:////offence, date_of_sentence, location go into consent_form_criminal, then unset them
-                    $offences = $_POST["offence"];
-                    $date_of_sentences = $_POST["date_of_sentence"];
-                    $locations = $_POST["location"];
-                    unset($_POST["offence"]);
-                    unset($_POST["date_of_sentence"]);
-                    unset($_POST["location"]);
-                    break;
-            }
+    echo '<div class="logo"></div><div class="content" style="width:60%">';
 
-            $dosubmit = false;
-            $client = first("SELECT * FROM clients WHERE company_name LIKE 'GFS%' OR company_name LIKE 'Gordon%'");//Find gordon food services
-            $userID = get("user_id", 81);//TEST DATA
-            $clientID = $client["id"];
-            $Execute = true;//False = test mode
-            $query = constructsubdoc($_POST, $_GET["form"], $userID, $clientID, 0, $Execute);
-            if($Execute) {
-                //echo "<P>Document ID:" . $query . "<P>";
-                switch ($_GET["form"]) {
-                    case 4:////offence, date_of_sentence, location go into consent_form_criminal
-                        $data = array("consent_form_id" => mysqli_insert_id($con));//might use $query instead
-                        foreach($offences as $ID => $offense){
-                            $data["offence"] = $offense;
-                            $data["date_of_sentence"] = $date_of_sentences[$ID];
-                            $data["location"] = $locations[$ID];
-                            insertdb($con, "consent_form_criminal", $data, "", $Execute);
-                        }
-                        break;
+    switch ($_GET["form"]) {
+        case 4:////offence, date_of_sentence, location go into consent_form_criminal, then unset them
+            $offences = $_POST["offence"];
+            $date_of_sentences = $_POST["date_of_sentence"];
+            $locations = $_POST["location"];
+            unset($_POST["offence"]);
+            unset($_POST["date_of_sentence"]);
+            unset($_POST["location"]);
+            break;
+    }
+
+    $dosubmit = false;
+    if(isset($_GET["client_id"])){
+        $clientID = $_GET["client_id"];
+        $client = first("SELECT * FROM clients WHERE id = " . $clientID);
+    } else {
+        $client = first("SELECT * FROM clients WHERE company_name LIKE 'GFS%' OR company_name LIKE 'Gordon%'");//Find gordon food services
+        $clientID = $client["id"];
+    }
+    $userID = get("user_id", 81);//TEST DATA
+    $Execute = true;//False = test mode
+    $query = constructsubdoc($_POST, $_GET["form"], $userID, $clientID, 0, $Execute);
+    if($Execute) {
+        switch ($_GET["form"]) {
+            case 4:////offence, date_of_sentence, location go into consent_form_criminal
+                $data = array("consent_form_id" => mysqli_insert_id($con));//might use $query instead
+                foreach($offences as $ID => $offense){
+                    $data["offence"] = $offense;
+                    $data["date_of_sentence"] = $date_of_sentences[$ID];
+                    $data["location"] = $locations[$ID];
+                    insertdb($con, "consent_form_criminal", $data, "", $Execute);
                 }
-            } else {
-                echo "<P>" . $query . "<P>";
-            }
-            ?>
+                break;
+        }
 
-    <?php
+        echo AJAX("clients/quickcontact?Type=email&user_id=" . $_POST["user_id"] . "&doc_id=" . $query . "&form=" . $_GET["form"] . "&client_id=" . $clientID);
+    } else {
+        echo "<P>" . $query . "<P>";
+    }
 } else {
     includeCSS("login");
     $is_disabled = '';
     if (isset($disabled)){ $is_disabled = 'disabled="disabled"';}
-    $language = get("language", "English");
-    $settings = array();
-    $strings = CacheTranslations($language, array("orders_%", "forms_%", "documents_%", "profiles_null", "clients_addeditimage", "addorder_%"), $settings);
+    $strings = CacheTranslations($language, array("orders_%", "forms_%", "documents_%", "profiles_null", "clients_addeditimage", "addorder_%", "uniform_%"), $settings);
     echo '<FORM ACTION="" METHOD="POST"><div class="logo"></div> <div class="content" style="width:60%">';
 
     $ignore = array("language", "form");
@@ -165,14 +175,15 @@ if (count($_POST) > 0) {
         break;
         default:
             $doback = false;
-            ?>
-                    Please select a form:
-                    <UL>
-                        <LI><A HREF="<?= getq("form=9"); ?>">Letter of Experience</A></LI>
-                        <LI><A HREF="<?= getq("form=4"); ?>">Consent</A></LI>
-                    </UL>
-
-            <?php
+            echo $strings["uniform_pleaseselect"] . ":<UL>";
+            $forms = array(4,9);
+            $fieldname = "title";
+            if ($language != "English" && $language != "Debug"){ $fieldname.=$language;}
+            foreach ($forms as $formID){
+                $form = first("SELECT * FROM subdocuments WHERE id = " . $formID);
+                echo '<LI><A HREF="' . getq("form=" . $formID) . '">'. $form[$fieldname] . '</A></LI>';
+            }
+            echo "</UL>";
     }
 }
 
@@ -196,14 +207,14 @@ function getq($data){
 </SCRIPT>
 <?php if($doback){
     if ($dosubmit){ ?>
-        <INPUT TYPE="SUBMIT" class="btn btn-info" STYLE="float: right;">
+        <INPUT TYPE="SUBMIT" class="btn btn-info" VALUE="<?= $strings["forms_submit"]; ?>" STYLE="float: right;">
         <div class="clearfix"></div>
     <?php } ?>
     <DIV align="center"><A HREF="uniform.php<?php
         if (isset($_GET["user_id"])){
             echo "?user_id=" . $_GET["user_id"];
         }
-    ?>">Go Back</A></DIV>
-<?php } ?>
+        echo '">' . $strings["addorder_back"] . "</A></DIV>";
+} ?>
 </div></form>
 </BODY>

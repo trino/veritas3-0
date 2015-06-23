@@ -210,6 +210,8 @@
                                                 }
                                             }
                                         }
+
+                                        echo $clients;
                                     } elseif (!$profile->Ptype) {
                                         echo "Profile type: " . $profile->profile_type . " is missing";
                                     }

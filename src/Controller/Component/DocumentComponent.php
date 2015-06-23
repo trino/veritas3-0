@@ -9,7 +9,7 @@ use Cake\View\Helper\SessionHelper;
 
 class DocumentComponent extends Component
 {
-    public function savedoc($cid = 0, $did = 0)
+    public function savedoc($Mailer, $cid = 0, $did = 0)
         {
              $controller = $this->_registry->getController();
               $settings = TableRegistry::get('settings');
@@ -107,8 +107,7 @@ class DocumentComponent extends Component
                         ->where(['id' => $did])
                         ->execute();
                     //$this->Flash->success('Client saved successfully.');
-                 
-                    
+
                     if($arr['draft']==0) {
                                 $path = $this->getUrl();
                                 $get_client = TableRegistry::get('Clients');
@@ -136,7 +135,8 @@ class DocumentComponent extends Component
                                                 $ut = '';
                                             }
 //$arr['document_type'] = urldecode($_GET['document']);
-                                            $this->Mailer->handleevent("documentcreated", array("site" => $setting->mee,"email" => $p, "company_name" => $client_name, "username" => $this->request->session()->read('Profile.username'), "id" => $did, "path" => $path, "profile_type" => $ut, "place" => 1));
+
+                                            $Mailer->handleevent("documentcreated", array("site" => $setting->mee,"email" => $p, "company_name" => $client_name, "username" => $this->request->session()->read('Profile.username'), "id" => $did, "path" => $path, "profile_type" => $ut, "place" => 1));
 /*
                                             $from = array('info@'.$path => $setting->mee);
                                             $to = $p;
@@ -151,7 +151,7 @@ class DocumentComponent extends Component
                                     }
                                 } else {
                                     $ut = $this->getprofiletype();
-                                    $this->Mailer->handleevent("documentcreated", array("site" => $setting->mee,"email" => "roy@trinoweb.com", "company_name" => $client_name, "username" => $this->request->session()->read('Profile.username'), "id" => $did, "path" => $path, "profile_type" => $ut, "place" => 2));
+                                    $Mailer->handleevent("documentcreated", array("site" => $setting->mee,"email" => "roy@trinoweb.com", "company_name" => $client_name, "username" => $this->request->session()->read('Profile.username'), "id" => $did, "path" => $path, "profile_type" => $ut, "place" => 2));
                                 }
 
                             $docus = TableRegistry::get('Documents');
@@ -225,7 +225,7 @@ class DocumentComponent extends Component
                                   }
                                   //$path = 'https://isbmeereports.com/documents/view/'.$cid;
 
-                                $this->Mailer->handleevent("documentcreated", array("site" => $setting->mee,"email" => $p, "company_name" => $client_name, "username" => $uq->username, "id" => $did, "path" => $path, "profile_type" => $ut, "place" => 3));
+                                $Mailer->handleevent("documentcreated", array("site" => $setting->mee,"email" => $p, "company_name" => $client_name, "username" => $uq->username, "id" => $did, "path" => $path, "profile_type" => $ut, "place" => 3));
 /*
                                 $from = array('info@'.$path => $setting->mee);
                                 $to = $p;
@@ -348,7 +348,7 @@ class DocumentComponent extends Component
             
                                         //$controller->Mailer->sendEmail($from, $to, $sub, $msg);
 */
-                                        $this->Mailer->handleevent("documentcreated", array("site" => $setting->mee,"email" => $p, "company_name" => $client_name, "username" => $this->request->session()->read('Profile.username'), "id" => $did, "path" => $path, "profile_type" => $ut, "place" => 4));
+                                        $Mailer->handleevent("documentcreated", array("site" => $setting->mee,"email" => $p, "company_name" => $client_name, "username" => $this->request->session()->read('Profile.username'), "id" => $did, "path" => $path, "profile_type" => $ut, "place" => 4));
                                     }
                                 }
                             }

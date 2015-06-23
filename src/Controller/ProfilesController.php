@@ -788,6 +788,7 @@ class ProfilesController extends AppController{
             $this->set('profile', $profile);
             $this->set('disabled', 1);
             $this->set('id', $id);
+            $this->loadclients($profile->id);
         }
         $this->render("edit");
     }
@@ -1657,6 +1658,17 @@ public function saveDriver()
         $this->set('uid', $id);
 
         $this->set('products', TableRegistry::get('product_types')->find()->where(['id <>' => 7]));
+        $this->loadclients($profile->id);
+
+    }
+
+    function loadclients($userid){
+        $clients_id = $this->Settings->getAllClientsId($userid);
+        $this->set('clients', $clients_id);
+        $clients = explode(",", $clients_id);
+        if (count($clients) == 1){
+            $this->set('client', TableRegistry::get('clients')->find()->where(['id' => $clients[0]]));
+        }
     }
 
     function changePass($id) {
@@ -2779,8 +2791,7 @@ public function saveDriver()
            
             
     }
-    public function loadprofile($UserID, $fieldname = "id")
-    {
+    public function loadprofile($UserID, $fieldname = "id") {
         $table = TableRegistry::get("profiles");
         $results = $table->find('all', array('conditions' => array($fieldname => $UserID)))->first();
         if (is_object($results)) {

@@ -143,10 +143,11 @@ class SettingsComponent extends Component
             {
                 foreach($qs as $k=>$q)
                 {
-                    if(count($qs)==$k+1)
+                    if(count($qs)==$k+1) {
                         $client_ids .= $q->id;
-                    else
-                        $client_ids .= $q->id.",";
+                    }else {
+                        $client_ids .= $q->id . ",";
+                    }
                 }
             }
                 return $client_ids;

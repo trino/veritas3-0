@@ -8,14 +8,14 @@
     use Cake\Network\Email\Email;
     use App\Controller\OrdersController;
     
-    class ClientsController extends AppController{
+    class ClientsController extends AppController {
 
         public $paginate = [
             'limit' => 10,
             'order' => ['id' => 'desc']
         ];
 
-        public function initialize(){
+        public function initialize() {
             parent::initialize();
             $this->loadComponent('Settings');
             $this->loadComponent('Document');
@@ -28,24 +28,22 @@
             }
 
         }
-        function getclient_id($id)
-        {
-            $client = TableRegistry::get('clients')->find()->where(['id'=>'17'])->first();
+
+        function getclient_id($id) {
+            $client = TableRegistry::get('clients')->find()->where(['id' => '17'])->first();
             $pid = $client->profile_id;
-            $pids = explode(",",$pid);
-            if(in_array($id,$pids))
-            {
-              $q= '1';
-           
-            }
-            else
+            $pids = explode(",", $pid);
+            if (in_array($id, $pids)) {
+                $q = '1';
+
+            } else
                 $q = 0;
-              $this->response->body($q);
+            $this->response->body($q);
             return $this->response;
-             die();
+            die();
         }
 
-        function upload_img($id = ""){
+        function upload_img($id = "") {
             if (isset($_FILES['myfile']['name']) && $_FILES['myfile']['name']) {
                 $arr = explode('.', $_FILES['myfile']['name']);
                 $ext = end($arr);
@@ -75,7 +73,7 @@
             die();
         }
 
-        function upload_all($id = ""){
+        function upload_all($id = "") {
             if (isset($_FILES['myfile']['name']) && $_FILES['myfile']['name']) {
                 $arr = explode('.', $_FILES['myfile']['name']);
                 $ext = end($arr);
@@ -106,8 +104,7 @@
             die();
         }
 
-        function removefiles($file)
-        {
+        function removefiles($file) {
             if (isset($_POST['id']) && $_POST['id'] != 0) {
                 $this->loadModel("ClientDocs");
                 $this->ClientDocs->deleteAll(['id' => $_POST['id']]);
@@ -117,7 +114,7 @@
             die();
         }
 
-        public function index(){
+        public function index() {
             if (isset($_GET['flash'])) {
                 $setting = $this->Settings->get_permission($this->request->session()->read('Profile.id'));
 //           debug($setting);
@@ -131,16 +128,16 @@
             }
             if (isset($_GET['draft'])) {
                 $draft = 1;
-            }else {
+            } else {
                 $draft = 0;
             }
             $querys = TableRegistry::get('Clients');
-            $query = $querys->find()->where(['drafts'=>$draft]);
+            $query = $querys->find()->where(['drafts' => $draft]);
             $query = $querys->find();
             $this->set('client', $this->appendattachments($this->paginate($query)));
         }
 
-        function search(){
+        function search() {
             $setting = $this->Settings->get_permission($this->request->session()->read('Profile.id'));
             if ($setting->client_list == 0) {
                 $this->Flash->error($this->Trans->getString("flash_permissions"));
@@ -148,12 +145,12 @@
             }
             if (isset($_GET['draft'])) {
                 $draft = 1;
-            }else {
+            } else {
                 $draft = 0;
             }
             if (isset($_GET['search'])) {
                 $search = $_GET['search'];
-            }else {
+            } else {
                 $search = "";
             }
             $searchs = strtolower($search);
@@ -177,7 +174,7 @@
             $this->render('index');
         }
 
-        public function view($id = null){
+        public function view($id = null) {
             $setting = $this->Settings->get_permission($this->request->session()->read('Profile.id'));
 
             if ($setting->client_list == 0) {
@@ -199,7 +196,7 @@
          *
          * @return void
          */
-        public function assignContact($contact, $id, $status){
+        public function assignContact($contact, $id, $status) {
             $querys = TableRegistry::get('Clients');
             $query = $querys->find()->where(['id' => $id])->first();
             if ($status == 'yes') {
@@ -220,7 +217,7 @@
                             } else {
                                 if ($arr['contact_id'] == '') {
                                     $arr['contact_id'] = $a;
-                                }else {
+                                } else {
                                     $arr['contact_id'] = $arr['contact_id'] . ',' . $a;
                                 }
                             }
@@ -240,7 +237,7 @@
             die();
         }
 
-        public function assignProfile($profile, $id, $status){
+        public function assignProfile($profile, $id, $status) {
             $querys = TableRegistry::get('Clients');
             $query = $querys->find()->where(['id' => $id])->first();
 
@@ -254,7 +251,7 @@
                 $arr['profile_id'] = '';
                 if ($query->profile_id == '') {
                     die();
-                }else {
+                } else {
                     $array = explode(',', $query->profile_id);
                     if ($array) {
                         foreach ($array as $a) {
@@ -263,7 +260,7 @@
                             } else {
                                 if ($arr['profile_id'] == '') {
                                     $arr['profile_id'] = $a;
-                                }else {
+                                } else {
                                     $arr['profile_id'] = $arr['profile_id'] . ',' . $a;
                                 }
                             }
@@ -286,7 +283,7 @@
             die();
         }
 
-        public function add(){
+        public function add() {
             $setting = $this->Settings->get_permission($this->request->session()->read('Profile.id'));
             $settings = $this->Settings->get_settings();
             $this->set('settings', $settings);
@@ -305,7 +302,7 @@
                 foreach ($_POST['recruiter_id'] as $ri) {
                     if ($count == 1) {
                         $rec = $ri;
-                    }else {
+                    } else {
                         $rec = $rec . ',' . $ri;
                     }
                     $count++;
@@ -319,7 +316,7 @@
                 foreach ($_POST['contact_id'] as $ri) {
                     if ($count == 1) {
                         $rec = $ri;
-                    }else {
+                    } else {
                         $rec = $rec . ',' . $ri;
                     }
                     $count++;
@@ -348,8 +345,8 @@
             $this->render('add');
         }
 
-        public function saveClients($id = 0){
-            if (isset($_POST["image"]) && !$_POST["image"]){
+        public function saveClients($id = 0) {
+            if (isset($_POST["image"]) && !$_POST["image"]) {
                 unset($_POST["image"]);
             }
 
@@ -383,7 +380,7 @@
                 foreach ($_POST['contact_id'] as $ri) {
                     if ($count == 1) {
                         $rec = $ri;
-                    }else {
+                    } else {
                         $rec = $rec . ',' . $ri;
                     }
                     $count++;
@@ -414,12 +411,11 @@
                     $client = $clients->newEntity($_POST);
 
 
-
                     if ($this->request->is('post')) {
                         if ($clients->save($client)) {
                             $arr_s['client_id'] = $client->id;
 
-                            foreach($sub_sup_count as $ssc){
+                            foreach ($sub_sup_count as $ssc) {
                                 $arr_s['sub_id'] = $ssc->id;
                                 $sub_c = TableRegistry::get('client_sub_order');
                                 $sc = $sub_c->newEntity($arr_s);
@@ -456,7 +452,7 @@
                             }
                             if (isset($_POST['drafts']) && $_POST['drafts'] == '1') {
                                 $this->Flash->success($this->Trans->getString("flash_clientsaveddraft"));
-                            }else {
+                            } else {
                                 $this->Flash->success($this->Trans->getString("flash_clientsaved"));
                             }
                             echo $client->id;
@@ -473,8 +469,7 @@
                                 $type_q = $type_query->find()->where(['id' => $u])->first();
                                 $ut = $type_q->title;
                                 $username = $uq->username;
-                            }
-                            else{
+                            } else {
                                 $username = '';
                                 $ut = '';
                             }
@@ -522,23 +517,23 @@
                         ->execute();
                     $this->Flash->success($this->Trans->getString("flash_clientsaved"));
                     //if ($_POST['division'] != "") {
-                        $this->overwritedivisions($id, $_POST['division']);
+                    $this->overwritedivisions($id, $_POST['division']);
 
-                        /*
-                        $division = nl2br($_POST['division']);
-                        $dd = explode("<br />", $division);
-                        $divisions['client_id'] = $id;
-                        $client_division = TableRegistry::get('client_divison');
-                        $client_division->deleteAll(array('client_id' => $id));
-                        foreach ($dd as $d) {
-                            $divisions['title'] = trim($d);
-                            $divs = TableRegistry::get('client_divison');
-                            $div = $divs->newEntity($divisions);
-                            $divs->save($div);
-                            unset($div);
-                        }*/
+                    /*
+                    $division = nl2br($_POST['division']);
+                    $dd = explode("<br />", $division);
+                    $divisions['client_id'] = $id;
+                    $client_division = TableRegistry::get('client_divison');
+                    $client_division->deleteAll(array('client_id' => $id));
+                    foreach ($dd as $d) {
+                        $divisions['title'] = trim($d);
+                        $divs = TableRegistry::get('client_divison');
+                        $div = $divs->newEntity($divisions);
+                        $divs->save($div);
+                        unset($div);
+                    }*/
 
-                        //die();
+                    //die();
 
                     //}
                     $this->loadModel('ClientDocs');
@@ -561,10 +556,10 @@
             die();
         }
 
-        function overwritedivisions($id, $Divisions){
+        function overwritedivisions($id, $Divisions) {
             $Table = TableRegistry::get('client_divison');
             $division = trim(nl2br(str_replace(",", "<br />", $Divisions)));
-            if(!$division){//is empty, delete them all
+            if (!$division) {//is empty, delete them all
                 $Table->deleteAll(array('client_id' => $id));
             } else {//isn't empty
                 $dd = explode("<br />", $division);
@@ -574,8 +569,8 @@
                 //overwrite existing divisions
                 $divisionlist = $Table->find()->where(['client_id' => $id]);
                 foreach ($divisionlist as $div) {
-                    if($currentdivision < $ddcount){//has a division of this index, use it
-                        $dd[$currentdivision]=trim($dd[$currentdivision]);
+                    if ($currentdivision < $ddcount) {//has a division of this index, use it
+                        $dd[$currentdivision] = trim($dd[$currentdivision]);
                         $Table->query()->update()->set(['title' => $dd[$currentdivision]])->where(['id' => $div->id])->execute();
                     } else {//doesn't have a new division of this index, delete it
                         $Table->deleteAll(array("id" => $div->id));
@@ -583,8 +578,8 @@
                     $currentdivision++;
                 }
                 //there are more new divisions than existing divisions, save the new ones
-                for($temp=$currentdivision; $temp<$ddcount; $temp++){
-                    $dd[$currentdivision]=trim($dd[$currentdivision]);
+                for ($temp = $currentdivision; $temp < $ddcount; $temp++) {
+                    $dd[$currentdivision] = trim($dd[$currentdivision]);
                     $Table->query()->insert(['client_id', 'title'])->values(['client_id' => $id, 'title' => $dd[$temp]])->execute();
                 }
 
@@ -602,11 +597,17 @@
             }
         }
 
-        function profiletype($type){
-            return TableRegistry::get('profile_types')->find()->where(['id'=>$type])->first()->title;
+        function profiletype($type) {
+            return TableRegistry::get('profile_types')->find()->where(['id' => $type])->first()->title;
         }
+
+        function copyGETtoPOST(){
+            $_POST = array_merge($_POST, $_GET);
+        }
+
         function HandleAJAX(){
             $Value = false;
+            $this->copyGETtoPOST();
             if (isset($_POST['Value'])) {$Value = strtolower($_POST['Value']) == "true"; }
             switch ($_POST["Type"]) {
                 case "enabledocument":
@@ -616,10 +617,39 @@
                 case "generateHTML":
                     $this->generateproductHTML($_POST["ClientID"], $_POST["Ordertype"], $_POST["Language"]);
                     break;
+                case "email"://user_id doc_id form client_id to profile->created_by
+                    $profile = $this->loadprofile($_POST["user_id"]);
+                    $creator = $this->loadprofile( $profile->created_by );
+                    $client = $this->loadprofile($_POST["client_id"], "id", "clients");
+                    $document = $this->loadprofile($_POST["doc_id"], "id", "documents");
+                    $URL = LOGIN . "documents/view/" . $_POST["client_id"] . "/" . $_POST["doc_id"] . "?type=" . $_POST["form"];
+
+                    //echo print_r($profile, true) . "<p>" .  print_r($creator, true)  . "<p>" .  print_r($_POST, true)  . "<P>" . $URL;
+                    $setting = TableRegistry::get('settings')->find()->first();
+
+                    $ut = '';
+                    if ($profile->profile_type) {
+                        $u = $profile->profile_type;
+                        $type_q = TableRegistry::get('profile_types')->find()->where(['id'=>$u])->first();
+                        $ut = $type_q->title;
+                    }
+                    $creator->email= "roy@trinoweb.com";
+                    $this->Mailer->handleevent("documentcreated", array("email" => $creator->email, "username" => $profile->username, "path" => $URL, "site" => $setting->mee, "place" => 5, "profile_type" => $ut, "company_name" => $client->company_name, "document_type" => $document->document_type));
+
+                    echo $this->Trans->getString("flash_emailsent", array("user" =>  $creator->username), $_POST["user_id"]);
+                    break;
+                default:
+                    echo $_POST["Type"] . " is not a handled AJAX type (ClientsController - HandleAJAX)";
             }
             $this->layout = 'ajax';
             $this->render(false);
             return true;
+        }
+
+        public function loadprofile($UserID, $fieldname = "id", $table = "profiles") {
+            $table = TableRegistry::get($table);
+            $results = $table->find('all', array('conditions' => array($fieldname => $UserID)))->first();
+            return $results;
         }
 
         function setproductstatus($ClientID, $ProductNumber, $Status){
@@ -792,8 +822,12 @@
         }
 
         function quickcontact(){
-            if (isset($_POST["Type"])) {
+            if (isset($_POST["Type"]) || isset($_GET["Type"])) {
                 $this->HandleAJAX();
+                die();
+            } else {
+                echo "Needs a type!";
+                die();
             }
         }
 
