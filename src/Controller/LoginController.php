@@ -27,11 +27,12 @@ class LoginController extends AppController{
     'httpOnly' => true
 ]);
         $this->layout = 'login';
-       
-        if($this->Cookie->read('Profile.username') && $this->Cookie->read('Profile.password')) {
+        $usedcookie=false;
+        if($this->Cookie->read('Profile.username') && $this->Cookie->read('Profile.password') && !isset($_POST["nocookie"]) && !$_GET["nocookie"]) {
             $_POST['username'] = $this->Cookie->read('Profile.username');
             $_POST['password'] = $this->Cookie->read('Profile.password');
             $_POST['name'] = $_POST['username'];
+            $usedcookie=true;
         }
         
         if(isset($_POST['name'])){
@@ -73,8 +74,15 @@ class LoginController extends AppController{
                     $this->redirect('/pages');
                 }
             } else{
-                $this->Flash->error($this->Trans->getString("flash_invalidlogin", "", $_POST["language"]));
-                $this->redirect('/login?language=' . $_POST["language"]);
+                if (!strpos($_SERVER['REQUEST_URI'], "login")) {
+                    $language = "English";
+                    if (isset($_POST["language"])) {$language = $_POST["language"];}
+                    if (isset($_GET["language"])) {$language = $_GET["language"];}
+                    $this->Flash->error($this->Trans->getString("flash_invalidlogin", "", $language));
+                    $URL = '/login?language=' . $language;
+                    if ($usedcookie || isset($_POST["nocookie"]) || $_GET["nocookie"]) {$URL .= "&nocookie";}
+                    $this->redirect($URL);
+                }
             }
         }else {
            // die();

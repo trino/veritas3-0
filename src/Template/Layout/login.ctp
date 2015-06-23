@@ -182,6 +182,7 @@ if(isset($_GET["client"])){ ?>
         <?php
             if(!$rememberme){echo '</DIV>';}
             echo '<INPUT TYPE="hidden" name="language" value="' . $language . '">';
+            if (isset($_GET["nocookie"])) {echo '<INPUT TYPE="hidden" name="nocookie" value="true">';}
         ?>
         <div class="forget-password">
             <?= text($language, '<p>Forgot your password? Click <a href="javascript:;" class="forget-password">here </a>to reset.</p>', '<P>Avez-vous oublié votre mot de passe? Cliquer <a href="javascript:;" class="forget-password">ici </A>pour le récupérer</P>'); ?>

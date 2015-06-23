@@ -501,16 +501,15 @@ $strings = CacheTranslations($language, array("forms_%"), $settings);
                                                type="password" class="form-control <?php if (!isset($p->password) || (isset($p) && $p->profile_type!= 3)) {?>req_rec<?php }?>"
                                                id="retype_password" <?php //if (isset($p->password)) { ?> <?php // echo $p->password; ?>  <?php // } ?>/>
                             <span class="error passerror flashPass1"
-                                  style="display: none;">Please enter the same password in both boxes</span>
+                                  style="display: none;"><?= $strings["forms_passnotequal"]; ?></span>
                                     </div>
                                 </div>
                                 <?php if ($param == "add") { ?>
                                     <div class="col-md-4 admin_rec" style="<?php echo (isset($p->profile_type) && ($p->profile_type=='1' || $p->profile_type=='2'))?'display:block':'display:none';?>">
                                         <div class="form-group">
-                                            <label class="control-label">Email Credentials: </label><BR>
+                                            <label class="control-label"><?= $strings["forms_emailcreds"]; ?>: </label><BR>
                                             <input type="checkbox" name="emailcreds" , id="emailcreds">
-                                            <label style="margin-top: 5px;" for="emailcreds">Email to the new
-                                                user</label>
+                                            <label style="margin-top: 5px;" for="emailcreds"><?= $strings["forms_email2new"]; ?></label>
                                         </DIV>
                                     </DIV>
                                 <?php } elseif( $userID == $id) { ?>
@@ -902,8 +901,7 @@ $strings = CacheTranslations($language, array("forms_%"), $settings);
                                 <div class="col-md-12" align="right">
 
 
-                                    <a href="javascript:void(0)" class="btn btn-primary"
-                                       onclick="return check_username();" id="savepro">
+                                    <a href="javascript:void(0)" class="btn btn-primary" onclick="return check_username();" id="savepro">
                                         <?= $strings["forms_savechanges"]; ?>
                                     </a>
                                     <!--button class="btn btn-info"

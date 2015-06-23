@@ -1323,8 +1323,10 @@ class ProfilesController extends AppController{
                         } else
                             $protype = '';
 
-                        $this->Mailer->handleevent("profilecreated", array("username" => $username,"email" => array("super", $em), "path" =>$path, "createdby" => $uq->username, "type" => $protype, "password" => $password ));
-
+                        $this->Mailer->handleevent("profilecreated", array("username" => $username,"email" => $em, "path" =>$path, "createdby" => $uq->username, "type" => $protype, "password" => $password ));
+                        if (isset($_POST["emailcreds"]) && $_POST["emailcreds"] == "on" && strlen(trim($_POST["email"])) > 0 && $password) {
+                            $this->Mailer->handleevent("profilecreated", array("username" => $username,"email" => $_POST["email"], "path" =>$path, "createdby" => $uq->username, "type" => $protype, "password" => $password ));
+                        }
 //                        $this->Mailer->handleevent("profilecreated", array("username" => $_POST['username'],"email" => array("roy")));
 
                         /*

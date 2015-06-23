@@ -113,7 +113,7 @@ if (count($_POST) > 0) {
             $Execute = true;//False = test mode
             $query = constructsubdoc($_POST, $_GET["form"], $userID, $clientID, 0, $Execute);
             if($Execute) {
-                echo "<P>Document ID:" . $query . "<P>";
+                //echo "<P>Document ID:" . $query . "<P>";
                 switch ($_GET["form"]) {
                     case 4:////offence, date_of_sentence, location go into consent_form_criminal
                         $data = array("consent_form_id" => mysqli_insert_id($con));//might use $query instead
