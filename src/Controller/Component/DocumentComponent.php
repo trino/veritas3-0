@@ -135,8 +135,9 @@ class DocumentComponent extends Component
                                                 $ut = '';
                                             }
 //$arr['document_type'] = urldecode($_GET['document']);
-
-                                            $Mailer->handleevent("documentcreated", array("site" => $setting->mee,"email" => $em, "company_name" => $client_name, "username" => $this->request->session()->read('Profile.username'), "id" => $did, "path" => $path, "profile_type" => $ut, "place" => 1));
+                                            $username =   $user_id = $controller->request->session()->read('Profile.username');
+                                            $ret = array("site" => $setting->mee,"email" => $em, "company_name" => $client_name, "username" => $username, "id" => $did, "path" => $path, "profile_type" => $ut, "place" => 1);
+                                            $Mailer->handleevent("documentcreated", $ret);
 /*
                                             $from = array('info@'.$path => $setting->mee);
                                             $to = $p;
@@ -151,9 +152,10 @@ class DocumentComponent extends Component
                                     }
                                 } else {
                                     $ut = $this->getprofiletype();
-                                    $username =   $user_id = $controller->request->session()->read('username.id');
+                                    $username =   $user_id = $controller->request->session()->read('Profile.username');
 
-                                    $Mailer->handleevent("documentcreated", array("site" => $setting->mee,"email" => "super", "company_name" => $client_name, "username" => $username, "id" => $did, "path" => $path, "profile_type" => $ut, "place" => 2));
+                                    $ret =  array("site" => $setting->mee,"email" => "super", "company_name" => $client_name, "username" => $username, "id" => $did, "path" => $path, "profile_type" => $ut, "place" => 2);
+                                    $Mailer->handleevent("documentcreated", $ret);
                                 }
 
                             $docus = TableRegistry::get('Documents');
@@ -227,7 +229,8 @@ class DocumentComponent extends Component
                                   }
                                   //$path = 'https://isbmeereports.com/documents/view/'.$cid;
 
-                                $Mailer->handleevent("documentcreated", array("site" => $setting->mee,"email" => $p, "company_name" => $client_name, "username" => $uq->username, "id" => $did, "path" => $path, "profile_type" => $ut, "place" => 3));
+                                $ret =  array("site" => $setting->mee,"email" => $p, "company_name" => $client_name, "username" => $uq->username, "id" => $did, "path" => $path, "profile_type" => $ut, "place" => 3);
+                                $Mailer->handleevent("documentcreated", $ret);
 /*
                                 $from = array('info@'.$path => $setting->mee);
                                 $to = $p;
@@ -350,8 +353,9 @@ class DocumentComponent extends Component
             
                                         //$controller->Mailer->sendEmail($from, $to, $sub, $msg);
 */
-                                        $username =   $user_id = $controller->request->session()->read('username.id');
-                                        $Mailer->handleevent("documentcreated", array("site" => $setting->mee,"email" => $p, "company_name" => $client_name, "username" => $username, "id" => $did, "path" => $path, "profile_type" => $ut, "place" => 4));
+                                        $username =   $user_id = $controller->request->session()->read('Profile.username');
+                                        $ret =  array("site" => $setting->mee,"email" => $p, "company_name" => $client_name, "username" => $username, "id" => $did, "path" => $path, "profile_type" => $ut, "place" => 4);
+                                        $Mailer->handleevent("documentcreated", $ret);
                                     }
                                 }
                             }
@@ -378,6 +382,7 @@ class DocumentComponent extends Component
                 }
                 
             }
+           // return $ret;
             die();
         }
 

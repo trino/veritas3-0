@@ -212,9 +212,9 @@
                                         }
 
                                         if($clients && isset($client)){
-                                            echo '<P><a href="' . $this->request->webroot . 'clients/quickcontact?Type=emailout';
-                                            echo ' class="blue-stripe btn floatleft grey-cascade" style="margin-top:2px;width:75%;">' . "Send forms via email";
-                                            echo ' <i class="icon-doc"></i></a>';
+                                            echo '<P><P><a href="' . $this->request->webroot . 'clients/quickcontact?Type=emailout&user_id=' . ;
+                                            echo '" class="blue-stripe btn floatleft grey-cascade" style="margin-top:2px;width:75%;">' . $strings["profiles_sendforms"];
+                                            echo ' <i class="icon-doc m-icon-white"></i></a>';
                                         }
                                     } elseif (!$profile->Ptype) {
                                         echo "Profile type: " . $profile->profile_type . " is missing";
