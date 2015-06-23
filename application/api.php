@@ -2,7 +2,7 @@
 $webroot = $_SERVER["REQUEST_URI"];
 $start = strpos($webroot, "/", 1) + 1;
 $webroot = substr($webroot, 0, $start) . "webroot/";
-if ( $_SERVER["SERVER_NAME"] != "localhost"){$webroot = ":3306";}
+if ( $_SERVER["SERVER_NAME"] != "localhost"){$webroot = str_replace("application/", "", $webroot);}
 $dirroot = getcwd();
 
 error_reporting(E_ERROR | E_PARSE);//suppress warnings
