@@ -211,7 +211,11 @@
                                             }
                                         }
 
-                                        echo $clients;
+                                        if($clients && isset($client)){
+                                            echo '<P><a href="' . $this->request->webroot . 'clients/quickcontact?Type=emailout';
+                                            echo ' class="blue-stripe btn floatleft ' . $product->ButtonColor . '" style="margin-top:2px;width:75%;">' . $product->$title . $Trans;
+                                            echo ' <i class="icon-doc"></i></a>';
+                                        }
                                     } elseif (!$profile->Ptype) {
                                         echo "Profile type: " . $profile->profile_type . " is missing";
                                     }
