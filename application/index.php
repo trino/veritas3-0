@@ -94,7 +94,7 @@ function AJAX($Query){
     $URL =  "http://" . $_SERVER["SERVER_NAME"].$_SERVER["REQUEST_URI"];
     $Q = strpos($URL, "?");
     if($Q){$URL = substr($URL, 0, $Q);}
-    $URL = str_replace("application/uniform.php", "", $URL);//must be updated to the current path of the file
+    $URL = str_replace("application/", "", $URL);//must be updated to the current path of the file
     return file_get_contents($URL . $Query );
 }
 
