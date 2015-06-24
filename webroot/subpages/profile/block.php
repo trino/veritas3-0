@@ -53,7 +53,7 @@
 <!--</div>-->
 <div class="portlet-body form">
     <div class="tab-content">
-
+        <?php if ($doit){ ?>
         <div
             class="tab-pane <?php if ((!isset($Clientcount) || (isset($Clientcount) && $Clientcount != 0))) activetab($activetab, "config", false); ?>"
             id="subtab_2_1">
@@ -1222,7 +1222,9 @@
                 ?>
             </form>
         </div>
-        <div class="tab-pane <?php if ($this->request->session()->read("Profile.profile_type") == 2 || (isset($Clientcount) && $Clientcount == 0)) echo 'active'; ?>"
+        <?php } ?>
+
+        <div class="tab-pane <?php if (!$doit || ($this->request->session()->read("Profile.profile_type") == 2 || (isset($Clientcount) && $Clientcount == 0))) echo 'active'; ?>"
              id="subtab_2_4">
 
             <?php if ($this->request->params['action'] == 'edit' && ($this->request->session()->read("Profile.super") || ($this->request->session()->read("Profile.admin") == 1 || $this->request->session()->read("Profile.profile_type") == 2))) {
