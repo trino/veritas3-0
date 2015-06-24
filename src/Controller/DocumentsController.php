@@ -53,19 +53,16 @@ class DocumentsController extends AppController{
             $this->Flash->error($this->Trans->getString("flash_cantviewdocs"));
             return $this->redirect("/");
         }
+        $sess = $this->request->session()->read('Profile.id');
+
         if (!$this->request->session()->read('Profile.super')) {
-            $u = $this->request->session()->read('Profile.id');
-            $setting = $this->Settings->get_permission($u);
+            $setting = $this->Settings->get_permission($sess);
             if ($setting && $setting->document_others == 0) {
-                if ($cond == '') {
-                    $cond = $cond . ' user_id = ' . $u;
-                } else {
-                    $cond = $cond . ' AND user_id = ' . $u;
-                }
+                $cond = 'user_id = ' . $sess;
             }
         }
 
-        $sess = $this->request->session()->read('Profile.id');
+
         $language = $this->request->session()->read('Profile.language');
         $docs = TableRegistry::get('Documents');
         $cls = TableRegistry::get('Clients');
@@ -84,86 +81,64 @@ class DocumentsController extends AppController{
                 $doc = $doc->select()->where(['draft' => 0, '(order_id = 0 OR (order_id <> 0 AND order_id IN (SELECT id FROM orders)))']);
                 
             }*/
-        $cond = '';
+       // $cond = '';
 
         if (isset($_GET['searchdoc']) && $_GET['searchdoc']) {
-            $cond = $cond . ' (title LIKE "%' . $_GET['searchdoc'] . '%" OR document_type LIKE "%' . $_GET['searchdoc'] . '%" OR description LIKE "%' . $_GET['searchdoc'] . '%")';
+            $cond = $this->AppendSQL($cond, '(title LIKE "%' . $_GET['searchdoc'] . '%" OR document_type LIKE "%' . $_GET['searchdoc'] . '%" OR description LIKE "%' . $_GET['searchdoc'] . '%")');
         }
-        if (!$this->request->session()->read('Profile.admin') && $setting->document_others == 0) {
-            if ($cond == '') {
-                $cond = $cond . ' user_id = ' . $this->request->session()->read('Profile.id');
+
+        if (!$this->request->session()->read('Profile.admin')){
+            if ($setting->document_others == 0) {
+                $cond = $this->AppendSQL($cond, 'user_id = ' . $sess);
             } else {
-                $cond = $cond . ' AND user_id = ' . $this->request->session()->read('Profile.id');
+                $cond = $this->AppendSQL($cond, 'client_id IN (' . $cli_id . ')');
             }
         }
-        if (!$this->request->session()->read('Profile.admin') && $setting->document_others == 1) {
-            if ($cond == '') {
-                $cond = $cond . ' client_id IN (' . $cli_id . ')';
-            } else {
-                $cond = $cond . ' AND client_id IN (' . $cli_id . ')';
-            }
-        }
+
         if (isset($_GET['submitted_by_id']) && $_GET['submitted_by_id']) {
-            if ($cond == '') {
-                $cond = $cond . ' user_id = ' . $_GET['submitted_by_id'];
-            } else {
-                $cond = $cond . ' AND user_id = ' . $_GET['submitted_by_id'];
-            }
+            $cond = $this->AppendSQL($cond, 'user_id = ' . $_GET['submitted_by_id']);
         }
 
         if (isset($_GET['submitted_for_id']) && $_GET['submitted_for_id']) {
-            if ($cond == '') {
-                $cond = $cond . ' uploaded_for = ' . $_GET['submitted_for_id'];
-            } else {
-                $cond = $cond . ' AND uploaded_for = ' . $_GET['submitted_for_id'];
-            }
+            $cond = $this->AppendSQL($cond, 'uploaded_for = ' . $_GET['submitted_for_id']);
         }
 
         if (isset($_GET['client_id']) && $_GET['client_id']) {
-            if ($cond == '') {
-                $cond = $cond . ' client_id = ' . $_GET['client_id'];
-            } else {
-                $cond = $cond . ' AND client_id = ' . $_GET['client_id'];
-            }
+            $cond = $this->AppendSQL($cond, 'client_id = ' . $_GET['client_id']);
         }
         /*if (isset($_GET['type']) && $_GET['type']) {
-            if ($cond == '')
-                $cond = $cond . ' document_type = "' . $_GET['type'] . '"';
-            else
-                $cond = $cond . ' AND document_type = "' . $_GET['type'] . '"';
+            $cond = $this->AppendSQL($cond, 'document_type = "' . $_GET['type'] . '"');
         }*/
         if (isset($_GET['type']) && $_GET['type']) {
-            if ($cond == ''){
-                $cond = $cond . ' sub_doc_id = "' . $_GET['type'] . '"';
-            } else {
-                $cond = $cond . ' AND sub_doc_id = "' . $_GET['type'] . '"';
-            }
+            $cond = $this->AppendSQL($cond, 'sub_doc_id = "' . $_GET['type'] . '"');
         }
 
         if (isset($_GET['from']) && isset($_GET['to'])) {
             $f = date('Y-m-d h:i:s', strtotime($_GET['from']));
             $t = date('Y-m-d h:i:s', strtotime($_GET['to']));
-            if ($cond == '') {
-                $cond = $cond . ' (created >="' . $f . '" AND created <= "' . $t . '")';
-            }else {
-                $cond = $cond . ' AND (created >="' . $f . '" AND created <= "' . $t . '")';
-                // $this->set('start',$cond);
-            }
+            $cond = $this->AppendSQL($cond, '(created >="' . $f . '" AND created <= "' . $t . '")');
         }
 
-        if($cond=='') {
-            $cond = $cond . ' (order_id = 0 OR (order_id <> 0 AND order_id IN (SELECT id FROM orders)))';
-        } else {
-            $cond = $cond . ' AND (order_id = 0 OR (order_id <> 0 AND order_id IN (SELECT id FROM orders)))';
-        }
+        $cond = $this->AppendSQL($cond, '(order_id = 0 OR (order_id <> 0 AND order_id IN (SELECT id FROM orders)))');
+
         //$cond = $cond . " LEFT JOIN attachments ON attachments.document_id = Documents__id";
         // $attachments = TableRegistry::get('attachments');
         //$attachment = $attachments->find()->where(['document_id' => $did])->all();
         //$this->set('attachments', $attachment);
 
+        $this->set('userclients', "");
+        if (!$this->request->session()->read('Profile.super')) {
+            $clients_id = $this->Settings->getAllClientsId($sess);
+            if($clients_id && !strpos($clients_id, ",")){
+                $this->set('userclients', $clients_id);
+                $cond = $this->AppendSQL($cond, ' client_id = ' . $clients_id);
+            }
+        }
+
+
         if ($cond) {
+           // debug($doc);die($cond);
             $doc = $doc->where([$cond]);
-            //debug($doc);die();
         }
 
         if (isset($_GET['searchdoc'])) {
@@ -185,6 +160,11 @@ class DocumentsController extends AppController{
         if (isset($_GET['flash'])) {
             $this->success(true, "", false);//I don't know why it doesn't redirect.
         }
+    }
+
+    function AppendSQL($SQL, $Query){
+        if($SQL && $Query){ return $SQL . " AND " . $Query; }
+        return $Query;
     }
 
     function success($Success=true, $draft = "", $redirect = true, $DID = ""){

@@ -19,17 +19,23 @@
 
 <ul class="nav nav-tabs nav-justified">
     <?php if ($this->request->session()->read('Profile.profile_type') != '2') {
-        ?>
-        <li <?php if ((!isset($Clientcount) || (isset($Clientcount) && $Clientcount != 0))) activetab($activetab, "config"); ?>>
-            <a href="#subtab_2_1" data-toggle="tab">Configuration</a>
-        </li>
-        <!--<li class="">
+        $doit = true;
+        if ($profile->id == $this->request->session()->read('Profile.id') ){
+            $doit = $this->request->session()->read('Profile.super');
+        }
+        if ($doit) {
+            ?>
+            <li <?php if ((!isset($Clientcount) || (isset($Clientcount) && $Clientcount != 0))) activetab($activetab, "config"); ?>>
+                <a href="#subtab_2_1" data-toggle="tab">Configuration</a>
+            </li>
+            <!--<li class="">
                 <a href="#subtab_2_2" data-toggle="tab"><?php echo ucfirst($settings->document); ?></a>
             </li>-->
-        <li class="">
-            <a href="#subtab_2_3" data-toggle="tab">Top blocks</a>
-        </li>
-    <?php
+            <li class="">
+                <a href="#subtab_2_3" data-toggle="tab">Top blocks</a>
+            </li>
+        <?php
+        }
     }
     ?>
     <!--<li >

@@ -134,27 +134,29 @@ class SettingsController extends AppController {
         return $this->response;
     }
 
-    function getCSubDocArray($cid_array,$doc_id){
-        $cids = urldecode($cid_array);
-        $c_arr = explode(",", $cids);
-        $c_array = [];
-        foreach($c_arr as $v) {
-            array_push($c_array,['client_id'=>$v]);
+    function getCSubDocArray($cid_array,$doc_id = ""){
+        $d="Missing data";
+        if($doc_id) {
+            $cids = urldecode($cid_array);
+            $c_arr = explode(",", $cids);
+            $c_array = [];
+            foreach ($c_arr as $v) {
+                array_push($c_array, ['client_id' => $v]);
+            }
+            //var_dump($c_array);die();
+            $sub = TableRegistry::get('clientssubdocument');
+            $query = $sub->find();
+            $query->select()->where(['subdoc_id' => $doc_id, 'OR' => $c_array]);
+
+            $q = $query->all();
+            $d = 0;
+            foreach ($q as $c) {
+                if ($c->display > $d)
+                    $d = $c->display;
+                else
+                    $d = $d;
+            }
         }
-        //var_dump($c_array);die();
-        $sub = TableRegistry::get('clientssubdocument');
-        $query = $sub->find();
-        $query->select()->where(['subdoc_id'=>$doc_id,'OR'=>$c_array]);
-        
-        $q = $query->all();
-        $d = 0;
-        foreach($q as $c) {
-            if($c->display > $d)
-            $d = $c->display;
-            else
-            $d =$d;
-        }
-        
         $this->response->body($d);
         return $this->response;
     }

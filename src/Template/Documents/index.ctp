@@ -156,10 +156,17 @@
                                 <option value=""><?= $strings["settings_client"]; ?></option>
                                 <?php
                                     foreach ($clients as $c) {
-                                        ?>
-                                        <option
-                                            value="<?php echo $c->id; ?>" <?php if (isset($return_client_id) && $return_client_id == $c->id) { ?> selected="selected"<?php } ?> ><?php echo ucfirst($c->company_name); ?></option>
-                                    <?php
+                                        $doit=true;
+                                        if (!$this->Session->read('Profile.super')){
+                                            $doit = $userclients == $c->id;
+                                            $return_client_id= $userclients;
+                                        }
+                                        if($doit) {
+                                            ?>
+                                            <option
+                                                value="<?php echo $c->id; ?>" <?php if (isset($return_client_id) && $return_client_id == $c->id) { ?> selected="selected"<?php } ?> ><?php echo ucfirst($c->company_name); ?></option>
+                                        <?php
+                                        }
                                     }
                                 ?>
 
