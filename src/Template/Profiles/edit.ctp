@@ -308,7 +308,7 @@
 
                                             <?php }
                                             $checker = $this->requestAction('/settings/check_edit_permission/' . $this->request->session()->read('Profile.id') . '/' . $profile->id . "/" . $profile->created_by);
-                                            if ($this->request->session()->read('Profile.super') == '1' || ($sidebar->profile_create == '1' && $sidebar->profile_edit == '1')) {
+                                            if ($this->request->session()->read('Profile.super') == '1'){//} || ($sidebar->profile_create == '1' && $sidebar->profile_edit == '1')) {
                                                 ?>
                                                 <li <?php activetab($activetab, "permissions"); ?>>
                                                     <a href="#tab_1_7" data-toggle="tab"><?= $strings["profiles_permissions"]; ?></a>
@@ -369,6 +369,8 @@
                                                 ?>
                                             </div>
                                         <?php }
+
+                                    if ($this->request->session()->read('Profile.super')){
                                     ?>
                                     <div class="tab-pane <?php activetab($activetab, "permissions", false); ?>"
                                          id="tab_1_7">
@@ -377,7 +379,7 @@
                                                 include('subpages/profile/block.php');
                                             }//permissions?>
                                     </div>
-
+                                    <?php } ?>
                                     <div class="tab-pane <?php activetab($activetab, "feedback", false); ?>"
                                          id="tab_1_8">
                                         <?       include('subpages/profile/feedback.php');
