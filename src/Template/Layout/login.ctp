@@ -112,7 +112,7 @@
 
 <?php
 $language = "English";
-if($translate && isset($_GET["language"])){$language = $_GET["language"];}
+if($translate && isset($_GET["language"]) && $_GET["language"]){$language = $_GET["language"];}
 
 if(isset($_GET["client"])){ ?>
 

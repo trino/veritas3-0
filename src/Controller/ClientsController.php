@@ -642,7 +642,7 @@
                     $profile = $this->loadprofile($_POST["user_id"]);
                     $URL = LOGIN . "application/index.php?user_id=" . $profile->id . "&form=";
                     $this->Mailer->handleevent("gfs", array("email" => $profile->email, "path1" => $URL . 4, "path2" => $URL . 9, "site" => $setting->mee, "username" => $this->request->session()->read('Profile.username')));
-                    echo $this->Trans->getString("flash_emailwassent");
+                    echo $this->Trans->getString("flash_emailwassent", array("email" => $profile->email) );
                     break;
                 default:
                     echo $_POST["Type"] . " is not a handled AJAX type (ClientsController - HandleAJAX)";
