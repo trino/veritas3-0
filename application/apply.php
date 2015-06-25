@@ -1,34 +1,17 @@
 <!DOCTYPE html><TITLE>Register with MEE</TITLE>
 <?php
+    include("api.php");
+
     $webroot = $_SERVER["REQUEST_URI"];
     $start = strpos($webroot, "/", 1) + 1;
     $webroot = substr($webroot, 0, $start);
-
-    error_reporting(E_ERROR | E_PARSE);//suppress warnings
-    include("../config/app.php");//config file is not meant to be run without cake, thus error reporting needs to be suppressed
-    error_reporting(E_ALL);//re-enable warnings
 
     $con = "";
     $logo = 'img/logos/';
     $company_name = "";
 
-    function connectdb()
-    {
-        global $con, $config;
-        $con = mysqli_connect("localhost:3306", $config['Datasources']['default']['username'], $config['Datasources']['default']['password'], $config['Datasources']['default']['database']) or die("Error " . mysqli_error($con));
-        return $con;
-    }
-
-    function first($query)
-    {
-        global $con;
-        $result = $con->query($query);
-        while ($row = mysqli_fetch_array($result)) {
-            return $row;
-        }
-    }
     function second($query)
-    {
+    {//this won't work, it'll return the first result.
         global $con;
         $result = $con->query($query);
         while ($row = mysqli_fetch_object($result)) {
@@ -57,17 +40,6 @@
     }
 
 
-    function printoption($option, $selected, $value = "")
-    {
-        $tempstr = "";
-        if ($option == $selected) {
-            $tempstr = " selected";
-        }
-        if (strlen($value) > 0) {
-            $value = " value='" . $value . "'";
-        }
-        echo '<option' . $value . $tempstr . ">" . $option . "</option>";
-    }
 
     function printoption2($value, $selected = "", $option)
     {
@@ -78,20 +50,7 @@
         echo '<OPTION VALUE="' . $value . '"' . $tempstr . ">" . $option . "</OPTION>";
     }
 
-    function printoptions($name, $valuearray, $selected = "", $optionarray, $isdisabled = "", $isrequired = false)
-    {
-        if ($name == 'profile_type') {
-            echo '<SELECT ' . $isdisabled . ' name="' . $name . '" class="form-control member_type req_driver"';
-        } else {
-            echo '<SELECT ' . $isdisabled . ' name="' . $name . '" class="form-control req_driver"';
-        }
-        echo '>';
 
-        for ($temp = 0; $temp < count($valuearray); $temp += 1) {
-            printoption2($valuearray[$temp], $selected, $optionarray[$temp]);
-        }
-        echo '</SELECT>';
-    }
 
     function printprovinces($name, $selected = "", $isdisabled = "", $isrequired = false, $Title = "Province")
     {
@@ -220,7 +179,7 @@ else{
         <div class="clearfix"></div>
         
         <div class="col-md-12" align="center">
-            <img src="<?php echo $webroot;?>img/gfs.png" style="width: 330px;" />
+            <img src="<?php echo $webroot;?>img/logo.png" />
             <div class="clearfix"></div>
         </div>
         <div class="clearfix"></div>
@@ -1350,13 +1309,14 @@ through 7 inclusive, and acknowledge that with my signature below.
             <label class="col-md-6">Dated</label>
             <input type="text" name="dated" class="form-control date-picker" value="<?php if(isset($application_for_employment_gfs))echo $application_for_employment_gfs->dated;?>" />
         </div>
-        <div class="col-md-6">
+        <!--div class="col-md-6">
             <label class="col-md-12">Signature</label>
             <?php
             //include('../webroot/canvas/apply.php');//won't work outside of cake
         ?>
         
-        </div>
+        </div-->
+            
          <div class="clearfix"></div>
           <p>&nbsp;</p>
           </div>
@@ -1370,23 +1330,18 @@ through 7 inclusive, and acknowledge that with my signature below.
 </form>
 <div class="clearfix"></div>
 <?php }
+backbutton();
 ?>
-    <DIV align="center"><A HREF="index.php<?php
-        if (isset($_GET["user_id"])){
-            echo "?user_id=" . $_GET["user_id"];
-        }
-        echo '">Back</A></DIV>';
-        ?>
-</div>
 </div>
 <script>
         function check_username() {
-            if($('.touched').val()==0)
-            {
+            /*
+            if($('.touched').val()==0) {
                 alert('No Signature found.');
                 return false;
             }
-            
+            */
+
            if ($('.email').val() != '') {
                         var un = $('.email').val();
                         $.ajax({
@@ -1406,13 +1361,16 @@ through 7 inclusive, and acknowledge that with my signature below.
                                     return false;
                                 } else {
                                     $(this).attr('disabled', 'disabled');
+
                                    //  save_signature('100');
-                                   
+
                                 }
                             }
                         });
                     } else {
+
                       //   save_signature('100');
+
                     }
       }
 
