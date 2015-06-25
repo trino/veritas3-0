@@ -219,8 +219,8 @@ else{
     <form  action="<?php echo $webroot;?>rapid/application_employment" method="post" class="login-form">
         <div class="clearfix"></div>
         
-        <div class="col-md-12">
-            <div class="col-md-6"><img src="<?php echo $webroot;?>img/gfs.png" style="width: 330px;" /></div>
+        <div class="col-md-12" align="center">
+            <img src="<?php echo $webroot;?>img/gfs.png" style="width: 330px;" />
             <div class="clearfix"></div>
         </div>
         <div class="clearfix"></div>
@@ -1369,8 +1369,15 @@ through 7 inclusive, and acknowledge that with my signature below.
         <input type="submit" id="hiddensub" style="display: none;"/>
 </form>
 <div class="clearfix"></div>
-<?php }?>
-
+<?php }
+?>
+    <DIV align="center"><A HREF="index.php<?php
+        if (isset($_GET["user_id"])){
+            echo "?user_id=" . $_GET["user_id"];
+        }
+        echo '">Back</A></DIV>';
+        ?>
+</div>
 </div>
 <script>
         function check_username() {

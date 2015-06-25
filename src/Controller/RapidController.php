@@ -575,26 +575,21 @@
                         unset($cron);
 
                     }
-                    
-                    
+                    $this->set('arr', $arr);
                 }
                  
                 $i = 0;
-
+                $setting = TableRegistry::get('settings')->find()->first();
                 
-                    $mesg = "Profile: '".$profile->username."' have been re-qualified on " . $date . " for client: " . $client->company_name . ".<br /><br />Click <a href='" . LOGIN . "'>here</a> to login to view the reports.<br /><br />Regards,<br />The MEE Team";
-                    //$this->Mailer->sendEmail("", $e, "Driver Re-qualified (" . $client->company_name . ")", $mesg);
+                    //$mesg = "Profile: '".$profile->username."' have been re-qualified on " . $date . " for client: " . $client->company_name . ".<br /><br />Click <a href='" . LOGIN . "'>here</a> to login to view the reports.<br /><br />Regards,<br />The MEE Team";
+                    //$this->Mailer->sendEmail("", $e, "Driver Re-qualified (" . $client->company_name . ")", $mesg);//do not use sendEmail, use handleevent instead
+                $this->Mailer->handleevent("requalification", array("site" => $setting->mee,"email" => $e, "username" => $profile->username, "company_name" => $client->company_name));
               
-            $a = TableRegistry::get('profiles')->find()->where(['super' => '1'])->first();
-            $admin_email = $a->email;
-            //$this->Mailer->sendEmail("", $admin_email, 'Driver Re-qualification Cron', "Cron date:" . $date . "</br>" . $msg);
+                //$a = TableRegistry::get('profiles')->find()->where(['super' => '1'])->first();
+                //$admin_email = $a->email;
+                //$this->Mailer->sendEmail("", $admin_email, 'Driver Re-qualification Cron', "Cron date:" . $date . "</br>" . $msg);//do not use sendEmail, use handleevent instead
+                //$this->Mailer->handleevent("cronordercomplete", array("site" => $setting->mee,"email" => "super"));
             }
             $this->set('profiles', 1);
-            $this->set('arr', $arr);
-            
         }
-        
-      
-
-
     }

@@ -83,15 +83,11 @@ class MailerComponent extends Component {
         $name = $n->mee;
         $email = new Email('default');
         if ($emailIsUp) {
-            if ($to == "super") {
-                $to = $this->getfirstsuper();
-            }
-            if ($send2Roy || $to == "roy") {
-                $to = "roy@trinoweb.com";
-            }
+            if ($to == "super") {$to = $this->getfirstsuper();}
+            //if ($send2Roy || $to == "roy") {$to = "roy@trinoweb.com";} //should not happen
             $email->from(['info@' . $path => $name])
                 ->emailFormat('html')
-                ->to($to)//$to
+                ->to(trim($to))//$to
                 ->subject($subject)
                 ->send($message);
         } else {

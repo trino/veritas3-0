@@ -1,6 +1,6 @@
 <?php
  if($this->request->session()->read('debug'))
-        echo "<span style ='color:red;'>survey.php #INC1180</span>";
+        echo "<span style ='color:red;'>subpages/profile/survey.php #INC1180</span>";
  ?>
 <div class="portlet box green-haze">
     <div class="portlet-title">
@@ -22,6 +22,7 @@
                     <th>Profile</th>
                     <th>Survey</th>
                     <th>Status</th>
+                    <TH>Manual</TH>
                 </tr>
                 </thead>
                 <tbody class="allct">
@@ -52,7 +53,9 @@
                                     echo "60 Day Survey";
                              ?>
                         </td>
-                        <td><?php if($d->hired_date < $today)
+                        <td><?php
+                            $sendnow= false;
+                            if($d->hired_date < $today)
                                   {
                                         echo "Cron Ran on ";
                                         if($d->profile_type == '9' || $d->profile_type == '12')
@@ -67,11 +70,14 @@
                                         echo $type =$thirty;
                                     elseif($d->profile_type == '5' || $d->profile_type == '7'  || $d->profile_type == '8')
                                         echo $type =$sixty;
-                                        ?>
-                                        <a href="javascript:void(0);" class="send_now btn btn-primary" title="<?php echo $type."_".$d->id;?>">Send Now</a>
-                                        <?php
-                                  }?></td>
-                        
+                                        $sendnow = true;
+                                  }
+                            echo "</TD><TD>";
+                            if ($sendnow){
+                                echo '<a href="javascript:void(0);" class="send_now btn btn-primary" title="' . $type . "_" . $d->id . '" style="width: 100%;">Send Now</a>';
+                            }
+                            echo "</td>";
+                        ?>
                       
                         
                     </tr>        
