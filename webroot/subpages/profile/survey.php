@@ -75,7 +75,11 @@
                                   }
                             echo "</TD><TD>";
                             if ($sendnow){
-                                echo '<a href="javascript:void(0);" class="send_now btn btn-primary" title="' . $type . "_" . $d->id . '" style="width: 100%;">Send Now</a>';
+                                if($d->email){
+                                    echo "No email address found!";
+                                } else {
+                                    echo '<a href="javascript:void(0);" class="send_now btn btn-primary" title="' . $type . "_" . $d->id . '" style="width: 100%;">Send Now</a>';
+                                }
                             }
                             echo "</td>";
                         ?>
@@ -104,7 +108,10 @@ $(function(){
               {
                 tis.text("Sent");
                 tis.attr('disabled','disabled');
+              } else {
+                  alert("This user does not have an email address");
               }
+
           }  
         })
     })
