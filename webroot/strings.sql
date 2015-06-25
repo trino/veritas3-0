@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 24, 2015 at 08:53 PM
+-- Generation Time: Jun 25, 2015 at 10:11 PM
 -- Server version: 5.6.17
 -- PHP Version: 5.5.12
 
@@ -32,14 +32,14 @@ CREATE TABLE IF NOT EXISTS `strings` (
   `English` varchar(4096) NOT NULL,
   `French` varchar(4096) NOT NULL,
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=660 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=664 ;
 
 --
 -- Dumping data for table `strings`
 --
 
 INSERT INTO `strings` (`ID`, `Name`, `English`, `French`) VALUES
-(1, 'Date', '1435091255', '<-- This is used by the system to auto-update'),
+(1, 'Date', '1435172022', '<-- This is used by the system to auto-update'),
 (2, 'dashboard_affirmative', 'Yes', 'Oui'),
 (3, 'dashboard_negative', 'No', 'Non'),
 (4, 'dashboard_selectall', 'Select All', 'Tout Sélectionner'),
@@ -625,7 +625,7 @@ INSERT INTO `strings` (`ID`, `Name`, `English`, `French`) VALUES
 (595, 'email_cronordercomplete_subject', 'Order Completed', ''),
 (596, 'email_cronordercomplete_message', 'Your MEE order has been processed and is ready to download<BR>\n<A HREF="%webroot%">Please login here to retrieve your score card.</A><BR>\n<BR>\nRegards,<BR>\nThe ISB %site% Team<BR>', ''),
 (597, 'email_survey_subject', 'Complete your survey', ''),
-(598, 'email_survey_message', 'Hello %username%, We hope you have enjoyed your first %months% of employment with Gordon Food Service. Your feedback is important to us at GFS and with that in mind we would like you to fill out the following online survey. Please click the following link to proceed with the survey. Thank you in advance.', ''),
+(598, 'email_survey_message', 'Hello %username%, We hope you have enjoyed your first %months% of employment with Gordon Food Service.<BR>\nYour feedback is important to us at GFS and with that in mind we would like you to fill out the following online survey.<BR>\nPlease click <A HREF="%path%">here</A> to proceed with the survey.<BR>\nThank you in advance.<BR>\n<BR>\nRegards,<BR>\nThe ISB %site% Team<BR>', ''),
 (599, 'email_documentcreated_subject', 'Document Submitted', ''),
 (600, 'email_documentcreated_message', 'A new document has been created in %webroot%<BR>\nUsername: %username%<BR>\nProfile Type: %profile_type%<BR>\nDate: %created%<BR>\nClient Name: %company_name%<BR>\nDocument type: %document_type%<BR>\n<BR>\n<A HREF="%path%">Click here to view it</A><BR>\n<BR>\nRegards,<BR>\nThe %site% Team', ''),
 (601, 'consent_a0', 'I hereby consent to the search of the following', 'Par les présentes, je consens à la recherche de ce qui suit'),
@@ -687,7 +687,11 @@ INSERT INTO `strings` (`ID`, `Name`, `English`, `French`) VALUES
 (656, 'email_gfs_subject', 'Please fill out these forms', ''),
 (657, 'email_gfs_message', '%username% has requested that you fill out these forms at your earliest convenience<BR>\n<A HREF="%path1%">Consent</A> and <A HREF="%path2%">Letter of experience</A><BR>\n<BR>\nRegards,<BR>\nThe %site% team', ''),
 (658, 'flash_emailwassent', 'The forms have been sent out to %email%', 'Les formulaires ont été envoyés à %email%'),
-(659, 'uniform_nouserid', 'Warning: user_id is not specified.', 'Attention: user_id est pas spécifié.');
+(659, 'uniform_nouserid', 'Warning: user_id is not specified.', 'Attention: user_id est pas spécifié.'),
+(660, 'email_requalification_subject', 'Driver Re-qualified (%company_name%)', ''),
+(661, 'email_requalification_message', 'Profile: %username% has been re-qualified on %created% for client: %company_name%<br>\n<br>\nClick <a href="%webroot%">here</a> to login to view the reports.<br>\n<br>\nRegards,<br>\nThe %site% Team', ''),
+(662, 'email_surveycomplete_subject', 'Survey form submitted', ''),
+(663, 'email_surveycomplete_message', 'The profile %username% has submitted the %type% days survey.<BR>\nClick <a href="%path%" target=''_blank''>here</a> to view the form.<BR>\n<BR>\nRegards,<BR>\nThe %site% Team.\n', '');
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

@@ -168,7 +168,7 @@ if (count($_POST) > 0) {
         echo '<div class="alert alert-danger display-hide" style="display: block;">' . $strings["uniform_nouserid"] . '</div>';
     }
 
-    echo '<DIV ALIGN="CENTER"><img src="' . $webroot . 'img/gfs.png" style="width: 330px;" /></DIV>';
+    echo '<DIV ALIGN="CENTER"><img src="' . $webroot . 'img/logo.png"  /></DIV>';//gfs
 
     switch (get("form")){
         case 9:
@@ -221,12 +221,8 @@ function getq($data = ""){
     if ($dosubmit){ ?>
         <INPUT TYPE="SUBMIT" class="btn btn-info" VALUE="<?= $strings["forms_submit"]; ?>" STYLE="float: right;">
         <div class="clearfix"></div>
-    <?php } ?>
-    <DIV align="center"><A HREF="index.php<?php
-        if (isset($_GET["user_id"])){
-            echo "?user_id=" . $_GET["user_id"];
-        }
-        echo '">' . $strings["addorder_back"] . "</A></DIV>";
-} ?>
+    <?php }
+backbutton($strings["addorder_back"]);
+    } ?>
 </div></form>
 </BODY>

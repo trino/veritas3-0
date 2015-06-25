@@ -397,11 +397,8 @@
 
     <div class="clearfix"></div>
 
-    <DIV align="center"><A HREF="index.php<?php
-        if (isset($_GET["user_id"])){
-            echo "?user_id=" . $_GET["user_id"];
-        }
-        echo '">Back</A></DIV>';
+    <?php
+    backbutton();
         ?>
 </div>
     <script>

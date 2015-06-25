@@ -34,6 +34,18 @@ function initdatepicker($dateformat = 'yy-mm-dd'){
     <?php
 }
 
+function backbutton($text = "Back"){
+    if ( $_SERVER["SERVER_NAME"] == "localhost") {
+        echo '<DIV align="center"><A HREF="index.php';
+        if (isset($_GET["user_id"])) {
+            echo "?user_id=" . $_GET["user_id"];
+        } else if (isset($_GET["p_id"])) {
+            echo "?user_id=" . $_GET["p_id"];
+        }
+        echo '">' . $text . '</A></DIV>';
+    }
+}
+
 function insertdb($conn, $Table, $DataArray, $PrimaryKey = "", $Execute = True){
     if (is_object($conn)){$DataArray = escapearray($conn, $DataArray);}
     $query = "INSERT INTO " . $Table . " (" . getarrayasstring($DataArray, True) . ") VALUES (" . getarrayasstring($DataArray, False) . ")";
