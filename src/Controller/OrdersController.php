@@ -806,7 +806,7 @@ class OrdersController extends AppController {
         $client =  $this->getcol("clients", "id", $order_info->client_id);
 
         $setting = TableRegistry::get('settings')->find()->first();
-        $this->Mailer->handleevent("ordercompleted", array("email" => "roy", "username" => $profile->username, "profile_type" => $this->profiletype($profile->profile_type), "company_name" => $client->company_name, "site" => $setting->mee, "for" => $uploadedfor->username));//$order_info
+        $this->Mailer->handleevent("ordercompleted", array("email" => "super", "username" => $profile->username, "profile_type" => $this->profiletype($profile->profile_type), "company_name" => $client->company_name, "site" => $setting->mee, "for" => $uploadedfor->username));//$order_info
     }
 
     function profiletype($type){
