@@ -92,6 +92,7 @@ function converge($array){
 
 function AJAX($Query){
     $URL =  "http://" . $_SERVER["SERVER_NAME"].$_SERVER["REQUEST_URI"];
+    $URL = str_replace("index.php", "", $URL);
     $Q = strpos($URL, "?");
     if($Q){$URL = substr($URL, 0, $Q);}
     $URL = str_replace("application/", "", $URL);//must be updated to the current path of the file
