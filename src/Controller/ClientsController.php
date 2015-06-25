@@ -1503,17 +1503,19 @@
         
         function requalify($cid){
             $p = '';
-            foreach($_POST['requalify_product'] as $k=>$r)
-            {
-                if($k+1==count($_POST['requalify_product']))
+            foreach($_POST['requalify_product'] as $k=>$r) {
+                if($k+1==count($_POST['requalify_product'])) {
                     $p .= $r;
-                else
-                    $p .=$r.","; 
+                }else {
+                    $p .= $r . ",";
+                }
             }
-            if(!isset($_POST['requalify']))
-            $_POST['requalify'] = 0;
-            if(!isset($_POST['requalify_re']))
-            $_POST['requalify_re'] = 0;
+            if(!isset($_POST['requalify'])) {
+                $_POST['requalify'] = 0;
+            }
+            if(!isset($_POST['requalify_re'])) {
+                $_POST['requalify_re'] = 0;
+            }
             $_POST['requalify_product'] = $p;
             $id = $_POST['id'];
             $cleint = TableRegistry::get('clients');

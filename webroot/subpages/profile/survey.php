@@ -5,7 +5,7 @@
 <div class="portlet box green-haze">
     <div class="portlet-title">
         <div class="caption">
-            <i class="fa fa-briefcase"></i>Profile Crons(Survey)
+            <i class="fa fa-briefcase"></i>Profile Crons (Survey)
         </div>
     </div>
     <div class="portlet-body">
@@ -15,21 +15,19 @@
             <table
                 class="table table-condensed  table-striped table-bordered table-hover dataTable no-footer">
                 <thead>
-                <tr >
-                    <th>Sn</th>
+                <tr>
+                    <th>ID</th>
                     <th>Hired Date</th>
                     <th>Client</th>
                     <th>Profile</th>
                     <th>Survey</th>
                     <th>Status</th>
-                    
                 </tr>
                 </thead>
                 <tbody class="allct">
                 <?php
                 $today = date('Y-m-d');
-                foreach($dates as $k=>$d)
-                {
+                foreach($dates as $k=>$d) {
                     $thirty = date('Y-m-d', strtotime($d->hired_date.'+30 days'));
                     $sixty = date('Y-m-d', strtotime($d->hired_date.'+60 days'));
                     ?>
@@ -37,17 +35,14 @@
                         <td><?php echo ++$k;?></td>
                         <td><?php echo $d->hired_date;?></td>
                         <td><?php echo $this->requestAction('/settings/getclient/26');?></td>
-                        <td><?php if($d->hired_date < $today)
-                                  {
+                        <td><?php if($d->hired_date < $today) {
                                         //echo "Cron Ran<br/>";
                                         if($d->automatic_sent== '1')
                                             echo "Sent for user:'";
                                         else
                                             echo "Pending for user:'";
                                         echo $d->username."'";
-                                  }
-                                  else
-                                  {
+                                  } else {
                                         echo "User:'".$d->username."'";
                                   }?>
                         </td>
@@ -107,5 +102,4 @@ $(function(){
         })
     })
 })
-
 </script>
