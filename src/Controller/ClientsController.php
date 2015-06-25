@@ -22,7 +22,8 @@
             $this->loadComponent('Mailer');
             $this->loadComponent('Trans');
 
-            if (!$this->request->session()->read('Profile.id')) {
+            $profileID = $this->request->session()->read('Profile.id');
+            if (!$profileID && !strpos($_SERVER["REQUEST_URI"], "clients/quickcontact")) {
                 $url = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
                 $this->redirect('/login?url=' . urlencode($url));
             }
