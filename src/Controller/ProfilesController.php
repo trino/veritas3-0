@@ -2718,19 +2718,17 @@ public function saveDriver()
         $client = TableRegistry::get('clients')->find()->where(['id'=>26])->first();
         $ids = $client->profile_id;
         $table = TableRegistry::get('profiles');
-        $automatic = $table->find()->where(['id IN('.$ids.")",'is_hired'=>'1','automatic_sent'=>'0','hired_date <>'=>'']);
-        if($automatic)
-        {
-            foreach($automatic as $auto)
-            {
+        $automatic = $table->find()->where(['id IN('.$ids.")",'is_hired'=>'1','automatic_sent'=>'0','hired_date <>'=>'']);//set automatic_sent to 0 when not debugging
+        if($automatic) {
+            $queries = TableRegistry::get('Profiles');
+            foreach($automatic as $auto) {
                 $today = date('Y-m-d');
                  $thirty = date('Y-m-d', strtotime($auto->hired_date.'+30 days'));
                  $sixty = date('Y-m-d', strtotime($auto->hired_date.'+60 days'));
               //  echo   $sixty = date('Y-m-d', strtotime($today.'-60 days'));
-
              
                 if($auto->profile_type == '9' || $auto->profile_type == '12' && $today==$thirty && $auto->email){
-                    $this->Mailer->handleevent("survey", array("email" => $auto->email, "username" => $auto->username, "days" => "30", "%monthsFrench%" => "mois", "%months%" => "month", "id" => $auto->id, "path" => LOGIN . 'application/30days.php?p_id='.$auto->id, "site" => $setting->mee));
+                    $this->Mailer->handleevent("survey", array("email" => $auto->email, "username" => $auto->username, "days" => "30", "monthsFrench" => "mois", "months" => "month", "id" => $auto->id, "path" => LOGIN . 'application/30days.php?p_id='.$auto->id, "site" => $setting->mee));
                     /*
                     $from = array('info@' . $path => $setting->mee);
                     $to = $auto->email;
@@ -2738,14 +2736,13 @@ public function saveDriver()
                     $msg = 'This is an automated email reminding you to complete your survey.<br><br>Click <a href="' . LOGIN . 'application/30days.php?p_id='.$auto->id.'">here</a> to complete your survey.<br /><br /> Regards,<br><br>The MEE Team';
                     $this->Mailer->sendEmail($from, $to, $sub, $msg);
                    */
-                    $queries = TableRegistry::get('Profiles');
                     $queries->query()->update()->set(['automatic_sent' => '1'])
                         ->where(['id' => $auto->id])
                         ->execute();
                 }
 
                 if($auto->profile_type == '5' || $auto->profile_type == '7'  || $auto->profile_type == '8'  && $today==$sixty && $auto->email){
-                    $this->Mailer->handleevent("survey", array("site" => $setting->mee, "username" => $auto->username , "email" => $auto->email, "%monthsFrench%" => "quelques mois", "%months%" => "few months", "days" => "60", "id" => $auto->id, "path" => LOGIN . 'application/60days.php?p_id='.$auto->id));
+                    $this->Mailer->handleevent("survey", array("site" => $setting->mee, "username" => $auto->username , "email" => $auto->email, "monthsFrench" => "quelques mois", "months" => "few months", "days" => "60", "id" => $auto->id, "path" => LOGIN . 'application/60days.php?p_id='.$auto->id));
                     /*
                     $from = array('info@' . $path => $setting->mee);
                     $to = $auto->email;
@@ -2753,7 +2750,6 @@ public function saveDriver()
                     $msg = 'This is an automated email reminding you to complete your survey.<br><br>Click <a href="' . LOGIN . 'application/60days.php?p_id='.$auto->id.'">here</a> to complete your survey.<br /><br /> Regards,<br><br>The MEE Team';
                     $this->Mailer->sendEmail($from, $to, $sub, $msg);
                     */
-                    $queries = TableRegistry::get('Profiles');
                     $queries->query()->update()->set(['automatic_sent' => '1'])
                         ->where(['id' => $auto->id])
                         ->execute();
@@ -2771,14 +2767,16 @@ public function saveDriver()
           $profile = TableRegistry::get('profiles')->find()->where(['id'=>$profile_id])->first();
             if($profile->email)
             {
-                //$this->Mailer->handleevent("survey", array("email" => $profile->email, "username" => $profile->username, "days" => $type, "%monthsFrench%" => "mois", "%months%" => "month", "id" => $profile->id, "path" => LOGIN . 'application/30days.php?p_id='.$profile->id, "site" => $setting->mee));
-                
+                $this->Mailer->handleevent("survey", array("email" => $profile->email, "username" => $profile->username, "days" => $type, "%monthsFrench%" => "mois", "%months%" => "month", "id" => $profile->id, "path" => LOGIN . 'application/30days.php?p_id='.$profile->id, "site" => $setting->mee));
+
+                /*
                 $from = array('info@' . $path => $setting->mee);
                 $to = $profile->email;
                 $sub = 'MEE - Survey';
                 $msg = 'This is an automated email reminding you to complete your survey.<br><br>Click <a href="' . LOGIN . 'application/30days.php?p_id='.$profile->id.'">here</a> to complete your survey.<br /><br /> Regards,<br><br>The MEE Team';
-                $this->Mailer->sendEmail($from, $to, $sub, $msg);
-               
+                $this->Mailer->sendEmail($from, $to, $sub, $msg);//do not use sendEmail, use handleevent instead
+               */
+
                 $queries = TableRegistry::get('Profiles');
                 $queries->query()->update()->set(['automatic_sent' => '1'])
                     ->where(['id' => $profile->id])

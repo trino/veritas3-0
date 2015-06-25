@@ -30,6 +30,7 @@
     }
      $con = connectdb();
 
+    if (isset($_GET["user_id"]) && !isset($_GET["p_id"])) {$_GET["p_id"] = $_GET["user_id"];}
     if (isset($_GET["p_id"])) {
         $row = first("SELECT * FROM profiles where id = " . $_GET["p_id"]);
         if ($row) {
@@ -617,6 +618,13 @@
                             Survey submitted successfully.
                 </div>';
     }?>
+        <DIV align="center"><A HREF="index.php<?php
+            if (isset($_GET["user_id"])){
+                echo "?user_id=" . $_GET["user_id"];
+            }
+            echo '">Back</A></DIV>';
+            ?>
+</div>
  	</div>	
  	</body>
     <script>

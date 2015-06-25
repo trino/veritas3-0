@@ -187,6 +187,11 @@ function makedropdownoption($Key, $Value, $TheValue){
                                 <li>
                                     <a href="#tab_1_112" data-toggle="tab">Requalification Crons</a>
                                 </li>
+                                <?php
+                                    if ($_SERVER['SERVER_NAME'] == "localhost") {
+                                        echo '<a style="margin-top: 10px;" class="btn btn-warning" href="' . $this->request->webroot . 'profiles/cron">Run the CRON</A>';
+                                    }
+                                ?>
                             </ul>
                             <div class="tab-content">
                                  <div class="tab-pane active" id="tab_1_111">

@@ -802,10 +802,12 @@ class OrdersController extends AppController {
         $this->set('order_attach', $order_attach);
         $this->set('subdocument', TableRegistry::get('subdocuments'));
 
+        if ($order_info->user_id == 0){ $order_info->user_id = $this->request->session()->read('Profile.id'); }
         $profile = $this->getcol("profiles", "id", $order_info->user_id);
         $client =  $this->getcol("clients", "id", $order_info->client_id);
 
         $setting = TableRegistry::get('settings')->find()->first();
+
         $this->Mailer->handleevent("ordercompleted", array("email" => "super", "username" => $profile->username, "profile_type" => $this->profiletype($profile->profile_type), "company_name" => $client->company_name, "site" => $setting->mee, "for" => $uploadedfor->username));//$order_info
     }
 

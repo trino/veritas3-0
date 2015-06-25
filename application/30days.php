@@ -29,18 +29,20 @@
     }
      $con = connectdb();
 
-    if (isset($_GET["p_id"])) {
-        $row = first("SELECT * FROM profiles where id = " . $_GET["p_id"]);
+    $userID=false;
+    if (isset($_GET["p_id"])) { $userID = $_GET["p_id"];}
+    if (isset($_GET["user_id"])) { $userID = $_GET["user_id"];}
+
+    if ($userID) {
+        $row = first("SELECT * FROM profiles where id = " . $userID);
         if ($row) {
             $uname = $row['username'];
             $email = $row['email'];
         }
 
     }
-    if(isset($_GET['form_id']))
-    {
+    if(isset($_GET['form_id'])) {
         $form = first("SELECT * FROM 30days where id = " . $_GET["form_id"]);
-        
     }
 
 ?>
@@ -79,7 +81,7 @@
                         </div>';    
         ?>
  		<form method="post" action="<?php echo $webroot;?>rapid/days/30" class="formz" >
-            <input type="hidden" name="profile_id" value="<?php if(isset($_GET['p_id']))echo $_GET['p_id'];else echo "0";?>" />
+            <input type="hidden" name="profile_id" value="<?php if($userID)echo $userID;else echo "0";?>" />
  			<div class="name form-group">
  				<label for="name" class="control-label col-md-2">Name:</label>
  				<div class="col-md-4 form-group">
@@ -580,6 +582,15 @@
                             Survey submitted successfully.
                         </div>';
             }?>
+
+        <DIV align="center"><A HREF="index.php<?php
+            if (isset($_GET["user_id"])){
+                echo "?user_id=" . $_GET["user_id"];
+            }
+            echo '">Back</A></DIV>';
+            ?>
+</div>
+
  		</div>
         <script>
     $(function(){

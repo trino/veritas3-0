@@ -187,18 +187,22 @@ if (count($_POST) > 0) {
                 $form = first("SELECT * FROM subdocuments WHERE id = " . $formID);
                 echo '<LI><A HREF="' . getq("form=" . $formID) . '">'. $form[$fieldname] . '</A></LI>';
             }
-            echo '<LI><A HREF="30days.php">30 days</A></LI>';
-            echo '<LI><A HREF="60days.php">60 days</A></LI>';
-            echo '<LI><A HREF="apply.php">Apply</A></LI>';
-            echo '<LI><A HREF="register.php">Register</A></LI>';
+            echo '<LI><A HREF="30days.php' . getq() . '">30 days</A></LI>';
+            echo '<LI><A HREF="60days.php' . getq() . '">60 days</A></LI>';
+            echo '<LI><A HREF="apply.php' . getq() . '">Apply</A></LI>';
+            echo '<LI><A HREF="register.php' . getq() . '">Register</A></LI>';
             echo "</UL>";
     }
 }
 
-function getq($data){
+function getq($data = ""){
     if( $_SERVER['QUERY_STRING']){
-        return "?" . $_SERVER['QUERY_STRING'] . "&" .  $data;
-    } else {
+        if($data) {
+            return "?" . $_SERVER['QUERY_STRING'] . "&" . $data;
+        } else {
+            return "?" . $_SERVER['QUERY_STRING'];
+        }
+    } elseif($data) {
         return "?" . $data;
     }
 }

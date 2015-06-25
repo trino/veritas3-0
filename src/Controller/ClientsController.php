@@ -1550,7 +1550,7 @@
                 
                 $frequency = $c->requalify_frequency;
                 $forms = $c->requalify_product;
-                $msg .= "Selected Forms:".$forms."<br/>";
+                $msg .= "Selected Forms: ".$forms."<br/>";
                 $nxt_sec = strtotime($today)+($frequency*24*60*60*30);
                 
                 $nxt_date = date('Y-m-d',$nxt_sec);
