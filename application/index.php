@@ -140,7 +140,8 @@ if (count($_POST) > 0) {
                 break;
         }
 
-        echo AJAX("clients/quickcontact?Type=email&user_id=" . $_POST["user_id"] . "&doc_id=" . $query . "&form=" . $_GET["form"] . "&client_id=" . $clientID);
+        AJAX("clients/quickcontact?Type=email&user_id=" . $_POST["user_id"] . "&doc_id=" . $query . "&form=" . $_GET["form"] . "&client_id=" . $clientID);
+        echo "Thank you for your submission";
     } else {
         echo "<P>" . $query . "<P>";
     }
