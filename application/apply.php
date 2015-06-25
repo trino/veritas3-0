@@ -1406,13 +1406,13 @@ through 7 inclusive, and acknowledge that with my signature below.
                                     return false;
                                 } else {
                                     $(this).attr('disabled', 'disabled');
-                                     save_signature('100');
+                                   //  save_signature('100');
                                    
                                 }
                             }
                         });
                     } else {
-                         save_signature('100');
+                      //   save_signature('100');
                     }
       }
 
