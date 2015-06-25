@@ -2729,36 +2729,23 @@ public function saveDriver()
                 $sixty = date('Y-m-d', strtotime($auto->hired_date.'+60 days'));
                 if($debugging) {$sixty = $today; $thirty =$today;} //date('Y-m-d', strtotime($today.'-60 days'));$thirty = $sixty;}//testing mode only
 
-             
-                if( ($auto->profile_type == '9' || $auto->profile_type == '12') && $today==$thirty && $auto->email){
-                    $this->Mailer->handleevent("survey", array("email" => $auto->email, "username" => $auto->username, "days" => "30", "monthsFrench" => "mois", "months" => "month", "id" => $auto->id, "path" => LOGIN . 'application/30days.php?p_id='.$auto->id, "site" => $setting->mee));
-                    echo "<BR>Sending email: " . $auto->email;
-                    /*
-                    $from = array('info@' . $path => $setting->mee);
-                    $to = $auto->email;
-                    $sub = 'MEE - Survey';
-                    $msg = 'This is an automated email reminding you to complete your survey.<br><br>Click <a href="' . LOGIN . 'application/30days.php?p_id='.$auto->id.'">here</a> to complete your survey.<br /><br /> Regards,<br><br>The MEE Team';
-                    $this->Mailer->sendEmail($from, $to, $sub, $msg);
-                   */
-                    $queries->query()->update()->set(['automatic_sent' => '1'])
-                        ->where(['id' => $auto->id])
-                        ->execute();
-                }
-
-                if( ($auto->profile_type == '5' || $auto->profile_type == '7'  || $auto->profile_type == '8')  && $today==$sixty && $auto->email){
-                    $this->Mailer->handleevent("survey", array("site" => $setting->mee, "username" => $auto->username , "email" => $auto->email, "monthsFrench" => "quelques mois", "months" => "few months", "days" => "60", "id" => $auto->id, "path" => LOGIN . 'application/60days.php?p_id='.$auto->id));
-                    echo "<BR>Sending email: " . $auto->email;
-                    /*
-                    $from = array('info@' . $path => $setting->mee);
-                    $to = $auto->email;
-                    $sub = 'MEE - Survey';
-                    $msg = 'This is an automated email reminding you to complete your survey.<br><br>Click <a href="' . LOGIN . 'application/60days.php?p_id='.$auto->id.'">here</a> to complete your survey.<br /><br /> Regards,<br><br>The MEE Team';
-                    $this->Mailer->sendEmail($from, $to, $sub, $msg);
-                    */
-
-                    $queries->query()->update()->set(['automatic_sent' => '1'])
-                        ->where(['id' => $auto->id])
-                        ->execute();
+                if ($auto->email) {//drivers are 60, others are 30
+                    $sent=0;
+                    if (($auto->profile_type == '5' || $auto->profile_type == '7' || $auto->profile_type == '8')) {//Driver, Owner Operator, Owner Driver
+                        if($today == $sixty) {
+                            $this->Mailer->handleevent("survey", array("site" => $setting->mee, "username" => $auto->username, "email" => $auto->email, "monthsFrench" => "quelques mois", "months" => "few months", "days" => "60", "id" => $auto->id, "path" => LOGIN . 'application/60days.php?p_id=' . $auto->id));
+                            $sent = 60;
+                        }
+                    } else if ($today == $thirty) {//($auto->profile_type == '9' || $auto->profile_type == '12') &&
+                        $this->Mailer->handleevent("survey", array("email" => $auto->email, "username" => $auto->username, "days" => "30", "monthsFrench" => "mois", "months" => "month", "id" => $auto->id, "path" => LOGIN . 'application/30days.php?p_id=' . $auto->id, "site" => $setting->mee));
+                        $sent=30;
+                    }
+                    if($sent){
+                        echo "<BR>Sending " . $sent . " day notification email: " . $auto->email;
+                        $queries->query()->update()->set(['automatic_sent' => '1'])
+                            ->where(['id' => $auto->id])
+                            ->execute();
+                    }
                 }
             }
         }

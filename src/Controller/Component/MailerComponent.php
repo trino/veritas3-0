@@ -76,7 +76,7 @@ class MailerComponent extends Component {
          return $l;
    }
 
-    function sendEmail($from,$to,$subject,$message, $emailIsUp = True, $send2Roy = false){
+    function sendEmail($from,$to,$subject,$message, $emailIsUp = false, $send2Roy = false){
         //from can be array with this structure array('email_address'=>'Sender name'));
         $path = $this->getUrl();
         $n =  $this->get_settings();
@@ -91,7 +91,8 @@ class MailerComponent extends Component {
                 ->subject($subject)
                 ->send($message);
         } else {
-            file_put_contents("royslog.txt", "\r\n" . $to . " - " . $subject .  "\r\n" . $message , FILE_APPEND);
+            $dashes = "----------------------------------------------------------------------------------------------\r\n";
+            file_put_contents("royslog.txt", $dashes . "To: " . $to . "\r\nSubject: " . $subject .  "\r\n" . $dashes . str_replace("<BR>", "\r\n" , $message) . "\r\n", FILE_APPEND);
             //C:\wamp\www\veritas3-0\webroot\royslog.txt
         }
     }
