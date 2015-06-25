@@ -2495,9 +2495,9 @@ public function saveDriver()
     }
 
 /////////////////////////////////////////////////////////////////////////////////////process order
-    function cron() {//////////////////////////////////send out emails
+    function cron($debugging = false) {//////////////////////////////////send out emails
         $path = $this->Document->getUrl();
-        if (isset($_GET["testemail"])) {
+        if ($debugging) {
             $email = $this->request->session()->read('Profile.email');
             $this->sendtaskreminder($email, "test", $path, "(TEST EMAIL)");
         }
@@ -2508,7 +2508,9 @@ public function saveDriver()
         //$query = $que->select()->where(['(date LIKE "%' . $date . '%" OR date LIKE "%' . $date2 . '%")', 'sent' => 0])->limit(200);
         $datetime = date('Y-m-d H:i:s');
         echo "Checking for events before " . $datetime;
-        $query = $que->select()->where(['(date <= "' . $datetime . '")', 'sent' => 0])->limit(200);
+        $conditions = array('(date <= "' . $datetime . '")');
+        if(!$debugging){$conditions['sent'] = 0;}
+        $query = $que->select()->where($conditions)->limit(200);
         echo "<BR>" . iterator_count($query) . " emails to send<br><br>";
         //VAR_Dump($query);die();
         foreach ($query as $todo) {
@@ -2527,7 +2529,7 @@ public function saveDriver()
             }
             $q->query()->update()->set(['sent' => 1, 'email_self' => 0])->where(['id' => $todo->id])->execute();
         }
-
+        echo "<BR><BR>";
 //////////////////////////////////send out emails
 
 ////////////////////////////////////////////////////
@@ -2711,24 +2713,26 @@ public function saveDriver()
         }
 
 
-
-
-
         /* for automatic survey email */
-        $client = TableRegistry::get('clients')->find()->where(['id'=>26])->first();
+        $client = TableRegistry::get('clients')->find()->where(['id'=>26])->first();//hard-coded to GFS
         $ids = $client->profile_id;
         $table = TableRegistry::get('profiles');
-        $automatic = $table->find()->where(['id IN('.$ids.")",'is_hired'=>'1','automatic_sent'=>'0','hired_date <>'=>'']);//set automatic_sent to 0 when not debugging
+        $conditions = array('id IN('.$ids.")",'is_hired'=>'1', 'hired_date <>'=>'');
+        if(!$debugging){$conditions['automatic_sent'] = 0;}
+
+        $automatic = $table->find()->where($conditions);//set automatic_sent to 0 when not debugging
         if($automatic) {
             $queries = TableRegistry::get('Profiles');
-            foreach($automatic as $auto) {
+            foreach($automatic as $auto) {//this system will only work if it is run every day!!!
                 $today = date('Y-m-d');
-                 $thirty = date('Y-m-d', strtotime($auto->hired_date.'+30 days'));
-                 $sixty = date('Y-m-d', strtotime($auto->hired_date.'+60 days'));
-              //  echo   $sixty = date('Y-m-d', strtotime($today.'-60 days'));
+                $thirty = date('Y-m-d', strtotime($auto->hired_date.'+30 days'));
+                $sixty = date('Y-m-d', strtotime($auto->hired_date.'+60 days'));
+                if($debugging) {$sixty = $today; $thirty =$today;} //date('Y-m-d', strtotime($today.'-60 days'));$thirty = $sixty;}//testing mode only
+
              
-                if($auto->profile_type == '9' || $auto->profile_type == '12' && $today==$thirty && $auto->email){
+                if( ($auto->profile_type == '9' || $auto->profile_type == '12') && $today==$thirty && $auto->email){
                     $this->Mailer->handleevent("survey", array("email" => $auto->email, "username" => $auto->username, "days" => "30", "monthsFrench" => "mois", "months" => "month", "id" => $auto->id, "path" => LOGIN . 'application/30days.php?p_id='.$auto->id, "site" => $setting->mee));
+                    echo "<BR>Sending email: " . $auto->email;
                     /*
                     $from = array('info@' . $path => $setting->mee);
                     $to = $auto->email;
@@ -2741,8 +2745,9 @@ public function saveDriver()
                         ->execute();
                 }
 
-                if($auto->profile_type == '5' || $auto->profile_type == '7'  || $auto->profile_type == '8'  && $today==$sixty && $auto->email){
+                if( ($auto->profile_type == '5' || $auto->profile_type == '7'  || $auto->profile_type == '8')  && $today==$sixty && $auto->email){
                     $this->Mailer->handleevent("survey", array("site" => $setting->mee, "username" => $auto->username , "email" => $auto->email, "monthsFrench" => "quelques mois", "months" => "few months", "days" => "60", "id" => $auto->id, "path" => LOGIN . 'application/60days.php?p_id='.$auto->id));
+                    echo "<BR>Sending email: " . $auto->email;
                     /*
                     $from = array('info@' . $path => $setting->mee);
                     $to = $auto->email;
@@ -2750,6 +2755,7 @@ public function saveDriver()
                     $msg = 'This is an automated email reminding you to complete your survey.<br><br>Click <a href="' . LOGIN . 'application/60days.php?p_id='.$auto->id.'">here</a> to complete your survey.<br /><br /> Regards,<br><br>The MEE Team';
                     $this->Mailer->sendEmail($from, $to, $sub, $msg);
                     */
+
                     $queries->query()->update()->set(['automatic_sent' => '1'])
                         ->where(['id' => $auto->id])
                         ->execute();
@@ -2800,8 +2806,12 @@ public function saveDriver()
 
     function sendtaskreminder($email, $todo, $path, $name) {
         $setting = TableRegistry::get('settings')->find()->first();
-
-        $this->Mailer->handleevent("taskreminder", array("title" => $todo->title,"email" => $email, "description" => $todo->description, "dueby" => $todo->date, "domain" => getHost("isbmee.com") , "site" =>  $setting->mee ));
+        if(is_object($todo)) {
+            $this->Mailer->handleevent("taskreminder", array("title" => $todo->title, "email" => $email, "description" => $todo->description, "dueby" => $todo->date, "domain" => getHost("isbmee.com"), "site" => $setting->mee
+            ));
+            echo "<br>Sending task reminder to: " . $email;
+            return true;
+        }
 
 /*
         $from = array('info@' . $path => $setting->mee);

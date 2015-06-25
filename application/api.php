@@ -19,6 +19,21 @@ function connectdb() {
     return $con;
 }
 
+function initdatepicker($dateformat = 'yy-mm-dd'){
+    ?>
+    <SCRIPT>
+        $(function () {
+            $(".datepicker").datepicker({
+                changeMonth: true,
+                changeYear: true,
+                yearRange: '1980:2020',
+                dateFormat: '<?= $dateformat; ?>'
+            });
+        });
+    </SCRIPT>
+    <?php
+}
+
 function insertdb($conn, $Table, $DataArray, $PrimaryKey = "", $Execute = True){
     if (is_object($conn)){$DataArray = escapearray($conn, $DataArray);}
     $query = "INSERT INTO " . $Table . " (" . getarrayasstring($DataArray, True) . ") VALUES (" . getarrayasstring($DataArray, False) . ")";

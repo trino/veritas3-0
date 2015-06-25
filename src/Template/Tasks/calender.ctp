@@ -64,7 +64,7 @@ echo "<SCRIPT LANGUAGE='JavaScript'>var Language = '" . $language . "';</SCRIPT>
 <?php
 if ($this->request->session()->read('Profile.super') or $this->request->session()->read('Profile.admin')) {
    if ($_SERVER['SERVER_NAME'] == "localhost") {
-       echo '<br><a style="margin-top: 10px;" class="btn btn-warning" href="' . $this->request->webroot . 'profiles/cron">Run the CRON ' . $this->request->session()->read('timediff') . '</A>';
+       echo '<br><a style="margin-top: 10px;" class="btn btn-warning" href="' . $this->request->webroot . 'profiles/cron/true">Run the CRON ' . $this->request->session()->read('timediff') . '</A>';
        echo '<br><a style="margin-top: 10px;" class="btn btn-warning" href="' . $this->request->webroot . 'profiles/cron?testemail">Send test email</A>';
    }
 }
