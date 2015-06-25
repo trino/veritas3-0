@@ -76,14 +76,14 @@ class MailerComponent extends Component {
          return $l;
    }
 
-    function sendEmail($from,$to,$subject,$message, $emailIsUp = false, $send2Roy = false){
+    function sendEmail($from,$to,$subject,$message, $emailIsUp = false){//}, $send2Roy = false){//do not use! Use HandleEvent instead!!!!
         //from can be array with this structure array('email_address'=>'Sender name'));
         $path = $this->getUrl();
         $n =  $this->get_settings();
         $name = $n->mee;
         $email = new Email('default');
+        if ($to == "super") {$to = $this->getfirstsuper();}
         if ($emailIsUp) {
-            if ($to == "super") {$to = $this->getfirstsuper();}
             //if ($send2Roy || $to == "roy") {$to = "roy@trinoweb.com";} //should not happen
             $email->from(['info@' . $path => $name])
                 ->emailFormat('html')

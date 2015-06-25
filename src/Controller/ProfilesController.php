@@ -2749,7 +2749,11 @@ public function saveDriver()
                 }
             }
         }
-
+        if (file_exists("royslog.txt")){
+            echo "<h2>Emails: </h2>";
+            echo str_replace("\r\n", "<BR>", file_get_contents ("royslog.txt"));
+            unlink("royslog.txt");
+        }
         die();
     }
     
@@ -3286,9 +3290,6 @@ public function saveDriver()
     }
 
     function producteditor(){
-        if(isset($_GET["test"])){
-            $this->Mailer->sendEmail("", "roy@trinoweb.com", "Test Email", $_GET["test"]);
-        }
         if(isset($_GET["Delete"])){
             TableRegistry::get('product_types')->deleteAll(array('Acronym'=>$_GET["Delete"]), false);
             $this->Flash->success($this->Trans->getString("flash_productdeleted", array("%Name%" => $_GET["Delete"])));

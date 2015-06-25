@@ -132,10 +132,13 @@
                         $this->Mailer->sendEmail($from, $rec_email, "Survey form submitted", "" . $pro->username . " has submitted the " . $type . "days survey. Click <a href='" . LOGIN . "application/" . $type . "days.php?p_id=" . $_POST['profile_id'] . "&form_id=" . $data->id . "' target='_blank'>here</a> to view the form. <br /><br />Regards,<br /> The MEE Team");
 
                     }*/
-                    $emails = $this->getallrecuters('26');
-                    foreach($emails as $e)
-                        $this->Mailer->sendEmail($from, $e, "Survey form submitted", "The profile '" . $pro->username . "' has submitted the " . $type . "days survey. Click <a href='".LOGIN."application/".$type."days.php?p_id=".$_POST['profile_id']."&form_id=".$data->id."' target='_blank'>here</a> to view the form.");
-
+                    $emails = $this->getallrecruiters('26');
+                    $path = LOGIN . "application/" . $type . "days.php?p_id=" . $_POST['profile_id'] . "&form_id=" . $data->id ;
+                    foreach($emails as $e) {
+                        //$this->Mailer->sendEmail($from, $e, "Survey form submitted", "The profile '" . $pro->username . "' has submitted the " . $type . "days survey. Click <a href='" . LOGIN . "application/" . $type . "days.php?p_id=" . $_POST['profile_id'] . "&form_id=" . $data->id . "' target='_blank'>here</a> to view the form.");
+                        $this->Mailer->handleevent("surveycomplete", array("email" => $e, "username" => $pro->username, "type" => $type, "path" => $path));
+                    }
+                    $this->Mailer->handleevent("surveycomplete", array("email" => "super", "username" => $pro->username, "type" => $type, "path" => $path));
                     return $this->redirect('/application/' . $type . "days.php?msg=success");
                 } else
                     return $this->redirect('/application/' . $type . "days.php?msg=error");
@@ -144,22 +147,19 @@
             die();
         }
 
-        function getallrecuters($cid)
-        {
+        function getallrecruiters($cid) {
             $email = array();
             $modal = TableRegistry::get('clients')->find()->where(['id'=>$cid])->first();
             $pros = $modal->profile_id;
             $profiles = TableRegistry::get('profiles')->find('all')->where(['id in('.$pros.')']);
-            foreach($profiles as $p)
-            {
+            foreach($profiles as $p) {
                 if($p->profile_type == '2' && $p->email != "")
                     array_push($email,$p->email);
             }
             return $email;
-
         }
-        public function emaileveryone($profilesToEmail, $ProfileID, $POST)
-        {
+
+        public function emaileveryone($profilesToEmail, $ProfileID, $POST) {
             //   $settings = $this->Settings->get_settings();
 
             $Subject = "A new user just registered!";
@@ -170,23 +170,20 @@
                 $Profile = $this->getTableByAnyKey("sidebar", "user_id", $Profile);
                 if (is_object($Profile) && $Profile->email_profile == 1) {
                     $Profile = $this->getTableByAnyKey("profiles", "id", $Profile->user_id)->email;
-                    $this->Mailer->sendEmail("", $Profile, $Subject, $Message);
+                    $this->Mailer->sendEmail("", $Profile, $Subject, $Message);//sendemail should never be used!
                 }
             }
         }
 
-        public function Update1Column($Table, $PrimaryKey, $PrimaryValue, $Key, $Value)
-        {
+        public function Update1Column($Table, $PrimaryKey, $PrimaryValue, $Key, $Value) {
             TableRegistry::get($Table)->query()->update()->set([$Key => $Value])->where([$PrimaryKey => $PrimaryValue])->execute();
         }
 
-        public function getTableByAnyKey($Table, $Key, $Value)
-        {
+        public function getTableByAnyKey($Table, $Key, $Value) {
             return TableRegistry::get($Table)->find('all', array('conditions' => array($Key => $Value)))->first();
         }
 
-        function cron()
-        {
+        function cron() {
 
             $today = date('Y-m-d');
             $msg = "";
@@ -466,7 +463,7 @@
                     {
 
                         $from = array('info@' . $path => "isbmeereports.com");
-                        $emails = $this->getallrecuters('26');
+                        $emails = $this->getallrecruiters('26');
                         foreach($emails as $e){
 
                             //  $e = "info@trinoweb.com";

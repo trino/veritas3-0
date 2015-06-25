@@ -31,21 +31,22 @@
                 foreach($dates as $k=>$d) {
                     $thirty = date('Y-m-d', strtotime($d->hired_date.'+30 days'));
                     $sixty = date('Y-m-d', strtotime($d->hired_date.'+60 days'));
+                    $clientID = 26;
                     ?>
                     <tr>
                         <td><?php echo ++$k;?></td>
                         <td><?php echo $d->hired_date;?></td>
-                        <td><?php echo $this->requestAction('/settings/getclient/26');?></td>
-                        <td><?php if($d->hired_date < $today) {
+                        <td><A HREF="<?= $this->request->webroot;?>clients/edit/<?= $clientID; ?>?view"><?php echo $this->requestAction('/settings/getclient/' . $clientID);?></A></td>
+                        <td><A HREF="<?= $this->request->webroot;?>profiles/view/<?= $d->id; ?>"><?php if($d->hired_date < $today) {
                                         //echo "Cron Ran<br/>";
                                         if($d->automatic_sent== '1')
-                                            echo "Sent for user:'";
+                                            echo "Sent for user: '";
                                         else
-                                            echo "Pending for user:'";
+                                            echo "Pending for user: '";
                                         echo $d->username."'";
                                   } else {
-                                        echo "User:'".$d->username."'";
-                                  }?>
+                                        echo "User: '".$d->username."'";
+                                  }?></A>
                         </td>
                         <td><?php if($d->profile_type == '9' || $d->profile_type == '12')
                                     echo "30 Day Survey";
