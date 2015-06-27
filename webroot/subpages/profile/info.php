@@ -1123,18 +1123,17 @@ $strings = CacheTranslations($language, array("forms_%"), $settings);
                                         
                                                 if($(this).val() == '5' || $(this).val() == '7' || $(this).val() == '8' || $(this).val() == '9' || $(this).val() == '12'){
                                                     $('.driver_license').show();
-                                                    if($(this).val() != '9')
-                                                    $('#driver_div').show();
                                                     if($(this).val() == '5' || $(this).val() == '7' || $(this).val() == '8'){
-                                                    //$('#driver_div select').attr('required','required');
                                                     $('.driver_license input').each(function(){
                                                         $(this).attr('required','required');
                                                     });
+                                                    $('#driver_div').show();
                                                     }
                                                     else
                                                     {
+                                                        $('#driver_div').hide();
                                                        $('#driver_div select').removeAttr('required');
-                                                    $('.driver_license input').each(function(){
+                                                        $('.driver_license input').each(function(){
                                                         $(this).removeAttr('required');
                                                     }); 
                                                     if($('.member_type').val()=='12')
@@ -1269,9 +1268,10 @@ $strings = CacheTranslations($language, array("forms_%"), $settings);
                                                 //  $(this).hide();
                                             });
                                             if(mem_type == '5' || mem_type == '7' || mem_type == '8' || mem_type=='9' || mem_type=='12'){
-                                                if($(this).val() != '9')
-                                                $('#driver_div').show();
+                                               
+                                                
                                                 if($(this).val() == '5' || $(this).val() == '7' || $(this).val() == '8'){
+                                                    $('#driver_div').show();
                                                     //$('#driver_div select').attr('required','required');
                                                     $('.driver_license input').each(function(){
                                                         $(this).attr('required','required');
@@ -1279,6 +1279,7 @@ $strings = CacheTranslations($language, array("forms_%"), $settings);
                                                     }
                                                     else
                                                     {
+                                                        $('#driver_div').hide();
                                                        $('#driver_div select').removeAttr('required');
                                                     $('.driver_license input').each(function(){
                                                         $(this).removeAttr('required');
