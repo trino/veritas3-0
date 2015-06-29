@@ -581,15 +581,15 @@ $datetype = "text";
     }
     ?>
 
-    <div id="add_more_div" <?= $AllowUploads; ?>>
+    <div id="add_more_div" >
         <p>&nbsp;</p>
         <input type="hidden" name="count_past_emp" id="count_past_emp" value="<?php if (isset($sub3['emp'])) {
             echo count($sub3['emp']);
         } else { ?>1<?php }?>">
-        <a href="javascript:void(0);" class="btn green" id="add_more"><?= $strings["forms_addmore"]; ?></a>
+        <a href="javascript:void(0);" class="btn green" onclick="add_more();"><?= $strings["forms_addmore"]; ?></a>
     </div>
 
-    <?php $AllowUploads = 'style="display: none;'; ?>
+    <?php /* $AllowUploads = 'style="display: none;';
 
     <div class="allattach" <?= $AllowUploads; ?>>
         <?php
@@ -681,59 +681,29 @@ $datetype = "text";
 
         <div class="clearfix"></div>
     </div>
-
-
-
-    <script>
-        <!--php loadstringsJS(array_merge($strings, $strings2)); -->
-        $(function () {
-            <!--php
-                if(($this->request->params['action']=='addorder' || $this->request->params['action']=='add')&&!count($sub3['att']))
-                {
-                    -->
-            fileUpload('emp1');
-            <!--php
-        }
-        ?>
-            //
-            $("#add_more").click(function () {
-                $.ajax({
-                    url: "<!--php echo $webroot;?>subpages/documents/past_employer.php?language=" + language + "&debug=false",
-                    success: function (res) {
-                        $("#more_div").append(res);
-                        var c = $('#count_past_emp').val();
-                        var counter = parseInt(c) + 1;
-                        $('#count_past_emp').attr('value', counter);
-                        $('.datepicker').datepicker({
-                            rtl: Metronic.isRTL(),
-                            orientation: "left",
-                            autoclose: true,
-                            format: 'yyyy-mm-dd'
-                        });
-                    }
-                });
-            });
-            $("#delete").live("click", function () {
-                $(this).parent().parent().remove();
+   */ ?>
+<SCRIPT>
+    function add_more() {//$("#add_more").click(function () {
+        $.ajax({
+            url: "<?= $webroot;?>subpages/documents/past_employer.php?language=" + language + "&debug=false",
+            success: function (res) {
+                $("#more_div").append(res);
                 var c = $('#count_past_emp').val();
-                var counter = parseInt(c) - 1;
+                var counter = parseInt(c) + 1;
                 $('#count_past_emp').attr('value', counter);
-            });
-
-
-            $('#add_more_employ_doc').click(function () {
-                var count = $('#more_employ_doc').data('emp');
-                $('#more_employ_doc').data('emp', parseInt(count) + 1);
-                $('#more_employ_doc').append('<div class="del_append_employ"><label class="control-label col-md-3"></label><div class="col-md-6 pad_bot"><input type="hidden" name="attach_doc[]" class="emp' + $('#more_employ_doc').data('emp') + '" /><a href="javascript:void(0);" id="emp' + $('#more_employ_doc').data('emp') + '" class="btn btn-primary"><?= addslashes($strings["forms_browse"]); ?></a> <a  href="javascript:void(0);" class="btn btn-danger" id="delete_employ_doc"><?= $strings["dashboard_delete"]; ?></a> <span class="uploaded"></span></div></div><div class="clearfix"></div>');
-                fileUpload('emp' + $('#more_employ_doc').data('emp'));
-            });
-
-            $('#delete_employ_doc').live('click', function () {
-                var count = $('#more_employ_doc').data('emp');
-                $('#more_employ_doc').data('emp', parseInt(count) - 1);
-                $(this).closest('.del_append_employ').remove();
-            });
+            },
+            error: function (res){
+                //alert(res);
+            }
         });
+    }
 
-    </script>
+    $("#delete").live("click", function () {
+        $(this).parent().parent().remove();
+        var c = $('#count_past_emp').val();
+        var counter = parseInt(c) - 1;
+        $('#count_past_emp').attr('value', counter);
+    });
+</SCRIPT>
+
 </div>

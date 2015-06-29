@@ -376,7 +376,15 @@ class OrdersController extends AppController {
         } else {
             $con_detail = TableRegistry::get('consent_form')->find()->where(['user_id' => $_GET["driver"]])->first();
             $con_detail->first_name = $con_detail->id;
-            if($con_detail){ $this->set('consent_detail', $con_detail);}
+            if($con_detail){
+                    $con_cri = TableRegistry::get('consent_form_criminal');
+                    $sub2['con_cri'] = $con_cri->find()->where(['consent_form_id' => $con_detail->id])->all();
+                    $did= $con_detail->document_id;
+                    $con_at = TableRegistry::get('doc_attachments');
+                    $sub2['con_at'] = $con_at->find()->where(['order_id' => $did, 'sub_id' => 4])->all();
+                    $this->set('sub2', $sub2);
+                    $this->set('consent_detail', $con_detail);
+            }
         }
 
         $this->LoadSubDocs($_GET["forms"]);

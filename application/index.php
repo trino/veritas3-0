@@ -74,20 +74,54 @@ function constructsubdoc($data, $formID, $userID, $clientID, $orderid=0, $Execut
             unset($data[$key]);
         }
     }
-    $data = insertdb($con, $table, $data, "", $Execute);
+    $ret="";
+    switch ($formID){
+        case 9:
+            $formcount = countforms($data);
+            for($index = 0; $index < $formcount; $index ++){
+                $form = converge($data, $index);
+                $ret .= "<BR>" . insertdb($con, $table, $form, "", $Execute);
+            }
+            break;
+        default:
+            $ret = "<BR>" . insertdb($con, $table, $data, "", $Execute);
+    }
     if($Execute){return $docid;}
-    return $docid . "<BR>" . $data;
+    return $docid . $ret;
 }
 
-function converge($array){
-    foreach($array as $Key => $Value){//it's doing some weird thing where values are put in arrays instead
-        if (is_array($Value)){
-            if (count($Value) == 1) {
-                $array[$Key] = $Value[0];
-            }
+function countforms($array){
+    foreach($array as $Key => $Value) {
+        if (is_array($Value)) {
+            return count($Value);
         }
     }
-    return $array;
+    return 0;
+}
+
+function converge($array, $index){
+    $data = array();
+    foreach($array as $Key => $Value){//it's doing some weird thing where values are put in arrays instead
+        $newKey = $Key;
+        if (strpos($Key, "_")){//remove numbers from the end
+            $newKey =  explode("_", $Key);
+            $lastvalue = $newKey[count($newKey)-1];
+            if (is_numeric($lastvalue)){
+                $newKey = str_replace("_" . $lastvalue, "", $Key);
+            } else {
+                $newKey = $Key;
+            }
+        }
+
+        if (is_array($Value)){
+            if($index < count($Value)) {
+                $data[$newKey] = $Value[$index];
+            }
+        } else {
+            $data[$newKey] = $Value;
+        }
+    }
+    return $data;
 }
 
 function AJAX($Query){
@@ -102,7 +136,8 @@ function AJAX($Query){
 if (count($_POST) > 0) {
     $strings = CacheTranslations($language, array("uniform_%", "addorder_back"), $settings);
     includeCSS("login");
-    $_POST = converge($_POST);
+    //var_dump($_POST);
+    //$_POST = converge($_POST); //do not do
     echo '<div class="logo"></div><div class="content" style="width:60%">';
 
     switch ($_GET["form"]) {
@@ -142,6 +177,7 @@ if (count($_POST) > 0) {
 
         AJAX("clients/quickcontact?Type=email&user_id=" . $_POST["user_id"] . "&doc_id=" . $query . "&form=" . $_GET["form"] . "&client_id=" . $clientID);
         echo "Thank you for your submission. We will be in contact shortly.";
+        //echo "<P>" . $query;
     } else {
         echo "<P>" . $query . "<P>";
     }
@@ -149,7 +185,8 @@ if (count($_POST) > 0) {
     includeCSS("login");
     $is_disabled = '';
     if (isset($disabled)){ $is_disabled = 'disabled="disabled"';}
-    $strings = CacheTranslations($language, array("orders_%", "forms_%", "documents_%", "profiles_null", "clients_addeditimage", "addorder_%", "uniform_%"), $settings);
+    $strings = CacheTranslations($language, array("orders_%", "forms_%", "documents_%", "profiles_null", "clients_addeditimage", "addorder_%", "uniform_%", "verifs_%", "tasks_date"), $settings);
+
     echo '<FORM ACTION="" METHOD="POST"><div class="logo"></div> <div class="content" style="width:60%">';
 
     $ignore = array("language", "form");
@@ -209,6 +246,7 @@ function getq($data = ""){
 }
 ?>
 <SCRIPT>
+    language = '<?= $language ?>';
     $(function () {
             $(".datepicker").datepicker({
                 changeMonth: true,
@@ -217,6 +255,8 @@ function getq($data = ""){
                 dateFormat: 'mm/dd/yy'
             });
         });
+
+    <?php loadstringsJS($strings); ?>
 </SCRIPT>
 <?php if($doback){
     if ($dosubmit){ ?>

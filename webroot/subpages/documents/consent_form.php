@@ -5,8 +5,8 @@
     if (isset($sub2)) { listfiles($sub2['con_at'], "attachments/", "", false, 3,false,'consent');     }
     //includejavascript($strings);
     $strings2 = CacheTranslations($language, array("consent_%", "file_attachfile", "tasks_date", "profiles_name"), $settings, False);
+    //debug($consent_detail);
 
-//debug($consent_detail);
 ?>
 <h2><?= $strings2["consent_consent"]; ?></h2>
 <form id="form_consent">

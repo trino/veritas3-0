@@ -1640,6 +1640,8 @@ class DocumentComponent extends Component
                 die();
             }
             // print_r($_GET);die;
+            
+            $consent_check = TableRegistry::get('orders')->find()->where(['id IN (SELECT order_id FROM consent_form)','uploaded_for'=>$profile_id])->first();
             if ($_GET['form_type'] == "company_pre_screen_question.php") {
                 $preScreen = TableRegistry::get('pre_screening');
                 if (!isset($_GET['document']) || isset($_GET['order_id'])) {
@@ -1711,7 +1713,7 @@ class DocumentComponent extends Component
                     echo json_encode($roadTestDetail);
                 }
 
-            } else if ($_GET['form_type'] == "document_tab_3.php") {//consent form
+            } else if ($_GET['form_type'] == "document_tab_3.php" && !$consent_check) {//consent form
 
                 $consentForm = TableRegistry::get('consent_form');
                 if (!isset($_GET['document']) || isset($_GET['order_id'])) {
