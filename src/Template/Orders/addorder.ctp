@@ -1220,12 +1220,12 @@ JSinclude($this,"js/ajaxupload.js");
                             if($(this).attr('class')!='touched' && $(this).attr('class')!='touched_edit3' && $(this).attr('class')!='touched_edit1' && $(this).attr('class')!='touched_edit2' && $(this).attr('class')!='touched_edit4'){
                                 var $name = $(this).attr('name');
 
-                                alert(doc_id + " " + $name + " " + res[$name]);
+                                //alert(doc_id + " " + $name + " " + res[$name]);
 
                                 if ($name != 'offence[]' && $name != 'date_of_sentence[]' && $name != 'location[]' && $name != 'attach_doc[]') {
-                                    //if (doc_id)
+                                    if (doc_id && $(this).val() == "") {
                                         $(this).val(res[$name]);
-
+                                    }
                                 }
                             }
                         });

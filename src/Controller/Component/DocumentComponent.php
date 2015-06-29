@@ -1636,20 +1636,6 @@ class DocumentComponent extends Component
 
         public function getOrderData($cid = 0, $order_id = 0, $profile_id = 0) {
             if (!$order_id) {
-                if($profile_id) {
-                    $table = "";
-                    switch ($_GET['form_type']) {
-                        case "document_tab_3.php":
-                            $table = 'consent_form';
-                            break;
-                    }
-                    if($table){
-                        $table = TableRegistry::get($table);
-                        $FormDetail = $table->find()->where(['user_id' => $profile_id])->first();
-                        $FormDetail->fname = "TESTING";
-                        echo json_encode($FormDetail);
-                    }
-                }
                 echo null;
                 die();
             }
