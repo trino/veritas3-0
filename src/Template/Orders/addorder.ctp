@@ -1390,7 +1390,7 @@ JSinclude($this,"js/ajaxupload.js");
         $('.tab-content button').hide();
         $('.tab-content a').hide();
         $('.nav a').show();
-        $('.cont').html('<?= addslashes($strings2["addorder_next"]); ?> <i class="m-icon-swapright m-icon-white"></i>');
+        $('.cont').html('<?= addslashes($strings["addorder_next"]); ?> <i class="m-icon-swapright m-icon-white"></i>');
         $('.cont').parent().find('.red').remove();
         $('.cont').each(function () {
             $(this).attr('id', 'nextview');

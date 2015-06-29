@@ -1,4 +1,4 @@
-<!DOCTYPE html><TITLE>Uniform</TITLE>
+<!DOCTYPE html><TITLE>MEE</TITLE>
 <?php
 //include_once ($dirroot . '/../webroot/subpages/api.php');
 include_once ('api.php');
@@ -141,7 +141,7 @@ if (count($_POST) > 0) {
         }
 
         AJAX("clients/quickcontact?Type=email&user_id=" . $_POST["user_id"] . "&doc_id=" . $query . "&form=" . $_GET["form"] . "&client_id=" . $clientID);
-        echo "Thank you for your submission";
+        echo "Thank you for your submission. We will be in contact shortly.";
     } else {
         echo "<P>" . $query . "<P>";
     }
