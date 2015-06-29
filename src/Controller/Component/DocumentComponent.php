@@ -1635,25 +1635,10 @@ class DocumentComponent extends Component
     }
 
         public function getOrderData($cid = 0, $order_id = 0, $profile_id = 0) {
-            if (!$order_id) {
-                if($profile_id) {
-                    $table = "";
-                    switch ($_GET['form_type']) {
-                        case "document_tab_3.php":
-                            $table = 'consent_form';
-                            break;
-                    }
-                    if($table){
-                        $table = TableRegistry::get($table);
-                        $FormDetail = $table->find()->where(['user_id' => $profile_id])->first();
-                        $FormDetail->fname = "TESTING";
-                        echo json_encode($FormDetail);
-                    }
-                }
-                echo null;
-                die();
-            }
+            
             // print_r($_GET);die;
+            
+            $consent_check = TableRegistry::get('orders')->find()->where(['id IN (SELECT order_id FROM consent_form)','uploaded_for'=>$profile_id])->first();
             if ($_GET['form_type'] == "company_pre_screen_question.php") {
                 $preScreen = TableRegistry::get('pre_screening');
                 if (!isset($_GET['document']) || isset($_GET['order_id'])) {
@@ -1725,7 +1710,7 @@ class DocumentComponent extends Component
                     echo json_encode($roadTestDetail);
                 }
 
-            } else if ($_GET['form_type'] == "document_tab_3.php") {//consent form
+            } else if ($_GET['form_type'] == "document_tab_3.php" && !$consent_check) {//consent form
 
                 $consentForm = TableRegistry::get('consent_form');
                 if (!isset($_GET['document']) || isset($_GET['order_id'])) {
