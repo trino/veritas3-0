@@ -443,6 +443,7 @@
                 $profile['title'] = $_POST['title'];
                 $profile['postal'] = $_POST['postal'];
                 $profile['hear'] = $_POST['hear'];
+                $profile["profile_type"] = 0;
 
                 $modal = TableRegistry::get('profiles');
                 $p = $modal->newEntity($profile);

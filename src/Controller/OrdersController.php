@@ -339,8 +339,8 @@ class OrdersController extends AppController {
                 $sub2['con_at'] = $con_at->find()->where(['order_id' => $did, 'sub_id' => 4])->all();
                 $this->set('sub2', $sub2);
                 $this->set('consent_detail', $con_detail);
-
             }
+
             $emp = TableRegistry::get('employment_verification');
             $sub3['emp'] = $emp->find()->where(['order_id' => $did])->all();
 
@@ -372,6 +372,13 @@ class OrdersController extends AppController {
                         $this->set($s->table_name, $mod);
                     }
                 }
+            }
+        } else {
+            //profile id = $_GET['driver']
+            //id: 4, title: Consent Form, display: 1, form: document_tab_3.php, table_name: consent_form, orders: 1, color_id: 1, icon: 0
+            $con_detail = TableRegistry::get('consent_form')->find()->where(['user_id' => $_GET['driver']])->first();
+            if($con_detail) {
+                $this->set('consent_detail', $con_detail);
             }
         }
 

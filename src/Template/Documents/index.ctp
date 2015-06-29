@@ -117,7 +117,7 @@
                                     foreach ($users as $u) {
                                         ?>
                                         <option
-                                            value="<?php echo $u->id; ?>" <?php if (isset($return_user_id) && $return_user_id == $u->id) { ?> selected="selected"<?php } ?> ><?php echo ucfirst($u->username); ?></option>
+                                            value="<?php echo $u->id; ?>" <?php if (isset($return_user_id) && $return_user_id == $u->id) { ?> selected="selected"<?php } ?> ><?php echo formatname($u); ?></option>
                                     <?php
                                     }
                                 ?>
@@ -134,7 +134,7 @@
 
                                         ?>
                                         <option
-                                            value="<?php echo $drcld->id; ?>" <?php if (isset($return_submitted_for_id) && $return_submitted_for_id == $drcld->id) { ?> selected="selected"<?php } ?> ><?php echo ucfirst($drcld->username); ?></option>
+                                            value="<?php echo $drcld->id; ?>" <?php if (isset($return_submitted_for_id) && $return_submitted_for_id == $drcld->id) { ?> selected="selected"<?php } ?> ><?php echo formatname($drcld); ?></option>
                                     <?php
                                     }
                                 ?>
@@ -338,7 +338,7 @@
                     <td align=""><?php if ($orderID > 0) {
                             echo '<a href="'.$this->request->webroot.'orders/vieworder/'.$orderDetail->client_id.'/'.$orderDetail->id;if($orderDetail->order_type){echo '?order_type='.urlencode($orderDetail->order_type);if($orderDetail->forms)echo '&forms='.$orderDetail->forms;}echo '">'.$orderDetail->id;echo '</a>';
                         } else {
-                            echo "N/A";
+                            echo $strings["documents_na"];//needs translation
                         }  ?></td>
 
 
@@ -348,10 +348,10 @@
                     <td><?php
                             $docname = "";
                             if (isset($uploaded_by->username)) {
-                                $user = '<a href="' . $this->request->webroot . 'profiles/view/' . $docs->user_id . '" target="_blank">' . ucfirst(h($uploaded_by->username));
-                                $docname = h($docs->document_type) . " submitted by " . ucfirst($uploaded_by->username) . " at " . h($docs->created);
+                                $user = '<a href="' . $this->request->webroot . 'profiles/view/' . $docs->user_id . '" target="_blank">' . formatname($uploaded_by);
+                                $docname = h($docs->document_type) . " " . $strings["documents_submittedby"] . " " . formatname($uploaded_by) . " " . $strings["documents_at"] . " " . h($docs->created);//needs translation
                             } else {
-                                $user = "None";
+                                $user = $strings["documents_none"];//needs translation
                             }
 
                             echo $user;
@@ -360,25 +360,20 @@
                     <?php if ($settings->mee == "MEE") { ?>
 
                     <td>
-
-
                         <?php
 
                             if (isset($uploaded_for->username)) {
-                                $user = '<a href="' . $this->request->webroot . 'profiles/view/' . $docs->uploaded_for . '" target="_blank">' . ucfirst(h($uploaded_for->username));
+                                $user = '<a href="' . $this->request->webroot . 'profiles/view/' . $docs->uploaded_for . '" target="_blank">' . formatname($uploaded_for);
                                 if (strlen($docname) == 0) {
-                                    $docname = h($docs->document_type) . " uploaded for " . ucfirst($uploaded_for->username) . " at " . h($docs->created);
-                                }else{
-
-
-
+                                    $docname = h($docs->document_type) . " " . $strings["documents_submittedfor"] . " " . formatname($uploaded_for) . " " . $strings["documents_at"] . " " . h($docs->created);//needs translation
                                 }
                             } else {
-                                $user = "None";
+                                $user = $strings["documents_none"];//needs translation
                             }
 
                             echo $user;
-                        ?></td>
+                        ?>
+                    </td>
 
                     <?}?>
                     <td><?= getdatecolor(h($docs->created)) ?></td>

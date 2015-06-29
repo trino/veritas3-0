@@ -1,6 +1,5 @@
 <?php
     $strings2 = CacheTranslations($language, array("verifs_%", "tasks_date", "file_attachfile", "file_download"), $settings, False);
-
 $datetype = "text";
 ?>
 <div class="menu-toggler sidebar-toggler"></div>
@@ -589,6 +588,9 @@ $datetype = "text";
         } else { ?>1<?php }?>">
         <a href="javascript:void(0);" class="btn green" id="add_more"><?= $strings["forms_addmore"]; ?></a>
     </div>
+
+    <?php $AllowUploads = 'style="display: none;'; ?>
+
     <div class="allattach" <?= $AllowUploads; ?>>
         <?php
 
@@ -682,14 +684,13 @@ $datetype = "text";
 
 
 
-    <!--script>
-    /*
-        <!--php loadstringsJS(array_merge($strings, $strings2)); >
+    <script>
+        <!--php loadstringsJS(array_merge($strings, $strings2)); -->
         $(function () {
             <!--php
                 if(($this->request->params['action']=='addorder' || $this->request->params['action']=='add')&&!count($sub3['att']))
                 {
-                    ?>
+                    -->
             fileUpload('emp1');
             <!--php
         }
@@ -733,6 +734,6 @@ $datetype = "text";
                 $(this).closest('.del_append_employ').remove();
             });
         });
-        */
-    </script-->
+
+    </script>
 </div>

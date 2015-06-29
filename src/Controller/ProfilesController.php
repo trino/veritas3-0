@@ -483,7 +483,8 @@ class ProfilesController extends AppController{
         $this->set('cancreate', explode(",", $condition) ) ;
 
         $this->loadModel('ProfileTypes');
-        $this->set('ptypes', $this->ProfileTypes->find()->where(['enable' => '1']));
+        $this->set('ptypes', $this->ProfileTypes->find()->where(array("OR" => ['enable' => '1', 'id' => 0])));
+        //$this->set('ptypes', $this->ProfileTypes->find()->where(['enable' => '1']));
         $this->set('doc_comp', $this->Document);
 
         $setting = $this->Settings->get_permission($u);

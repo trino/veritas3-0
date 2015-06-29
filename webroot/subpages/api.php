@@ -490,6 +490,18 @@ function getpost($Key, $Default = ""){
     return $Default;
 }
 
+function formatname($profile){
+    $name = trim(ucfirst(h($profile->fname)) . " " . ucfirst(h($profile->lname)));
+    if ($profile->username){
+        if($name){
+            $name .= " (" . ucfirst(h($profile->username)) . ")";
+        } else {
+            $name =  ucfirst(h($profile->username));
+        }
+    }
+    return $name;
+}
+
 function cleanit($array){
     return str_replace("\r\n", "", str_replace('\"', '"', addslashes(implode('", "',$array))));
 }

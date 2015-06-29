@@ -258,7 +258,7 @@ if($language == "Debug"){ $Trans = " [Translated]"; } else {$Trans = "";}
                                                         $expires = strtotime($profile->expiry_date);
                                                         if ($expires) {
                                                             if ($expires < time()) {
-                                                                echo '<span class="clearfix " style="color:#a94442">License Expired</span>';
+                                                                echo '<span class="clearfix " style="color:#a94442">' . $strings["profiles_expired"] . '</span>';
                                                             }
                                                         }
                                                     }
