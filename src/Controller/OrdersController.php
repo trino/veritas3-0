@@ -373,13 +373,6 @@ class OrdersController extends AppController {
                     }
                 }
             }
-        } else {
-            //profile id = $_GET['driver']
-            //id: 4, title: Consent Form, display: 1, form: document_tab_3.php, table_name: consent_form, orders: 1, color_id: 1, icon: 0
-            $con_detail = TableRegistry::get('consent_form')->find()->where(['user_id' => $_GET['driver']])->first();
-            if($con_detail) {
-                $this->set('consent_detail', $con_detail);
-            }
         }
 
         $this->LoadSubDocs($_GET["forms"]);
@@ -1222,8 +1215,8 @@ class OrdersController extends AppController {
 
 
 
-    public function getOrderData($cid = 0, $order_id = 0) {
-        $this->Document->getOrderData($cid, $order_id);
+    public function getOrderData($cid = 0, $order_id = 0, $profile_id = 0) {
+        $this->Document->getOrderData($cid, $order_id, $profile_id);
         die;
     }
 

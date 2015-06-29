@@ -523,10 +523,12 @@ JSinclude($this,"js/ajaxupload.js");
     </div>
 </div>
 <script>
-    client_id = '<?=$cid?>',
-        doc_id = '<?=$did?>';
-    if (doc_id)
+    client_id = '<?=$cid?>';
+    doc_id = '<?=$did?>';
+    profile_id = '<?= $_GET["driver"] ?>';
+    if (doc_id) {
         doc_id = parseInt(doc_id);
+    }
     if (!doc_id) {
         $('#uploaded_for').change(function () {
             if ($(this).val())
@@ -554,7 +556,7 @@ JSinclude($this,"js/ajaxupload.js");
         if (form_type != "") {
             $('.subform').load('<?php echo $this->request->webroot;?>documents/subpages/' + form_type);
 
-            var url = '<?php echo $this->request->webroot;?>orders/getOrderData/' + client_id + '/' + doc_id,
+            var url = '<?php echo $this->request->webroot;?>orders/getOrderData/' + client_id + '/' + doc_id + '/' + profile_id,
                 param = {form_type: form_type};
             $.getJSON(url, param, function (res) {
                 if (form_type == "company_pre_screen_question.php") {
@@ -1213,14 +1215,16 @@ JSinclude($this,"js/ajaxupload.js");
 
 
                     if (res) {
+
                         $('#form_consent').find(':input').each(function () {
                             if($(this).attr('class')!='touched' && $(this).attr('class')!='touched_edit3' && $(this).attr('class')!='touched_edit1' && $(this).attr('class')!='touched_edit2' && $(this).attr('class')!='touched_edit4'){
                                 var $name = $(this).attr('name');
 
-                                if ($name != 'offence[]' && $name != 'date_of_sentence[]' && $name != 'location[]' && $name != 'attach_doc[]') {
-                                    if (doc_id)
-                                        $(this).val(res[$name]);
+                                alert(doc_id + " " + $name + " " + res[$name]);
 
+                                if ($name != 'offence[]' && $name != 'date_of_sentence[]' && $name != 'location[]' && $name != 'attach_doc[]') {
+                                    //if (doc_id)
+                                        $(this).val(res[$name]);
 
                                 }
                             }
