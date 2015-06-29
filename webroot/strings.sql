@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 25, 2015 at 10:11 PM
+-- Generation Time: Jun 29, 2015 at 10:28 PM
 -- Server version: 5.6.17
 -- PHP Version: 5.5.12
 
@@ -32,14 +32,14 @@ CREATE TABLE IF NOT EXISTS `strings` (
   `English` varchar(4096) NOT NULL,
   `French` varchar(4096) NOT NULL,
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=664 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=668 ;
 
 --
 -- Dumping data for table `strings`
 --
 
 INSERT INTO `strings` (`ID`, `Name`, `English`, `French`) VALUES
-(1, 'Date', '1435172022', '<-- This is used by the system to auto-update'),
+(1, 'Date', '1435263074', '<-- This is used by the system to auto-update'),
 (2, 'dashboard_affirmative', 'Yes', 'Oui'),
 (3, 'dashboard_negative', 'No', 'Non'),
 (4, 'dashboard_selectall', 'Select All', 'Tout Sélectionner'),
@@ -691,7 +691,11 @@ INSERT INTO `strings` (`ID`, `Name`, `English`, `French`) VALUES
 (660, 'email_requalification_subject', 'Driver Re-qualified (%company_name%)', ''),
 (661, 'email_requalification_message', 'Profile: %username% has been re-qualified on %created% for client: %company_name%<br>\n<br>\nClick <a href="%webroot%">here</a> to login to view the reports.<br>\n<br>\nRegards,<br>\nThe %site% Team', ''),
 (662, 'email_surveycomplete_subject', 'Survey form submitted', ''),
-(663, 'email_surveycomplete_message', 'The profile %username% has submitted the %type% days survey.<BR>\nClick <a href="%path%" target=''_blank''>here</a> to view the form.<BR>\n<BR>\nRegards,<BR>\nThe %site% Team.\n', '');
+(663, 'email_surveycomplete_message', 'The profile %username% has submitted the %type% days survey.<BR>\nClick <a href="%path%" target=''_blank''>here</a> to view the form.<BR>\n<BR>\nRegards,<BR>\nThe %site% Team.\n', ''),
+(664, 'profiles_expired', 'License Expired', 'licence expirée'),
+(665, 'documents_none', 'None', 'Aucun'),
+(666, 'documents_na', 'N/A', 'S/O'),
+(667, 'documents_at', 'at', 'à');
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
