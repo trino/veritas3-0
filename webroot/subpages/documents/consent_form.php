@@ -6,7 +6,7 @@
     //includejavascript($strings);
     $strings2 = CacheTranslations($language, array("consent_%", "file_attachfile", "tasks_date", "profiles_name"), $settings, False);
 
-debug($consent_detail);
+//debug($consent_detail);
 ?>
 <h2><?= $strings2["consent_consent"]; ?></h2>
 <form id="form_consent">

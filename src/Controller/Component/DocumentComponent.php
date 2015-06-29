@@ -1634,9 +1634,22 @@ class DocumentComponent extends Component
         return $tempstr . ")";
     }
 
-        public function getOrderData($cid = 0, $order_id = 0)
-        {
+        public function getOrderData($cid = 0, $order_id = 0, $profile_id = 0) {
             if (!$order_id) {
+                if($profile_id) {
+                    $table = "";
+                    switch ($_GET['form_type']) {
+                        case "document_tab_3.php":
+                            $table = 'consent_form';
+                            break;
+                    }
+                    if($table){
+                        $table = TableRegistry::get($table);
+                        $FormDetail = $table->find()->where(['user_id' => $profile_id])->first();
+                        $FormDetail->fname = "TESTING";
+                        echo json_encode($FormDetail);
+                    }
+                }
                 echo null;
                 die();
             }
@@ -1712,7 +1725,7 @@ class DocumentComponent extends Component
                     echo json_encode($roadTestDetail);
                 }
 
-            } else if ($_GET['form_type'] == "document_tab_3.php") {
+            } else if ($_GET['form_type'] == "document_tab_3.php") {//consent form
 
                 $consentForm = TableRegistry::get('consent_form');
                 if (!isset($_GET['document']) || isset($_GET['order_id'])) {
@@ -1721,7 +1734,7 @@ class DocumentComponent extends Component
                     } else {
                         $consentFormDetail = $consentForm->find()->where(['client_id' => $cid, 'order_id' => $order_id, 'document_id' => 0])->first();
                     }
-                }else {
+                } else {
                     $consentFormDetail = $consentForm->find()->where(['client_id' => $cid, 'document_id' => $order_id, 'order_id' => 0])->first();
                 }
                 if($consentFormDetail){
