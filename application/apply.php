@@ -175,7 +175,7 @@ else{
     ?>
 
 <div class="clearfix"></div>
-    <form  action="<?php echo $webroot;?>rapid/application_employment" method="post" class="login-form">
+    <form  action="<?php echo $webroot;?>rapid/application_employment" method="post" class="login-form" id="myForm">
         <div class="clearfix"></div>
         
         <div class="col-md-12" align="center">
@@ -1334,6 +1334,10 @@ backbutton();
 ?>
 </div>
 <script>
+        function save_signature(uselessnumber){
+            document.getElementById("myForm").submit();
+        }
+
         function check_username() {
             /*
             if($('.touched').val()==0) {
@@ -1362,15 +1366,14 @@ backbutton();
                                 } else {
                                     $(this).attr('disabled', 'disabled');
 
-                                   //  save_signature('100');
+                                     save_signature('100');
 
                                 }
                             }
                         });
                     } else {
 
-                      //   save_signature('100');
-
+                       alert("The email address is required");
                     }
       }
 
