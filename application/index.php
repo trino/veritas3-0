@@ -44,7 +44,7 @@ function constructdocument($orderid, $document_type, $sub_doc_id, $user_id, $cli
     $data["sub_doc_id"] = $sub_doc_id;
     $data["user_id"] = $user_id;
     $data["client_id"] = $client_id;
-    $data["uploaded_for"] = $uploaded_for;
+    $data["uploaded_for"] = $user_id;
     $data["draft"] = $draft;
     $data = insertdb($con, "documents", $data, "", $Execute);//$conn, $Table, $DataArray, $PrimaryKey = "", $Execute =
     //die("<BR>Current date: " . $this->offsettime(0, "hours"));
@@ -62,7 +62,6 @@ function constructsubdoc($data, $formID, $userID, $clientID, $orderid=0, $Execut
     $data["order_id"] = $orderid;
     $data["client_id"] = $clientID;
     $data["user_id"] = $userID;
-    $data["uploaded_for"] = $userID;
     if(!$Execute){$data["document_id"] = " -- No Document ID --- ";}
     $remove = "";
     switch ($formID){
