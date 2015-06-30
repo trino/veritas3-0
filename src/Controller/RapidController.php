@@ -463,11 +463,6 @@
 
                     $path = $this->Document->getUrl();
                     if($app->save($application)) {
-
-                        debug($application);
-                        die();
-
-
                         $from = array('info@' . $path => "isbmeereports.com");
                         $emails = $this->getallrecruiters('26');
                         foreach($emails as $e){
