@@ -44,7 +44,7 @@ function constructdocument($orderid, $document_type, $sub_doc_id, $user_id, $cli
     $data["sub_doc_id"] = $sub_doc_id;
     $data["user_id"] = $user_id;
     $data["client_id"] = $client_id;
-    $data["uploaded_for"] = $user_id;
+    $data["uploaded_for"] = $uploaded_for;
     $data["draft"] = $draft;
     $data = insertdb($con, "documents", $data, "", $Execute);//$conn, $Table, $DataArray, $PrimaryKey = "", $Execute =
     //die("<BR>Current date: " . $this->offsettime(0, "hours"));
@@ -57,7 +57,7 @@ function constructsubdoc($data, $formID, $userID, $clientID, $orderid=0, $Execut
     $subdocinfo = first("SELECT * from subdocuments WHERE id = " . $formID);
     $table = $subdocinfo["table_name"];
     $docTitle = $subdocinfo["title"];
-    $docid = constructdocument($orderid, $docTitle, $formID, $userID, $clientID, 0,0, $Execute);//22= doc id number, 81 = user id for SMI site, 1=client id for SMI
+    $docid = constructdocument($orderid, $docTitle, $formID, $userID, $clientID, $userID,0, $Execute);//22= doc id number, 81 = user id for SMI site, 1=client id for SMI
     $data["document_id"] = $docid;
     $data["order_id"] = $orderid;
     $data["client_id"] = $clientID;
