@@ -2,9 +2,7 @@
 <?php
     include("api.php");
 
-    $webroot = $_SERVER["REQUEST_URI"];
-    $start = strpos($webroot, "/", 1) + 1;
-    $webroot = substr($webroot, 0, $start);
+
 
     $con = "";
     $logo = 'img/logos/';
