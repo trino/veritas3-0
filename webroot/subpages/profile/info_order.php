@@ -91,7 +91,7 @@
                                      style="">
                                     <div class="form-group">
                                         <label class="control-label"><?= $strings["forms_drivertype"]; ?>:</label>
-                                        <select name="driver" class="form-control select_driver required">
+                                        <select name="driver" class="form-control select_driver">
                                             <option value=""><?= $strings["forms_selectdrivertype"]; ?></option>
                                             <option
                                                 value="1" <?php if (isset($p) && $p->driver == 1) echo "selected='selected'"; ?>
