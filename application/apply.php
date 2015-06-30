@@ -1349,7 +1349,7 @@ backbutton();
            if ($('.email').val() != '') {
                         var un = $('.email').val();
                         $.ajax({
-                            url: '<?php echo $webroot;?>profiles/check_email',
+                            url: '<?php echo $webroot2;?>profiles/check_email',
                             data: 'email=' + $('.email').val(),
                             type: 'post',
                             success: function (res) {
