@@ -71,14 +71,12 @@ $datetype = "text";
                 <label class="control-label col-md-3"><?= $strings2["verifs_supername"]; ?>: </label>
 
                 <div class="col-md-3">
-                    <input type="text" class="form-control" name="supervisor_name[]" value="<?php echo $emp->address;?>"
-                           value="<?php echo $emp->supervisor_name;?>"/>
+                    <input type="text" class="form-control" name="supervisor_name[]" value="<?php echo $emp->supervisor_name;?>"/>
                 </div>
                 <label class="control-label col-md-3"><?= $strings["forms_phone"]; ?>: </label>
 
                 <div class="col-md-3">
-                    <input type="text" class="form-control" name="supervisor_phone[]"
-                           value="<?php echo $emp->supervisor_phone;?>"/>
+                    <input type="text" class="form-control" name="supervisor_phone[]" value="<?php echo $emp->supervisor_phone;?>"/>
                 </div>
             </div>
 
@@ -86,8 +84,7 @@ $datetype = "text";
                 <label class="control-label col-md-3"><?= $strings2["verifs_superemail"]; ?>: </label>
 
                 <div class="col-md-3">
-                    <input type="email" class="form-control email1" name="supervisor_email[]"
-                           value="<?php echo $emp->supervisor_email;?>"/>
+                    <input type="email" class="form-control email1" name="supervisor_email[]" value="<?php echo $emp->supervisor_email;?>"/>
                 </div>
                 <label class="control-label col-md-3"><?= $strings2["verifs_secondarye"]; ?>: </label>
 

@@ -79,7 +79,7 @@ $strings2 = CacheTranslations($language, array("verifs_%", "tasks_date", "file_a
                         <div class="form-group col-md-12">
                             <label class="control-label col-md-3"><?= $strings2["verifs_supername"]; ?>: </label>
                             <div class="col-md-3">
-                                <input type="text" class="form-control" name="supervisor_name[]" value="<?php echo $emp->address;?>" value="<?php echo $emp->supervisor_name;?>"/>
+                                <input type="text" class="form-control" name="supervisor_name[]" value="<?php echo $emp->supervisor_name;?>"/>
                             </div>
                             <label class="control-label col-md-3"><?= $strings["forms_phone"]; ?>: </label>
                             <div class="col-md-3">

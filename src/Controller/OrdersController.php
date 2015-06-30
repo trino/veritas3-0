@@ -341,7 +341,7 @@ class OrdersController extends AppController {
                 $this->set('consent_detail', $con_detail);
             }
 
-            $emp = TableRegistry::get('employment_verification');
+            $emp = TableRegistry::get('employment_verification');//
             $sub3['emp'] = $emp->find()->where(['order_id' => $did])->all();
 
             //echo $con_detail->id;die();
@@ -385,9 +385,26 @@ class OrdersController extends AppController {
                     $this->set('sub2', $sub2);
                     $this->set('consent_detail', $con_detail);
             }
+
+            $this->load_emp_verification(array(), $_GET["driver"]);
         }
 
         $this->LoadSubDocs($_GET["forms"]);
+    }
+
+    public function load_emp_verification($sub3, $Profile_ID = ""){
+       // if(!$Profile_ID){$Profile_ID = $this->request->session()->read('Profile.id');}
+        $emp = TableRegistry::get('employment_verification');
+        $sub3['emp'] = $emp->find()->where(['user_id' => $Profile_ID])->all();
+        if($sub3['emp']) {
+            $did = "";
+            foreach ($sub3['emp'] as $document) {
+                if (!$did) {$did = $document->document_id;}
+            }
+            $emp_att = TableRegistry::get('doc_attachments');
+            $sub3['att'] = $emp_att->find()->where(['document_id' => $did])->all();
+            $this->set('sub3', $sub3);
+        }
     }
 
     public function savedoc($cid = 0, $did = 0){

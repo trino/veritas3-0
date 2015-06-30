@@ -255,79 +255,89 @@ class DocumentsController extends AppController{
                 if ($query->sub_doc_id == '6') {
                     $feeds = TableRegistry::get('feedbacks');
                     //$pre_at = TableRegistry::get('driver_application_accident');
-                    if(!isset($_GET['order_id']))
+                    if(!isset($_GET['order_id'])) {
                         $feed = $feeds->find()->where(['document_id' => $did])->first();
-                    else
+                    } else {
                         $feed = $feeds->find()->where(['order_id' => $_GET['order_id']])->first();
+                    }
                     $this->set('feeds', $feed);
                 } elseif ($query->sub_doc_id == '5') {
                     $survey = TableRegistry::get('Survey');
                     //$pre_at = TableRegistry::get('driver_application_accident');
-                    if(!isset($_GET['order_id']))
+                    if(!isset($_GET['order_id'])) {
                         $sur = $survey->find()->where(['document_id' => $did])->first();
-                    else
+                    }else {
                         $sur = $survey->find()->where(['order_id' => $_GET['order_id']])->first();
+                    }
                     $this->set('survey', $sur);
                 } elseif ($query->sub_doc_id == '7') {
                     $attachments = TableRegistry::get('attachments');
                     //$pre_at = TableRegistry::get('driver_application_accident');
-                    if(!isset($_GET['order_id']))
+                    if(!isset($_GET['order_id'])) {
                         $attachment = $attachments->find()->where(['document_id' => $did])->all();
-                    else
+                    }else {
                         $attachment = $attachments->find()->where(['order_id' => $_GET['order_id']])->all();
+                    }
                     $this->set('attach', $attachment);
                 } elseif ($query->sub_doc_id == '8') {
                     $attachments = TableRegistry::get('audits');
                     //$pre_at = TableRegistry::get('driver_application_accident');
-                    if(!isset($_GET['order_id']))
+                    if(!isset($_GET['order_id'])) {
                         $audits = $attachments->find()->where(['document_id' => $did])->first();
-                    else
+                    }else {
                         $audits = $attachments->find()->where(['order_id' => $_GET['order_id']])->first();
+                    }
                     $this->set('audits', $audits);
                 } elseif ($query->sub_doc_id == '11') {
                     $attachments = TableRegistry::get('generic_forms');
                     //$pre_at = TableRegistry::get('driver_application_accident');
-                    if(!isset($_GET['order_id']))
+                    if(!isset($_GET['order_id'])) {
                         $audits = $attachments->find()->where(['document_id' => $did])->first();
-                    else
+                    }else {
                         $audits = $attachments->find()->where(['order_id' => $_GET['order_id']])->first();
+                    }
                     $this->set('generic', $audits);
                 } elseif ($query->sub_doc_id == '12') {
                     $attachments = TableRegistry::get('abstract_forms');
                     //$pre_at = TableRegistry::get('driver_application_accident');
-                    if(!isset($_GET['order_id']))
+                    if(!isset($_GET['order_id'])) {
                         $audits = $attachments->find()->where(['document_id' => $did])->first();
-                    else
+                    } else {
                         $audits = $attachments->find()->where(['order_id' => $_GET['order_id']])->first();
+                    }
                     $this->set('abstract', $audits);
 
                 }
 
                 $pre = TableRegistry::get('doc_attachments');
                 //$pre_at = TableRegistry::get('driver_application_accident');
-                if(!isset($_GET['order_id']))
+                if(!isset($_GET['order_id'])) {
                     $pre_at['attach_doc'] = $pre->find()->where(['document_id' => $did])->all();
-                else
-                    $pre_at['attach_doc'] = $pre->find()->where(['order_id' => $_GET['order_id'],'sub_id'=>1])->all();
+                }else {
+                    $pre_at['attach_doc'] = $pre->find()->where(['order_id' => $_GET['order_id'], 'sub_id' => 1])->all();
+                }
                 $this->set('pre_at', $pre_at);
 
                 $mee_att = TableRegistry::get('mee_attachments');
-                if(!isset($_GET['order_id']))
+                if(!isset($_GET['order_id'])) {
                     $mee_a['attach_doc'] = $mee_att->find()->where(['document_id' => $did])->first();
-                else
+                }else {
                     $mee_a['attach_doc'] = $mee_att->find()->where(['order_id' => $_GET['order_id']])->first();
+                }
                 $this->set('mee_att', $mee_a);
 
-                if(!isset($_GET['order_id']))
+                if(!isset($_GET['order_id'])) {
                     $ps_detail = TableRegistry::get('pre_screening')->find()->where(['document_id' => $did])->first();
-                else
+                } else {
                     $ps_detail = TableRegistry::get('pre_screening')->find()->where(['order_id' => $_GET['order_id']])->first();
+                }
                 $this->set('ps_detail',$ps_detail);
 
-                if(!isset($_GET['order_id']))
+                if(!isset($_GET['order_id'])) {
                     $deval_detail = TableRegistry::get('road_test')->find()->where(['document_id' => $did])->first();
-                else
+                }else {
                     $deval_detail = TableRegistry::get('road_test')->find()->where(['order_id' => $_GET['order_id']])->first();
+                }
                 $this->set('deval_detail',$deval_detail);
 
 
@@ -391,31 +401,33 @@ class DocumentsController extends AppController{
 
                 }
                 $emp = TableRegistry::get('employment_verification');
-                if(!isset($_GET['order_id']))
+                if(!isset($_GET['order_id'])) {
                     $sub3['emp'] = $emp->find()->where(['document_id' => $did])->all();
-                else
+                }else {
                     $sub3['emp'] = $emp->find()->where(['order_id' => $_GET['order_id']])->all();
-
+                }
                 //echo $con_detail->id;die();
                 $emp_att = TableRegistry::get('doc_attachments');
-                if(!isset($_GET['order_id']))
+                if(!isset($_GET['order_id'])) {
                     $sub3['att'] = $emp_att->find()->where(['document_id' => $did])->all();
-                else
-                    $sub3['att'] = $emp_att->find()->where(['order_id' => $_GET['order_id'],'sub_id'=>41])->all();
-
+                }else {
+                    $sub3['att'] = $emp_att->find()->where(['order_id' => $_GET['order_id'], 'sub_id' => 41])->all();
+                }
                 $this->set('sub3', $sub3);
 
                 $edu = TableRegistry::get('education_verification');
-                if(!isset($_GET['order_id']))
+                if(!isset($_GET['order_id'])) {
                     $sub4['edu'] = $edu->find()->where(['document_id' => $did])->all();
-                else
+                }else {
                     $sub4['edu'] = $edu->find()->where(['order_id' => $_GET['order_id']])->all();
+                }
                 //echo $con_detail->id;die();
                 $edu_att = TableRegistry::get('doc_attachments');
-                if(!isset($_GET['order_id']))
+                if(!isset($_GET['order_id'])) {
                     $sub4['att'] = $edu_att->find()->where(['document_id' => $did])->all();
-                else
-                    $sub4['att'] = $edu_att->find()->where(['order_id' => $_GET['order_id'],'sub_id'=>41])->all();
+                }else {
+                    $sub4['att'] = $edu_att->find()->where(['order_id' => $_GET['order_id'], 'sub_id' => 41])->all();
+                }
                 $this->set('sub4', $sub4);
             }
             $this->render('add');
@@ -802,6 +814,7 @@ class DocumentsController extends AppController{
                 $this->set('consent_detail', $con_detail);
 
             }
+
             $emp = TableRegistry::get('employment_verification');
             if(!isset($_GET['order_id']))
                 $sub3['emp'] = $emp->find()->where(['document_id' => $did])->all();
