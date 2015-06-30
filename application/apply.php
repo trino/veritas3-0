@@ -2,7 +2,9 @@
 <?php
     include("api.php");
 
-
+    $webroot2 = $_SERVER["REQUEST_URI"];
+    $start = strpos($webroot2, "/", 1) + 1;
+    $webroot2 = substr($webroot2, 0, $start);
 
     $con = "";
     $logo = 'img/logos/';
@@ -173,7 +175,7 @@ else{
     ?>
 
 <div class="clearfix"></div>
-    <form  action="<?php echo $webroot;?>rapid/application_employment" method="post" class="login-form" id="myForm">
+    <form  action="<?php echo $webroot2;?>rapid/application_employment" method="post" class="login-form" id="myForm">
         <div class="clearfix"></div>
         
         <div class="col-md-12" align="center">
