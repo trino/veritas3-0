@@ -1,5 +1,41 @@
 <?php
  if($this->request->session()->read('debug')){  echo "<span style ='color:red;'>subpages/documents/application_for_employment_gfs.php #INC206</span>";}
+    if (!isset($profile)){ $profile= "";}
+
+if($profile){
+    debug($profile);
+}
+
+function makerow($profile, $Fields){
+    if($profile){
+        $theindex = 0;
+        ?>
+        <div>
+            <?php foreach($Fields as $Label => $Field){
+                ?>
+    <div class="col-md-6">
+                    <label class="control-label col-md-6"><?= $Label; ?>:  </label>
+                    <div class="col-md-6">
+                        <input class="form-control" name="<?= $Field; ?>" value="<?= $profile->$Field ;?>" />
+                    </div>
+                </div>
+            <?php
+                $theindex = $theindex+1;
+                if ($theindex == 2) {
+                    $theindex = 0;
+                    echo "<div class='clearfix'></div><p>&nbsp;</p>\r\n      <DIV>\r\n    ";
+                }
+
+            }
+            if ($theindex){
+               // echo '<div class="col-md-6"><div class="col-md-6"></div></div>';
+            }
+            ?>
+
+            <div class="clearfix"></div><p>&nbsp;</p>
+    <?php
+    }
+}
 ?>
 <form id="form_tab<?php echo $dx->id;?>" action="<?php echo $this->request->webroot;?>documents/application_employment/<?php echo $cid .'/' .$did;?>" method="post">
         <input type="hidden" class="document_type" name="document_type" value="<?php echo $dx->title;?>"/>
@@ -13,9 +49,12 @@
         </div>
         <div class="clearfix"></div>
         <p>&nbsp;</p>
+
+    <?= makerow($profile, array("Title" => "title", "Gender" => "gender", "Email" => "email", "Country of Birth" => "placeofbirth", "Date of Birth" => "dob")); ?>
+
         <div>
             <div class="col-md-6">
-                    <label class="control-label col-md-3">Name: </label>  
+                    <label class="control-label col-md-3">Name: </label>
                     <div class="col-md-3">              
                         <input class="form-control" name="lname" placeholder="Last" value="<?php if(isset($application_for_employment_gfs))echo $application_for_employment_gfs->lname;?>" />
                     </div> 

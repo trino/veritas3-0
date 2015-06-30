@@ -210,6 +210,7 @@ class DocumentsController extends AppController{
                 }
                 $profile = TableRegistry::get('profiles')->find()->where(['id' => $document->user_id])->first();
                 $this->set('DriverProvince', $profile->driver_province);
+                $this->set('profile', $profile);
 
                 $att = TableRegistry::get('attach_docs');
                 $query = $att->find();

@@ -457,12 +457,17 @@
                     //18  GFS Application for Employment  1   application_for_employment_gfs.php  application_for_employment_gfs  1   1   GFS Demande d'emploi    0
                     $docID = $this->Document->constructdocument(0, "GFS Application for Employment", 18, $p_id, 26, 0);
                     $_POST["document_id"] = $docID;
-
+                    $_POST["address"] = $_POST["street"] . " " . $_POST["city"] . ", " . $_POST["province"] . " " . $_POST["country"];
                     $app = TableRegistry::get('application_for_employment_gfs');
                     $application = $app->newEntity($_POST);
 
                     $path = $this->Document->getUrl();
                     if($app->save($application)) {
+
+                        debug($application);
+                        die();
+
+
                         $from = array('info@' . $path => "isbmeereports.com");
                         $emails = $this->getallrecruiters('26');
                         foreach($emails as $e){
