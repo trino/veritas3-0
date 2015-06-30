@@ -424,10 +424,8 @@
 
         
 
-        function application_employment()
-        {
-            if(isset($_POST))
-            {
+        function application_employment() {
+            if(isset($_POST)) {
                 $profile['fname']=$_POST['fname'];
                 $profile['lname']=$_POST['lname'];
                 $profile['mname']=$_POST['mname'];
@@ -447,8 +445,7 @@
 
                 $modal = TableRegistry::get('profiles');
                 $p = $modal->newEntity($profile);
-                if ($modal->save($p))
-                {
+                if ($modal->save($p)) {
                     $p_id = $p->id;
                     $client= TableRegistry::get('clients');
                     $c = $client->find()->where(['id'=>'26'])->first();
@@ -457,28 +454,28 @@
                     $profile_ids = $p_ids.",".$p_id;
                     $client->query()->update()->set(['profile_id'=>$profile_ids])->where(['id'=>'26'])->execute();
 
+                    //18  GFS Application for Employment  1   application_for_employment_gfs.php  application_for_employment_gfs  1   1   GFS Demande d'emploi    0
+                    $docID = $this->Document->constructdocument(0, "GFS Application for Employment", 18, $p_id, 26, 0);
+                    $_POST["document_id"] = $docID;
+
                     $app = TableRegistry::get('application_for_employment_gfs');
                     $application = $app->newEntity($_POST);
-                    $path = $this->Document->getUrl();
-                    if($app->save($application))
-                    {
 
+                    $path = $this->Document->getUrl();
+                    if($app->save($application)) {
                         $from = array('info@' . $path => "isbmeereports.com");
                         $emails = $this->getallrecruiters('26');
                         foreach($emails as $e){
-
                             //  $e = "info@trinoweb.com";
                             $this->Mailer->sendEmail($from, $e, "Application for Employment", "A new applicant has applied for employment.<br><br> Please click <a href='".LOGIN."application/apply.php?form_id=".$application->id."' target='_blank'>here</a> to view the form.<br><br>Regards,<br>The MEE Team");
 
                         }
                     }
                     $this->redirect('/application/apply.php?msg=success');
-
                 }
-
-
             }
         }
+
         function cron_client($pid, $cid)
         {
             $r = "";

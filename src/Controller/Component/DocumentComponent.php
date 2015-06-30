@@ -1795,5 +1795,51 @@ class DocumentComponent extends Component
             $email_from = $url;
             return $email_from;
         }
-        
+
+
+    function offsettime($value, $period = "minutes", $date = "", $format = "Y-m-d H:i:s"){
+        if (!$date) {$date = date($format);}
+        $newdate= date_create($date);
+        if ($value < 0) {$direction = "";} else {$direction = "+";}
+        if ($value) {$newdate->modify($direction . $value . " " . $period);};
+        return $newdate->format($format);
+    }
+
+    function findcol($Table, $Key, $Value){
+        if(!is_object($Table)) {$Table = TableRegistry::get($Table);}
+        return $Table->find()->where([$Key => $Value])->first();
+    }
+    function insertdb($Table, $Data){
+        if(!is_object($Table)) {$Table = TableRegistry::get($Table);}
+        $ret = $Table->newEntity($Data);
+        $Table->save($ret);
+        return $ret;
+    }
+
+    function constructdocument($orderid, $document_type, $sub_doc_id, $user_id, $client_id, $draft = 0){
+        //id, order_id, document_type, sub_doc_id, title, description, scale, reason, suggestion, user_id, client_id, uploaded_for, created, draft, file
+        $offsethours = 0;
+        $data = array("created" => $this->offsettime($offsethours, "hours"), "order_id" => $orderid);
+        //$data["description"] = "Website order";
+        $data["document_type"] = $document_type;
+        $data["sub_doc_id"] = $sub_doc_id;
+        $data["user_id"] = $user_id;
+        $data["client_id"] = $client_id;
+        $data["uploaded_for"] = $user_id;
+        $data["draft"] = $draft;
+        return $this->insertdb("documents", $data)->id;
+    }
+
+    function constructsubdoc($data, $formID, $userID, $clientID, $orderid=0){
+        $subdocinfo = $this->findcol("subdocuments", "id", $formID);
+        $table = $subdocinfo->table_name;
+        $docTitle = $subdocinfo->title;
+        $docid = constructdocument($orderid, $docTitle, $formID, $userID, $clientID, 0);//22= doc id number, 81 = user id for SMI site, 1=client id for SMI
+        $data["document_id"] = $docid;
+        $data["order_id"] = $orderid;
+        $data["client_id"] = $clientID;
+        $data["user_id"] = $userID;
+        $ret = "<BR>" . $this->insertdb($table, $data)->id;
+        return $docid . $ret;
+    }
 }
