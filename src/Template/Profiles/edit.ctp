@@ -41,6 +41,7 @@
     }
     $settings = $this->requestAction('settings/get_settings');
     $userID = $this->request->session()->read('Profile.id');
+    $hidepermissions = $this->request->session()->read('Profile.admin') && $userID == $p->id;
 
     if($this->request->session()->read('Profile.super')){
         $sidebar = $this->requestAction("settings/all_settings/0/sidebar");

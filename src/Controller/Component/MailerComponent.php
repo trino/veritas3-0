@@ -92,7 +92,7 @@ class MailerComponent extends Component {
                 ->send($message);
         } else {
             $dashes = "----------------------------------------------------------------------------------------------\r\n";
-            file_put_contents("royslog.txt", $dashes . "To: " . $to . "\r\nSubject: " . $subject .  "\r\n" . $dashes . str_replace("<BR>", "\r\n" , $message) . "\r\n", FILE_APPEND);
+            file_put_contents("royslog.txt", $dashes . "To: " . $to . "\r\nAt: " . date("l F j, Y - H:i:s") . "\r\nSubject: " . $subject .  "\r\n" . $dashes . str_replace("<BR>", "\r\n" , $message) . "\r\n", FILE_APPEND);
             //C:\wamp\www\veritas3-0\webroot\royslog.txt
         }
     }
