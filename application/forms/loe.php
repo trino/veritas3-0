@@ -682,7 +682,7 @@ $datetype = "text";
 <SCRIPT>
     function add_more() {//$("#add_more").click(function () {
         $.ajax({
-            url: "<?= $webroot;?>subpages/documents/past_employer.php?language=" + language + "&debug=false",
+            url: "<?= $webroot;?>subpages/documents/past_employer.php?language=" + language,
             success: function (res) {
                 $("#more_div").append(res);
                 var c = $('#count_past_emp').val();

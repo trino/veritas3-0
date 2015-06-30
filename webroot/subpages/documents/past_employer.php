@@ -3,8 +3,7 @@
 
     include_once($include);
     $language = $_GET["language"];
-    $debug = $_GET["debug"];
-    if($debug){ echo "<span style ='color:red;'>subpages/documents/past_employer.php #INC146</span>"; }//$this is not accessible!
+    if(isset( $_GET["debug"])){ echo "<span style ='color:red;'>subpages/documents/past_employer.php #INC146</span>"; }//$this is not accessible!
     //$strings = CacheTranslations($language, array("forms_%"));
     //var_dump($strings);
 
