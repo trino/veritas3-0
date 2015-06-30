@@ -2,10 +2,6 @@
  if($this->request->session()->read('debug')){  echo "<span style ='color:red;'>subpages/documents/application_for_employment_gfs.php #INC206</span>";}
     if (!isset($profile)){ $profile= "";}
 
-if($profile){
-    debug($profile);
-}
-
 function makerow($profile, $Fields){
     if($profile){
         $theindex = 0;
