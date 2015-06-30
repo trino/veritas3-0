@@ -5,6 +5,7 @@
     $webroot2 = $_SERVER["REQUEST_URI"];
     $start = strpos($webroot2, "/", 1) + 1;
     $webroot2 = substr($webroot2, 0, $start);
+    $webroot2 = str_replace("/application/", "/", $webroot2);
 
     $con = "";
     $logo = 'img/logos/';
