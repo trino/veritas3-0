@@ -374,28 +374,80 @@ class OrdersController extends AppController {
                 }
             }
         } else {
-            $con_detail = TableRegistry::get('consent_form')->find()->where(['user_id' => $_GET["driver"]])->first();
-            $con_detail->first_name = $con_detail->id;
-            if($con_detail){
-                    $con_cri = TableRegistry::get('consent_form_criminal');
-                    $sub2['con_cri'] = $con_cri->find()->where(['consent_form_id' => $con_detail->id])->all();
-                    $did= $con_detail->document_id;
-                    $con_at = TableRegistry::get('doc_attachments');
-                    $sub2['con_at'] = $con_at->find()->where(['order_id' => $did, 'sub_id' => 4])->all();
-                    $this->set('sub2', $sub2);
-                    $this->set('consent_detail', $con_detail);
-            }
-
-            $this->load_emp_verification(array(), $_GET["driver"]);
+            $this->loadlastforms($_GET["driver"]);
         }
 
         $this->LoadSubDocs($_GET["forms"]);
     }
 
-    public function load_emp_verification($sub3, $Profile_ID = ""){
-       // if(!$Profile_ID){$Profile_ID = $this->request->session()->read('Profile.id');}
-        $emp = TableRegistry::get('employment_verification');
-        $sub3['emp'] = $emp->find()->where(['user_id' => $Profile_ID])->all();
+    function getlastdocument($Profile_ID, $DocSubType, $Table){
+        $consentform = TableRegistry::get('documents')->find()->order("id desc")->where(['uploaded_for' => $Profile_ID, "sub_doc_id" => $DocSubType])->first();
+        //$consentform = TableRegistry::get("documents")->find('all', array('order' => "id DESC" ,'conditions' => array('uploaded_for' => $Profile_ID, "sub_doc_id" => $DocSubType)))->first();
+
+        if ($consentform) {
+            if ($consentform->order_id) {
+                $con_detail = TableRegistry::get($Table)->find()->where(['order_id' => $consentform->order_id])->first();//last
+            } else {
+                $con_detail = TableRegistry::get($Table)->find()->where(['document_id' => $consentform->id])->first();//last
+            }
+            return $con_detail;
+        }
+    }
+
+    public function loadlastforms($Profile_ID = ""){
+        //CONSENT FORM
+
+        /*
+        $consentform = TableRegistry::get('documents')->find()->where(['uploaded_for' => $Profile_ID, "sub_doc_id" => 4])->first();
+        if ($consentform) {
+            if ($consentform->order_id) {
+                $con_detail = TableRegistry::get('consent_form')->find()->order(['id' => 'DESC'])->where(['order_id' => $consentform->order_id])->first();//last
+            } else{
+                $con_detail = TableRegistry::get('consent_form')->find()->order(['id' => 'DESC'])->where(['id' => $consentform->document_id])->first();//last
+            }
+
+        }
+        debug($consentform);
+        die();
+        return false;
+
+        //$con_detail = TableRegistry::get('consent_form')->find()->where(['user_id' => $_GET["driver"]])->first();//first
+        $con_detail = TableRegistry::get('consent_form')->find()->where(['user_id' => $_GET["driver"]])->first();//last
+        */
+        $con_detail = $this->getlastdocument($Profile_ID, 4, "consent_form");
+        if($con_detail){
+            $con_cri = TableRegistry::get('consent_form_criminal');
+            $sub2['con_cri'] = $con_cri->find()->where(['consent_form_id' => $con_detail->id])->all();
+            $did= $con_detail->document_id;
+            $con_at = TableRegistry::get('doc_attachments');
+            $sub2['con_at'] = $con_at->find()->where(['order_id' => $did, 'sub_id' => 4])->all();
+            $this->set('sub2', $sub2);
+            $this->set('consent_detail', $con_detail);
+        }
+
+        //LETTER OF EXPERIENCE
+        $con_detail = $this->getlastdocument($Profile_ID, 9, "employment_verification");
+        if($con_detail->document_id) {
+            $emp = TableRegistry::get('employment_verification')->find()->where(['document_id' => $con_detail->document_id])->all();
+        } else {
+            $emp = TableRegistry::get('employment_verification')->find()->where(['order_id' => $con_detail->order_id])->all();
+        }
+
+        //$emp = TableRegistry::get('employment_verification')->find()->order(['id' => 'DESC'])->where(['user_id' => $Profile_ID])->all();
+        $listofdocs = array();
+        foreach($emp as $document){
+            if (count($listofdocs) == 0){
+                $listofdocs[] = $document;
+            } elseif ($listofdocs[0]->document_id && $listofdocs[0]->document_id == $document->document_id) {
+                $listofdocs[] = $document;
+            } elseif ($listofdocs[0]->order_id && $listofdocs[0]->order_id == $document->order_id){
+                $listofdocs[] = $document;
+            } else{
+                break;
+            }
+        }
+
+        $sub3['emp'] = $listofdocs;
         if($sub3['emp']) {
             $did = "";
             foreach ($sub3['emp'] as $document) {
@@ -410,7 +462,7 @@ class OrdersController extends AppController {
     public function savedoc($cid = 0, $did = 0){
         //$this->set('doc_comp',$this->Document);
         $this->loadComponent('Mailer');
-        $ret = $this->Document->savedoc($this->Mailer, $cid, $did);
+        $ret = $this->Document->savedoc($this->Mailer, $cid, $did, false);
         //$this->Mailer->handleevent("documentcreated", $ret);
         die();
     }

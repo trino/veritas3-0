@@ -62,6 +62,7 @@ function constructsubdoc($data, $formID, $userID, $clientID, $orderid=0, $Execut
     $data["order_id"] = $orderid;
     $data["client_id"] = $clientID;
     $data["user_id"] = $userID;
+    $data["uploaded_for"] = $userID;
     if(!$Execute){$data["document_id"] = " -- No Document ID --- ";}
     $remove = "";
     switch ($formID){

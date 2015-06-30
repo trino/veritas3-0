@@ -9,7 +9,7 @@ use Cake\View\Helper\SessionHelper;
 
 class DocumentComponent extends Component
 {
-    public function savedoc($Mailer, $cid = 0, $did = 0)
+    public function savedoc($Mailer, $cid = 0, $did = 0, $emailenabled = True)
         {
              $controller = $this->_registry->getController();
               $settings = TableRegistry::get('settings');
@@ -137,7 +137,7 @@ class DocumentComponent extends Component
 //$arr['document_type'] = urldecode($_GET['document']);
                                             $username =   $user_id = $controller->request->session()->read('Profile.username');
                                             $ret = array("site" => $setting->mee,"email" => $em, "company_name" => $client_name, "username" => $username, "id" => $did, "path" => $path, "profile_type" => $ut, "place" => 1);
-                                            $Mailer->handleevent("documentcreated", $ret);
+                                            if($emailenabled) {$Mailer->handleevent("documentcreated", $ret);}
 /*
                                             $from = array('info@'.$path => $setting->mee);
                                             $to = $p;
@@ -153,9 +153,10 @@ class DocumentComponent extends Component
                                 } else {
                                     $ut = $this->getprofiletype();
                                     $username =   $user_id = $controller->request->session()->read('Profile.username');
-
-                                    $ret =  array("site" => $setting->mee,"email" => "super", "company_name" => $client_name, "username" => $username, "id" => $did, "path" => $path, "profile_type" => $ut, "place" => 2);
-                                    $Mailer->handleevent("documentcreated", $ret);
+                                    if($emailenabled) {
+                                        $ret = array("site" => $setting->mee, "email" => "super", "company_name" => $client_name, "username" => $username, "id" => $did, "path" => $path, "profile_type" => $ut, "place" => 2);
+                                        $Mailer->handleevent("documentcreated", $ret);
+                                    }
                                 }
 
                             $docus = TableRegistry::get('Documents');
@@ -228,10 +229,10 @@ class DocumentComponent extends Component
                                     $ut = $type_q->title;
                                   }
                                   //$path = 'https://isbmeereports.com/documents/view/'.$cid;
-
-                                $ret =  array("site" => $setting->mee,"email" => $p, "company_name" => $client_name, "username" => $uq->username, "id" => $did, "path" => $path, "profile_type" => $ut, "place" => 3);
-                                $Mailer->handleevent("documentcreated", $ret);
-/*
+                                if($emailenabled) {
+                                    $ret = array("site" => $setting->mee, "email" => $p, "company_name" => $client_name, "username" => $uq->username, "id" => $did, "path" => $path, "profile_type" => $ut, "place" => 3);
+                                    $Mailer->handleevent("documentcreated", $ret);
+                                }/*
                                 $from = array('info@'.$path => $setting->mee);
                                 $to = $p;
                                  $sub = 'Document Submitted';
@@ -353,9 +354,11 @@ class DocumentComponent extends Component
             
                                         //$controller->Mailer->sendEmail($from, $to, $sub, $msg);
 */
-                                        $username =   $user_id = $controller->request->session()->read('Profile.username');
-                                        $ret =  array("site" => $setting->mee,"email" => $p, "company_name" => $client_name, "username" => $username, "id" => $did, "path" => $path, "profile_type" => $ut, "place" => 4);
-                                        $Mailer->handleevent("documentcreated", $ret);
+                                        if($emailenabled) {
+                                            $username = $user_id = $controller->request->session()->read('Profile.username');
+                                            $ret = array("site" => $setting->mee, "email" => $p, "company_name" => $client_name, "username" => $username, "id" => $did, "path" => $path, "profile_type" => $ut, "place" => 4);
+                                            $Mailer->handleevent("documentcreated", $ret);
+                                        }
                                     }
                                 }
                             }
