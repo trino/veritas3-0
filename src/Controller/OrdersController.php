@@ -1091,7 +1091,7 @@ class OrdersController extends AppController {
 
         //echo "<OPTION>" . $this->makeprofiletypequery() . "</OPTION>";
 
-        echo "<option value='' title='Orderscontroller.getDriverByClient'>Select Driver</option>";
+        echo "<option value='' title='Orderscontroller.getDriverByClient'>" . $this->Trans->getString("forms_selectdriver") . "</option>";
         if ($profile) {
             foreach ($profile as $p) {
                 echo "<option value='" . $p->id . "'>" . $p->fname . ' ' . $p->mname . ' ' . $p->lname . "</option>";

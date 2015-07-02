@@ -462,6 +462,17 @@ function includejavascript($strings = "", $settings = ""){
     return true;
 }
 
+function selecttitle($language, $strings, $name, $title, $is_disabled = ""){
+    echo '<label class="control-label">' . $strings["forms_title"] . ':</label><BR>';
+    echo '<SELECT ' . $is_disabled . ' name="' . $name . '" class="form-control ">';
+        $title = "";
+        if($language == "French"){if ($title == "Ms.") { $title = "Mrs."; }}
+        printoption($strings["forms_mr"], $title, "Mr");
+        printoption($strings["forms_mrs"], $title, "Mrs");
+        if($language != "French"){ printoption($strings["forms_ms"], $title, "Ms");}
+    echo '</SELECT>';
+}
+
 function changevalidation($inputtype, $message){
     ?>
         var intputElements = document.getElementsByTagName("<?= $inputtype; ?>");

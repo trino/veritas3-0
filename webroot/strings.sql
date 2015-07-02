@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 02, 2015 at 05:17 PM
+-- Generation Time: Jul 02, 2015 at 08:31 PM
 -- Server version: 5.6.17
 -- PHP Version: 5.5.12
 
@@ -32,14 +32,14 @@ CREATE TABLE IF NOT EXISTS `strings` (
   `English` varchar(4096) NOT NULL,
   `French` varchar(4096) NOT NULL,
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=669 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=672 ;
 
 --
 -- Dumping data for table `strings`
 --
 
 INSERT INTO `strings` (`ID`, `Name`, `English`, `French`) VALUES
-(1, 'Date', '1435609700', '<-- This is used by the system to auto-update'),
+(1, 'Date', '1435850257', '<-- This is used by the system to auto-update'),
 (2, 'dashboard_affirmative', 'Yes', 'Oui'),
 (3, 'dashboard_negative', 'No', 'Non'),
 (4, 'dashboard_selectall', 'Select All', 'Tout sélectionner'),
@@ -85,13 +85,13 @@ INSERT INTO `strings` (`ID`, `Name`, `English`, `French`) VALUES
 (46, 'clients_aggregate', 'Aggregate Audits', 'Vérifications aggregate'),
 (47, 'clients_search', 'Search %Client%s', 'Recherche de %client%s'),
 (48, 'dashboard_logout', 'Log Out', 'Déconnexion'),
-(49, 'index_qualify', '%MEE% Driver Qualification System', '%MEE% système de qualification conducteur'),
+(49, 'index_qualify', 'Driver Qualification System', 'Système de qualification conducteur'),
 (50, 'index_viewmore', 'View More', 'Afficher davantage'),
 (52, 'index_createclients', 'Create %Client%', 'Créer %client%'),
 (53, 'index_listprofiles', 'List %Profile%s', 'Liste des %profile%s'),
 (54, 'index_createprofile', 'Create %Profile%', 'Créer un %profile%'),
-(55, 'index_listorders', 'List Orders', 'Liste commandes'),
-(56, 'index_listdocuments', 'List %Document%s', 'Liste des %document%s'),
+(55, 'index_listorders', 'List Orders', 'Afficher les commandes'),
+(56, 'index_listdocuments', 'List %Document%s', 'Afficher les %document%s'),
 (57, 'index_orderdrafts', 'Order Drafts', 'Brouillons de commande'),
 (58, 'index_createdocument', 'Create %Document%', 'Créer un %document%'),
 (59, 'index_documentdrafts', '%Document% Drafts', 'Brouillons de %document%s'),
@@ -106,7 +106,6 @@ INSERT INTO `strings` (`ID`, `Name`, `English`, `French`) VALUES
 (68, 'index_training', 'Training', 'Éducation'),
 (69, 'index_courses', 'Courses', 'Cours'),
 (70, 'index_quizresults', 'Quiz Results', 'Résultats du quiz'),
-(71, 'index_listdocuments', 'List %Document%s', 'Liste des %document%s'),
 (73, 'index_orders', 'Orders', 'Ordres'),
 (74, 'index_invoice', 'Invoice', 'Facture'),
 (75, 'analytics_description', 'Analytics of %Document%s, Orders and Drivers', 'Analytics de %document%s, des ordonnances et des pilotes'),
@@ -181,9 +180,9 @@ INSERT INTO `strings` (`ID`, `Name`, `English`, `French`) VALUES
 (144, 'orders_division', 'Division', 'Division'),
 (145, 'orders_ordertype', 'Order Type', 'Type d''ordre'),
 (146, 'orders_scorecard', 'Score Card', 'Score card'),
-(147, 'orders_noresults', 'No orders found', 'Pas de commandes trouvé'),
+(147, 'orders_noresults', 'No orders found', 'Aucune commande trouvée'),
 (148, 'orders_all', 'List All Orders', 'Inscrivez commandes'),
-(149, 'infoorder_continue', 'Continue', 'Continuer'),
+(149, 'infoorder_continue', 'Continue', 'Poursuivre'),
 (150, 'infoorder_driver', 'Subject', 'Pilote'),
 (151, 'infoorder_selectdriver', 'Select Subject', 'Sélectionnez pilote'),
 (152, 'infoorder_createdriver', 'Create New Driver', 'Créer un nouveau pilote'),
@@ -696,7 +695,10 @@ INSERT INTO `strings` (`ID`, `Name`, `English`, `French`) VALUES
 (665, 'documents_none', 'None', 'Aucun'),
 (666, 'documents_na', 'N/A', 'S/O'),
 (667, 'documents_at', 'at', 'à'),
-(668, 'forms_dateformat', 'YYYY-MM-DD', 'AAAA-MM-JJ');
+(668, 'forms_dateformat', 'YYYY-MM-DD', 'AAAA-MM-JJ'),
+(669, 'dashboard_dashboard2', '%MEE% Dashboard', 'Tableau de bord %MEE%'),
+(670, 'forms_selectdriver', 'Select Driver', 'Sélectionnez Pilote'),
+(671, 'infoorder_selectclient', 'Select a %client%', 'Sélectionner un %client%');
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

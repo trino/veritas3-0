@@ -533,19 +533,11 @@ $strings = CacheTranslations($language, array("forms_%"), $settings);
                             <?php } ?>
                             <div class="col-md-4">
                                 <div class="form-group">
-                                    <label class="control-label"><?= $strings["forms_title"]; ?>: </label><BR>
-                                    <SELECT <?php echo $is_disabled ?> name="title" class="form-control "><?php
-
-                                        if (isset($p->title)) {
-                                            $title = $p->title;
-                                        } else {
-                                            $title = "";
-                                        }
-                                        printoption($strings["forms_mr"], $title, "Mr.");
-                                        printoption($strings["forms_mrs"], $title, "Mrs.");
-                                        printoption($strings["forms_ms"], $title, "Ms.");
-                                        ?></SELECT>
-
+                                    <?php
+                                    $title = "";
+                                    if (isset($p->title)) {$title = $p->title;}
+                                    selecttitle($language, $strings, "title", $title, $is_disabled);//$language, $strings, $name, $title, $is_disabled
+                                    ?>
                                     <!--
                                                                         <input < php echo $is_disabled ?> name="title" type="text"
                                                                                                           placeholder="eg. Mr"

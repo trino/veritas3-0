@@ -287,7 +287,7 @@
 
                 data-placeholder="Select <?php echo ucfirst($settings->client) . '" ';
                 if ($client) { ?><?php } ?>>
-                        <option><?= $strings["infoorder_noneselected"]; ?></option><?php
+                        <option><?= $strings["infoorder_selectclient"]; ?></option><?php
             } else { ?>
 
                     <select id="selecting_client" class="form-control input-<?= $size; ?> select2me"

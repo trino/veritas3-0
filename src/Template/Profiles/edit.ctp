@@ -37,12 +37,12 @@
         $is_disabled = 'disabled="disabled"';
     }// style="border: 0px solid;"';}
     $hidepermissions=true;
+    $userID = $this->request->session()->read('Profile.id');
     if (isset($profile)) {
         $p = $profile;
         $hidepermissions = $this->request->session()->read('Profile.admin') && $userID == $p->id;
     }
     $settings = $this->requestAction('settings/get_settings');
-    $userID = $this->request->session()->read('Profile.id');
 
     if($this->request->session()->read('Profile.super')){
         $sidebar = $this->requestAction("settings/all_settings/0/sidebar");
