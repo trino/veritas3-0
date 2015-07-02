@@ -633,7 +633,7 @@ $strings = CacheTranslations($language, array("forms_%"), $settings);
                             <div class="col-md-9">
 
                                 <div class="form-group">
-                                    <label class="control-label"><?= $strings["forms_dateofbirth"]; ?> (YYYY MM DD): </label><BR>
+                                    <label class="control-label"><?= $strings["forms_dateofbirth"]; ?> (<?= $strings["forms_dateformat"]; ?>): </label><BR>
 
                                     <div class="row">
 
@@ -820,7 +820,7 @@ $strings = CacheTranslations($language, array("forms_%"), $settings);
                                     //   listfiles($client_docs, "img/jobs/",'profile_doc',$delete);
                                 }
                                 ?>
-                                <div class="form-group col-md-4 col-sm-4">
+                                <div class="form-group col-md-8 col-sm-8">
                                    
                
                                 <!--label class="control-label col-md-6"> <?= $strings["forms_hearaboutus"]; ?></label-->

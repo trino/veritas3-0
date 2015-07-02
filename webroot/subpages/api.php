@@ -207,12 +207,12 @@ function s($settings, $language = "English"){
 function Sadd($Key, $language, $Value){
     $P="%";
     $NewName = $Key;
-    if($language != "English" && $language != "Debug"){$Key .= $language;}
-    $Value=$Value->$Key;
+    if($language != "English" && $language != "Debug"){$NewName .= $language;}
+    $Value=$Value->$NewName;
     $variables=array();
-    $variables[$P. strtolower($NewName) .$P] = strtolower($Value);
-    $variables[$P. strtoupper($NewName) .$P] = strtoupper($Value);
-    $variables[$P. ucfirst($NewName) .$P] = ucfirst($Value);
+    $variables[$P. strtolower($Key) .$P] = strtolower($Value);
+    $variables[$P. strtoupper($Key) .$P] = strtoupper($Value);
+    $variables[$P. ucfirst($Key) .$P] = ucfirst($Value);
     return $variables;
 }
 
@@ -239,7 +239,7 @@ function CacheTranslations($Language='English', $Text, $Variables = "", $Common 
         $Text = array($Text);
     }
     if (is_object($Variables)) {
-        $Variables = s($Variables);
+        $Variables = s($Variables, $Language);
     }
 
     if ($Common) {
@@ -417,7 +417,7 @@ function getprovinces($Language = "English", $IncludeUSA = False){
             if($IncludeUSA) {$states = array("Alabama", "Alaska", "Arizona", "Arkansas", "California", "Colorado", "Connecticut", "Delaware", "Florida", "Georgia", "Hawaii", "Idaho", "Illinois", "Indiana", "Iowa", "Kansas", "Kentucky", "Louisiana", "Maine", "Maryland", "Massachusetts", "Michigan", "Minnesota", "Mississippi", "Missouri", "Montana", "Nebraska", "Nevada", "New Hampshire", "New Jersey", "New Mexico", "New York", "North Carolina", "North Dakota", "Ohio", "Oklahoma", "Oregon", "Pennsylvania", "Rhode Island", "South Carolina", "South Dakota", "Tennessee", "Texas", "Utah", "Vermont", "Virginia", "Washington", "Virginia", "Wisconsin", "Wyoming");}
             break;
         case "French":
-            $provinces = array("Choisir la province", "Alberta", "la Colombie-Britannique", "Manitoba", "Nouveau-Brunswick", "Terre-Neuve-et-Labrador", "Territoires du Nord-Ouest", "la Nouvelle-Écosse", "Nunavut", "Ontario", "Prince-Édouard Island", "Le Québec", "Saskatchewan", "Yukon");
+            $provinces = array("Choisir la province", "Alberta", "Colombie-Britannique", "Manitoba", "Nouveau-Brunswick", "Terre-Neuve-et-Labrador", "Territoires du Nord-Ouest", "Nouvelle-Écosse", "Nunavut", "Ontario", "Île-du-Prince-Édouard", "Québec", "Saskatchewan", "Yukon");
             if($IncludeUSA) {$states = array("Alabama", "Alaska", "Arizona", "Arkansas", "California", "Colorado", "Connecticut", "Delaware", "Florida", "Georgia", "Hawaii", "Idaho", "Illinois", "Indiana", "Iowa", "Kansas", "Kentucky", "Louisiane", "Maine", "Maryland", "Massachusetts ", "Michigan", "Minnesota", "Mississippi", "Missouri", "Montana", "Nebraska", "Nevada", "New Hampshire", "New Jersey", "Nouveau-Mexique", "New York", "Nord Carolina", "le Dakota du Nord", "Ohio", "Oklahoma", "Oregon", "Pennsylvania", "Rhode Island", "Caroline du Sud", "Dakota du Sud", "Tennessee", "Texas", "Utah ", "Vermont", "Virginia", "Washington", "Virginia", "Wisconsin", "Wyoming");}
             break;
         default:

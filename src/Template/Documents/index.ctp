@@ -173,11 +173,17 @@
                             </select>
 
 
-                            <input class="form-control input-inline" name="searchdoc" type="search"
+                            <input class="form-control input-inline" name="searchdoc" type="search" id="searchdoc"
                                    placeholder="<?= $strings["documents_search"]; ?>"
                                    value="<?php if (isset($search_text)) echo $search_text; ?>"
                                    aria-controls="sample_1"/>
-
+                            <SCRIPT>
+                                expandtofitplaceholder("searchdoc");
+                                function expandtofitplaceholder(ElementName) {
+                                    var input = document.getElementById(ElementName);
+                                    input.setAttribute('size',input.getAttribute('placeholder').length);
+                                }
+                            </SCRIPT>
 
                             <button type="submit" class="btn btn-primary input-inline" id="search"><?= $strings["dashboard_search"]; ?></button>
 

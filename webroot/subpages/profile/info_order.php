@@ -275,7 +275,7 @@
                             <div class="col-md-8">
 
                                 <div class="form-group">
-                                    <label class="control-label"><?= $strings["forms_dateofbirth"]; ?>: (YYYY MM DD)</label><BR>
+                                    <label class="control-label"><?= $strings["forms_dateofbirth"]; ?>: (<?= $strings["forms_dateformat"]; ?>)</label><BR>
 
                                     <div class="row">
 

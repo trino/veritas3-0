@@ -32,7 +32,7 @@
 
 
             <div class="col-md-4"><label class="control-label"><?= $strings["forms_dateofbirth"]; ?>: </label>
-                <input type="text" class="form-control datepicker required" placeholder="YYYY-MM-DD" value="<?php if (isset($profile))echo $profile["dob"];?>"
+                <input type="text" class="form-control datepicker required" placeholder="<?= $strings["forms_dateformat"]; ?>" value="<?php if (isset($profile))echo $profile["dob"];?>"
                        name="birth_date"/>
             </div>
 
@@ -229,12 +229,12 @@
 
 
                 <div class="col-md-4"><label class="control-label"><?= $strings["forms_dateofbirth"]; ?>: </label>
-                    <input type="text" class="form-control datepicker" placeholder="YYYY-MM-DD" value="<?php if (isset($profile))echo $profile["dob"];?>"
+                    <input type="text" class="form-control datepicker" placeholder="<?= $strings["forms_dateformat"]; ?>" value="<?php if (isset($profile))echo $profile["dob"];?>"
                            name="criminal_date_birth"/>
                 </div>
 
                 <div class="col-md-4"><label class="control-label"><?= $strings2["tasks_date"]; ?>: </label>
-                    <input type="text" class="form-control datepicker" placeholder="YYYY-MM-DD" name="criminal_date" value="<?php if (isset($consent_detail))echo $consent_detail->criminal_date;?>"
+                    <input type="text" class="form-control datepicker" placeholder="<?= $strings["forms_dateformat"]; ?>" name="criminal_date" value="<?php if (isset($consent_detail))echo $consent_detail->criminal_date;?>"
                            value="<?php echo date("Y-m-d"); ?>"/>
                 </div>
             </div>

@@ -58,12 +58,12 @@ class TransComponent extends Component {
     function Sadd($Key, $language, $Value){
         $P="%";
         $NewName = $Key;
-        if($language != "English" && $language != "Debug"){$Key .= $language;}
-        $Value=$Value->$Key;
+        if($language != "English" && $language != "Debug"){$NewName .= $language;}
+        $Value=$Value->$NewName;
         $variables=array();
-        $variables[$P. strtolower($NewName) .$P] = strtolower($Value);
-        $variables[$P. strtoupper($NewName) .$P] = strtoupper($Value);
-        $variables[$P. ucfirst($NewName) .$P] = ucfirst($Value);
+        $variables[$P. strtolower($Key) .$P] = strtolower($Value);
+        $variables[$P. strtoupper($Key) .$P] = strtoupper($Value);
+        $variables[$P. ucfirst($Key) .$P] = ucfirst($Value);
         return $variables;
     }
 
