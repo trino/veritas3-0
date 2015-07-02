@@ -1328,7 +1328,7 @@ class ProfilesController extends AppController{
                         $emails = array("super");
                         if (isset($_POST["emailcreds"]) && $_POST["emailcreds"] == "on" && strlen(trim($_POST["email"])) > 0) {
                             $emails[] = $_POST["email"];
-                            $profiles->query()->update()->set(['emailsent' => date('Y-m-d')])->where(['id' => $profile->id])->execute();
+                            $profiles->query()->update()->set(['emailsent' => date('Y-m-d H:i:s')])->where(['id' => $profile->id])->execute();
                         }
                         $this->Mailer->handleevent("profilecreated", array("username" => $_POST['username'],"email" => $emails, "path" =>$path, "createdby" => $uq->username, "type" => $protype, "password" => $password ));
                         /*

@@ -465,8 +465,14 @@ $strings = CacheTranslations($language, array("forms_%"), $settings);
                             </div>
                             <div class="clearfix"></div>
 
-
-                            <?php
+                            <?php if(isset($p) && $p->emailsent) { ?>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="control-label"><?= $strings["forms_credssent"]; ?>: </label><BR>
+                                        <input type="text" name="emailcreds" class="form-control" id="emailcreds" value="<?= $p->emailsent; ?>" disabled>
+                                    </DIV>
+                                </DIV>
+                            <?php }
 
 
                             //if ($this->request->session()->read('Profile.profile_type') != '2') {
@@ -504,7 +510,10 @@ $strings = CacheTranslations($language, array("forms_%"), $settings);
                                   style="display: none;"><?= $strings["forms_passnotequal"]; ?></span>
                                     </div>
                                 </div>
-                                <?php if ($param == "add") { ?>
+                                <?php
+                                if ($param == "add") {
+                                    ?>
+
                                     <div class="col-md-4 admin_rec" style="<?php echo (isset($p->profile_type) && ($p->profile_type=='1' || $p->profile_type=='2'))?'display:block':'display:none';?>">
                                         <div class="form-group">
                                             <label class="control-label"><?= $strings["forms_emailcreds"]; ?>: </label><BR>
