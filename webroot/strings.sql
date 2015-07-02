@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 02, 2015 at 08:47 PM
+-- Generation Time: Jul 02, 2015 at 09:29 PM
 -- Server version: 5.6.17
 -- PHP Version: 5.5.12
 
@@ -490,7 +490,7 @@ INSERT INTO `strings` (`ID`, `Name`, `English`, `French`) VALUES
 (460, 'score_view', 'View Order', 'Voir commander'),
 (461, 'score_road', 'Road Test Score', 'Essai score'),
 (462, 'score_products', 'Products Ordered', 'Produits commandés'),
-(463, 'score_docs', '%Document%s Submitted', '%Documents% soumis'),
+(463, 'score_docs', '%Document%s Submitted', '%Document%s soumis'),
 (464, 'score_dupe', 'Duplicate Order', 'Duplicate commander'),
 (465, 'score_submitted', 'Submitted', 'Soumis'),
 (466, 'score_skipped', 'Skipped', 'Ignoré'),
