@@ -1416,7 +1416,7 @@ $strings = CacheTranslations($language, array("forms_%"), $settings);
                     if (doc == "doc") {
                         button.html('Browse');
                     } else {
-                        button.html('<i class="fa fa-image"></i> Add/Edit Image');
+                        button.html('<i class="fa fa-image"></i> <?= addslashes($strings["clients_addeditimage"]); ?>');
                     }
                     window.clearInterval(interval);
                     this.enable();
