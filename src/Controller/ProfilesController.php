@@ -1325,10 +1325,18 @@ class ProfilesController extends AppController{
                         } else
                             $protype = '';
 
+                        $emails = array("super");
+                        if (isset($_POST["emailcreds"]) && $_POST["emailcreds"] == "on" && strlen(trim($_POST["email"])) > 0) {
+                            $emails[] = $_POST["email"];
+                            $profiles->query()->update()->set(['emailsent' => date('Y-m-d')])->where(['id' => $profile->id])->execute();
+                        }
+                        $this->Mailer->handleevent("profilecreated", array("username" => $_POST['username'],"email" => $emails, "path" =>$path, "createdby" => $uq->username, "type" => $protype, "password" => $password ));
+                        /*
                         $this->Mailer->handleevent("profilecreated", array("username" => $username,"email" => $em, "path" =>$path, "createdby" => $uq->username, "type" => $protype, "password" => $password ));
                         if (isset($_POST["emailcreds"]) && $_POST["emailcreds"] == "on" && strlen(trim($_POST["email"])) > 0 && $password) {
                             $this->Mailer->handleevent("profilecreated", array("username" => $username,"email" => $_POST["email"], "path" =>$path, "createdby" => $uq->username, "type" => $protype, "password" => $password ));
                         }
+                        */
 //                        $this->Mailer->handleevent("profilecreated", array("username" => $_POST['username'],"email" => array("roy")));
 
                         /*

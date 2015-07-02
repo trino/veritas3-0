@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 02, 2015 at 09:58 PM
+-- Generation Time: Jul 02, 2015 at 10:29 PM
 -- Server version: 5.6.17
 -- PHP Version: 5.5.12
 
@@ -32,7 +32,7 @@ CREATE TABLE IF NOT EXISTS `strings` (
   `English` varchar(4096) NOT NULL,
   `French` varchar(4096) NOT NULL,
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=673 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=674 ;
 
 --
 -- Dumping data for table `strings`
@@ -699,7 +699,8 @@ INSERT INTO `strings` (`ID`, `Name`, `English`, `French`) VALUES
 (669, 'dashboard_dashboard2', '%MEE% Dashboard', 'Tableau de bord %MEE%'),
 (670, 'forms_selectdriver', 'Select Driver', 'Sélectionnez Pilote'),
 (671, 'infoorder_selectclient', 'Select a %client%', 'Sélectionner un %client%'),
-(672, 'documents_selectdocument', 'Select %Document%', 'Sélectionnez %document%');
+(672, 'documents_selectdocument', 'Select %Document%', 'Sélectionnez %document%'),
+(673, 'forms_credssent', 'Credentials sent', 'Pouvoirs envoyés');
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

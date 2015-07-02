@@ -527,6 +527,13 @@ $strings = CacheTranslations($language, array("forms_%"), $settings);
                                             </select>
                                         </DIV>
                                     </DIV>
+                                <?php } elseif($p->emailsent) { ?>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label class="control-label"><?= $strings["forms_credssent"]; ?>: </label><BR>
+                                            <input type="text" name="emailcreds" class="form-control" id="emailcreds" value="<?= $p->emailsent; ?>" disabled>
+                                        </DIV>
+                                    </DIV>
                                 <?php } ?>
 
                                 <div class="clearfix"></div>
