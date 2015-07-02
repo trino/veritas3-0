@@ -28,7 +28,7 @@ if (isset($this->request->params['pass'][1])) {
 
 include_once('subpages/api.php');
 $language = $this->request->session()->read('Profile.language');
-$strings = CacheTranslations($language, array("documents_%", "forms_%", "clients_addeditimage"), $settings);//,$registry);//$registry = $this->requestAction('/settings/getRegistry');
+$strings = CacheTranslations($language, array("documents_%", "forms_%", "clients_addeditimage", "infoorder_selectclient"), $settings);//,$registry);//$registry = $this->requestAction('/settings/getRegistry');
 if($language == "Debug") { $Trans = " [Trans]";} else { $Trans = ""; }
 $title = $strings["index_" . strtolower($action) . "document"];
 ?>
@@ -136,7 +136,7 @@ $title = $strings["index_" . strtolower($action) . "document"];
                     <div class="col-md-12 clients_select" style="margin: 10px 0;padding:0">
 
                         <select name="clients" class="form-control select2me" data-placeholder="<?=$settings->client?>" id="changeclient" <?php if($this->request->params['action']=='view'){?>disabled="disabled"<?php }?> onchange="changeclient_onchange();">
-                            <option value="0">Select <?=$settings->client?></option>
+                            <option value="0"><?= $strings["infoorder_selectclient"]; ?></option>
                             <?php
                             $profile_id = $this->request->session()->read('Profile.id');
                             foreach ($clients as $c){
@@ -159,8 +159,8 @@ $title = $strings["index_" . strtolower($action) . "document"];
 
                     <div class="col-md-12 doc_select" style="margin: 10px 0;padding:0">
 
-                        <select name="doctype" class="form-control select2me" data-placeholder="Select Document" onchange="window.location='<?php echo $this->request->webroot;?>documents/add/<?php echo $cid;?>?type='+$(this).val()" <?php if($this->request->params['action']=='view'){?>disabled="disabled"<?php }?>>
-                            <option value="0">Select Document</option>
+                        <select name="doctype" class="form-control select2me" data-placeholder="<?= $strings["documents_selectdocument"]; ?>" onchange="window.location='<?php echo $this->request->webroot;?>documents/add/<?php echo $cid;?>?type='+$(this).val()" <?php if($this->request->params['action']=='view'){?>disabled="disabled"<?php }?>>
+                            <option value="0"><?= $strings["documents_selectdocument"]; ?></option>
                             <?php
                              $doc = $doc_comp->getDocument('document');
                              $subdoccli = $this->requestAction('/clients/getSubCli2/'.$cid.'/document/true/true');

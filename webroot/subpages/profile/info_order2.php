@@ -4,7 +4,7 @@
     include_once('subpages/api.php');
     $settings = $this->requestAction('settings/get_settings');
     $language = $this->request->session()->read('Profile.language');
-    $strings = CacheTranslations($language, "infoorder_%",$settings);
+    $strings = CacheTranslations($language, array("infoorder_%", "infoorder_selectclient"),$settings);
     $GLOBALS["language"] = $language;
     if($debug && $language == "Debug"){ $Trans = " [Translated]"; } else {$Trans = "";}
 
@@ -291,7 +291,7 @@
             } else { ?>
 
                     <select id="selecting_client" class="form-control input-<?= $size; ?> select2me"
-                            data-placeholder="Select <?php echo ucfirst($settings->client); ?>" disabled>
+                            data-placeholder="<?= $strings["infoorder_selectclient"]; ?>" disabled>
                         <?php
             }
             //debug( $dr_cl["query"]);
