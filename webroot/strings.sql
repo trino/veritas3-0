@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 02, 2015 at 08:31 PM
+-- Generation Time: Jul 02, 2015 at 08:47 PM
 -- Server version: 5.6.17
 -- PHP Version: 5.5.12
 
@@ -184,7 +184,7 @@ INSERT INTO `strings` (`ID`, `Name`, `English`, `French`) VALUES
 (148, 'orders_all', 'List All Orders', 'Inscrivez commandes'),
 (149, 'infoorder_continue', 'Continue', 'Poursuivre'),
 (150, 'infoorder_driver', 'Subject', 'Pilote'),
-(151, 'infoorder_selectdriver', 'Select Subject', 'Sélectionnez pilote'),
+(151, 'infoorder_selectdriver', 'Select Subject', 'Sélectionner le sujet'),
 (152, 'infoorder_createdriver', 'Create New Driver', 'Créer un nouveau pilote'),
 (153, 'infoorder_noneselected', 'None Selected', 'Aucune sélection'),
 (154, 'infoorder_alertselectdriver', 'Please select a driver.', 'S''il vous plaît sélectionner un pilote.'),
