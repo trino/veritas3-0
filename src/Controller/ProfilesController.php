@@ -2709,13 +2709,6 @@ public function saveDriver()
 
                         $this->Mailer->handleevent("cronordercomplete", array("site" => $setting->mee,"email" => $profile1->email));
 
-                        /*
-                        $from = array('info@' . $path => $setting->mee);
-                        $to = $profile1->email;
-                        $sub = 'Order Completed';
-                        $msg = 'Your order has been processed and   ready to download.<br /><br /> Please login <a href="' . LOGIN . '">here</a> to retrieve your score card.<br /><br /> Regards,<br /> The ISB MEE Team';
-                        $this->Mailer->sendEmail($from, $to, $sub, $msg);
-                        */
                     }
                 }
             }
