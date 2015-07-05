@@ -707,6 +707,22 @@ class OrdersController extends AppController {
         return $this->response;
     }
 
+
+
+    public function writing_complete($orderid) {
+        $query2 = TableRegistry::get('orders');
+        $arr['complete_writing'] = 1;
+        $query2 = $query2->query();
+        $query2->update()
+            ->set($arr)
+            ->where(['id' => $orderid])
+            ->execute();
+        $this->response->body($query2);
+        return $this->response;
+    }
+
+
+
     public function save_webservice_ids($orderid, $ins_id, $ebs_id) {
         $this->set('doc_comp', $this->Document);
         $query2 = TableRegistry::get('orders');

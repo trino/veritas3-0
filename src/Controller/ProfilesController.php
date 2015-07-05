@@ -2549,12 +2549,12 @@ public function saveDriver()
         $orders = TableRegistry::get('orders');
         $order = $orders
             ->find()
-            ->where(['orders.draft' => 0])->order('orders.id DESC')->limit(15);
+            ->where(['orders.draft' => 0])->order('orders.id DESC')->limit(12);
 
         foreach ($order as $o) {
 
-            if ($o->complete == 0) {
-
+            if ($o->complete == 0  && $o->complete_writing == 1) {
+               // echo $o->id .',';
                 $complete = 1;
 
                 if ($o->ins_1 && $o->ins_1_binary == null) {
@@ -2705,8 +2705,6 @@ public function saveDriver()
                     $profile1 = $table->find()->where(['id' => $o->user_id])->first();
 
                     if ($profile1->email) {
-
-
                         $this->Mailer->handleevent("cronordercomplete", array("site" => $setting->mee,"email" => $profile1->email));
 
                     }
