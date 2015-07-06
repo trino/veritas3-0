@@ -1,4 +1,10 @@
 <?php
+
+$debugmode = false;
+if (file_exists($_SERVER["DOCUMENT_ROOT"] . "debugmode.txt")){
+    $debugmode = file_get_contents($_SERVER["DOCUMENT_ROOT"] . "debugmode.txt") == $_SERVER['REMOTE_ADDR'];
+}
+
 $config = [
 /**
  * Debug Level:
@@ -9,7 +15,7 @@ $config = [
  * Development Mode:
  * true: Errors and warnings shown.
  */
-	'debug' => false,
+	'debug' => $debugmode,
 
 /**
  * Configure basic information about the application.

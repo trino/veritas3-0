@@ -136,11 +136,9 @@ class ProfilesController extends AppController{
             $filename = $_SERVER["DOCUMENT_ROOT"] . "debugmode.txt";
             if (file_exists($filename)) {
                 unlink($filename);
-                //$this->Flash->success('Debug mode: Deactivated');
                 $debugstate = $this->Trans->getString("dashboard_off");
             } else {
-                file_put_contents ($filename, "true");
-                //$this->Flash->success('Debug mode: Activated');
+                file_put_contents ($filename, $_SERVER['REMOTE_ADDR']);
                 $debugstate = $this->Trans->getString("dashboard_on");
             }
             $this->Flash->success($this->Trans->getString("dashboard_debug") . " " . $debugstate);
@@ -493,7 +491,7 @@ class ProfilesController extends AppController{
         $condition = $this->Settings->getprofilebyclient($u, $super);
         //var_dump($condition);die();
         if ($setting->profile_list == 0) {
-            $this->Flash->error($this->Trans->getString("flash_permissions"));
+            $this->Flash->error($this->Trans->getString("flash_permissions", array("place" => "index")));
             return $this->redirect("/");
         }
         if (isset($_GET['draft'])) {
@@ -701,7 +699,11 @@ class ProfilesController extends AppController{
             $setting = $this->Settings->get_permission($userid);
 
             if ($setting->profile_list == 0 || ($userid != $id && $setting->viewprofiles ==0)) {
-                $this->Flash->error($this->Trans->getString("flash_permissions"));
+                $place = "View: ";
+                if($setting->profile_list == 0) { $place .= "profile_list";}
+                if($userid != $id && $setting->viewprofiles ==0) { $place .= "viewprofiles";}
+
+                $this->Flash->error($this->Trans->getString("flash_permissions", array("place" => $place)));
                 return $this->redirect("/");
             }
 
@@ -906,7 +908,7 @@ class ProfilesController extends AppController{
         }*/
 
         if ($setting->profile_create == 0 && !$this->request->session()->read('Profile.super')) {
-            $this->Flash->error($this->Trans->getString("flash_permissions"));
+            $this->Flash->error($this->Trans->getString("flash_permissions", array("place" => "add")));
             return $this->redirect("/");
 
         }
@@ -1608,7 +1610,7 @@ public function saveDriver()
 
         $setting = $this->Settings->get_permission($userid);
         if (($setting->profile_edit == 0 || $setting->viewprofiles ==0) && $id != $userid) {
-            $this->Flash->error($this->Trans->getString("flash_permissions") . ' (0)');
+            $this->Flash->error($this->Trans->getString("flash_permissions", array("place" => "edit")) . ' (0)');
             return $this->redirect("/");
         } else {
             $this->set('myuser', '1');
@@ -1712,7 +1714,7 @@ public function saveDriver()
 
         $checker = $this->Settings->check_permission($this->request->session()->read('Profile.id'), $id);
         if ($checker == 0) {
-            $this->Flash->error($this->Trans->getString("flash_permissions") . ' (1)');
+            $this->Flash->error($this->Trans->getString("flash_permissions", array("place" => "delete 1")) . ' (1)');
             return $this->redirect("/profiles/index");
             die();
         }
@@ -1720,7 +1722,7 @@ public function saveDriver()
         $setting = $this->Settings->get_permission($this->request->session()->read('Profile.id'));
 
         if ($setting->profile_delete == 0) {
-            $this->Flash->error($this->Trans->getString("flash_permissions") . ' (3)');
+            $this->Flash->error($this->Trans->getString("flash_permissions", array("place" => "delete 2")));
             return $this->redirect("/");
 
         }
@@ -1779,7 +1781,7 @@ public function saveDriver()
         //var_dump($side);die();
         //die();
         if ($client == "") {
-            $sides = $this->getColumnNames("sidebar", "id");//why does this use sidebar columns instead of block?
+            $sides = $this->getColumnNames("sidebar", "id", true);//why does this use sidebar columns instead of block?
             //array('profile_list', 'profile_create', 'client_list', 'client_create', 'document_list', 'document_create', 'profile_edit', 'profile_delete', 'client_edit', 'client_delete', 'document_edit', 'document_delete', 'document_others', 'document_requalify', 'orders_list', 'orders_create', 'orders_delete', 'orders_requalify', 'orders_edit', 'orders_others', 'order_requalify', 'orders_mee', 'orders_products', 'order_intact', 'email_document', 'email_orders', 'email_profile', 'orders_emp', 'orders_GEM', 'orders_GDR', 'aggregate', 'bulk', 'invoice');//this should not be hardcoded
             foreach ($sides as $s) {
                 if (!isset($_POST['side'][$s]))
@@ -2146,7 +2148,7 @@ public function saveDriver()
     function filterBy() {
         $setting = $this->Settings->get_permission($this->request->session()->read('Profile.id'));
         if ($setting->profile_list == 0) {
-            $this->Flash->error($this->Trans->getString("flash_permissions") . ' (2)');
+            $this->Flash->error($this->Trans->getString("flash_permissions", array("place" => "filter by")));
             return $this->redirect("/");
         }
         $profile_type = $_GET['filter_profile_type'];
@@ -3292,8 +3294,8 @@ public function saveDriver()
         $this->set("producttypes",  TableRegistry::get('product_types')->find('all') );
         $this->set("colors", TableRegistry::get('color_class')->find('all') );
 
-        $this->set("blockscols", $this->getColumnNames('blocks'));
-        $this->set("sidebarcols", $this->getColumnNames('sidebar'));
+        $this->set("blockscols", $this->getColumnNames('blocks'), "", true);
+        $this->set("sidebarcols", $this->getColumnNames('sidebar'), "", true);
 
         $this->set("order_products",  TableRegistry::get('order_products')->find('all') );
         $this->set("subdocuments", TableRegistry::get('subdocuments')->find('all') );
@@ -3302,7 +3304,7 @@ public function saveDriver()
     function SaveFields($Table, $Data, $PrimaryKey, $Default = "0", $Ignore = "ID"){
         //detect unchecked checkboxes
         $Columns = $this->getColumnNames($Table, $Ignore);
-        foreach($Columns as $Column){
+        foreach($Columns as $Column => $ColumnType){
             if (!isset($Data[$Column])){
                 $Data[$Column] = $Default;
             }
@@ -3320,17 +3322,48 @@ public function saveDriver()
         }
     }
 
-    function getColumnNames($Table, $ignore = ""){
+    function getColumnNames($Table, $ignore = "", $justColumnNames = false){
+        /*
         $Columns = TableRegistry::get($Table)->find('all')->first();
-        $Data = $this->getProtectedValue($Columns, "_properties");
-        if($ignore){unset($Data[$ignore]);}
-        return array_keys($Data);
+        if($Columns) {
+            $Data = $this->getProtectedValue($Columns, "_properties");
+            if ($Data) {
+                if (is_array($ignore)) {
+                    foreach ($ignore as $value) {
+                        unset($Data[$value]);
+                    }
+                } elseif ($ignore) {
+                    unset($Data[$ignore]);
+                }
+                return array_keys($Data);
+            }
+        } else {
+        */
+        $Columns = TableRegistry::get($Table)->schema();
+        $Data = $this->getProtectedValue($Columns, "_columns");
+        if ($Data) {
+            if (is_array($ignore)) {
+                foreach ($ignore as $value) {
+                    unset($Data[$value]);
+                }
+            } elseif ($ignore) {
+                unset($Data[$ignore]);
+            }
+            if ($justColumnNames){
+                return array_keys($Data);
+            }
+            return $Data;
+        }
+        //}
     }
     function getProtectedValue($obj,$name) {
         $array = (array)$obj;
         $prefix = chr(0).'*'.chr(0);
-        return $array[$prefix.$name];
+        if (isset($array[$prefix.$name])) {
+            return $array[$prefix . $name];
+        }
     }
+
     function getDriverProv($driver)
     {
         $dri = TableRegistry::get('profiles')->find()->where(['id'=>$driver])->first();

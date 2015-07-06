@@ -434,7 +434,10 @@
                 if ($this->request->session()->read('Profile.super') && ($_SERVER['SERVER_NAME'] == 'localhost' || $_SERVER['REMOTE_ADDR'] == '24.36.161.100')) {
                     $isfirst = print_title($content, $this->request->webroot, "pages/view/version_log", "version_log", $isfirst, false, $language);
 
-                    $debugmode = file_exists($_SERVER["DOCUMENT_ROOT"] . "debugmode.txt");
+                    $debugmode = false;
+                    if (file_exists($_SERVER["DOCUMENT_ROOT"] . "debugmode.txt")){
+                        $debugmode = file_get_contents($_SERVER["DOCUMENT_ROOT"] . "debugmode.txt") == $_SERVER['REMOTE_ADDR'];
+                    }
                     if ($debugmode) {
                         $debugmode = "dashboard_on";
                     } else {
