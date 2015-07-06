@@ -334,12 +334,12 @@
                                 </ul>
 
 
-                                <div class="tab-content">
+                                <div class="tab-content" style="padding: 0;">
                                     <!-- PERSONAL INFO TAB -->
 
 
                                     <div class="tab-pane  <?php activetab($activetab, "profile", false); ?> "
-                                         id="tab_1_1">
+                                         id="tab_1_1" style="padding: 10px;">
 
                                         <input type="hidden" name="user_id" value="<?php echo ""; ?>"/>
                                         <?php include('subpages/profile/info.php'); ?>
@@ -352,7 +352,7 @@
                                             ?>
 
                                             <div class="tab-pane <?php activetab($activetab, "notes", false); ?>"
-                                                 id="tab_1_9">
+                                                 id="tab_1_9" style="padding: 10px;">
                                                 <div class="cleafix">&nbsp;</div>
 
                                                 <div class="portlet-body">
@@ -365,7 +365,7 @@
                                         if ($this->request['action'] == 'view') {
                                             ?>
                                             <div class="tab-pane <?php activetab($activetab, "scorecard", false); ?>"
-                                                 id="tab_1_11">
+                                                 id="tab_1_11" style="padding: 10px;">
                                                 <?php
                                                     include('subpages/documents/forview.php');
                                                 ?>

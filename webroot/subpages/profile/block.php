@@ -1,6 +1,6 @@
 <?php
     if ($this->request->session()->read('debug')) {
-        echo "<span style ='color:red;'>subpages/profile/block.php #INC116</span>";
+        echo "<span style ='color:red;display:block;padding:10px;'>subpages/profile/block.php #INC116</span>";
     }
     $uid = ($this->request['action'] == 'add') ? "0" : $this->request['pass'][0];
     $sidebar = $this->requestAction("settings/all_settings/" . $uid . "/sidebar");
@@ -49,14 +49,14 @@
     </li>
 
 
-</UL>
+</ul>
 <!--</div>-->
 <div class="portlet-body form">
     <div class="tab-content">
         <?php if ($doit){ ?>
         <div
             class="tab-pane <?php if ((!isset($Clientcount) || (isset($Clientcount) && $Clientcount != 0))) activetab($activetab, "config", false); ?>"
-            id="subtab_2_1">
+            id="subtab_2_1" style="padding: 10px;">
             <div class="">
                 <!--h1>Modules</h1-->
 
@@ -775,7 +775,7 @@
             </div>
         </div>
 
-        <div class="tab-pane" id="subtab_2_3">
+        <div class="tab-pane" id="subtab_2_3" style="padding: 10px;">
 
 
             <form id="homeform">
@@ -1225,7 +1225,7 @@
         <?php } ?>
 
         <div class="tab-pane <?php if (!$doit || ($this->request->session()->read("Profile.profile_type") == 2 || (isset($Clientcount) && $Clientcount == 0))) echo 'active'; ?>"
-             id="subtab_2_4">
+             id="subtab_2_4" style="padding: 10px;">
 
             <?php if ($this->request->params['action'] == 'edit' && ($this->request->session()->read("Profile.super") || ($this->request->session()->read("Profile.admin") == 1 || $this->request->session()->read("Profile.profile_type") == 2))) {
                 //&& $this->request->session()->read("Profile.id")==$id
@@ -1238,11 +1238,16 @@
                     </div>
                     <div class="portlet-body">
                     -->
-
-                <input type="text" id="searchClient" onkeyup="searchClient()" class="form-control"
+                <div class="input-group">
+                    <span class="input-group-addon">
+                    <i class="fa fa-search"></i>
+                    </span>
+                    <input type="text" id="searchClient" onkeyup="searchClient()" class="form-control"
                        <?php if ($this->request->session()->read('Profile.profile_type') == 2 && $this->request->session()->read('Profile.id') == $id){ ?>disabled=""<?php } ?> />
+                </div>
+                
                 <div class="scrolldiv">
-                    <table class="table" id="clientTable">
+                    <table class="table" id="clientTable" style="border: 1px solid #e5e5e5;border-top:none;">
                         <?php
 
                             $clients = $this->requestAction('/clients/getAllClient/');
@@ -1256,14 +1261,15 @@
                                     }
                                 }
 
-
+                                $b=0;
                                 foreach ($clients as $o) {
+                                    $b++;
                                     $pro_ids = explode(",", $o->profile_id);
                                     $isassigned = in_array($id, $pro_ids);
                                     ?>
 
                                     <tr>
-                                        <td width="1">
+                                        <td width="1" <?php if($b==1){?>style="border-top:none;"<?php }?>>
                                             <input
                                                 <?php if ($this->request->session()->read('Profile.profile_type') == 2 && $this->request->session()->read('Profile.id') == $id){ ?>disabled=""<?php } ?>
                                                 id="c_<?= $count ?>"
@@ -1275,11 +1281,11 @@
                                                  echo " disabled";
                                              }
                                             ?> />
-                                        </TD><TD width="50"> <?php if (strlen($o->image) > 0) {
+                                        </td><td width="50" <?php if($b==1){?>style="border-top:none;"<?php }?>> <?php if (strlen($o->image) > 0) {
                                                 echo '<img height="32" src="' . $this->request->webroot . 'img/jobs/' . $o->image . '">';
                                             } else {
                                                 echo '<img width="32" src="' . $this->request->webroot . 'img/logos/MEELogo.png">';
-                                            } ?></TD><TD>
+                                            } ?></td><td <?php if($b==1){?>style="border-top:none;"<?php }?>>
 
                                             <label
                                                 for="c_<?= $count ?>"><?php echo $o->company_name; ?></label><span
@@ -1308,31 +1314,33 @@
                 <input type="text" id="searchClient" onkeyup="searchClient()"
                        class="form-control"  <?php echo $is_disabled ?> />
                 <div class="scrolldiv">
-                    <table class="table scrolldiv" id="clientTable">
+                    <table class="table scrolldiv" id="clientTable" style="border: 1px solid #e5e5e5;border-top:none;">
                         <?php
 
                             $clients = $this->requestAction('/clients/getAllClient/');
                             $count = 0;
+                            $b=0;
                             if ($clients)
                                 foreach ($clients as $client) {
+                                    $b++;
                                     $pro_ids = explode(",", $client->profile_id);
 
                                     ?>
 
                                     <tr>
-                                        <td width="1"><input  <?php echo $is_disabled ?>
+                                        <td width="1" <?php if($b==1){?>style="border-top:none;"<?php }?>><input  <?php echo $is_disabled ?>
                                                 id="c_<?= $count ?>"
                                                 type="checkbox" <?php if (in_array($id, $pro_ids)) {
                                                 echo "checked";
                                             } ?>   value="<?php echo $client->id; ?>"
                                                 class="addclientz"/>
-                                        </TD><TD width="50"><IMG SRC="<?php
+                                        </TD><TD width="50" <?php if($b==1){?>style="border-top:none;"<?php }?>><IMG SRC="<?php
                                                 if($client->image) {
                                                     echo $this->request->webroot . "img/jobs/" . $client->image;
                                                 } else {
                                                     echo $this->request->webroot . "img/logos/MEELogo.png";
                                                 }
-                                            ?>" style="max-width: 50px;"></TD><TD>
+                                            ?>" style="max-width: 50px;"></TD><TD <?php if($b==1){?>style="border-top:none;"<?php }?>>
                                             <label
                                                 for="c_<?= $count ?>"><?php echo $client->company_name; ?></label><span
                                                 class="msg_<?php echo $client->id; ?>"></span></td>
