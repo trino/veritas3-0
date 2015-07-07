@@ -429,33 +429,39 @@ class OrdersController extends AppController {
         $con_detail = $this->getlastdocument($Profile_ID, 9, "employment_verification");
         if($con_detail->document_id) {
             $emp = TableRegistry::get('employment_verification')->find()->where(['document_id' => $con_detail->document_id])->all();
-        } else {
+        } elseif($con_detail->order_id) {
             $emp = TableRegistry::get('employment_verification')->find()->where(['order_id' => $con_detail->order_id])->all();
         }
-
-        //$emp = TableRegistry::get('employment_verification')->find()->order(['id' => 'DESC'])->where(['user_id' => $Profile_ID])->all();
-        $listofdocs = array();
-        foreach($emp as $document){
-            if (count($listofdocs) == 0){
-                $listofdocs[] = $document;
-            } elseif ($listofdocs[0]->document_id && $listofdocs[0]->document_id == $document->document_id) {
-                $listofdocs[] = $document;
-            } elseif ($listofdocs[0]->order_id && $listofdocs[0]->order_id == $document->order_id){
-                $listofdocs[] = $document;
-            } else{
-                break;
+        
+        if($emp) {
+            //$emp = TableRegistry::get('employment_verification')->find()->order(['id' => 'DESC'])->where(['user_id' => $Profile_ID])->all();
+            $listofdocs = array();
+            foreach ($emp as $document) {
+                if (count($listofdocs) == 0) {
+                    $listofdocs[] = $document;
+                } elseif ($listofdocs[0]->document_id && $listofdocs[0]->document_id == $document->document_id) {
+                    $listofdocs[] = $document;
+                } elseif ($listofdocs[0]->order_id && $listofdocs[0]->order_id == $document->order_id) {
+                    $listofdocs[] = $document;
+                } else {
+                    break;
+                }
             }
-        }
 
-        $sub3['emp'] = $listofdocs;
-        if($sub3['emp']) {
-            $did = "";
-            foreach ($sub3['emp'] as $document) {
-                if (!$did) {$did = $document->document_id;}
+            $sub3['emp'] = $listofdocs;
+            if ($sub3['emp']) {
+                $did = "";
+                foreach ($sub3['emp'] as $document) {
+                    if (!$did) {
+                        $did = $document->document_id;
+                    }
+                }
+                if($did) {
+                    $emp_att = TableRegistry::get('doc_attachments');
+                    $sub3['att'] = $emp_att->find()->where(['document_id' => $did])->all();
+                }
+                $this->set('sub3', $sub3);
             }
-            $emp_att = TableRegistry::get('doc_attachments');
-            $sub3['att'] = $emp_att->find()->where(['document_id' => $did])->all();
-            $this->set('sub3', $sub3);
         }
     }
 
@@ -1181,7 +1187,9 @@ class OrdersController extends AppController {
         }
 
         if (isset($_GET['searchdoc']) && $_GET['searchdoc']) {
-            $cond = $this->AppendSQL($cond, '(orders.title LIKE "%' . $_GET['searchdoc'] . '%" OR orders.description LIKE "%' . $_GET['searchdoc'] . '%")');
+            //$cond = $this->AppendSQL($cond, '(orders.title LIKE "%' . $_GET['searchdoc'] . '%" OR orders.description LIKE "%' . $_GET['searchdoc'] . '%")');
+            $cond = $this->AppendSQL($cond, '(orders.user_id IN (SELECT id FROM profiles WHERE username LIKE "%'.$_GET['searchdoc'].'%" OR fname LIKE "%'.$_GET['searchdoc'].'%" OR lname LIKE "%'.$_GET['searchdoc'].'%") OR orders.id IN (SELECT order_id FROM footprint WHERE fullname LIKE "%'.$_GET['searchdoc'].'%") OR orders.client_id IN (SELECT id FROM clients WHERE company_name LIKE "%'.$_GET['searchdoc'].'%"))');
+
         }
 
         if (isset($_GET['table']) && $_GET['table']) {
@@ -1513,9 +1521,8 @@ class OrdersController extends AppController {
             $order = $orders->find()->order(['orders.id' => 'DESC'])->where(['draft' => 0, $cond])->all();
             $this->set('orders', $order);
 
-            $table = TableRegistry::get('product_types')->find('all');
-            $this->set('products', $table);
-
+            $this->set('products', TableRegistry::get('product_types')->find('all'));
+            $this->set('profiles',  TableRegistry::get('profiles')->find('all'));
             $this->set('taxes', 0.13);
         }
     }
