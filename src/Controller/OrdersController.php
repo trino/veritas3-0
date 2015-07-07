@@ -427,40 +427,42 @@ class OrdersController extends AppController {
 
         //LETTER OF EXPERIENCE
         $con_detail = $this->getlastdocument($Profile_ID, 9, "employment_verification");
-        if($con_detail->document_id) {
-            $emp = TableRegistry::get('employment_verification')->find()->where(['document_id' => $con_detail->document_id])->all();
-        } elseif($con_detail->order_id) {
-            $emp = TableRegistry::get('employment_verification')->find()->where(['order_id' => $con_detail->order_id])->all();
-        }
-        
-        if($emp) {
-            //$emp = TableRegistry::get('employment_verification')->find()->order(['id' => 'DESC'])->where(['user_id' => $Profile_ID])->all();
-            $listofdocs = array();
-            foreach ($emp as $document) {
-                if (count($listofdocs) == 0) {
-                    $listofdocs[] = $document;
-                } elseif ($listofdocs[0]->document_id && $listofdocs[0]->document_id == $document->document_id) {
-                    $listofdocs[] = $document;
-                } elseif ($listofdocs[0]->order_id && $listofdocs[0]->order_id == $document->order_id) {
-                    $listofdocs[] = $document;
-                } else {
-                    break;
-                }
+        if($con_detail) {
+            if ($con_detail->document_id) {
+                $emp = TableRegistry::get('employment_verification')->find()->where(['document_id' => $con_detail->document_id])->all();
+            } elseif ($con_detail->order_id) {
+                $emp = TableRegistry::get('employment_verification')->find()->where(['order_id' => $con_detail->order_id])->all();
             }
 
-            $sub3['emp'] = $listofdocs;
-            if ($sub3['emp']) {
-                $did = "";
-                foreach ($sub3['emp'] as $document) {
-                    if (!$did) {
-                        $did = $document->document_id;
+            if ($emp) {
+                //$emp = TableRegistry::get('employment_verification')->find()->order(['id' => 'DESC'])->where(['user_id' => $Profile_ID])->all();
+                $listofdocs = array();
+                foreach ($emp as $document) {
+                    if (count($listofdocs) == 0) {
+                        $listofdocs[] = $document;
+                    } elseif ($listofdocs[0]->document_id && $listofdocs[0]->document_id == $document->document_id) {
+                        $listofdocs[] = $document;
+                    } elseif ($listofdocs[0]->order_id && $listofdocs[0]->order_id == $document->order_id) {
+                        $listofdocs[] = $document;
+                    } else {
+                        break;
                     }
                 }
-                if($did) {
-                    $emp_att = TableRegistry::get('doc_attachments');
-                    $sub3['att'] = $emp_att->find()->where(['document_id' => $did])->all();
+
+                $sub3['emp'] = $listofdocs;
+                if ($sub3['emp']) {
+                    $did = "";
+                    foreach ($sub3['emp'] as $document) {
+                        if (!$did) {
+                            $did = $document->document_id;
+                        }
+                    }
+                    if ($did) {
+                        $emp_att = TableRegistry::get('doc_attachments');
+                        $sub3['att'] = $emp_att->find()->where(['document_id' => $did])->all();
+                    }
+                    $this->set('sub3', $sub3);
                 }
-                $this->set('sub3', $sub3);
             }
         }
     }
