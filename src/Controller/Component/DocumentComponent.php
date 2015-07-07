@@ -1303,12 +1303,12 @@ class DocumentComponent extends Component
             die();
         }
 
-        function getAllUser(){
+        function getAllUser($sortby = "fname"){
             $query = TableRegistry::get('Profiles');
             //$query = $query->find();
             //$q = $query->find()->where(['profile_type !=' => '5'])->all();
             //$order = $orders->find()->order(['orders.id' => 'DESC'])->where(['draft' => 0, $cond])->all();
-            $q = $query->find()->order(['fname' => 'ASC'])->all();
+            $q = $query->find()->order([$sortby => 'ASC'])->all();
             //$this->response->body($q);
             return $q;
             die();
@@ -1316,7 +1316,7 @@ class DocumentComponent extends Component
 
         function getAllClient(){
             $query = TableRegistry::get('Clients');
-            $query = $query->find();
+            $query = $query->find()->order(["company_name" => 'ASC']);
             $q = $query->select();
             //$this->response->body($q);
             return $q;
