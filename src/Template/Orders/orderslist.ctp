@@ -13,6 +13,7 @@
         if (is_object($product)) { return $product->ButtonColor;}
         return $Default;
     }
+
 ?>
 
 <h3 class="page-title">
@@ -96,8 +97,7 @@
                                 <?php
                                     foreach ($users as $u) {
                                         ?>
-                                        <option
-                                            value="<?php echo $u->id; ?>" <?php if (isset($return_user_id) && $return_user_id == $u->id) { ?> selected="selected"<?php } ?> ><?php echo ucfirst($u->username); ?></option>
+                                        <option value="<?php echo $u->id; ?>" <?php if (isset($return_user_id) && $return_user_id == $u->id) { ?> selected="selected"<?php } ?> ><?= formatname($u); ?></option>
                                     <?php
                                     }
                                 ?>
@@ -107,8 +107,7 @@
                                 <?php
                                     foreach ($users as $u) {
                                         ?>
-                                        <option
-                                            value="<?php echo $u->id; ?>" <?php if (isset($_GET['uploaded_for']) && $_GET['uploaded_for'] == $u->id) { ?> selected="selected"<?php } ?> ><?php echo ucfirst($u->fname) . " " . ucfirst($u->lname); ?></option>
+                                        <option value="<?php echo $u->id; ?>" <?php if (isset($_GET['uploaded_for']) && $_GET['uploaded_for'] == $u->id) { ?> selected="selected"<?php } ?> ><?= formatname($u); ?></option>
                                         <?php
                                     }
                                 ?>

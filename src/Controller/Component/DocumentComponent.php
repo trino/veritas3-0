@@ -1307,7 +1307,8 @@ class DocumentComponent extends Component
             $query = TableRegistry::get('Profiles');
             //$query = $query->find();
             //$q = $query->find()->where(['profile_type !=' => '5'])->all();
-            $q = $query->find()->all();
+            //$order = $orders->find()->order(['orders.id' => 'DESC'])->where(['draft' => 0, $cond])->all();
+            $q = $query->find()->order(['fname' => 'ASC'])->all();
             //$this->response->body($q);
             return $q;
             die();

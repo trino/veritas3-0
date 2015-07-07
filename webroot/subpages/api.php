@@ -502,7 +502,7 @@ function getpost($Key, $Default = ""){
 }
 
 function formatname($profile){
-    $name = trim(ucfirst(h($profile->fname)) . " " . ucfirst(h($profile->lname)));
+    $name = trim(ucfirst(strtolower($profile->fname)) . " " . ucfirst(strtolower($profile->lname)));
     if ($profile->username){
         if($name){
             $name .= " (" . ucfirst(h($profile->username)) . ")";
@@ -510,7 +510,10 @@ function formatname($profile){
             $name =  ucfirst(h($profile->username));
         }
     }
-    return $name;
+    if(!trim($name)){
+        return "#" . $profile->id;
+    }
+    return h(trim($name));
 }
 
 function cleanit($array){

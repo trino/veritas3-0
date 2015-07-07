@@ -1,6 +1,11 @@
 <?php $settings = $this->requestAction('settings/get_settings');
 $sidebar = $this->requestAction("settings/get_side/" . $this->Session->read('Profile.id'));
 //this page is bypassed to orders/orderslist
+
+function formatname($profile){
+
+}
+
 ?>
 
 <h3 class="page-title">
@@ -52,7 +57,7 @@ $sidebar = $this->requestAction("settings/get_side/" . $this->Session->read('Pro
                                     foreach ($users as $u) {
                                         ?>
                                         <option
-                                            value="<?php echo $u->id; ?>" <?php if (isset($return_user_id) && $return_user_id == $u->id) { ?> selected="selected"<?php } ?> ><?php echo $u->username; ?></option>
+                                            value="<?php echo $u->id; ?>" <?php if (isset($return_user_id) && $return_user_id == $u->id) { ?> selected="selected"<?php } ?> ><?= formatname($u); ?></option>
                                     <?php
                                     }
                                 ?>
