@@ -2238,7 +2238,7 @@ public function saveDriver()
 
     function getClient() {
         $query = TableRegistry::get('Clients');
-        $q = $query->find();
+        $q = $query->find()->order(["company_name" => 'ASC']);
         $que = $q->select();
         $this->response->body($que);
         return $this->response;

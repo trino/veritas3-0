@@ -576,6 +576,7 @@ class OrdersController extends AppController {
         if (isset($_GET['searchdoc']) && $_GET['searchdoc']) {
             $cond = $cond . ' (orders.title LIKE "%' . $_GET['searchdoc'] . '%" OR orders.description LIKE "%' . $_GET['searchdoc'] . '%")';
         }
+
         if (isset($_GET['table']) && $_GET['table']) {
             if ($cond == '') {
                 $cond = $cond . ' orders.id IN (SELECT order_id FROM ' . $_GET['table'] . ')';
