@@ -304,6 +304,9 @@ class ProfilesController extends AppController{
                     $this->clearproduct($DocID);
                     $this->generateproductHTML($DocID, $Language);
                     break;
+                case "editemail":
+                    $this->saveemail($_POST);
+                    break;
                 default:
                     echo $_POST["Type"] . " is unhandled";
             }
@@ -312,6 +315,23 @@ class ProfilesController extends AppController{
         } else {
             $this->set('products', TableRegistry::get('order_products')->find()->all());
         }
+    }
+
+    function saveemail($Data){
+        $table = TableRegistry::get('strings');
+        $string =  $table->find()->where(['Name'=> "email_" . $Data["key"]])->first();
+        $Subject = $Data["subject"];
+        $Message = $Data["message"];
+        if($string){//update
+            $table->query()->update()->set($Subject)->where(['Name'=> "email_" . $Data["key"] . "_subject"])->execute();
+            $table->query()->update()->set($Message)->where(['Name'=> "email_" . $Data["key"] . "_message"])->execute();
+        } else {
+            $Subject["Name"] = "email_" . $Data["key"] . "_subject";
+            $Message["Name"] = "email_" . $Data["key"] . "_message";
+            $table->query()->insert(array_keys($Subject))->values($Subject)->execute();
+            $table->query()->insert(array_keys($Message))->values($Message)->execute();
+        }
+        echo $Data["key"] . " has been saved";
     }
 
     function createcolumn($Table, $Column, $Type, $Length="", $Default ="", $AutoIncrement=false, $Null = false){

@@ -143,6 +143,9 @@ function makedropdownoption($Key, $Value, $TheValue){
                             <li>
                                 <a href="#tab_1_16" data-toggle="tab">Profile Importer</a>
                             </li>
+                            <LI>
+                                <a href="#tab_1_17" data-toggle="tab">Email Editor</a>
+                            </LI>
                             <?php
                             }
                         }
@@ -207,6 +210,11 @@ function makedropdownoption($Key, $Value, $TheValue){
                      <div class="tab-pane" id="tab_1_16">
                         <?php include('subpages/import.php'); ?>
                     </div>
+                <div class="tab-pane" id="tab_1_17">
+                    <?php include('subpages/profile/emails.php'); ?>
+                </div>
+
+
                     <div class="tab-pane" id="tab_1_14">
                         <div class="tabbable tabbable-custom">
                             <ul class="nav nav-tabs">
