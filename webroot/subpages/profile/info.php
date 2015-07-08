@@ -122,41 +122,11 @@ $strings = CacheTranslations($language, array("forms_%"), $settings);
                                                 //var_dump($pt);
                                                 if (isset($pts)) {
                                                     if (in_array($pt->id, $pts)) {
-                                                        if ($pt->id == '1') {
-                                                            //if($this->request->session()->read('Profile.super'))
-                                                            //{
-                                                            ?>
-                                                            <option
-                                                                value="<?php echo $pt->id; ?>" <?php if (isset($p) && $p->profile_type == 1) { ?> selected="selected" <?php } ?>>
-                                                                <?php echo $pt->$fieldname . $Trans; ?>
-                                                            </option>
-                                                            <?php
-
-                                                            //}
-                                                        } else {
-                                                            /*if($isISB)
-                                                            {
-                                                                if ($pt->id<='8')
-                                                                {
-                                                                ?>
-                                                                <option
-                                                                        value="<?php echo $pt->id;?>" <?php if (isset($p) && $p->profile_type == $pt->id) { ?> selected="selected" <?php } ?>>
-                                                                        <?php echo $pt->title;?>
-                                                                </option>
-                                                            <?php
-                                                                }
-                                                            }
-                                                            else
-                                                            {*/
                                                             ?>
                                                             <option
                                                                 value="<?php echo $pt->id; ?>" <?php if (isset($p) && $p->profile_type == $pt->id) { ?> selected="selected" <?php } ?>>
                                                                 <?php echo $pt->$fieldname . $Trans; ?>
                                                             </option>
-                                                            <?php
-                                                            //}
-                                                        }
-
                                                         ?>
 
                                                     <?php
@@ -514,7 +484,7 @@ $strings = CacheTranslations($language, array("forms_%"), $settings);
                                 if ($param == "add") {
                                     ?>
 
-                                    <div class="col-md-4 admin_rec" style="<?php echo (isset($p->profile_type) && ($p->profile_type=='1' || $p->profile_type=='2'))?'display:block':'display:none';?>">
+                                    <div class="col-md-4" oldstyle="<?php echo (isset($p->profile_type) && ($p->profile_type=='1' || $p->profile_type=='2'))?'display:block':'display:none';?>" oldclass="admin_rec">
                                         <div class="form-group">
                                             <label class="control-label"><?= $strings["forms_emailcreds"]; ?>: </label><BR>
                                             <input type="checkbox" name="emailcreds" , id="emailcreds">
@@ -1116,7 +1086,7 @@ $strings = CacheTranslations($language, array("forms_%"), $settings);
         })
 
         $('.member_type').change(function () {
-            
+
                    
                         
                                     if ($(this).val() == '5' || $(this).val() == '7' || $(this).val() == '8'|| $(this).val() == '9'|| $(this).val() == '12') {
