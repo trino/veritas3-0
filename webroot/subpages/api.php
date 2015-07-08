@@ -544,4 +544,31 @@ function loadstringsJS($strings){
     }
     <?php
 }
-?>
+
+function readCSV($filename, $primarykey = "") {
+    $columnheaders = array();
+    $returndata = array();
+    $row = 0;
+    if (($handle = fopen($filename, "r")) !== FALSE) {
+        while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
+            if ($row == 0){
+                $columnheaders = $data;
+            } else {
+                $data = array_combine($columnheaders, $data);
+                foreach($data as $Key => $Value){
+                    if (strpos($Value, '+') !== False && strpos($Value, "'") === 0){
+                        $data[$Key] = substr($Value, 1, strlen($Value)-1);
+                    }
+                }
+                if ($primarykey){
+                    $returndata[$data[$primarykey]] = $data;
+                } else {
+                    $returndata[] = $data;
+                }
+            }
+            $row++;
+        }
+        fclose($handle);
+    }
+    return $returndata;
+}
