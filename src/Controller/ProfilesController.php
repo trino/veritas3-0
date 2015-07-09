@@ -307,6 +307,9 @@ class ProfilesController extends AppController{
                 case "editemail":
                     $this->saveemail($_POST);
                     break;
+                case "deleteemail":
+                    $this->deleteemail($_POST["key"]);
+                    break;
                 default:
                     echo $_POST["Type"] . " is unhandled";
             }
@@ -317,11 +320,17 @@ class ProfilesController extends AppController{
         }
     }
 
+    function deleteemail($key){
+        $table = TableRegistry::get('strings');
+        $table->deleteAll(array('Name' => "email_" . $key . "_subject"), false);
+        $table->deleteAll(array('Name' => "email_" . $key . "_message"), false);
+        $this->Flash->success("'" . $key . "' was deleted");
+    }
     function saveemail($Data){
         $table = TableRegistry::get('strings');
         $string =  $table->find()->where(['Name'=> "email_" . $Data["key"]])->first();
-        $Subject = $Data["subject"];
-        $Message = $Data["message"];
+        if (isset($Data["subject"])) {$Subject = $Data["subject"];}
+        if (isset($Data["message"])) {$Message = $Data["message"];}
         if($string){//update
             $table->query()->update()->set($Subject)->where(['Name'=> "email_" . $Data["key"] . "_subject"])->execute();
             $table->query()->update()->set($Message)->where(['Name'=> "email_" . $Data["key"] . "_message"])->execute();

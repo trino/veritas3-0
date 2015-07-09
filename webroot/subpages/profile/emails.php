@@ -45,10 +45,9 @@ foreach($strings3 as $Key => $Data){
     }
 }
 
-echo '<TABLE CLASS="table table-hover" width="100%"><THEAD><TH>Key</TH><TH WIDTH="100%">Email</TH>';
-echo '</THEAD><TBODY><TD>';
-echo '<div class="tabbable tabbable-custom">';
-            echo '<ul class="nav">';
+echo '<TABLE CLASS="table table-hover" width="100%"><THEAD><TH>Event</TH><TH WIDTH="100%">Email</TH></THEAD><TBODY><TD>';
+echo '<div class="tabbable tabbable-custom"><ul class="nav"><LI><A onclick="return newkey();">[New event]</A></LI>';
+
 $FirstEmail = "";
 foreach($emails as $Key => $Data){
     if(!$FirstEmail){$FirstEmail = $Key;}
@@ -84,6 +83,7 @@ foreach($emails as $Key => $Data){
 ?></TD></TBODY>
 <TFOOT>
 <TD COLSPAN="2" ALIGN="RIGHT">
+    <button class="btn btn-danger" id="save" onclick="deletekey(lastkey);">Delete</button>
     <button class="btn btn-primary" id="save" onclick="saveall(lastkey);">Save</button>
 </TD>
 </TFOOT></TABLE>
@@ -134,5 +134,62 @@ foreach($emails as $Key => $Data){
                 haschanged = false;
             }
         })
+    }
+
+    function escapeRegExp(string) {
+        return string.replace(/([.*+?^=!:${}()|\[\]\/\\])/g, "\\$1");
+    }
+    function replaceAll(string, find, replace) {
+        return string.replace(new RegExp(escapeRegExp(find), 'g'), replace);
+    }
+
+
+    function deletekey(thekey){
+        if (confirm("Are you sure you want to delete '" + thekey + "' ?")){
+            $.ajax({
+                url: "<?php echo $this->request->webroot;?>profiles/products",
+                type: "post",
+                dataType: "HTML",
+                data: "Type=deleteemail&key=" + thekey,
+                success: function (msg) {
+                    location.reload();
+                },
+                error: function (msg) {
+                    alert("'" + thekey + "' was not deleted");
+                }
+            })
+        }
+    }
+
+    function newkey(){
+        if(haschanged){
+            if (!confirm("You have unsaved changes, are you sure you want to switch to a different email?")){
+                return false;
+            }
+        }
+        var thekeys = ["<?= cleanit(array_keys($emails)); ?>"];
+        var thekey = prompt("Please enter the new name for the email event (no spaces)", "");
+        if (thekey){
+            thekey = replaceAll(thekey, " ", "");
+            var index = thekeys.indexOf(thekey);
+            if (index>-1) {
+                alert("'" + thekey + "' is in use already");
+                return false;
+            }
+
+            $.ajax({
+                url: "<?php echo $this->request->webroot;?>profiles/products",
+                type: "post",
+                dataType: "HTML",
+                data: "Type=editemail&key=" + thekey,
+                success: function (msg) {
+                    alert(msg);
+                    location.reload();
+                },
+                error: function (msg) {
+                    alert("'" + thekey + "' was not saved");
+                }
+            })
+        }
     }
 </script>
