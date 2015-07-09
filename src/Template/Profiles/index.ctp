@@ -213,12 +213,7 @@ if($language == "Debug"){ $Trans = " [Translated]"; } else {$Trans = "";}
                                                 if ($sidebar->profile_list == '1' && !isset($_GET["draft"])) {
                                                     ?>
                                                     <a href="<?php echo $this->request->webroot; ?>profiles/view/<?php echo $profile->id; ?>">
-                                                        <img style="width:40px;" src="<?php
-                                                            if ($profile->image) {
-                                                                echo $this->request->webroot; ?>img/profile/<?php echo $profile->image;
-                                                            } else {
-                                                                echo $this->request->webroot; ?>img/profile/default.png;
-                                           <?php } ?>" class="img-responsive" alt=""/>
+                                                        <img style="width:40px;" src="<?= profileimage($this->request->webroot, $profile); ?>" class="img-responsive" alt=""/>
                                                     </a>
                                                 <?php
                                                 }

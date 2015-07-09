@@ -1281,11 +1281,9 @@
                                                  echo " disabled";
                                              }
                                             ?> />
-                                        </td><td width="50" <?php if($b==1){?>style="border-top:none;"<?php }?>> <?php if (strlen($o->image) > 0) {
-                                                echo '<img height="32" src="' . $this->request->webroot . 'img/jobs/' . $o->image . '">';
-                                            } else {
-                                                echo '<img width="32" src="' . $this->request->webroot . 'img/logos/MEELogo.png">';
-                                            } ?></td><td <?php if($b==1){?>style="border-top:none;"<?php }?>>
+                                        </td><td width="50" align="center" <?php if($b==1){?>style="border-top:none;"<?php }?>> <img height="32" src="<?=
+                                            clientimage( $this->request->webroot, $settings, $o);
+                                            ?>"></td><td <?php if($b==1){?>style="border-top:none;"<?php }?>>
 
                                             <label
                                                 for="c_<?= $count ?>"><?php echo $o->company_name; ?></label><span
@@ -1334,12 +1332,8 @@
                                                 echo "checked";
                                             } ?>   value="<?php echo $client->id; ?>"
                                                 class="addclientz"/>
-                                        </TD><TD width="50" <?php if($b==1){?>style="border-top:none;"<?php }?>><IMG SRC="<?php
-                                                if($client->image) {
-                                                    echo $this->request->webroot . "img/jobs/" . $client->image;
-                                                } else {
-                                                    echo $this->request->webroot . "img/logos/MEELogo.png";
-                                                }
+                                        </TD><TD width="50" <?php if($b==1){?>style="border-top:none;"<?php }?>><IMG SRC="<?=
+                                                clientimage( $this->request->webroot, $settings, $client);
                                             ?>" style="max-width: 50px;"></TD><TD <?php if($b==1){?>style="border-top:none;"<?php }?>>
                                             <label
                                                 for="c_<?= $count ?>"><?php echo $client->company_name; ?></label><span

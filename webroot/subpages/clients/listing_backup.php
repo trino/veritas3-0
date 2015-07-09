@@ -60,25 +60,30 @@
                                         <tr>
                                             <td><?= $this->Number->format($clients->id) ?></td>
                                             <td>
-
-
-                                                <?php
-                                                    if (isset($clients->image) && $clients->image) {
-                                                        ?>
-                                                        <img class="img-responsive" style="max-width:180px;"
-                                                             id="clientpic"
-                                                             alt=""
-                                                             src="<?php echo $this->request->webroot; ?>img/jobs/<?php echo $clients->image; ?>"/>
+                                                <img class="img-responsive" style="max-width:180px;"
+                                                     id="clientpic"
+                                                     alt=""
+                                                     src="<?php
+                                                        echo $this->request->webroot;
+                                                        $filename = "img/logos/MEELogo.png";
+                                                        if (isset($clients->image) && $clients->image) {
+                                                            $testfile = "img/jobs/" . $clients->image;
+                                                            if (file_exists($testfile)) {
+                                                                $filename = $testfile;
+                                                            }
+                                                        }
+                                                        echo $filename;
+                                                        ?>"/>
                                                     <?php
                                                     } else {
                                                         ?>
                                                         <img class="img-responsive" style="max-width:180px;"
                                                              id="clientpic"
                                                              alt=""
-                                                             src="<?php echo $this->request->webroot; ?>img/logos/MEELogo.png"/>
+                                                             src="<?php echo $this->request->webroot; ?>
                                                     <?php
                                                     }
-                                                ?>
+                                                ?>"/>
 
                                             </td>
                                             <td><?= ucfirst(h($clients->company_name)) ?></td>

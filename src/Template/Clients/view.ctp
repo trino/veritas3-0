@@ -43,24 +43,9 @@ $contact = $this->requestAction('clients/getContact/'.$id);
 
 										<ul class="list-unstyled profile-nav">
 											<li>
-
-
-
-
-												<?php
-													if(isset($client->image) && $client->image)
-													{
-														?>
-														<img class="img-responsive" id="clientpic" alt="" src="<?php echo $this->request->webroot;?>img/jobs/<?php echo $client->image;?>"/>
-													<?php
-													}
-													else
-													{
-														?>
-														<img class="img-responsive" id="clientpic" alt="" src="<?php echo $this->request->webroot;?>img/logos/MEELogo.png"/>
-													<?php
-													}
-												?>
+                                                <img class="img-responsive" id="clientpic" alt="" src="<?=
+                                                     clientimage($this->request->webroot, $settings, $client->image);
+												?>">
 
 
 

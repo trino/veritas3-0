@@ -302,8 +302,7 @@
                         <li class="dropdown dropdown-user">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown"
                                data-close-others="true">
-                                <img alt="" class="img-circle"
-                                     src="<?php echo $this->request->webroot;?>img/profile/<?php echo $c->image;?>"/>
+                                <img alt="" class="img-circle" src="<?= profileimage($this->request->webroot, $c); ?>"/>
 					<span class="username username-hide-on-mobile">
 					<?php echo ucfirst($c->username);?> </span>
                                 <i class="fa fa-angle-down"></i>

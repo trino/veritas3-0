@@ -81,19 +81,7 @@
 
             <div class="row profile-account">
                 <div class="col-md-3" align="center">
-                    <?php
-                        if (isset($client->image) && $client->image) {
-                            ?>
-                            <img class="img-responsive" id="clientpic" alt=""
-                                 src="<?php echo $this->request->webroot; ?>img/jobs/<?php echo $client->image; ?>"/>
-                        <?php
-                        } else {
-                            ?>
-                            <img class="img-responsive" id="clientpic" alt=""
-                                 src="<?php echo $this->request->webroot; ?>img/clients/<?php echo $settings->client_img; ?>"/>
-                        <?php
-                        }
-                    ?>
+                    <img class="img-responsive" id="clientpic" alt="" src="<?= clientimage($this->request->webroot, $settings, $client); ?>" />
 
                     <div class="form-group">
                         <label class="sr-only" for="exampleInputEmail22"><?= $strings["clients_addeditimage"]; ?></label>

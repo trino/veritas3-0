@@ -134,19 +134,10 @@
                     <div class="portlet light profile-sidebar-portlet">
                         <!-- SIDEBAR USERPIC -->
                         <div class="profile-userpic" style="max-width:250px;margin:0 auto;">
-                            <?php if (isset($p->image) && $p->image != "") { ?>
-                                <img
-                                    src="<?php echo $this->request->webroot; ?>img/profile/<?php echo $p->image ?>"
-                                    class="img-responsive" alt="" id="clientpic" style="height: auto;"/>
-
-                            <?php } else {
-                                ?>
-                                <img src="<?php echo $this->request->webroot; ?>img/profile/default.png"
-                                     class="img-responsive" id="clientpic"
-                                     alt="" style="height: auto;"/>
-                            <?php
-                            }
-                            ?>
+                            <img class="img-responsive" id="clientpic"
+                                 alt="" style="height: auto;"
+                                 src="<?= profileimage($this->request->webroot, $profile); ?>"
+                                />
                             <?php if (isset($id) && !(isset($disabled))) { ?>
                                 <center>
                                     <div class="form-group">

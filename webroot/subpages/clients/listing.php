@@ -69,28 +69,18 @@
                                                             echo '<BR><i  title="Has Attachment" class="fa fa-paperclip"></i>';
                                                         }
                                                     ?></td>
-                                                <td>
+                                                <td align="center">
 
                                                     <?php
                                                         if ($sidebar->client_list == '1' && !isset($_GET["draft"])) {
                                                             ?>
                                                             <a href="<?php echo $this->request->webroot; ?>clients/edit/<?php echo $clients->id; ?>?view">
-                                                                <img class="img-responsive" style="max-width:180px;"
+                                                                <img class="img-responsive" style="max-width:180px;max-height:50px;width: auto; height: auto;"
                                                                      id="clientpic"
                                                                      alt=""
-                                                                     src="<?php if (isset($clients->image) && $clients->image)
-                                                                         {
-                                                                             echo $this->request->webroot; ?>img/jobs/<?php echo $clients->image . '"';
-                                                                         }
-                                                                         else
-                                                                         {
-                                                                            echo $this->request->webroot;?>img/clients/<?php echo $settings->client_img;?>"
-                                                                    <?php
-                                                                        }
-                                                                    ?> />
-                                                            </a>
-                                                        <?php
-                                                        } else {
+                                                                     src="<?php
+                                                                     echo clientimage($this->request->webroot, $settings, $clients) . '"/></a>';
+                                                            } else {
                                                             ?>
                                                             <img class="img-responsive" style="max-width:180px;"
                                                                  id="clientpic"

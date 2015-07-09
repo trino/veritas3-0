@@ -516,6 +516,30 @@ function formatname($profile){
     return h(trim($name));
 }
 
+function clientimage($webroot, $settings, $clients){
+    $filename = 'img/clients/' . $settings->client_img;
+    if (isset($clients->image) && $clients->image){
+        $tempfilename = 'img/jobs/' . $clients->image;
+        if (file_exists($tempfilename)){
+            $filename = $tempfilename;
+        }
+    }
+    if(!file_exists($filename)) {
+        //$filename = scandir("img/clients");
+        //$filename = "img/clients/" . $filename[2];
+        $filename = "img/logos/MEELogo.png";
+    }
+    return $webroot . $filename;
+}
+function profileimage($webroot, $profile){
+    $dir = "img/profile/";
+    $filename = "default.png";
+    if (file_exists($dir . $profile->image)) {
+        $filename = $profile->image;
+    }
+    return $webroot . $dir . $filename;
+}
+
 function cleanit($array){
     return str_replace("\r\n", "", str_replace('\"', '"', addslashes(implode('", "',$array))));
 }
