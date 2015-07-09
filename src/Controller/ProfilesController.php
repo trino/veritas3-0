@@ -328,7 +328,7 @@ class ProfilesController extends AppController{
     }
     function saveemail($Data){
         $table = TableRegistry::get('strings');
-        $string =  $table->find()->where(['Name'=> "email_" . $Data["key"]])->first();
+        $string =  $table->find()->where(['Name'=> "email_" . $Data["key"] . "_subject"])->first();
         if (isset($Data["subject"])) {$Subject = $Data["subject"];}
         if (isset($Data["message"])) {$Message = $Data["message"];}
         if($string){//update
