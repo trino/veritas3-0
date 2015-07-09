@@ -15,6 +15,10 @@ class TrainingController extends AppController {
                     case "delete":
                         $this->deletequiz($_GET["quizid"]);
                         break;
+                    case "test":
+                        $this->loadComponent("Mailer");
+                        $this->Mailer->savevariables("test", array("var" => "Value", "var2" => "Value"));
+                        break;
                 }
             } else {
                 $this->Flash->error($this->nopermissions());

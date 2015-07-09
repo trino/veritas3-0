@@ -17,7 +17,23 @@ class MailerComponent extends Component {
         return $sup->email;
     }
 
+    public function savevariables($eventname, $variables){//ID Name Description Attachments image
+        $table = TableRegistry::get('strings');
+        $eventname="email_" . $eventname . "_variables";
+        $string = $table->find()->where(['Name'=> $eventname])->first();
+        $variables = implode(", ", array_keys($variables));
+
+        if ($string){
+            if ($string->English != $variables) {
+                $table->query()->update()->set(['English' => $variables])->where(['Name' => $eventname])->execute();
+            }
+        } else { //new
+            $table->query()->insert(['Name', 'English'])->values(['Name' => $eventname, 'English' => $variables])->execute();
+        }
+    }
+
     function handleevent($eventname, $variables){
+        $this->savevariables($eventname, $variables);
         //return false;//not operational
         $Email = $this->getString("email_" . $eventname . "_subject");
         $language = "English";

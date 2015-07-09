@@ -20,6 +20,12 @@ $FirstLanguage = $languages[0];
 $strings3 = $strings2[$FirstLanguage];
 if(!$fullmode) {$languages = array($FirstLanguage);}
 
+if(!function_exists("cleanit")) {
+    function cleanit($array) {
+        return str_replace("\r\n", "", str_replace('\"', '"', addslashes(implode('", "', $array))));
+    }
+}
+
 foreach($strings3 as $Key => $Data){
     $currentemail = array();
     if ($fullmode){
@@ -28,6 +34,7 @@ foreach($strings3 as $Key => $Data){
             $name = str_replace("_subject", "", $name);
             $currentemail["subject[" . $FirstLanguage . "]"] = $Data;
             $currentemail["message[" . $FirstLanguage . "]"] = $strings3["email_" . $name . "_message"];
+            if (isset($strings3["email_" . $name . "_variables"])) {$currentemail["variables"] = $strings3["email_" . $name . "_variables"];} else {$currentemail["variables"] = "";}
             foreach($languages as $language){
                 if($language != $FirstLanguage){
                     $currentemail["subject[" . $language . "]"] = $strings2[$language]["email_" . $name . "_subject"];
@@ -35,10 +42,11 @@ foreach($strings3 as $Key => $Data){
                 }
             }
         }
-    } elseif(strpos($Key, "email_") === 0) {
+    } elseif(strpos($Key, "email_") === 0 && !strpos($Key, "_variables")) {
         $name = str_replace("email_", "", $Key);
         $currentemail["subject"] = $Data;
         $currentemail["message"] = $strings2["French"]["email_" . $name];
+        if (isset($strings3[$Key . "_variables"])) {$currentemail["variables"] = $strings3[$Key . "_variables"];} else { $currentemail["variables"] = "";}
     }
     if($currentemail) {
         $emails[$name] = $currentemail;
@@ -53,19 +61,19 @@ foreach($emails as $Key => $Data){
     if(!$FirstEmail){$FirstEmail = $Key;}
     echo '<LI><A onclick="return show(' . "'" . $Key  . "'" . ')">' . $Key . '</A></LI>';
 }
-echo '</DIV></DIV></TD><TD>';
-?>
-Global variables:
-<UL>
-    <LI>%webroot% = The webroot</LI>
-    <LI>%created% = The current date/time</LI>
-    <LI>%login% = The URL of the login page</LI>
-    <LI>%variables% = A dump of all the variables</LI>
-</UL>
-<?php
+echo "</DIV></DIV></TD><TD><H4>Global variables:</H4> %webroot%, %created%, %login%, %variables%";
+
+function printvariables($Variables){
+    if($Variables) {
+        echo "<H4>Local Variables:</H4> %" . str_replace(", ", "%, %", $Variables) . "%<P>";
+    }
+}
+
 foreach($emails as $Key => $Data){
     echo '<div id="email_' . $Key . '" style="display: none;">';
     echo '<H3>' . $Key . '</H3>';
+    printvariables($Data["variables"]);
+
     foreach($Data as $Key2 => $Value){
         echo '<div class="form-group"><label class="control-label">' . $Key2 . ': </label>';
         $id = $Key . "_" . $Key2;
@@ -99,8 +107,8 @@ foreach($emails as $Key => $Data){
 
         var element;
         if(lastkey){
-             element = document.getElementById("email_" + lastkey);
-             element.style.display = 'none';
+            element = document.getElementById("email_" + lastkey);
+            element.style.display = 'none';
         }
         element = document.getElementById("email_" + key);
         element.style.display = 'block';
