@@ -73,7 +73,7 @@ if(isset($isdisabled)) {$disabled = "disabled='disabled'";}
 				</ul>
                 <?php
                 if (isset($event)) {
-                    echo '<a href="javascript:window.print();" class="floatright btn btn-info">Print</a>';
+                    echo '<a href="javascript:window.print();" class="floatright btn btn-info">' . $strings["dashboard_print"] . '</a>';
                 }?>
 
 			</div>
@@ -132,7 +132,7 @@ if(isset($isdisabled)) {$disabled = "disabled='disabled'";}
 			<?php if(!isset($isdisabled)){?>
 			<div class="form-actions right todo-form-actions">
                 <?php if (isset($event)){
-                    echo '<a href="../delete/' . $event->id . '" class="btn btn-danger delUrl" onclick="return confirm(' . "'" . $strings["tasks_confirmdelete"] . "');" . '">Delete</a>';
+                    echo '<a href="../delete/' . $event->id . '" class="btn btn-sm btn-danger delUrl" onclick="return confirm(' . "'" . $strings["tasks_confirmdelete"] . "');" . '">' . $strings["dashboard_delete"] . '</a>';
                 } ?>
 				<button class="btn btn-sm green-haze" type="submit" name="submit"><?= $strings["forms_savechanges"]; ?></button>
 			</div>
