@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 02, 2015 at 10:29 PM
+-- Generation Time: Jul 09, 2015 at 04:02 PM
 -- Server version: 5.6.17
 -- PHP Version: 5.5.12
 
@@ -32,14 +32,14 @@ CREATE TABLE IF NOT EXISTS `strings` (
   `English` varchar(4096) NOT NULL,
   `French` varchar(4096) NOT NULL,
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=674 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=684 ;
 
 --
 -- Dumping data for table `strings`
 --
 
 INSERT INTO `strings` (`ID`, `Name`, `English`, `French`) VALUES
-(1, 'Date', '1435865360', '<-- This is used by the system to auto-update'),
+(1, 'Date', '1435868985', '<-- This is used by the system to auto-update'),
 (2, 'dashboard_affirmative', 'Yes', 'Oui'),
 (3, 'dashboard_negative', 'No', 'Non'),
 (4, 'dashboard_selectall', 'Select All', 'Tout sélectionner'),
@@ -57,7 +57,7 @@ INSERT INTO `strings` (`ID`, `Name`, `English`, `French`) VALUES
 (16, 'dashboard_actions', 'Actions', 'Mesures'),
 (17, 'dashboard_previous', 'Previous', 'Précédent'),
 (18, 'dashboard_next', 'Next', 'Prochain'),
-(19, 'profiles_searchfor', 'Search for %Profile%', 'Recherche de %profile%'),
+(19, 'profiles_searchfor', 'Search for %Profile%', 'Recherche de %profile%s'),
 (20, 'settings_client', '%Client%', '%Client%'),
 (21, 'profiles_profiletype', '%Profile% Type', 'Type de %profile%'),
 (22, 'index_createprofile', 'Create %Profile%', 'Créer un %profile%'),
@@ -176,14 +176,14 @@ INSERT INTO `strings` (`ID`, `Name`, `English`, `French`) VALUES
 (140, 'documents_saved', 'saved', 'Sauvé'),
 (141, 'documents_pending', 'pending', 'En attendant'),
 (142, 'documents_complete', 'complete', 'Complet'),
-(143, 'orders_search', 'Search Orders', 'Ordres de recherche'),
+(143, 'orders_search', 'Search Orders', 'Recherche de commandes'),
 (144, 'orders_division', 'Division', 'Division'),
 (145, 'orders_ordertype', 'Order Type', 'Type d''ordre'),
 (146, 'orders_scorecard', 'Score Card', 'Score card'),
 (147, 'orders_noresults', 'No orders found', 'Aucune commande trouvée'),
 (148, 'orders_all', 'List All Orders', 'Inscrivez commandes'),
 (149, 'infoorder_continue', 'Continue', 'Poursuivre'),
-(150, 'infoorder_driver', 'Subject', 'Pilote'),
+(150, 'infoorder_driver', 'Subject', 'Sujet'),
 (151, 'infoorder_selectdriver', 'Select Subject', 'Sélectionner le sujet'),
 (152, 'infoorder_createdriver', 'Create New Driver', 'Créer un nouveau pilote'),
 (153, 'infoorder_noneselected', 'None Selected', 'Aucune sélection'),
@@ -333,7 +333,7 @@ INSERT INTO `strings` (`ID`, `Name`, `English`, `French`) VALUES
 (297, 'forms_cronorders', 'Cron Orders Placed', 'Les commandes cron placé'),
 (298, 'forms_added', 'Added', 'Ajouté'),
 (299, 'forms_removed', 'Removed', 'Suppression'),
-(300, 'profiles_add', 'Create %Profile%', 'Créez %profile%'),
+(300, 'profiles_add', 'Create %Profile%', 'Créer un %profile%'),
 (301, 'profiles_view', 'View %Profile%', 'Voir Le %profile%'),
 (302, 'profiles_edit', 'Edit %Profile%', 'Modifier %profile%'),
 (303, 'profiles_viewscorecard', 'View Scorecard', 'Voir le tableau de bord'),
@@ -377,11 +377,11 @@ INSERT INTO `strings` (`ID`, `Name`, `English`, `French`) VALUES
 (341, 'forms_lastname', 'Last Name', 'Nom de famille'),
 (342, 'forms_title', 'Title', 'Titre'),
 (343, 'forms_mr', 'Mr.', 'M.'),
-(344, 'forms_mrs', 'Mrs.', 'Mme.'),
+(344, 'forms_mrs', 'Mrs.', 'Mme'),
 (345, 'forms_ms', 'Ms.', 'Mlle.'),
 (346, 'forms_gender', 'Gender', 'Sexe'),
-(347, 'forms_male', 'Male', 'Mâle'),
-(348, 'forms_female', 'Female', 'Femelle'),
+(347, 'forms_male', 'Male', 'Homme'),
+(348, 'forms_female', 'Female', 'Femme'),
 (349, 'forms_selectgender', 'Select Gender', 'Sélectionner le sexe'),
 (350, 'forms_placeofbirth', 'Place of Birth', 'Lieu de naissance'),
 (351, 'forms_dateofbirth', 'Date of Birth', 'Date de naissance'),
@@ -700,7 +700,11 @@ INSERT INTO `strings` (`ID`, `Name`, `English`, `French`) VALUES
 (670, 'forms_selectdriver', 'Select Driver', 'Sélectionnez Pilote'),
 (671, 'infoorder_selectclient', 'Select a %client%', 'Sélectionner un %client%'),
 (672, 'documents_selectdocument', 'Select %Document%', 'Sélectionnez %document%'),
-(673, 'forms_credssent', 'Credentials sent', 'Pouvoirs envoyés');
+(673, 'forms_credssent', 'Credentials sent', 'Pouvoirs envoyés'),
+(674, 'email_profilecreated_subject', 'Profile Created: %username% test', 'email_profilecreated_subject'),
+(675, 'email_profilecreated_message', 'Thank you for registering with Making Eligibility Easy. <BR>\nYou are now able to login, navigate and place orders on the MEE system.<BR>\n<BR>\nYour login credentials are as follows:<BR>\n<BR>\nLogin: %webroot%<BR>\nUsername: %username%<BR>\nPassword: %password%<BR>\n<BR>\nIf you have questions or would like training on how to use the system please contact your Account Manager, Paul Clement- pclement@isbc.ca, who will be happy to assist.<BR>\n<BR>\nRegards,<BR>\nThe %site% Team', 'email_profilecreated_message'),
+(676, 'email_profilecreated_subject', 'Profile Created: %username%', 'email_profilecreated_subject'),
+(677, 'email_profilecreated_message', 'Thank you for registering with Making Eligibility Easy. <BR>\nYou are now able to login, navigate and place orders on the MEE system.<BR>\n<BR>\nYour login credentials are as follows:<BR>\n<BR>\nLogin: %webroot%<BR>\nUsername: %username%<BR>\nPassword: %password%<BR>\n<BR>\nIf you have questions or would like training on how to use the system please contact your Account Manager, Paul Clement- pclement@isbc.ca, who will be happy to assist.<BR>\n<BR>\nRegards,<BR>\nThe %site% Team', 'email_profilecreated_message');
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

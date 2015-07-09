@@ -150,14 +150,14 @@
                             <?php if (isset($id) && !(isset($disabled))) { ?>
                                 <center>
                                     <div class="form-group">
-                                        <label class="sr-only" for="exampleInputEmail22">Add/Edit Image</label>
+                                        <label class="sr-only" for="exampleInputEmail22"><?= $strings["clients_addeditimage"]; ?></label>
 
                                         <div class="input-icon">
                                             <br/>
                                             <a class="btn btn-xs  btn-success   margin-t10" href="javascript:void(0)"
                                                id="clientimg">
                                                 <i class="fa fa-image"></i>
-                                                Add/Edit Image
+                                                <?= $strings["clients_addeditimage"]; ?>
                                             </a>
 
                                         </div>
