@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 09, 2015 at 04:02 PM
+-- Generation Time: Jul 09, 2015 at 09:49 PM
 -- Server version: 5.6.17
 -- PHP Version: 5.5.12
 
@@ -32,14 +32,14 @@ CREATE TABLE IF NOT EXISTS `strings` (
   `English` varchar(4096) NOT NULL,
   `French` varchar(4096) NOT NULL,
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=684 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=680 ;
 
 --
 -- Dumping data for table `strings`
 --
 
 INSERT INTO `strings` (`ID`, `Name`, `English`, `French`) VALUES
-(1, 'Date', '1435868985', '<-- This is used by the system to auto-update'),
+(1, 'Date', '1436450528', '<-- This is used by the system to auto-update'),
 (2, 'dashboard_affirmative', 'Yes', 'Oui'),
 (3, 'dashboard_negative', 'No', 'Non'),
 (4, 'dashboard_selectall', 'Select All', 'Tout sélectionner'),
@@ -71,7 +71,7 @@ INSERT INTO `strings` (`ID`, `Name`, `English`, `French`) VALUES
 (30, 'dashboard_servicedivision', 'A service division of', 'Une division de service de'),
 (31, 'dashboard_documentsearch', '%Document% Search...', '%Document% de recherche...'),
 (32, 'profiles_viewdocuments', 'View %Document%s', 'Afficher les %document%s'),
-(33, 'profiles_vieworders', 'View Orders', 'Afficher les commandes'),
+(33, 'profiles_vieworders', 'View Orders', 'Afficher les Commandes'),
 (36, 'dashboard_settings', 'Settings', 'Paramètres'),
 (37, 'profiles_null', 'Applicant', 'Demandeur'),
 (38, 'dashboard_debug', 'Debug Mode', 'Mode debug'),
@@ -90,9 +90,9 @@ INSERT INTO `strings` (`ID`, `Name`, `English`, `French`) VALUES
 (52, 'index_createclients', 'Create %Client%', 'Créer %client%'),
 (53, 'index_listprofiles', 'List %Profile%s', 'Liste des %profile%s'),
 (54, 'index_createprofile', 'Create %Profile%', 'Créer un %profile%'),
-(55, 'index_listorders', 'List Orders', 'Afficher les commandes'),
+(55, 'index_listorders', 'List Orders', 'Afficher les Commandes'),
 (56, 'index_listdocuments', 'List %Document%s', 'Afficher les %document%s'),
-(57, 'index_orderdrafts', 'Order Drafts', 'Brouillons de commande'),
+(57, 'index_orderdrafts', 'Order Drafts', 'Brouillons des Commandes'),
 (58, 'index_createdocument', 'Create %Document%', 'Créer un %document%'),
 (59, 'index_documentdrafts', '%Document% Drafts', 'Brouillons de %document%s'),
 (60, 'index_tasks', 'Tasks', 'Tâches'),
@@ -176,12 +176,12 @@ INSERT INTO `strings` (`ID`, `Name`, `English`, `French`) VALUES
 (140, 'documents_saved', 'saved', 'Sauvé'),
 (141, 'documents_pending', 'pending', 'En attendant'),
 (142, 'documents_complete', 'complete', 'Complet'),
-(143, 'orders_search', 'Search Orders', 'Recherche de commandes'),
+(143, 'orders_search', 'Search Orders', 'Recherche des Commandes'),
 (144, 'orders_division', 'Division', 'Division'),
 (145, 'orders_ordertype', 'Order Type', 'Type d''ordre'),
 (146, 'orders_scorecard', 'Score Card', 'Score card'),
-(147, 'orders_noresults', 'No orders found', 'Aucune commande trouvée'),
-(148, 'orders_all', 'List All Orders', 'Inscrivez commandes'),
+(147, 'orders_noresults', 'No orders found', 'Aucune Commandes trouvée'),
+(148, 'orders_all', 'List All Orders', 'Inscrivez Commandes'),
 (149, 'infoorder_continue', 'Continue', 'Poursuivre'),
 (150, 'infoorder_driver', 'Subject', 'Sujet'),
 (151, 'infoorder_selectdriver', 'Select Subject', 'Sélectionner le sujet'),
@@ -611,8 +611,8 @@ INSERT INTO `strings` (`ID`, `Name`, `English`, `French`) VALUES
 (582, 'consent_attachid', 'Attach ID', 'Fixez ID'),
 (583, 'forms_language', 'Language', 'Langue'),
 (584, 'flash_clientdeleted', '%Client% deleted', '%Client% supprimé'),
-(585, 'email_profilecreated_subject', 'Profile Created: %username%', ''),
-(586, 'email_profilecreated_message', 'Thank you for registering with Making Eligibility Easy. <BR>\nYou are now able to login, navigate and place orders on the MEE system.<BR>\n<BR>\nYour login credentials are as follows:<BR>\n<BR>\nLogin: %webroot%<BR>\nUsername: %username%<BR>\nPassword: %password%<BR>\n<BR>\nIf you have questions or would like training on how to use the system please contact your Account Manager, Paul Clement- pclement@isbc.ca, who will be happy to assist.<BR>\n<BR>\nRegards,<BR>\nThe %site% Team', ''),
+(585, 'email_profilecreated_subject', 'Profile Created: %username%', 'email_profilecreated_subject'),
+(586, 'email_profilecreated_message', 'Thank you for registering with Making Eligibility Easy. <BR>\nYou are now able to login, navigate and place orders on the MEE system.<BR>\n<BR>\nYour login credentials are as follows:<BR>\n<BR>\nLogin: %webroot%<BR>\nUsername: %username%<BR>\nPassword: %password%<BR>\n<BR>\nIf you have questions or would like training on how to use the system please contact your Account Manager, Paul Clement- pclement@isbc.ca, who will be happy to assist.<BR>\n<BR>\nRegards,<BR>\nThe %site% Team', 'email_profilecreated_message'),
 (587, 'email_clientcreated_subject', 'Client Created: %company_name%', ''),
 (588, 'email_clientcreated_message', 'Domain: %webroot%<BR>\nClient Name: %company_name%<BR>\nCreated by: %username% (Profile Type: %profile_type%)<BR>\nOn: %created%<BR>\n<BR><BR>\nRegards<BR>\nThe %site% Team', ''),
 (589, 'email_taskreminder_subject', 'Tasks Reminder', ''),
@@ -701,10 +701,7 @@ INSERT INTO `strings` (`ID`, `Name`, `English`, `French`) VALUES
 (671, 'infoorder_selectclient', 'Select a %client%', 'Sélectionner un %client%'),
 (672, 'documents_selectdocument', 'Select %Document%', 'Sélectionnez %document%'),
 (673, 'forms_credssent', 'Credentials sent', 'Pouvoirs envoyés'),
-(674, 'email_profilecreated_subject', 'Profile Created: %username% test', 'email_profilecreated_subject'),
-(675, 'email_profilecreated_message', 'Thank you for registering with Making Eligibility Easy. <BR>\nYou are now able to login, navigate and place orders on the MEE system.<BR>\n<BR>\nYour login credentials are as follows:<BR>\n<BR>\nLogin: %webroot%<BR>\nUsername: %username%<BR>\nPassword: %password%<BR>\n<BR>\nIf you have questions or would like training on how to use the system please contact your Account Manager, Paul Clement- pclement@isbc.ca, who will be happy to assist.<BR>\n<BR>\nRegards,<BR>\nThe %site% Team', 'email_profilecreated_message'),
-(676, 'email_profilecreated_subject', 'Profile Created: %username%', 'email_profilecreated_subject'),
-(677, 'email_profilecreated_message', 'Thank you for registering with Making Eligibility Easy. <BR>\nYou are now able to login, navigate and place orders on the MEE system.<BR>\n<BR>\nYour login credentials are as follows:<BR>\n<BR>\nLogin: %webroot%<BR>\nUsername: %username%<BR>\nPassword: %password%<BR>\n<BR>\nIf you have questions or would like training on how to use the system please contact your Account Manager, Paul Clement- pclement@isbc.ca, who will be happy to assist.<BR>\n<BR>\nRegards,<BR>\nThe %site% Team', 'email_profilecreated_message');
+(679, 'email_profilecreated_variables', 'username, email, path, createdby, type, password', '');
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
