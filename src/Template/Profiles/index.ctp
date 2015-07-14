@@ -133,7 +133,7 @@ if($language == "Debug"){ $Trans = " [Translated]"; } else {$Trans = "";}
 
                             <?php
                                 $super = $this->request->session()->read('Profile.super');
-                                if (isset($super)) {
+                                if ($super) {
                                     $getClient = $this->requestAction('profiles/getClient');
                                     ?>
                                     <select class="form-control showprodivision input-inline" style=""
@@ -150,11 +150,6 @@ if($language == "Debug"){ $Trans = " [Translated]"; } else {$Trans = "";}
                                             }
                                         ?>
                                     </select>
-
-
-                                    <div class="prodivisions input-inline">
-                                    </div>
-
 
                                 <?php } ?>
 
