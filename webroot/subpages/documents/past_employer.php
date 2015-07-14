@@ -24,7 +24,7 @@
                                <div class="form-group col-md-12">
                                 <label class="control-label col-md-3"><translate>forms_companyname</translate>:</label>
                                 <div class=" col-md-9">
-                                <input type="text" class="form-control" name="company_name[]" />
+                                <input type="text" class="form-control" name="company_name[]" required/>
                                 </div>
                                 </div>
                                 <div class="form-group col-md-12">
@@ -54,7 +54,7 @@
                                 </div>
                                <label class="control-label col-md-3"><translate>forms_phone</translate>:</label>
                                <div class="col-md-3">
-                               <input type="text" class="form-control" name="supervisor_phone[]"/>
+                               <input type="text" class="form-control" name="supervisor_phone[]" required/>
                                </div>
                                </div>
                                
@@ -136,9 +136,9 @@
                                 </div>
                 
                 </div>
-<div class="delete">
-    <a href="javascript:void(0);" class="btn red" id="delete"><translate>dashboard_delete</translate></a>
-</div>
+        <div class="delete">
+            <a href="javascript:void(0);" class="btn red" id="delete"><translate>dashboard_delete</translate></a>
+        </div>
   </div>
 
 <Script> translate(); </Script>

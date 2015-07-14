@@ -516,9 +516,9 @@ function formatname($profile){
     return h(trim($name));
 }
 
-function clientimage($webroot, $settings, $clients){
+function clientimage($webroot, $settings, $clients = ""){
     $filename = 'img/clients/' . $settings->client_img;
-    if (isset($clients->image) && $clients->image){
+    if (is_object($clients) && isset($clients->image) && $clients->image){
         $tempfilename = 'img/jobs/' . $clients->image;
         if (file_exists($tempfilename)){
             $filename = $tempfilename;
@@ -531,10 +531,10 @@ function clientimage($webroot, $settings, $clients){
     }
     return $webroot . $filename;
 }
-function profileimage($webroot, $profile){
+function profileimage($webroot, $profile = ""){
     $dir = "img/profile/";
     $filename = "default.png";
-    if (file_exists($dir . $profile->image)) {
+    if (is_object($profile) && isset($profile->image) && file_exists($dir . $profile->image)) {
         $filename = $profile->image;
     }
     return $webroot . $dir . $filename;

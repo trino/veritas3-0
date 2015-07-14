@@ -344,9 +344,9 @@
                                                 } ?>
 
                                             <?php
-                                                $super = $this->request->session()->read('Profile.super');
+                                                $super = $this->request->session()->read('Profile.super');// || $profiletype->caneditall;
                                                 //if (isset($super) && isset($_GET['draft'])) {
-                                                    if ($sidebar->orders_edit == '1' && $order->order_type!='BUL' && $order->order_type!='REQ' && ($this->request->session()->read('Profile.super')==1 || $this->request->session()->read('Profile.id')==$order->user_id)) {
+                                                    if ($sidebar->orders_edit == '1' && $order->order_type!='BUL' && $order->order_type!='REQ' && ($super==1 || $this->request->session()->read('Profile.id')==$order->user_id)) {
                                                         if (!isset($_GET['table']) && $order->draft == 1) {
                                                             ?>
                                                             <a class="<?= btnclass("EDIT") ?>"

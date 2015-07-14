@@ -228,10 +228,13 @@ class SettingsController extends AppController {
         $user_profile = TableRegistry::get('profiles');
         $query = $user_profile->find()->where(['id'=>$uid]);
         $q1 = $query->first();
+        $ret = "0";
         if($q1) {
             $profile = $user_profile->find()->select('profile_type')->where(['id'=>$pid]);
             $q2 = $profile->first();
             $usertype = $q1->profile_type;
+
+            $profiletype = TableRegistry::get('profile_types')->find()->where(['id'=>$usertype])->first();
             
             $settings = TableRegistry::get('sidebar');
              $setting = $settings->find()->where(['user_id'=>$uid]); 
@@ -239,37 +242,19 @@ class SettingsController extends AppController {
 
              if($setting->profile_edit=='1'){//can edit profiles
                 if($q1->super == '1' || $uid == $pid){//is a super or the attempting to edit themselves{
-                    $this->response->body('1');
-                    return $this->response;
-                    die();
+                    $ret = "1";
                 } else {
-
-                    if($q1->profile_type == '1' || $cby =="") { //is an admin
-                        $this->response->body('1');
-                        return $this->response;
-                        die();
-                    } else {
-                        if($uid==$cby) {
-                            $this->response->body('1');
-                            return $this->response;
-                            die();
-                        } else {
-                            $this->response->body('0');
-                            return $this->response;
-                            die();
-                        }
+                    if($q1->profile_type == '1' || $cby =="" || $profiletype->caneditall == 1) { //is an admin
+                        $ret = "1";
+                    } else if($uid==$cby) {
+                        $ret = "1";
                     }
                 }
-             } else {
-               $this->response->body('0');
-                        return $this->response;
-                        die(); 
-             }  
-        } else {
-             $this->response->body('0');
-                        return $this->response;
-                        die(); 
+             }
         }
+        $this->response->body($ret);
+        return $this->response;
+        die();
     }
     
     function getallclients($uid){

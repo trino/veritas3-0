@@ -1,448 +1,16 @@
 <?php
     $strings2 = CacheTranslations($language, array("verifs_%", "tasks_date", "file_attachfile", "file_download"), $settings, False);
-$datetype = "text";
+    $datetype = "text";
 ?>
-<div class="menu-toggler sidebar-toggler"></div>
-
 <div class="form-group row">
     <h3 class="col-md-12"><?= $strings2["verifs_pastemploy"]; ?></h3>
 </div>
 <div class="gndn">
-    <?php
-    $counter = 0;
-    if (isset($sub3['emp']) && count($sub3['emp'])) {
-        //echo count($sub3['emp']);
-
-        foreach ($sub3['emp'] as $emp) {
-            //die('here');
-            $counter++;
-            if ($counter != 1) {
-                if ($counter == 2) {
-                    ?>
-                    <div id="more_div">
-
-                <?php
-                }
-                ?>
-                <div id="toremove">
-
-            <?php
-            }
-            ?>
-
-            <div class="form-group row">
-                <label class="control-label col-md-3"><?= $strings["forms_companyname"]; ?>: </label>
-
-                <div class=" col-md-9">
-                    <input type="text" class="form-control" name="company_name[]"
-                           value="<?php echo $emp->company_name;?>"/>
-                </div>
-            </div>
-
-            <div class="form-group row">
-                <label class="control-label col-md-3"><?= $strings["forms_address"]; ?>: </label>
-
-                <div class="col-md-3">
-                    <input type="text" class="form-control" name="address[]" value="<?php echo $emp->address;?>"/>
-                </div>
-
-                <label class="control-label col-md-3"><?= $strings["forms_city"]; ?>: </label>
-
-                <div class="col-md-3">
-                    <input type="text" class="form-control" name="city[]" value="<?php echo $emp->city;?>"/>
-                </div>
-            </div>
-
-            <div class="form-group row">
-                <label class="control-label col-md-3"><?= $strings["forms_provincestate"]; ?>: </label>
-
-                <div class="col-md-3">
-                    <input type="text" class="form-control" name="state_province[]"
-                           value="<?php echo $emp->state_province;?>"/>
-                </div>
-                <label class="control-label col-md-3"><?= $strings["forms_country"]; ?>: </label>
-
-                <div class="col-md-3">
-                    <input type="text" class="form-control" name="country[]" value="<?php echo $emp->country;?>"/>
-                </div>
-            </div>
-
-            <div class="form-group col-md-12">
-                <label class="control-label col-md-3"><?= $strings2["verifs_supername"]; ?>: </label>
-
-                <div class="col-md-3">
-                    <input type="text" class="form-control" name="supervisor_name[]" value="<?php echo $emp->supervisor_name;?>"/>
-                </div>
-                <label class="control-label col-md-3"><?= $strings["forms_phone"]; ?>: </label>
-
-                <div class="col-md-3">
-                    <input type="text" class="form-control" name="supervisor_phone[]" value="<?php echo $emp->supervisor_phone;?>"/>
-                </div>
-            </div>
-
-            <div class="form-group col-md-12">
-                <label class="control-label col-md-3"><?= $strings2["verifs_superemail"]; ?>: </label>
-
-                <div class="col-md-3">
-                    <input type="email" class="form-control email1" name="supervisor_email[]" value="<?php echo $emp->supervisor_email;?>"/>
-                </div>
-                <label class="control-label col-md-3"><?= $strings2["verifs_secondarye"]; ?>: </label>
-
-                <div class="col-md-3">
-                    <input type="email" class="form-control email1" name="supervisor_secondary_email[]"
-                           value="<?php echo $emp->supervisor_secondary_email;?>"/>
-                </div>
-            </div>
-
-            <div class="form-group col-md-12">
-                <label class="control-label col-md-3"><?= $strings2["verifs_employment"]; ?>: </label>
-
-                <div class="col-md-3">
-                    <input type="<?= $datetype; ?>" class="form-control datepicker" name="employment_start_date[]"
-                           placeholder="mm/dd/yyyy"
-                           value="<?php echo $emp->employment_start_date;?>"/>
-                </div>
-                <label class="control-label col-md-3"><?= $strings2["verifs_employment2"]; ?>: </label>
-
-                <div class="col-md-3">
-                    <input type="<?= $datetype; ?>" class="form-control datepicker" name="employment_end_date[]"
-                           placeholder="mm/dd/yyyy"
-                           value="<?php echo $emp->employment_end_date;?>"/>
-                </div>
-            </div>
-            <div class="form-group col-md-12">
-                <label class="control-label col-md-3"><?= $strings2["verifs_claimswith"]; ?>: </label>
-
-                <div class="col-md-3 radio-list">
-                    &nbsp;&nbsp;
-                    <label class="radio-inline">
-                    <?php
-                    if ($this->request->params['action'] == 'vieworder' || $this->request->params['action'] == 'view') {
-                        if ($emp->claims_with_employer == 1) {
-                            ?>
-                            &#10004;
-                        <?php
-                        } else {
-                            ?>
-                            &#10006;
-                        <?php
-                        }
-                    } else {
-                        ?>
-                        <!--php $rand = rand(0, 100); echo $rand; //um, why? -->
-                        <input type="radio" name="claims_with_employer[]" value="1"
-                               <?php if ($emp->claims_with_employer == 1){ ?>checked="checked"<?php }?>/>
-                    <?php
-                    }
-                    ?>
-
-                        <?= $strings["dashboard_affirmative"]; ?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                    </label>
-                    <label class="radio-inline">
-                    <?php
-                    if ($this->request->params['action'] == 'vieworder' || $this->request->params['action'] == 'view') {
-                        if ($emp->claims_with_employer == 0) {
-                            ?>
-                            &#10004;
-                        <?php
-                        } else {
-                            ?>
-                            &#10006;
-                        <?php
-                        }
-                    } else {
-                        ?>
-                        <input type="radio" name="claims_with_employer<?php //echo "_" . $rand;?>[]" value="0"
-                               <?php if ($emp->claims_with_employer == 0){ ?>checked="checked"<?php }?>/>
-                    <?php
-                    }
-                    ?>
-                        <?= $strings["dashboard_negative"]; ?>
-                    </label>
-                </div>
-                <label class="control-label col-md-3"><?= $strings2["verifs_dateclaims"]; ?>: </label>
-
-                <div class="col-md-3">
-                    <input type="<?= $datetype; ?>" class="form-control datepicker" name="claims_recovery_date[]"
-                           placeholder="mm/dd/yyyy"
-                           value="<?php echo $emp->claims_recovery_date;?>"/>
-                </div>
-            </div>
-
-            <div class="form-group col-md-12">
-                <label class="control-label col-md-3"><?= $strings2["verifs_employment3"]; ?>: </label>
-
-                <div class="col-md-9">
-                    <input type="text" class="form-control" name="emploment_history_confirm_verify_use[]"
-                           value="<?php echo $emp->emploment_history_confirm_verify_use;?>"/>
-                </div>
-            </div>
-
-            <div class="form-group col-md-12">
-                <label class="control-label col-md-3">US DOT MC/MX#: </label>
-
-                <div class="col-md-3">
-                    <input name="us_dot[]" type="text" class="form-control" name="us_dot[]"
-                           value="<?php echo $emp->us_dot;?>"/>
-                </div>
-                <label class="control-label col-md-3" style="display: none;"><?= $strings["forms_signature"]; ?>
-                    : </label>
-
-                <div class="col-md-3">
-                    <input type="text" class="form-control" style="display: none;" name="signature[]"
-                           value="<?php echo $emp->signature;?>"/>
-                </div>
-            </div>
-
-            <div class="form-group col-md-12">
-                <label class="control-label col-md-3"><? $strings2["tasks_date"]; ?>: </label>
-
-                <div class="col-md-9">
-                    <input type="<?= $datetype; ?>" class="form-control datepicker" name="signature_datetime[]"
-                           placeholder="mm/dd/yyyy"
-                           value="<?php echo $emp->signature_datetime;?>"/>
-                </div>
-            </div>
-            <div class="form-group col-md-12">
-                <label class="control-label col-md-3"><?= $strings2["verifs_equipmento"]; ?>: </label>
-
-                <div class="col-md-9">
-                    <?php
-                    if ($this->request->params['action'] == 'vieworder' || $this->request->params['action'] == 'view') {
-                        if ($emp->equipment_vans == 1) {
-                            ?>
-                            &#9745;
-                        <?php
-                        } else {
-                            ?>
-                            &#9744;
-                        <?php
-                        }
-                    } else {
-                        ?>
-                        <input type="checkbox" <?php if ($emp->equipment_vans == 1){ ?>checked="checked"<?php }?>
-                               name="equipment_vans[]" value="1"/>
-                    <?php
-                    }
-                    ?>
-                    &nbsp;<?= $strings2["verifs_vans"]; ?>&nbsp;
-                    <?php
-                    if ($this->request->params['action'] == 'vieworder' || $this->request->params['action'] == 'view') {
-                        if ($emp->equipment_reefer == 1) {
-                            ?>
-                            &#9745;
-                        <?php
-                        } else {
-                            ?>
-                            &#9744;
-                        <?php
-                        }
-                    } else {
-                        ?>
-                        <input type="checkbox" <?php if ($emp->equipment_reefer == 1){ ?>checked="checked"<?php }?>
-                               name="equipment_reefer[]" value="1"/>
-                    <?php
-                    }
-                    ?>
-                    &nbsp;<?= $strings2["verifs_reefers"]; ?>&nbsp;
-                    <?php
-                    if ($this->request->params['action'] == 'vieworder' || $this->request->params['action'] == 'view') {
-                        if ($emp->equipment_decks == 1) {
-                            ?>
-                            &#9745;
-                        <?php
-                        } else {
-                            ?>
-                            &#9744;
-                        <?php
-                        }
-                    } else {
-                        ?>
-                        <input type="checkbox" <?php if ($emp->equipment_decks == 1){ ?>checked="checked"<?php }?>
-                               name="equipment_decks[]" value="1"/>
-                    <?php
-                    }
-                    ?>
-                    &nbsp;<?= $strings2["verifs_decks"]; ?>&nbsp;
-                    <?php
-                    if ($this->request->params['action'] == 'vieworder' || $this->request->params['action'] == 'view') {
-                        if ($emp->equipment_super == 1) {
-                            ?>
-                            &#9745;
-                        <?php
-                        } else {
-                            ?>
-                            &#9744;
-                        <?php
-                        }
-                    } else {
-                        ?>
-                        <input type="checkbox" <?php if ($emp->equipment_super == 1){ ?>checked="checked"<?php }?>
-                               name="equipment_super[]" value="1"/>
-                    <?php
-                    }
-                    ?>
-                    &nbsp;<?= $strings2["verifs_superbs"]; ?>&nbsp;
-                    <?php
-                    if ($this->request->params['action'] == 'vieworder' || $this->request->params['action'] == 'view') {
-                        if ($emp->equipment_straight_truck == 1) {
-                            ?>
-                            &#9745;
-                        <?php
-                        } else {
-                            ?>
-                            &#9744;
-                        <?php
-                        }
-                    } else {
-                        ?>
-                        <input type="checkbox"
-                               <?php if ($emp->equipment_straight_truck == 1){ ?>checked="checked"<?php }?>
-                               name="equipment_straight_truck[]" value="1"/>
-                    <?php
-                    }
-                    ?>&nbsp;<?= $strings2["verifs_straighttr"]; ?>&nbsp;
-                    <?php
-                    if ($this->request->params['action'] == 'vieworder' || $this->request->params['action'] == 'view') {
-                        if ($emp->equipment_others == 1) {
-                            ?>
-                            &#9745;
-                        <?php
-                        } else {
-                            ?>
-                            &#9744;
-                        <?php
-                        }
-                    } else {
-                        ?>
-                        <input type="checkbox" <?php if ($emp->equipment_others == 1){ ?>checked="checked"<?php }?>
-                               name="equipment_others[]" value="1"/>
-                    <?php
-                    }
-                    ?>&nbsp;<?= $strings2["verifs_others"]; ?>:
-                </div>
-            </div>
-            <div class="form-group col-md-12">
-                <label class="control-label col-md-3"><?= $strings2["verifs_drivingexp"]; ?>: </label>
-
-                <div class="col-md-9">
-                    <?php
-                    if ($this->request->params['action'] == 'vieworder' || $this->request->params['action'] == 'view') {
-                        if ($emp->driving_experince_local == 1) {
-                            ?>
-                            &#9745;
-                        <?php
-                        } else {
-                            ?>
-                            &#9744;
-                        <?php
-                        }
-                    } else {
-                        ?>
-                        <input type="checkbox"
-                               <?php if ($emp->driving_experince_local == 1){ ?>checked="checked"<?php }?>
-                               name="driving_experince_local[]" value="1"/>
-                    <?php
-                    }
-                    ?>
-                    &nbsp;<?= $strings2["verifs_local"]; ?>&nbsp;
-                    <?php
-                    if ($this->request->params['action'] == 'vieworder' || $this->request->params['action'] == 'view') {
-                        if ($emp->driving_experince_canada == 1) {
-                            ?>
-                            &#9745;
-                        <?php
-                        } else {
-                            ?>
-                            &#9744;
-                        <?php
-                        }
-                    } else {
-                        ?>
-                        <input type="checkbox"
-                               <?php if ($emp->driving_experince_canada == 1){ ?>checked="checked"<?php }?>
-                               name="driving_experince_canada[]" value="1"/>
-                    <?php
-                    }
-                    ?>&nbsp;<?= $strings2["verifs_canada"]; ?>&nbsp;
-                    <?php
-                    if ($this->request->params['action'] == 'vieworder' || $this->request->params['action'] == 'view') {
-                        if ($emp->driving_experince_canada_rocky_mountains == 1) {
-                            ?>
-                            &#9745;
-                        <?php
-                        } else {
-                            ?>
-                            &#9744;
-                        <?php
-                        }
-                    } else {
-                        ?>
-                        <input type="checkbox"
-                               <?php if ($emp->driving_experince_canada_rocky_mountains == 1){ ?>checked="checked"<?php }?>
-                               name="driving_experince_canada_rocky_mountains[]" value="1"/>
-                    <?php
-                    }
-                    ?>
-                    &nbsp;<?= $strings2["verifs_canadarock"]; ?>&nbsp;
-                    <?php
-                    if ($this->request->params['action'] == 'vieworder' || $this->request->params['action'] == 'view') {
-                        if ($emp->driving_experince_usa == 1) {
-                            ?>
-                            &#9745;
-                        <?php
-                        } else {
-                            ?>
-                            &#9744;
-                        <?php
-                        }
-                    } else {
-                        ?>
-                        <input type="checkbox" <?php if ($emp->driving_experince_usa == 1){ ?>checked="checked"<?php }?>
-                               name="driving_experince_usa[]" value="1"/>
-                    <?php
-                    }
-                    ?>
-                    &nbsp;<?= $strings2["verifs_usa"]; ?>&nbsp;
-                </div>
-
-            </div>
-            <div class="clearfix"></div>
-            <hr/>
-
-
-
-            <?php
-            if ($counter != 1) {
-                ?>
-                <div class="delete">
-                    <a href="javascript:void(0);" class="btn red" id="delete"><?= $strings["dashboard_delete"]; ?></a>
-                </div>
-                </div>
-
-                <?php
-                if ($counter == 2) {
-                    ?>
-                    </div>
-                <?php
-                }
-            }
-
-        }
-        if ($counter == 1) {
-            ?>
-            <div id="more_div"></div>
-        <?php
-        }
-
-    } else {
-        ?>
-
         <div class="form-group row">
             <label class="control-label col-md-3"><?= $strings["forms_companyname"]; ?>:</label>
 
             <div class=" col-md-9">
-                <input type="text" class="form-control" name="company_name[]"/>
+                <input type="text" class="form-control" name="company_name[]" required/>
             </div>
         </div>
 
@@ -480,7 +48,7 @@ $datetype = "text";
             <label class="control-label col-md-3"><?= $strings["forms_phone"]; ?>:</label>
 
             <div class="col-md-3">
-                <input type="text" class="form-control" name="supervisor_phone[]"/>
+                <input type="text" class="form-control" name="supervisor_phone[]" required/>
             </div>
         </div>
 
@@ -574,9 +142,7 @@ $datetype = "text";
 
         </div>
         <div id="more_div"></div>
-    <?php
-    }
-    ?>
+
 
     <div id="add_more_div" >
         <p>&nbsp;</p>
@@ -586,100 +152,9 @@ $datetype = "text";
         <a href="javascript:void(0);" class="btn green" onclick="add_more();"><?= $strings["forms_addmore"]; ?></a>
     </div>
 
-    <?php /* $AllowUploads = 'style="display: none;';
-
-    <div class="allattach" <?= $AllowUploads; ?>>
-        <?php
-
-        if (!isset($sub3['att']))
-            $sub3['att'] = array();
-        if (!count($sub3['att'])) {
-            ?>
-            <div class="form-group row" style="display:block;margin-top:5px; margin-bottom: 5px;">
-                <label class="control-label col-md-3"><?= $strings2["file_attachfile"]; ?>: </label>
-
-                <div class="col-md-9">
-                    <input type="hidden" name="attach_doc[]" class="emp1"/>
-                    <a href="javascript:void(0);" id="emp1" class="btn btn-primary"><?= $strings["forms_browse"]; ?></a>
-                    <span class="uploaded"></span>
-                </div>
-            </div>
-        <?php }
-
-
-
-        ?>
-        <div class="form-group row" >
-            <div id="more_employ_doc"
-                 data-emp="<?php if (count($sub3['att'])) echo count($sub3['att']); else echo '1';?>">
-                <?php
-                if (count($sub3['att']))//THIS SHOULD BE USING FILELIST.PHP!!!!!
-                {
-                    $at = 0;
-                    foreach ($sub3['att'] as $pa) {
-                        if ($pa->attachment) {
-                            $at++;
-                            ?>
-                            <div class="del_append_employ"><label
-                                    class="control-label col-md-3"><?= $strings2["file_attachfile"]; ?>: </label>
-
-                                <div class="col-md-6 pad_bot"><input type="hidden" class="emp<?php echo $at;?>"
-                                                                     name="attach_doc[]"
-                                                                     value="<?php echo $pa->attachment;?>"/><a href="#"
-                                                                                                               id="emp<?php echo $at;?>"
-                                                                                                               class="btn btn-primary"><?= $strings["forms_browse"]; ?></a> <?php if ($at > 1) { ?>
-                                        <a href="javascript:void(0);" class="btn btn-danger" id="delete_employ_doc"
-                                           onclick="$(this).parent().remove();"><?= $strings["dashboard_delete"]; ?></a><?php }?>
-                                    <span class="uploaded"><?php echo $pa->attachment;?>  <?php if ($pa->attachment) {
-                                            $ext_arr = explode('.', $pa->attachment);
-                                            $ext = end($ext_arr);
-                                            $ext = strtolower($ext);
-                                            if (in_array($ext, $img_ext)) { ?><img
-                                                src="<?php echo $webroot; ?>attachments/<?php echo $pa->attachment; ?>"
-                                                style="max-width:120px;" /><?php } elseif (in_array($ext, $doc_ext)) { ?>
-                                                <a class="dl"
-                                                   href="<?php echo $webroot; ?>attachments/<?php echo $pa->attachment; ?>"><?= $strings["file_download"]; ?></a><?php } else { ?>
-                                                <br/>
-                                                <video width="320" height="240" controls>
-                                                    <source
-                                                        src="<?php echo $webroot; ?>attachments/<?php echo $pa->attachment; ?>"
-                                                        type="video/mp4">
-                                                    <source
-                                                        src="<?php echo $webroot; ?>attachments/<?php echo str_replace('.mp4', '.ogg', $pa->attachment); ?>"
-                                                        type="video/ogg">
-                                                    <?= $strings["forms_novideo"]; ?>
-                                                </video>
-                                            <?php }
-                                        }?></span>
-                                </div>
-                            </div>
-                            <div class="clearfix"></div>
-                            <script>
-                                $(function () {
-                                    fileUpload('emp<?php echo $at;?>');
-                                });
-                            </script>
-                        <?php
-                        }
-                    }
-                }
-                ?>
-            </div>
-        </div>
-
-        <div class="form-group row" <?= $AllowUploads; ?>>
-            <div class="col-md-3">
-            </div>
-            <div class="col-md-9">
-                <a href="javascript:void(0);" class="btn btn-success moremore"
-                   id="add_more_employ_doc"><?= $strings["forms_addmore"]; ?></a>
-            </div>
-        </div>
-
-        <div class="clearfix"></div>
-    </div>
-   */ ?>
 <SCRIPT>
+    var references = 1;
+
     function add_more() {//$("#add_more").click(function () {
         $.ajax({
             url: "<?= $webroot;?>subpages/documents/past_employer.php?language=" + language,
@@ -688,6 +163,7 @@ $datetype = "text";
                 var c = $('#count_past_emp').val();
                 var counter = parseInt(c) + 1;
                 $('#count_past_emp').attr('value', counter);
+                references = references + 1;
             },
             error: function (res){
                 //alert(res);
@@ -700,7 +176,16 @@ $datetype = "text";
         var c = $('#count_past_emp').val();
         var counter = parseInt(c) - 1;
         $('#count_past_emp').attr('value', counter);
+        references = references - 1;
     });
+
+    function checkformint(){
+        if (references < 2){
+            alert("Please include at least 2 references");
+            return false;
+        }
+        return true;
+    }
 </SCRIPT>
 
 </div>

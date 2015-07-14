@@ -3,12 +3,13 @@
     $logo = 'img/logos/';
     $company_name = "";
 
-   include_once("api.php");
-
+    include_once("api.php");
+    $haslogo=false;
     if (isset($_GET["client"])) {
         $row = first("SELECT * FROM clients where id = " . $_GET["client"]);
         if ($row) {
             $logo = "img/jobs/" . $row["image"];
+            $haslogo=true;
             $company_name = $row["company_name"];
         }
 
@@ -51,6 +52,7 @@
     <meta http-equiv="Content-type" content="text/html; charset=utf-8">
     <meta content="" name="description"/>
     <meta content="" name="author"/>
+
     <!-- BEGIN GLOBAL MANDATORY STYLES -->
     <link href="http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700&subset=all" rel="stylesheet" type="text/css"/>
     <link href="<?= $webroot; ?>assets/global/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
@@ -77,8 +79,7 @@
     <script src="<?= $webroot; ?>assets/global/plugins/respond.min.js"></script>
     <script src="<?= $webroot; ?>assets/global/plugins/excanvas.min.js"></script>
     <![endif]-->
-    <link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css" rel="stylesheet" type="text/css"/>
-    <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js" type="text/javascript"></script>
+
 
     <script src="<?= $webroot; ?>assets/global/plugins/jquery.min.js" type="text/javascript"></script>
     <script src="<?= $webroot; ?>assets/global/plugins/jquery-migrate.min.js" type="text/javascript"></script>
@@ -122,8 +123,9 @@
 <div class="logo"></div>
 
 <div class="content" style="width:60%">
-    <center>
-        <img src="<?= $webroot . $logo; ?>" style="max-width: 33%; max-height: 100px;"/></center>
+    <?php if($haslogo) {
+        echo '<center><img src="' . $webroot . $logo . '" style="max-width: 33%; max-height: 100px;"/></center>';
+    } ?>
     <form class="login-form" action="<?= $webroot; ?>rapid" method="post">
         <div class="col-md-12">
 
@@ -463,17 +465,20 @@
         }
 
         $(function () {
-            $(".datepicker").datepicker({
-                changeMonth: true,
-                changeYear: true,
-                yearRange: '1980:2020',
-                dateFormat: 'yy-mm-dd'
-            });
             $('.clients').change(function () {
                 var cid = $(this).val();
                 if (cid != "")
                     window.location = "<?php echo str_replace("webroot/", "", $webroot) ;?>application/register.php?client=" + cid;
             })
+        });
+
+        $(function () {
+            $(".datepicker").datepicker({
+                changeMonth: true,
+                changeYear: true,
+                yearRange: '1980:2020',
+                dateFormat: 'mm/dd/yy'
+            });
         });
     </script>
 

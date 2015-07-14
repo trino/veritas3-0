@@ -400,7 +400,7 @@
                             echo '<a class="' . btnclass("VIEW") . '" href="' . $VIEWURL . '">' . $strings["dashboard_view"] . '</a>';
                         } ?>
                         <?php
-                            if ($sidebar->document_edit == '1' && ($this->request->session()->read('Profile.super')==1 || $this->request->session()->read('Profile.id')==$docs->user_id)) {
+                            if ($sidebar->document_edit == '1' && ($profiletype->caneditall == 1 || $this->request->session()->read('Profile.super')==1 || $this->request->session()->read('Profile.id')==$docs->user_id)) {
                                 echo '<a class="' . btnclass("EDIT") . '" href="' . $EDITURL .'">' . $strings["dashboard_edit"] . '</a>';
                             }
                         ?>
@@ -411,20 +411,11 @@
                                 $dl_show = 1;
                             } else $dl_show = 0;
                             if ($dl_show == 1) {
-                                if (isset($_GET['draft'])) {
-                                    ?>
-                                    <a href="<?php echo $this->request->webroot; ?>documents/delete/<?php echo $docs->id; ?>/draft"
-                                       onclick="return confirm('<?= ProcessVariables($language, $strings["dashboard_confirmdelete"], array("name" => $docname), true); ?>');"
-                                       class="<?= btnclass("DELETE") ?>"><?= $strings["dashboard_delete"]; ?></a>
-
-                                <?php
-                                } else {
-                                    ?>
-                                    <a href="<?php echo $this->request->webroot; ?>documents/delete/<?php echo $docs->id; ?>"
+                                ?>
+                                    <a href="<?php echo $this->request->webroot; ?>documents/delete/<?php echo $docs->id; if(isset($_GET['draft'])){ echo "/draft"; } ?>"
                                        onclick="return confirm('<?= ProcessVariables($language, $strings["dashboard_confirmdelete"], array("name" => $docname), true); ?>');"
                                        class="<?= btnclass("DELETE") ?>"><?= $strings["dashboard_delete"]; ?></a>
                                 <?php
-                                }
                             }
 
                         }

@@ -257,10 +257,19 @@ function getq($data = ""){
         });
 
     <?php loadstringsJS($strings); ?>
+
+    function checkformext(){
+        if (typeof checkformint == 'function') {
+            return checkformint();
+        } else {// No internal check
+            return true;
+        }
+        return false;//debugging purposes
+    }
 </SCRIPT>
 <?php if($doback){
     if ($dosubmit){ ?>
-        <INPUT TYPE="SUBMIT" class="btn btn-info" VALUE="<?= $strings["forms_submit"]; ?>" STYLE="float: right;">
+        <INPUT TYPE="SUBMIT" class="btn btn-info" onclick="return checkformext();" VALUE="<?= $strings["forms_submit"]; ?>" STYLE="float: right;">
         <div class="clearfix"></div>
     <?php }
 backbutton($strings["addorder_back"]);

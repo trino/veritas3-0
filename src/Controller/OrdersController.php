@@ -1262,6 +1262,10 @@ class OrdersController extends AppController {
 
         //debug($order);
         $this->set('orders', $this->appendattachments($this->paginate($order)));
+
+        $usertype = TableRegistry::get('profiles')->find()->where(['id'=>$sess])->first()->profile_type;
+        $profiletype = TableRegistry::get('profile_types')->find()->where(['id'=>$usertype])->first();
+        $this->set('profiletype', $profiletype);
     }
 
     function AppendSQL($SQL, $Query){

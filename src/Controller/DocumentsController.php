@@ -160,6 +160,10 @@ class DocumentsController extends AppController{
         if (isset($_GET['flash'])) {
             $this->success(true, "", false);//I don't know why it doesn't redirect.
         }
+        
+        $usertype = TableRegistry::get('profiles')->find()->where(['id'=>$sess])->first()->profile_type;
+        $profiletype = TableRegistry::get('profile_types')->find()->where(['id'=>$usertype])->first();
+        $this->set('profiletype', $profiletype);
     }
 
     function AppendSQL($SQL, $Query){

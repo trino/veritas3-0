@@ -136,7 +136,13 @@
                         <div class="profile-userpic" style="max-width:250px;margin:0 auto;">
                             <img class="img-responsive" id="clientpic"
                                  alt="" style="height: auto;"
-                                 src="<?= profileimage($this->request->webroot, $profile); ?>"
+                                 src="<?php
+                                    if (isset($profile)) {
+                                        echo profileimage($this->request->webroot, $profile);
+                                    } else {
+                                        echo profileimage($this->request->webroot);
+                                    }
+                                 ?>"
                                 />
                             <?php if (isset($id) && !(isset($disabled))) { ?>
                                 <center>
