@@ -36,7 +36,7 @@ function initdatepicker($dateformat = 'yy-mm-dd'){
 
 function backbutton($text = "Back"){
     if ( $_SERVER["SERVER_NAME"] == "localhost") {
-        echo '<DIV align="center"><A HREF="index.php';
+        echo '<DIV align="center" class="no-print"><A HREF="index.php';
         if (isset($_GET["user_id"])) {
             echo "?user_id=" . $_GET["user_id"];
         } else if (isset($_GET["p_id"])) {

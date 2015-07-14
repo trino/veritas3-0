@@ -137,7 +137,7 @@
                 
                 </div>
         <div class="delete">
-            <a href="javascript:void(0);" class="btn red" id="delete"><translate>dashboard_delete</translate></a>
+            <a href="javascript:void(0);" class="btn red no-print" id="delete"><translate>dashboard_delete</translate></a>
         </div>
   </div>
 

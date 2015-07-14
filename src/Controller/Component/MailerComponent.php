@@ -37,6 +37,7 @@ class MailerComponent extends Component {
         //return false;//not operational
         $Email = $this->getString("email_" . $eventname . "_subject");
         $language = "English";
+        $variables["event"] = $eventname;
         $variables["webroot"] = LOGIN;
         $variables["created"] = date("l F j, Y - H:i:s");
         $variables["login"] = '<a href="' . LOGIN . '">Click here to login</a>';

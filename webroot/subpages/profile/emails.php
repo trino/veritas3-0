@@ -61,7 +61,7 @@ foreach($emails as $Key => $Data){
     if(!$FirstEmail){$FirstEmail = $Key;}
     echo '<LI><A onclick="return show(' . "'" . $Key  . "'" . ')">' . $Key . '</A></LI>';
 }
-echo "</DIV></DIV></TD><TD><H4>Global variables:</H4> %webroot%, %created%, %login%, %variables%";
+echo "</DIV></DIV></TD><TD><H4>Global variables:</H4> %event%, %webroot%, %created%, %login%, %variables%";
 
 function printvariables($Variables){
     if($Variables) {
