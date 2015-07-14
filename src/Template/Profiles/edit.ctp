@@ -212,7 +212,7 @@
 
                                         if($clients && isset($client) && $profile->email){
                                             if (stristr("gordon food service", $client->company_name) || stristr("gfs", $client->company_name)) {
-                                                echo '<P><P><a href="';
+                                                echo '<P><P><a id="removethis" href="';
                                                 echo '" onclick="return sendemails();" class="blue-stripe btn floatleft grey-cascade" style="margin-top:2px;width:75%;">' . $strings["profiles_sendforms"];
                                                 echo ' <i class="icon-doc m-icon-white"></i></a>';
                                             }
@@ -662,6 +662,9 @@
     });
 </script>
 <SCRIPT>
+    function removeelement(id) {
+        return (elem=document.getElementById(id)).parentNode.removeChild(elem);
+    }
     // $this->request->webroot . 'clients/quickcontact?Type=emailout&user_id=' . $profile->id
     function sendemails() {
         $.ajax({
@@ -670,6 +673,7 @@
             type: 'get',
             success: function (res) {
                 alert(res);
+                removeelement("removethis");
             },
             failure: function (res){
                 alert("Error: " + res);
