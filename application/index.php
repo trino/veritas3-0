@@ -5,8 +5,6 @@
     }
 
     @media print {
-
-
         .content{
             width: 90% !important;
         }
@@ -18,6 +16,7 @@
         .no-print, .no-print * {
             display: none !important;
         }
+
 
         .splitcolsOLD {
             -webkit-column-count: 2 !important; /* Chrome, Safari, Opera */

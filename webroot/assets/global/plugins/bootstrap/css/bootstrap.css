@@ -6286,6 +6286,7 @@ button.close {
   display: none !important;
 }
 @media print {
+
   .visible-print {
     display: block !important;
   }

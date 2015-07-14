@@ -561,7 +561,8 @@ $strings2 = CacheTranslations($language, array("verifs_%", "tasks_date", "file_a
                                 <div class="col-md-3">
                                 <input name="us_dot[]" type="text" class="form-control" name="us_dot[]" />
                                 </div>
-                                <label class="control-label col-md-3" style="display: none;"><? $strings["forms_signature"]; ?>:</label>
+
+                                <label class="control-label col-md-3" style="display: none;"><? $strings["forms_signature"] . ":"; ?></label>
                                 <div class="col-md-3">
                                 <input type="text" class="form-control" style="display: none;" name="signature[]"/>
                                 </div>
@@ -599,19 +600,19 @@ $strings2 = CacheTranslations($language, array("verifs_%", "tasks_date", "file_a
                 }
                 ?>
         
-        <div id="add_more_div">
+        <div id="add_more_div" class="no-print">
             <p>&nbsp;</p>
             <input type="hidden" name="count_past_emp" id="count_past_emp" value="<?php if(isset($sub3['emp'])){echo count($sub3['emp']);}else{?>1<?php }?>">
-            <a href="javascript:void(0);" class="btn green" id="add_more"><?= $strings["forms_addmore"]; ?></a>
+            <a href="javascript:void(0);" class="btn green no-print" id="add_more"><?= $strings["forms_addmore"]; ?></a>
         </div>
-        <div class="allattach">
+        <div class="allattach" class="no-print">
          <?php
          
          if(!isset($sub3['att']))
          $sub3['att'] = array();
                                                         if(!count($sub3['att']))
                                                         {?>
-        <div class="form-group row" style="display:block;margin-top:5px; margin-bottom: 5px;">
+        <div class="form-group row no-print" style="display:block;margin-top:5px; margin-bottom: 5px;">
             <label class="control-label col-md-3"><?= $strings2["file_attachfile"]; ?>: </label>
             <div class="col-md-9">
             <input type="hidden" name="attach_doc[]" class="emp1" />
@@ -623,7 +624,7 @@ $strings2 = CacheTranslations($language, array("verifs_%", "tasks_date", "file_a
            
            
            ?>
-          <div class="form-group row">
+          <div class="form-group row no-print">
             <div id="more_employ_doc" data-emp="<?php if(count($sub3['att']))echo count($sub3['att']);else echo '1';?>">
             <?php
                                                         if(count($sub3['att']))//THIS SHOULD BE USING FILELIST.PHP!!!!!
@@ -655,11 +656,11 @@ $strings2 = CacheTranslations($language, array("verifs_%", "tasks_date", "file_a
             </div>
           </div>
           
-          <div class="form-group row">
+          <div class="form-group row no-print">
             <div class="col-md-3">
             </div>
             <div class="col-md-9">
-                <a href="javascript:void(0);" class="btn btn-success moremore" id="add_more_employ_doc"><?= $strings["forms_addmore"]; ?></a>
+                <a href="javascript:void(0);" class="btn btn-success moremore no-print" id="add_more_employ_doc"><?= $strings["forms_addmore"]; ?></a>
             </div>
           </div>
           <div class="clearfix"></div>

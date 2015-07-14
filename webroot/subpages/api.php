@@ -1,3 +1,19 @@
+<STYLE>
+    @media print {
+        a[href]:after {
+            content: none !important;
+        }
+
+        .no-print, .no-print * {
+            display: none !important;
+        }
+
+        .portlet > .portlet-title > .caption {
+            /* only works outside of print mode */
+            color: red !important;
+        }
+    }
+</STYLE>
 <?php
 use Cake\ORM\TableRegistry;
 use Cake\Datasource\ConnectionManager;
