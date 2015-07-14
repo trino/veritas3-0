@@ -627,6 +627,7 @@ $title = $strings["index_" . strtolower($action) . "document"];
                     {
                         $('#gfs_signature').val(response);
                     }
+                    $('.saved'+numb).html('Saved');
                 });
             }
 
