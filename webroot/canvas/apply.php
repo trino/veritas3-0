@@ -1,7 +1,7 @@
 <?php
-if ($this->request->session()->read('debug')) {
+/*if ($this->request->session()->read('debug')) {
     echo "<span style ='color:red;'>subpages/canvas/apply.php #INC???</span>";
-}
+}*/
 $_GET['num']=100;?>
 		<meta name="viewport" content="width=device-width;initial-scale=1.0;maximum-scale=1.0;user-scalable=0;"/>
 		<meta name="apple-mobile-web-app-capable" content="yes"/>
@@ -82,7 +82,7 @@ $_GET['num']=100;?>
          $("#test100").jqScribble();
          
       })
-          function save_signature(numb) {
+          function save_signature1(numb) {
         //alert('trd');
         numb = '100';
         $("#test" + numb).data("jqScribble").save(function (imageData) {

@@ -1310,13 +1310,13 @@ through 7 inclusive, and acknowledge that with my signature below.
             <label class="col-md-6">Dated</label>
             <input type="text" name="dated" class="form-control date-picker" value="<?php if(isset($application_for_employment_gfs))echo $application_for_employment_gfs->dated;?>" />
         </div>
-        <!--div class="col-md-6">
+        <div class="col-md-6">
             <label class="col-md-12">Signature</label>
             <?php
-            //include('../webroot/canvas/apply.php');//won't work outside of cake
+            include('../webroot/canvas/apply.php');//won't work outside of cake
         ?>
         
-        </div-->
+        </div>
 
          <div class="clearfix"></div>
           <p>&nbsp;</p>
@@ -1367,7 +1367,7 @@ backbutton();
                                 } else {
                                     $(this).attr('disabled', 'disabled');
 
-                                     save_signature('100');
+                                     save_signature1('100');
 
                                 }
                             }

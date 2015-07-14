@@ -1,7 +1,64 @@
+<script>
+
+    function save_signature(numb) {
+       
+        $("#test" + numb).data("jqScribble").save(function (imageData) {
+   
+        $.post('<?php echo $webroot; ?>canvas/image_save.php', {imagedata: imageData}, function (response) {
+            if(response=='')
+            {
+                alert('There was problem saving the signatures, please go back and re-submit the consent form.');
+            }
+            if (numb == '1004') {
+
+                $('#signature_company_witness').val(response);
+                
+            }
+            if (numb == '1003') {
+
+                $('#criminal_signature_applicant').val(response);
+                
+            }
+            if (numb == '1002') {
+
+                $('#signature_company_witness2').val(response);
+                        
+            }
+            if (numb == '1001') {
+
+                $('#criminal_signature_applicant2').val(response);
+                
+            }
+            $('.saved'+numb).html('Saved');
+            /*
+             $('#hiddensub').click();*/
+        });
+        
+        });
+    }
+        
+/*    
+    function checkformint(){
+    
+        save_signature('1001');
+        save_signature('1002');
+        save_signature('1003');
+        save_signature('1004');
+        //if(criminal_signature_applicant2!="" ||signature_company_witness2!="" ||criminal_signature_applicant!="" ||signature_company_witness!="")
+        alert('Form submitted succesfully.')
+        return true;
+        
+    }*/
+
+    
+</script>
 <?php
     $strings2 = CacheTranslations($language, array("consent_%", "file_attachfile", "tasks_date", "profiles_name"), $settings, False);
     $gender = "";
 ?>
+
+
+
     <div class="form-group row">
         <h3 class="col-md-12"><?= $strings2["consent_release"]; ?></h3>
     </div>
@@ -486,42 +543,7 @@
 
                 <div class="clearfix"></div>
 
-        <script>
-            function save_signature(numb) {
-        //alert('trd');
         
-        $("#test" + numb).data("jqScribble").save(function (imageData) {
-           
-                $.post('<?php echo $webroot; ?>canvas/image_save.php', {imagedata: imageData}, function (response) {
-                    if(response=='')
-                    {
-                        alert('There was problem saving the signatures, please go back and re-submit the consent form.');
-                    }
-                    if (numb == '1004') {
-
-                        $('#signature_company_witness').val(response);
-                    }
-                    if (numb == '1003') {
-
-                        $('#criminal_signature_applicant').val(response);
-                    }
-                    if (numb == '1002') {
-
-                        $('#signature_company_witness2').val(response);
-                    }
-                    if (numb == '1001') {
-
-                        $('#criminal_signature_applicant2').val(response);
-                    }
-                    
-                    $('.saved'+numb).html('Saved');
-                     $('#hiddensub').click();
-                });
-            
-        });
-    }
-        
-        </script>
         <!--script>
             $(function () {
                 <?php if($this->request->params['action'] != 'vieworder' && $this->request->params['action']!= 'view'){?>
@@ -553,13 +575,3 @@
                 });
             });
         </script-->
-
-                <SCRIPT>
-                    function checkformint(){
-                    save_signature('1001');
-                    save_signature('1002');
-                    save_signature('1003');
-                    save_signature('1004');
-                        return true;
-                    }
-                </SCRIPT>

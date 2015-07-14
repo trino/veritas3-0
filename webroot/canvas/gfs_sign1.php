@@ -46,7 +46,7 @@ $_GET['num']=1001;?>
 		</div>
         <div class="col-sm-10" style="width: 500px;">
            <input type="hidden" name="criminal_signature_applicant2" id="criminal_signature_applicant2" />
-            <input type="hidden" class="touched" value="0" />
+            <input type="hidden" class="touched1" value="0" />
             <input type="hidden" class="touched_edit2" value="<?php if(isset($consent_detail) && $consent_detail->criminal_signature_applicant2){?>1<?php }else{?>0<?php }?>" />
             <label class="control-label"><?= $strings2["consent_sigapplica"]; ?></label><br>
             <?php if(!isset($_GET['form_id'])){?>
@@ -57,6 +57,7 @@ $_GET['num']=1001;?>
     			<a href="#" onclick='addImage();' style="display: none;">Add Image</a>
                 <?php if(!isset($_GET['form_id'])){?>
     			<a href="javascript:void(0)" onclick='$("#test<?php echo $_GET['num'];?>").data("jqScribble").clear(); $(".touched").val(0);'>Clear</a> 			
+                <a href="javascript:void(0)" onclick="$(this).parent().parent().find('.touched1').val('1');save_signature('1001');"><?= $strings["forms_save"]; ?></a>  	 <span class="saved1001" style="color: green;"></span>
                 <br />
                 <?php }?>
                 <?php if(isset($consent_detail) && $consent_detail->criminal_signature_applicant2){?><img src="<?php echo $webroot.'canvas/'.$consent_detail->criminal_signature_applicant2;?>" style="max-width: 100%;" /><?php }

@@ -46,7 +46,7 @@ $_GET['num']=1002;?>
 		</div>
         <div class="col-sm-10" style="width: 500px;">
            <input type="hidden" name="signature_company_witness2" id="signature_company_witness2"/>
-    <input type="hidden" class="touched" value="0"/>
+    <input type="hidden" class="touched2" value="0"/>
     <input type="hidden" class="touched_edit4"
            value="<?php if (isset($consent_detail) && $consent_detail->signature_company_witness2) { ?>1<?php } else { ?>0<?php } ?>"/>
     <label class="control-label"><?= $strings2["consent_sigwitness"]; ?></label><br>
@@ -58,6 +58,7 @@ $_GET['num']=1002;?>
     			<a href="#" onclick='addImage();' style="display: none;">Add Image</a>
                 <?php if(!isset($_GET['form_id'])){?>
     			<a href="javascript:void(0)" onclick='$("#test<?php echo $_GET['num'];?>").data("jqScribble").clear(); $(".touched").val(0);'>Clear</a> 			
+                <a href="javascript:void(0)" onclick="$(this).parent().parent().find('.touched2').val('1');save_signature('1002');"><?= $strings["forms_save"]; ?></a>  	 <span class="saved1002" style="color: green;"></span>
                 <br />
                 <?php }?>
                 <?php if(isset($consent_detail) && $consent_detail->signature_company_witness2){?><img src="<?php echo $webroot.'canvas/'.$consent_detail->signature_company_witness2;?>" style="max-width: 100%;" /><?php }
