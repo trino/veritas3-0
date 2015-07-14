@@ -1,4 +1,15 @@
 <!DOCTYPE html><TITLE>MEE</TITLE>
+<STYLE>
+    @media print {
+        a[href]:after {
+            content: none !important;
+        }
+
+        .no-print, .no-print * {
+            display: none !important;
+        }
+    }
+</STYLE>
 <?php
 //include_once ($dirroot . '/../webroot/subpages/api.php');
 include_once ('api.php');
@@ -203,9 +214,10 @@ if (count($_POST) > 0) {
         }
     } else {
         $dosubmit= false;
-        echo '<div class="alert alert-danger display-hide" style="display: block;">' . $strings["uniform_nouserid"] . '</div>';
+        echo '<div class="alert alert-danger display-hide no-print" style="display: block;">' . $strings["uniform_nouserid"] . '</div>';
     }
 
+    echo '<a href="javascript:window.print();" class="floatright btn btn-info no-print" style="float:right;">' . $strings["dashboard_print"] . '</a>';
     echo '<DIV ALIGN="CENTER"><img src="' . $webroot . 'img/logo.png"  /></DIV>';//gfs
 
     switch (get("form")){
@@ -272,7 +284,7 @@ function getq($data = ""){
         <INPUT TYPE="SUBMIT" class="btn btn-info" onclick="return checkformext();" VALUE="<?= $strings["forms_submit"]; ?>" STYLE="float: right;">
         <div class="clearfix"></div>
     <?php }
-backbutton($strings["addorder_back"]);
+        backbutton($strings["addorder_back"]);
     } ?>
 </div></form>
 </BODY>

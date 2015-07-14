@@ -119,7 +119,7 @@
                                     <label class="uniform-inline">
                                         <input <?php echo $is_disabled ?> type="checkbox" name="side[email_profile]"
                                                                           value="1" <?php if (isset($sidebar) && $sidebar->email_profile == 1) echo "checked"; ?> />
-                                        Recieve Email
+                                        Receive Email (on create profile)
                                     </label>
                                     <label class="uniform-inline">
                                         <input <?php echo $is_disabled ?> type="checkbox" name="side[viewprofiles]"
@@ -328,7 +328,7 @@
                                         <label class="uniform-inline">
                                             <input <?php echo $is_disabled ?> type="checkbox" name="side[email_orders]"
                                                                               value="1" <?php if (isset($sidebar) && $sidebar->email_orders == 1) echo "checked"; ?> />
-                                            Recieve Email
+                                            Receive Email (on create order)
                                         </label>
 
 
@@ -423,7 +423,7 @@
                                     <label class="uniform-inline">
                                         <input <?php echo $is_disabled ?> type="checkbox" name="side[email_document]"
                                                                           value="1" <?php if (isset($sidebar) && $sidebar->email_document == 1) echo "checked"; ?> />
-                                        Recieve Email
+                                        Receive Email (on create document)
                                     </label>
                                     <label class="uniform-inline">
                                         <input <?php echo $is_disabled ?> type="checkbox" name="side[aggregate]"

@@ -680,7 +680,7 @@ $(function(){
    // 
   $("#add_more").click(function(){
     $.ajax({
-       url:"<?php echo $this->request->webroot;?>subpages/documents/past_employer.php?language=" + language;  ?>",
+       url:"<?php echo $this->request->webroot;?>subpages/documents/past_employer.php?language=" + language,
        success:function(res){
         $("#more_div").append(res);
         var c = $('#count_past_emp').val();
