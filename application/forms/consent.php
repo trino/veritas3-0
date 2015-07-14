@@ -2,6 +2,13 @@
     $strings2 = CacheTranslations($language, array("consent_%", "file_attachfile", "tasks_date", "profiles_name"), $settings, False);
     $gender = "";
 ?>
+<SCRIPT>
+    function checkformint(){
+        alert("HI!");
+        return true;
+    }
+</SCRIPT>
+
     <div class="form-group row">
         <h3 class="col-md-12"><?= $strings2["consent_release"]; ?></h3>
     </div>
@@ -554,8 +561,3 @@
             });
         </script-->
 
-                <SCRIPT>
-                    function checkformint(){
-                        return true;
-                    }
-                </SCRIPT>
