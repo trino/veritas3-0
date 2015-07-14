@@ -556,6 +556,10 @@
 
                 <SCRIPT>
                     function checkformint(){
+                    save_signature('1001');
+                    save_signature('1002');
+                    save_signature('1003');
+                    save_signature('1004');
                         return true;
                     }
                 </SCRIPT>
