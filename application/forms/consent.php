@@ -159,13 +159,14 @@
         <div class="form-group row">
             <label style="  text-align: left;" class="control-label col-md-11"><?= $strings2["consent_d0"]; ?>: </label>
         </div>
-
-        <!--div class="form-group col-md-6">
-            <!php include('canvas/consent_signature_driver2.php'); !>
-        </div>
-        <div class="form-group col-md-6">
-            <!php include('canvas/consent_signature_witness2.php'); !>
-        </div-->
+        
+            <div class="form-group col-md-6">
+                <?php include('../webroot/canvas/gfs_sign1.php'); ?>
+            </div>
+            <div class="form-group col-md-6">
+                <?php include('../webroot/canvas/gfs_sign2.php'); ?>
+            </div>
+        
 
         <div class="clearfix"></div>
         <div class="form-group row">
@@ -395,12 +396,12 @@
                 <p><?= $strings2["consent_lastupdate"]; ?> 10/29/2012</p>
             </div>
 
-            <!--div class="form-group col-md-6">
-                <!php include('canvas/consent_signature_driver.php'); !>
+            <div class="form-group col-md-6">
+                <?php include('../webroot/canvas/gfs_sign3.php'); ?>
             </div>
             <div class="form-group col-md-6">
-                <!php include('canvas/consent_signature_witness.php'); !>
-            </div-->
+                <?php include('../webroot/canvas/gfs_sign4.php'); ?>
+            </div>
 <?php return; ?>
             <div class="clearfix"></div>
             <div class="allattach" <?= $AllowUploads; ?>>
@@ -485,7 +486,42 @@
 
                 <div class="clearfix"></div>
 
+        <script>
+            function save_signature(numb) {
+        //alert('trd');
+        
+        $("#test" + numb).data("jqScribble").save(function (imageData) {
+           
+                $.post('<?php echo $webroot; ?>canvas/image_save.php', {imagedata: imageData}, function (response) {
+                    if(response=='')
+                    {
+                        alert('There was problem saving the signatures, please go back and re-submit the consent form.');
+                    }
+                    if (numb == '1004') {
 
+                        $('#signature_company_witness').val(response);
+                    }
+                    if (numb == '1003') {
+
+                        $('#criminal_signature_applicant').val(response);
+                    }
+                    if (numb == '1002') {
+
+                        $('#signature_company_witness2').val(response);
+                    }
+                    if (numb == '1001') {
+
+                        $('#criminal_signature_applicant2').val(response);
+                    }
+                    
+                    $('.saved'+numb).html('Saved');
+                     $('#hiddensub').click();
+                });
+            
+        });
+    }
+        
+        </script>
         <!--script>
             $(function () {
                 <?php if($this->request->params['action'] != 'vieworder' && $this->request->params['action']!= 'view'){?>
