@@ -561,7 +561,7 @@
                                 <button class="close" data-close="alert"></button>
                             Survey submitted successfully.
                         </div>';
-            }?>
+            }
 
         backbutton();
             ?>

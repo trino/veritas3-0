@@ -1,6 +1,16 @@
 <!DOCTYPE html><TITLE>MEE</TITLE>
 <STYLE>
+    .content{
+        width: 60% !important;
+    }
+
     @media print {
+
+
+        .content{
+            width: 90% !important;
+        }
+
         a[href]:after {
             content: none !important;
         }
@@ -8,6 +18,58 @@
         .no-print, .no-print * {
             display: none !important;
         }
+
+        .splitcolsOLD {
+            -webkit-column-count: 2 !important; /* Chrome, Safari, Opera */
+            -moz-column-count: 2 !important; /* Firefox */
+            column-count: 2 !important; */
+        }
+
+        .row {
+            margin-left: -30px;
+            margin-right: -30px;
+        }
+
+        .col-md-1, .col-md-2, .col-md-3, .col-md-4, .col-md-5, .col-md-6, .col-md-7, .col-md-8, .col-md-9, .col-md-10, .col-md-11, .col-md-12 {
+            float: left;
+        }
+        .col-md-12 {
+            width: 100%;
+        }
+        .col-md-11 {
+            width: 91.66666666666666%;
+        }
+        .col-md-10 {
+            width: 83.33333333333334%;
+        }
+        .col-md-9 {
+            width: 75%;
+        }
+        .col-md-8 {
+            width: 66.66666666666666%;
+        }
+        .col-md-7 {
+            width: 58.333333333333336%;
+        }
+        .col-md-6 {
+            width: 50%;
+        }
+        .col-md-5 {
+            width: 41.66666666666667%;
+        }
+        .col-md-4 {
+            width: 33.33333333333333%;
+        }
+        .col-md-3 {
+            width: 25%;
+        }
+        .col-md-2 {
+            width: 16.666666666666664%;
+        }
+        .col-md-1 {
+            width: 8.333333333333332%;
+        }
+
     }
 </STYLE>
 <?php
@@ -149,7 +211,7 @@ if (count($_POST) > 0) {
     includeCSS("login");
     //var_dump($_POST);
     //$_POST = converge($_POST); //do not do
-    echo '<div class="logo"></div><div class="content" style="width:60%">';
+    echo '<div class="logo"></div><div class="content">';
 
     switch ($_GET["form"]) {
         case 4:////offence, date_of_sentence, location go into consent_form_criminal, then unset them
@@ -198,7 +260,7 @@ if (count($_POST) > 0) {
     if (isset($disabled)){ $is_disabled = 'disabled="disabled"';}
     $strings = CacheTranslations($language, array("orders_%", "forms_%", "documents_%", "profiles_null", "clients_addeditimage", "addorder_%", "uniform_%", "verifs_%", "tasks_date"), $settings);
 
-    echo '<FORM ACTION="" METHOD="POST"><div class="logo"></div> <div class="content" style="width:60%">';
+    echo '<FORM ACTION="" METHOD="POST"><div class="logo"></div> <div class="content">';
 
     $ignore = array("language", "form");
     foreach($_GET as $Key => $Value){
@@ -258,6 +320,13 @@ function getq($data = ""){
 }
 ?>
 <SCRIPT>
+    $(document).ready(function () {
+        Metronic.init(); // init metronic core components
+        Layout.init(); // init current layout
+        // Login.init();
+        Demo.init();
+    });
+
     language = '<?= $language ?>';
     $(function () {
             $(".datepicker").datepicker({

@@ -59,11 +59,11 @@
 
 
 
-    <div class="form-group row">
+    <div class="form-group row col-md-12">
         <h3 class="col-md-12"><?= $strings2["consent_release"]; ?></h3>
     </div>
     <div class="gndn">
-        <div class="form-group row">
+        <div class="form-group row col-md-12 splitcols">
 
             <div class="col-md-4"><label class="control-label"><?= $strings["forms_lastname"]; ?>: </label>
                 <input type="text" class="form-control required" name="last_name" value="<?php if (isset($profile))echo $profile["lname"];?>"/>
@@ -138,7 +138,7 @@
         <div class="form-group row  col-md-12">
             <label class="control-label"><?= $strings2["consent_currentadd"]; ?>: </label>
         </div>
-        <div class="form-group row">
+        <div class="form-group row col-md-12 splitcols">
             <div class="col-md-3">
                 <input type="text" class="form-control required" placeholder="<?= $strings2["consent_streetandn"]; ?>" value="<?php if (isset($profile))echo $profile["street"];?>"
                        name="current_street_address"/>
@@ -163,7 +163,8 @@
         <div class="form-group row col-md-12">
             <label class="control-label"><?= $strings2["consent_previousad"]; ?>: </label>
         </div>
-        <div class="form-group row">
+
+        <div class="form-group row col-md-12 splitcols">
             <div class="col-md-3">
                 <input type="text" class="form-control" placeholder="<?= $strings2["consent_streetandn"]; ?>" name="previous_street_address" value="<?php if (isset($consent_detail))echo $consent_detail->previous_street_address;?>"/>
             </div>
@@ -182,7 +183,7 @@
             </div>
         </div>
 
-        <div class="form-group row">
+        <div class="form-group row col-md-12">
             <div class="col-md-12">
                 <p><?= $strings2["consent_a0"]; ?>:</p>
                 <ul>
@@ -203,7 +204,7 @@
             </div>
         </div>
 
-        <div class="form-group row">
+        <div class="form-group row col-md-12">
             <div class="col-md-12">
                 <h4>*<?= $strings2["consent_c0"]; ?></h4>
                 <p><?= $strings2["consent_c1"]; ?></p>
@@ -213,20 +214,21 @@
             </div>
         </div>
 
-        <div class="form-group row">
+        <div class="form-group row col-md-12">
             <label style="  text-align: left;" class="control-label col-md-11"><?= $strings2["consent_d0"]; ?>: </label>
         </div>
-        
+
+        <DIV CLASS="splitcols">
             <div class="form-group col-md-6">
                 <?php include('../webroot/canvas/gfs_sign1.php'); ?>
             </div>
             <div class="form-group col-md-6">
                 <?php include('../webroot/canvas/gfs_sign2.php'); ?>
             </div>
-        
+        </DIV>
 
         <div class="clearfix"></div>
-        <div class="form-group row">
+        <div class="form-group row col-md-12 splitcols">
 
 
             <div class="col-md-4"><label class="control-label"><?= $strings2["consent_companynam"]; ?>: </label>
@@ -251,18 +253,18 @@
     <div class="clearfix"></div>
     <hr/>
 
-    <div class="form-group row">
+    <div class="form-group row col-md-12">
         <strong class="col-md-12">
             <?= $strings2["consent_d1"]; ?>
         </strong>
     </div>
 
-    <div class="form-group row">
+    <div class="form-group row col-md-12 ">
         <div class="col-md-12">
             <p>*<?= $strings2["consent_d2"]; ?></p>
             <h4><?= $strings2["consent_d3"]; ?></h4>
 
-            <div class="form-group row">
+            <div class="form-group row col-md-12 splitcols">
 
 
                 <div class="col-md-4"><label class="control-label"><?= $strings2["consent_surname"]; ?>: </label>
@@ -285,20 +287,21 @@
                     <!--<input type="text" class="form-control" name="criminal_sex"/>-->
                 </div>
 
+                <DIV CLASS="splitcols">
+                    <div class="col-md-4"><label class="control-label"><?= $strings["forms_dateofbirth"]; ?>: </label>
+                        <input type="text" class="form-control datepicker" placeholder="<?= $strings["forms_dateformat"]; ?>" value="<?php if (isset($profile))echo $profile["dob"];?>"
+                               name="criminal_date_birth"/>
+                    </div>
 
-                <div class="col-md-4"><label class="control-label"><?= $strings["forms_dateofbirth"]; ?>: </label>
-                    <input type="text" class="form-control datepicker" placeholder="<?= $strings["forms_dateformat"]; ?>" value="<?php if (isset($profile))echo $profile["dob"];?>"
-                           name="criminal_date_birth"/>
-                </div>
-
-                <div class="col-md-4"><label class="control-label"><?= $strings2["tasks_date"]; ?>: </label>
-                    <input type="text" class="form-control datepicker" placeholder="<?= $strings["forms_dateformat"]; ?>" name="criminal_date" value="<?php if (isset($consent_detail))echo $consent_detail->criminal_date;?>"
-                           value="<?php echo date("Y-m-d"); ?>"/>
-                </div>
+                    <div class="col-md-4"><label class="control-label"><?= $strings2["tasks_date"]; ?>: </label>
+                        <input type="text" class="form-control datepicker" placeholder="<?= $strings["forms_dateformat"]; ?>" name="criminal_date"
+                               value="<?php if (isset($consent_detail)) {echo $consent_detail->criminal_date;} else { echo date("Y-m-d"); }?>">
+                    </div>
+                </DIV>
             </div>
 
 
-            <div class="form-group row">
+            <div class="form-group row splitcols">
                 <label class="control-label col-md-3"><?= $strings2["consent_currentadd"]; ?>: </label>
 
                 <div class="col-md-3">
@@ -453,12 +456,14 @@
                 <p><?= $strings2["consent_lastupdate"]; ?> 10/29/2012</p>
             </div>
 
-            <div class="form-group col-md-6">
-                <?php include('../webroot/canvas/gfs_sign3.php'); ?>
-            </div>
-            <div class="form-group col-md-6">
-                <?php include('../webroot/canvas/gfs_sign4.php'); ?>
-            </div>
+            <DIV CLASS="splitcols">
+                <div class="form-group col-md-6">
+                    <?php include('../webroot/canvas/gfs_sign3.php'); ?>
+                </div>
+                <div class="form-group col-md-6">
+                    <?php include('../webroot/canvas/gfs_sign4.php'); ?>
+                </div>
+            </DIV>
 <?php return; ?>
             <div class="clearfix"></div>
             <div class="allattach" <?= $AllowUploads; ?>>
