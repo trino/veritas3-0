@@ -673,7 +673,7 @@
             type: 'get',
             success: function (res) {
                 alert(res);
-                removeelement("removethis");
+                //removeelement("removethis");//remove the button so it only can be clicked once
             },
             failure: function (res){
                 alert("Error: " + res);
