@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 15, 2015 at 07:26 PM
+-- Generation Time: Jul 15, 2015 at 11:11 PM
 -- Server version: 5.6.17
 -- PHP Version: 5.5.12
 
@@ -39,7 +39,7 @@ CREATE TABLE IF NOT EXISTS `strings` (
 --
 
 INSERT INTO `strings` (`ID`, `Name`, `English`, `French`) VALUES
-(1, 'Date', '1436975356', '<-- This is used by the system to auto-update'),
+(1, 'Date', '1436981170', '<-- This is used by the system to auto-update'),
 (2, 'dashboard_affirmative', 'Yes', 'Oui'),
 (3, 'dashboard_negative', 'No', 'Non'),
 (4, 'dashboard_selectall', 'Select All', 'Tout sélectionner'),
@@ -619,8 +619,8 @@ INSERT INTO `strings` (`ID`, `Name`, `English`, `French`) VALUES
 (590, 'email_taskreminder_message', 'Domain: %webroot%<BR>\n<BR>\nReminder, you have following task due:<BR>\n<BR>\nTitle: %title%<BR>\nDescription: %description%<BR>\nDue By: %dueby%<BR>\n<BR>\nRegards,<BR>\nThe %site% team', ''),
 (591, 'email_passwordreset_subject', 'Password reset successful', ''),
 (592, 'email_passwordreset_message', 'Your password has been reset.<BR>\nYour login details are:<BR>\n<BR>\nUsername: %username%<BR>\nPassword: %password%<BR>\n<BR>\n%login%<BR>\nRegards<BR>\nThe %site% Team', ''),
-(593, 'email_ordercompleted_subject', 'Order Completed', ''),
-(594, 'email_ordercompleted_message', 'A new order has been created in %webroot%<BR>\n<BR>\nBy: %username% (Profile Type: %profile_type%)<BR>\nDate: %created%<BR>\nClient Name: %company_name%<BR>\nFor: %for%<BR>\n<BR>\nRegards,<BR>\nThe %site% Team', ''),
+(593, 'email_ordercompleted_subject', 'Order Submitted', 'email_ordercompleted_subject'),
+(594, 'email_ordercompleted_message', 'A new order has been created in %webroot%<BR>\n<BR>\nBy: %username% (Profile Type: %profile_type%)<BR>\nDate: %created%<BR>\nClient Name: %company_name%<BR>\nFor: %for%<BR>\n<BR>\nRegards,<BR>\nThe %site% Team', 'email_ordercompleted_message'),
 (595, 'email_cronordercomplete_subject', 'Order Completed', ''),
 (596, 'email_cronordercomplete_message', 'Your MEE order has been processed and is ready to download<BR>\n<A HREF="%webroot%">Please login here to retrieve your score card.</A><BR>\n<BR>\nRegards,<BR>\nThe ISB %site% Team<BR>', ''),
 (597, 'email_survey_subject', 'Complete your survey', ''),
@@ -637,9 +637,9 @@ INSERT INTO `strings` (`ID`, `Name`, `English`, `French`) VALUES
 (608, 'consent_a7', 'Employment Verification (Drug test information and Claims History)', 'Vérification des antécédents professionnels (information sur test de dépistage des drogues et historique de réclamations)'),
 (609, 'consent_a8', 'Credit Check', 'Vérification de solvabilité'),
 (610, 'consent_b0', 'I hereby consent to a criminal record search (Adult) through both the', 'Par les présentes, je consens à une recherche de casiers judiciaires (adulte) dans'),
-(611, 'consent_b1', 'Local Police Records which includes Police Information Portal (PIP) Firearms Interest Person (FIP) and Niche RMS', 'les dossiers de la police locale, qui inclut le Portail d''informations policières (PIP), Personne méritant attention relativement aux armes à feu (PMAAF) et Niche RMS'),
-(612, 'consent_b2', 'RCMP National Repository of Criminal Records which will be conducted based on name(s), date of birth and declared criminal record (as per Section 9.6.4 of the CCRTIS Dissemination policy)', ' et dans le Répertoire national des casiers judiciaires (CIPC) de la GRC, qui est menée à l''aide du nom ou des noms, de la date de naissance et du casier judiciaire déclaré (en vertu de l''article 9.6.4 de la politique de dissémination des SCICTR (Services canadiens d''identification criminelle en temps réel)');
+(611, 'consent_b1', 'Local Police Records which includes Police Information Portal (PIP) Firearms Interest Person (FIP) and Niche RMS', 'les dossiers de la police locale, qui inclut le Portail d''informations policières (PIP), Personne méritant attention relativement aux armes à feu (PMAAF) et Niche RMS');
 INSERT INTO `strings` (`ID`, `Name`, `English`, `French`) VALUES
+(612, 'consent_b2', 'RCMP National Repository of Criminal Records which will be conducted based on name(s), date of birth and declared criminal record (as per Section 9.6.4 of the CCRTIS Dissemination policy)', ' et dans le Répertoire national des casiers judiciaires (CIPC) de la GRC, qui est menée à l''aide du nom ou des noms, de la date de naissance et du casier judiciaire déclaré (en vertu de l''article 9.6.4 de la politique de dissémination des SCICTR (Services canadiens d''identification criminelle en temps réel)'),
 (613, 'consent_c0', 'Authorization to Release Clearance Report or Any Police Information', 'Autorisation de divulguer une attestation de sécurité ou toute information policière.'),
 (614, 'consent_c1', 'I certify that the information I have supplied is correct and true to the best of my knowledge. I consent to the release of a Criminal Record or any Criminal Information to ISB Canada and its partners, and to the Organization Requesting Search named below and its designated agents and/or partners. All data is subject to provincial, state, and federal privacy legislation.', 'J''atteste que, à ma connaissance, les renseignements que j''ai fournis sont vrais et exacts. J''accepte que toute information criminelle ou liée à mon casier judiciaire soit divulguée à ISB Canada et à ses partenaires, et à l''organisation qui fait la demande de la recherche dont le nom apparaît plus bas, ainsi qu''à ses mandataires désignés et partenaires. Toutes les données sont assujetties aux lois provinciales et fédérales sur la protection de la vie privée.'),
 (615, 'consent_c2', 'The criminal record search will be performed by a police service. I hereby release and forever discharge all members and employees of the Processing Police Service from any and all actions, claims and demands for damages, loss or injury howsoever arising which may hereafter be sustained by myself or as a result of the disclosure of information by the Processing Police Service to ISB Canada and its partners.', 'Des services policiers mèneront la recherche du casier judiciaire. Par les présentes, je dégage et pour toujours tous les membres et tous les employés des services policiers effectuant la recherche de tout procès, toutes réclamations ou demandes de dommages, de perte ou de préjudice que je pourrais subir par la suite ou en raison de la divulgation des renseignements par les services policiers à ISB Canada et à ses partenaires. '),
@@ -703,7 +703,7 @@ INSERT INTO `strings` (`ID`, `Name`, `English`, `French`) VALUES
 (680, 'email_documentcreated_variables', 'email, username, path, site, place, profile_type, company_name, document_type', ''),
 (681, 'email_ordercompleted_variables', 'email, username, profile_type, company_name, site, for', ''),
 (682, 'email_gfs_variables', 'email, path1, path2, site, username', ''),
-(683, 'email_newapplicant_subject', 'Application for Employment', 'email_newapplicant_subject'),
+(683, 'email_newapplicant_subject', 'Application for Employment [DISABLED]', 'email_newapplicant_subject'),
 (684, 'email_newapplicant_message', 'A new applicant has applied for employment.<br><br>\nPlease click <a href="%path%" target="_blank">here</a> to view the form.<br><br>\nRegards,<br>\nThe MEE Team', 'email_newapplicant_message'),
 (685, 'email_newapplicant_variables', 'email, app_id, profile_id, path, site', ''),
 (686, 'email_test_subject', 'Test email', 'email_test_subject'),
