@@ -470,7 +470,7 @@
                 </div>
             </DIV>
             
-            <div class="col-md-12">
+            <!--<div class="col-md-12">
             <p>&nbsp;</p>
             
             <div>
@@ -506,7 +506,7 @@
                 </div>
             </div>
             <p>&nbsp;</p>
-            </div>
+            </div>-->
             
 <?php return; ?>
             <div class="clearfix"></div>
