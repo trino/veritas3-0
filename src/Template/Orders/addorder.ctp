@@ -32,6 +32,7 @@ $title = $strings["orders_" . strtolower($action)];
 //includejavascript($strings);
 JSinclude($this,"js/jquery.easyui.min.js");
 JSinclude($this,"js/ajaxupload.js");
+printCSS();
     ?>
 <style>.allattach{display:none;}</style>
 

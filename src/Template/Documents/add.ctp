@@ -31,6 +31,7 @@ $language = $this->request->session()->read('Profile.language');
 $strings = CacheTranslations($language, array("documents_%", "forms_%", "clients_addeditimage", "infoorder_selectclient"), $settings);//,$registry);//$registry = $this->requestAction('/settings/getRegistry');
 if($language == "Debug") { $Trans = " [Trans]";} else { $Trans = ""; }
 $title = $strings["index_" . strtolower($action) . "document"];
+printCSS();
 ?>
 <h3 class="page-title">
     <?= $title; ?>

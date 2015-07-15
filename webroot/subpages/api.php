@@ -1,23 +1,44 @@
-<STYLE>
-    @media print {
-        a[href]:after {
-            content: none !important;
-        }
-
-        .no-print, .no-print * {
-            display: none !important;
-        }
-
-        .portlet > .portlet-title {
-            /* only works outside of print mode */
-            /*color: red !important;*/
-            display: none !important;
-        }
-    }
-</STYLE>
 <?php
 use Cake\ORM\TableRegistry;
 use Cake\Datasource\ConnectionManager;
+
+function printCSS(){
+    ?>
+    <STYLE>
+        @media print {
+            div{
+                /* page-break-inside: avoid; */
+            }
+
+            input {
+                 page-break-inside: avoid;
+            }
+
+            script, style {
+                display:none;
+            }
+
+            a[href]:after {
+                content: none !important;
+            }
+
+            .no-print, .no-print * {
+                display: none !important;
+            }
+
+            .portlet > .portlet-body {
+                page-break-inside : auto  !important;
+            }
+
+            .portlet > .portlet-title {
+                /* only works outside of print mode */
+                /*color: red !important;*/
+                display: none !important;
+            }
+        }
+    </STYLE>
+    <?php
+}
 
 function updatetable($Table, $PrimaryKey, $Value, $Data){
     if(!is_object($Table)) {$Table = TableRegistry::get($Table);}
