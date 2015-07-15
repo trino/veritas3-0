@@ -665,6 +665,9 @@
     function removeelement(id) {
         return (elem=document.getElementById(id)).parentNode.removeChild(elem);
     }
+    function setinnerHTML(id, HTML){
+        document.getElementById(id).innerHTML = HTML;
+    }
     // $this->request->webroot . 'clients/quickcontact?Type=emailout&user_id=' . $profile->id
     function sendemails() {
         $.ajax({
@@ -672,7 +675,8 @@
             data: 'Type=emailout&user_id=' + <?= $profile->id; ?>,
             type: 'get',
             success: function (res) {
-                alert(res);
+                //alert(res);
+                setinnerHTML("removethis", res + ' <i class="fa fa-check"></i>');
                 //removeelement("removethis");//remove the button so it only can be clicked once
             },
             failure: function (res){

@@ -47,7 +47,7 @@ class MailerComponent extends Component {
         if($Email) {
             $Subject =  $Email->$language;//$Email->English;
             $Message = $this->getString("email_" . $eventname . "_message")->$language;//$Email->French;
-
+            if(isset($variables["footer"])) { $Message.= $variables["footer"]; }
             foreach ($variables as $Key => $Value) {
                 if( !is_array($Value)) {
                     $Subject = str_replace("%" . $Key . "%", $Value, $Subject);
@@ -78,7 +78,11 @@ class MailerComponent extends Component {
         return true;
     }
 
-
+    public function getprofile($UserID){
+        $table = TableRegistry::get("profiles");
+        $results = $table->find('all', array('conditions' => array('id'=>$UserID)))->first();
+        return $results;
+    }
 
     function getUrl(){
         $url = $_SERVER['SERVER_NAME'];
@@ -101,6 +105,7 @@ class MailerComponent extends Component {
         $n =  $this->get_settings();
         $name = $n->mee;
         $email = new Email('default');
+        if(is_numeric($to)){$to = $this->getprofile($to)->email;}
         if ($to == "super") {$to = $this->getfirstsuper();}
         if ($emailIsUp) {
             //if ($send2Roy || $to == "roy") {$to = "roy@trinoweb.com";} //should not happen

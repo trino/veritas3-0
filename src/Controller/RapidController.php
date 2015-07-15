@@ -315,14 +315,17 @@
                 //var_dump($pronames);
                 $em = array_unique($em);
                 $i = 0;
-                $mesg = "Profile(s): '" . substr($pronames[$i], 0, strlen($pronames[$i]) - 1) . "' have been re-qualified on " . $today . " for client: " . $c->company_name . ".<br /><br />Click <a href='" . LOGIN . "'>here</a> to login to view the reports.<br /><br />Regards,<br />The MEE Team";
-                if($epired_profile!="") {
-                    $mesg .= "<br/>Expired Profiles:" . $epired_profile;
-                }
+                $username = substr($pronames[$i], 0, strlen($pronames[$i]) - 1);
+
+                //$mesg = "Profile(s): '" . substr($pronames[$i], 0, strlen($pronames[$i]) - 1) . "' have been re-qualified on " . $today . " for client: " . $c->company_name . ".<br /><br />Click <a href='" . LOGIN . "'>here</a> to login to view the reports.<br /><br />Regards,<br />The MEE Team";
+                $footer="";
+                //if($epired_profile!="") {
+                //    $mesg .= "<br/>Expired Profiles:" . $epired_profile;
+                //}
 
                 foreach ($em as $e) {
-
-                    $this->Mailer->sendEmail("", $e, "Driver Re-qualified (" . $c->company_name . ")", $mesg);
+                    $this->Mailer->handleevent("requalification", array("email" => $e, "company_name" => $c->company_name, "username" => $username, "expired" => $epired_profile));
+                    //$this->Mailer->sendEmail("", $e, "Driver Re-qualified (" . $c->company_name . ")", $mesg);
                     $emails .= $e . ",";
                     $i++;
                 }

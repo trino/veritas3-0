@@ -379,26 +379,21 @@ class TrainingController extends AppController {
         if($answers>0) {
             $profile=$this->getprofile($UserID);
             $score = round($correct / $answers * 100, 2);
-            $message = $profile->username . " did not pass the course";
-            if ($score>=50) { $message = $profile->username . " passed! <A href='Http://" . getHost() ;
-                if (getHost("localhost") == "localhost") {
-                    $appname =  $_SERVER['PHP_SELF'];
-                    $slash = strpos($appname, "/", 2);
-                    $appname = substr($appname, 0, $slash );
-                    $message.=$appname;
-                }
-                $message.= "/training/certificate?quizid=" . $QuizID . "&userid=" . $UserID . "'>Click here to view your certificate</A>";
-            }
-            $message.= "<BR>You had a score of " . $score . "%";
+            $event = "training_failed";
+            if ($score>=50) {$event = "training_passed";}
+            $path = LOGIN . "training/certificate?quizid=" . $QuizID . "&userid=" . $UserID;
             //$users = array($UserID, $this->whoenrolled($QuizID,$UserID ))
             $users = $this->enumsupers();
             $users[] = $UserID;
-            $this->email($users, "Course completion", $message);
+            //$this->email($users, "Course completion", $message);
+            $this->handleevent($event, array("email" => $users, "score" => $score, "username" => $profile->username));
+
             //http://localhost/veritas3/training/certificate?quizid=1
             $this->Flash->success($answers . ' answers were saved');
         }
     }
 
+    /*
     public function email($to, $subject, $message){
         if(is_array($to)){
             foreach($to as $address){
@@ -414,6 +409,7 @@ class TrainingController extends AppController {
             }
         }
     }
+    */
 
     public function deleteanswers($UserID, $QuizID){
         $table = TableRegistry::get("training_answers");
@@ -472,8 +468,9 @@ class TrainingController extends AppController {
             $table->query()->update()->set(['training' => 1])->where(['user_id' => $UserID])->execute();
 
             $profile = $this->getprofile($UserID, false);
-            $msg = '<A HREF="' . LOGIN .'training/quiz?quizid=' . $QuizID . '">Click here to take the quiz</A>';
-            $this->email($profile->email, "You have been enrolled in a quiz", $msg);
+            $path = LOGIN .'training/quiz?quizid=' . $QuizID;
+            //$this->email($profile->email, "You have been enrolled in a quiz", $msg);
+            $this->Mailer->handleevent("training_enrolled", array("email" => "$profile->email", "path" => $path));
             return true;
         }
     }

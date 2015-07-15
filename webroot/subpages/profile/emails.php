@@ -88,16 +88,18 @@ foreach($emails as $Key => $Data){
     printvariables($Data["variables"]);
 
     foreach($Data as $Key2 => $Value){
-        echo '<div class="form-group"><label class="control-label">' . $Key2 . ': </label>';
-        $id = $Key . "_" . $Key2;
-        if(strpos($Key2, "subject") === 0){
-            if(!$fullmode){$Key2 = "[English]";}
-            echo '<INPUT ONCHANGE="haschanged = true;" ID="' . $id . '" TYPE="TEXT" CLASS="form-control email_' . $Key . '" NAME="' . $Key2 . '" VALUE="' . $Value . '">';
-        } elseif(strpos($Key2, "message") === 0) {
-            if(!$fullmode){$Key2 = "[French]";}
-            echo '<TEXTAREA ONCHANGE="haschanged = true;" ID="' . $id . '" CLASS="form-control email_' . $Key . '" NAME="' . $Key2 . '">' . $Value . '</TEXTAREA>';
+        if ($Key2 != "variables") {
+            echo '<div class="form-group"><label class="control-label">' . $Key2 . ': </label>';
+            $id = $Key . "_" . $Key2;
+            if (strpos($Key2, "subject") === 0) {
+                if (!$fullmode) {$Key2 = "[English]";}
+                echo '<INPUT ONCHANGE="haschanged = true;" ID="' . $id . '" TYPE="TEXT" CLASS="form-control email_' . $Key . '" NAME="' . $Key2 . '" VALUE="' . $Value . '">';
+            } elseif (strpos($Key2, "message") === 0) {
+                if (!$fullmode) {$Key2 = "[French]";}
+                echo '<TEXTAREA ONCHANGE="haschanged = true;" ID="' . $id . '" CLASS="form-control email_' . $Key . '" NAME="' . $Key2 . '">' . $Value . '</TEXTAREA>';
+            }
+            echo '</DIV>';
         }
-        echo '</DIV>';
     }
     echo '</div>';
 }
@@ -105,7 +107,7 @@ foreach($emails as $Key => $Data){
 <TFOOT>
 <TD COLSPAN="2" ALIGN="RIGHT" valign="center">
     <CENTER>WARNING: Emails can only be edited by the prrimary translator, or the changes will be overwritten when the strings table gets updated next</CENTER>
-    <button class="btn btn-danger" id="save" onclick="deletekey(lastkey);">Delete</button>
+    <button class="btn btn-danger" id="delete" onclick="deletekey(lastkey);">Delete</button>
     <button class="btn btn-primary" id="save" onclick="saveall(lastkey);">Save</button>
 </TD>
 </TFOOT></TABLE>
