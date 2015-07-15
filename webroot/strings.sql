@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 09, 2015 at 09:49 PM
+-- Generation Time: Jul 15, 2015 at 05:02 PM
 -- Server version: 5.6.17
 -- PHP Version: 5.5.12
 
@@ -32,14 +32,14 @@ CREATE TABLE IF NOT EXISTS `strings` (
   `English` varchar(4096) NOT NULL,
   `French` varchar(4096) NOT NULL,
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=680 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=686 ;
 
 --
 -- Dumping data for table `strings`
 --
 
 INSERT INTO `strings` (`ID`, `Name`, `English`, `French`) VALUES
-(1, 'Date', '1436450528', '<-- This is used by the system to auto-update'),
+(1, 'Date', '1436471354', '<-- This is used by the system to auto-update'),
 (2, 'dashboard_affirmative', 'Yes', 'Oui'),
 (3, 'dashboard_negative', 'No', 'Non'),
 (4, 'dashboard_selectall', 'Select All', 'Tout sélectionner'),
@@ -683,8 +683,8 @@ INSERT INTO `strings` (`ID`, `Name`, `English`, `French`) VALUES
 (653, 'flash_emailsent', 'Thank you for your submission!<P>An email has been sent to: %user%', 'Merci pour votre présentation!<P>Un e-mail a été envoyé à: %user%'),
 (654, 'uniform_pleaseselect', 'Please select a form', 'S''il vous plaît sélectionner un formulaire'),
 (655, 'profiles_sendforms', 'Send forms via email', 'Envoyer par e-mail les formes'),
-(656, 'email_gfs_subject', 'Please fill out these forms', ''),
-(657, 'email_gfs_message', '%username% has requested that you fill out these forms at your earliest convenience<BR>\n<A HREF="%path1%">Consent</A> and <A HREF="%path2%">Letter of experience</A><BR>\n<BR>\nRegards,<BR>\nThe %site% team', ''),
+(656, 'email_gfs_subject', 'Please fill out these forms', 'email_gfs_subject'),
+(657, 'email_gfs_message', '%username% has requested that you fill out these forms at your earliest convenience<BR>\n<A HREF="%path2%">Letter of experience</A><BR>\n<BR>\nRegards,<BR>\nThe %site% team', 'email_gfs_message'),
 (658, 'flash_emailwassent', 'The forms have been sent out to %email%', 'Les formulaires ont été envoyés à %email%'),
 (659, 'uniform_nouserid', 'Warning: user_id is not specified.', 'Attention: user_id est pas spécifié.'),
 (660, 'email_requalification_subject', 'Driver Re-qualified (%company_name%)', ''),
@@ -701,7 +701,13 @@ INSERT INTO `strings` (`ID`, `Name`, `English`, `French`) VALUES
 (671, 'infoorder_selectclient', 'Select a %client%', 'Sélectionner un %client%'),
 (672, 'documents_selectdocument', 'Select %Document%', 'Sélectionnez %document%'),
 (673, 'forms_credssent', 'Credentials sent', 'Pouvoirs envoyés'),
-(679, 'email_profilecreated_variables', 'username, email, path, createdby, type, password', '');
+(679, 'email_profilecreated_variables', 'username, email, path, createdby, type, password', ''),
+(680, 'email_documentcreated_variables', 'email, username, path, site, place, profile_type, company_name, document_type', ''),
+(681, 'email_ordercompleted_variables', 'email, username, profile_type, company_name, site, for', ''),
+(682, 'email_gfs_variables', 'email, path1, path2, site, username', ''),
+(683, 'email_newapplicant_subject', '', ''),
+(684, 'email_newapplicant_message', '', ''),
+(685, 'email_newapplicant_variables', 'email, app_id, profile_id, path', '');
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
