@@ -153,8 +153,9 @@
             $pros = $modal->profile_id;
             $profiles = TableRegistry::get('profiles')->find('all')->where(['id in('.$pros.')']);
             foreach($profiles as $p) {
-                if($p->profile_type == '2' && $p->email != "")
-                    array_push($email,$p->email);
+                if($p->profile_type == '2' && $p->email != "") {
+                    array_push($email, $p->email);
+                }
             }
             return $email;
         }
@@ -426,6 +427,7 @@
 
         function application_employment() {
             if(isset($_POST)) {
+                $Client_ID = 26;//GFS
                 $profile['fname']=$_POST['fname'];
                 $profile['lname']=$_POST['lname'];
                 $profile['mname']=$_POST['mname'];
@@ -448,14 +450,14 @@
                 if ($modal->save($p)) {
                     $p_id = $p->id;
                     $client= TableRegistry::get('clients');
-                    $c = $client->find()->where(['id'=>'26'])->first();
+                    $c = $client->find()->where(['id'=>$Client_ID])->first();
                     $p_ids = $c->profile_id;
                     $_POST['profile_id'] = $p_id;
                     $profile_ids = $p_ids.",".$p_id;
-                    $client->query()->update()->set(['profile_id'=>$profile_ids])->where(['id'=>'26'])->execute();
+                    $client->query()->update()->set(['profile_id'=>$profile_ids])->where(['id'=>$Client_ID])->execute();
 
                     //18  GFS Application for Employment  1   application_for_employment_gfs.php  application_for_employment_gfs  1   1   GFS Demande d'emploi    0
-                    $docID = $this->Document->constructdocument(0, "GFS Application for Employment", 18, $p_id, 26, 0);
+                    $docID = $this->Document->constructdocument(0, "GFS Application for Employment", 18, $p_id, $Client_ID, 0);
                     $_POST["document_id"] = $docID;
                     $_POST["address"] = $_POST["street"] . " " . $_POST["city"] . ", " . $_POST["province"] . " " . $_POST["country"];
                     $app = TableRegistry::get('application_for_employment_gfs');
@@ -463,13 +465,13 @@
 
                     $path = $this->Document->getUrl();
                     if($app->save($application)) {
-                        $from = array('info@' . $path => "isbmeereports.com");
-                        $emails = $this->getallrecruiters('26');
-                        foreach($emails as $e){
-                            //  $e = "info@trinoweb.com";
-                            $this->Mailer->sendEmail($from, $e, "Application for Employment", "A new applicant has applied for employment.<br><br> Please click <a href='".LOGIN."application/apply.php?form_id=".$application->id."' target='_blank'>here</a> to view the form.<br><br>Regards,<br>The MEE Team");
+                        $emails = $this->getallrecruiters($Client_ID);//GFS
+                        $path = LOGIN . "documents/view/" . $Client_ID . "/" . $docID . "?type=18";//18=document type ID
+                        $this->Mailer->handleevent("newapplicant", array("email" => $emails, "app_id" => $application->id, "profile_id" => $p_id, "path" => $path));
 
-                        }
+                        //foreach($emails as $e){
+                            //$this->Mailer->sendEmail($from, $e, "Application for Employment", "A new applicant has applied for employment.<br><br> Please click <a href='".LOGIN."application/apply.php?form_id=".$application->id."' target='_blank'>here</a> to view the form.<br><br>Regards,<br>The MEE Team");
+                       // }
                     }
                     $this->redirect('/application/apply.php?msg=success');
                 }

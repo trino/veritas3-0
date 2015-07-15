@@ -221,18 +221,24 @@ if (count($_POST) > 0) {
     }
     $userID = get("user_id", 81);//TEST DATA
     $Execute = true;//False = test mode
+
+
+    switch ($_GET["form"]) {
+        case 4://consent: offence, date_of_sentence, location go into consent_form_criminal
+            $offences = $_POST["offence"];
+            $date_of_sentences = $_POST["date_of_sentence"];
+            $locations = $_POST["location"];
+            unset($_POST["offence"]);
+            unset($_POST["date_of_sentence"]);
+            unset($_POST["location"]);
+            break;
+    }
+
     $query = constructsubdoc($_POST, $_GET["form"], $userID, $clientID, 0, $Execute);
     $redir = "";
     if($Execute) {
         switch ($_GET["form"]) {
             case 4://consent: offence, date_of_sentence, location go into consent_form_criminal
-                $offences = $_POST["offence"];
-                $date_of_sentences = $_POST["date_of_sentence"];
-                $locations = $_POST["location"];
-                unset($_POST["offence"]);
-                unset($_POST["date_of_sentence"]);
-                unset($_POST["location"]);
-
                 $data = array("consent_form_id" => mysqli_insert_id($con));//might use $query instead
                 foreach($offences as $ID => $offense){
                     $data["offence"] = $offense;
