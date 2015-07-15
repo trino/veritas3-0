@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 15, 2015 at 05:37 PM
+-- Generation Time: Jul 15, 2015 at 05:49 PM
 -- Server version: 5.6.17
 -- PHP Version: 5.5.12
 
@@ -39,7 +39,7 @@ CREATE TABLE IF NOT EXISTS `strings` (
 --
 
 INSERT INTO `strings` (`ID`, `Name`, `English`, `French`) VALUES
-(1, 'Date', '1436972537', '<-- This is used by the system to auto-update'),
+(1, 'Date', '1436974667', '<-- This is used by the system to auto-update'),
 (2, 'dashboard_affirmative', 'Yes', 'Oui'),
 (3, 'dashboard_negative', 'No', 'Non'),
 (4, 'dashboard_selectall', 'Select All', 'Tout sélectionner'),
@@ -683,7 +683,7 @@ INSERT INTO `strings` (`ID`, `Name`, `English`, `French`) VALUES
 (653, 'flash_emailsent', 'Thank you for your submission!<P>An email has been sent to: %user%', 'Merci pour votre présentation!<P>Un e-mail a été envoyé à: %user%'),
 (654, 'uniform_pleaseselect', 'Please select a form', 'S''il vous plaît sélectionner un formulaire'),
 (655, 'profiles_sendforms', 'Send forms via email', 'Envoyer par e-mail les formes'),
-(656, 'email_gfs_subject', 'Please fill out these forms', 'email_gfs_subject'),
+(656, 'email_gfs_subject', 'GFS - Application for employment', 'email_gfs_subject'),
 (657, 'email_gfs_message', 'Thank you for your interest in working with Gordon food Services.<BR>\n%username% has requested that you fill out the following forms to start the recruiting process.<BR>\n<A HREF="%path2%">Letter of Experience & Consent Form</A><BR>\n<BR>\nRegards,<BR>\nThe %site% team', 'email_gfs_message'),
 (658, 'flash_emailwassent', 'The forms have been sent out to %email%', 'Les formulaires ont été envoyés à %email%'),
 (659, 'uniform_nouserid', 'Warning: user_id is not specified.', 'Attention: user_id est pas spécifié.'),

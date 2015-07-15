@@ -1587,7 +1587,7 @@
                             $emails .= $p->email.",";
 
 
-                            $this->Mailer->sendEmail("", $p->email, $Subject, $msg);//what is the subject?
+                            $this->Mailer->sendEmail("", $p->email, $Subject, $msg);//what is the subject?, sendEmail should never be used
                         }
                     }
                   }
