@@ -585,7 +585,7 @@ function clientimage($webroot, $settings, $clients = ""){
 function profileimage($webroot, $profile = ""){
     $dir = "img/profile/";
     $filename = "default.png";
-    if (is_object($profile) && isset($profile->image) && file_exists($dir . $profile->image)) {
+    if (is_object($profile) && isset($profile->image) && $profile->image && file_exists($dir . $profile->image)) {
         $filename = $profile->image;
     }
     return $webroot . $dir . $filename;

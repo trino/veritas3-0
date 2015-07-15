@@ -205,6 +205,16 @@ function AJAX($Query){
     return file_get_contents($URL . $Query );
 }
 
+function handlemsg($strings = "") {
+    if (isset($_GET["msg"])) {
+        switch ($_GET["msg"]) {
+            case "success":
+                echo '<div class="alert alert-info"><button class="close" data-close="alert"></button>The form has been submitted. We will get in touch shortly.</div>';
+                break;
+        }
+    }
+}
+
 if (count($_POST) > 0) {
     $strings = CacheTranslations($language, array("uniform_%", "addorder_back"), $settings);
     includeCSS("login");
@@ -221,7 +231,7 @@ if (count($_POST) > 0) {
     }
     $userID = get("user_id", 81);//TEST DATA
     $Execute = true;//False = test mode
-
+    unset($_POST["msg"]);
 
     switch ($_GET["form"]) {
         case 4://consent: offence, date_of_sentence, location go into consent_form_criminal
@@ -283,15 +293,19 @@ if (count($_POST) > 0) {
         $dosubmit= false;
         echo '<div class="alert alert-danger display-hide no-print" style="display: block;">' . $strings["uniform_nouserid"] . '</div>';
     }
+    handlemsg($strings);
 
    // echo '<a href="javascript:window.print();" class="floatright btn btn-info no-print" style="float:right;">' . $strings["dashboard_print"] . '</a>';
     echo '<DIV ALIGN="CENTER"><img src="' . $webroot . 'img/logo.png"  /></DIV>';//gfs
 
+    $stages = "";
     switch (get("form")){
         case 9:
+            $stages = " (2 of 3)";
             include("forms/loe.php");//works!
         break;
         case 4:
+            $stages = " (3 of 3)";
             include("forms/consent.php");
         break;
         default:
@@ -355,7 +369,7 @@ function getq($data = ""){
 </SCRIPT>
 <?php if($doback){
     if ($dosubmit){ ?>
-        <INPUT TYPE="SUBMIT" class="btn btn-info" onclick="return checkformext();" VALUE="<?= $strings["forms_submit"]; ?>" STYLE="float: right;">
+        <INPUT TYPE="SUBMIT" class="btn btn-info" onclick="return checkformext();" VALUE="<?= $strings["forms_submit"] . $stages; ?>" STYLE="float: right;">
         <div class="clearfix"></div>
     <?php }
         backbutton($strings["addorder_back"]);
