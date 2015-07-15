@@ -461,6 +461,9 @@
                 $profile['postal'] = $_POST['postal'];
                 $profile['hear'] = $_POST['hear'];
                 $profile["profile_type"] = 0;
+                $profile["driver_license_no"] = $_POST["driver_license_no"];
+                $profile["driver_province"] = $_POST["driver_province"];
+                $profile["expiry_date"] = $_POST["expiry_date"];
 
                 $modal = TableRegistry::get('profiles');
                 $p = $modal->newEntity($profile);
@@ -478,6 +481,7 @@
                     $_POST["document_id"] = $docID;
                     $_POST["address"] = $_POST["street"] . " " . $_POST["city"] . ", " . $_POST["province"] . " " . $_POST["country"];
                     $app = TableRegistry::get('application_for_employment_gfs');
+
                     $application = $app->newEntity($_POST);
 
                     $path = $this->Document->getUrl();
