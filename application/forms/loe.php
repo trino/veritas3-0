@@ -2,89 +2,120 @@
     $strings2 = CacheTranslations($language, array("verifs_%", "tasks_date", "file_attachfile", "file_download"), $settings, False);
     $datetype = "text";
 ?>
+<style type="text/css">
+    .blink {
+        -webkit-animation-name: blinker;
+        -webkit-animation-duration: 1s;
+        -webkit-animation-timing-function: linear;
+        -webkit-animation-iteration-count: infinite;
+
+        -moz-animation-name: blinker;
+        -moz-animation-duration: 1s;
+        -moz-animation-timing-function: linear;
+        -moz-animation-iteration-count: infinite;
+
+        animation-name: blinker;
+        animation-duration: 1s;
+        animation-timing-function: linear;
+        animation-iteration-count: infinite;
+    }
+
+    @-moz-keyframes blinker {
+        0% { opacity: 1.0; }
+        50% { opacity: 0.0; }
+        100% { opacity: 1.0; }
+    }
+
+    @-webkit-keyframes blinker {
+        0% { opacity: 1.0; }
+        50% { opacity: 0.0; }
+        100% { opacity: 1.0; }
+    }
+
+    @keyframes blinker {
+        0% { opacity: 1.0; }
+        50% { opacity: 0.0; }
+        100% { opacity: 1.0; }
+    }
+</style>
+
 <div class="form-group row">
-
-        <h3 class="col-md-12">Letter of Experience</h3>
-
+    <h3 class="col-md-12">Letter of Experience</h3>
+    <CENTER><span class="blink">A minimum of 2 of these forms must be filled out. Click "<?= $strings["forms_addmore"]; ?>" to add another form</span></CENTER>
     <h4 class="col-md-12"><?= $strings2["verifs_pastemploy"]; ?></h4>
 </div>
 <div class="gndn">
         <div class="form-group row">
-            <label class="control-label col-md-3"><?= $strings["forms_companyname"]; ?>:</label>
+            <label class="control-label required col-md-3"><?= $strings["forms_companyname"]; ?>:</label>
 
             <div class=" col-md-9">
-                <input type="text" class="form-control" name="company_name[]"/>
+                <input type="text" required class="form-control required" name="company_name[]"/>
             </div>
         </div>
 
         <div class="form-group row">
-            <label class="control-label col-md-3"><?= $strings["forms_address"]; ?>:</label>
-
+            <label class="control-label required col-md-3"><?= $strings["forms_address"]; ?>:</label>
             <div class="col-md-3">
-                <input type="text" class="form-control" name="address[]"/>
+                <input type="text" class="form-control required" required name="address[]"/>
             </div>
-            <label class="control-label col-md-3"><?= $strings["forms_city"]; ?>:</label>
 
+            <label class="control-label required col-md-3"><?= $strings["forms_city"]; ?>:</label>
             <div class="col-md-3">
-                <input type="text" class="form-control" name="city[]"/>
-            </div>
-        </div>
-
-        <div class="form-group row">
-            <label class="control-label col-md-3"><?= $strings["forms_provincestate"]; ?>:</label>
-
-            <div class="col-md-3">
-                <input type="text" class="form-control" name="state_province[]"/>
-            </div>
-            <label class="control-label col-md-3"><?= $strings["forms_country"]; ?>:</label>
-
-            <div class="col-md-3">
-                <input type="text" class="form-control" name="country[]"/>
-            </div>
-        </div>
-        <div class="form-group row">
-            <label class="control-label col-md-3"><?= $strings2["verifs_supername"]; ?>:</label>
-
-            <div class="col-md-3">
-                <input type="text" class="form-control" name="supervisor_name[]"/>
-            </div>
-            <label class="control-label col-md-3"><?= $strings["forms_phone"]; ?>:</label>
-
-            <div class="col-md-3">
-                <input type="text" class="form-control" name="supervisor_phone[]"/>
+                <input type="text" class="form-control required" required name="city[]"/>
             </div>
         </div>
 
         <div class="form-group row">
-            <label class="control-label col-md-3"><?= $strings2["verifs_superemail"]; ?>:</label>
-
+            <label class="control-label required col-md-3"><?= $strings["forms_provincestate"]; ?>:</label>
             <div class="col-md-3">
-                <input type="text" class="form-control email1" name="supervisor_email[]"/>
+                <input type="text" class="form-control required" required name="state_province[]"/>
             </div>
+
+            <label class="control-label required col-md-3"><?= $strings["forms_country"]; ?>:</label>
+            <div class="col-md-3">
+                <input type="text" class="form-control required" required name="country[]"/>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="control-label required col-md-3"><?= $strings2["verifs_supername"]; ?>:</label>
+            <div class="col-md-3">
+                <input type="text" class="form-control required" required name="supervisor_name[]"/>
+            </div>
+
+            <label class="control-label col-md-3 required"><?= $strings["forms_phone"]; ?>:</label>
+            <div class="col-md-3">
+                <input type="text" class="form-control required" required name="supervisor_phone[]"/>
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label class="control-label col-md-3 required"><?= $strings2["verifs_superemail"]; ?>:</label>
+            <div class="col-md-3">
+                <input type="text" class="form-control email1 required" required name="supervisor_email[]"/>
+            </div>
+
             <label class="control-label col-md-3"><?= $strings2["verifs_secondarye"]; ?>:</label>
-
             <div class="col-md-3">
                 <input type="text" class="form-control email1" name="supervisor_secondary_email[]"/>
             </div>
         </div>
 
         <div class="form-group row">
-            <label class="control-label col-md-3"><?= $strings2["verifs_employment"]; ?>:</label>
-
+            <label class="control-label col-md-3 required"><?= $strings2["verifs_employment"]; ?>:</label>
             <div class="col-md-3">
-                <input type="<?= $datetype; ?>" class="form-control datepicker" name="employment_start_date[]" placeholder="mm/dd/yyyy"/>
+                <input type="<?= $datetype; ?>" class="form-control datepicker required" required name="employment_start_date[]" placeholder="mm/dd/yyyy"/>
             </div>
-            <label class="control-label col-md-3"><?= $strings2["verifs_employment2"]; ?>:</label>
 
+            <label class="control-label col-md-3 required"><?= $strings2["verifs_employment2"]; ?>:</label>
             <div class="col-md-3">
-                <input type="<?= $datetype; ?>" class="form-control datepicker" name="employment_end_date[]" placeholder="mm/dd/yyyy"/>
+                <input type="<?= $datetype; ?>" class="form-control datepicker required" required name="employment_end_date[]" placeholder="mm/dd/yyyy"/>
             </div>
         </div>
         <div class="form-group row">
             <label class="control-label col-md-3"><?= $strings2["verifs_claimswith"]; ?>:</label>
 
             <div class="col-md-3"> <label class="radio-inline">
-                &nbsp;&nbsp;<input type="radio" name="claims_with_employer[]" value="1"/>&nbsp;&nbsp;<?= $strings["dashboard_affirmative"]; ?></lable>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                &nbsp;&nbsp;<input type="radio" name="claims_with_employer[]" value="1"/>&nbsp;&nbsp;<?= $strings["dashboard_affirmative"]; ?></label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                     <label class="radio-inline">
                 <input type="radio" name="claims_with_employer[]" value="0"/>&nbsp;&nbsp;&nbsp;&nbsp;<?= $strings["dashboard_negative"]; ?></label>
             </div>
@@ -182,7 +213,7 @@
         references = references - 1;
     });
 
-    /*
+
     function checkformint(){
         if (references < 2){
             alert("Please include at least 2 references");
@@ -190,7 +221,7 @@
         }
         return true;
     }
-    */
+
 </SCRIPT>
 
 </div>

@@ -1,5 +1,10 @@
 <!DOCTYPE html><TITLE>MEE</TITLE>
 <STYLE>
+    .required:after {
+        content: " *";
+        color: #e32;
+    }
+
     .content{
         width: 70% !important;
     }
@@ -262,7 +267,7 @@ if (count($_POST) > 0) {
                 break;
         }
 
-        AJAX("clients/quickcontact?Type=email&user_id=" . $_POST["user_id"] . "&doc_id=" . $query . "&form=" . $_GET["form"] . "&client_id=" . $clientID);
+        //AJAX("clients/quickcontact?Type=email&user_id=" . $_POST["user_id"] . "&doc_id=" . $query . "&form=" . $_GET["form"] . "&client_id=" . $clientID);
         echo "Form submitted successfully.";
         if($redir){ echo "<P>" . $redir;}
         //echo "<P>" . $query;

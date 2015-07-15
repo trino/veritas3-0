@@ -233,8 +233,10 @@ function includeCSS($Class = ""){
     }
 }
 
-function provinces($name, $value = ""){
-    echo '<SELECT class="form-control" name="' . $name . '">';
+function provinces($name, $value = "", $required = false){
+    echo '<SELECT class="form-control" name="' . $name . '"';
+    if ($required) { echo " required"; }
+    echo '>';
     $acronyms = getprovinces("Acronyms");
     $Provinces = getprovinces("");
     $ID=0;

@@ -1,4 +1,10 @@
 <!DOCTYPE html><TITLE>Register with MEE</TITLE>
+<STYLE>
+    .required:after {
+        content: " *";
+        color: #e32;
+    }
+</STYLE>
 <?php
     include("api.php");
 
@@ -187,9 +193,9 @@ else{
         <p>&nbsp;</p>
         <div>
                     <div class="col-md-6">
-                    <label class="control-label col-md-4">Title:  </label>  
+                    <label class="control-label col-md-4 required">Title:  </label>
                     <div class="col-md-8">              
-                       <select class="form-control " name="title">
+                       <select class="form-control required" name="title" required>
                        <option value="Mr." <?php if(isset($profile) && $profile->title =='Mr.')echo "selected='selected'";?>>Mr.</option>
                        <option value="Mrs." <?php if(isset($profile) && $profile->title =='Mrs.')echo "selected='selected'";?>>Mrs.</option>
                        <option value="Ms." <?php if(isset($profile) && $profile->title =='Ms.')echo "selected='selected'";?>>Ms.</option>
@@ -198,15 +204,15 @@ else{
             </div>
             
             <div class="col-md-6">
-                    <label class="control-label col-md-3">Name: </label>  
+                    <label class="control-label col-md-3 required">Name: </label>
                     <div class="col-md-3">              
-                        <input class="form-control" name="lname" placeholder="Last" value="<?php if(isset($application_for_employment_gfs))echo $application_for_employment_gfs->lname;?>" />
+                        <input class="form-control" name="lname" placeholder="Last" required value="<?php if(isset($application_for_employment_gfs))echo $application_for_employment_gfs->lname;?>" />
                     </div> 
                     <div class="col-md-3">              
                         <input class="form-control" name="mname" placeholder="Middle" value="<?php if(isset($application_for_employment_gfs))echo $application_for_employment_gfs->mname;?>" />
                     </div> 
                     <div class="col-md-3">              
-                        <input class="form-control" name="fname" placeholder="First" value="<?php if(isset($application_for_employment_gfs))echo $application_for_employment_gfs->fname;?>" />
+                        <input class="form-control" name="fname" placeholder="First" required value="<?php if(isset($application_for_employment_gfs))echo $application_for_employment_gfs->fname;?>" />
                     </div>
             </div>
           
@@ -215,26 +221,26 @@ else{
         <p>&nbsp;</p>
 
               <div class="col-md-6">
-                    <label class="control-label col-md-4">Telephone: </label>  
+                    <label class="control-label col-md-4 required">Telephone: </label>
                     <div class="col-md-3">              
-                        <input class="form-control" name="code" placeholder="Area Code" value="<?php if(isset($application_for_employment_gfs))echo $application_for_employment_gfs->code;?>" />
+                        <input class="form-control required" name="code" required placeholder="Area Code" value="<?php if(isset($application_for_employment_gfs))echo $application_for_employment_gfs->code;?>" />
                     </div>  
                     <div class="col-md-5">              
-                        <input class="form-control" name="phone" value="<?php if(isset($application_for_employment_gfs))echo $application_for_employment_gfs->phone;?>" />
+                        <input class="form-control required" name="phone" required value="<?php if(isset($application_for_employment_gfs))echo $application_for_employment_gfs->phone;?>" />
                     </div>
             </div> 
             <div class="col-md-6">
-                    <label class="control-label col-md-3">Email: </label>  
+                    <label class="control-label col-md-3 required">Email: </label>
                     <div class="col-md-9">              
-                        <input class="form-control email" type="email"  name="email" required="required" value="<?php if(isset($application_for_employment_gfs))echo $application_for_employment_gfs->email;?>" />
+                        <input class="form-control email required" type="email"  name="email" required value="<?php if(isset($application_for_employment_gfs))echo $application_for_employment_gfs->email;?>" />
                     </div>  
             </div>
                  <div class="clearfix"></div>  
         <p>&nbsp;</p>
                <div class="col-md-6">
-                    <label class="control-label col-md-4">Gender:  </label>  
+                    <label class="control-label col-md-4 required">Gender:  </label>
                     <div class="col-md-8">
-                    <select class="form-control req_driver" name="gender">
+                    <select class="form-control req_driver required" required name="gender">
                         <option>Select Gender</option>
                         <option value="Male" <?php if(isset($profile)&& $profile->gender=='Male')echo 'selected';?>>Male</option>
                         <option value="Female" <?php if(isset($profile)&& $profile->gender=='Female')echo 'selected';?>>Female</option>
@@ -243,9 +249,9 @@ else{
                     </div>  
             </div>
             <div class="col-md-6">
-                    <label class="control-label col-md-3">Country of Birth:  </label>
+                    <label class="control-label col-md-3 required">Country of Birth:  </label>
                     <div class="col-md-9">              
-                        <input class="form-control birth" type="text"  name="placeofbirth" required="required" value="<?php if(isset($profile))echo $profile->placeofbirth;?>" />
+                        <input class="form-control birth required" type="text" name="placeofbirth" required value="<?php if(isset($profile))echo $profile->placeofbirth;?>" />
                     </div>  
             </div>
             
@@ -266,9 +272,9 @@ else{
         ?>
         
         <div class="col-md-12">
-            <label class="control-label col-md-3">Date of Birth (YYYY MM DD):   </label>
+            <label class="control-label col-md-3 required">Date of Birth (YYYY MM DD):   </label>
             <div class="col-md-3 no-margin">
-            <select name="doby" class="form-control req_driver ">
+            <select name="doby" class="form-control req_driver required">
             <?php for($i=date('Y');$i>1950; --$i){
               ?>
               <option value="<?php echo $i?>" <?php if(isset($profile)&& $i==$currentyear)echo 'selected';?>><?php echo $i?></option>
@@ -278,7 +284,7 @@ else{
             </select> 
             </div>
             <div class="col-md-3"> 
-            <select name="dobm" class="form-control req_driver ">
+            <select name="dobm" class="form-control req_driver required" required>
             <option value="01" <?php if(isset($profile)&& 01==$currentmonth)echo 'selected';?>>01</option>
             <option value="02" <?php if(isset($profile)&& 02==$currentmonth)echo 'selected';?>>02</option>
             <option value="03" <?php if(isset($profile)&& 03==$currentmonth)echo 'selected';?>>03</option>
@@ -334,12 +340,12 @@ else{
         <p>&nbsp;</p>
         
           <div class="col-md-12">
-            <label class="control-label col-md-4">Address:   </label>
+            <label class="control-label col-md-4 required">Address:   </label>
             <div class="col-md-4">
-            <input type="text" class="form-control req_driver" placeholder="Address" name="street" value="<?php if(isset($profile))echo $profile->street;?>">
+            <input type="text" class="form-control req_driver required" placeholder="Address" required name="street" value="<?php if(isset($profile))echo $profile->street;?>">
             </div>
             <div class="col-md-4">
-            <input type="text" class="form-control req_driver" placeholder="City" name="city" value="<?php if(isset($profile))echo $profile->city;?>">
+            <input type="text" class="form-control req_driver required" placeholder="City" required name="city" value="<?php if(isset($profile))echo $profile->city;?>">
             </div>
             </div>
           <div class="clearfix"></div>  
@@ -347,7 +353,7 @@ else{
         
          <div class="col-md-12">
           <div class="col-md-4">
-            <select class="form-control req_driver" name="province">
+            <select class="form-control req_driver required" name="province" required>
             <option selected="" value="">Select Province</option>
             <option value="AB" <?php if(isset($profile)&& $profile->province=='AB')echo 'selected';?>>Alberta</option>
             <option value="BC" <?php if(isset($profile)&& $profile->province=='BC')echo 'selected';?>>British Columbia</option>
@@ -364,17 +370,17 @@ else{
             <option value="YT" <?php if(isset($profile)&& $profile->province=='YT')echo 'selected';?>>Yukon Territories</option>
             </select>
             </div>
-            <div class="col-md-4"><input type="text" name="postal" class="form-control req_driver" placeholder="Postal code" value="<?php if(isset($profile))echo $profile->postal;?>"></div>
-            <div class="col-md-4"><input type="text" name="country" class="form-control req_driver" value="Canada" placeholder="Country" value="<?php if(isset($profile))echo $profile->country;?>"></div>
+            <div class="col-md-4"><input type="text" name="postal" class="form-control req_driver required" required placeholder="Postal code" value="<?php if(isset($profile))echo $profile->postal;?>"></div>
+            <div class="col-md-4"><input type="text" name="country" class="form-control req_driver required" required value="Canada" placeholder="Country" value="<?php if(isset($profile))echo $profile->country;?>"></div>
             </div>
             
               <div class="clearfix"></div>  
         <p>&nbsp;</p>
             <div class="col-md-12">
                
-                <label class="control-label col-md-6"> Where did you hear about us?</label> 
+                <label class="control-label col-md-6 required"> Where did you hear about us?</label>
                         <div class="col-md-6">              
-                            <select name="hear" class="form-control">
+                            <select name="hear" class="form-control required" required>
                                 <option value="Referral" <?php if(isset($profile)&& $profile->hear=='Referral')echo 'selected';?>>Referral</option>
                                 <option value="Company Website"  <?php if(isset($profile)&& $profile->hear=='Company Website')echo 'selected';?>>Company Website</option>
                                 <option value="Workopolis"  <?php if(isset($profile)&& $profile->hear=='Workopolis')echo 'selected';?>>Workopolis</option>
@@ -388,7 +394,7 @@ else{
                         </div>
             </div>
             <div class="col-md-12">
-                    <label class="control-label col-md-4">Have you ever applied for work with us before? </label>  
+                    <label class="control-label col-md-4 required">Have you ever applied for work with us before? </label>
                     <div class="col-md-3 radio-list yesNoCheck">
                         <label class="radio-inline">
                         <?php 
@@ -410,7 +416,7 @@ else{
                         else
                         {
                             ?>                                      
-                            <input type="radio" class="form-control" name="workedbefore" id="yesCheck" value="1" 
+                            <input type="radio" class="form-control" name="workedbefore" id="yesCheck" required value="1"
                             <?php if(isset($application_for_employment_gfs) && $application_for_employment_gfs->workedbefore=='1')echo "checked='checked'";?>/>
                             <?php
                         }
@@ -436,7 +442,7 @@ else{
                         else
                         {
                             ?>                                      
-                            <input type="radio" class="form-control" name="workedbefore" id="noCheck" value="0" 
+                            <input type="radio" class="form-control" name="workedbefore" id="noCheck" value="0" required
                             <?php if(isset($application_for_employment_gfs) && $application_for_employment_gfs->workedbefore=='0')echo "checked='checked'";?>/>
                             <?php
                         }

@@ -35,10 +35,13 @@
         //if(criminal_signature_applicant2!="" ||signature_company_witness2!="" ||criminal_signature_applicant!="" ||signature_company_witness!="")
         alert('Form submitted succesfully.')
         */
+
+        /*
         if($(".touched1").val() == 0 || $(".touched2").val() == 0 || $(".touched3").val() == 0 || $(".touched4").val() == 0 ){
             alert("Please save the signatures");
             return false;
         }
+        */
         return true;
         
     }
@@ -58,12 +61,12 @@
     <div class="gndn">
         <div class="form-group row col-md-12 splitcols">
 
-            <div class="col-md-4"><label class="control-label"><?= $strings["forms_lastname"]; ?>: </label>
-                <input type="text" class="form-control required" name="last_name" value="<?php if (isset($profile))echo $profile["lname"];?>"/>
+            <div class="col-md-4"><label class="control-label required"><?= $strings["forms_lastname"]; ?>: </label>
+                <input type="text" class="form-control required" required name="last_name" value="<?php if (isset($profile))echo $profile["lname"];?>"/>
             </div>
 
-            <div class="col-md-4"><label class="control-label"><?= $strings["forms_firstname"]; ?>: </label>
-                <input type="text" class="form-control required" name="first_name" value="<?php if (isset($profile))echo $profile["fname"];?>"/>
+            <div class="col-md-4"><label class="control-label required"><?= $strings["forms_firstname"]; ?>: </label>
+                <input type="text" class="form-control required" required name="first_name" value="<?php if (isset($profile))echo $profile["fname"];?>"/>
             </div>
 
             <div class="col-md-4"><label class="control-label"><?= $strings["forms_middlename"]; ?>: </label>
@@ -76,18 +79,18 @@
                 <input type="text" class="form-control" name="previous_last_name"/>
             </div>
 
-            <div class="col-md-4"><label class="control-label"><?= $strings["forms_placeofbirth"]; ?> (<?= $strings["forms_country"]; ?>): </label>
-                <input type="text" class="form-control" name="place_birth_country" value="Canada"/>
+            <div class="col-md-4"><label class="control-label required"><?= $strings["forms_placeofbirth"]; ?> (<?= $strings["forms_country"]; ?>): </label>
+                <input type="text" class="form-control required" required name="place_birth_country" value="Canada"/>
             </div>
 
 
-            <div class="col-md-4"><label class="control-label"><?= $strings["forms_dateofbirth"]; ?>: </label>
-                <input type="text" class="form-control datepicker required" placeholder="<?= $strings["forms_dateformat"]; ?>" value="<?php if (isset($profile))echo $profile["dob"];?>"
+            <div class="col-md-4"><label class="control-label required"><?= $strings["forms_dateofbirth"]; ?>: </label>
+                <input type="text" class="form-control datepicker required" required placeholder="<?= $strings["forms_dateformat"]; ?>" value="<?php if (isset($profile))echo $profile["dob"];?>"
                        name="birth_date"/>
             </div>
 
-            <div class="col-md-4"><label class="control-label"><?= $strings["forms_gender"]; ?>: </label>
-                <SELECT class="form-control" name="sex">
+            <div class="col-md-4"><label class="control-label required"><?= $strings["forms_gender"]; ?>: </label>
+                <SELECT class="form-control required" required name="sex">
                     <?php
                     if (isset($profile)) {
                         $gender = "Female";
@@ -100,8 +103,8 @@
                 </SELECT>
             </div>
 
-            <div class="col-md-4"><label class="control-label"><?= $strings["forms_phone"]; ?>: </label>
-                <input type="text" class="form-control" name="phone" value="<?php if (isset($profile))echo $profile["phone"];?>"/>
+            <div class="col-md-4"><label class="control-label required"><?= $strings["forms_phone"]; ?>: </label>
+                <input type="text" class="form-control required" required name="phone" value="<?php if (isset($profile))echo $profile["phone"];?>"/>
             </div>
 
 
@@ -118,38 +121,38 @@
                 <?php
                 $province = "";
                 if (isset($profile)){$province = $profile["driver_province"];}
-                provinces("driver_license_issued", $province);
+                provinces("driver_license_issued", $province, true);
                 ?>
             </div>
 
 
-            <div class="col-md-4"><label class="control-label"><?= $strings["forms_email"]; ?>: </label>
-                <input type="text" class="form-control email1 " name="applicants_email" value="<?php if (isset($profile))echo $profile["email"];?>"/>
+            <div class="col-md-4"><label class="control-label required"><?= $strings["forms_email"]; ?>: </label>
+                <input type="text" class="form-control email1 required" required name="applicants_email" value="<?php if (isset($profile))echo $profile["email"];?>"/>
             </div>
         </div>
 
         <div class="form-group row  col-md-12">
-            <label class="control-label"><?= $strings2["consent_currentadd"]; ?>: </label>
+            <label class="control-label required"><?= $strings2["consent_currentadd"]; ?>: </label>
         </div>
         <div class="form-group row col-md-12 splitcols">
             <div class="col-md-3">
-                <input type="text" class="form-control required" placeholder="<?= $strings2["consent_streetandn"]; ?>" value="<?php if (isset($profile))echo $profile["street"];?>"
+                <input type="text" class="form-control required" required placeholder="<?= $strings2["consent_streetandn"]; ?>" value="<?php if (isset($profile))echo $profile["street"];?>"
                        name="current_street_address"/>
             </div>
             <div class="col-md-2">
                 <input type="text" class="form-control" placeholder="<?= $strings2["consent_apartmentu"]; ?>" name="current_apt_unit" value="<?php if (isset($consent_detail))echo $consent_detail->current_apt_unit;?>"/>
             </div>
             <div class="col-md-2">
-                <input type="text" class="form-control required" placeholder="<?= $strings["forms_city"]; ?>" name="current_city" value="<?php if (isset($profile)) echo $profile["city"];?>"/>
+                <input type="text" class="form-control required" required placeholder="<?= $strings["forms_city"]; ?>" name="current_city" value="<?php if (isset($profile)) echo $profile["city"];?>"/>
             </div>
             <div class="col-md-2">
                 <?php
                 $province = "";
                 if (isset($profile)){$province = $profile["province"];}
-                provinces("current_province", $province); ?>
+                provinces("current_province", $province, true); ?>
             </div>
             <div class="col-md-3">
-                <input type="text" class="form-control required" placeholder="<?= $strings["forms_postalcode"]; ?>" name="current_postal_code" value="<?php if (isset($profile))echo $profile["postal"];?>"/>
+                <input type="text" class="form-control required" required placeholder="<?= $strings["forms_postalcode"]; ?>" name="current_postal_code" value="<?php if (isset($profile))echo $profile["postal"];?>"/>
             </div>
         </div>
 
