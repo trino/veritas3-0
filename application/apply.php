@@ -1314,7 +1314,7 @@ through 7 inclusive, and acknowledge that with my signature below.
         <div class="col-md-12">
         <div class="col-md-6">
             <label class="col-md-6">Dated</label>
-            <input type="text" name="dated" class="form-control date-picker" value="<?php if(isset($application_for_employment_gfs))echo $application_for_employment_gfs->dated;?>" />
+            <input type="text" name="dated" class="form-control datepicker" value="<?php if(isset($application_for_employment_gfs))echo $application_for_employment_gfs->dated;?>" />
         </div>
         <div class="col-md-6">
             <label class="col-md-12">Signature</label>
@@ -1418,3 +1418,20 @@ backbutton();
     </script>
 </body>
 </html>
+
+
+<script src="http://code.jquery.com/jquery-migrate-1.2.1.min.js" type="text/javascript"></script>
+<link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css" rel="stylesheet" type="text/css"/>
+<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js" type="text/javascript"></script>
+
+<SCRIPT>
+    language = 'English';
+    $(function () {
+        $(".datepicker").datepicker({
+            changeMonth: true,
+            changeYear: true,
+            yearRange: '1980:2020',
+            dateFormat: 'mm/dd/yy'
+        });
+    });
+</SCRIPT>
