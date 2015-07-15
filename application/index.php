@@ -263,12 +263,12 @@ if (count($_POST) > 0) {
                 }
                 break;
             case 9://letter of experience
-                $redir = '<A HREF="?form=4&user_id=' . $_POST["user_id"] . '"><br>Please fill out the consent form to complete the recruiting process.</A>';
+                $redir = '<script> window.location = "?form=4&user_id=' . $_POST["user_id"] . '"; </script>';
                 break;
         }
 
         //AJAX("clients/quickcontact?Type=email&user_id=" . $_POST["user_id"] . "&doc_id=" . $query . "&form=" . $_GET["form"] . "&client_id=" . $clientID);
-        echo "Form submitted successfully.";
+        echo "Application submitted successfully. A GFS employee will get in touch with you shortly";
         if($redir){ echo "<P>" . $redir;}
         //echo "<P>" . $query;
     } else {

@@ -217,13 +217,13 @@
         <DIV CLASS="splitcols">
             <div class="form-group col-md-6">
                 <?php include('../webroot/canvas/gfs_sign1.php'); ?>
-                <div class="col-sm-10">
+                <div class="col-sm-10" style="display: none">
                     <p class="no-print no-view" style="color: red;"><?= $strings["forms_signhere"]; ?></p>
                 </DIV>
             </div>
             <div class="form-group col-md-6">
                 <?php include('../webroot/canvas/gfs_sign2.php'); ?>
-                <div class="col-sm-10">
+                <div class="col-sm-10" style="display: none">
                     <p class="no-print no-view" style="color: red;"><?= $strings["forms_signhere"]; ?></p>
                 </DIV
             </div>
@@ -461,13 +461,13 @@
             <DIV CLASS="splitcols">
                 <div class="form-group col-md-6">
                     <?php include('../webroot/canvas/gfs_sign3.php'); ?>
-                    <div class="col-sm-10">
+                    <div class="col-sm-10" style="display: none">
                         <p class="no-print no-view" style="color: red;"><?= $strings["forms_signhere"]; ?></p>
                     </div>
                 </div>
                 <div class="form-group col-md-6">
                     <?php include('../webroot/canvas/gfs_sign4.php'); ?>
-                    <div class="col-sm-10">
+                    <div class="col-sm-10" style="display: none">
                         <p class="no-print no-view" style="color: red;"><?= $strings["forms_signhere"]; ?></p>
                     </div>
                 </div>
