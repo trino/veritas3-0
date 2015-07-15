@@ -61,9 +61,22 @@ foreach($emails as $Key => $Data){
     if(!$FirstEmail){$FirstEmail = $Key;}
     echo '<LI><A onclick="return show(' . "'" . $Key  . "'" . ')">' . $Key . '</A></LI>';
 }
-echo "</DIV></DIV></TD><TD><H4>Global variables:</H4> %event%, %webroot%, %created%, %login%, %variables%";
+echo "</DIV></DIV></TD><TD><H4>Global variables:</H4>";// %event%, %webroot%, %created%, %login%, %variables%, %site%";
 
-function printvariables($Variables){
+function globalvariable($name, $tooltiptext, $first = false){
+    if(!$first){ echo ", ";}
+    $tooltiptext = str_replace("*", " (for debugging purposes)", $tooltiptext);
+    echo '<SPAN TITLE="' . $tooltiptext . '">%' . $name . "%</SPAN>";
+}
+
+globalvariable("event", "Name of the event*", true);
+globalvariable("variables", "A list of all the variables being passed to the event handler*");
+globalvariable("webroot", "root directory of this site (" . $this->request->webroot . ")");
+globalvariable("created", "the date and time the email was sent out");
+globalvariable("login", "A hyperlink to the login page (" . LOGIN . ") saying 'Click here to login'");
+globalvariable("site", "name of the site (" . $settings->mee . ")");
+
+    function printvariables($Variables){
     if($Variables) {
         echo "<H4>Local Variables:</H4> %" . str_replace(", ", "%, %", $Variables) . "%<P>";
     }
