@@ -213,7 +213,7 @@
                                         if($clients && isset($client) && $profile->email){
                                             if (stristr("gordon food service", $client->company_name) || stristr("gfs", $client->company_name)) {
                                                 echo '<P><P><a id="removethis" href="';
-                                                echo '" onclick="return sendemails();" class="blue-stripe btn floatleft grey-cascade" style="margin-top:2px;width:75%;">' . $strings["profiles_sendforms"];
+                                                echo '" onclick="return sendemails();" class="blue-stripe btn floatleft grey-cascade" style="margin-top:2px;width:75%; display:none;">' . $strings["profiles_sendforms"];
                                                 echo ' <i class="icon-doc m-icon-white"></i></a>';
                                             }
                                         }

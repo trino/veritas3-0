@@ -76,7 +76,9 @@ globalvariable("created", "the date and time the email was sent out");
 globalvariable("login", "A hyperlink to the login page (" . LOGIN . ") saying 'Click here to login'");
 globalvariable("site", "name of the site (" . $settings->mee . ")");
 
-    function printvariables($Variables){
+echo "<BR>If the subject contains [DISABLED], this event will not be sent out";
+
+function printvariables($Variables){
     if($Variables) {
         echo "<H4>Local Variables:</H4> %" . str_replace(", ", "%, %", $Variables) . "%<P>";
     }
