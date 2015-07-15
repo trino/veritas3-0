@@ -33,7 +33,7 @@ if ($this->request->session()->read('debug')) {
 	
 		
         <div class="col-sm-12" id="sig2">
-            <input type="hidden" name="criminal_signature_applicant2" id="criminal_signature_applicant2" />
+            <input type="hidden" name="criminal_signature_applicant2" id="criminal_signature_applicant2" value="<?php if(isset($consent_detail) && $consent_detail->criminal_signature_applicant2){echo  $consent_detail->criminal_signature_applicant2; }?>" />
             <input type="hidden" class="touched" value="0" />
             <input type="hidden" class="touched_edit2" value="<?php if(isset($consent_detail) && $consent_detail->criminal_signature_applicant2){?>1<?php }else{?>0<?php }?>" />
             <label class="control-label"><?= $strings2["consent_sigapplica"]; ?></label><br>

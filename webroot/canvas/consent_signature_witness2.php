@@ -33,7 +33,7 @@ if ($this->request->session()->read('debug')) {
 
 
 <div class="col-sm-12" id="sig4">
-    <input type="hidden" name="signature_company_witness2" id="signature_company_witness2"/>
+    <input type="hidden" name="signature_company_witness2" id="signature_company_witness2" value="<?php if(isset($consent_detail) && $consent_detail->signature_company_witness2){echo  $consent_detail->signature_company_witness2; }?>"/>
     <input type="hidden" class="touched" value="0"/>
     <input type="hidden" class="touched_edit4"
            value="<?php if (isset($consent_detail) && $consent_detail->signature_company_witness2) { ?>1<?php } else { ?>0<?php } ?>"/>

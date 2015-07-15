@@ -382,12 +382,52 @@
 
                 <p><?= $strings2["consent_lastupdate"]; ?> 10/29/2012</p>
             </div>
+            
+            
 
             <div class="form-group col-md-6">
                 <?php include('canvas/consent_signature_driver.php'); ?>
             </div>
             <div class="form-group col-md-6">
                 <?php include('canvas/consent_signature_witness.php'); ?>
+            </div>
+            
+            <div class="col-md-12">
+            <p>&nbsp;</p>
+            
+            <div>
+                <div class="col-md-12"><strong>Reference #1</strong></div>
+                <div class="col-md-4">
+                <label>Phone Number</label>
+                <input type="text" name="r1_phone"  class="form-control" value="<?php if (isset($consent_detail))echo $consent_detail->r1_phone;?>" />
+                </div>
+                <div class="col-md-4">
+                <label>Name</label>
+                <input type="text" name="r1_name" class="form-control" value="<?php if (isset($consent_detail))echo $consent_detail->r1_name;?>" />
+                </div>
+                <div class="col-md-4">
+                <label>Position</label>
+                <input type="text" name="r1_position" class="form-control" value="<?php if (isset($consent_detail))echo $consent_detail->r1_position;?>" />
+                </div>
+            </div>
+            
+            <p>&nbsp;</p>
+            <div>
+                <div class="col-md-12"><strong>Reference #2</strong></div>
+                <div class="col-md-4">
+                <label>Phone Number</label>
+                <input type="text" name="r2_phone" class="form-control" value="<?php if (isset($consent_detail))echo $consent_detail->r2_phone;?>" />
+                </div>
+                <div class="col-md-4">
+                <label>Name</label>
+                <input type="text" name="r2_name" class="form-control" value="<?php if (isset($consent_detail))echo $consent_detail->r2_name;?>" />
+                </div>
+                <div class="col-md-4">
+                <label>Position</label>
+                <input type="text" name="r2_position" class="form-control" value="<?php if (isset($consent_detail))echo $consent_detail->r2_position;?>" />
+                </div>
+            </div>
+            <p>&nbsp;</p>
             </div>
 
             <div class="clearfix"></div>

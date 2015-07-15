@@ -1,7 +1,7 @@
 <!DOCTYPE html><TITLE>MEE</TITLE>
 <STYLE>
     .content{
-        width: 60% !important;
+        width: 70% !important;
     }
 
     @media print {
