@@ -3,7 +3,10 @@
     $datetype = "text";
 ?>
 <div class="form-group row">
-    <h3 class="col-md-12"><?= $strings2["verifs_pastemploy"]; ?></h3>
+
+        <h3 class="col-md-12">Letter of Experience</h3>
+
+    <h4 class="col-md-12"><?= $strings2["verifs_pastemploy"]; ?></h4>
 </div>
 <div class="gndn">
         <div class="form-group row">

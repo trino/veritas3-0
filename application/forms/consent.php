@@ -459,9 +459,11 @@
             <DIV CLASS="splitcols">
                 <div class="form-group col-md-6">
                     <?php include('../webroot/canvas/gfs_sign3.php'); ?>
+
                 </div>
                 <div class="form-group col-md-6">
                     <?php include('../webroot/canvas/gfs_sign4.php'); ?>
+                    <p class="no-print" style="color: red;">Please sign here then click save before proceeding</p>
                 </div>
             </DIV>
 <?php return; ?>

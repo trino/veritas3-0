@@ -45,6 +45,7 @@ $_GET['num']=1001;?>
 			</div>
 		</div>
         <div class="col-sm-10" style="width: 500px;">
+		
            <input type="hidden" name="criminal_signature_applicant2" id="criminal_signature_applicant2" />
             <input type="hidden" class="touched1" value="0" />
             <input type="hidden" class="touched_edit2" value="<?php if(isset($consent_detail) && $consent_detail->criminal_signature_applicant2){?>1<?php }else{?>0<?php }?>" />
@@ -71,6 +72,7 @@ $_GET['num']=1001;?>
                     }
                 }
                 ?>
+				
                 <br />
                 
     		</div>
