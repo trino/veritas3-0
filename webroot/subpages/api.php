@@ -8,9 +8,10 @@
             display: none !important;
         }
 
-        .portlet > .portlet-title > .caption {
+        .portlet > .portlet-title {
             /* only works outside of print mode */
-            color: red !important;
+            /*color: red !important;*/
+            display: none !important;
         }
     }
 </STYLE>
