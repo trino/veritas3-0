@@ -74,15 +74,15 @@ class LoginController extends AppController{
                     $this->redirect('/pages');
                 }
             } else{
-                if (!strpos($_SERVER['REQUEST_URI'], "login")) {
+                //if (!strpos($_SERVER['REQUEST_URI'], "login")) {//does not work (prevents the invalid username/password notification
                     $language = "English";
                     if (isset($_POST["language"])) {$language = $_POST["language"];}
                     if (isset($_GET["language"])) {$language = $_GET["language"];}
                     $this->Flash->error($this->Trans->getString("flash_invalidlogin", "", $language));
                     $URL = '/login?language=' . $language;
-                    if ($usedcookie || isset($_POST["nocookie"]) || $_GET["nocookie"]) {$URL .= "&nocookie";}
+                    if ($usedcookie || isset($_POST["nocookie"]) || isset($_GET["nocookie"])) {$URL .= "&nocookie";}
                     $this->redirect($URL);
-                }
+                //}
             }
         }else {
            // die();

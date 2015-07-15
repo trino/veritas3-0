@@ -2,7 +2,7 @@
 use Cake\ORM\TableRegistry;
 use Cake\Datasource\ConnectionManager;
 
-function printCSS(){
+function printCSS($_this = ""){
     ?>
     <STYLE>
         @media print {
@@ -36,8 +36,18 @@ function printCSS(){
                 display: none !important;
             }
         }
-    </STYLE>
     <?php
+    if (is_object($_this)){
+        $action = $_this->request->params['action'];
+         if ($action == "view" || $action == "vieworder") {
+             ?>
+             .no-view, .no-view * {
+                 display: none !important;
+             }
+            <?php
+         }
+    }
+    echo '</STYLE>';
 }
 
 function updatetable($Table, $PrimaryKey, $Value, $Data){
