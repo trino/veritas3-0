@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 15, 2015 at 05:02 PM
+-- Generation Time: Jul 15, 2015 at 07:26 PM
 -- Server version: 5.6.17
 -- PHP Version: 5.5.12
 
@@ -32,14 +32,14 @@ CREATE TABLE IF NOT EXISTS `strings` (
   `English` varchar(4096) NOT NULL,
   `French` varchar(4096) NOT NULL,
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=686 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=696 ;
 
 --
 -- Dumping data for table `strings`
 --
 
 INSERT INTO `strings` (`ID`, `Name`, `English`, `French`) VALUES
-(1, 'Date', '1436471354', '<-- This is used by the system to auto-update'),
+(1, 'Date', '1436975356', '<-- This is used by the system to auto-update'),
 (2, 'dashboard_affirmative', 'Yes', 'Oui'),
 (3, 'dashboard_negative', 'No', 'Non'),
 (4, 'dashboard_selectall', 'Select All', 'Tout sélectionner'),
@@ -683,12 +683,10 @@ INSERT INTO `strings` (`ID`, `Name`, `English`, `French`) VALUES
 (653, 'flash_emailsent', 'Thank you for your submission!<P>An email has been sent to: %user%', 'Merci pour votre présentation!<P>Un e-mail a été envoyé à: %user%'),
 (654, 'uniform_pleaseselect', 'Please select a form', 'S''il vous plaît sélectionner un formulaire'),
 (655, 'profiles_sendforms', 'Send forms via email', 'Envoyer par e-mail les formes'),
-(656, 'email_gfs_subject', 'Please fill out these forms', 'email_gfs_subject'),
-(657, 'email_gfs_message', '%username% has requested that you fill out these forms at your earliest convenience<BR>\n<A HREF="%path2%">Letter of experience</A><BR>\n<BR>\nRegards,<BR>\nThe %site% team', 'email_gfs_message'),
-(658, 'flash_emailwassent', 'The forms have been sent out to %email%', 'Les formulaires ont été envoyés à %email%'),
+(656, 'email_gfs_subject', 'GFS - Application for employment', 'email_gfs_subject'),
+(657, 'email_gfs_message', 'Thank you for your interest in working with Gordon food Services.<BR>\n%username% has requested that you fill out the following forms to start the recruiting process.<BR>\n<A HREF="%path2%">Letter of Experience & Consent Form</A><BR>\n<BR>\nRegards,<BR>\nThe %site% team', 'email_gfs_message'),
+(658, 'flash_emailwassent', 'The forms have been sent', 'Les formulaires ont été envoyés'),
 (659, 'uniform_nouserid', 'Warning: user_id is not specified.', 'Attention: user_id est pas spécifié.'),
-(660, 'email_requalification_subject', 'Driver Re-qualified (%company_name%)', ''),
-(661, 'email_requalification_message', 'Profile: %username% has been re-qualified on %created% for client: %company_name%<br>\n<br>\nClick <a href="%webroot%">here</a> to login to view the reports.<br>\n<br>\nRegards,<br>\nThe %site% Team', ''),
 (662, 'email_surveycomplete_subject', 'Survey form submitted', ''),
 (663, 'email_surveycomplete_message', 'The profile %username% has submitted the %type% days survey.<BR>\nClick <a href="%path%" target=''_blank''>here</a> to view the form.<BR>\n<BR>\nRegards,<BR>\nThe %site% Team.\n', ''),
 (664, 'profiles_expired', 'License Expired', 'licence expirée'),
@@ -705,9 +703,19 @@ INSERT INTO `strings` (`ID`, `Name`, `English`, `French`) VALUES
 (680, 'email_documentcreated_variables', 'email, username, path, site, place, profile_type, company_name, document_type', ''),
 (681, 'email_ordercompleted_variables', 'email, username, profile_type, company_name, site, for', ''),
 (682, 'email_gfs_variables', 'email, path1, path2, site, username', ''),
-(683, 'email_newapplicant_subject', '', ''),
-(684, 'email_newapplicant_message', '', ''),
-(685, 'email_newapplicant_variables', 'email, app_id, profile_id, path', '');
+(683, 'email_newapplicant_subject', 'Application for Employment', 'email_newapplicant_subject'),
+(684, 'email_newapplicant_message', 'A new applicant has applied for employment.<br><br>\nPlease click <a href="%path%" target="_blank">here</a> to view the form.<br><br>\nRegards,<br>\nThe MEE Team', 'email_newapplicant_message'),
+(685, 'email_newapplicant_variables', 'email, app_id, profile_id, path, site', ''),
+(686, 'email_test_subject', 'Test email', 'email_test_subject'),
+(687, 'email_test_message', 'This is test email', 'email_test_message'),
+(688, 'email_requalification_subject', 'Driver Re-qualified (%company_name%)', 'email_requalification_subject'),
+(689, 'email_requalification_message', 'Profile(s): %username% has/have been re-qualified on %created% for client: %company_name%<br>\nExpired profiles : %expired%\n<br>\nClick <a href="%webroot%">here</a> to login to view the reports.<br>\n<br>\nRegards,<br>\nThe %site% Team', 'email_requalification_message'),
+(690, 'email_training_enrolled_subject', 'You have been enrolled in a quiz', 'email_training_enrolled_subject'),
+(691, 'email_training_enrolled_message', '<A HREF="%path%">Click here to take the quiz</A>', 'email_training_enrolled_message'),
+(692, 'email_training_passed_subject', 'Course completion (Success!)', 'email_training_passed_subject'),
+(693, 'email_training_passed_message', '%username% passed!<BR>\n<A HREF="%path%">Click here to view the certificate</A><BR>\nScore: %score% %', 'email_training_passed_message'),
+(694, 'email_training_failed_subject', 'Course completion (Failure)', 'email_training_failed_subject'),
+(695, 'email_training_failed_message', '%username% not not pass the course', 'email_training_failed_message');
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

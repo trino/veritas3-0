@@ -134,11 +134,13 @@
                     }*/
                     $emails = $this->getallrecruiters('26');
                     $path = LOGIN . "application/" . $type . "days.php?p_id=" . $_POST['profile_id'] . "&form_id=" . $data->id ;
+                    $site = TableRegistry::get('settings')->find()->first()->mee;//, "site" => $site
+
                     foreach($emails as $e) {
                         //$this->Mailer->sendEmail($from, $e, "Survey form submitted", "The profile '" . $pro->username . "' has submitted the " . $type . "days survey. Click <a href='" . LOGIN . "application/" . $type . "days.php?p_id=" . $_POST['profile_id'] . "&form_id=" . $data->id . "' target='_blank'>here</a> to view the form.");
-                        $this->Mailer->handleevent("surveycomplete", array("email" => $e, "username" => $pro->username, "type" => $type, "path" => $path));
+                        $this->Mailer->handleevent("surveycomplete", array("email" => $e, "username" => $pro->username, "type" => $type, "path" => $path, "site" => $site));
                     }
-                    $this->Mailer->handleevent("surveycomplete", array("email" => "super", "username" => $pro->username, "type" => $type, "path" => $path));
+                    $this->Mailer->handleevent("surveycomplete", array("email" => "super", "username" => $pro->username, "type" => $type, "path" => $path, "site" => $site));
                     return $this->redirect('/application/' . $type . "days.php?msg=success");
                 } else
                     return $this->redirect('/application/' . $type . "days.php?msg=error");
@@ -162,7 +164,16 @@
 
         public function emaileveryone($profilesToEmail, $ProfileID, $POST) {
             //   $settings = $this->Settings->get_settings();
-
+            $emails = array();
+            foreach ($profilesToEmail as $Profile) {
+                $Profile = $this->getTableByAnyKey("sidebar", "user_id", $Profile);
+                if (is_object($Profile) && $Profile->email_profile == 1) {
+                    $emails[] = $Profile->email;
+                }
+            }
+            $path = LOGIN . "profiles/view/" . $ProfileID;
+            $this->Mailer->handleevent("profilecreated", array("username" => $_POST['username'],"email" => $emails, "path" =>$path, "createdby" => "Application", "type" => "Applicant", "password" => "[Blank]", "id" =>  $ProfileID ));
+    /*
             $Subject = "A new user just registered!";
             $Message = 'A new user just registered on ' . LOGIN . '<br><br>Name: ' . $POST["fname"] . " " . $POST["mname"] . " " . $POST["lname"] .
                 "<br><br>Username: " . $POST["username"] .
@@ -170,10 +181,11 @@
             foreach ($profilesToEmail as $Profile) {
                 $Profile = $this->getTableByAnyKey("sidebar", "user_id", $Profile);
                 if (is_object($Profile) && $Profile->email_profile == 1) {
-                    $Profile = $this->getTableByAnyKey("profiles", "id", $Profile->user_id)->email;
+                    $Profile = $Profile->email;
                     $this->Mailer->sendEmail("", $Profile, $Subject, $Message);//sendemail should never be used!
                 }
             }
+    */
         }
 
         public function Update1Column($Table, $PrimaryKey, $PrimaryValue, $Key, $Value) {
@@ -303,12 +315,17 @@
                 //var_dump($pronames);
                 $em = array_unique($em);
                 $i = 0;
+                $username = substr($pronames[$i], 0, strlen($pronames[$i]) - 1);
+
+                //$mesg = "Profile(s): '" . substr($pronames[$i], 0, strlen($pronames[$i]) - 1) . "' have been re-qualified on " . $today . " for client: " . $c->company_name . ".<br /><br />Click <a href='" . LOGIN . "'>here</a> to login to view the reports.<br /><br />Regards,<br />The MEE Team";
+                $footer="";
+                //if($epired_profile!="") {
+                //    $mesg .= "<br/>Expired Profiles:" . $epired_profile;
+                //}
 
                 foreach ($em as $e) {
-                    $mesg = "Profile(s): '" . substr($pronames[$i], 0, strlen($pronames[$i]) - 1) . "' have been re-qualified on " . $today . " for client: " . $c->company_name . ".<br /><br />Click <a href='" . LOGIN . "'>here</a> to login to view the reports.<br /><br />Regards,<br />The MEE Team";
-                    if($epired_profile!="")
-                        $mesg.= "<br/>Expired Profiles:".$epired_profile;
-                    $this->Mailer->sendEmail("", $e, "Driver Re-qualified (" . $c->company_name . ")", $mesg);
+                    $this->Mailer->handleevent("requalification", array("email" => $e, "company_name" => $c->company_name, "username" => $username, "expired" => $epired_profile));
+                    //$this->Mailer->sendEmail("", $e, "Driver Re-qualified (" . $c->company_name . ")", $mesg);
                     $emails .= $e . ",";
                     $i++;
                 }
@@ -467,7 +484,8 @@
                     if($app->save($application)) {
                         $emails = $this->getallrecruiters($Client_ID);//GFS
                         $path = LOGIN . "documents/view/" . $Client_ID . "/" . $docID . "?type=18";//18=document type ID
-                        $this->Mailer->handleevent("newapplicant", array("email" => $emails, "app_id" => $application->id, "profile_id" => $p_id, "path" => $path));
+                        $site = TableRegistry::get('settings')->find()->first()->mee;//, "site" => $site
+                        $this->Mailer->handleevent("newapplicant", array("email" => $emails, "app_id" => $application->id, "profile_id" => $p_id, "path" => $path, "site" => $site));
 
                         //foreach($emails as $e){
                             //$this->Mailer->sendEmail($from, $e, "Application for Employment", "A new applicant has applied for employment.<br><br> Please click <a href='".LOGIN."application/apply.php?form_id=".$application->id."' target='_blank'>here</a> to view the form.<br><br>Regards,<br>The MEE Team");

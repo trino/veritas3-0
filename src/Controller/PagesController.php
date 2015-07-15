@@ -134,7 +134,7 @@ class PagesController extends AppController {
     
     
     function test_email(){
-        $this->sendEmail(array('justdoit2045@gmail.com'=>'Email tester'),array('reshma.alee@gmail.com','justdoit_2045@hotmail.com'),'Test email','<b>This is test emaikl</b>');
+        $this->Mailer->handleevent("test", array("email"=> array('reshma.alee@gmail.com','justdoit_2045@hotmail.com')));
         die('here');
     }
     
