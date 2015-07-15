@@ -90,7 +90,8 @@ foreach($emails as $Key => $Data){
 }
 ?></TD></TBODY>
 <TFOOT>
-<TD COLSPAN="2" ALIGN="RIGHT">
+<TD COLSPAN="2" ALIGN="RIGHT" valign="center">
+    <CENTER>WARNING: Emails can only be edited by the prrimary translator, or the changes will be overwritten when the strings table gets updated next</CENTER>
     <button class="btn btn-danger" id="save" onclick="deletekey(lastkey);">Delete</button>
     <button class="btn btn-primary" id="save" onclick="saveall(lastkey);">Save</button>
 </TD>

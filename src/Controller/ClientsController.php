@@ -621,7 +621,7 @@
                     break;
                 case "email"://user_id doc_id form client_id to profile->created_by
                     $profile = $this->loadprofile($_POST["user_id"]);
-                    $creator = $this->loadprofile( $profile->created_by );
+                    $creator = $this->loadprofile( $profile->send_to);
                     $client = $this->loadprofile($_POST["client_id"], "id", "clients");
                     $document = $this->loadprofile($_POST["doc_id"], "id", "documents");
                     $URL = LOGIN . "documents/view/" . $_POST["client_id"] . "/" . $_POST["doc_id"] . "?type=" . $_POST["form"];
@@ -643,6 +643,7 @@
                     $profile = $this->loadprofile($_POST["user_id"]);
                     $URL = LOGIN . "application/index.php?user_id=" . $profile->id . "&form=";
                     $this->Mailer->handleevent("gfs", array("email" => $profile->email, "path1" => $URL . 4, "path2" => $URL . 9, "site" => $setting->mee, "username" => $this->request->session()->read('Profile.username')));
+                    $this->updatetable("profiles", "id", $profile->id, "send_to", $this->request->session()->read('Profile.id'));
                     echo $this->Trans->getString("flash_emailwassent", array("email" => $profile->email) );
                     break;
                 default:
@@ -651,6 +652,11 @@
             $this->layout = 'ajax';
             $this->render(false);
             return true;
+        }
+
+        public function updatetable($table, $primarykey, $keyvalue, $fieldname, $fieldvalue){
+            $table = TableRegistry::get($table);
+            $table->query()->update()->set([$fieldname => $fieldvalue])->where([$primarykey => $keyvalue])->execute();
         }
 
         public function loadprofile($UserID, $fieldname = "id", $table = "profiles") {

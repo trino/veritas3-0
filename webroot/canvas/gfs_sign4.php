@@ -55,7 +55,7 @@ $_GET['num']=1004;?>
     			<strong style="display: none;">OPTIONS:</strong>
     			<a href="#" onclick='addImage();' style="display: none;">Add Image</a>
                 <?php if(!isset($_GET['form_id'])){?>
-    			<a href="javascript:void(0)" onclick='$("#test<?php echo $_GET['num'];?>").data("jqScribble").clear(); $(".touched").val(0);'>Clear</a> 			
+    			<a href="javascript:void(0)" onclick='$("#test<?php echo $_GET['num'];?>").data("jqScribble").clear(); $(".touched4").val(0);'>Clear</a>
                 <a href="javascript:void(0)" onclick="$(this).parent().parent().find('.touched4').val('1');save_signature('1004');"><?= $strings["forms_save"]; ?></a>  	 <span class="saved1004" style="color: green;"></span>
                 <br />
                 <?php }?>

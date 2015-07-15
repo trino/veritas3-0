@@ -448,7 +448,7 @@
                 }
                 if (!count($sub2['con_at'])) {
                     ?>
-                    <div class="form-group col-md-12" style="display:block;margin-top:5px; margin-bottom: 5px;">
+                    <div class="form-group col-md-12 no-view" style="display:block;margin-top:5px; margin-bottom: 5px;">
                         <label class="control-label col-md-3"><?= $strings2["consent_attachid"]; ?>: </label>
 
                         <div class="col-md-9">

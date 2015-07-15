@@ -1,54 +1,47 @@
 <script>
 
     function save_signature(numb) {
-       
         $("#test" + numb).data("jqScribble").save(function (imageData) {
-   
-        $.post('<?php echo $webroot; ?>canvas/image_save.php', {imagedata: imageData}, function (response) {
-            if(response=='')
-            {
-                alert('There was problem saving the signatures, please go back and re-submit the consent form.');
-            }
-            if (numb == '1004') {
-
-                $('#signature_company_witness').val(response);
-                
-            }
-            if (numb == '1003') {
-
-                $('#criminal_signature_applicant').val(response);
-                
-            }
-            if (numb == '1002') {
-
-                $('#signature_company_witness2').val(response);
-                        
-            }
-            if (numb == '1001') {
-
-                $('#criminal_signature_applicant2').val(response);
-                
-            }
-            $('.saved'+numb).html('Saved');
-            /*
-             $('#hiddensub').click();*/
-        });
-        
+            $.post('<?php echo $webroot; ?>canvas/image_save.php', {imagedata: imageData}, function (response) {
+                if(response=='') {
+                    alert('There was problem saving the signatures, please go back and re-submit the consent form.');
+                }
+                switch (numb) {
+                    case '1004':
+                        $('#signature_company_witness').val(response);
+                        break;
+                    case '1003':
+                        $('#criminal_signature_applicant').val(response);
+                        break;
+                    case '1002':
+                        $('#signature_company_witness2').val(response);
+                        break;
+                    case '1001':
+                        $('#criminal_signature_applicant2').val(response);
+                        break;
+                }
+                $('.saved'+numb).html('Saved');
+                /*$('#hiddensub').click();*/
+            });
         });
     }
-        
-/*    
+
     function checkformint(){
-    
+/*
         save_signature('1001');
         save_signature('1002');
         save_signature('1003');
         save_signature('1004');
         //if(criminal_signature_applicant2!="" ||signature_company_witness2!="" ||criminal_signature_applicant!="" ||signature_company_witness!="")
         alert('Form submitted succesfully.')
+        */
+        if($(".touched1").val() == 0 || $(".touched2").val() == 0 || $(".touched3").val() == 0 || $(".touched4").val() == 0 ){
+            alert("Please save the signatures");
+            return false;
+        }
         return true;
         
-    }*/
+    }
 
     
 </script>
@@ -221,11 +214,15 @@
         <DIV CLASS="splitcols">
             <div class="form-group col-md-6">
                 <?php include('../webroot/canvas/gfs_sign1.php'); ?>
-                <p class="no-print no-view" style="color: red;"><?= $strings["forms_signhere"]; ?></p>
+                <div class="col-sm-10">
+                    <p class="no-print no-view" style="color: red;"><?= $strings["forms_signhere"]; ?></p>
+                </DIV>
             </div>
             <div class="form-group col-md-6">
                 <?php include('../webroot/canvas/gfs_sign2.php'); ?>
-                <p class="no-print no-view" style="color: red;"><?= $strings["forms_signhere"]; ?></p>
+                <div class="col-sm-10">
+                    <p class="no-print no-view" style="color: red;"><?= $strings["forms_signhere"]; ?></p>
+                </DIV
             </div>
         </DIV>
 
@@ -461,11 +458,15 @@
             <DIV CLASS="splitcols">
                 <div class="form-group col-md-6">
                     <?php include('../webroot/canvas/gfs_sign3.php'); ?>
-                    <p class="no-print no-view" style="color: red;"><?= $strings["forms_signhere"]; ?></p>
+                    <div class="col-sm-10">
+                        <p class="no-print no-view" style="color: red;"><?= $strings["forms_signhere"]; ?></p>
+                    </div>
                 </div>
                 <div class="form-group col-md-6">
                     <?php include('../webroot/canvas/gfs_sign4.php'); ?>
-                    <p class="no-print no-view" style="color: red;"><?= $strings["forms_signhere"]; ?></p>
+                    <div class="col-sm-10">
+                        <p class="no-print no-view" style="color: red;"><?= $strings["forms_signhere"]; ?></p>
+                    </div>
                 </div>
             </DIV>
 <?php return; ?>

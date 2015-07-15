@@ -211,18 +211,6 @@ if (count($_POST) > 0) {
     //var_dump($_POST);
     //$_POST = converge($_POST); //do not do
     echo '<div class="logo"></div><div class="content">';
-
-    switch ($_GET["form"]) {
-        case 4:////offence, date_of_sentence, location go into consent_form_criminal, then unset them
-            $offences = $_POST["offence"];
-            $date_of_sentences = $_POST["date_of_sentence"];
-            $locations = $_POST["location"];
-            unset($_POST["offence"]);
-            unset($_POST["date_of_sentence"]);
-            unset($_POST["location"]);
-            break;
-    }
-
     $dosubmit = false;
     if(isset($_GET["client_id"])){
         $clientID = $_GET["client_id"];
@@ -234,9 +222,17 @@ if (count($_POST) > 0) {
     $userID = get("user_id", 81);//TEST DATA
     $Execute = true;//False = test mode
     $query = constructsubdoc($_POST, $_GET["form"], $userID, $clientID, 0, $Execute);
+    $redir = "";
     if($Execute) {
         switch ($_GET["form"]) {
-            case 4:////offence, date_of_sentence, location go into consent_form_criminal
+            case 4://consent: offence, date_of_sentence, location go into consent_form_criminal
+                $offences = $_POST["offence"];
+                $date_of_sentences = $_POST["date_of_sentence"];
+                $locations = $_POST["location"];
+                unset($_POST["offence"]);
+                unset($_POST["date_of_sentence"]);
+                unset($_POST["location"]);
+
                 $data = array("consent_form_id" => mysqli_insert_id($con));//might use $query instead
                 foreach($offences as $ID => $offense){
                     $data["offence"] = $offense;
@@ -245,10 +241,14 @@ if (count($_POST) > 0) {
                     insertdb($con, "consent_form_criminal", $data, "", $Execute);
                 }
                 break;
+            case 9://letter of experience
+                $redir = '<A HREF="?form=4&user_id=' . $_POST["user_id"] . '">Please fill out the consent form</A>';
+                break;
         }
 
         AJAX("clients/quickcontact?Type=email&user_id=" . $_POST["user_id"] . "&doc_id=" . $query . "&form=" . $_GET["form"] . "&client_id=" . $clientID);
         echo "Thank you for your submission. We will be in contact shortly.";
+        if($redir){ echo "<P>" . $redir;}
         //echo "<P>" . $query;
     } else {
         echo "<P>" . $query . "<P>";
