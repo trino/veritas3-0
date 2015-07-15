@@ -46,14 +46,14 @@ $strings2 = CacheTranslations($language, array("verifs_%", "tasks_date", "file_a
                         ?>
 
                         
-                       <div class="form-group row">
+                       <div class="form-group col-md-12">
                             <label class="control-label col-md-3"><?= $strings["forms_companyname"]; ?>: </label>
                             <div class=" col-md-9">
                             <input type="text" class="form-control" name="company_name[]" value="<?php echo $emp->company_name;?>"  />
                             </div>
                         </div>
 
-                        <div class="form-group row">
+                        <div class="form-group col-md-12">
                             <label class="control-label col-md-3"><?= $strings["forms_address"]; ?>: </label>
                             <div class="col-md-3">
                                 <input type="text" class="form-control" name="address[]" value="<?php echo $emp->address;?>" />
@@ -65,7 +65,7 @@ $strings2 = CacheTranslations($language, array("verifs_%", "tasks_date", "file_a
                             </div>
                         </div>
 
-                        <div class="form-group row">
+                        <div class="form-group col-md-12">
                             <label class="control-label col-md-3"><?= $strings["forms_provincestate"]; ?>: </label>
                             <div class="col-md-3">
                                 <input type="text" class="form-control" name="state_province[]" value="<?php echo $emp->state_province;?>" />

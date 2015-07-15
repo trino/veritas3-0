@@ -35,6 +35,9 @@ function printCSS($_this = ""){
                 /*color: red !important;*/
                 display: none !important;
             }
+            .portlet{                border: 0px !important;
+            }
+            p,h1,h2,h3,h4,h5,h6,li,label,strong,input,select{font-size:80% !important;padding:2px !important;}
         }
     <?php
     if (is_object($_this)){
