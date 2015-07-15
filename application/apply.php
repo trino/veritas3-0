@@ -1228,14 +1228,14 @@ else{
                 </thead>
                 <tbody>
                     <tr>
-                        <td><input name="business_communication_name1" class="form-control" value="<?php if(isset($application_for_employment_gfs))echo $application_for_employment_gfs->business_communication_name1;?>" /></td>                    
-                        <td><input name="business_communication_address1" class="form-control" value="<?php if(isset($application_for_employment_gfs))echo $application_for_employment_gfs->business_communication_address1;?>" /></td>
-                        <td><input name="business_communication_occupation1" class="form-control" value="<?php if(isset($application_for_employment_gfs))echo $application_for_employment_gfs->business_communication_occupation1;?>" /></td>
+                        <td><input name="business_communication_name1" required class="form-control" value="<?php if(isset($application_for_employment_gfs))echo $application_for_employment_gfs->business_communication_name1;?>" /></td>
+                        <td><input name="business_communication_address1" required class="form-control" value="<?php if(isset($application_for_employment_gfs))echo $application_for_employment_gfs->business_communication_address1;?>" /></td>
+                        <td><input name="business_communication_occupation1" required class="form-control" value="<?php if(isset($application_for_employment_gfs))echo $application_for_employment_gfs->business_communication_occupation1;?>" /></td>
                     </tr>
                     <tr>
-                        <td><input name="business_communication_name2" class="form-control" value="<?php if(isset($application_for_employment_gfs))echo $application_for_employment_gfs->business_communication_name2;?>" /></td>                    
-                        <td><input name="business_communication_address2" class="form-control" value="<?php if(isset($application_for_employment_gfs))echo $application_for_employment_gfs->business_communication_address2;?>" /></td>
-                        <td><input name="business_communication_occupation2" class="form-control" value="<?php if(isset($application_for_employment_gfs))echo $application_for_employment_gfs->business_communication_occupation2;?>" /></td>
+                        <td><input name="business_communication_name2" class="form-control" required value="<?php if(isset($application_for_employment_gfs))echo $application_for_employment_gfs->business_communication_name2;?>" /></td>
+                        <td><input name="business_communication_address2" class="form-control" required value="<?php if(isset($application_for_employment_gfs))echo $application_for_employment_gfs->business_communication_address2;?>" /></td>
+                        <td><input name="business_communication_occupation2" class="form-control" required value="<?php if(isset($application_for_employment_gfs))echo $application_for_employment_gfs->business_communication_occupation2;?>" /></td>
                     </tr>
                 </tbody>
              </table>
@@ -1348,34 +1348,30 @@ backbutton();
             */
 
            if ($('.email').val() != '') {
-                        var un = $('.email').val();
-                        $.ajax({
-                            url: '<?php echo $webroot2;?>profiles/check_email',
-                            data: 'email=' + $('.email').val(),
-                            type: 'post',
-                            success: function (res) {
-                                res = res.trim();
-                                if (res == '1') {
-                                    $('.email').focus();
-                                    alert('Email already exists');
-                                    $('html,body').animate({
-                                            scrollTop: $('.login-form').offset().top
-                                        },
-                                        'slow');
-
-                                    return false;
-                                } else {
-                                    $(this).attr('disabled', 'disabled');
-
-                                     save_signature1('100');
-
-                                }
-                            }
-                        });
-                    } else {
-
-                       alert("The email address is required");
+                var un = $('.email').val();
+                $.ajax({
+                    url: '<?php echo $webroot2;?>profiles/check_email',
+                    data: 'email=' + $('.email').val(),
+                    type: 'post',
+                    success: function (res) {
+                        res = res.trim();
+                        if (res == '1') {
+                            $('.email').focus();
+                            alert('Email already exists');
+                            $('html,body').animate({
+                                    scrollTop: $('.login-form').offset().top
+                                },
+                                'slow');
+                            return false;
+                        } else {
+                            $(this).attr('disabled', 'disabled');
+                             save_signature1('100');
+                        }
                     }
+                });
+           } else {
+                alert("The email address is required");
+           }
       }
 
       $(function(){

@@ -13,7 +13,7 @@
             <label class="control-label col-md-3"><?= $strings["forms_companyname"]; ?>:</label>
 
             <div class=" col-md-9">
-                <input type="text" class="form-control" name="company_name[]" required/>
+                <input type="text" class="form-control" name="company_name[]"/>
             </div>
         </div>
 
@@ -51,7 +51,7 @@
             <label class="control-label col-md-3"><?= $strings["forms_phone"]; ?>:</label>
 
             <div class="col-md-3">
-                <input type="text" class="form-control" name="supervisor_phone[]" required/>
+                <input type="text" class="form-control" name="supervisor_phone[]"/>
             </div>
         </div>
 
@@ -182,6 +182,7 @@
         references = references - 1;
     });
 
+    /*
     function checkformint(){
         if (references < 2){
             alert("Please include at least 2 references");
@@ -189,6 +190,7 @@
         }
         return true;
     }
+    */
 </SCRIPT>
 
 </div>
