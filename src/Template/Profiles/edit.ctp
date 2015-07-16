@@ -200,7 +200,12 @@
                                             foreach ($products as $product) {
                                                  $alias = $product->Sidebar_Alias;
                                                 if ($alias && $alias !="bulk") {
-                                                    if ($sidebar->$alias == 1 && $product->Visible == 1) {
+                                                    $showit = false;
+                                                    if ($product->profile_types) {
+                                                        $profile_types = explode(",", $product->profile_types);
+                                                        $showit = in_array($profile->profile_type, $profile_types );
+                                                    }
+                                                    if ($sidebar->$alias == 1 && $product->Visible == 1 && $showit) {
                                                         echo '<br><a href="' . $this->request->webroot . 'orders/productSelection?driver=' . $profile->id;
                                                         echo '&ordertype=' . $product->Acronym . '"';
                                                         echo ' class="blue-stripe btn floatleft ' . $product->ButtonColor . '" style="margin-top:2px;width:75%;">' . $product->$title . $Trans;

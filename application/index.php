@@ -380,7 +380,7 @@ function getq($data = ""){
 }
 ?>
 
-<script>
+<SCRIPT>
     $(document).ready(function () {
         Metronic.init(); // init metronic core components
         Layout.init(); // init current layout
@@ -401,7 +401,7 @@ function getq($data = ""){
     <?php loadstringsJS($strings); ?>
 
     function checkformext(){
-        //do not put form checking code here, that goes inside the checkformint function
+        //do not put form checking code here, that goes inside the checkformint function in the same file as the form
         if (typeof checkformint == 'function') {
             return checkformint();
         } else {// No internal check
@@ -409,7 +409,7 @@ function getq($data = ""){
         }
         return false;//debugging purposes
     }
-</script>
+</SCRIPT>
 
 <?php if($doback){
     if ($dosubmit){ ?>

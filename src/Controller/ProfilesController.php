@@ -3331,6 +3331,8 @@ public function saveDriver()
 
         $this->set("order_products",  TableRegistry::get('order_products')->find('all') );
         $this->set("subdocuments", TableRegistry::get('subdocuments')->find('all') );
+
+        $this->set("profile_types",  TableRegistry::get('profile_types')->find()->select()->where(['placesorders' => 1]) );
     }
 
     function SaveFields($Table, $Data, $PrimaryKey, $Default = "0", $Ignore = "ID"){

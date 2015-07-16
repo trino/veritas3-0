@@ -146,6 +146,7 @@
         if ($RightSide){ $RightSide = '<small>' . $RightSide . "</small>"; }
         echo '<div class="col-md-' . $Cols . '" TITLE="' . $Tooltip . '"><div class="form-group"><label class="control-label">' . $Title . ': ' . $RightSide. '</label>';
     }
+
     function input($Type, $Name, $Value="", $Disabled = false, $Checked=false, $Required=false, $OtherParams = ""){
         if($Type=="checkbox"){echo "<BR>";}
         echo '<INPUT CLASS="form-control" TYPE="' . $Type . '" ID="' . $Name . '" NAME="' . $Name . '" VALUE="' . $Value . '"';
@@ -160,12 +161,14 @@
         echo ' onchange="changed=true;">';
         return $Checked;
     }
+
     function getvalue($Object, $Fieldname, $Default=""){
         if(is_object($Object)){
             return $Object->$Fieldname;
         }
         return $Default;
     }
+
     function iif($Value, $True, $False){
         if($Value){return $True;}
         return $False;
@@ -179,6 +182,7 @@
             echo "</select>";
         }
     }
+
     function makedropdown($is_disabled, $Name, $TheValue, $Language, $EnglishValues, $FrenchValues = ""){
         makeselect($is_disabled, $Name);
         if ($FrenchValues == ""){ $Language = "English"; }
@@ -188,11 +192,13 @@
         }
         echo '</select>';
     }
+
     function makedropdownoption($Key, $Value, $TheValue){
         echo '<option value="' . $Key . '"';
         if($TheValue == $Key){echo "selected='selected'";}
         echo '>' . $Value . '</option>';
     }
+
     function makecolordropdown($Name, $Colors, $Value){
         makeselect(false, $Name);
         echo '<option value="">Select a color class</option>';
@@ -203,6 +209,7 @@
         }
         makeselect();
     }
+
     function makeradio($webroot, $Name, $UserValue, $Value, $Icon = "icon-docs", $iconsize = "", $isDefault = false){
         echo '<LABEL CLASS="uniform-inline">';
         input("radio", $Name, $Value, False, $UserValue==$Value || ($UserValue =="" && $isDefault) );
@@ -213,12 +220,13 @@
         }
         echo '</LABEL>';
     }
+
     function makealiasselect($Name, $Columns, $UserValue = ""){
         makeselect(False, $Name);
         makedropdownoption("","Select a column",$UserValue);
         foreach ($Columns as $key => $value) {
-            if($value!="id") {
-                makedropdownoption($value, $value, $UserValue);
+            if($key!="id") {
+                makedropdownoption($key, $key, $UserValue);
             }
         }
         makeselect();
@@ -235,6 +243,7 @@
         }
         echo '</TABLE>';
     }
+
     function isolatefield($Obj, $Key, $Value){
         $array = array();
         foreach($Obj as $Object){
@@ -265,7 +274,7 @@
 
     $MakeCol = '<A HREF="javascript:void(0);" ONCLICK="' . "makecol('sidebar', 'Sidebar_Alias');" . '">Make Column</A>';
     tr("Sidebar Alias", 2, "Needs to point to a column in the sidebar table", false, $MakeCol);
-    makealiasselect("Sidebar_Alias", $sidebarcols,getvalue($selectedproduct, "Sidebar_Alias"));
+    makealiasselect("Sidebar_Alias", $sidebarcols, getvalue($selectedproduct, "Sidebar_Alias"));
 
     $MakeCol = '<A HREF="javascript:void(0);" ONCLICK="' . "makecol('blocks', 'Blocks_Alias');" . '">Make Column</A>';
     tr("Blocks Alias", 2, "Needs to point to a column in the blocks table", false, $MakeCol);
@@ -303,19 +312,24 @@
         echo '<INPUT STYLE="float: right" TYPE="BUTTON" NAME="delete" ONCLICK="return deleteproduct();" CLASS="btn btn-danger btnspc" VALUE="Delete">';
     }
 
-    tr("Show only these packages", 6, "If this is not blank, only these packages will be shown");//order_products
+    tr("Show only these packages", 3, "If this is not blank, only these packages will be shown");//order_products
     input("text", "Blocked", getvalue($selectedproduct, "Blocked"));
 
     tr("Product/Document IDs", 6, "If Bypass is enabled: Which products will show when a topblock is clicked. Otherwise it's which forms will show when placing an order");
     input("text", "doc_ids", getvalue($selectedproduct, "doc_ids"));
 
-    echo '</DIV></DIV></FORM><TABLE width="100%" style="margin-left: 15px;margin-right: 150px;"><TR><TD WIDTH="50%" STYLE="vertical-align: top;">';
+    tr("Show for profile types", 3, "Will only show for these profile types when viewing a profile");
+    input("text", "profile_types", getvalue($selectedproduct, "profile_types"));
+
+    echo '</DIV></DIV></FORM><TABLE width="100%" style="margin-left: 15px;margin-right: 150px;"><TR><TD WIDTH="25%" STYLE="vertical-align: top;">';
     echo '<FORM id="formlists1">';
     makelist("Products (1)", "addblocked", isolatefield($order_products, "number", "title"), getvalue($selectedproduct, "Blocked"));
     echo '</FORM><FORM id="formlists"></TD><TD WIDTH="25%" STYLE="vertical-align: top;">';
     makelist("Products (2)", "addblocked2", isolatefield($order_products, "number", "title"), getvalue($selectedproduct, "doc_ids"));
     echo '</TD><TD WIDTH="25%" STYLE="vertical-align: top;">';
     makelist("Documents", "addblocked3", isolatefield($subdocuments, "id", "title"), getvalue($selectedproduct, "doc_ids"));
+    echo '</TD><TD WIDTH="25%" STYLE="vertical-align: top;">';
+    makelist("Profile Types", "addblocked4", isolatefield($profile_types, "id", "title"), getvalue($selectedproduct, "profile_types"));
 ?></TD></TR></TABLE>
 
 <SCRIPT>
@@ -337,6 +351,11 @@
     function addblocked(ID){
         var added = addID("Blocked", ID);
         checkbox("addblocked." + ID, added);
+    }
+
+    function addblocked4(ID){
+        var added = addID("profile_types", ID);
+        checkbox("addblocked4." + ID, added);
     }
 
     function addblocked2(ID){
