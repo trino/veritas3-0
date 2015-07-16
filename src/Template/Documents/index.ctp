@@ -398,19 +398,22 @@
                         if ($sidebar->document_list == '1' && !isset($_GET["draft"])) {
                             //echo $this->Html->link(__('View'), ['action' => 'view', $docs->client_id, $docs->id], ['class' => btnclass("VIEW")]);
                             echo '<a class="' . btnclass("VIEW") . '" href="' . $VIEWURL . '">' . $strings["dashboard_view"] . '</a>';
-                        } ?>
-                        <?php
-                            if ($sidebar->document_edit == '1' && ($profiletype->caneditall == 1 || $this->request->session()->read('Profile.super')==1 || $this->request->session()->read('Profile.id')==$docs->user_id)) {
-                                echo '<a class="' . btnclass("EDIT") . '" href="' . $EDITURL .'">' . $strings["dashboard_edit"] . '</a>';
+                        }
+
+                        if ($sidebar->document_edit == '1' && ($profiletype->caneditall == 1 || $this->request->session()->read('Profile.super')==1 || $this->request->session()->read('Profile.id')==$docs->user_id)) {
+                            echo '<a class="' . btnclass("EDIT") . '" href="' . $EDITURL .'">' . $strings["dashboard_edit"] . '</a>';
+                        }
+
+                        $isssuper = $this->request->session()->read('Profile.super');
+                        if ($sidebar->document_delete == '1' && ($docs->order_id == 0 || $isssuper)) {
+                            if (!$isssuper && $docs->user_id == $this->request->session()->read('Profile.id')) {
+                                $dl_show = true;
+                            } else if ($isssuper) {
+                                $dl_show = true;
+                            } else {
+                                $dl_show = false;
                             }
-                        ?>
-                        <?php if ($sidebar->document_delete == '1' && $docs->order_id == 0) {
-                            if (!$this->request->session()->read('Profile.super') && $docs->user_id == $this->request->session()->read('Profile.id')) {
-                                $dl_show = 1;
-                            } else if ($this->request->session()->read('Profile.super')) {
-                                $dl_show = 1;
-                            } else $dl_show = 0;
-                            if ($dl_show == 1) {
+                            if ($dl_show) {
                                 ?>
                                     <a href="<?php echo $this->request->webroot; ?>documents/delete/<?php echo $docs->id; if(isset($_GET['draft'])){ echo "/draft"; } ?>"
                                        onclick="return confirm('<?= ProcessVariables($language, $strings["dashboard_confirmdelete"], array("name" => $docname), true); ?>');"

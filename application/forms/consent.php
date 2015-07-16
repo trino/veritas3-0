@@ -42,15 +42,28 @@
             return false;
         }
         */
-        return true;
+        <?php if(isset($_GET['msg'])){ ?>
+            var scrollto = "";
+            if($('.touched1').val()==0) {scrollto = '#test1001';}
+            if($('.touched2').val()==0) {scrollto = '#test1002';}
+            if($('.touched3').val()==0) {scrollto = '#test1003';}
+            if($('.touched4').val()==0) {scrollto = '#test1004';}
+            if(scrollto) {
+                alert('Please provide your signature');
+                $('html,body').animate({scrollTop: $(scrollto).offset().top}, 'slow');
+                return false;
+            }
+        <?php } ?>
 
-    }
+    return true;
+
+}
 
 
 </script>
 <?php
-    $strings2 = CacheTranslations($language, array("consent_%", "file_attachfile", "tasks_date", "profiles_name"), $settings, False);
-    $gender = "";
+$strings2 = CacheTranslations($language, array("consent_%", "file_attachfile", "tasks_date", "profiles_name"), $settings, False);
+$gender = "";
 ?>
 
 
@@ -414,7 +427,7 @@
                 <p>
 
                 <div class="col-md-5">1.&nbsp;&nbsp;<?= $strings2["consent_g1a"]; ?></div>
-                <div class="col-md-3"><input type="text" class="form-control" name="psp_employer"/></div>
+                <div class="col-md-3"><input type="text" class="form-control" disabled name="psp_employer" value="<?=$clientname; ?>"/></div>
                 <div class="col-md-4"><?= $strings2["consent_g1b"]; ?></div>
                 <br/><br/> <?= $strings2["consent_g1c"]; ?></p>
                 <p><?= $strings2["consent_g1d"]; ?></p>
@@ -426,7 +439,7 @@
                 <p>
 
                 <div class="col-md-2">2.&nbsp;&nbsp;<?= $strings2["consent_g2a"]; ?></div>
-                <div class="col-md-3"><input type="text" class="form-control" name="authorize_name_hereby"/></div>
+                <div class="col-md-3"><input type="text" class="form-control" value="<?=$clientname; ?>" disabled name="authorize_name_hereby"/></div>
                 <div class="col-md-7"><?= $strings2["consent_g2b"]; ?></div>
                 </p><br/><br/>
 
@@ -438,7 +451,7 @@
                 <label class="control-label col-md-2"><?= $strings2["tasks_date"]; ?>: </label>
 
                 <div class="col-md-2">
-                    <input type="text" class="form-control datepicker" name="authorize_date"/>
+                    <input type="text" class="form-control" value="<?= $today; ?>" disabled name="authorize_date"/>
                 </div>
                 <!--<label class="control-label col-md-3">Signature: </label>
                 <div class="col-md-3">
@@ -446,10 +459,10 @@
                 </div>-->
                 <input type="hidden" class="form-control" name="authorize_signature" />
 
-                <label class="control-label col-md-3"> <?= $strings2["profiles_name"]; ?>: </label>
+                <label class="control-label col-md-2"> <?= $strings2["profiles_name"]; ?>: </label>
 
                 <div class="col-md-5">
-                    <input type="text" class="form-control" name="authorize_name" value="<?php if (isset($consent_detail))echo $consent_detail->authorize_name;?>"/>
+                    <input type="text" class="form-control" name="authorize_name" <?php if (isset($profile)) {echo 'value="' . $profile["fname"] . " " . $profile["mname"] . " " . $profile["lname"] . '" disabled';}?>/>
                 </div>
             </div>
             <div class="col-md-12">

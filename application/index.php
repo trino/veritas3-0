@@ -76,6 +76,7 @@
 
     }
 </STYLE>
+
 <?php
 //include_once ($dirroot . '/../webroot/subpages/api.php');
 include_once ('api.php');
@@ -83,7 +84,7 @@ $offsethours = 0;
 $AllowUploads = ' style="display: none"';
 $doback = true;
 $dosubmit = true;
-
+$clientname = "Gordon Food Services";
 $language = get("language", "English");
 $settings = array();
 
@@ -94,6 +95,9 @@ function offsettime($value, $period = "minutes", $date = "", $format = "Y-m-d H:
     if ($value) {$newdate->modify($direction . $value . " " . $period);};
     return $newdate->format($format);
 }
+
+$today = date("Y-m-d");
+
 //returns the order ID
 function constructorder($title, $user_id, $client_id, $conf_recruiter_name, $conf_driver_name, $forms, $otherdata = "", $order_type = "PSA"){
     global $offsethours, $con;
@@ -214,16 +218,7 @@ function handlemsg($strings = "", $bypass = false) {
     $message = "";
     if ($bypass || isset($_GET["msg"])) {
         if (!$bypass && isset($_GET["msg"])) {$bypass = isset($_GET["msg"]);}
-        switch ($bypass) {
-            case "success":
-                $message = "Document saved successfully.";
-                break;
-            case "done":
-                $message = "Document saved successfully. A GFS employee will get in touch with you shortly";
-                break;
-
-        }
-
+        if (isset($strings["uniform_" . $bypass])) {$message = $strings["uniform_" . $bypass];}
         if ($message) {
             echo '<div class="alert alert-info"><button class="close" data-close="alert"></button>' . $message . '</div>';
         }
@@ -313,7 +308,37 @@ if (count($_POST) > 0) {
 
    // echo '<a href="javascript:window.print();" class="floatright btn btn-info no-print" style="float:right;">' . $strings["dashboard_print"] . '</a>';
     echo '<DIV ALIGN="CENTER"><img src="' . $webroot . 'img/logo.png"  /></DIV>';//gfs
+?>
+<SCRIPT>
+    $(document).ready(function () {
+        Metronic.init(); // init metronic core components
+        Layout.init(); // init current layout
+        // Login.init();
+        Demo.init();
+    });
 
+    var language = '<?= $language ?>';
+    $(function () {
+        $(".datepicker").datepicker({
+            changeMonth: true,
+            changeYear: true,
+            yearRange: '1980:2020',
+            dateFormat: 'mm/dd/yy'
+        });
+    });
+
+    <?php loadstringsJS($strings); ?>
+
+    function checkformext(){
+        if (typeof checkformint == 'function') {
+            return checkformint();
+        } else {// No internal check
+            return true;
+        }
+        return false;//debugging purposes
+    }
+</SCRIPT>
+<?php
     $stages = "";
     switch (get("form")){
         case 9:
@@ -354,6 +379,7 @@ function getq($data = ""){
     }
 }
 ?>
+
 <script>
     $(document).ready(function () {
         Metronic.init(); // init metronic core components
@@ -375,7 +401,9 @@ function getq($data = ""){
     <?php loadstringsJS($strings); ?>
 
     function checkformext(){
-        
+
+        //do not put form checking code here, that goes inside the checkformint function
+
         if (typeof checkformint == 'function') {
             return checkformint();
         } else {// No internal check
@@ -384,9 +412,10 @@ function getq($data = ""){
         return false;//debugging purposes
     }
 </script>
+
 <?php if($doback){
     if ($dosubmit){ ?>
-        <INPUT TYPE="SUBMIT" class="btn btn-info" onclick="return checkformext();" VALUE="<?= $strings["forms_submit"] . $stages; ?>" STYLE="float: right;">
+        <INPUT TYPE="SUBMIT" class="btn btn-danger btn-lg" onclick="return checkformext();" VALUE="Next Step <?= $stages; ?>" STYLE="float: right;" oldtitle="<?=$strings["forms_submit"];?>">
         <div class="clearfix"></div>
     <?php }
         backbutton($strings["addorder_back"]);

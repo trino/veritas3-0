@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 15, 2015 at 11:11 PM
+-- Generation Time: Jul 16, 2015 at 04:54 PM
 -- Server version: 5.6.17
 -- PHP Version: 5.5.12
 
@@ -32,14 +32,14 @@ CREATE TABLE IF NOT EXISTS `strings` (
   `English` varchar(4096) NOT NULL,
   `French` varchar(4096) NOT NULL,
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=696 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=701 ;
 
 --
 -- Dumping data for table `strings`
 --
 
 INSERT INTO `strings` (`ID`, `Name`, `English`, `French`) VALUES
-(1, 'Date', '1436981170', '<-- This is used by the system to auto-update'),
+(1, 'Date', '1436994693', '<-- This is used by the system to auto-update'),
 (2, 'dashboard_affirmative', 'Yes', 'Oui'),
 (3, 'dashboard_negative', 'No', 'Non'),
 (4, 'dashboard_selectall', 'Select All', 'Tout sélectionner'),
@@ -715,7 +715,12 @@ INSERT INTO `strings` (`ID`, `Name`, `English`, `French`) VALUES
 (692, 'email_training_passed_subject', 'Course completion (Success!)', 'email_training_passed_subject'),
 (693, 'email_training_passed_message', '%username% passed!<BR>\n<A HREF="%path%">Click here to view the certificate</A><BR>\nScore: %score% %', 'email_training_passed_message'),
 (694, 'email_training_failed_subject', 'Course completion (Failure)', 'email_training_failed_subject'),
-(695, 'email_training_failed_message', '%username% not not pass the course', 'email_training_failed_message');
+(695, 'email_training_failed_message', '%username% not not pass the course', 'email_training_failed_message'),
+(696, 'verifs_referencenum', 'Reference Number', 'Numéro De Réference'),
+(697, 'verifs_date', 'Application Date', 'Date de la demande'),
+(698, 'uniform_done', 'Thank you for submitting your application for Gordon Food Services. We will be in touch with you shortly.', 'Merci de nous envoyer votre demande de Gordon Food Services. Nous serons en contact avec vous sous peu.'),
+(699, 'uniform_success', 'Document saved successfully.', 'Document enregistré avec succès.'),
+(700, 'profiles_gfs', 'To place a MEE order on an applicant, please follow these steps:<P>\nStep 1 - click on edit beside candidate name below<BR>\nStep 2 - select profile type, save<BR>\nStep 3 - place order', 'Pour placer un ordre de MEE sur un candidat, s''il vous plaît suivez ces étapes:<P>\nÉtape 1 - cliquez sur modifier à côté nom de candidat ci-dessous <BR>\nÉtape 2 - sélectionner le type de profil, sauvegarder <BR>\nÉtape 3 - passer la commander');
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
