@@ -46,7 +46,7 @@ $_GET['num']=100;?>
 				<a href="#" onclick='$("#test").data("jqScribble").update({brushColor: "rgb(0,0,255)"});'>Blue</a>
 			</div>
 		</div>
-        <div class="col-sm-10" style="width: 700px;">
+        <div class="col-sm-10" style="width: 700px;padding:0px;">
             <input type="hidden" class="touched" value="0" />
             <input type="hidden" class="touched_edit" value="<?php if(isset($application_for_employment_gfs) && $application_for_employment_gfs->gfs_signature){?>1<?php }else{?>0<?php }?>" />
             <input type="hidden" name="gfs_signature" id="recruiter_signature"

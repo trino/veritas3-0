@@ -594,9 +594,12 @@ else{
         
         <p>&nbsp;</p>
 
+
         <div class="col-md-12">
             <h3 class="col-md-12">Driver's License</h3>
         </div>
+        <div class="col-md-12">
+
         <div class="col-md-4">
             <div class="form-group">
                 <label class="control-label required">Driver's License #: </label>
@@ -617,6 +620,8 @@ else{
                 <input name="expiry_date" required type="text" class="form-control req_driver datepicker">
             </div>
         </div>
+        </div>
+        <p>&nbsp;</p>
 
         <div class="col-md-12">
             <h3 class="col-md-12">Education</h3>
@@ -1336,12 +1341,16 @@ through 7 inclusive, and acknowledge that with my signature below.
         <div class="clearfix"></div>
         <p>&nbsp;</p>
         <div class="col-md-12">
-        <div class="col-md-6">
-            <label class="col-md-6">Dated</label>
+            <label class="col-md-12">Dated</label>
+
+            <div class="col-md-6">
             <input type="text" name="dated" class="form-control datepicker" value="<?php if(isset($application_for_employment_gfs))echo $application_for_employment_gfs->dated;?>" />
-        </div>
+        </div>         <div class="clearfix"></div>
+            <div class="col-md-12"><br></div>
         <div class="col-md-6">
-            <label class="col-md-12">Signature</label>
+            <label class="">Signature</label>
+            <font color="red"  class="">(Required)</font>
+
             <?php
             include('../webroot/canvas/apply.php');//won't work outside of cake
         ?>

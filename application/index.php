@@ -219,7 +219,7 @@ function handlemsg($strings = "", $bypass = false) {
                 $message = "Document saved successfully.";
                 break;
             case "done":
-                $message = "A GFS employee will get in touch with you shortly";
+                $message = "Document saved successfully. A GFS employee will get in touch with you shortly";
                 break;
 
         }
