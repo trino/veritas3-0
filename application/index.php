@@ -217,7 +217,7 @@ function AJAX($Query){
 function handlemsg($strings = "", $bypass = false) {
     $message = "";
     if ($bypass || isset($_GET["msg"])) {
-        if (!$bypass && isset($_GET["msg"])) {$bypass = isset($_GET["msg"]);}
+        if (!$bypass && isset($_GET["msg"])) {$bypass = $_GET["msg"];}
         if (isset($strings["uniform_" . $bypass])) {$message = $strings["uniform_" . $bypass];}
         if ($message) {
             echo '<div class="alert alert-info"><button class="close" data-close="alert"></button>' . $message . '</div>';
