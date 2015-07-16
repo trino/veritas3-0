@@ -62,11 +62,9 @@ echo "<SCRIPT LANGUAGE='JavaScript'>var Language = '" . $language . "';</SCRIPT>
 											<?= $strings["tasks_addtask"]; ?></a>
 
 <?php
-if ($this->request->session()->read('Profile.super') or $this->request->session()->read('Profile.admin')) {
-   if ($_SERVER['SERVER_NAME'] == "localhost") {
+if ($this->request->session()->read('Profile.super')) {
        echo '<br><a style="margin-top: 10px;" class="btn btn-warning" href="' . $this->request->webroot . 'profiles/cron/true">Run the CRON ' . $this->request->session()->read('timediff') . '</A>';
        echo '<br><a style="margin-top: 10px;" class="btn btn-warning" href="' . $this->request->webroot . 'profiles/cron?testemail">Send test email</A>';
-   }
 }
 ?>
 

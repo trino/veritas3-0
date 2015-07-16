@@ -2540,9 +2540,10 @@ public function saveDriver()
 /////////////////////////////////////////////////////////////////////////////////////process order
     function cron($debugging = false) {//////////////////////////////////send out emails
         $path = $this->Document->getUrl();
-        if ($debugging) {
+        if (isset($_GET["testemail"])) {
             $email = $this->request->session()->read('Profile.email');
-            $this->sendtaskreminder($email, "test", $path, "(TEST EMAIL)");
+            //$this->sendtaskreminder($email, "test", $path, "(TEST EMAIL)");
+            $this->Mailer->handleevent("test", array("email" => $email));
         }
 
         $setting = TableRegistry::get('settings')->find()->first();
@@ -2786,7 +2787,7 @@ public function saveDriver()
         if (file_exists("royslog.txt")){
             echo "<h2>Emails: </h2>";
             echo str_replace("\r\n", "<BR>", file_get_contents ("royslog.txt"));
-            unlink("royslog.txt");
+            //unlink("royslog.txt");
         }
         die();
     }

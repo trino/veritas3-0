@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 16, 2015 at 09:48 PM
+-- Generation Time: Jul 16, 2015 at 10:47 PM
 -- Server version: 5.6.17
 -- PHP Version: 5.5.12
 
@@ -32,14 +32,14 @@ CREATE TABLE IF NOT EXISTS `strings` (
   `English` varchar(4096) NOT NULL,
   `French` varchar(4096) NOT NULL,
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=701 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=703 ;
 
 --
 -- Dumping data for table `strings`
 --
 
 INSERT INTO `strings` (`ID`, `Name`, `English`, `French`) VALUES
-(1, 'Date', '1437066390', '<-- This is used by the system to auto-update'),
+(1, 'Date', '1437076129', '<-- This is used by the system to auto-update'),
 (2, 'dashboard_affirmative', 'Yes', 'Oui'),
 (3, 'dashboard_negative', 'No', 'Non'),
 (4, 'dashboard_selectall', 'Select All', 'Tout sélectionner'),
@@ -684,7 +684,7 @@ INSERT INTO `strings` (`ID`, `Name`, `English`, `French`) VALUES
 (654, 'uniform_pleaseselect', 'Please select a form', 'S''il vous plaît sélectionner un formulaire'),
 (655, 'profiles_sendforms', 'Send forms via email', 'Envoyer par e-mail les formes'),
 (656, 'email_gfs_subject', 'GFS - Application for employment', 'email_gfs_subject'),
-(657, 'email_gfs_message', 'Thank you for your interest in working with Gordon food Services.<BR>\n%username% has requested that you fill out the following forms to start the recruiting process.<BR>\n<A HREF="%path2%">Letter of Experience & Consent Form</A><BR>\n<BR>\nRegards,<BR>\nThe %site% team', 'email_gfs_message'),
+(657, 'email_gfs_message', 'Thank you for your interest in working with Gordon food Service.<BR>\n%username% has requested that you fill out the following forms to start the recruiting process.<BR>\n<A HREF="%path2%">Letter of Experience & Consent Form</A><BR>\n<BR>\nRegards,<BR>\nThe %site% team', 'email_gfs_message'),
 (658, 'flash_emailwassent', 'The forms have been sent', 'Les formulaires ont été envoyés'),
 (659, 'uniform_nouserid', 'Warning: user_id is not specified.', 'Attention: user_id est pas spécifié.'),
 (662, 'email_surveycomplete_subject', 'Survey form submitted', ''),
@@ -707,7 +707,7 @@ INSERT INTO `strings` (`ID`, `Name`, `English`, `French`) VALUES
 (684, 'email_newapplicant_message', 'A new applicant has applied for employment.<br><br>\nPlease click <a href="%path%" target="_blank">here</a> to view the form.<br><br>\nRegards,<br>\nThe MEE Team', 'email_newapplicant_message'),
 (685, 'email_newapplicant_variables', 'email, app_id, profile_id, path, site', ''),
 (686, 'email_test_subject', 'Test email', 'email_test_subject'),
-(687, 'email_test_message', 'This is test email', 'email_test_message'),
+(687, 'email_test_message', 'This is test email\n%variables%', 'email_test_message'),
 (688, 'email_requalification_subject', 'Driver Re-qualified (%company_name%)', 'email_requalification_subject'),
 (689, 'email_requalification_message', 'Profile(s): %username% has/have been re-qualified on %created% for client: %company_name%<br>\nExpired profiles : %expired%\n<br>\nClick <a href="%webroot%">here</a> to login to view the reports.<br>\n<br>\nRegards,<br>\nThe %site% Team', 'email_requalification_message'),
 (690, 'email_training_enrolled_subject', 'You have been enrolled in a quiz', 'email_training_enrolled_subject'),
@@ -718,9 +718,11 @@ INSERT INTO `strings` (`ID`, `Name`, `English`, `French`) VALUES
 (695, 'email_training_failed_message', '%username% not not pass the course', 'email_training_failed_message'),
 (696, 'verifs_referencenum', 'Reference Number', 'Numéro De Réference'),
 (697, 'verifs_date', 'Application Date', 'Date de la demande'),
-(698, 'uniform_done', 'Thank you for submitting your application for Gordon Food Services. We will be in touch with you shortly.', 'Merci de nous envoyer votre demande de Gordon Food Services. Nous serons en contact avec vous sous peu.'),
+(698, 'uniform_done', 'Thank you for submitting your application for Gordon Food Service. We will be in touch with you shortly.', 'Merci de nous envoyer votre demande de Gordon Food Services. Nous serons en contact avec vous sous peu.'),
 (699, 'uniform_success', 'Document saved successfully.', 'Document enregistré avec succès.'),
-(700, 'profiles_gfs', '<b>To place a MEE order on an applicant, please follow these steps:</b><BR>\nStep 1 - click on edit beside candidate name below<BR>\nStep 2 - select profile type, save<BR>\nStep 3 - place order', '<B>Pour placer un ordre de MEE sur un candidat, s''il vous plaît suivez ces étapes:</B><P>\nÉtape 1 - cliquez sur modifier à côté nom de candidat ci-dessous <BR>\nÉtape 2 - sélectionner le type de profil, sauvegarder <BR>\nÉtape 3 - passer la commander');
+(700, 'profiles_gfs', '<b>To place a MEE order on an applicant, please follow these steps:</b><BR>\nStep 1 - click on edit beside candidate name below<BR>\nStep 2 - select profile type, save<BR>\nStep 3 - place order', '<B>Pour placer un ordre de MEE sur un candidat, s''il vous plaît suivez ces étapes:</B><P>\nÉtape 1 - cliquez sur modifier à côté nom de candidat ci-dessous <BR>\nÉtape 2 - sélectionner le type de profil, sauvegarder <BR>\nÉtape 3 - passer la commander'),
+(701, 'email_test_variables', 'email', ''),
+(702, 'email_taskreminder_variables', 'title, email, description, dueby, domain, site', '');
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
