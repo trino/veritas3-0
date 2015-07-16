@@ -375,37 +375,7 @@ function getq($data = ""){
     <?php loadstringsJS($strings); ?>
 
     function checkformext(){
-        <?php
-        if(isset($_GET['msg']))
-        {
-            ?>
-            if($('.touched1').val()==0)
-            {
-                alert('Please provide your signature');
-                $('html,body').animate({scrollTop: $('#test1001').offset().top},'slow');
-                return false;
-            }
-            if($('.touched2').val()==0)
-            {
-                alert('Please provide your signature');
-                $('html,body').animate({scrollTop: $('#test1002').offset().top},'slow');
-                return false;
-            }
-            if($('.touched3').val()==0)
-            {
-                alert('Please provide your signature');
-                $('html,body').animate({scrollTop: $('#test1003').offset().top},'slow');
-                return false;
-            }
-            if($('.touched4').val()==0)
-            {
-                alert('Please provide your signature');
-                $('html,body').animate({scrollTop: $('#test1004').offset().top},'slow');
-                return false;
-            }
-            <?php
-        }
-        ?>
+        
         if (typeof checkformint == 'function') {
             return checkformint();
         } else {// No internal check

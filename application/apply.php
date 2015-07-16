@@ -1379,12 +1379,13 @@ backbutton();
         }
 
         function check_username() {
-            /*
+            
             if($('.touched').val()==0) {
-                alert('No Signature found.');
+                alert('Please provide the signature');
                 return false;
             }
-            */
+            
+            
 
            if ($('.email').val() != '') {
                 var un = $('.email').val();
