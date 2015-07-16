@@ -210,12 +210,17 @@ function AJAX($Query){
     return file_get_contents($URL . $Query );
 }
 
-function handlemsg($strings = "") {
-    if (isset($_GET["msg"])) {
-        switch ($_GET["msg"]) {
+function handlemsg($strings = "", $bypass = false) {
+    $message = "";
+    if ($bypass || isset($_GET["msg"])) {
+        if (!$bypass && isset($_GET["msg"])) {$bypass = isset($_GET["msg"]);}
+        switch ($bypass) {
             case "success":
-                echo '<div class="alert alert-info"><button class="close" data-close="alert"></button>The form has been submitted. We will get in touch shortly.</div>';
+                $message = "The form has been submitted. We will get in touch shortly.";
                 break;
+        }
+        if ($message) {
+            echo '<div class="alert alert-info"><button class="close" data-close="alert"></button>' . $message . '</div>';
         }
     }
 }
@@ -263,12 +268,13 @@ if (count($_POST) > 0) {
                 }
                 break;
             case 9://letter of experience
-                $redir = '<script> window.location = "?form=4&user_id=' . $_POST["user_id"] . '"; </script>';
+                $redir = '<script> window.location = "?form=4&msg=success&user_id=' . $_POST["user_id"] . '"; </script>';
                 break;
         }
 
         //AJAX("clients/quickcontact?Type=email&user_id=" . $_POST["user_id"] . "&doc_id=" . $query . "&form=" . $_GET["form"] . "&client_id=" . $clientID);
-        echo "Application submitted successfully. A GFS employee will get in touch with you shortly";
+        //echo "Application submitted successfully. A GFS employee will get in touch with you shortly";
+        handlemsg($strings, "success");
         if($redir){ echo "<P>" . $redir;}
         //echo "<P>" . $query;
     } else {

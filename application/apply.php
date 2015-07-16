@@ -599,22 +599,22 @@ else{
         </div>
         <div class="col-md-4">
             <div class="form-group">
-                <label class="control-label">Driver's License #: </label>
-                <input name="driver_license_no" type="text" class="form-control req_driver" value="dhg">
+                <label class="control-label required">Driver's License #: </label>
+                <input name="driver_license_no" type="text" required class="form-control req_driver" value="dhg">
             </div>
         </div>
         <div class="col-md-4">
             <div class="form-group">
-                <label class="control-label">Province issued: </label>
+                <label class="control-label required">Province issued: </label>
 
-                <select name="driver_province" class="form-control req_driver" required=""><option value="">Select Province</option><option value="AB">Alberta</option><option value="BC">British Columbia</option><option value="MB">Manitoba</option><option value="NB">New Brunswick</option><option value="NL">Newfoundland and Labrador</option><option value="NT">Northwest Territories</option><option value="NS">Nova Scotia</option><option value="NU">Nunavut</option><option value="ON">Ontario</option><option value="PE" selected="">Prince Edward Island</option><option value="QC">Quebec</option><option value="SK">Saskatchewan</option><option value="YT">Yukon Territories</option></select>
+                <select name="driver_province" required class="form-control req_driver" required=""><option value="">Select Province</option><option value="AB">Alberta</option><option value="BC">British Columbia</option><option value="MB">Manitoba</option><option value="NB">New Brunswick</option><option value="NL">Newfoundland and Labrador</option><option value="NT">Northwest Territories</option><option value="NS">Nova Scotia</option><option value="NU">Nunavut</option><option value="ON">Ontario</option><option value="PE" selected="">Prince Edward Island</option><option value="QC">Quebec</option><option value="SK">Saskatchewan</option><option value="YT">Yukon Territories</option></select>
 
             </div>
         </div>
         <div class="col-md-4">
             <div class="form-group">
-                <label class="control-label">Expiry Date: </label>
-                <input name="expiry_date" type="text" class="form-control req_driver datepicker">
+                <label class="control-label required">Expiry Date: </label>
+                <input name="expiry_date" required type="text" class="form-control req_driver datepicker">
             </div>
         </div>
 
