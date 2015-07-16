@@ -118,8 +118,17 @@ class MailerComponent extends Component {
                 ->subject($subject)
                 ->send($message);
         } else {
+
+
+            if($_SERVER['SERVER_NAME'] =="isbmeereports.com"){
+                $pather = "/home/isbmeereports/public_html/webroot/royslog.txt";
+            }else{
+                $pather = "royslog.txt";
+            }
+
+
             $dashes = "----------------------------------------------------------------------------------------------\r\n";
-            file_put_contents("royslog.txt", $dashes . "To: " . $to . "\r\nAt: " . date("l F j, Y - H:i:s") . "\r\nSubject: " . $subject .  "\r\n" . $dashes . str_replace("<BR>", "\r\n" , $message) . "\r\n", FILE_APPEND);
+            file_put_contents($pather, $dashes . "To: " . $to . "\r\nAt: " . date("l F j, Y - H:i:s") . "\r\nSubject: " . $subject .  "\r\n" . $dashes . str_replace("<BR>", "\r\n" , $message) . "\r\n", FILE_APPEND);
             //C:\wamp\www\veritas3-0\webroot\royslog.txt
         }
     }

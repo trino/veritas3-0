@@ -2786,7 +2786,7 @@ public function saveDriver()
         if (file_exists("royslog.txt")){
             echo "<h2>Emails: </h2>";
             echo str_replace("\r\n", "<BR>", file_get_contents ("royslog.txt"));
-            unlink("royslog.txt");
+          //  unlink("royslog.txt");
         }
         die();
     }
