@@ -84,7 +84,7 @@ $offsethours = 0;
 $AllowUploads = ' style="display: none"';
 $doback = true;
 $dosubmit = true;
-$clientname = "Gordon Food Services";
+$clientname = "Gordon Food Service";
 $language = get("language", "English");
 $settings = array();
 
