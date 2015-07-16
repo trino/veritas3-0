@@ -42,7 +42,7 @@
             return false;
         }
         */
-        <?php if(isset($_GET['msg'])){ ?>
+        <?php /*if(isset($_GET['msg'])){ ?>
             var scrollto = "";
             if($('.touched1').val()==0) {scrollto = '#test1001';}
             if($('.touched2').val()==0) {scrollto = '#test1002';}
@@ -53,7 +53,7 @@
                 $('html,body').animate({scrollTop: $(scrollto).offset().top}, 'slow');
                 return false;
             }
-        <?php } ?>
+        <?php } */?>
 
     return true;
 
