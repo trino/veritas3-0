@@ -489,7 +489,7 @@
                         $emails = $this->getallrecruiters($Client_ID);//GFS
                         $path = LOGIN . "documents/view/" . $Client_ID . "/" . $docID . "?type=18";//18=document type ID
                         $site = TableRegistry::get('settings')->find()->first()->mee;//, "site" => $site
-                        $this->Mailer->handleevent("newapplicant", array("email" => $emails, "app_id" => $application->id, "profile_id" => $p_id, "path" => $path, "site" => $site));
+//                        $this->Mailer->handleevent("newapplicant", array("email" => $emails, "app_id" => $application->id, "profile_id" => $p_id, "path" => $path, "site" => $site));
 
                         //foreach($emails as $e){
                             //$this->Mailer->sendEmail($from, $e, "Application for Employment", "A new applicant has applied for employment.<br><br> Please click <a href='".LOGIN."application/apply.php?form_id=".$application->id."' target='_blank'>here</a> to view the form.<br><br>Regards,<br>The MEE Team");

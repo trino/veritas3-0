@@ -584,7 +584,7 @@ else{
         <div class="col-md-4">
             <div class="form-group">
                 <label class="control-label required">Driver's License #: </label>
-                <input name="driver_license_no" type="text" required class="form-control req_driver" value="dhg">
+                <input name="driver_license_no" type="text" required class="form-control req_driver">
             </div>
         </div>
         <div class="col-md-4">
