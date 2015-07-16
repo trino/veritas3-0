@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 16, 2015 at 04:54 PM
+-- Generation Time: Jul 16, 2015 at 09:48 PM
 -- Server version: 5.6.17
 -- PHP Version: 5.5.12
 
@@ -39,7 +39,7 @@ CREATE TABLE IF NOT EXISTS `strings` (
 --
 
 INSERT INTO `strings` (`ID`, `Name`, `English`, `French`) VALUES
-(1, 'Date', '1436994693', '<-- This is used by the system to auto-update'),
+(1, 'Date', '1437066390', '<-- This is used by the system to auto-update'),
 (2, 'dashboard_affirmative', 'Yes', 'Oui'),
 (3, 'dashboard_negative', 'No', 'Non'),
 (4, 'dashboard_selectall', 'Select All', 'Tout sélectionner'),
@@ -699,7 +699,7 @@ INSERT INTO `strings` (`ID`, `Name`, `English`, `French`) VALUES
 (671, 'infoorder_selectclient', 'Select a %client%', 'Sélectionner un %client%'),
 (672, 'documents_selectdocument', 'Select %Document%', 'Sélectionnez %document%'),
 (673, 'forms_credssent', 'Credentials sent', 'Pouvoirs envoyés'),
-(679, 'email_profilecreated_variables', 'username, email, path, createdby, type, password', ''),
+(679, 'email_profilecreated_variables', 'username, email, path, createdby, type, password, id', ''),
 (680, 'email_documentcreated_variables', 'email, username, path, site, place, profile_type, company_name, document_type', ''),
 (681, 'email_ordercompleted_variables', 'email, username, profile_type, company_name, site, for', ''),
 (682, 'email_gfs_variables', 'email, path1, path2, site, username', ''),
@@ -720,7 +720,7 @@ INSERT INTO `strings` (`ID`, `Name`, `English`, `French`) VALUES
 (697, 'verifs_date', 'Application Date', 'Date de la demande'),
 (698, 'uniform_done', 'Thank you for submitting your application for Gordon Food Services. We will be in touch with you shortly.', 'Merci de nous envoyer votre demande de Gordon Food Services. Nous serons en contact avec vous sous peu.'),
 (699, 'uniform_success', 'Document saved successfully.', 'Document enregistré avec succès.'),
-(700, 'profiles_gfs', 'To place a MEE order on an applicant, please follow these steps:<P>\nStep 1 - click on edit beside candidate name below<BR>\nStep 2 - select profile type, save<BR>\nStep 3 - place order', 'Pour placer un ordre de MEE sur un candidat, s''il vous plaît suivez ces étapes:<P>\nÉtape 1 - cliquez sur modifier à côté nom de candidat ci-dessous <BR>\nÉtape 2 - sélectionner le type de profil, sauvegarder <BR>\nÉtape 3 - passer la commander');
+(700, 'profiles_gfs', '<b>To place a MEE order on an applicant, please follow these steps:</b><BR>\nStep 1 - click on edit beside candidate name below<BR>\nStep 2 - select profile type, save<BR>\nStep 3 - place order', '<B>Pour placer un ordre de MEE sur un candidat, s''il vous plaît suivez ces étapes:</B><P>\nÉtape 1 - cliquez sur modifier à côté nom de candidat ci-dessous <BR>\nÉtape 2 - sélectionner le type de profil, sauvegarder <BR>\nÉtape 3 - passer la commander');
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

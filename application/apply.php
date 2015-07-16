@@ -443,7 +443,7 @@ else{
                         else
                         {
                             ?>                                      
-                            <input type="radio" class="form-control" name="workedbefore" id="noCheck" value="0" required
+                            <input type="radio" class="form-control" name="workedbefore" id="noCheck" value="0" required checked
                             <?php if(isset($application_for_employment_gfs) && $application_for_employment_gfs->workedbefore=='0')echo "checked='checked'";?>/>
                             <?php
                         }
@@ -478,55 +478,35 @@ else{
             </div>
             <p>&nbsp;</p>
             <div class="col-md-6" style="padding-right:0px ;">
-                    <label class="control-label col-md-7">Are you 18 years of age or older? </label>  
+                    <label class="control-label col-md-7 required">Are you 18 years of age or older? </label>
                     <div class="col-md-4 radio-list" style="padding-right:0px ;">
                         <label class="radio-inline">
                         <?php 
-                        if(isset($_GET['form_id']))
-                        {
-                            if(isset($application_for_employment_gfs) && $application_for_employment_gfs->age=='1')
-                            {
+                            if(isset($_GET['form_id'])) {
+                                if(isset($application_for_employment_gfs) && $application_for_employment_gfs->age=='1') {
+                                    echo '&#10004;';
+                                } else {
+                                    echo '&#10006;';
+                                }
+                            } else {
                                 ?>
-                                &#10004;
+                                <input type="radio" class="form-control" name="age" required value="1"/>
                                 <?php
                             }
-                            else 
-                            {
-                                ?>
-                                &#10006;
-                                <?php
-                            } 
-                        }
-                        else
-                        {
-                            ?>                                      
-                            <input type="radio" class="form-control" name="age" value="1" <?php if(isset($application_for_employment_gfs) && $application_for_employment_gfs->age=='1')echo "checked='checked'";?>/>
-                            <?php
-                        }
-                         ?>              
+                        ?>
                         Yes
                         </label>
                         <label class="radio-inline">
                         <?php 
-                        if(isset($_GET['form_id']))
-                        {
-                            if(isset($application_for_employment_gfs) && $application_for_employment_gfs->age=='0')
-                            {
-                                ?>
-                                &#10004;
-                                <?php
-                            }
-                            else 
-                            {
-                                ?>
-                                &#10006;
-                                <?php
+                        if(isset($_GET['form_id'])) {
+                            if(isset($application_for_employment_gfs) && $application_for_employment_gfs->age=='0') {
+                                echo '&#10004;';
+                            } else {
+                                echo '&#10006;';
                             } 
-                        }
-                        else
-                        {
-                            ?>                                      
-                            <input type="radio" class="form-control" name="age" value="0" <?php if(isset($application_for_employment_gfs) && $application_for_employment_gfs->age=='0')echo "checked='checked'";?>/>
+                        } else {
+                            ?>
+                            <input type="radio" class="form-control" name="age" value="0" required checked/>
                             <?php
                         }
                          ?>
@@ -535,7 +515,7 @@ else{
                     </div>
             </div>
             <div class="col-md-6" style="padding-right:0px ;">
-                    <label class="control-label col-md-8">Are you legally eligible to work in Canada? </label>  
+                    <label class="control-label col-md-8 required">Are you legally eligible to work in Canada? </label>
                     <div class="col-md-4 radio-list" style="padding-right:0px ;">
                         <label class="radio-inline">
                         <?php 
@@ -557,7 +537,7 @@ else{
                         else
                         {
                             ?>                                      
-                            <input type="radio" class="form-control" name="legal" value="1" <?php if(isset($application_for_employment_gfs) && $application_for_employment_gfs->legal=='1')echo "checked='checked'";?>/>
+                            <input required type="radio" class="form-control" name="legal" value="1" <?php if(isset($application_for_employment_gfs) && $application_for_employment_gfs->legal=='1')echo "checked='checked'";?>/>
                             <?php
                         }
                          ?>              
@@ -583,7 +563,7 @@ else{
                         else
                         {
                             ?>                                      
-                            <input type="radio" class="form-control" name="legal" value="0" <?php if(isset($application_for_employment_gfs) && $application_for_employment_gfs->legal=='0')echo "checked='checked'";?>/>
+                            <input type="radio" required checked class="form-control" name="legal" value="0" <?php if(isset($application_for_employment_gfs) && $application_for_employment_gfs->legal=='0')echo "checked='checked'";?>/>
                             <?php
                         }
                          ?>
