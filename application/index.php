@@ -216,11 +216,7 @@ function handlemsg($strings = "", $bypass = false) {
         if (!$bypass && isset($_GET["msg"])) {$bypass = isset($_GET["msg"]);}
         switch ($bypass) {
             case "success":
-<<<<<<< HEAD
-                $message = "The form has been submitted.";
-=======
                 $message = "Document saved successfully.";
->>>>>>> origin/master
                 break;
             case "done":
                 $message = "A GFS employee will get in touch with you shortly";

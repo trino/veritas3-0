@@ -113,11 +113,11 @@
             </div>
 
 
-            <div class="col-md-4"><label class="control-label"><?= $strings["forms_driverslicense"]; ?>: </label>
-                <input type="text" class="form-control" name="driver_license_number" value="<?php if (isset($profile))echo $profile["driver_license_no"];?>"/>
+            <div class="col-md-4"><label class="control-label required "><?= $strings["forms_driverslicense"]; ?>: </label>
+                <input type="text" required class="form-control required" name="driver_license_number" value="<?php if (isset($profile))echo $profile["driver_license_no"];?>"/>
             </div>
 
-            <div class="col-md-4"><label class="control-label"><?= $strings["forms_provinceissued"]; ?>:</label>
+            <div class="col-md-4"><label class="control-label required"><?= $strings["forms_provinceissued"]; ?>:</label>
                 <?php
                 $province = "";
                 if (isset($profile)){$province = $profile["driver_province"];}
