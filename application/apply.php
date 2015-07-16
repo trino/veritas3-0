@@ -595,9 +595,12 @@ else{
         
         <p>&nbsp;</p>
 
+
         <div class="col-md-12">
             <h3 class="col-md-12">Driver's License</h3>
         </div>
+        <div class="col-md-12">
+
         <div class="col-md-4">
             <div class="form-group">
                 <label class="control-label required">Driver's License #: </label>
@@ -618,6 +621,8 @@ else{
                 <input name="expiry_date" required type="text" class="form-control req_driver datepicker">
             </div>
         </div>
+        </div>
+        <p>&nbsp;</p>
 
         <div class="col-md-12">
             <h3 class="col-md-12">Education</h3>
@@ -1336,26 +1341,29 @@ through 7 inclusive, and acknowledge that with my signature below.
         </div></div>
         <div class="clearfix"></div>
         <p>&nbsp;</p>
+
         <div class="col-md-12">
-        <div class="col-md-6">
-            <label class="col-md-6">Dated</label>
-            <input type="text" name="dated" class="form-control datepicker" value="<?= $today;?>" disabled/>
-        </div>
-        <div class="col-md-6">
-            <label class="col-md-12">Signature</label>
-            <?php
-            include('../webroot/canvas/apply.php');//won't work outside of cake
-        ?>
-        
+              <div class="col-md-6">
+                    <label class="col-md-6">Application Dated</label>
+                    <input type="text" name="dated" class="form-control datepicker" value="<?= $today;?>" disabled/>
+              </div>
+
+              <div class="col-md-6">
+                    <label class="">Signature</label>
+                    <font color="red"  class="">(Required)</font>
+                    <?php
+                        include('../webroot/canvas/apply.php');//won't work outside of cake
+                    ?>
+              </div>
+
+              <div class="clearfix"></div>
+              <p>&nbsp;</p>
         </div>
 
-         <div class="clearfix"></div>
-          <p>&nbsp;</p>
-          </div>
-          <div class="col-md-12 subz">
-            <a href="javascript:void(0);" class="btn btn-danger btn-lg pull-right" onclick="return check_username();">
-                Next Step <i class="m-icon-swapright m-icon-white"></i>
-            </a>
+        <div class="col-md-12 subz">
+              <a href="javascript:void(0);" class="btn btn-danger btn-lg pull-right" onclick="return check_username();">
+                    Next Step <i class="m-icon-swapright m-icon-white"></i>
+              </a>
         </div>
        
         <input type="submit" id="hiddensub" style="display: none;"/>

@@ -380,6 +380,37 @@ function getq($data = ""){
 }
 ?>
 
+<script>
+    $(document).ready(function () {
+        Metronic.init(); // init metronic core components
+        Layout.init(); // init current layout
+        // Login.init();
+        Demo.init();
+    });
+
+    language = '<?= $language ?>';
+    $(function () {
+            $(".datepicker").datepicker({
+                changeMonth: true,
+                changeYear: true,
+                yearRange: '1980:2020',
+                dateFormat: 'mm/dd/yy'
+            });
+        });
+
+    <?php loadstringsJS($strings); ?>
+
+    function checkformext(){
+        //do not put form checking code here, that goes inside the checkformint function
+        if (typeof checkformint == 'function') {
+            return checkformint();
+        } else {// No internal check
+            return true;
+        }
+        return false;//debugging purposes
+    }
+</script>
+
 <?php if($doback){
     if ($dosubmit){ ?>
         <INPUT TYPE="SUBMIT" class="btn btn-danger btn-lg" onclick="return checkformext();" VALUE="Next Step <?= $stages; ?>" STYLE="float: right;" oldtitle="<?=$strings["forms_submit"];?>">

@@ -42,15 +42,28 @@
             return false;
         }
         */
-        return true;
+        <?php if(isset($_GET['msg'])){ ?>
+            var scrollto = "";
+            if($('.touched1').val()==0) {scrollto = '#test1001';}
+            if($('.touched2').val()==0) {scrollto = '#test1002';}
+            if($('.touched3').val()==0) {scrollto = '#test1003';}
+            if($('.touched4').val()==0) {scrollto = '#test1004';}
+            if(scrollto) {
+                alert('Please provide your signature');
+                $('html,body').animate({scrollTop: $(scrollto).offset().top}, 'slow');
+                return false;
+            }
+        <?php } ?>
 
-    }
+    return true;
+
+}
 
 
 </script>
 <?php
-    $strings2 = CacheTranslations($language, array("consent_%", "file_attachfile", "tasks_date", "profiles_name"), $settings, False);
-    $gender = "";
+$strings2 = CacheTranslations($language, array("consent_%", "file_attachfile", "tasks_date", "profiles_name"), $settings, False);
+$gender = "";
 ?>
 
 
@@ -113,7 +126,7 @@
             </div>
 
 
-            <div class="col-md-4"><label class="control-label required "><?= $strings["forms_driverslicense"]; ?>: </label>
+            <!--div class="col-md-4"><label class="control-label required "><?= $strings["forms_driverslicense"]; ?>: </label>
                 <input type="text" required class="form-control required" name="driver_license_number" value="<?php if (isset($profile))echo $profile["driver_license_no"];?>"/>
             </div>
 
@@ -123,7 +136,7 @@
                 if (isset($profile)){$province = $profile["driver_province"];}
                 provinces("driver_license_issued", $province, true);
                 ?>
-            </div>
+            </div-->
 
 
             <div class="col-md-4"><label class="control-label required"><?= $strings["forms_email"]; ?>: </label>
@@ -132,7 +145,7 @@
         </div>
 
         <div class="form-group row  col-md-12">
-            <label class="control-label required"><?= $strings2["consent_currentadd"]; ?>: </label>
+            <label class="control-label required  col-md-12"><?= $strings2["consent_currentadd"]; ?>: </label>
         </div>
         <div class="form-group row col-md-12 splitcols">
             <div class="col-md-3">
@@ -157,7 +170,7 @@
         </div>
 
         <div class="form-group row col-md-12">
-            <label class="control-label"><?= $strings2["consent_previousad"]; ?>: </label>
+            <label class="control-label col-md-12 "><?= $strings2["consent_previousad"]; ?>: </label>
         </div>
 
         <div class="form-group row col-md-12 splitcols">
