@@ -1,5 +1,6 @@
 
 <h3 class="col-md-12">Consent for the release of police information and disclosure of personal information</h3>
+
 			<div class="form-body">
                 <div class="form-group col-md-12">
     				<label class="control-label col-md-2">Surname : </label>

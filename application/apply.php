@@ -7,7 +7,6 @@
 </STYLE>
 <?php
     include("api.php");
-
     $webroot2 = $_SERVER["REQUEST_URI"];
     $start = strpos($webroot2, "/", 1) + 1;
     $webroot2 = substr($webroot2, 0, $start);
@@ -187,6 +186,7 @@ else{
         
         <div class="col-md-12" align="center">
             <img src="<?php echo $webroot;?>img/logo.png" />
+            <h2>Gordon Food Service Application for Employment</h2>
             <div class="clearfix"></div>
         </div>
         <div class="clearfix"></div>
