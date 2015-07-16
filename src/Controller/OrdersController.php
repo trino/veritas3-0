@@ -380,10 +380,9 @@ class OrdersController extends AppController {
         $this->LoadSubDocs($_GET["forms"]);
     }
 
-    function getlastdocument($Profile_ID, $DocSubType, $Table){
+    function getlastdocument($Profile_ID, $DocSubType, $Table){//this is roy's sub for loading old data
         $consentform = TableRegistry::get('documents')->find()->order("id desc")->where(['uploaded_for' => $Profile_ID, "sub_doc_id" => $DocSubType])->first();
         //$consentform = TableRegistry::get("documents")->find('all', array('order' => "id DESC" ,'conditions' => array('uploaded_for' => $Profile_ID, "sub_doc_id" => $DocSubType)))->first();
-
         if ($consentform) {
             if ($consentform->order_id) {
                 $con_detail = TableRegistry::get($Table)->find()->where(['order_id' => $consentform->order_id])->first();//last
@@ -419,8 +418,8 @@ class OrdersController extends AppController {
             $con_cri = TableRegistry::get('consent_form_criminal');
             $sub2['con_cri'] = $con_cri->find()->where(['consent_form_id' => $con_detail->id])->all();
             $did= $con_detail->document_id;
-            $con_at = TableRegistry::get('doc_attachments');
-            $sub2['con_at'] = $con_at->find()->where(['order_id' => $did, 'sub_id' => 4])->all();
+            //$con_at = TableRegistry::get('doc_attachments');
+            $sub2['con_at'] = "";//$con_at->find()->where(['order_id' => $did, 'sub_id' => 4])->all();
             $this->set('sub2', $sub2);
             $this->set('consent_detail', $con_detail);
         }

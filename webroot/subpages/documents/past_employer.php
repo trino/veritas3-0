@@ -16,7 +16,10 @@
 <div id="toremove">
 <div class="clearfix"></div>
 <hr />
-<div class="form-group col-md-12">
+    <?php if (isset($_GET["references"])){
+        echo '<H2><translate>verifs_referencenum</translate>: ' . ($_GET["references"]+1) . '</H2><P>';
+    } ?>
+    <div class="form-group col-md-12">
                 
                                 <h4 class="control-label col-md-12"><translate>verifs_pastemploy</translate></h4>
                 </div>
@@ -79,12 +82,12 @@
                                <div class="form-group col-md-12">
                                     <label class="control-label col-md-3 required"><translate>verifs_employment</translate>:</label>
                                     <div class="col-md-3">
-                                        <input type="text" class="form-control date-picker" required name="employment_start_date[]"/>
+                                        <input type="text" class="form-control date-picker datepicker" required name="employment_start_date[]"/>
                                     </div>
 
                                     <label class="control-label col-md-3 required"><translate>verifs_employment2</translate>:</label>
                                     <div class="col-md-3">
-                                        <input type="text" class="form-control date-picker" required name="employment_end_date[]"/>
+                                        <input type="text" class="form-control date-picker datepicker" required name="employment_end_date[]"/>
                                     </div>
                                </div>
 
@@ -96,7 +99,7 @@
                                 </div>
                                  <label class="control-label col-md-3"><translate>verifs_dateclaims</translate>:</label>
                                  <div class="col-md-3">
-                                 <input type="text" class="form-control date-picker" name="claims_recovery_date[]"/>
+                                 <input type="text" class="form-control date-picker datepicker" name="claims_recovery_date[]"/>
                                  </div>
                                  </div>
                                  
@@ -119,9 +122,9 @@
                                 </div>
                                 
                                 <div class="form-group col-md-12">
-                                <label class="control-label col-md-3"><translate>tasks_date</translate>:</label>
+                                <label class="control-label col-md-3"><translate>verifs_date</translate>:</label>
                                 <div class="col-md-9">
-                                <input type="text" class="form-control date-picker" name="signature_datetime[]"/>
+                                <input type="text" class="form-control date-picker datepicker" disabled name="signature_datetime[]" value="<?= date("Y-m-d"); ?>"/>
                                 </div>
                                 </div>
                                 <div class="form-group col-md-12">
@@ -145,9 +148,28 @@
                                 </div>
                 
                 </div>
+    <?php
+    $doit = !isset($_GET["references"]);
+    if (!$doit){
+        $doit = $_GET["references"] > 1;
+    }
+    if ($doit){
+    ?>
         <div class="delete">
             <a href="javascript:void(0);" class="btn red no-print" id="delete"><translate>dashboard_delete</translate></a>
         </div>
+    <?php } ?>
   </div>
 
-<Script> translate(); </Script>
+<Script> translate();
+<?php if (isset($_GET["references"])) { ?>
+$(function () {
+    $(".datepicker").datepicker({
+        changeMonth: true,
+        changeYear: true,
+        yearRange: '1980:2020',
+        dateFormat: 'mm/dd/yy'
+    });
+});
+<?php } ?>
+</Script>

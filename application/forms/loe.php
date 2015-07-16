@@ -4,12 +4,13 @@
 ?>
 <div class="form-group row">
     <center><h3 class="col-md-12">Letter of Experience</h3></center>
+    <H2> <?= $strings["verifs_referencenum"]; ?>: 1 </H2>
     <h3 class="col-md-12"><?= $strings2["verifs_pastemploy"]; ?></h3>
 </div>
 <div class="gndn">
         <div class="form-group row">
             <div class=" col-md-12">
-            <font color="red" style="">A minimum of 2 of references must be filled out. Click "<?= $strings["forms_addmore"]; ?>" to add another form</font>
+            <font color="red" style="display:none;">A minimum of 2 of references must be filled out. Click "<?= $strings["forms_addmore"]; ?>" to add another form</font>
 </div>
             <label class="control-label  col-md-12"></label>
 
@@ -113,7 +114,7 @@
         </div>
 
         <div class="form-group row">
-            <label class="control-label col-md-3"><?= $strings2["tasks_date"]; ?>:</label>
+            <label class="control-label col-md-3"><?= $strings2["verifs_date"]; ?>:</label>
 
             <div class="col-md-3">
                 <input type="<?= $datetype; ?>" class="form-control" name="signature_datetime[]" placeholder="mm/dd/yyyy" disabled value="<?= date("m/d/Y"); ?>"/>
@@ -155,16 +156,15 @@
 
 <SCRIPT>
     var references = 1;
-
     function add_more() {//$("#add_more").click(function () {
         $.ajax({
-            url: "<?= $webroot;?>subpages/documents/past_employer.php?language=" + language,
+            url: "<?= $webroot;?>subpages/documents/past_employer.php?language=" + language + "&references=" + references,
             success: function (res) {
-                $("#more_div").append(res);
+                references = references + 1;
+                $("#more_div").append( res);
                 var c = $('#count_past_emp').val();
                 var counter = parseInt(c) + 1;
                 $('#count_past_emp').attr('value', counter);
-                references = references + 1;
             },
             error: function (res){
                 //alert(res);
@@ -189,6 +189,7 @@
         return true;
     }
 
+    add_more();
 </SCRIPT>
 
 </div>

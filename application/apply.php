@@ -7,6 +7,7 @@
 </STYLE>
 <?php
     include("api.php");
+    $today = date("Y-m-d");
     $webroot2 = $_SERVER["REQUEST_URI"];
     $start = strpos($webroot2, "/", 1) + 1;
     $webroot2 = substr($webroot2, 0, $start);
@@ -1338,7 +1339,7 @@ through 7 inclusive, and acknowledge that with my signature below.
         <div class="col-md-12">
         <div class="col-md-6">
             <label class="col-md-6">Dated</label>
-            <input type="text" name="dated" class="form-control datepicker" value="<?php if(isset($application_for_employment_gfs))echo $application_for_employment_gfs->dated;?>" />
+            <input type="text" name="dated" class="form-control datepicker" value="<?= $today;?>" disabled/>
         </div>
         <div class="col-md-6">
             <label class="col-md-12">Signature</label>
@@ -1352,8 +1353,8 @@ through 7 inclusive, and acknowledge that with my signature below.
           <p>&nbsp;</p>
           </div>
           <div class="col-md-12 subz">
-            <a href="javascript:void(0);" class="btn green-haze pull-right" onclick="return check_username();">
-                Submit (Form 1 of 3) <i class="m-icon-swapright m-icon-white"></i>
+            <a href="javascript:void(0);" class="btn btn-danger btn-lg pull-right" onclick="return check_username();">
+                Next Step <i class="m-icon-swapright m-icon-white"></i>
             </a>
         </div>
        

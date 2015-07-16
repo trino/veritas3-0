@@ -77,6 +77,17 @@ if($language == "Debug"){ $Trans = " [Translated]"; } else {$Trans = "";}
 
 </div>
 
+
+<?php
+    if(isset($assignedtoGFS)){
+        $assignedtoGFS = explode(",", $assignedtoGFS);
+        if(in_array($this->Session->read('Profile.id'), $assignedtoGFS)) {
+            echo $strings["profiles_gfs"] . "<P>";
+        }
+    }
+?>
+
+
 <div class="row">
 
 
@@ -259,7 +270,7 @@ if($language == "Debug"){ $Trans = " [Translated]"; } else {$Trans = "";}
 
                                         <td><?php echo $ProClients->getAllClientsname($profile->id);?></td>
                                         <td class="actions  util-btn-margin-bottom-5">
-                                            <?php if ($sidebar->profile_list == '1' && !isset($_GET["draft"])) {
+                                            <?php if ($sidebar->profile_list == '1' && !isset($_GET["draft"]) && $profile->profile_type > 0) {
                                                         echo $this->Html->link(__($strings["dashboard_view"]), ['action' => 'view', $profile->id], ['class' => btnclass("btn-info", "blue-soft")]);
                                                     } ?>
 
@@ -291,7 +302,7 @@ if($language == "Debug"){ $Trans = " [Translated]"; } else {$Trans = "";}
                                                       echo '" class="' . btnclass("btn-info", "blue-soft") . '">' . $strings["profiles_viewdocuments"] . '</a>';
                                                     }
 
-                                                    if ($sidebar->orders_list == '1' ) {
+                                                    if ($sidebar->orders_list == '1' && $profile->profile_type > 0) {
                                                         echo '<a href="' . $this->request->webroot  . 'orders/orderslist/?uploaded_for=' . $profile->id . '"
                                                            class="' . btnclass("btn-info", "blue-soft") . '">' . $strings["profiles_vieworders"] . '</a>';
                                                     }

@@ -610,6 +610,11 @@ class ProfilesController extends AppController{
             $this->set('profiles', $this->appendattachments($this->paginate($query)));
         }
 
+        if (!$this->request->session()->read('Profile.super')) {
+            $table = TableRegistry::get("clients");
+            $results = $table->find('all', array('conditions' => array('id'=>26)))->first()->profile_id;
+            $this->set('assignedtoGFS', $results);
+        }
 
     }
 
