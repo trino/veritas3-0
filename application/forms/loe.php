@@ -116,7 +116,7 @@
             <label class="control-label col-md-3"><?= $strings2["tasks_date"]; ?>:</label>
 
             <div class="col-md-3">
-                <input type="<?= $datetype; ?>" class="form-control datepicker" name="signature_datetime[]" placeholder="mm/dd/yyyy"/>
+                <input type="<?= $datetype; ?>" class="form-control" name="signature_datetime[]" placeholder="mm/dd/yyyy" disabled value="<?= date("m/d/Y"); ?>"/>
             </div>
         </div>
         <div class="form-group row">
