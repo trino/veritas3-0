@@ -354,7 +354,7 @@ function getq($data = ""){
     }
 }
 ?>
-<SCRIPT>
+<script>
     $(document).ready(function () {
         Metronic.init(); // init metronic core components
         Layout.init(); // init current layout
@@ -375,6 +375,37 @@ function getq($data = ""){
     <?php loadstringsJS($strings); ?>
 
     function checkformext(){
+        <?php
+        if(isset($_GET['msg']))
+        {
+            ?>
+            if($('.touched1').val()==0)
+            {
+                alert('Please provide your signature');
+                $('html,body').animate({scrollTop: $('#test1001').offset().top},'slow');
+                return false;
+            }
+            if($('.touched2').val()==0)
+            {
+                alert('Please provide your signature');
+                $('html,body').animate({scrollTop: $('#test1002').offset().top},'slow');
+                return false;
+            }
+            if($('.touched3').val()==0)
+            {
+                alert('Please provide your signature');
+                $('html,body').animate({scrollTop: $('#test1003').offset().top},'slow');
+                return false;
+            }
+            if($('.touched4').val()==0)
+            {
+                alert('Please provide your signature');
+                $('html,body').animate({scrollTop: $('#test1004').offset().top},'slow');
+                return false;
+            }
+            <?php
+        }
+        ?>
         if (typeof checkformint == 'function') {
             return checkformint();
         } else {// No internal check
@@ -382,7 +413,7 @@ function getq($data = ""){
         }
         return false;//debugging purposes
     }
-</SCRIPT>
+</script>
 <?php if($doback){
     if ($dosubmit){ ?>
         <INPUT TYPE="SUBMIT" class="btn btn-info" onclick="return checkformext();" VALUE="<?= $strings["forms_submit"] . $stages; ?>" STYLE="float: right;">
