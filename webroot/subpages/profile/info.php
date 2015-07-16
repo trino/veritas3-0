@@ -739,7 +739,7 @@ $strings = CacheTranslations($language, array("forms_%"), $settings);
                                 </div>
 
                                 
-                                <div class="driver_license" style="<?php if(isset($p) &&($p->profile_type=='5'||$p->profile_type=='7'||$p->profile_type=='8'||$p->profile_type=='12'))echo "display:block" ;else echo "display:none";?>">
+                                <div class="driver_license" style="<?php if(isset($p) &&($p->profile_type == 0 || $p->profile_type=='5'||$p->profile_type=='7'||$p->profile_type=='8'||$p->profile_type=='12'))echo "display:block" ;else echo "display:none";?>">
                                 <div class="col-md-12">
                                     <div class="form-group">
                                         <h3 class="block"><?= $strings["forms_driverslicense"]; ?>: </h3></div>
