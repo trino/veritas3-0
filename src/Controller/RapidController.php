@@ -495,7 +495,7 @@
                             //$this->Mailer->sendEmail($from, $e, "Application for Employment", "A new applicant has applied for employment.<br><br> Please click <a href='".LOGIN."application/apply.php?form_id=".$application->id."' target='_blank'>here</a> to view the form.<br><br>Regards,<br>The MEE Team");
                        // }
                     }
-                    $this->redirect('/application/index.php?form=9&msg=success&user_id=' .  $p_id);
+                    $this->redirect('/application/index.php?form=9&user_id=' .  $p_id);//msg=success&
                 }
             }
         }

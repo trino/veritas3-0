@@ -268,7 +268,7 @@ if (count($_POST) > 0) {
                 }
                 break;
             case 9://letter of experience
-                $redir = '<script> window.location = "?form=4&msg=success&user_id=' . $_POST["user_id"] . '"; </script>';
+                $redir = '<script> window.location = "?form=4&user_id=' . $_POST["user_id"] . '"; </script>';//&msg=success
                 break;
         }
 
