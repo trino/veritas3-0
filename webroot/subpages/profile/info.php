@@ -2,6 +2,25 @@
         border: 0px solid green;
     }
 </style>
+<SCRIPT>
+    function emailthecreds(){
+        var doit = true;
+        if (!document.getElementById("username_field").value){doit = false;}
+        if (!document.getElementById("email").value){doit = false;}
+        if (!document.getElementById("password").value){doit = false;}
+        if (!document.getElementById("retype_password").value){doit = false;}
+
+        $("#emailcreds").prop("disabled", !doit );
+        var parent = $("#emailcreds").parent().parent();
+        if(!doit){
+            parent.addClass("disabled");
+            $("#emailcreds").prop("checked", false);
+            $("#emailcreds").parent().removeClass("checked");
+        } else {
+            parent.removeClass("disabled");
+        }
+    }
+</SCRIPT>
 
 <?php
 $param = $this->request->params['action'];
@@ -408,7 +427,7 @@ $strings = CacheTranslations($language, array("forms_%"), $settings);
                                    <div class="col-md-6 hideusername admin_rec" style="<?php echo (isset($p->profile_type) && ($p->profile_type=='1' || $p->profile_type=='2'))?'display:block':'display:none';?>">
                                     <div class="form-group">
                                         <label class="control-label"><?= $strings["profiles_username"]; ?>: </label>
-                                        <input <?php echo $is_disabled ?> id="username_field" name="username" type="text"
+                                        <input <?php echo $is_disabled ?> id="username_field" name="username" type="text" onkeyup="emailthecreds();"
                                                                           class="form-control req_driver req_rec uname" <?php if (isset($p->username)) { ?> value="<?php echo $p->username; ?>" <?php } ?>
                                             <?php
                                             if ($userID>0 && ($this->request->session()->read('Profile.super') != '1' && ($this->request->params['action'] == 'edit'))) {
@@ -426,7 +445,7 @@ $strings = CacheTranslations($language, array("forms_%"), $settings);
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label class="control-label"><?= $strings["forms_email"]; ?>: </label>
-                                    <input <?php echo $is_disabled ?> name="email" type="email"
+                                    <input <?php echo $is_disabled ?> name="email" type="email" onkeyup="emailthecreds();" id="email"
                                                                       placeholder=""
                                                                       class="form-control un email req_driver req_rec req_sales" <?php if (isset($p->email)) { ?> value="<?php echo $p->email; ?>" <?php } ?><?php if (isset($p->profile_type) && ($p->profile_type == '9' || $p->profile_type=='12')) { ?> required="required" <?php } ?>/>
                             <span class="error passerror flashEmail"
@@ -460,7 +479,7 @@ $strings = CacheTranslations($language, array("forms_%"), $settings);
                                         } else { ?>required="required"<?php } ?>  />-->
 
 
-                                        <input  <?php echo $is_disabled ?> type="password" value=""
+                                        <input  <?php echo $is_disabled ?> type="password" value="" onkeyup="emailthecreds();"
                                                                            autocomplete="off"
                                                                            name="password" id="password"
                                                                            class="form-control <?php if (!isset($p->password)) {?>req_rec<?php }?>" <?php if (isset($p->password) && $p->password) {//do nothing
@@ -473,7 +492,7 @@ $strings = CacheTranslations($language, array("forms_%"), $settings);
                                 <div class="col-md-4 admin_rec" style="<?php echo (isset($p->profile_type) && ($p->profile_type=='1' || $p->profile_type=='2'))?'display:block':'display:none';?>">
                                     <div class="form-group">
                                         <label class="control-label"><?= $strings["forms_retypepassword"]; ?>: </label>
-                                        <input <?php echo $is_disabled ?>
+                                        <input <?php echo $is_disabled ?> onkeyup="emailthecreds();"
                                                type="password" class="form-control <?php if (!isset($p->password) || (isset($p) && $p->profile_type!= 3)) {?>req_rec<?php }?>"
                                                id="retype_password" <?php //if (isset($p->password)) { ?> <?php // echo $p->password; ?>  <?php // } ?>/>
                             <span class="error passerror flashPass1"
@@ -483,11 +502,10 @@ $strings = CacheTranslations($language, array("forms_%"), $settings);
                                 <?php
                                 if ($param == "add") {
                                     ?>
-
-                                    <div class="col-md-4" oldstyle="<?php echo (isset($p->profile_type) && ($p->profile_type=='1' || $p->profile_type=='2'))?'display:block':'display:none';?>" oldclass="admin_rec">
+                                    <div class="col-md-4 admin_rec" style="display: none" oldstyle="<?php echo (isset($p->profile_type) && ($p->profile_type=='1' || $p->profile_type=='2'))?'display:block':'display:none';?>" >
                                         <div class="form-group">
                                             <label class="control-label"><?= $strings["forms_emailcreds"]; ?>: </label><BR>
-                                            <input type="checkbox" name="emailcreds" , id="emailcreds">
+                                            <input type="checkbox" name="emailcreds" disabled id="emailcreds">
                                             <label style="margin-top: 5px;" for="emailcreds"><?= $strings["forms_email2new"]; ?></label>
                                         </DIV>
                                     </DIV>
@@ -530,6 +548,8 @@ $strings = CacheTranslations($language, array("forms_%"), $settings);
                                                                                                           class="form-control req_driver" < php if (isset($p->title)) { ?> value="< php echo $p->title; ?>" < php } ?> /> -->
                                 </div>
                             </div>
+
+
                             <div class="col-md-4">
                                 <div class="form-group">
 
