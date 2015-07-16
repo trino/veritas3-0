@@ -43,10 +43,10 @@
         }
         */
         return true;
-        
+
     }
 
-    
+
 </script>
 <?php
     $strings2 = CacheTranslations($language, array("consent_%", "file_attachfile", "tasks_date", "profiles_name"), $settings, False);
@@ -56,7 +56,7 @@
 
 
     <div class="form-group row col-md-12">
-        <h3 class="col-md-12"><?= $strings2["consent_release"]; ?></h3>
+     <center>  <h3 class="col-md-12"><?= $strings2["consent_release"]; ?></h3></center>
     </div>
     <div class="gndn">
         <div class="form-group row col-md-12 splitcols">
@@ -457,7 +457,7 @@
 
                 <p><?= $strings2["consent_lastupdate"]; ?> 10/29/2012</p>
             </div>
-            
+
             <DIV CLASS="splitcols">
                 <div class="form-group col-md-6">
                     <?php include('../webroot/canvas/gfs_sign3.php'); ?>
@@ -472,10 +472,10 @@
                     </div>
                 </div>
             </DIV>
-            
+
             <!--<div class="col-md-12">
             <p>&nbsp;</p>
-            
+
             <div>
                 <div class="col-md-12"><strong>Reference #1</strong></div>
                 <div class="col-md-4">
@@ -491,7 +491,7 @@
                 <input type="text" name="r1_position" required=""  class="form-control" />
                 </div>
             </div>
-            
+
             <p>&nbsp;</p>
             <div>
                 <div class="col-md-12"><strong>Reference #2</strong></div>
@@ -510,7 +510,7 @@
             </div>
             <p>&nbsp;</p>
             </div>-->
-            
+
 <?php return; ?>
             <div class="clearfix"></div>
             <div class="allattach" <?= $AllowUploads; ?>>
@@ -592,12 +592,12 @@
                         <a href="javascript:void(0);" class="btn btn-success moremore" id="add_more_consent_doc"><?= $strings["forms_addmore"]; ?></a>
                     </div>
                 </div>
-                
-                
+
+
 
                 <div class="clearfix"></div>
 
-        
+
         <!--script>
             $(function () {
                 <?php if($this->request->params['action'] != 'vieworder' && $this->request->params['action']!= 'view'){?>

@@ -216,9 +216,10 @@ function handlemsg($strings = "", $bypass = false) {
         if (!$bypass && isset($_GET["msg"])) {$bypass = isset($_GET["msg"]);}
         switch ($bypass) {
             case "success":
-                $message = "The form has been submitted. We will get in touch shortly.";
+                $message = "Document saved successfully.";
                 break;
         }
+
         if ($message) {
             echo '<div class="alert alert-info"><button class="close" data-close="alert"></button>' . $message . '</div>';
         }

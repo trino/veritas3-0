@@ -3,12 +3,16 @@
     $datetype = "text";
 ?>
 <div class="form-group row">
-    <h3 class="col-md-12">Letter of Experience</h3>
-    <CENTER><font color="red">A minimum of 2 of these forms must be filled out. Click "<?= $strings["forms_addmore"]; ?>" to add another form</font></CENTER>
-    <h4 class="col-md-12"><?= $strings2["verifs_pastemploy"]; ?></h4>
+    <center><h3 class="col-md-12">Letter of Experience</h3></center>
+    <h3 class="col-md-12"><?= $strings2["verifs_pastemploy"]; ?></h3>
 </div>
 <div class="gndn">
         <div class="form-group row">
+            <div class=" col-md-12">
+            <font color="red" style="">A minimum of 2 of references must be filled out. Click "<?= $strings["forms_addmore"]; ?>" to add another form</font>
+</div>
+            <label class="control-label  col-md-12"></label>
+
             <label class="control-label required col-md-3"><?= $strings["forms_companyname"]; ?>:</label>
 
             <div class=" col-md-9">
@@ -179,7 +183,7 @@
 
     function checkformint(){
         if (references < 2){
-            alert("Please include at least 2 references");
+            alert("Please include at least 2 references by clicking add more");
             return false;
         }
         return true;
