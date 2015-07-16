@@ -1341,7 +1341,7 @@ through 7 inclusive, and acknowledge that with my signature below.
         <div class="clearfix"></div>
         <p>&nbsp;</p>
         <div class="col-md-12">
-            <label class="col-md-12">Dated</label>
+            <label class="col-md-12">Application Dated</label>
 
             <div class="col-md-6">
             <input type="text" name="dated" class="form-control datepicker" value="<?php if(isset($application_for_employment_gfs))echo $application_for_employment_gfs->dated;?>" />
