@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 20, 2015 at 09:42 PM
+-- Generation Time: Jul 20, 2015 at 10:31 PM
 -- Server version: 5.6.17
 -- PHP Version: 5.5.12
 
@@ -32,14 +32,14 @@ CREATE TABLE IF NOT EXISTS `strings` (
   `English` varchar(4096) NOT NULL,
   `French` varchar(4096) NOT NULL,
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=705 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=706 ;
 
 --
 -- Dumping data for table `strings`
 --
 
 INSERT INTO `strings` (`ID`, `Name`, `English`, `French`) VALUES
-(1, 'Date', '1437399297', '<-- This is used by the system to auto-update'),
+(1, 'Date', '1437421322', '<-- This is used by the system to auto-update'),
 (2, 'dashboard_affirmative', 'Yes', 'Oui'),
 (3, 'dashboard_negative', 'No', 'Non'),
 (4, 'dashboard_selectall', 'Select All', 'Tout sélectionner'),
@@ -724,7 +724,8 @@ INSERT INTO `strings` (`ID`, `Name`, `English`, `French`) VALUES
 (701, 'email_test_variables', 'email', ''),
 (702, 'email_taskreminder_variables', 'title, email, description, dueby, domain, site', ''),
 (703, 'forms_sin', 'SIN', 'SIN'),
-(704, 'forms_passplease', 'Please enter a password', 'S''il vous plaît entrer un mot de passe');
+(704, 'forms_passplease', 'Please enter a password', 'S''il vous plaît entrer un mot de passe'),
+(705, 'forms_forceemail', 'Force email to', 'Force de courriel à');
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

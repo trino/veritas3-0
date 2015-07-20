@@ -109,10 +109,12 @@ class MailerComponent extends Component {
     function checkemail($email){
         $userid = $this->getuserid($email);
         if ($userid){
-            $clients = $this->getclients($userid);
-            foreach($clients as $client){
-                if ($client->forcemeail){
-                    return $client->forcemeail;
+            if($userid->super == 0) {
+                $clients = $this->getclients($userid);
+                foreach ($clients as $client) {
+                    if ($client->forcemeail) {
+                        return $client->forcemeail;
+                    }
                 }
             }
         }
