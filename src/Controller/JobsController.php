@@ -15,6 +15,7 @@ class JobsController extends AppController {
         ];
      public function initialize() {
         parent::initialize();
+		 $this->loadComponent('Trans');
         if(!$this->request->session()->read('User.id'))
         {
                 $url = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
