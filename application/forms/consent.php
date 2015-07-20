@@ -226,7 +226,7 @@ $gender = "";
         <div class="form-group row col-md-12">
             <label style="  text-align: left;" class="control-label col-md-11"><?= $strings2["consent_d0"]; ?>: </label>
 
-            <p class="col-md-11"><i style="color:red;"><?= $strings2["consent_c4-1"]; ?></i></p>
+            <p class="col-md-11"><i style="color:red;"><?= $strings["forms_savesig"] . " " .  $strings2["consent_notrequired"]; ?></i></p>
 
 
 

@@ -104,6 +104,8 @@ function get($Key, $default = ""){
 
 function CacheTranslations($Language='English', $Text, $Variables = "", $Common = True){
     global $con;
+    $wasdebug = false;
+    if ($Language == "Debug"){ $Language = "English"; $wasdebug= true;}
     $GLOBALS["language"] = $Language;
     if (!is_array($Text)) {
         $Text = array($Text);
@@ -133,6 +135,12 @@ function CacheTranslations($Language='English', $Text, $Variables = "", $Common 
     while ($row = mysqli_fetch_array($result)) {
         $data[$row["Name"]] = $row[$Language];
     }
+    if ($wasdebug){
+        foreach($data as $Key => $Value){
+            $data[$Key] = "[" . $Key . "]";
+        }
+    }
+
     return $data;
 }
 
