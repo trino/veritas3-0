@@ -204,6 +204,7 @@
         foreach($values as $value){
             $ret[$value] = $GLOBALS["strings"][$value];
         }
+        return $ret;
     }
 
     function listfiles($client_docs, $dir, $field_name = 'client_doc', $delete, $method = 1, $ShowUser = False,$consent=false) {
@@ -254,7 +255,7 @@
                         if(!$consent)
                         echo "<input type='hidden' value='" . $file . "' name='attach_doc[]' />";
                         echo "</TD>";
-                        echo "<TD>" . $strings["filemissing"] . "</TD>";//NEEDS TRANSLATION
+                        echo "<TD>" . $strings["file_missing"] . "</TD>";//NEEDS TRANSLATION
                     }
                     switch (TRUE) {
                         case isset($cd->client_id):
@@ -280,7 +281,7 @@
         } else {//old layout ?>
             <div class="form-group col-md-12">
                 <label class="control-label" id="attach_label"><?php
-                    echo $strings["attached"];
+                    echo $strings["forms_attachedfiles"];
                     ?>: </label>
 
                 <div class="row">
@@ -315,10 +316,10 @@
                                             echo "<a href='" . $webroot . $dir . $file . "' target='_blank' class='uploaded'>" . $file . "</a>";
                                     ?><BR><?php echo $file;?><BR>
                                     <a href="<?php echo $webroot . $dir . $file ?>" download="<?= $file ?>"
-                                       class="btn btn-info"><?= $strings["download"]; ?></a>
+                                       class="btn btn-info"><?= $strings["file_download"]; ?></a>
 							<span <?php if (($delete)) echo "style='display:none;'";?>>
 								<a href="javascript:void(0);" title="<?php echo $file?>&<?php echo $cd->id;?>"
-                                   class="btn btn-danger img_delete"><?= $strings["delete"]; ?></a>
+                                   class="btn btn-danger img_delete"><?= $strings["dashboard_delete"]; ?></a>
                             </span>
                                     <input type="hidden" name="<?php echo $field_name;?>[]" value="<?php echo $file;?>"
                                            class="moredocs"/>

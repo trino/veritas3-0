@@ -131,7 +131,7 @@ $super = $this->request->session()->read('Profile.super');
                                             $doit = $ProfileType->ISB == 0;
                                             if ($isISB) {$doit = $ProfileType->ISB == 1;}
                                             if($doit) {
-                                                if ($ProfileType->id == 0){$doApplicant == false;}
+                                                if ($ProfileType->id == 0){$doApplicant = false;}
                                                 echo '<option value="' . $ProfileType->id . '"';
                                                 if (isset($return_profile_type) && $return_profile_type == $ProfileType->id) {
                                                     echo ' selected="selected"';
