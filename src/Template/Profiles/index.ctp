@@ -4,6 +4,8 @@ $settings = $this->requestAction('settings/get_settings');
 $language = $this->request->session()->read('Profile.language');
 $strings = CacheTranslations($language, "profiles_%",$settings);//,$registry);//$registry = $this->requestAction('/settings/getRegistry');
 if($language == "Debug"){ $Trans = " [Translated]"; } else {$Trans = "";}
+
+$super = $this->request->session()->read('Profile.super');
 ?>
 
 <style>
@@ -123,11 +125,13 @@ if($language == "Debug"){ $Trans = " [Translated]"; } else {$Trans = "";}
                                 <?php
                                     $isISB = (isset($sidebar) && $sidebar->client_option == 0);
                                     $fieldname = getFieldname("title", $language);
+                                    $doApplicant = true;
                                     foreach($ptypes as $ProfileType){
                                         if($ProfileType->enable) {//id title enable ISB
                                             $doit = $ProfileType->ISB == 0;
                                             if ($isISB) {$doit = $ProfileType->ISB == 1;}
                                             if($doit) {
+                                                if ($ProfileType->id == 0){$doApplicant == false;}
                                                 echo '<option value="' . $ProfileType->id . '"';
                                                 if (isset($return_profile_type) && $return_profile_type == $ProfileType->id) {
                                                     echo ' selected="selected"';
@@ -136,14 +140,15 @@ if($language == "Debug"){ $Trans = " [Translated]"; } else {$Trans = "";}
                                             }
                                         }
                                     }
-                                    echo '<option value="NULL"';
-                                    if (isset($return_profile_type) && $return_profile_type == "NULL") {echo ' selected="selected"';}
-                                    echo '>' . $strings["profiles_null"] . '</option>';
+                                    if($doApplicant) {
+                                        echo '<option value="NULL"';
+                                        if (isset($return_profile_type) && $return_profile_type == "NULL") {echo ' selected="selected"';}
+                                        echo '>' . $strings["profiles_null"] . '</option>';
+                                    }
                                 ?>
                             </select>
 
                             <?php
-                                $super = $this->request->session()->read('Profile.super');
                                 if ($super) {
                                     $getClient = $this->requestAction('profiles/getClient');
                                     ?>
@@ -270,23 +275,20 @@ if($language == "Debug"){ $Trans = " [Translated]"; } else {$Trans = "";}
 
                                         <td><?php echo $ProClients->getAllClientsname($profile->id);?></td>
                                         <td class="actions  util-btn-margin-bottom-5">
-                                            <?php if ($sidebar->profile_list == '1' && !isset($_GET["draft"]) && $profile->profile_type > 0) {
+                                            <?php if ($sidebar->profile_list == '1' && !isset($_GET["draft"]) && ($super || $profile->profile_type > 0)) {
                                                         echo $this->Html->link(__($strings["dashboard_view"]), ['action' => 'view', $profile->id], ['class' => btnclass("btn-info", "blue-soft")]);
                                                     } ?>
 
                                                     <?php
                                                        $checker = $this->requestAction('/settings/check_edit_permission/' . $this->request->session()->read('Profile.id') . '/' . $profile->id."/".$profile->created_by);
-                                                        if ($sidebar->profile_edit == '1') {
-
-                                                            if ($checker == 1 ) {
+                                                        if ($sidebar->profile_edit == '1' && $checker == 1) {
                                                                 /*if ($this->request->session()->read('Profile.profile_type') == '2') {
                                                                     //echo $profile->profile_type;
                                                                     if ($profile->profile_type == '5' || $profile->profile_type == '7' || $profile->profile_type == '8')
                                                                         echo $this->Html->link(__('Edit'), ['action' => 'edit', $profile->id], ['class' => btnclass("EDIT")]);
                                                                 } else
                                                                 */
-                                                                    echo $this->Html->link(__($strings["dashboard_edit"]), ['action' => 'edit', $profile->id], ['class' => btnclass("EDIT")]);
-                                                            }
+                                                                echo $this->Html->link(__($strings["dashboard_edit"]), ['action' => 'edit', $profile->id], ['class' => btnclass("EDIT")]);
                                                         } ?>
 
 
@@ -309,12 +311,11 @@ if($language == "Debug"){ $Trans = " [Translated]"; } else {$Trans = "";}
 
                                             if ($sidebar->profile_delete == '1') {
                                                 $CanDelete=false;
-                                                if ($this->request->session()->read('Profile.super') == '1') {
+                                                if ($super == '1') {
                                                    $CanDelete = true;//supers can delete anyone
                                                 } else if ($this->request->session()->read('Profile.profile_type') == '2' && ($profile->profile_type == '5')) {
                                                     $CanDelete = true;//recruiters can delete drivers
                                                 } else if($sidebar->profile_create =='1'){
-
                                                     $CanDelete = in_array($profile->profile_type, $cancreate);//can delete profile types you can create
                                                 }
                                                 if ($this->request->session()->read('Profile.id') == $profile->id) {

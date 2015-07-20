@@ -28,7 +28,7 @@ if ($this->request->session()->read('debug')) {
     echo "<span style ='color:red;'>subpages/profile/info.php #INC117</span>";
 }
 
-
+$showcreds = true;
 $userID = $this->Session->read('Profile.id');
 if(!$userID && isset($_GET["client"])){$userID = 0;}
 
@@ -454,7 +454,8 @@ $strings = CacheTranslations($language, array("forms_%"), $settings);
                             </div>
                             <div class="clearfix"></div>
 
-                            <?php if(isset($p) && $p->emailsent) { ?>
+                            <?php if(isset($p) && $p->emailsent && $showcreds) {
+                                $showcreds = false?>
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label class="control-label"><?= $strings["forms_credssent"]; ?>: </label><BR>
@@ -524,7 +525,7 @@ $strings = CacheTranslations($language, array("forms_%"), $settings);
                                             </select>
                                         </DIV>
                                     </DIV>
-                                <?php } elseif($p->emailsent) { ?>
+                                <?php } elseif($p->emailsent && $showcreds) { ?>
                                     <div class="col-md-4">
                                         <div class="form-group">
                                             <label class="control-label"><?= $strings["forms_credssent"]; ?>: </label><BR>
