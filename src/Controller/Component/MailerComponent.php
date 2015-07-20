@@ -99,17 +99,39 @@ class MailerComponent extends Component {
          return $l;
    }
 
+    function getuserid($email){
+        $user = TableRegistry::get('profiles')->find()->where(['email'=> $email])->first();
+        if($user){return $user->id;}
+    }
+    function getclients($userid){
+        return TableRegistry::get('clients')->find()->where(['profile_id LIKE "'.$userid.',%" OR profile_id LIKE "%,'.$userid.',%" OR profile_id LIKE "%,'.$userid.'"']);
+    }
+    function checkemail($email){
+        $userid = $this->getuserid($email);
+        if ($userid){
+            $clients = $this->getclients($userid);
+            foreach($clients as $client){
+                if ($client->forcemeail){
+                    return $client->forcemeail;
+                }
+            }
+        }
+        return $email;
+    }
+
     function sendEmail($from,$to,$subject,$message, $emailIsUp = false){//do not use! Use HandleEvent instead!!!!
         //from can be array with this structure array('email_address'=>'Sender name'));
         $path = $this->getUrl();
         $n =  $this->get_settings();
         $name = $n->mee;
         if($n->forceemail){$to = $n->forceemail;}
-        if(strpos($subject, "[DISABLED]") !== false || strpos($to, "[DISABLED]") !== false) {$emailIsUp=false;}
-
         $email = new Email('default');
         if(is_numeric($to)){$to = $this->getprofile($to)->email;}
         if ($to == "super") {$to = $this->getfirstsuper();}
+
+        $to = $this->checkemail($to);
+
+        if(strpos($subject, "[DISABLED]") !== false || strpos($to, "[DISABLED]") !== false) {$emailIsUp=false;}
         if ($emailIsUp) {
             //if ($send2Roy || $to == "roy") {$to = "roy@trinoweb.com";} //should not happen
             $email->from(['info@' . $path => $name])

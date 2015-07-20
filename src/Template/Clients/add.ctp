@@ -7,6 +7,7 @@
     include_once('subpages/api.php');
     $settings = $this->requestAction('settings/get_settings');
     $language = $this->request->session()->read('Profile.language');
+    $issuper = $this->request->session()->read('Profile.super');
     $strings = CacheTranslations($language, array("clients_%", "forms_%", "infoorder_%", "index_%", "documents_document"), $settings);//,$registry);//$registry = $this->requestAction('/settings/getRegistry');
     if($language == "Debug") { $Trans = " [Trans]";} else { $Trans = ""; }
 
@@ -441,6 +442,15 @@
                                                                             </option>
                                                                         </select>
                                                                     </div>
+    <?php if ($issuper){ ?>
+                                                                    <div class="form-group col-md-4">
+                                                                        <label class="control-label"><?= $strings["forms_forceemail"];?>:</label>
+                                                                        <input type="text" class="form-control"
+                                                                               name="forceemail"
+                                                                               value="<?php echo isset($client->forceemail) ? $client->forceemail : '' ?>"/>
+                                                                    </div>
+    <?php } ?>
+
                                                                     <div class="form-group col-md-12">
                                                                         <label class="control-label"><?= $strings["forms_billinginstructions"];?>:</label>
                                                                     </div>
@@ -454,6 +464,7 @@
                                                                                name="billing_instructions" <?php if (isset($client->billing_instructions) && $client->billing_instructions == "centralized") { ?> checked="checked" <?php } ?>
                                                                                value="centralized"/> <?= $strings["forms_centralized"];?>&nbsp;&nbsp;
                                                                     </div>
+
                                                                 <?php } ?>
                                                                 <div class="form-group col-md-12">
 
