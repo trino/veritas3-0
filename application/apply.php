@@ -604,6 +604,21 @@ else{
         </div>
         <p>&nbsp;</p>
 
+
+        <div class="col-md-12">
+            <h3 class="col-md-12">SIN Card</h3>
+        </div>
+        <div class="col-md-12">
+
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label class="control-label required">SIN: </label>
+                    <input name="sin" type="text" required class="form-control req_driver">
+                </div>
+            </div>
+        </div>
+        <p>&nbsp;</p>
+
         <div class="col-md-12">
             <h3 class="col-md-12">Education</h3>
         </div>

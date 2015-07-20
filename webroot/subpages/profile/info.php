@@ -109,7 +109,7 @@ $strings = CacheTranslations($language, array("forms_%"), $settings);
                             <?php }  ?>
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label class="control-label"><?= $strings["profiles_profiletype"]; ?></label>
+                                    <label class="control-label"><?= $strings["profiles_profiletype"]; ?>:</label>
                                     <!--old code:  <input type="hidden" id="nProfileType" name="profile_type" value="<!php if(!isset($p) && isset($getProfileType->profile_type) && $getProfileType->profile_type == 2)echo "5"; else echo $p->profile_type;!>" <!php echo $is_disabled !> />-->
                                     <?php if (isset($p)) { ?>
                                         <input type="hidden" id="nProfileType" name="profile_type"
@@ -455,7 +455,7 @@ $strings = CacheTranslations($language, array("forms_%"), $settings);
                             <div class="clearfix"></div>
 
                             <?php if(isset($p) && $p->emailsent && $showcreds) {
-                                $showcreds = false?>
+                                $showcreds = false; ?>
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label class="control-label"><?= $strings["forms_credssent"]; ?>: </label><BR>
@@ -806,13 +806,13 @@ $strings = CacheTranslations($language, array("forms_%"), $settings);
                                 </div>
                                 </div>
                                 <?php 
-                                }
-                                else { ?>
+                                } else { ?>
                                     <input type="hidden" name="doby" value="0000"/>
                                     <input type="hidden" name="dobm" value="00"/>
                                     <input type="hidden" name="dobd" value="00"/>
                                 <?php
                                 }
+
                                 $delete = isset($disabled);
                                 if (isset($client_docs)) {
                                     //   include_once 'subpages/filelist.php';
@@ -835,6 +835,15 @@ $strings = CacheTranslations($language, array("forms_%"), $settings);
                                             <option value="Others"  <?php if(isset($p)&& $p->hear=='Others')echo 'selected';?>><?= $strings["forms_other"]; ?></option>
                                             
                                         </select>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="control-label"><?= $strings["forms_sin"]; ?> #: </label>
+                                        <input <?php echo $is_disabled ?> name="sin" type="text"
+                                                                          class="form-control req_driver" <?php if (isset($p->sin)) { ?>
+                                            value="<?php echo $p->sin; ?>" <?php } ?> />
                                     </div>
                                 </div>
                                 <!--div class="col-md-12">
@@ -963,7 +972,7 @@ $strings = CacheTranslations($language, array("forms_%"), $settings);
                     res = res.trim();
                     if (res == '1') {
                         //alert(res);
-                        alert('Username already exists');
+                        alert('<?= addslashes($strings["profiles_usernameexists"]); ?>');
 
                         $('.uname').focus();
                         $('html,body').animate({
@@ -984,7 +993,7 @@ $strings = CacheTranslations($language, array("forms_%"), $settings);
                                     res = res.trim();
                                     if (res == '1') {
                                         $('.email').focus();
-                                        alert('Email already exists');
+                                        alert('<?= addslashes($strings["dashboard_emailexists"]); ?>');
                                         $('html,body').animate({
                                                 scrollTop: $('.page-title').offset().top
                                             },
@@ -1017,6 +1026,11 @@ $strings = CacheTranslations($language, array("forms_%"), $settings);
         }
 
     }
+
+    function confirmdelete(Name){
+        var text = "<?= addslashes($strings["dashboard_confirmdelete"]); ?>";
+        return confirm(text.replace("%name%", Name));
+    }
     //I break for bad code
 </SCRIPT>
 <SCRIPT>
@@ -1029,7 +1043,7 @@ $strings = CacheTranslations($language, array("forms_%"), $settings);
             var total_count = $('.docMore').data('count');
             $('.docMore').data('count', parseInt(total_count) + 1);
             total_count = $('.docMore').data('count');
-            var input_field = '<div  class="form-group" ><div class="" style="margin-top:10px;"><a href="javascript:void(0);" id="addMore' + total_count + '" class="btn btn-primary">Browse</a><input type="hidden" name="profile_doc[]" value="" class="addMore' + total_count + '_doc moredocs" /><a href="javascript:void(0);" class = "btn btn-danger img_delete" id="delete_addMore' + total_count + '" title ="">Delete</a><span></span></div></div>';
+            var input_field = '<div  class="form-group" ><div class="" style="margin-top:10px;"><a href="javascript:void(0);" id="addMore' + total_count + '" class="btn btn-primary"><?= addslashes($strings["forms_browse"]); ?></a><input type="hidden" name="profile_doc[]" value="" class="addMore' + total_count + '_doc moredocs" /><a href="javascript:void(0);" class = "btn btn-danger img_delete" id="delete_addMore' + total_count + '" title =""><?= addslashes($strings["dashboard_delete"]); ?></a><span></span></div></div>';
             $('.docMore').append(input_field);
             initiate_ajax_upload1('addMore' + total_count, 'doc');
 
@@ -1044,7 +1058,7 @@ $strings = CacheTranslations($language, array("forms_%"), $settings);
                 var id = f[1];
             }
 
-            var con = confirm('Are you sure you want to delete "' + file + '"?');
+            var con = confirmdelete(file);// confirm('Are you sure you want to delete "' + file + '"?');
             if (con == true) {
                 $.ajax({
                     type: "post",
@@ -1091,7 +1105,7 @@ $strings = CacheTranslations($language, array("forms_%"), $settings);
 
         });
         $('#addmore_id').click(function () {
-            $('#more_id_div').append('<div id="append_id"><div class="pad_bot"><a href="" class="btn btn-primary">Browse</a> <a href="javascript:void(0);" id="delete_id_div" class="btn btn-danger">Delete</a></div></div>')
+            $('#more_id_div').append('<div id="append_id"><div class="pad_bot"><a href="" class="btn btn-primary"><?= addslashes($strings["forms_browse"]); ?></a> <a href="javascript:void(0);" id="delete_id_div" class="btn btn-danger"><?= addslashes($strings["dashboard_delete"]); ?></a></div></div>')
         });
 
         $('#delete_id_div').live('click', function () {
@@ -1099,7 +1113,7 @@ $strings = CacheTranslations($language, array("forms_%"), $settings);
         })
 
         $('#addmore_trans').click(function () {
-            $('#more_trans_div').append('<div id="append_trans"><div class="pad_bot"><a href="" class="btn btn-primary">Browse</a> <a href="javascript:void(0);" id="delete_trans_div" class="btn btn-danger">Delete</a></div></div>')
+            $('#more_trans_div').append('<div id="append_trans"><div class="pad_bot"><a href="" class="btn btn-primary"><?= addslashes($strings["forms_browse"]); ?></a> <a href="javascript:void(0);" id="delete_trans_div" class="btn btn-danger"><?= addslashes($strings["dashboard_delete"]); ?></a></div></div>')
         });
 
         $('#delete_trans_div').live('click', function () {

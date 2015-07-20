@@ -464,6 +464,8 @@
                 $profile["driver_license_no"] = $_POST["driver_license_no"];
                 $profile["driver_province"] = $_POST["driver_province"];
                 $profile["expiry_date"] = $_POST["expiry_date"];
+                $profile["sin"] = $_POST["sin"];
+                unset($_POST["sin"]);
 
                 $modal = TableRegistry::get('profiles');
                 $p = $modal->newEntity($profile);
