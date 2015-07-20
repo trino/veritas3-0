@@ -48,7 +48,7 @@ $_GET['num']=1003;?>
            <input type="hidden" name="criminal_signature_applicant" id="criminal_signature_applicant" />
             <input type="hidden" class="touched3" value="0" />
             <input type="hidden" class="touched_edit1" value="<?php if(isset($consent_detail) && $consent_detail->criminal_signature_applicant){?>1<?php }else{?>0<?php }?>" />
-            <label class="control-label"><?= $strings2["consent_sigapplica"]; ?></label><br>
+            <label class="control-label required"><?= $strings2["consent_sigapplica"]; ?></label><br>
             <?php if(!isset($_GET['form_id'])){?>
             <canvas id="test<?php echo $_GET['num'];?>" style="border: 1px solid silver;border-radius: 5px; width: 400px;"></canvas>
             <?php }?>

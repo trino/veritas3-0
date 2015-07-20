@@ -1376,7 +1376,7 @@ backbutton();
         function check_username() {
             
             if($('.touched').val()==0) {
-                alert('Please provide the signature');
+                alert('Please provide your signature');
                 return false;
             }
             

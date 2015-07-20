@@ -4,31 +4,31 @@ $_GET['num']=1001;?>
 		<meta name="viewport" content="width=device-width;initial-scale=1.0;maximum-scale=1.0;user-scalable=0;"/>
 		<meta name="apple-mobile-web-app-capable" content="yes"/>
 		<meta name="apple-mobile-web-app-status-bar-style" content="black"/>
-			
-		
+
+
 		<script src="<?php echo $webroot;?>canvas/jquery.jqscribble.js" type="text/javascript"></script>
 		<script src="<?php echo $webroot;?>canvas/jqscribble.extrabrushes.js" type="text/javascript"></script>
-		
+
 		<style>
 			.links a {
 				padding: 3px 10px;
-                background:#007ECC; 
+                background:#007ECC;
                 display: inline-block;
                 border-radius:4px;
 				text-decoration: none;
 				color: #FFF;
-                
+
 			}
 			.column-left {
-				display: inline; 
+				display: inline;
 				float: left;
 			}
 			.column-right {
-				display: inline; 
+				display: inline;
 				float: right;
 			}
 		</style>
-	
+
 		<div style="overflow: hidden; margin-bottom: 5px;display:none" class="">
 			<div class="column-left links" style="display: none;">
 				<strong>BRUSHES:</strong>
@@ -45,11 +45,11 @@ $_GET['num']=1001;?>
 			</div>
 		</div>
         <div class="col-sm-10" style="width: 500px;">
-		
+
            <input type="hidden" name="criminal_signature_applicant2" id="criminal_signature_applicant2" />
             <input type="hidden" class="touched1" value="0" />
             <input type="hidden" class="touched_edit2" value="<?php if(isset($consent_detail) && $consent_detail->criminal_signature_applicant2){?>1<?php }else{?>0<?php }?>" />
-            <label class="control-label"><?= $strings2["consent_sigapplica"]; ?></label><br>
+            <label class="control-label required"><?= $strings2["consent_sigapplica"]; ?></label><br>
             <?php if(!isset($_GET['form_id'])){?>
             <canvas id="test<?php echo $_GET['num'];?>" style="border: 1px solid silver;border-radius: 5px; width: 400px;"></canvas>
             <?php }?>
@@ -72,17 +72,16 @@ $_GET['num']=1001;?>
                     }
                 }
                 ?>
-				
+
                 <br />
-                
+
     		</div>
         </div>
       <script>
-      
+
       $(function(){
          $("#test1001").jqScribble();
-         
+
       })
-     
+
       </script>
-		

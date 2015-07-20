@@ -6,11 +6,11 @@ if ($this->request->session()->read('debug')) {
 <meta name="viewport" content="width=device-width;initial-scale=1.0;maximum-scale=1.0;user-scalable=0;"/>
 		<meta name="apple-mobile-web-app-capable" content="yes"/>
 		<meta name="apple-mobile-web-app-status-bar-style" content="black"/>
-			
-		
+
+
 		<script src="<?php echo $this->request->webroot;?>canvas/jquery.jqscribble.js" type="text/javascript"></script>
 		<script src="<?php echo $this->request->webroot;?>canvas/jqscribble.extrabrushes.js" type="text/javascript"></script>
-		
+
 		<style>
 			.links a {
 				padding: 3px 10px;
@@ -19,19 +19,19 @@ if ($this->request->session()->read('debug')) {
                 border-radius:4px;
 				text-decoration: none;
 				color: #FFF;
-                
+
 			}
 			.column-left {
-				display: inline; 
+				display: inline;
 				float: left;
 			}
 			.column-right {
-				display: inline; 
+				display: inline;
 				float: right;
 			}
 		</style>
-	
-		
+
+
         <div class="col-sm-12" id="sig1">
             <input type="hidden" name="criminal_signature_applicant" id="criminal_signature_applicant" value="<?php if(isset($consent_detail) && $consent_detail->criminal_signature_applicant){echo  $consent_detail->criminal_signature_applicant; }?>" />
             <input type="hidden" class="touched" value="0" />
@@ -49,7 +49,7 @@ if ($this->request->session()->read('debug')) {
                 <br />
     		</div>
         </div>
-        
+
         <div class="col-sm-6">
                 <?php if(isset($consent_detail) && $consent_detail->criminal_signature_applicant){?><img src="<?php echo $this->request->webroot.'canvas/'.$consent_detail->criminal_signature_applicant;?>" style="max-width: 100%;" /><?php }
                 else
@@ -61,6 +61,6 @@ if ($this->request->session()->read('debug')) {
                         <?php
                     }
                 }
-                ?>                    
+                ?>
         </div>
 		<div class="clearfix"></div>
