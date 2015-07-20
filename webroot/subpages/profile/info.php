@@ -574,7 +574,9 @@ $strings = CacheTranslations($language, array("forms_%"), $settings);
                                 </div>
                             </div>
 
-
+<?
+debug($p);
+?>
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label class="control-label"><?= $strings["forms_lastname"]; ?>: </label>

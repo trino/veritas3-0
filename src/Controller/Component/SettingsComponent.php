@@ -259,7 +259,7 @@
                         }
                         else return 0;
                     }
-                    else if(($q1->profile_type == '2' && $q2->profile_type == '5')|| ($q1->profile_type == '2' && $q2->profile_type == '0'))
+                    else if($q1->profile_type == '2')
                     {
                         if($uid != $pid)
                         {
