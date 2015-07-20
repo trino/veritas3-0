@@ -523,8 +523,8 @@
                     }
                 },
                 messages: {
-                    password: "Please enter password",
-                    retype_password: "Password do not match"
+                    password: "<?= addslashes($strings["forms_passplease"]); ?>",
+                    retype_password: "<?= addslashes($strings["forms_passnotequal"]); ?>"
                 },
                 submitHandler: function () {
                     $('#pass_form').submit();

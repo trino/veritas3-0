@@ -1,10 +1,14 @@
+<?php
+$strings2 = CacheTranslations($language, array("consent_%", "file_attachfile", "tasks_date", "profiles_name", "addorder_problem", "forms_datasaved", "forms_signplease"), $settings, False);
+$gender = "";
+?>
 <script>
 
     function save_signature(numb) {
         $("#test" + numb).data("jqScribble").save(function (imageData) {
             $.post('<?php echo $webroot; ?>canvas/image_save.php', {imagedata: imageData}, function (response) {
                 if(response=='') {
-                    alert('There was problem saving the signatures, please go back and re-submit the consent form.');
+                    alert('<?= addslashes($strings["addorder_problem"]); ?>');
                 }
                 switch (numb) {
                     case '1004':
@@ -20,52 +24,48 @@
                         $('#criminal_signature_applicant2').val(response);
                         break;
                 }
-                $('.saved'+numb).html('Saved');
+                $('.saved'+numb).html('<?= addslashes($strings["forms_datasaved"]); ?>');
                 /*$('#hiddensub').click();*/
             });
         });
     }
 
     function checkformint(){
-/*
-        save_signature('1001');
-        save_signature('1002');
-        save_signature('1003');
-        save_signature('1004');
-        //if(criminal_signature_applicant2!="" ||signature_company_witness2!="" ||criminal_signature_applicant!="" ||signature_company_witness!="")
-        alert('Form submitted succesfully.')
-        */
+        /*
+         save_signature('1001');
+         save_signature('1002');
+         save_signature('1003');
+         save_signature('1004');
+         //if(criminal_signature_applicant2!="" ||signature_company_witness2!="" ||criminal_signature_applicant!="" ||signature_company_witness!="")
+         alert('Form submitted succesfully.')
+         */
 
         /*
-        if($(".touched1").val() == 0 || $(".touched2").val() == 0 || $(".touched3").val() == 0 || $(".touched4").val() == 0 ){
-            alert("Please save the signatures");
-            return false;
-        }
-        */
-        <?php /*if(isset($_GET['msg'])){ ?>
+         if($(".touched1").val() == 0 || $(".touched2").val() == 0 || $(".touched3").val() == 0 || $(".touched4").val() == 0 ){
+         alert("Please save the signatures");
+         return false;
+         }
+
+         */
+        <?php /* if(isset($_GET['msg'])){ */ ?>
             var scrollto = "";
             if($('.touched1').val()==0) {scrollto = '#test1001';}
-            if($('.touched2').val()==0) {scrollto = '#test1002';}
+            //if($('.touched2').val()==0) {scrollto = '#test1002';}
             if($('.touched3').val()==0) {scrollto = '#test1003';}
-            if($('.touched4').val()==0) {scrollto = '#test1004';}
+            //if($('.touched4').val()==0) {scrollto = '#test1004';}
             if(scrollto) {
-                alert('Please provide your signature');
+                alert('<?= addslashes($strings["forms_signplease"]); ?>');
                 $('html,body').animate({scrollTop: $(scrollto).offset().top}, 'slow');
                 return false;
             }
-        <?php } */?>
+        <?php /* } */?>
 
-    return true;
+        return true;
 
-}
+    }
 
 
 </script>
-<?php
-$strings2 = CacheTranslations($language, array("consent_%", "file_attachfile", "tasks_date", "profiles_name"), $settings, False);
-$gender = "";
-?>
-
 
 
     <div class="form-group row col-md-12">

@@ -329,7 +329,7 @@ if (count($_POST) > 0) {
 
     <?php loadstringsJS($strings); ?>
 
-    function checkformext(){
+    function checkformext(){//do not add code to this function
         if (typeof checkformint == 'function') {
             return checkformint();
         } else {// No internal check

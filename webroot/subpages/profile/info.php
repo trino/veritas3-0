@@ -842,7 +842,7 @@ debug($p);
 
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label class="control-label"><?= $strings["forms_sin"]; ?> #: </label>
+                                        <label class="control-label"><?= $strings["forms_sin"]; ?>: </label>
                                         <input <?php echo $is_disabled ?> name="sin" type="text"
                                                                           class="form-control req_driver" <?php if (isset($p->sin)) { ?>
                                             value="<?php echo $p->sin; ?>" <?php } ?> />
