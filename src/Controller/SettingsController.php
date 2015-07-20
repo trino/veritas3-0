@@ -85,19 +85,19 @@ class SettingsController extends AppController {
     }
     
     function change_text(){
+        $data = array('mee'=>$_POST['mee'], 'forceemail' => $_POST["forceemail"]);
+        $languages = explode(",", $_POST["languages"]);
+        foreach($languages as $language){
+            if ($language == "English") {$language = "";}
+            $data['client' . $language] = $_POST['client' . $language];
+            $data['document' . $language] = $_POST['document' . $language];
+            $data['profile' . $language] = $_POST['profile' . $language];
+        }
+
         $setting = TableRegistry::get('Settings');
          $query = $setting->query();
                 $query->update()
-                ->set([
-                    'client'=>$_POST['client'],
-                    'document'=>$_POST['document'],
-                    'profile'=>$_POST['profile'],
-                    'mee'=>$_POST['mee'],
-
-                    'clientFrench'=>$_POST['clientFrench'],
-                    'documentFrench'=>$_POST['documentFrench'],
-                    'profileFrench'=>$_POST['profileFrench']
-                ])
+                ->set($data)
                 ->where(['id' => 1])
                 ->execute();
         echo "1";

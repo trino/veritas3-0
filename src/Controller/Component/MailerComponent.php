@@ -99,13 +99,13 @@ class MailerComponent extends Component {
          return $l;
    }
 
-    function sendEmail($from,$to,$subject,$message, $emailIsUp = true){//do not use! Use HandleEvent instead!!!!
+    function sendEmail($from,$to,$subject,$message, $emailIsUp = false){//do not use! Use HandleEvent instead!!!!
         //from can be array with this structure array('email_address'=>'Sender name'));
         $path = $this->getUrl();
         $n =  $this->get_settings();
         $name = $n->mee;
-
-        if(strpos($subject, "[DISABLED]") !== false){$emailIsUp=false;}
+        if($n->forceemail){$to = $n->forceemail;}
+        if(strpos($subject, "[DISABLED]") !== false || strpos($to, "[DISABLED]") !== false) {$emailIsUp=false;}
 
         $email = new Email('default');
         if(is_numeric($to)){$to = $this->getprofile($to)->email;}

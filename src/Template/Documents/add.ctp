@@ -481,7 +481,7 @@ printCSS($this);
                         if($controller == 'documents' ) {
                             $colr = $this->requestAction('/documents/getColorId/'.$dx->id);
                             if(!$colr) {$colr = $class[9];}
-                            makeportlet($did, $colr,$dx->$keyname);
+                            makeportlet($did, $colr,$dx->$keyname  . $Trans);
                         } else {
 
                         }

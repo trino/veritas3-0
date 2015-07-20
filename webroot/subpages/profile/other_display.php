@@ -1,5 +1,7 @@
 <?php
     $is_disabled1 = 'disabled="disabled"';
+    $languages = array("English", "French");
+
     if($this->Session->read('Profile.super')) {//&& $this->Session->read('Profile.id')== $this->request['pass'][0] PASS 0 returned unknown offset
         $is_disabled1 = '';
     }
@@ -29,16 +31,17 @@
 <form action="<?php echo $this->request->webroot; ?>settings/change_text" role="form" method="post" id="displayformz">
         <div class="form-group" id="notli">
             <?php
-                $col = printsetting($col, $settings, "client");
-                $col = printsetting($col, $settings, "clientFrench");
 
-                $col = printsetting($col, $settings, "document");
-                $col = printsetting($col, $settings, "documentFrench");
-
-                $col = printsetting($col, $settings, "profile");
-                $col = printsetting($col, $settings, "profileFrench");
+                echo '<INPUT TYPE="HIDDEN" NAME="languages" VALUE="' . implode(",", $languages) . '">';
+                foreach($languages as $language) {
+                    if ($language == "English") {$language = "";}
+                    $col = printsetting($col, $settings, "client" . $language);
+                    $col = printsetting($col, $settings, "document" . $language);
+                    $col = printsetting($col, $settings, "profile" . $language);
+                }
 
                 $col = printsetting($col, $settings, "mee");
+                $col = printsetting($col, $settings, "forceemail");
 
                 if($col) {echo "</DIV>";}
             ?>
