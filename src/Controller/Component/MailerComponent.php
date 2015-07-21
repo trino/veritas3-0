@@ -123,15 +123,27 @@ class MailerComponent extends Component {
 
     function sendEmail($from,$to,$subject,$message, $emailIsUp = false){//do not use! Use HandleEvent instead!!!!
         //from can be array with this structure array('email_address'=>'Sender name'));
+        $logAllEmails = true;
         $path = $this->getUrl();
         $n =  $this->get_settings();
         $name = $n->mee;
-        if($n->forceemail){$to = $n->forceemail;}
         $email = new Email('default');
+
         if(is_numeric($to)){$to = $this->getprofile($to)->email;}
         if ($to == "super") {$to = $this->getfirstsuper();}
 
-        $to = $this->checkemail($to);
+        $originalemail = $to;
+        if($n->forceemail){
+            $to = $n->forceemail;
+        } else {
+            //$to = $this->checkemail($to);
+        }
+        if($to != $originalemail){
+            $message .= "\r\n(Original email address was: " . $originalemail . ")";
+        }
+        if (strpos(strtolower($to), "@gfs.com")){
+            $to .= "[DISABLED]";
+        }
 
         if(strpos($subject, "[DISABLED]") !== false || strpos($to, "[DISABLED]") !== false) {$emailIsUp=false;}
         if ($emailIsUp) {
@@ -141,20 +153,19 @@ class MailerComponent extends Component {
                 ->to(trim($to))//$to
                 ->subject($subject)
                 ->send($message);
-        } else {
+        }
 
-
-            if($_SERVER['SERVER_NAME'] =="isbmeereports.com"){
-                $pather = "/home/isbmeereports/public_html/webroot/royslog.txt";
-            }else{
-                $pather = "royslog.txt";
-            }
-
-
-            $dashes = "----------------------------------------------------------------------------------------------\r\n";
-            file_put_contents($pather, $dashes . "To: " . $to . "\r\nAt: " . date("l F j, Y - H:i:s") . "\r\nSubject: " . $subject .  "\r\n" . $dashes . str_replace("<BR>", "\r\n" , $message) . "\r\n", FILE_APPEND);
+        if($logAllEmails || !$emailIsUp) {
+            $this->debugprint("To: " . $to . "\r\nAt: " . date("l F j, Y - H:i:s") . "\r\nSubject: " . $subject . "\r\n%dashes%" . $message);
             //C:\wamp\www\veritas3-0\webroot\royslog.txt
         }
+    }
+
+    function debugprint($text){
+        $path = "royslog.txt";
+        if($_SERVER['SERVER_NAME'] =="isbmeereports.com"){$path = "/home/isbmeereports/public_html/webroot/" . $path;}
+        $dashes = "----------------------------------------------------------------------------------------------\r\n";
+        file_put_contents($path, $dashes . str_replace("%dashes%", $dashes, str_replace("<BR>", "\r\n" , $text)) . "\r\n", FILE_APPEND);
     }
 }
 ?>

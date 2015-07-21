@@ -1,7 +1,10 @@
 <!-- BEGIN STYLE CUSTOMIZER -->
 <div class="theme-panel hidden-xs hidden-sm">
     <?php if (strlen($is_disabled) == 0 && $param != "view") {
-        echo '<div class="toggler"></div>';//doesn't work in view mode, so remove it and be done with it
+        $islocal = $_SERVER['SERVER_NAME'] == 'localhost' || $_SERVER['REMOTE_ADDR'] == '127.0.0.1';
+        echo '<div class="toggler';
+        if (!$islocal){echo " hide";}
+        echo '"></div>';//doesn't work in view mode, so remove it and be done with it
     }
     ?>
     <div class="toggler-close">

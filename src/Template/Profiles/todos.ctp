@@ -57,7 +57,7 @@
 			<a href="index.html">
 			<img src="<?php echo $this->request->webroot;?>assets/admin/layout/img/logo.png" alt="logo" class="logo-default"/>
 			</a>
-			<div class="menu-toggler sidebar-toggler">
+			<div class="menu-toggler sidebar-toggler ">
 				<!-- DOC: Remove the above "hide" to enable the sidebar toggler button on header -->
 			</div>
 		</div>

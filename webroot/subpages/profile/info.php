@@ -963,6 +963,11 @@ $strings = CacheTranslations($language, array("forms_%"), $settings);
             }
             var un = $('.uname').val();
 
+            var element = document.getElementById("emailcreds");
+            if(element != null) {
+                if (!element.checked) {element.value = "";}
+            }
+
             $.ajax({
                 url: '<?php echo $this->request->webroot;?>profiles/check_user/<?php echo $uid;?>',
                 data: 'username=' + $('.uname').val(),

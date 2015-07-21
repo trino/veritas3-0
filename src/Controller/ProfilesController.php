@@ -1189,7 +1189,7 @@ class ProfilesController extends AppController{
         $path = $this->Document->getUrl();
 
         $this->updatelanguage($_POST);
-
+        //$this->Flash->success("Add: " . $add);
         if ($add == '0') {
             $profile_type = $this->request->session()->read('Profile.profile_type');
             $_POST['created'] = date('Y-m-d');
@@ -1316,7 +1316,7 @@ class ProfilesController extends AppController{
                     $query2->insert(['user_id'])
                         ->values(['user_id' => $profile->id])
                         ->execute();
-                    if (isset($_POST['email']) && $_POST['email']) {
+                    if (true){ //isset($_POST['email']) && $_POST['email']) {
 
                         //     $com = "ISBMEE";
                         //     $from = 'info@isbmee.com';
@@ -1354,19 +1354,24 @@ class ProfilesController extends AppController{
                             $u = $pt;
                             $type_query = TableRegistry::get('profile_types');
                             $type_q = $type_query->find()->where(['id' => $u])->first();
-                            if ($type_q)
+                            if ($type_q) {
                                 $protype = $type_q->title;
-                            else
+                            }else {
                                 $protype = '';
-                        } else
+                            }
+                        } else {
                             $protype = '';
+                        }
+
+
+                        //$this->Mailer->debugprint(print_r($_POST,true));
 
                         $emails = array("super");
-                        if (isset($_POST["emailcreds"]) && $_POST["emailcreds"] == "on" && strlen(trim($_POST["email"])) > 0) {
+                        if (isset($_POST["emailcreds"]) && $_POST["emailcreds"] && strlen(trim($_POST["email"])) > 0) {
                             $emails[] = $_POST["email"];
                             $profiles->query()->update()->set(['emailsent' => date('Y-m-d H:i:s')])->where(['id' => $profile->id])->execute();
                         }
-                        $this->Mailer->handleevent("profilecreated", array("username" => $_POST['username'],"email" => $emails, "path" =>$path, "createdby" => $uq->username, "type" => $protype, "password" => $password, "id" =>  $profile->id ));
+                        $this->Mailer->handleevent("profilecreated", array("username" => $username,"email" => $emails, "path" =>$path, "createdby" => $uq->username, "type" => $protype, "password" => $password, "id" =>  $profile->id ));
                         /*
                         $this->Mailer->handleevent("profilecreated", array("username" => $username,"email" => $em, "path" =>$path, "createdby" => $uq->username, "type" => $protype, "password" => $password ));
                         if (isset($_POST["emailcreds"]) && $_POST["emailcreds"] == "on" && strlen(trim($_POST["email"])) > 0 && $password) {
@@ -1398,12 +1403,12 @@ class ProfilesController extends AppController{
                     }
                         */
                     $this->Flash->success($this->Trans->getString("flash_profilesaved"));
-
                 }
                 echo $profile->id;
 
-            } else
-                echo "0";
+            } else {
+                    echo "0";
+                }
         }
     } else {
         $profile = $this->Profiles->get($add, ['contain' => []]);
@@ -1450,32 +1455,30 @@ class ProfilesController extends AppController{
                         ->where(['id' => $profile->id])
                         ->execute();
                 } else {
-                    if(isset($_POST['profile_type']))
-                    {
-
+                    if(isset($_POST['profile_type'])) {
                         if ($_POST['profile_type'] == '7'){
                             $username = 'owner_operator_' . $profile->id;
                             $queries = TableRegistry::get('Profiles');
                             $queries->query()->update()->set(['username' => $username])
                                 ->where(['id' => $profile->id])
                                 ->execute();
-                        }
-                        else
-                            if ($_POST['profile_type'] == '8'){
+                        } else {
+                            if ($_POST['profile_type'] == '8') {
                                 $username = 'owner_driver_' . $profile->id;
                                 $queries = TableRegistry::get('Profiles');
                                 $queries->query()->update()->set(['username' => $username])
                                     ->where(['id' => $profile->id])
                                     ->execute();
-                            }
-                            else
-                                if ($_POST['profile_type'] == '11'){
+                            } else {
+                                if ($_POST['profile_type'] == '11') {
                                     $username = 'employee_' . $profile->id;
                                     $queries = TableRegistry::get('Profiles');
                                     $queries->query()->update()->set(['username' => $username])
                                         ->where(['id' => $profile->id])
                                         ->execute();
                                 }
+                            }
+                        }
                     }
                 }
                 if (isset($_POST['drafts']) && ($_POST['drafts'] == '1')) {
@@ -1488,6 +1491,9 @@ class ProfilesController extends AppController{
             }
         }
     }
+
+
+
     $this->refreshsession();
     die();
 }
@@ -2540,7 +2546,7 @@ public function saveDriver()
 /////////////////////////////////////////////////////////////////////////////////////process order
     function cron($debugging = false) {//////////////////////////////////send out emails
         $path = $this->Document->getUrl();
-        if ($debugging) {
+        if (isset($_GET["testemail"])) {
             $email = $this->request->session()->read('Profile.email');
             $this->sendtaskreminder($email, "test", $path, "(TEST EMAIL)");
         }
@@ -2827,6 +2833,8 @@ public function saveDriver()
             ));
             echo "<br>Sending task reminder to: " . $email;
             return true;
+        } else {
+            $this->Mailer->handleevent("test", array("email" => $email));
         }
 
 /*
@@ -2876,10 +2884,10 @@ public function saveDriver()
                                 $msg = 'Your password has been reset.<br /> Your login details are:<br /> Username: ' . $profile->username . '<br /> Password: ' . $new_pwd . '<br /> Please <a href="' . LOGIN . '">click here</a> to login.<br /> Regards,<br /> The ' . $setting->mee . ' Team';
                                 $this->Mailer->sendEmail($from, $to, $sub, $msg);
                                       */
-                                echo "Password has been reset succesfully. Please check your email for the new password.";
+                                 echo $this->Trans->getString("email_passwordreset_subject");
                             }
                         } else {
-                            echo "Sorry, the email address does not exist.";
+                            echo $this->Trans->getString("flash_invalidemail");
                         }
                         die();
                     }
