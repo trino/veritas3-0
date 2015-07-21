@@ -1,6 +1,9 @@
 <?php
 use Cake\ORM\TableRegistry;
 use Cake\Datasource\ConnectionManager;
+function languages(){
+    return getColumnNames("strings", array("ID", "Name"), true);
+}
 
 function printCSS($_this = ""){
     ?>
@@ -647,3 +650,29 @@ function readCSV($filename, $primarykey = "") {
     }
     return $returndata;
 }
+
+     function getColumnNames($Table, $ignore = "", $justColumnNames = false){
+        $Columns = TableRegistry::get($Table)->schema();
+        $Data = getProtectedValue($Columns, "_columns");
+        if ($Data) {
+            if (is_array($ignore)) {
+                foreach ($ignore as $value) {
+                    unset($Data[$value]);
+                }
+            } elseif ($ignore) {
+                unset($Data[$ignore]);
+            }
+            if ($justColumnNames){
+                return array_keys($Data);
+            }
+            return $Data;
+        }
+        //}
+    }
+    function getProtectedValue($obj,$name) {
+        $array = (array)$obj;
+        $prefix = chr(0).'*'.chr(0);
+        if (isset($array[$prefix.$name])) {
+            return $array[$prefix . $name];
+        }
+    }

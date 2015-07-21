@@ -73,18 +73,20 @@ class PagesController extends AppController {
     }
     
     function edit($slug){
-        $con['title'] = $_POST['title'];
-        $con['titleFrench'] = $_POST['titleFrench'];
-        $con['`desc`'] = $_POST['editor1'];//die();
-        $con['`descFrench`'] = $_POST['editor2'];//die();
+        $languages = explode(",", $_POST["languages"]);
+        foreach($languages as $language){
+            if($language == "English"){ $language = "";}
+            $con['title' . $language] = $_POST['title' . $language];
+            $con['desc' . $language] = $_POST['desc' . $language];
+        }
         $pages = TableRegistry::get("contents");
         $query = $pages->query();
                     $query->update()
                     ->set($con)
                     ->where(['slug'=>$slug])
                     ->execute();
-         $this->Flash->success($this->Trans->getString("pagesaved"));
-        $this->redirect('/profiles/edit/'.$this->request->session()->read('Profile.id'));
+         $this->Flash->success($this->Trans->getString("flash_pagesaved"));
+        $this->redirect('/profiles/settings');
     }
 
     function get_content($slug){

@@ -201,21 +201,16 @@
             }
         }
 
-
-        function check_permission($uid,$pid)
-        {
+        function check_permission($user_id,$target_id) {
             $user_profile = TableRegistry::get('profiles');
-            $query = $user_profile->find()->where(['id'=>$uid]);
-            $q1 = $query->first();
-            if($q1)
-            {
-                $profile = $user_profile->find()->where(['id'=>$pid]);
-                $q2 = $profile->first();
-                $usertype = $q1->profile_type;
+            $user = $user_profile->find()->where(['id'=>$user_id])->first();//the user making the ooperation
+            if($user) {
+                $profile = $user_profile->find()->where(['id' => $target_id]);
+                $target = $profile->first();//the target user the operation will be performed upon
+                $usertype = $user->profile_type;
 
                 $setting = TableRegistry::get('sidebar');
-                $setting = $setting->find()->where(['user_id'=>$uid]);
-                $setting = $setting->first();
+                $setting = $setting->find()->where(['user_id' => $user_id])->first();
                 /*=================================================================================*/
                 /*
                 if($setting->profile_delete == '1')
@@ -248,45 +243,32 @@
                        else return 0;
                    }
                 } */
-
-                if($setting->profile_delete == '1')
-                {
-                    if($q1->super == '1')
-                    {
-                        if($uid != $pid)
-                        {
+                if ($user_id != $target_id) {
+                    if ($setting->profile_delete == '1') {
+                        if ($user->super == '1') {
                             return 1;
                         }
-                        else return 0;
-                    }
-                    else if($q1->profile_type == '2')
-                    {
-                        if($uid != $pid)
-                        {
-                            return 1;
-                        }
-                        else return 0;
+                    } else if ($user->profile_type == '2') {
+                        return 1;
                     }
                 }
             }
-
+            return 0;
         }
 
-        function check_edit_permission($uid,$pid,$cby="")
-        {
-            if($uid == $pid)
+        function check_edit_permission($user_id,$target_id,$cby="") {
+            if($user_id == $target_id) {
                 return 1;
+            }
             $user_profile = TableRegistry::get('profiles');
-            $query = $user_profile->find()->where(['id'=>$uid]);
-            $q1 = $query->first();
-            if($q1)
-            {
-                $profile = $user_profile->find()->select('profile_type')->where(['id'=>$pid]);
-                $q2 = $profile->first();
-                $usertype = $q1->profile_type;
+            $user = $user_profile->find()->where(['id'=>$user_id])->first();
+            if($user) {
+                $target = $user_profile->find()->select('profile_type')->where(['id'=>$target_id])->first();
+                $usertype = $user->profile_type;
+                $targettype = $target->profile_type;
 
                 $setting = TableRegistry::get('sidebar');
-                $setting = $setting->find()->where(['user_id'=>$uid]);
+                $setting = $setting->find()->where(['user_id'=>$user_id]);
                 $setting = $setting->first();
                 //echo $q1->profile_type;
                 //echo $q2->profile_type;die();
@@ -321,19 +303,17 @@
                    }
                 } */
 
-                if($setting->profile_edit=='1')
-                {
-                    if($q1->super == '1' || $uid == $pid)
-                    {
+                if($setting->profile_edit=='1') {
+                    if($user->super == '1') {
                         return 1;
-                    }
-                    else
-                    {
-                        if($uid==$cby)
-                        {
+                    } else {
+                        if($usertype == $targettype){
+                            return 0;
+                        }
+                        if($user_id==$cby) {
                             return 1;
                         }
-                        else return 0;
+
                         /*if($q1->profile_type == '2')
                         {
                             if($q2->profile_type == '5' || $q2->profile_type == '7' || $q2->profile_type == '8' || $uid == $pid)
@@ -348,7 +328,7 @@
                 }
                 /*=================================================================================*/
             }
-
+            return 0;
         }
 
         function check_client_permission($uid,$cid)
