@@ -294,7 +294,7 @@ class ProfilesController extends AppController{
                     echo "<FONT COLOR=RED>" . $DocID . " was deleted</FONT>";
                     break;
                 case "createdocument":
-                    if ($this->AddProduct($DocID, $_POST["Name"], $_POST["NameFrench"])) {
+                    if ($this->AddProduct($DocID, $_POST)){//["Name"], $_POST["NameFrench"])) {
                         echo "<FONT COLOR='green'>" . $_POST["Name"] . "/" . $_POST["NameFrench"] . " was created</FONT>";
                     } else {
                         echo "<FONT COLOR='red'>" . $DocID . " is already in use</FONT>";
@@ -494,13 +494,22 @@ class ProfilesController extends AppController{
         //TableRegistry::get("order_provinces")->deleteAll(array('ProductID' => $Number), false);
     }
 
-    function AddProduct($Number, $Name, $FrenchName){
+    function startsWith($haystack, $needle) {
+        // search backwards starting from haystack length characters from the end
+        return $needle === "" || strrpos($haystack, $needle, -strlen($haystack)) !== FALSE;
+    }
+    function AddProduct($Number, $post){//$Name, $FrenchName){
         $table = TableRegistry::get("order_products");
         $item = $table->find()->where(['number' => $Number])->first();
-        if ($item) {
-            return false;
+        if ($item) {return false;}
+        $data = array("number" => $Number, "enable" => 0);
+        foreach($post as $Key => $Value){
+            if($this->startsWith($Key, "title")){
+                $data[$Key] = $Value;
+            }
         }
-        $table->query()->insert(['number', "title", "titleFrench", "enable"])->values(['number' => $Number, 'title' => $Name, "titleFrench"=> $FrenchName, "enable" => 0])->execute();
+        $table->query()->insert(array_keys($data))->values($data)->execute();
+        //$table->query()->insert(['number', "title", "titleFrench", "enable"])->values(['number' => $Number, 'title' => $Name, "titleFrench"=> $FrenchName, "enable" => 0])->execute();
         return true;
     }
 

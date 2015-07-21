@@ -1,6 +1,8 @@
 <?php
-    if ($_SERVER['SERVER_NAME'] == 'localhost') { echo "<span style ='color:red;'>profiles/products.ctp #INC not assigned</span>";}
+    if ($_SERVER['SERVER_NAME'] == 'localhost') { echo "<span style ='color:red;'>templates/profiles/products.ctp #INC not assigned</span>";}
     $language = $this->request->session()->read('Profile.language');
+    include_once('subpages/api.php');
+    $languages = languages();
 ?>
 <style>
     th.rotate {
@@ -34,7 +36,7 @@
             data: "Type=enabledocument&DocID=" + Index + "&Value=" + element.checked,
             success: function (msg) {
                 if(element.checked){ word="enabled"; } else { word = "disabled";}
-                msg = "<FONT COLOR=BLACK>You have " + word + " '" + selectedname() + "'</FONT>";
+                msg = "<FONT COLOR=BLACK>You have " + word + " '" + selectedname("") + "'</FONT>";
                 Toast(msg, true);
             }
         })
@@ -42,31 +44,52 @@
 
     function addproduct(){
         var Number =  $('#newnum').val();
-        var Name =  $('#newname').val();
-        var NameFrench =  $('#newnameFrench').val();
+        <?php
+        foreach($languages as $lang){
+            if($lang=="English"){$lang ="";}
+            echo "var Name" . $lang . " =  $('#newname" . $lang . "').val(); \r\n";
+       }
+        ?>
         if(isNaN(Number)) {
             Toast("'" + Number + "' is not a number", true);
-        } else if (Name.length ==0 || NameFrench.length ==0) {
-            Toast("No name or french name were specified", true);
+        } else if (<?php
+        foreach($languages as $lang){
+            if($lang=="English"){$lang ="";} else { echo " || ";}
+            echo "Name" . $lang . ".length ==0";
+       }
+        ?>) {
+            Toast("Missing a name for 1 or more languages", true);
         } else {
             $.ajax({
                 url: "<?php echo $this->request->webroot;?>profiles/products",
                 type: "post",
                 dataType: "HTML",
-                data: "Type=createdocument&DocID=" + Number + "&Name=" + Name + "&NameFrench=" + NameFrench,
+                data: "Type=createdocument&DocID=" + Number <?php
+                     foreach($languages as $lang){
+                        if($lang=="English"){$lang ="";}
+                                echo ' + "&Name' . $lang . '=" + Name' . $lang;
+                     }
+                    ?>,
                 success: function (msg) {
                     Toast(msg, true);
                     if(msg.indexOf("green") >-1){
-                        switch (Language){
-                            case "French":
-                                Name = NameFrench;
-                                break;
-                        }
-                        $('#myTable > tbody:last').append('<TR ID="PTR' + Number + '" onclick="selectproduct(' + Number + ');"><TD><INPUT TYPE="RADIO" ID="rad' + Number + '">' + Number + '</LABEL></TD><TD><DIV ID="pn' + Number + '">' + Name + '</div></TD><TD><INPUT TYPE="checkbox" ID="chk' + Number + '" ONCLICK="enableproduct(' + Number  + ');"></TD></TR>');
+                        $('#myTable > tbody:last').append('<TR ID="PTR' + Number + '" onclick="selectproduct(' + Number + ');"><TD><INPUT TYPE="RADIO" ID="rad' + Number + '">' + Number + '</LABEL></TD><TD><?php
+
+                    foreach($languages as $lang){
+                        $hidden = "";
+                        if($lang=="English"){$lang ="";} else {$hidden = ' STYLE="display: none;"';}
+                        echo "<DIV ID=pn' + Number + '" . $lang . $hidden . ">' + Name" . $lang . " + '</div>";
+                    }
+
+ ?></TD><TD><INPUT TYPE="checkbox" ID="chk' + Number + '" ONCLICK="enableproduct(' + Number  + ');"></TD></TR>');
 
                         $('#newnum').val("");
-                        $('#newname').val("");
-                        $('#newnameFrench').val("");
+                        <?php
+                            foreach($languages as $lang){
+                                if($lang=="English"){$lang ="";}
+                                echo '$("#newname' . $lang . '").val("");' . "\r\n";
+                            }
+                        ?>
                     }
                 }
             })
@@ -83,7 +106,7 @@
             success: function (msg) {
                 if(element.checked){ word="enabled"; } else { word = "disabled";}
                 if(Province == "ALL") {Province = "all provinces"; }
-                msg = "You have " + word + " '" + documentname(DocID) + "' in " + Province + " for '" + selectedname() + "'";
+                msg = "You have " + word + " '" + documentname(DocID) + "' in " + Province + " for '" + selectedname("") + "'";
                 Toast(msg, true);
             }
         })
@@ -105,7 +128,7 @@
             data: "Type=cleardocument&DocID=" + OldIndex + "&Language=" + Language,
             success: function (msg) {
                 $('.tablespot').html(msg);
-                Toast("<FONT COLOR='red'>'" + selectedname() + "' was cleared</FONT>", true);
+                Toast("<FONT COLOR='red'>'" + selectedname("") + "' was cleared</FONT>", true);
             }
         })
     }
@@ -115,7 +138,7 @@
         if(OldIndex>-1){$("#rad" + OldIndex).prop("checked", false);}
         $("#rad" + Index).prop("checked", true);
         OldIndex=Index;
-        Toast("<FONT COLOR='BLACK'>You have selected '" + selectedname() + "'</FONT>", true);
+        Toast("<FONT COLOR='BLACK'>You have selected '" + selectedname("") + "'</FONT>", true);
         $('.tablespot').html('<DIV ALIGN="CENTER"><IMG SRC="<?= $this->request->webroot;?>webroot/assets/global/img/loading-spinner-blue.gif"><BR>Loading...</DIV>');
         $('.actions').show();
         $.ajax({
@@ -129,22 +152,23 @@
         })
     }
 
-    function selectedname(){
-        return $('#pn' + OldIndex).text() ;
+    function selectedname(Language){
+        if(Language == "English"){Language = "";}
+        return $('#pn' + OldIndex + Language).text() ;
     }
     function documentname(DocID){
         return $('#dn' + DocID).text() ;
     }
 
     function deleteproduct(){
-        if (confirm("Are you sure you want to delete '" + selectedname() + "'?")){
+        if (confirm("Are you sure you want to delete '" + selectedname("") + "'?")){
             $.ajax({
                 url: "<?php echo $this->request->webroot;?>profiles/products",
                 type: "post",
                 dataType: "HTML",
                 data: "Type=deletedocument&DocID=" + OldIndex,
                 success: function (msg) {
-                    Toast("'" + selectedname() + "' was deleted", true);
+                    Toast("'" + selectedname("") + "' was deleted", true);
                     document.getElementById("PTR" + OldIndex).remove();
                     OldIndex=-1;
                     OldRow=-1;
@@ -155,19 +179,22 @@
         }
     }
     function editproduct(){
-        var person = prompt("Please enter a new " + Language + " name for: '" + selectedname() + "'", selectedname());
+        <?php foreach($languages as $lang){
+                if($lang=="English"){$lang2 ="";} else {$lang2=$lang;}?>
+        var person = prompt("Please enter a new <?= $lang; ?> name for: '" + selectedname('<?= $lang; ?>') + "'", selectedname('<?= $lang; ?>'));
         if(person !== null && person.length>0) {
             $.ajax({
                 url: "<?php echo $this->request->webroot;?>profiles/products",
                 type: "post",
                 dataType: "HTML",
-                data: "Type=rename&DocID=" + OldIndex + "&newname=" + person + "&Language=" + Language,
+                data: "Type=rename&DocID=" + OldIndex + "&newname=" + person + "&Language=<?= $lang; ?>",
                 success: function (msg) {
-                    Toast("'" + selectedname() + "' was renamed to '" + person + "'", true);
-                    $('#pn' + OldIndex).text(person);
+                    Toast("'" + selectedname('<?= $lang; ?>') + "' was renamed to '" + person + "' in <?= $lang; ?>", true);
+                    $('#pn' + OldIndex + '<?= $lang; ?>').text(person);
                 }
             })
         }
+        <?php } ?>
     }
 
     function simulateClick(name) {
@@ -201,12 +228,18 @@ function getDefault($Default, $Value){
 echo "<table class='table table-condensed  table-striped table-bordered table-hover dataTable no-footer'  ID='myTable'>";
 echo "<THEAD><TH>ID</TH><TH>Package</TH><TH TITLE='Enabled'>EN</TH></THEAD><TBODY>";
 
-$fieldname = "title";
-if(($language!="English")){$fieldname.=$language;}
+//if(($language!="English")){$fieldname.=$language;}
 foreach($products as $product){
     $checked="";
     if ($product->enable) { $checked= " checked";}
-    echo '<TR ID="PTR' . $product->number . '" onclick="selectproduct(' . $product->number . ');"><TD><INPUT TYPE="RADIO" ID="rad' . $product->number . '">' . $product->number . '</LABEL></TD><TD><DIV ID="pn' . $product->number . '">' . getDefault($product->title, $product->$fieldname) . '</div></TD><TD><INPUT TYPE="checkbox" ID="chk' . $product->number . '" ONCLICK="enableproduct(' . $product->number  . ');"' . $checked . '></TD></TR>';
+    echo '<TR ID="PTR' . $product->number . '" onclick="selectproduct(' . $product->number . ');"><TD><INPUT TYPE="RADIO" ID="rad' . $product->number . '">' . $product->number . '</LABEL></TD><TD>';
+    foreach($languages as $lang){
+        $fieldname = "title";
+        $hidden="";
+        if($lang != "English"){ $fieldname .= $lang; $hidden = ' STYLE="display:none;"';} else {$lang = "";}
+        echo '<DIV ID="pn' . $product->number . $lang . '"' . $hidden . '>' . getDefault($product->title, $product->$fieldname) . '</div>';
+    }
+    echo '</TD><TD><INPUT TYPE="checkbox" ID="chk' . $product->number . '" ONCLICK="enableproduct(' . $product->number  . ');"' . $checked . '></TD></TR>';
 }
 ?></TBODY><TFOOT>
     <TR><TH COLSPAN="3">Actions:</TH></TR><TR class="actions" style="display: none;"><TD COLSPAN="3">
@@ -220,8 +253,10 @@ foreach($products as $product){
                 <a class="btn btn-xs btn-info" id="add" onclick="addproduct();" style="float: right; width: 50px; margin-top: 3px;">Add</a>
             </TD>
             <TD COLSPAN="2">
-                <input type="text" id="newname" style="width: 100%" placeholder="English">
-                <input type="text" id="newnameFrench" style="width: 100%" placeholder="French">
+                <?php foreach($languages as $lang){
+                if($lang=="English"){$lang2 ="";} else {$lang2=$lang;}?>
+                <input type="text" id="newname<?= $lang2; ?>" style="width: 100%" placeholder="<?= $lang; ?>">
+                <?php } ?>
                 </TD>
         </TR>
 </table>

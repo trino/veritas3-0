@@ -1,6 +1,10 @@
 <h3 class="page-title">
     Product Editor
 </h3>
+<?php
+    include_once('subpages/api.php');
+    $languages = languages();
+?>
 
 <div class="page-bar">
     <ul class="page-breadcrumb">
@@ -33,11 +37,10 @@
             <TH>Icon</TH>
             <TH>Acronym</TH>
 
-            <TH>English Name</TH>
-            <!--TH>English Description</TH-->
-
-            <TH>French Name</TH>
-            <!--TH>French Description</TH-->
+            <?php foreach($languages as $language) {
+                echo '<TH>' . $language . ' Name</TH>';
+                echo '<!--TH>' . $language . ' Description</TH-->';
+            } ?>
 
             <TH>Color</TH>
             <TH>Checked</TH>
@@ -97,10 +100,12 @@
                     }
 
                     td($producttype->Acronym);
-                    td($producttype->Name);
-                    //td($producttype->Description);
 
-                    td($producttype->NameFrench);
+                    foreach($languages as $language) {
+                        if($language == "English") { $fieldname = "Name";} else { $fieldname = "Name" . $language;}
+                        td($producttype->$fieldname);
+                        //td($producttype->Description);
+                    }
 
                     td($producttype->Color, False, "green");
 
@@ -280,17 +285,14 @@
     tr("Blocks Alias", 2, "Needs to point to a column in the blocks table", false, $MakeCol);
     makealiasselect("Blocks_Alias", $blockscols,getvalue($selectedproduct, "Blocks_Alias"));
 
-    tr("English Name", 2);
-    input("text", "Name", getvalue($selectedproduct, "Name") , false,false,true);
+    foreach($languages as $language) {
+        if($language == "English"){$language2 = "";} else {$language2 = $language;}
+        tr($language . " Name", 2);
+        input("text", "Name" . $language2, getvalue($selectedproduct, "Name" . $language2), false, false, true);
 
-    tr("English Description", 4);
-    input("text", "Description", getvalue($selectedproduct, "Description"), false,false,true);
-
-    tr("French Name", 2);
-    input("text", "NameFrench", getvalue($selectedproduct, "NameFrench"), false,false,true);
-
-    tr("French Description", 4);
-    input("text", "DescriptionFrench", getvalue($selectedproduct, "DescriptionFrench"), false,false,true);
+        tr($language . " Description", 4);
+        input("text", "Description" . $language2, getvalue($selectedproduct, "Description" . $language2), false, false, true);
+    }
 
     tr("Top Block Color", 2, "What color will the Top blocks show as");
     makecolordropdown("Block_Color", $colors, str_replace("bg-", "", getvalue($selectedproduct, "Block_Color")));

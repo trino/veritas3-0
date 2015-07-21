@@ -14,8 +14,10 @@
         
         <a href="javascript:;" class="btn btn-primary apt" style="float: right;" onclick="$(this).hide();$('.addptype').show();">Add Profile Type</a>
         <div class="addptype" style="display: none;">
-            <span class="col-md-4"><input type="text" class="form-control"  placeholder="Title" id="titptype_0"/></span>
-            <span class="col-md-4"><input type="text" class="form-control"  placeholder="Title" id="titptypeFrench_0"/></span>
+            <?php foreach($languages as $language) {
+                if ($language == "English") {$language2 = "";} else {$language2 = $language;}
+                echo '<span class="col-md-4"><input type="text" class="form-control"  placeholder="' . $language . ' title" id="titptype' . $language2 . '_0"/></span>';
+            } ?>
             <span class="col-md-3"><a href="javascript:;" id="0" class="btn btn-primary saveptypes">Add</a></span>
         </div>
     </div>
@@ -24,25 +26,27 @@
             <table
                 class="table table-condensed  table-striped table-bordered table-hover dataTable no-footer">
                 <thead>
-                <tr >
-                    <th>Id</th>
-                    <th>Title (English)</th>
-                    <th>Title (French)</th>
-                    <th>Enable</th>
-                    <th>Can Order</th>
-                    <th>Actions</th>
-
-                </tr>
+                    <tr>
+                        <th>ID</th>
+                        <?php foreach($languages as $language) {
+                            echo '<th>Title (' . $language . ')</th>';
+                        } ?>
+                        <th>Enable</th>
+                        <th>Can Order</th>
+                        <th>Actions</th>
+                    </tr>
                 </thead>
                 <tbody class="allpt">
                 <?php
                 $i = 1;
-                foreach($ptypes as $product)
-                {?>
+                foreach($ptypes as $product){?>
                     <tr>
                         <td><?php echo $i;?></td>
-                        <td class="titleptype_<?= $product->id;?>"><?php echo $product->title;?></td>
-                        <td class="titleptypeFrench_<?= $product->id;?>"><?php echo $product->titleFrench;?></td>
+                        <?php foreach($languages as $language){
+                            if ($language == "English"){$language = "";}
+                            $keyname = "title" . $language;
+                            echo '<td class="titleptype' . $language . '_' . $product->id . '">' . $product->$keyname . '</td>';
+                        } ?>
                         <td><input type="checkbox" <?php if($product->enable=='1'){echo "checked='checked'";}?> class="penable" id="pchk_<?= $product->id;?>" /><span class="span_<?= $product->id;?>"></span></td>
                         <!--php if($product->id != 1 && $product->id != 2 && $product->id != 5 && $product->id != 7 && $product->id != 8  && $product->id != 11) {?>-->
                         <td><input type="checkbox" <?php if($product->placesorders=='1'){echo "checked='checked'";}?> class="oenable" id="ochk_<?= $product->id;?>" /><span class="span2_<?= $product->id;?>"></span></td>
@@ -64,11 +68,19 @@ $(function(){
     $('.editptype').live('click', function(){
         
         var id = $(this).attr('id').replace("editptype_","");
-        var va = $('.titleptype_'+id).text();
-        var vaFrench = $('.titleptypeFrench_'+id).text();
 
-        $('.titleptype_'+id).html('<input type="text" value="'+va+'" class="form-control" id="titptype_'+id+'" /><a class="btn btn-primary saveptypes" id ="ptypesave_'+id+'" >save</a> ');
-        $('.titleptypeFrench_'+id).html('<input type="text" value="'+vaFrench+'" class="form-control" id="titptypeFrench_'+id+'" /> ');
+        <?php foreach($languages as $language) {
+            if ($language == "English") {$language = "";}
+            echo "var va" . $language . " = $('.titleptype" . $language . "_'+id).text();";
+        } ?>
+        if(va == 'Save'){return false;}
+
+        $('.titleptype_'+id).html('<input type="text" value="'+va+'" class="form-control" id="titptype_'+id+'" /><a class="btn btn-primary saveptypes" id ="ptypesave_'+id+'" >Save</a>');
+
+    <?php foreach($languages as $language) {
+        if ($language != "English") { ?>
+            $('.titleptype<?= $language; ?>_'+id).html('<input type="text" value="'+va<?= $language; ?>+'" class="form-control" id="titptype<?= $language; ?>_'+id+'" /> ');
+    <?php }} ?>
 
     });
     $('.saveptypes').live('click',function(){

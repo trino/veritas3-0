@@ -1,4 +1,8 @@
 <?php
+if ($this->request->session()->read('debug')) {
+    echo "<span style ='color:red;'>subpages/profile/email.php #INC???</span>";
+}
+
 $languages = array("English", "French");
 $strings2 = array();
 foreach($languages as $language){
@@ -7,14 +11,14 @@ foreach($languages as $language){
     $strings2[$language] = $data;
 }
 
-$fullmode = false;
+$fullmode = true;
 
 $emails = array();
 
-foreach($strings2["English"] as $Key => $Data){
+/* foreach($strings2["English"] as $Key => $Data){
     $fullmode = strpos($Key, "_subject") || strpos($Key, "_message");
     break;
-}
+}*/
 
 $FirstLanguage = $languages[0];
 $strings3 = $strings2[$FirstLanguage];
@@ -108,7 +112,7 @@ foreach($emails as $Key => $Data){
 ?></TD></TBODY>
 <TFOOT>
 <TD COLSPAN="2" ALIGN="RIGHT" valign="center">
-    <CENTER>WARNING: Emails can only be edited by the prrimary translator, or the changes will be overwritten when the strings table gets updated next</CENTER>
+    <CENTER>WARNING: Emails can only be edited by the primary translator, or the changes will be overwritten when the strings table gets updated next</CENTER>
     <button class="btn btn-danger" id="delete" onclick="deletekey(lastkey);">Delete</button>
     <button class="btn btn-primary" id="save" onclick="saveall(lastkey);">Save</button>
 </TD>

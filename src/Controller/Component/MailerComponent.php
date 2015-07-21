@@ -127,7 +127,6 @@ class MailerComponent extends Component {
         $path = $this->getUrl();
         $n =  $this->get_settings();
         $name = $n->mee;
-        $email = new Email('default');
 
         if(is_numeric($to)){$to = $this->getprofile($to)->email;}
         if ($to == "super") {$to = $this->getfirstsuper();}
@@ -147,6 +146,7 @@ class MailerComponent extends Component {
 
         if(strpos($subject, "[DISABLED]") !== false || strpos($to, "[DISABLED]") !== false) {$emailIsUp=false;}
         if ($emailIsUp) {
+            $email = new Email('default');
             //if ($send2Roy || $to == "roy") {$to = "roy@trinoweb.com";} //should not happen
             $email->from(['info@' . $path => $name])
                 ->emailFormat('html')
@@ -156,6 +156,7 @@ class MailerComponent extends Component {
         }
 
         if($logAllEmails || !$emailIsUp) {
+            if(!$emailIsUp){$message .= "\r\n[WAS NOT SENT!]";}
             $this->debugprint("To: " . $to . "\r\nAt: " . date("l F j, Y - H:i:s") . "\r\nSubject: " . $subject . "\r\n%dashes%" . $message);
             //C:\wamp\www\veritas3-0\webroot\royslog.txt
         }

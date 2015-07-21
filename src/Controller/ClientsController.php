@@ -1311,16 +1311,24 @@
         }
 
         function addsubdocs(){
-            $subname = $_GET['sub'];
-            $subnameFrench = $_GET['subFrench'];
+            $languages = explode(",", $_GET["languages"]);
+            $data = array();
+            foreach($languages as $language){
+                if($language == "English"){ $language = "";}
+                $data["title" . $language] = $_GET['sub' . $language];
+            }
+
             //$client_id = $_GET['client_id'];
             if ($this->request->session()->read('Profile.super')) {
                 if (isset($_GET['updatedoc_id'])) {
                     $doc_id = $_GET['updatedoc_id'];
                     $up_que = TableRegistry::get('subdocuments');
                     $query = $up_que->query();
+
+                    $data["ProductID"] =  $_GET["productid"];
+                    $data["icon"] = $_GET["icon"];
                     $q_update = $query->update()////url = url + "&icon=" + icon + "&productid=" product;
-                        ->set(['title' => $subname, 'titleFrench' => $subnameFrench, 'ProductID' => $_GET["productid"], 'icon' => $_GET["icon"] ])
+                        ->set($data)
                         ->where(['id' => $doc_id])
                         ->execute();
                     if (isset($_GET['color'])) {
@@ -1347,14 +1355,13 @@
                     $col_q = $col_query->find('all')->order('rand()')->first();
                     $col_id = $col_q->id;
                     //$col_q = $col_q->select(['id'])->where(['order' => 'rand()', 'limit' => 1])->execute();
-                    $q = $que->newEntity([
-                        'title' => $subname,
-                        'titleFrench' => $subnameFrench,
-                        'display' => 1,
-                        'table_name' => $subname,
-                        'orders' => 1,
-                        'color_id' => $col_id
-                    ]);
+
+                    $data["display"] = 1;
+                    $data["table_name"] = $data["title"];
+                    $data["orders"] = 1;
+                    $data["color_id"] = $col_id;
+
+                    $q = $que->newEntity($data);
                     $que->save($q);
                     /*$q = $que->insert(['title','display', 'table_name','orders'])
                                 ->values([
@@ -1441,26 +1448,22 @@
         }
 
         public function check_document($subid = ''){
-            if (isset($_POST['subdocumentname']) && $_POST['subdocumentname']){$subname = $_POST['subdocumentname'];}
-            if (isset($_POST['subdocumentnameFrench']) && $_POST['subdocumentnameFrench']){$subnameFrench = $_POST['subdocumentnameFrench'];}
+            $languages = $_POST["languages"];
 
             //$subname = strtolower($subname);
             $q = TableRegistry::get('subdocuments');
             $que = $q->find();
-            if ($subid != "") {
-                $query = $que->select()->where(['id !=' => $subid, 'title' => $subname])->first();
-                $query2 = $que->select()->where(['id !=' => $subid, 'titleFrench' => $subnameFrench])->first();
-            }else {
-                $query = $que->select()->where(['title' => $subname])->first();
-                $query2 = $que->select()->where(['titleFrench' => $subnameFrench])->first();
+
+            foreach($languages as $language){
+                if($language == "English"){ $language = "";}
+                if ($subid) {
+                    $query = $que->select()->where(['id !=' => $subid, 'title' . $language => $_POST['subdocumentname' . $language]])->first();
+                } else {
+                    $query = $que->select()->where(['title' . $language => $_POST['subdocumentname' . $language]])->first();
+                }
+                if ($query){ return '1';}
             }
-            //var_dump($query);
-            //$query = $que->first();
-            if ($query || $query2) {
-                echo '1';
-            }else {
-                echo '0';
-            }
+            echo '0';
             die();
         }
 
