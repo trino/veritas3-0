@@ -15,7 +15,12 @@ function languagenames(){
     $acceptablelanguages = languages();
     $languages = array();
     foreach($acceptablelanguages as $language){
-        $languages[$language] = $table->$language;
+        if($table->$language){
+            $languages[$language] = $table->$language;
+        } else {
+            $languages[$language] = "[" .  $language . "]";
+        }
+
     }
     return $languages;
 }

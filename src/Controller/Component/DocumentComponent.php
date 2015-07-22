@@ -1810,8 +1810,16 @@ class DocumentComponent extends Component
         if(!is_object($Table)) {$Table = TableRegistry::get($Table);}
         return $Table->find()->where([$Key => $Value])->first();
     }
-    function insertdb($Table, $Data){
+    function insertdb($Table, $Data, $PrimaryKey = "", $Value = ""){
         if(!is_object($Table)) {$Table = TableRegistry::get($Table);}
+        if($PrimaryKey && $Value){
+            $col = $this->findcol($Table,$PrimaryKey,$Value);
+            if($col){
+                $Table->query()->update()->set($Data)->where([$PrimaryKey => $Value])->execute();
+                return $Data;
+            }
+            $Data[$PrimaryKey] = $Value;
+        }
         $ret = $Table->newEntity($Data);
         $Table->save($ret);
         return $ret;
@@ -1843,4 +1851,81 @@ class DocumentComponent extends Component
         $ret = "<BR>" . $this->insertdb($table, $data)->id;
         return $docid . $ret;
     }
+
+    function getProtectedValue($obj,$name) {
+        $array = (array)$obj;
+        $prefix = chr(0).'*'.chr(0);
+        if (isset($array[$prefix.$name])) {
+            return $array[$prefix . $name];
+        }
+    }
+    function makeCSV($data, $newline = "\r\n"){
+        $retvalue = "";
+        $haswrittencolumns = false;
+        foreach($data as $entry){
+            $currentline = "";
+            if (is_object($entry)) {
+                $entry = $this->getProtectedValue($entry, "_properties");
+            }
+            if(!$haswrittencolumns){
+                foreach($entry as $key => $value){
+                    $newkey = "";
+                    if (is_array($value)){
+                        if($this->isassocarray($value)){
+                            $newkey = $value;
+                        }
+                    } elseif(is_object($value)){
+                        $newkey = $this->getProtectedValue($value, "_properties");
+                    }
+                    if (is_array($newkey)) {
+                        foreach($newkey as $key2 => $value2) {
+                            $currentline = $this->appendstring($currentline, $key . "." . $key2);
+                        }
+                    } else {
+                        $currentline = $this->appendstring($currentline, $key);
+                    }
+                }
+                $haswrittencolumns=true;
+                $retvalue = $currentline;
+                $currentline = "";
+            }
+
+            foreach($entry as $key => $value){
+                $currentline = $this->appendstring($currentline, $this->CSVvalue($value));
+            }
+
+            $retvalue .= $newline . $currentline;
+        }
+        return $retvalue;
+    }
+
+    function appendstring($Current, $Append, $delimeter = ","){
+        if($Current){return $Current . $delimeter . $Append;}
+        return $Append;
+    }
+
+    function CSVvalue($value){
+        if (is_object($value)){$value = $this->getProtectedValue($value, "_properties");}
+        if (is_array($value)) {
+            if ($this->isassocarray($value)) {
+                $currentline = "";
+                foreach ($value as $Key => $thevalue) {
+                    if ($currentline) {
+                        $currentline .= ",";
+                    }
+                    $currentline .= $this->CSVvalue($thevalue);
+                }
+                return $currentline;
+            } else {
+                return $this->CSVvalue(implode(",", $value));
+            }
+        } else {
+            if (strpos($value, '+') !== False){$value = "'" . $value;}
+            if ( (strpos($value, ",") || strpos($value, "\r\n") || strpos($value, '"') || strpos($value, '-') || strpos($value, '\\') || strpos($value, '+')) !== False) {
+                return '"' . str_replace('"', '""', $value) . '"';
+            }
+            return $value;
+        }
+    }
+
 }

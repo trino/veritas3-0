@@ -56,7 +56,7 @@ $super = $this->request->session()->read('Profile.super');
 ?>
 
 <h3 class="page-title">
-    <?php echo ucfirst($strings["profiles_profile"]); ?>s
+    <?php echo ucfirst($strings["profiles_profiles"]); ?>
 </h3>
 
 <div class="page-bar">
@@ -67,7 +67,7 @@ $super = $this->request->session()->read('Profile.super');
             <i class="fa fa-angle-right"></i>
         </li>
         <li>
-            <a href=""><?php echo ucfirst($strings["profiles_profile"]); ?>s</a>
+            <a href=""><?php echo ucfirst($strings["profiles_profiles"]); ?></a>
         </li>
     </ul>
     <a href="javascript:window.print();" class="floatright btn btn-info"><?= $strings["dashboard_print"] ?></a>

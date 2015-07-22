@@ -315,7 +315,7 @@
                                 <?php if ($debug || true) { ?>
                                     <li>
                                         <a href="<?php echo $this->request->webroot; ?>profiles/langswitch/<?php echo $this->request->session()->read('Profile.id'); ?>">
-                                            <i class="icon-user"></i> <?= $strings["langswitch"]; ?> </a>
+                                            <i class="fa fa-language"></i> <?= $strings["langswitch"]; ?> </a>
                                     </li>
                                 <?php } ?>
                                 <li class="divider">

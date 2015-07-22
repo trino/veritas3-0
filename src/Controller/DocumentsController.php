@@ -12,7 +12,7 @@ include_once('subpages/api.php');
 class DocumentsController extends AppController{
     function translate(){////veritas3-0\webroot\Locale\[language]\LC_MESSAGES will need clearing of duplicate mo files
         $language = $this->request->session()->read('Profile.language');
-        $acceptablelanguages = array("English", "French");
+        $acceptablelanguages = $this->Settings->acceptablelanguages(false);;
         if (!in_array($language, $acceptablelanguages)) { $language = $acceptablelanguages[0]; }//default to english
         $this->set("language", $language);
         $this->response->body($language);

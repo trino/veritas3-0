@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 20, 2015 at 10:56 PM
+-- Generation Time: Jul 22, 2015 at 07:12 PM
 -- Server version: 5.6.17
 -- PHP Version: 5.5.12
 
@@ -32,14 +32,14 @@ CREATE TABLE IF NOT EXISTS `strings` (
   `English` varchar(4096) NOT NULL,
   `French` varchar(4096) NOT NULL,
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=707 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=708 ;
 
 --
 -- Dumping data for table `strings`
 --
 
 INSERT INTO `strings` (`ID`, `Name`, `English`, `French`) VALUES
-(1, 'Date', '1437424272', '<-- This is used by the system to auto-update'),
+(1, 'Date', '1437425794', '<-- This is used by the system to auto-update'),
 (2, 'dashboard_affirmative', 'Yes', 'Oui'),
 (3, 'dashboard_negative', 'No', 'Non'),
 (4, 'dashboard_selectall', 'Select All', 'Tout sélectionner'),
@@ -611,8 +611,8 @@ INSERT INTO `strings` (`ID`, `Name`, `English`, `French`) VALUES
 (582, 'consent_attachid', 'Attach ID', 'Fixez ID'),
 (583, 'forms_language', 'Language', 'Langue'),
 (584, 'flash_clientdeleted', '%Client% deleted', '%Client% supprimé'),
-(585, 'email_profilecreated_subject', 'Profile Created: %username%', 'email_profilecreated_subject'),
-(586, 'email_profilecreated_message', 'Thank you for registering with Making Eligibility Easy. <BR>\nYou are now able to login, navigate and place orders on the MEE system.<BR>\n<BR>\nYour login credentials are as follows:<BR>\n<BR>\nLogin: %webroot%<BR>\nUsername: %username%<BR>\nPassword: %password%<BR>\n<BR>\nIf you have questions or would like training on how to use the system please contact your Account Manager, Paul Clement- pclement@isbc.ca, who will be happy to assist.<BR>\n<BR>\nRegards,<BR>\nThe %site% Team', 'email_profilecreated_message'),
+(585, 'email_profilecreated_subject', 'Profile Created: %username%', 'subject french'),
+(586, 'email_profilecreated_message', 'Thank you for registering with Making Eligibility Easy. <BR>\nYou are now able to login, navigate and place orders on the MEE system.<BR>\n<BR>\nYour login credentials are as follows:<BR>\n<BR>\nLogin: %webroot%<BR>\nUsername: %username%<BR>\nPassword: %password%<BR>\n<BR>\nIf you have questions or would like training on how to use the system please contact your Account Manager, Paul Clement- pclement@isbc.ca, who will be happy to assist.<BR>\n<BR>\nRegards,<BR>\nThe %site% Team', 'message french'),
 (587, 'email_clientcreated_subject', 'Client Created: %company_name%', ''),
 (588, 'email_clientcreated_message', 'Domain: %webroot%<BR>\nClient Name: %company_name%<BR>\nCreated by: %username% (Profile Type: %profile_type%)<BR>\nOn: %created%<BR>\n<BR><BR>\nRegards<BR>\nThe %site% Team', ''),
 (589, 'email_taskreminder_subject', 'Tasks Reminder', ''),
@@ -637,9 +637,9 @@ INSERT INTO `strings` (`ID`, `Name`, `English`, `French`) VALUES
 (608, 'consent_a7', 'Employment Verification (Drug test information and Claims History)', 'Vérification des antécédents professionnels (information sur test de dépistage des drogues et historique de réclamations)'),
 (609, 'consent_a8', 'Credit Check', 'Vérification de solvabilité'),
 (610, 'consent_b0', 'I hereby consent to a criminal record search (Adult) through both the', 'Par les présentes, je consens à une recherche de casiers judiciaires (adulte) dans'),
-(611, 'consent_b1', 'Local Police Records which includes Police Information Portal (PIP) Firearms Interest Person (FIP) and Niche RMS', 'les dossiers de la police locale, qui inclut le Portail d''informations policières (PIP), Personne méritant attention relativement aux armes à feu (PMAAF) et Niche RMS');
+(611, 'consent_b1', 'Local Police Records which includes Police Information Portal (PIP) Firearms Interest Person (FIP) and Niche RMS', 'les dossiers de la police locale, qui inclut le Portail d''informations policières (PIP), Personne méritant attention relativement aux armes à feu (PMAAF) et Niche RMS'),
+(612, 'consent_b2', 'RCMP National Repository of Criminal Records which will be conducted based on name(s), date of birth and declared criminal record (as per Section 9.6.4 of the CCRTIS Dissemination policy)', ' et dans le Répertoire national des casiers judiciaires (CIPC) de la GRC, qui est menée à l''aide du nom ou des noms, de la date de naissance et du casier judiciaire déclaré (en vertu de l''article 9.6.4 de la politique de dissémination des SCICTR (Services canadiens d''identification criminelle en temps réel)');
 INSERT INTO `strings` (`ID`, `Name`, `English`, `French`) VALUES
-(612, 'consent_b2', 'RCMP National Repository of Criminal Records which will be conducted based on name(s), date of birth and declared criminal record (as per Section 9.6.4 of the CCRTIS Dissemination policy)', ' et dans le Répertoire national des casiers judiciaires (CIPC) de la GRC, qui est menée à l''aide du nom ou des noms, de la date de naissance et du casier judiciaire déclaré (en vertu de l''article 9.6.4 de la politique de dissémination des SCICTR (Services canadiens d''identification criminelle en temps réel)'),
 (613, 'consent_c0', 'Authorization to Release Clearance Report or Any Police Information', 'Autorisation de divulguer une attestation de sécurité ou toute information policière.'),
 (614, 'consent_c1', 'I certify that the information I have supplied is correct and true to the best of my knowledge. I consent to the release of a Criminal Record or any Criminal Information to ISB Canada and its partners, and to the Organization Requesting Search named below and its designated agents and/or partners. All data is subject to provincial, state, and federal privacy legislation.', 'J''atteste que, à ma connaissance, les renseignements que j''ai fournis sont vrais et exacts. J''accepte que toute information criminelle ou liée à mon casier judiciaire soit divulguée à ISB Canada et à ses partenaires, et à l''organisation qui fait la demande de la recherche dont le nom apparaît plus bas, ainsi qu''à ses mandataires désignés et partenaires. Toutes les données sont assujetties aux lois provinciales et fédérales sur la protection de la vie privée.'),
 (615, 'consent_c2', 'The criminal record search will be performed by a police service. I hereby release and forever discharge all members and employees of the Processing Police Service from any and all actions, claims and demands for damages, loss or injury howsoever arising which may hereafter be sustained by myself or as a result of the disclosure of information by the Processing Police Service to ISB Canada and its partners.', 'Des services policiers mèneront la recherche du casier judiciaire. Par les présentes, je dégage et pour toujours tous les membres et tous les employés des services policiers effectuant la recherche de tout procès, toutes réclamations ou demandes de dommages, de perte ou de préjudice que je pourrais subir par la suite ou en raison de la divulgation des renseignements par les services policiers à ISB Canada et à ses partenaires. '),
@@ -726,7 +726,8 @@ INSERT INTO `strings` (`ID`, `Name`, `English`, `French`) VALUES
 (703, 'forms_sin', 'SIN', 'SIN'),
 (704, 'forms_passplease', 'Please enter a password', 'S''il vous plaît entrer un mot de passe'),
 (705, 'forms_forceemail', 'Force email to', 'Force de courriel à'),
-(706, 'consent_notrequired', 'Signature of Company Witness is not required.', 'Signature de la Compagnie de témoin est pas nécessaire.');
+(706, 'consent_notrequired', 'Signature of Company Witness is not required.', 'Signature de la Compagnie de témoin est pas nécessaire.'),
+(707, 'profiles_profiles', '%profile%s', '%profile%s');
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

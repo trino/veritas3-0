@@ -72,7 +72,6 @@ function printprovinces($language, $name, $selected = "", $isdisabled = "", $isr
     $provinces = getprovinces($language);
     printoptions($name, $acronyms, $selected, $provinces, $isdisabled, $isrequired);
 }
-
 /*
 $settings = $this->requestAction('settings/get_settings');
 include_once('subpages/api.php');
@@ -137,6 +136,7 @@ $strings = CacheTranslations($language, array("forms_%"), $settings);
                                                 $pts = explode(",", $ptyp);
                                             }
                                             $fieldname = getFieldname("title", $language);
+                                            if($language == "Debug"){$Trans = " [Trans]";} else {$Trans="";}
                                             foreach ($ptypes as $k => $pt) {
                                                 //var_dump($pt);
                                                 if (isset($pts)) {
@@ -163,20 +163,6 @@ $strings = CacheTranslations($language, array("forms_%"), $settings);
 
                                                         //}
                                                     } else {
-                                                        /*if($isISB)
-                                                        {
-                                                            if ($pt->id<='8')
-                                                            {
-                                                            ?>
-                                                            <option
-                                                                    value="<?php echo $pt->id;?>" <?php if (isset($p) && $p->profile_type == $pt->id) { ?> selected="selected" <?php } ?>>
-                                                                    <?php echo $pt->title;?>
-                                                            </option>
-                                                        <?php
-                                                            }
-                                                        }
-                                                        else
-                                                        {*/
                                                         ?>
                                                         <option
                                                             value="<?php echo $pt->id; ?>" <?php if (isset($p) && $p->profile_type == $pt->id) { ?> selected="selected" <?php } ?>>
@@ -289,7 +275,7 @@ $strings = CacheTranslations($language, array("forms_%"), $settings);
                                             onchange="$('#nProfileType').val($(this).val());">
 
                                             <option selected=""
-                                                    value="$p->profile_type"><?php echo $this->requestAction('/profiles/getTypeTitle/' . $p->profile_type . "/" . $language)?></option>
+                                                    value="$p->profile_type"><?php echo $this->requestAction('/profiles/getTypeTitle/' . $p->profile_type . "/" . $language) . $Trans ?></option>
 
                                         </select>
                                     <?php

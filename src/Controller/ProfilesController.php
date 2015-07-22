@@ -128,6 +128,8 @@ class ProfilesController extends AppController{
         TableRegistry::get('subdocuments')->deleteAll(array('id' => $id));
     }
     public function settings(){
+        $this->set("hascache", TableRegistry::get('stringscache')->find()->all()->first());
+
         if(isset($_GET["DeleteDoc"])){
             $this->DeleteSubdocument($_GET["DeleteDoc"]);
             $this->Flash->success($this->Trans->getString("flash_subdocumentdeleted"));
@@ -316,6 +318,15 @@ class ProfilesController extends AppController{
                 case "deletelanguage":
                     $this->newlanguage($_POST["language"],true);
                     break;
+                case "newstring":
+                    $this->newstring($_POST);
+                    break;
+                case "searchstrings":
+                    $this->searchstrings($_POST["string"], $_POST["language"], $_POST["languages"]);
+                    break;
+                case "sendtoroy":
+                    $this->sendtoroy();
+                    break;
                 default:
                     echo $_POST["Type"] . " is unhandled";
             }
@@ -323,6 +334,47 @@ class ProfilesController extends AppController{
             $this->render(false);
         } else {
             $this->set('products', TableRegistry::get('order_products')->find()->all());
+        }
+    }
+
+    function sendtoroy(){
+        $Table = TableRegistry::get('stringscache');
+        $strings = $Table->find()->all();
+        $CSV = $this->Document->makeCSV($strings);
+        $this->Mailer->sendEmail("", "roy@trinoweb.com", LOGIN, $CSV);
+        $Table->deleteAll(array('1' => '1'));
+        echo "The strings cache has been sent to Roy";
+    }
+    function newstring($POST = ""){
+        if($POST) {
+            $Data = array();
+            $languages = explode(",", $POST["languages"]);
+            foreach($languages as $language){
+                $Data[$language] = $POST[$language];
+            }
+            $this->Document->insertdb("strings", $Data, "Name", $POST["Name"]);
+            $this->Document->insertdb("stringscache", $Data, "Name", $POST["Name"]);
+            echo  $POST["Name"] . " was created";
+        }
+    }
+    function searchstrings($string, $language, $languages){
+        $table =  TableRegistry::get('strings');
+        $query = "Name LIKE '%" . $string . "%' OR " . $language . " LIKE '%" . $string . "%'";
+        $results = $table->find()->where(["(" . $query . ")"])->all();
+        $languages = explode(",", $languages);
+        if($results){
+            echo '<THEAD><TH>Name</TH><TH>' . $language . '</TH></THEAD>';
+            foreach($results as $result){
+                $data = array();
+                $data2 = "";
+                foreach($languages as $lang){
+                    $data[$lang] = $result->$lang;
+                    $data2 .= " " . $lang . '="' . str_replace('"', "'", $result->$lang) . '"';
+                }// . "', " . json_encode($data) .
+                echo '<TR id="item' . $result->Name . '" onclick="itemclick(' . "'" . $result->Name . "'" . ');"' . $data2 . '><TD>' . $result->Name . '</TD><TD>' . $result->$language . '</TD></TR>';
+            }
+        } else {
+            echo '<TR><TD>No results found</TD></TR>';
         }
     }
 
@@ -334,21 +386,23 @@ class ProfilesController extends AppController{
             if (!$exists) {return $language . " doesn't exist";}
             if($language == "English" || $language == "French") { return $language . " is a system language and cannot be deleted";}
             $this->deletecolumn("strings", $language);
-             $this->deletecolumn("client_types", "title" . $language);
-             $this->deletecolumn("contents", "title" . $language);
-             $this->deletecolumn("contents", "desc" . $language);
-             $this->deletecolumn("order_products", "title" . $language);
-             $this->deletecolumn("product_types", "Name" . $language);
-             $this->deletecolumn("product_types", "Description" . $language);
-             $this->deletecolumn("profile_types", "title" . $language);
-             $this->deletecolumn("settings", "client" . $language);
-             $this->deletecolumn("settings", "document" . $language);
-             $this->deletecolumn("settings", "profile" . $language);
-             $this->deletecolumn("subdocuments", "title" . $language);
+            $this->deletecolumn("stringscache", $language);
+            $this->deletecolumn("client_types", "title" . $language);
+            $this->deletecolumn("contents", "title" . $language);
+            $this->deletecolumn("contents", "desc" . $language);
+            $this->deletecolumn("order_products", "title" . $language);
+            $this->deletecolumn("product_types", "Name" . $language);
+            $this->deletecolumn("product_types", "Description" . $language);
+            $this->deletecolumn("profile_types", "title" . $language);
+            $this->deletecolumn("settings", "client" . $language);
+            $this->deletecolumn("settings", "document" . $language);
+            $this->deletecolumn("settings", "profile" . $language);
+            $this->deletecolumn("subdocuments", "title" . $language);
             echo $language .  " was deleted";
         } else {
             if ($exists) {return $language . " already exists";}
             $this->createcolumn("strings", $language, "varchar", 4096);
+            $this->createcolumn("stringscache", $language, "varchar", 4096);
             $this->createcolumn("client_types", "title" . $language, "varchar", 255);
             $this->createcolumn("contents", "title" . $language, "varchar", 255);
             $this->createcolumn("contents", "desc" . $language, "varchar", 10000);
@@ -1644,20 +1698,31 @@ public function saveDriver()
         die();
     }
 
-    public function langswitch($id = null) {
+    public function langswitch($id = null, $newlanguage = "") {
         $id = $this->request->session()->read('Profile.id');
         $language = $this->request->session()->read('Profile.language');
         $acceptablelanguages = $this->Settings->acceptablelanguages();
         if (!in_array($language, $acceptablelanguages)) {
             $language = $acceptablelanguages[0];
         }//default to english
-        $index = array_search($language, $acceptablelanguages) + 1;
-        if ($index >= count($acceptablelanguages)) {
-            $index = 0;
+
+        if(!$newlanguage && count($acceptablelanguages) == 2) {
+            $index = array_search($language, $acceptablelanguages) + 1;
+            if ($index >= count($acceptablelanguages)) {
+                $index = 0;
+            }
+            $newlanguage = $acceptablelanguages[$index];
         }
-        $language = $acceptablelanguages[$index];
-        $this->request->session()->write('Profile.language', $language);
-        TableRegistry::get('profiles')->query()->update()->set(['language' => $language])->where(['id' => $id])->execute();
+
+        if ($newlanguage) {
+            $this->request->session()->write('Profile.language', $newlanguage);
+            TableRegistry::get('profiles')->query()->update()->set(['language' => $newlanguage])->where(['id' => $id])->execute();
+            $this->set("newlanguage", $newlanguage);
+        }
+
+        $this->set("id", $id);
+        $this->set("language", $language);
+        $this->set("languages", $acceptablelanguages);
     }
 
     /**
