@@ -2754,7 +2754,7 @@ public function saveDriver()
                     $profile1 = $table->find()->where(['id' => $o->user_id])->first();
 
                     if ($profile1->email) {
-                        $this->Mailer->handleevent("cronordercomplete", array("site" => $setting->mee,"email" => $profile1->email));
+                        $this->Mailer->handleevent("cronordercomplete", array("site" => $setting->mee,"email" => array('super',$profile1->email)));
 
                     }
                 }
