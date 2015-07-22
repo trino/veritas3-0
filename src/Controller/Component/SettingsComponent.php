@@ -7,6 +7,39 @@
 
     class SettingsComponent extends Component
     {
+        function acceptablelanguages($includeDebug = false){
+            $acceptablelanguages = $this->getColumnNames("strings", array("ID", "Name"), true);
+            if ($includeDebug){$acceptablelanguages[] = "Debug";}
+            return $acceptablelanguages;
+        }
+
+
+        function getColumnNames($Table, $ignore = "", $justColumnNames = false){
+            $Columns = TableRegistry::get($Table)->schema();
+            $Data = $this->getProtectedValue($Columns, "_columns");
+            if ($Data) {
+                if (is_array($ignore)) {
+                    foreach ($ignore as $value) {
+                        unset($Data[$value]);
+                    }
+                } elseif ($ignore) {
+                    unset($Data[$ignore]);
+                }
+                if ($justColumnNames){
+                    return array_keys($Data);
+                }
+                return $Data;
+            }
+            //}
+        }
+        function getProtectedValue($obj,$name) {
+            $array = (array)$obj;
+            $prefix = chr(0).'*'.chr(0);
+            if (isset($array[$prefix.$name])) {
+                return $array[$prefix . $name];
+            }
+        }
+
         function get_permission($uid)   {
             $setting = TableRegistry::get('sidebar');
             $query = $setting->find()->where(['user_id'=>$uid]);
@@ -14,8 +47,7 @@
             return $l;
         }
 
-        function get_settings()
-        {
+        function get_settings() {
             $settings = TableRegistry::get('settings');
             $query = $settings->find();
 
@@ -23,126 +55,95 @@
             return $l;
         }
 
-        function getprofilebyclient($u,$super,$cid="")
-        {
+        function getprofilebyclient($u,$super,$cid="") {
             $cond = [];
             $pro_id = [];
             $clients = TableRegistry::get('clients');
-            if($cid != "")
-            {
+            if($cid != "") {
                 $qs = $clients->find()->select('profile_id')->where(['id'=>$cid])->first();
-                if(count($qs)>0)
-                {
+                if(count($qs)>0) {
                     $p = explode("," ,$qs->profile_id);
-                    foreach($p as $pro)
-                    {
+                    foreach($p as $pro) {
                         array_push($pro_id,$pro);
                     }
                     $pro_id =array_unique($pro_id);
 
-                    foreach($pro_id as $pid)
-                    {
+                    foreach($pro_id as $pid) {
                         array_push($cond,['id'=>$pid]);
                     }
-                }
-                else
-                {
+                } else {
                     $cond = ['id >'=>'0'];
                 }
 
-            }
-            else
-            {
-                if(!$super)
-                {
+            } else {
+                if(!$super) {
 
 
 
                     $qs = $clients->find()->select('profile_id')->where(['profile_id LIKE "'.$u.',%" OR profile_id LIKE "%,'.$u.',%" OR profile_id LIKE "%,'.$u.'" OR profile_id ="'.$u.'"'])->all();
-                    if(count($qs)>0)
-                    {
-                        foreach($qs as $q)
-                        {
-
+                    if(count($qs)>0) {
+                        foreach($qs as $q) {
                             $p = explode("," ,$q->profile_id);
-                            foreach($p as $pro)
-                            {
+                            foreach($p as $pro) {
                                 array_push($pro_id,$pro);
                             }
                         }
                         //var_dump($pro_id);
                         $pro_id =array_unique($pro_id);
 
-                        foreach($pro_id as $pid)
-                        {
+                        foreach($pro_id as $pid) {
                             array_push($cond,['id'=>$pid]);
                         }
-                    }
-                    else
-                    {
+                    } else {
                         $cond = ['id >'=>'0'];
                     }
-
+                } else {
+                    $cond = ['id >' => '0'];
                 }
-                else
-                    $cond = ['id >'=>'0'];
             }
             //var_dump($cond);
             return $cond;
         }
-        function getclientids($u,$super,$model="")
-        {
-
-            if($model!="")
-                $model =$model.".";
+        function getclientids($u,$super,$model="") {
+            if($model!="") {
+                $model = $model . ".";
+            }
             $cond = [];
             $pro_id = [];
-            if(!$super)
-            {
-
+            if(!$super) {
                 $clients = TableRegistry::get('clients');
                 $qs = $clients->find()->select('id')->where(['profile_id LIKE "'.$u.',%" OR profile_id LIKE "%,'.$u.',%" OR profile_id LIKE "%,'.$u.'" OR profile_id ="'.$u.'"'])->all();
                 $pro_id = [];
                 $cond = [];
-                if(count($qs)>0)
-                {
-                    foreach($qs as $q)
-                    {
-
+                if(count($qs)>0) {
+                    foreach($qs as $q) {
                         $p = explode("," ,$q->id);
-                        foreach($p as $pro)
-                        {
+                        foreach($p as $pro) {
                             array_push($pro_id,$pro);
                         }
                     }
                     //var_dump($pro_id);die();
                     $pro_id =array_unique($pro_id);
 
-                    foreach($pro_id as $pid)
-                    {
+                    foreach($pro_id as $pid) {
                         array_push($cond,[$model.'client_id'=>$pid]);
                     }
+                } else {
+                    $cond = [$model . 'id >' => '0'];
                 }
-                else
-                    $cond = [$model.'id >'=>'0'];
+            } else {
+                $cond = [$model . 'id >' => '0'];
             }
-            else
-                $cond = [$model.'id >'=>'0'];
             return $cond;
 
         }
 
-        function getAllClientsId($uid)
-        {
-
+        function getAllClientsId($uid) {
             $clients = TableRegistry::get('clients');
             $qs = $clients->find()->select('id')->where(['profile_id LIKE "'.$uid.',%" OR profile_id LIKE "%,'.$uid.',%" OR profile_id LIKE "%,'.$uid.'" OR profile_id ="'.$uid.'"'])->all();
-
             $client_ids ="";
-            if(count($qs)>0)
-            {
-                foreach($qs as $k=>$q)
-                {
+            if(count($qs)>0) {
+                foreach($qs as $k=>$q) {
                     if(count($qs)==$k+1) {
                         $client_ids .= $q->id;
                     }else {
@@ -151,52 +152,43 @@
                 }
             }
             return $client_ids;
-
         }
 
-        function getAllClientsname($uid)
-        {
+        function getAllClientsname($uid) {
             $controller = $this->_registry->getController();
             $clients = TableRegistry::get('clients');
             $qs = $clients->find()->select(['company_name','id'])->where(['profile_id LIKE "'.$uid.',%" OR profile_id LIKE "%,'.$uid.',%" OR profile_id LIKE "%,'.$uid.'" OR profile_id ="'.$uid.'"'])->all();
             //debug($qs);die();
             $client_ids ="";
-            if(count($qs)>0)
-            {
-                foreach($qs as $k=>$q)
-                {
+            if(count($qs)>0) {
+                foreach($qs as $k=>$q) {
                     //var_dump($q); die();
-                    if(count($qs)==$k+1)
-                        $client_ids .= "<a href='".$controller->request->webroot."clients/edit/".$q->id."?view' target ='_blank'>".ucfirst($q->company_name)."</a>";
-                    else
-                        $client_ids .= "<a href='".$controller->request->webroot."clients/edit/".$q->id."?view' target ='_blank'>".ucfirst($q->company_name) . "</a>, ";
+                    if(count($qs)==$k+1) {
+                        $client_ids .= "<a href='" . $controller->request->webroot . "clients/edit/" . $q->id . "?view' target ='_blank'>" . ucfirst($q->company_name) . "</a>";
+                    }else {
+                        $client_ids .= "<a href='" . $controller->request->webroot . "clients/edit/" . $q->id . "?view' target ='_blank'>" . ucfirst($q->company_name) . "</a>, ";
+                    }
                 }
             }
             return $client_ids;
-
         }
 
 
-        function check_pro_id($id)
-        {
+        function check_pro_id($id) {
             $profile = TableRegistry::get('profiles');
             $query = $profile->find()->select('id')->where(['id'=>$id]);
-
             $l = $query->first();
-            if(!$l)
-            {
+            if(!$l) {
                 return 1;
             }
         }
 
-        function check_client_id($id)
-        {
+        function check_client_id($id) {
             $profile = TableRegistry::get('clients');
             $query = $profile->find()->select('id')->where(['id'=>$id]);
 
             $l = $query->first();
-            if(!$l)
-            {
+            if(!$l) {
                 return 1;
             }
         }
@@ -331,14 +323,12 @@
             return 0;
         }
 
-        function check_client_permission($uid,$cid)
-        {
+        function check_client_permission($uid,$cid) {
             $client_profile = TableRegistry::get('clients');
             $user_profile = TableRegistry::get('profiles');
             $query = $user_profile->find()->where(['id'=>$uid]);
             $q1 = $query->first();
-            if($q1)
-            {
+            if($q1) {
                 $profile = $user_profile->find()->where(['id'=>$uid]);
                 $q2 = $profile->first();
                 $usertype = $q1->profile_type;
@@ -347,24 +337,18 @@
                 $q2 = $client->first();
                 //var_dump($q2); echo $uid; die();
                 $arr = explode(',',$q2->profile_id);
-                if(in_array($uid,$arr) || $usertype== 1 || $q1->super == 1 || $q1->admin == 1 )
-                {
+                if(in_array($uid,$arr) || $usertype== 1 || $q1->super == 1 || $q1->admin == 1 ) {
                     return 1;
                 }
-                else return 0;
+                return 0;
             }
         }
 
-        function getClientCountByProfile($uid)
-        {
+        function getClientCountByProfile($uid) {
             $query = TableRegistry::get('Clients');
             $q = $query->find();
             $u = trim($uid);
             $q =$q->select()->where(['profile_id LIKE "'.$u.',%" OR profile_id LIKE "%,'.$u.',%" OR profile_id LIKE "%,'.$u.'" OR profile_id LIKE "'.$u.'" '])->count();
-
             return $q;
         }
-
-
-
     }

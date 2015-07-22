@@ -516,8 +516,10 @@ $strings = CacheTranslations($language, array("forms_%"), $settings);
                                             <label class="control-label"><?= $strings["forms_language"]; ?>: </label><BR>
                                             <select name="language" class="form-control">
                                                 <?php
-                                                printoption("English", $language, "English");
-                                                printoption("Français", $language, "French");
+                                                $languages = languagenames();
+                                                foreach($languages as $English => $Native){
+                                                    printoption($Native, $language, $English);
+                                                }
                                                 if($this->request->session()->read('Profile.super')==1){
                                                     printoption("Debug", $language, "Debug");
                                                 }

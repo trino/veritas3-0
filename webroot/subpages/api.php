@@ -1,8 +1,23 @@
 <?php
 use Cake\ORM\TableRegistry;
 use Cake\Datasource\ConnectionManager;
-function languages(){
-    return getColumnNames("strings", array("ID", "Name"), true);
+function languages($includeDebug = false){
+    $acceptablelanguages = getColumnNames("strings", array("ID", "Name"), true);
+    if ($includeDebug){
+        $acceptablelanguages[] = "Debug";
+    }
+    return $acceptablelanguages;
+}
+
+function languagenames(){
+    $table =  TableRegistry::get('strings');
+    $table = $table->find()->where(["Name" => "name"])->first();
+    $acceptablelanguages = languages();
+    $languages = array();
+    foreach($acceptablelanguages as $language){
+        $languages[$language] = $table->$language;
+    }
+    return $languages;
 }
 
 function printCSS($_this = ""){
@@ -314,7 +329,7 @@ function CacheTranslations($Language='English', $Text, $Variables = "", $Common 
     }
 
     $Language = trim($Language);
-    $acceptablelanguages = array("English", "French", "Debug");
+    $acceptablelanguages = languages(true);
     if(!in_array ($Language, $acceptablelanguages)){$Language = $acceptablelanguages[0]; }
     $table = $table->find()->where(["(" . $query . ")"])->all();
     $data = array();

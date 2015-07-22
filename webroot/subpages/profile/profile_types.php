@@ -85,23 +85,35 @@ $(function(){
     });
     $('.saveptypes').live('click',function(){
         var id = $(this).attr('id').replace("ptypesave_","");
-        var title = $('#titptype_'+id).val();
-        var titleFrench = $('#titptypeFrench_'+id).val();
+        <?php foreach($languages as $language) {
+            if ($language == "English") {$language = ""; }
+            echo "var title" . $language . " = $('#titptype" . $language . "_'+id).val();";
+        } ?>
         $.ajax({
             url:"<?php echo $this->request->webroot;?>profiles/ptypes/"+id,
             type:"post",
             dataType:"HTML",
-            data: "title=" + title + "&titleFrench=" + titleFrench,
+            data: 'languages=<?php
+                echo implode(",", $languages) . "'";
+                foreach($languages as $language) {
+                    if ($language == "English") {$language = "";}
+                    echo ' + "&title' . $language . '=" + title' . $language;
+                }
+        ?>,
             success:function(msg) {
                 if(id!=0) {
-                    $('.titleptype_' + id).html(msg);
-                    $('.titleptypeFrench_' + id).html(titleFrench);
+                    <?php foreach($languages as $language) {
+                       if ($language == "English") {$language = ""; }
+                       echo "$('.titleptype" . $language . "_' + id).html(title" . $language . ");";
+                   } ?>
                 }else {
                     $('.allpt').append(msg);
                     $('.addptype').hide();
                     $('.apt').show();
-                    $('#titptype_0').val("");
-                    $('#titptypeFrench_0').val("");
+                    <?php foreach($languages as $language) {
+                       if ($language == "English") {$language = ""; }
+                       echo "$('#titptype" . $language . "_0').val('');";
+                   } ?>
                 }
             }
         })

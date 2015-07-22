@@ -310,6 +310,12 @@ class ProfilesController extends AppController{
                 case "deleteemail":
                     $this->deleteemail($_POST["key"]);
                     break;
+                case "newlanguage":
+                    $this->newlanguage($_POST["language"]);
+                    break;
+                case "deletelanguage":
+                    $this->newlanguage($_POST["language"],true);
+                    break;
                 default:
                     echo $_POST["Type"] . " is unhandled";
             }
@@ -317,6 +323,42 @@ class ProfilesController extends AppController{
             $this->render(false);
         } else {
             $this->set('products', TableRegistry::get('order_products')->find()->all());
+        }
+    }
+
+    function newlanguage($language, $delete = false){
+        $languages = $this->Settings->acceptablelanguages(true);
+        $language=ucfirst(trim($language));
+        $exists = in_array($language, $languages);
+        if ($delete){
+            if (!$exists) {return $language . " doesn't exist";}
+            if($language == "English" || $language == "French") { return $language . " is a system language and cannot be deleted";}
+            $this->deletecolumn("strings", $language);
+             $this->deletecolumn("client_types", "title" . $language);
+             $this->deletecolumn("contents", "title" . $language);
+             $this->deletecolumn("contents", "desc" . $language);
+             $this->deletecolumn("order_products", "title" . $language);
+             $this->deletecolumn("product_types", "Name" . $language);
+             $this->deletecolumn("product_types", "Description" . $language);
+             $this->deletecolumn("profile_types", "title" . $language);
+             $this->deletecolumn("settings", "client" . $language);
+             $this->deletecolumn("settings", "document" . $language);
+             $this->deletecolumn("settings", "profile" . $language);
+             $this->deletecolumn("subdocuments", "title" . $language);
+        } else {
+            if ($exists) {return $language . " already exists";}
+            $this->createcolumn("strings", $language, "varchar", 4096);
+            $this->createcolumn("client_types", "title" . $language, "varchar", 255);
+            $this->createcolumn("contents", "title" . $language, "varchar", 255);
+            $this->createcolumn("contents", "desc" . $language, "varchar", 10000);
+            $this->createcolumn("order_products", "title" . $language, "varchar", 255);
+            $this->createcolumn("product_types", "Name" . $language, "varchar", 255);
+            $this->createcolumn("product_types", "Description" . $language, "varchar", 255);
+            $this->createcolumn("profile_types", "title" . $language, "varchar", 255);
+            $this->createcolumn("settings", "client" . $language, "varchar", 255);
+            $this->createcolumn("settings", "document" . $language, "varchar", 255);
+            $this->createcolumn("settings", "profile" . $language, "varchar", 255);
+            $this->createcolumn("subdocuments", "title" . $language, "varchar", 255);
         }
     }
 
@@ -359,12 +401,14 @@ class ProfilesController extends AppController{
                 $query.= "'" . $Default . "'";
             }
         }
-
         $conn = ConnectionManager::get('default');
         $conn->query($query);
-
         echo $query;
         //$this->clear_cache();
+    }
+    function deletecolumn($Table, $Column){
+        $conn = ConnectionManager::get('default');
+        $conn->query("ALTER TABLE '" . $Table . "' DROP COLUMN '" . $Column . "';");
     }
 
     public function clear_cache() {
@@ -1601,7 +1645,7 @@ public function saveDriver()
     public function langswitch($id = null) {
         $id = $this->request->session()->read('Profile.id');
         $language = $this->request->session()->read('Profile.language');
-        $acceptablelanguages = array("English", "French");
+        $acceptablelanguages = $this->Settings->acceptablelanguages();
         if (!in_array($language, $acceptablelanguages)) {
             $language = $acceptablelanguages[0];
         }//default to english
@@ -3148,20 +3192,30 @@ public function saveDriver()
                     function ptypes($id = '0'){
                         if (isset($_POST)) {
                             $p = TableRegistry::get('profile_types');
-                            $title = $_POST['title'];
-                            $titleFrench = $_POST['titleFrench'];
+
+                            $data = array();
+                            $languages = explode(",", $_POST["languages"]);
+                            foreach($languages as $language){
+                                if($language=="English"){$language="";}
+                                $data['title' . $language] = $_POST['title' . $language];
+                            }
+
                             if ($id != 0) {
-                                if ($p->query()->update()->set(['title' => $title, 'titleFrench' => $titleFrench])->where(['id' => $id])->execute()) {
-                                    echo $title;
+                                if ($p->query()->update()->set($data)->where(['id' => $id])->execute()) {
+                                    echo $data['title'];
                                 }
                             } else {
                                 $profile = $p->newEntity($_POST);
                                 if ($p->save($profile)) {
                                     echo '<tr>
-                                            <td>' . $profile->id . '</td>
-                                            <td class="titleptype_' . $profile->id . '">' . $title . '</td>
-                                            <td class="titleptypeFrench_' . $profile->id . '">' . $titleFrench . '</td>
-                                            <td><input type="checkbox" id="pchk_' . $profile->id . '" class="penable"/><span class="span_' . $profile->id . '"></span></td>
+                                            <td>' . $profile->id . '</td>';
+                                    foreach($languages as $language) {
+                                        if ($language == "English") {$language = "";}
+                                        echo '<td class="titleptype' . $language . '_' . $profile->id . '">' . $data['title' . $language] . '</td>';
+                                    }
+
+                                        echo '    <td><input type="checkbox" id="pchk_' . $profile->id . '" class="penable"/><span class="span_' . $profile->id . '"></span></td>
+                                            <td><input type="checkbox" class="oenable" id="ochk_' . $profile->id . '" /><span class="span2_' . $profile->id . '"></span></td>
                                             <td><span  class="btn btn-info editptype" id="editptype_' . $profile->id . '">' .  $this->Trans->getString("dashboard_edit") . '</span></td>
                                         </tr>';
                                 }
@@ -3172,21 +3226,28 @@ public function saveDriver()
 
                     function ctypes($id = '0'){
                         if (isset($_POST)) {
-                            $p = TableRegistry::get('client_types');
-                            $title = $_POST['title'];
-                            $titleFrench = $_POST['titleFrench'];
+                            $table = TableRegistry::get('client_types');
+                            $data = array();
+                            $languages = explode(",", $_POST["languages"]);
+                            foreach($languages as $language){
+                                if($language=="English"){$language="";}
+                                $data['title' . $language] = $_POST['title' . $language];
+                            }
+
                             if ($id != 0) {
-                                if ($p->query()->update()->set(['title' => $title, 'titleFrench' => $titleFrench])->where(['id' => $id])->execute()) {
-                                    echo $title;
+                                if ($table->query()->update()->set($data)->where(['id' => $id])->execute()) {
+                                    print_r($data);
                                 }
                             } else {
-                                $profile = $p->newEntity($_POST);
-                                if ($p->save($profile)) {
+                                $profile = $table->newEntity($_POST);
+                                if ($table->save($profile)) {
                                     echo '<tr>
-                                            <td>' . $profile->id . '</td>
-                                            <td class="titlectype_' . $profile->id . '">' . $title . '</td>
-                                            <td class="titlectypeFrench_' . $profile->id . '">' . $titleFrench . '</td>
-                                            <td><input type="checkbox" id="cchk_' . $profile->id . '" class="cenable"/><span class="span_' . $profile->id . '"></span></td>
+                                            <td>' . $profile->id . '</td>';
+                                    foreach($languages as $language) {
+                                        if ($language == "English") {$language = "";}
+                                        echo '<td class="titlectype' . $language .'_' . $profile->id . '">' . $data["title" . $language] . '</td>';
+                                    }
+                                       echo '     <td><input type="checkbox" id="cchk_' . $profile->id . '" class="cenable"/><span class="span_' . $profile->id . '"></span></td>
                                             <td><span  class="btn btn-info editctype" id="editctype_' . $profile->id . '">' . $this->Trans->getString("dashboard_edit") . '</span></td>
                                         </tr>';
                                 }

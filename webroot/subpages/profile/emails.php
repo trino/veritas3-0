@@ -3,7 +3,7 @@ if ($this->request->session()->read('debug')) {
     echo "<span style ='color:red;'>subpages/profile/email.php #INC???</span>";
 }
 
-$languages = array("English", "French");
+$languages = languages();
 $strings2 = array();
 foreach($languages as $language){
     $data = CacheTranslations($language, array("email_%"), $settings, False);
