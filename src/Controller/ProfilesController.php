@@ -345,6 +345,7 @@ class ProfilesController extends AppController{
              $this->deletecolumn("settings", "document" . $language);
              $this->deletecolumn("settings", "profile" . $language);
              $this->deletecolumn("subdocuments", "title" . $language);
+            echo $language .  " was deleted";
         } else {
             if ($exists) {return $language . " already exists";}
             $this->createcolumn("strings", $language, "varchar", 4096);
@@ -359,6 +360,7 @@ class ProfilesController extends AppController{
             $this->createcolumn("settings", "document" . $language, "varchar", 255);
             $this->createcolumn("settings", "profile" . $language, "varchar", 255);
             $this->createcolumn("subdocuments", "title" . $language, "varchar", 255);
+            echo $language .  " was created";
         }
     }
 
@@ -408,7 +410,7 @@ class ProfilesController extends AppController{
     }
     function deletecolumn($Table, $Column){
         $conn = ConnectionManager::get('default');
-        $conn->query("ALTER TABLE '" . $Table . "' DROP COLUMN '" . $Column . "';");
+        $conn->query("ALTER TABLE " . $Table . " DROP COLUMN " . $Column . ";");
     }
 
     public function clear_cache() {

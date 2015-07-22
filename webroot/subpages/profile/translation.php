@@ -25,7 +25,7 @@
     }
 
     function removeselectoption(SelectID, Index){
-        var select = document.getElementById('selectId');
+        var select = document.getElementById(SelectID);
         if (Index<0){Index = select.selectedIndex;}
         select.remove(Index);
     }
@@ -56,9 +56,9 @@
         var element = document.getElementById("languages");
         if(element.value == "English" || element.value == "French"){
             alert(element.value + " can't be deleted");
-        } else {
-            removeselectoption("languages", -1);
+        } else if (confirm("Are you sure you want to delete " + element.value + "?")) {
             AJAX("deletelanguage", "language=" + element.value);
+            removeselectoption("languages", -1);
         }
     }
 
