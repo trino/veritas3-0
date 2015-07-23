@@ -120,6 +120,21 @@ if (isset($quiz)){
     </div>
 </div>
 
+    <div class="col-md-1">
+        <div class="form-group">
+            Passing grade:
+            <SELECT name="pass" class="form-control">
+                <?php
+                    for($i = 10; $i < 101; $i = $i + 10){
+                        echo '<OPTION';
+                        if (isset($quiz) && $quiz->pass == $i) { echo " SELECTED"; }
+                        echo '>' . $i . '</OPTION>';
+                    }
+                ?>
+            </SELECT>
+        </div>
+    </div>
+
     <div class="col-md-2">
     <div class="form-group">
         <button type="submit" class="btn blue"><i class="fa fa-check"></i> Save Changes</button>
@@ -127,7 +142,7 @@ if (isset($quiz)){
     </div>
 
     <?php if (isset($_GET["quizid"])){ ?>
-    <div class="col-md-10" align="right">
+    <div class="col-md-8" align="right">
         <div class="form-group">
             <A href="<?= $this->request->webroot ?>training/users?quizid=<?= $_GET["quizid"] ?>" class="btn btn-info">Results</A>
             <A href="<?= $this->request->webroot ?>training/enroll?quizid=<?= $_GET["quizid"] ?>" class="btn btn-warning">Enroll</A>

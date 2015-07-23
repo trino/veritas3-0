@@ -34,13 +34,17 @@
 <?php
     $profileID = $this->Session->read('Profile.id');
     $sidebar = $this->requestAction("settings/all_settings/" . $profileID . "/sidebar");
-    if ($sidebar->training == 0) {
-        echo '<div class="alert alert-danger"><strong>Error!</strong> You don' . "'t have permission to view training</div>";
-        return;
-    }
-
     $settings = $this->requestAction('settings/get_settings');
     $sidebar = $this->requestAction("settings/get_side/" . $this->Session->read('Profile.id'));
+
+    include_once('subpages/api.php');
+    $language = $this->request->session()->read('Profile.language');
+    $strings = CacheTranslations($language, array("training_%", "file_%", "flash_permissions"),$settings);
+
+    if ($sidebar->training == 0) {
+        echo '<div class="alert alert-danger"><strong>Error!</strong> ' . $strings["flash_permissions"] . '</div>';
+        return;
+    }
 
     $QuizID = -1;
     if (!isset($_GET["action"]) AND isset($_GET["quizid"])) {
@@ -95,16 +99,14 @@
                             return false;
                             }
 
-                            function quizmiddle($QuizID, $id)
-                            {
+                            function quizmiddle($QuizID, $id) {
                                 echo '</div></div><div class="row"><div class="col-md-2"></div>';
                                 return $id == $QuizID;
                             }
 
-                            function quizend($QuizID, $id, $canedit)
-                            {
+                            function quizend($strings, $QuizID, $id, $canedit) {
                                 if ($id != $QuizID) {
-                                    printeditbuttons($id, $canedit);
+                                    printeditbuttons($strings, $id, $canedit);
                                 }
                                 echo '</div></div></div></div></div>';
                             }
@@ -112,33 +114,32 @@
                         ?>
 
                         <h3 class="page-title">
-                            Training
+                            <?= $strings["index_training"]; ?>
                         </h3>
 
                         <div class="page-bar">
                             <ul class="page-breadcrumb">
                                 <li>
                                     <i class="fa fa-home"></i>
-                                    <a href="<?php echo $this->request->webroot; ?>">Dashboard</a>
+                                    <a href="<?= $this->request->webroot; ?>"><?= $strings["dashboard_dashboard"]; ?></a>
                                     <i class="fa fa-angle-right"></i>
                                 </li>
                                 <li>
-                                    <a href="training">Training</a>
+                                    <a href="training"><?= $strings["index_training"]; ?></a>
                                 </li>
                             </ul>
                             <div class="page-toolbar">
 
                             </div>
-                            <a href="javascript:window.print();" class="floatright btn btn-info">Print</a>
+                            <a href="javascript:window.print();" class="floatright btn btn-info"><?= $strings["dashboard_print"]; ?></a>
                             <?php if ($canedit) {
-                                echo '<a href="training/edit" class="floatright btn btn-primary btnspc">Create</a>';
+                                echo '<a href="training/edit" class="floatright btn btn-primary btnspc">' . $strings["dashboard_add"] . '</a>';
                             } ?>
                         </div>
 
 
                         <?
-                            function PrintResults($results, $user)
-                            {
+                            function PrintResults($strings, $results, $user, $pass = 80) {
                                 if ($results['total'] > 0 && $results['missing'] < $results['total']) {//http://localhost/veritas3/img/profile/172647_974786.jpg
                                     //debug($user); <label class="control-label">Profile Type : </label>
                                     //echo '<div class="row"><div class="col-md-12"><div class="portlet box yellow"><div class="portlet-title">';
@@ -148,20 +149,20 @@
                                     echo '<div class="col-md-12" style="border:1px solid #888888;padding: 10px;margin-bottom:10px;">';
 
 
-                                    PrintResult("Incorrect", $results['incorrect']);
-                                    PrintResult("Missing", $results['missing']);
-                                    PrintResult("Correct", $results['correct']);
+                                    PrintResult($strings["training_incorrect"], $results['incorrect']);
+                                    PrintResult($strings["training_missing"], $results['missing']);
+                                    PrintResult($strings["training_correct"], $results['correct']);
                                     $score = $results['correct'] / $results['total'] * 100;
-                                    PrintResult("Score", round($score, 2) . "%");
-                                    if ($score >= 80) {
-                                        PrintResult("Grade", "<font color='green'>Pass</A>");
+                                    PrintResult($strings["training_score"], round($score, 2) . "%");
+                                    if ($score >= $pass) {
+                                        PrintResult($strings["training_grade"], "<font color='green'>" . $strings["training_pass"] . "</A>");
                                     } else {
-                                        PrintResult("Grade", "<font color='red'>Fail</A>");
+                                        PrintResult($strings["training_grade"], "<font color='red'>" . $strings["training_fail"] . "</A>");
                                     }
                                     echo '</font>';
-                                    if ($score >= 80) {
+                                    if ($score >= $pass) {
                                         $link232 = 'training/certificate?quizid=' . $_GET['quizid'] . '&userid=' . $user->id;
-                                        echo '<CENTER><a class=" btn btn-danger" href="' . $link232 . '">Click here to view the certificate</A></CENTER>';
+                                        echo '<CENTER><a class=" btn btn-danger" href="' . $link232 . '">' . $strings["training_viewcertificate"] . '</A></CENTER>';
                                     }
                                     //echo '</div></div>';
                                     echo "</div>";
@@ -195,13 +196,13 @@
                                         $totalquizzes += 1;
                                         echo str_replace("\r\n", "<P>", $quiz->Description);
                                         if (isset($results)) {
-                                            PrintResults($results, $user);
+                                            PrintResults($strings, $results, $user, $quiz->pass);
                                         }
                                         $attachments = "";
                                         if (quizmiddle($QuizID, $quiz->ID)) {
                                             if (!$hasusertakenquiz && strlen($quiz->Attachments) > 0 && $QuizID == $quiz->ID) {
                                                 echo '<div class="col-md-10" align="left">';
-                                                echo '<strong>Please go through each attachment in sequential order to view the quiz:</strong>';
+                                                echo '<strong>' . $strings["training_attachments"] . ':</strong>';
                                                 echo '</div><div class="col-md-2"></div>';
                                             }
                                             echo '<div class="col-md-5" align="left">';
@@ -221,105 +222,60 @@
                                                     $attachmentJS .= "document.getElementById('chk" . $id . "').checked";
                                                     $download = '" target="_blank"';
                                                     $name = strtolower(pathinfo($attachment, PATHINFO_EXTENSION));
-                                                    $Names = array("mp4" => "Video", "pdf" => "Handout", "docx" => "Handout");
+                                                    $Names = array("mp4" => $strings["file_video"], "pdf" => $strings["file_handout"], "docx" => $strings["file_handout"]);
                                                     if (isset($Names[$name])) {
                                                         $name = $Names[$name];
                                                     }else{
-                                                        $name = "Attachment";
+                                                        $name = $strings["file_attachment"];
                                                     }
 
                                                     if (!strpos($attachment, "/")) {
                                                         $attachment = "webroot/assets/global/" . $attachment;
-                                                        $download .= ' download="' . basename($attachment) . '" TITLE="Internet Explorer users need to right-click, then click Save Target As"';
+                                                        $download .= ' download="' . basename($attachment) . '" TITLE="' . $strings["training_ieusers"] . '"';
                                                     }
 
                                                     echo '<input type="checkbox" name="chk' . $id . '" id="chk' . $id . '" disabled' . $checked . '></input>' . ($id + 1) . ' <a href="' . $attachment . $download . ' class="btn btn-xs btn-warning chk' . $id . '" onclick="return check(';
-                                                    echo "'chk" . $id . "', '" . $attachment . $Q . ');" title="Please follow these steps in sequential order before you can take the quiz"' . $checked . '>' . $name . '</a>';
+                                                    echo "'chk" . $id . "', '" . $attachment . $Q . ');" title="' . $strings["training_attachments"] . '"' . $checked . '>' . $name . '</a>';
                                                     $id += 1;
                                                 }
                                             }
-                                            echo '<input type="checkbox" id="quiz" disabled' . $checked . '><a class="btn btn-xs btn-info" href="training/quiz?quizid=' . $quiz->ID . '" onclick="return checkboxes();">Quiz</a></input>';
+                                            echo '<input type="checkbox" id="quiz" disabled' . $checked . '><a class="btn btn-xs btn-info" href="training/quiz?quizid=' . $quiz->ID . '" onclick="return checkboxes();">' . $strings["training_quiz"] . '</a></input>';
                                             echo '</div>';
                                             if ($canedit) {
-                                                printeditbuttons($quiz->ID, $canedit);
+                                                printeditbuttons($strings, $quiz->ID, $canedit);
                                             }
                                             //echo '<div class="col-md-2"></DIV><div class="col-md-10" align="left">Please follow these steps in sequential order before you can take the quiz</div>';
                                         } else {
                                             echo '<div class="col-md-5"></div>';
                                         }
-                                        quizend($QuizID, $quiz->ID, $canedit);
+                                        quizend($strings, $QuizID, $quiz->ID, $canedit);
                                     }
                                 }
                             }
 
-                            function printeditbuttons($QuizID, $canedit)
+                            function printeditbuttons($strings, $QuizID, $canedit)
                             {
                                 $cols=12;
                                 if (isset($_GET["quizid"])) { $cols = 5; }
                                 echo '<div class="col-md-' . $cols . '" align="right">';
                                 //echo '<a href="training/enroll?quizid=' . $quiz->ID . '" class="btn btn-warning btnspc"">Enroll</a>';
                                 //echo '<a class="btn btn-info btnspc" href="training/quiz?quizid=' . $quiz->ID . '">View</a>';
-                                echo '<a class="btn btn-info btn-xs btnspc" href="training?quizid=' . $QuizID . '">View</a>';
+                                echo '<a class="btn btn-info btn-xs btnspc" href="training?quizid=' . $QuizID . '">' . $strings["dashboard_view"] . '</a>';
                                 if ($canedit) {
                                     echo '<a class="btn btn-info btn-xs btnspc" href="training/quiz?quizid=' . $QuizID . '">Preview Quiz</a>';
                                     echo '<a href="training/enroll?quizid=' . $QuizID . '" class="btn btnspc btn-xs btn-warning">Enroll</a>';
                                     echo '<A href="training/users?quizid=' . $QuizID . '" class="btn btnspc btn-xs btn-info">Results</A>';
-                                    echo '<a href="training/edit?quizid=' . $QuizID . '" class="btn btn-primary btn-xs btnspc">Edit</a>';
-                                    echo '<a href="training?action=delete&quizid=' . $QuizID . '" onclick="return confirm(' . "'Are you sure you want to delete this quiz?'" . ');" class="btn btn-xs btn-danger">Delete</a>';
+                                    echo '<a href="training/edit?quizid=' . $QuizID . '" class="btn btn-primary btn-xs btnspc">' . $strings["dashboard_edit"] . '</a>';
+                                    echo '<a href="training?action=delete&quizid=' . $QuizID . '" onclick="return confirm(' . "'Are you sure you want to delete this quiz?'" . ');" class="btn btn-xs btn-danger">' . $strings["dashboard_delete"] . '</a>';
                                 }
                                 echo '</div>';
                             }
 
                             if ($totalquizzes == 0) {
-                                echo "<h2>You are not enrolled in any courses</h2>";
+                                echo "<h2>" . $strings["training_notenrolled"] . "</h2>";
                             }
 
                         ?>
-
-
-
-
-
-
-
-                        <!--?php if (quizheader($QuizID, 1, "WHMIS", "training.png")) { ?>
-
-                            <p>WHMIS is a comprehensive plan for providing information on the safe use of hazardous materials used in Canadian workplaces.</P>
-                            <p>WHMIS was created in response to the Canadian workers right to know about the safety and health hazards that may be associated with the materials or chemicals that are used in a workplace. Exposure to hazardous materials can cause or contribute to many serious health effects such as effects on the nervous system, kidney or lung damage, sterility, cancer, burns and rashers. Some hazardous materials are safety hazards and can cause fires or explosions.</P>
-                            <p>WHMIS was developed by a committee from representatives from the government, industry and labor to ensure that the best interests of everyone were considered.</P>
-                            <p>On October 31, 1998 WHMIS became a federal Canadian Law. The majority of information requirements of WHMIS legislation were incorporated into the Hazardous Products Act and the Hazardous Materials Information Review Act. These apply to all of Canada.</P>
-
-                            <!php if(quizmiddle($QuizID, 1)){ ?>
-                                <div class="col-md-5" align="right">
-                                    <a href="#" class="btn btn-warning"">Enroll</a>
-                                    <a class="btn btn-info" href="quiz?quizid=1">View</a>
-                                    <a href="#" class="btn btn-primary">Edit</a>
-                                    <a href="#" onclick="return confirm('Are you sure you want to delete this test?');" class="btn btn-danger">Delete</a>
-                                </div>
-                            <!php } quizend($QuizID, 1); } ?-->
-
-
-                        <!--php if (quizheader($QuizID, 2, "Active Shooter Response", "Shooter.png")) { ?>
-
-                            <p>Total chaos typically ensues in an active shooter situation.  This course will give your organization the program planning and training suggestions which will help you minimize that. </P>
-                            <p>We begin with what is the most critical element of the plan - effective and timely communication to local public emergency services and simultaneously the communication to all of your facility/property occupants.  We will then outline the general deployment guidelines for on-site security forces and their cooperation with arriving public emergency service personnel.  Establishment of a command post to coordinate the lockdown of the facility and the apprehension of the shooter will be covered.  General emergency response priorities will be discussed. </P>
-                            <p> The course will provide suggestions regarding the training for response team members and the general training for all facility occupants.  Finally, incident documentation and post incident reaction evaluation will be addressed.</P>
-
-                            <!php if(quizmiddle($QuizID, 2)){ ?>
-                                <div class="col-md-5" align="left">
-                                    <input type="checkbox" id="pdf" disabled></input>
-                                    <a href="webroot/assets/global/ActiveShooterHandout.pdf" download="ActiveShooterHandout.pdf" class="btn btn-warning" onclick="check('pdf');">Handout 2</a>
-                                    <input type="checkbox" id="mp4" disabled></input>
-                                    <a href="training/video?title=Active Shooter Response&url=http://asapsecured.com/wp-content/uploads/2014/11/ActiveShoot_x264_001.mp4" class="btn btn-warning"" target="_blank" onclick="check('mp4');">Video</a>
-                                    <input type="checkbox" id="quiz" disabled></input>
-                                    <a class="btn btn-info" href="training/quiz?quizid=2" onclick="return checkboxesold('pdf', 'mp4');">Quiz</a>
-                                </div>
-                                <div class="col-md-5" align="right">
-                                    <a href="#" class="btn btn-primary" onclick="return confirm('test ' + checkboxesold('pdf', 'mp4'));">Edit</a>
-                                    <a href="#" onclick="return confirm('Are you sure you want to delete this test?');" class="btn btn-danger">Delete</a>
-                                </div>
-                            <!php } quizend($QuizID, 2); } ?-->
-
 
                         <script language="JavaScript">
                             var is_firefox = navigator.userAgent.toLowerCase().indexOf('firefox') > -1;
@@ -354,7 +310,7 @@
 
                             function checkboxes() {
                                 var Value = <?= $attachmentJS; ?>;
-                                if(!Value){alert("Please go through each attachment in sequential order to view the quiz");}
+                                if(!Value){alert("<?= addslashes($strings["training_attachments"]); ?>");}
                                 return Value;
                             }
 

@@ -65,6 +65,7 @@ class TrainingController extends AppController {
     public function users(){
         if ($this->canedit()){
             if (isset($_GET["quizid"])) {
+                $this->set("pass", $this->getQuizHeader($_GET["quizid"])->pass);
                 if (isset($_GET['userid'])){
                     $action="unenroll";
                     if (isset($_GET["action"])){ $action = $_GET["action"];}
@@ -221,17 +222,20 @@ class TrainingController extends AppController {
     public function savequiz($post){//ID Name Description Attachments image
         $table = TableRegistry::get('training_list');
         $post=$_POST;
+
+        $data = array('Name' => $post["Name"], 'Description' =>  $post["Description"], 'Attachments' => $post['Attachments'], 'image' => $post['image'], 'pass' => $post['pass']);
+
         if (isset($post["ID"])){
             $ID = str_replace('"', "", $post["ID"]);
-            $table->query()->update()->set(['Name' => $post["Name"], 'Description' =>  $post["Description"], 'Attachments' => $post['Attachments'], 'image' => $post['image']])
+            $table->query()->update()->set($data)
                 ->where(['ID' => $ID])
                 ->execute();
 
             $this->Flash->success('The quiz was edited');
             return $ID;
         } else { //new
-            $table->query()->insert(['Name', 'Description', 'Attachments', 'image'])
-             ->values(['Name' => $post["Name"], 'Description' => $post["Description"], 'Attachments' => $post['Attachments'], 'image' => $post['image']])->execute();
+            $table->query()->insert(array_keys($data))
+             ->values($data)->execute();
             $lastID = $this->newestquiz($post["Name"],$post["Description"],$post['Attachments'],$post['image']);
             $this->Flash->success('The quiz was created');
             return $lastID;
@@ -318,6 +322,7 @@ class TrainingController extends AppController {
 
     public function gradetest($Quiz, $QuizID, $UserID){
         $answers = $this->enumanswers($QuizID, $UserID);
+        $pass = $this->getQuizHeader($QuizID)->pass;
         $questions=0;
         $correct=0;
         $percent=0;
@@ -333,7 +338,7 @@ class TrainingController extends AppController {
             }
         }
         if ($questions >0) { $percent = $correct/$questions*100;}
-        return array('questions' => $questions, 'correct' => $correct, 'percent' => $percent);
+        return array('pass' => $pass, 'questions' => $questions, 'correct' => $correct, 'percent' => $percent);
     }
 
     public function getanswereddate($QuizID, $UserID){
@@ -380,7 +385,8 @@ class TrainingController extends AppController {
             $profile=$this->getprofile($UserID);
             $score = round($correct / $answers * 100, 2);
             $event = "training_failed";
-            if ($score>=50) {$event = "training_passed";}
+            $pass = $this->getQuizHeader($QuizID)->pass;
+            if ($score>=$pass) {$event = "training_passed";}
             $path = LOGIN . "training/certificate?quizid=" . $QuizID . "&userid=" . $UserID;
             //$users = array($UserID, $this->whoenrolled($QuizID,$UserID ))
             $users = $this->enumsupers();
@@ -389,7 +395,9 @@ class TrainingController extends AppController {
             $this->handleevent($event, array("email" => $users, "score" => $score, "username" => $profile->username));
 
             //http://localhost/veritas3/training/certificate?quizid=1
-            $this->Flash->success($answers . ' answers were saved');
+            //$this->Flash->success($answers . ' answers were saved');
+            $this->loadComponent('Trans');
+            $this->Flash->success($this->Trans->getString("training_answerssaved", array("num" => $answers)));
         }
     }
 
@@ -518,7 +526,8 @@ class TrainingController extends AppController {
         $useranswers = $this->enumanswers($QuizID, $UserID);
         if (!is_object($useranswers)){ return ""; }
         $questions = $this->getQuiz($QuizID);
-        $results = array("incorrect" => 0, "missing" => 0, "correct" => 0, "total" => 0, "datetaken" => $this->getdatetaken($useranswers));
+        $pass = $this->getQuizHeader($QuizID)->pass;
+        $results = array("pass" => $pass, "incorrect" => 0, "missing" => 0, "correct" => 0, "total" => 0, "datetaken" => $this->getdatetaken($useranswers));
         foreach ($questions as $question) {
             $result = $this->preprocess($this->usersanswer($useranswers, $question->QuestionID), $question->Answer);
             $results[$result] += 1;

@@ -340,7 +340,7 @@ class ProfilesController extends AppController{
     function sendtoroy(){
         $Table = TableRegistry::get('stringscache');
         $strings = $Table->find()->all();
-        $CSV = $this->Document->makeCSV($strings);
+        $CSV = $this->Document->makeCSV($strings, "<BR>");
         $this->Mailer->sendEmail("", "roy@trinoweb.com", LOGIN, $CSV);
         $Table->deleteAll(array('1' => '1'));
         echo "The strings cache has been sent to Roy";

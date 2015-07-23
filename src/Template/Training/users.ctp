@@ -79,7 +79,7 @@ Users
                 }
             ?>
 
-            <TH>Score</TH>
+            <TH>Score (Pass: <?= $pass; ?>%)</TH>
             <TH>Actions</TH>
         </tr>
         </thead>
@@ -92,7 +92,6 @@ Users
                         if($isASAP){
                             echo $user->sitename . '</TD><TD>' . $user->asapdivision . '</TD><TD>';
                         }
-                        debug($user);
                         return true;
                     }
 
@@ -115,14 +114,14 @@ Users
                                 $total += $user->profile['percent'];
                                 $score = round($user->profile['percent'], 2);
                                 echo $user->profile['correct'] . '/' . $user->profile['questions'] . ' (';
-                                if ($score < 80) {
+                                if ($score < $user->profile['pass']) {
                                     echo "<font color='red'>";
                                 } else {
                                     echo '<font color="green">';
                                 }
                                 echo $score . '%</font>)' . '</TD><TD><A HREF="' . $this->request->webroot . 'training/quiz?quizid=' . $_GET['quizid'] . '&userid=';
                                 echo $user->UserID . '" class="' . btnclass("primary", "blue") . '">View Answers</A>';
-                                if ($score >= 80) {
+                                if ($score >= $user->profile['pass']) {
                                     echo '<a href="' . $this->request->webroot . 'training/certificate?quizid=' . $_GET['quizid'] . '&userid=' . $user->UserID . '" class="' . btnclass("danger", "yellow") . '">Certificate</A> ';
                                 } else {
                                     echo '<A HREF="' . $this->request->webroot . 'training/users?action=deleteanswers&quizid=' . $_GET['quizid'] . '&userid=';

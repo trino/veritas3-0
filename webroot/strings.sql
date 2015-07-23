@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 22, 2015 at 07:12 PM
+-- Generation Time: Jul 23, 2015 at 05:33 PM
 -- Server version: 5.6.17
 -- PHP Version: 5.5.12
 
@@ -32,14 +32,14 @@ CREATE TABLE IF NOT EXISTS `strings` (
   `English` varchar(4096) NOT NULL,
   `French` varchar(4096) NOT NULL,
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=708 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=736 ;
 
 --
 -- Dumping data for table `strings`
 --
 
 INSERT INTO `strings` (`ID`, `Name`, `English`, `French`) VALUES
-(1, 'Date', '1437425794', '<-- This is used by the system to auto-update'),
+(1, 'Date', '1437664011', '<-- This is used by the system to auto-update'),
 (2, 'dashboard_affirmative', 'Yes', 'Oui'),
 (3, 'dashboard_negative', 'No', 'Non'),
 (4, 'dashboard_selectall', 'Select All', 'Tout sélectionner'),
@@ -727,7 +727,31 @@ INSERT INTO `strings` (`ID`, `Name`, `English`, `French`) VALUES
 (704, 'forms_passplease', 'Please enter a password', 'S''il vous plaît entrer un mot de passe'),
 (705, 'forms_forceemail', 'Force email to', 'Force de courriel à'),
 (706, 'consent_notrequired', 'Signature of Company Witness is not required.', 'Signature de la Compagnie de témoin est pas nécessaire.'),
-(707, 'profiles_profiles', '%profile%s', '%profile%s');
+(707, 'profiles_profiles', '%profile%s', '%profile%s'),
+(711, 'gf', 'jg', 'gf'),
+(712, 'training_attachments', 'Please go through each attachment in sequential order to view the quiz', 'S''il vous plaît aller à travers chaque pièce jointe dans un ordre séquentiel pour voir le quiz'),
+(713, 'training_notenrolled', 'You are not enrolled in any courses', 'Vous n''êtes pas inscrit à des cours'),
+(714, 'training_ieusers', 'Internet Explorer users need to right-click, then click Save Target As', 'Les utilisateurs d''Internet Explorer doivent clic-droit, puis cliquez sur Save Target As'),
+(715, 'file_video', 'Video', 'Vidéo'),
+(716, 'file_handout', 'Handout', 'Polycopié'),
+(717, 'file_attachment', 'Attachment', 'Attachement'),
+(718, 'training_incorrect', 'Incorrect', 'Incorrect'),
+(719, 'training_missing', 'Missing', 'Manquant'),
+(720, 'training_correct', 'Correct', 'Corriger'),
+(721, 'training_score', 'Score', 'But'),
+(722, 'training_grade', 'Grade', 'Grade'),
+(723, 'training_fail', 'Fail', 'Échouer'),
+(724, 'training_pass', 'Pass', 'Passe'),
+(726, 'training_quiz', 'Quiz', 'Quiz'),
+(727, 'training_viewcertificate', 'Click here to view the certificate', 'Cliquez ici pour voir le certificat'),
+(728, 'training_selectone', 'Select one', 'Sélectionnez un'),
+(729, 'training_areyousure', 'Are you sure you are done?', 'Etes-vous sûr que vous avez terminé?'),
+(730, 'training_questionnumber', 'Question %#%', 'Question %#%'),
+(731, 'training_outof', 'Marked out of %#%', 'Marqué sur %#%'),
+(732, 'training_notanswered', 'Not yet answered', 'Non encore répondu'),
+(733, 'training_answered', 'Answered', 'Répondu'),
+(734, 'training_resultsfor', 'Results for: %fname% %lname% (%username%) on %date%', 'Résultats pour: %fname% %lname% (%username%) sur %date%'),
+(735, 'training_answerssaved', '%num% answers were saved', '%num% réponses ont été sauvés');
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
