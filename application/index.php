@@ -149,6 +149,8 @@ function constructsubdoc($data, $formID, $userID, $clientID, $orderid=0, $Execut
         case 9:
             $remove = array("count_past_emp", "attach_doc");
             break;
+        case 4:
+            $remove = array('customlink');
     }
     if (is_array($remove)){
         foreach($remove as $key){
@@ -251,7 +253,8 @@ if (count($_POST) > 0) {
             unset($_POST["offence"]);
             unset($_POST["date_of_sentence"]);
             unset($_POST["location"]);
-            break;
+            unset($_GET['customlink']);
+            break; 
     }
 
     $query = constructsubdoc($_POST, $_GET["form"], $userID, $clientID, 0, $Execute);
