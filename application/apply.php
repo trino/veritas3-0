@@ -194,10 +194,11 @@ else{
             <div class="clearfix"></div>
         </div>
         <div class="col-md-12 oldie" style="color: red; font-weight: bold; display:none;">
-            Please use new versions of IE or download  <a href="https://www.google.com/chrome/browser/desktop/" target="_blank">Chrome here</a>.
+          <center>Your version of Internet Explorer is not supported. Please update your version or download <a href="https://www.google.com/chrome/browser/desktop/" target="_blank">Chrome here</a>.</center>
         </div>
         <div class="clearfix"></div>
         <p>&nbsp;</p>
+        <div class="hideoldie">
         <div>
                     <div class="col-md-6">
                     <label class="control-label col-md-4 required">Title:  </label>
@@ -1376,6 +1377,7 @@ through 7 inclusive, and acknowledge that with my signature below.
 backbutton();
 ?>
 </div>
+</div>
 <script>
         function save_signature(uselessnumber){
             document.getElementById("myForm").submit();
@@ -1496,6 +1498,14 @@ backbutton();
        $('.oldie').hide();
         // ..And here's the full-fat code for everyone else
     }
+
+                if (oldIE) {
+                    $('.hideoldie').hide();
+                    // Here's your JS for IE..
+                } else {
+                    $('.hideoldie').show();
+                    // ..And here's the full-fat code for everyone else
+                }
 
 }(jQuery));
 
