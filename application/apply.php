@@ -5,6 +5,7 @@
         color: #e32;
     }
 </STYLE>
+
 <?php
     include("api.php");
     $today = date("Y-m-d");
@@ -66,6 +67,7 @@
 
 ?>
 
+<!--[if (gt IE 9)|!(IE)]><!--> <html class=""> <!--<![endif]-->
 <!--[if IE 8]>
 <html lang="en" class="ie8 no-js"> <![endif]-->
 <!--[if IE 9]>
@@ -188,7 +190,11 @@ else{
         <div class="col-md-12" align="center">
             <img src="<?php echo $webroot;?>img/logo.png" />
             <h2>Gordon Food Service Application for Employment</h2>
+            
             <div class="clearfix"></div>
+        </div>
+        <div class="col-md-12 oldie" style="color: red; font-weight: bold; display:none;">
+            Please use new versions of IE or download  <a href="https://www.google.com/chrome/browser/desktop/" target="_blank">Chrome here</a>.
         </div>
         <div class="clearfix"></div>
         <p>&nbsp;</p>
@@ -1463,7 +1469,8 @@ backbutton();
 <link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css" rel="stylesheet" type="text/css"/>
 <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js" type="text/javascript"></script>
 
-<SCRIPT>
+<script>
+
     language = 'English';
     $(function () {
         $(".datepicker").datepicker({
@@ -1473,4 +1480,23 @@ backbutton();
             dateFormat: 'mm/dd/yy'
         });
     });
-</SCRIPT>
+            (function ($) {
+    "use strict";
+
+    // Detecting IE
+    var oldIE;
+    if ($('html').is('.ie6, .ie7, .ie8')) {
+        oldIE = true;
+    }
+
+    if (oldIE) {
+       $('.oldie').show();
+        // Here's your JS for IE..
+    } else {
+       $('.oldie').hide();
+        // ..And here's the full-fat code for everyone else
+    }
+
+}(jQuery));
+
+</script>
