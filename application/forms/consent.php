@@ -3,7 +3,7 @@ $strings2 = CacheTranslations($language, array("consent_%", "file_attachfile", "
 $gender = "";
 ?>
 <script>
-
+      
     function save_signature(numb) {
         $("#test" + numb).data("jqScribble").save(function (imageData) {
             $.post('<?php echo $webroot; ?>canvas/image_save.php', {imagedata: imageData}, function (response) {

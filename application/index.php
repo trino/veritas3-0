@@ -413,7 +413,7 @@ function getq($data = ""){
 
 <?php if($doback){
     if ($dosubmit){ ?>
-        <INPUT TYPE="SUBMIT" class="btn btn-danger btn-lg" onclick="return checkformext();" VALUE="Next Step <?= $stages; ?>" STYLE="float: right;" oldtitle="<?=$strings["forms_submit"];?>">
+        <INPUT TYPE="SUBMIT" class="btn btn-danger btn-lg" onclick="return checkformext();" VALUE="<?php echo (isset($_GET['customlink']))?'Submit':'Next Step'.$stages;?>" STYLE="float: right;" oldtitle="<?=$strings["forms_submit"];?>">
         <div class="clearfix"></div>
     <?php }
         backbutton($strings["addorder_back"]);

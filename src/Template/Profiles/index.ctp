@@ -273,7 +273,8 @@ $super = $this->request->session()->read('Profile.super');
                                                 }
                                             ?></td>
 
-                                        <td><?php echo $ProClients->getAllClientsname($profile->id);?></td>
+                                        <td><?php $clinet_name =strtolower($ProClients->getClientName($profile->id));
+                                        echo $ProClients->getAllClientsname($profile->id);?></td>
                                         <td class="actions  util-btn-margin-bottom-5">
                                             <?php if ($sidebar->profile_list == '1' && !isset($_GET["draft"]) && ($super || $profile->profile_type > 0)) {
                                                         echo $this->Html->link(__($strings["dashboard_view"]), ['action' => 'view', $profile->id], ['class' => btnclass("btn-info", "blue-soft")]);
@@ -328,6 +329,12 @@ $super = $this->request->session()->read('Profile.super');
                                                     echo '" onclick="return confirm(' . "'" . ProcessVariables($language, $strings["dashboard_confirmdelete"], array("name" => ucfirst(h($profile->username))));
                                                     echo "'" . ');" class="' . btnclass("DELETE") . '">' . $strings["dashboard_delete"] . '</a></span>';
                                                 }
+                                                if(strtolower($clinet_name) == 'gordon food service')
+                                                {
+                                                    echo "<button onclick=\"$('.consent_linkz_".$profile->id."').toggle();\" class='btn default btn-xs blue-soft-stripe'>Consent Link</button>";
+                                                    echo "<div class='consent_linkz_".$profile->id."' style='display:none;'>http://".getenv('HTTP_HOST').$this->request->webroot."application/index.php?form=4&user_id=".$profile->id."&customlink</div><div class='clearfix'></div>";
+                                                }
+                                                
                                             }
                                             ?>
 
