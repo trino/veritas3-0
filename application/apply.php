@@ -1392,6 +1392,7 @@ backbutton();
 
         function check_username() {
             var element;
+
             for (var checkbox = 1; checkbox < 8; checkbox ++){
                 element = document.getElementById("checkbox" + checkbox);
                 if(!element.checked){
@@ -1400,12 +1401,14 @@ backbutton();
                 }
             }
 
-            if($('.touched').val()==0) {
+            if (<?php if($newsigmethod){
+                echo "!savedgfs_signature";
+            } else {
+                echo "$('.touched').val()==0";
+            } ?>){
                 alert('Please provide your signature');
                 return false;
             }
-            
-            
 
            if ($('.email').val() != '') {
                 var un = $('.email').val();
@@ -1425,21 +1428,23 @@ backbutton();
                             return false;
                         } else {
                             $(this).attr('disabled', 'disabled');
-                             save_signature1('100');
-                        }
-                    }
-                });
-           } else {
-                alert("The email address is required");
-           }
-      }
+                            save_signature('100');
+                       }
+                   }
+               });
+          } else {
+               alert("The email address is required");
+          }
 
-      $(function(){
-        $('.hiddensub').click(function(){
-           
-        })
-           
-        <?php if(isset($_GET['form_id'])){?>
+        return true;
+     }
+
+     $(function(){
+       $('.hiddensub').click(function(){
+
+       })
+
+       <?php if(isset($_GET['form_id'])){?>
         
             $('.login-form input').attr('disabled','disabled');
             $('.login-form textarea').attr('readonly','readonly');
@@ -1499,20 +1504,14 @@ backbutton();
     }
 
     if (oldIE) {
-       $('.oldie').show();
+        $('.oldie').show();
+        $('.hideoldie').hide();
         // Here's your JS for IE..
     } else {
-       $('.oldie').hide();
+        $('.oldie').hide();
+        $('.hideoldie').show();
         // ..And here's the full-fat code for everyone else
     }
-
-                if (oldIE) {
-                    $('.hideoldie').hide();
-                    // Here's your JS for IE..
-                } else {
-                    $('.hideoldie').show();
-                    // ..And here's the full-fat code for everyone else
-                }
 
 }(jQuery));
 

@@ -7,6 +7,25 @@
 
     class SettingsComponent extends Component
     {
+        public function verifylogin($controller){
+            switch($controller){
+                case "clients":
+                    $exceptions = array("quickcontact");
+                    break;
+            }
+            if(!is_array($exceptions)){ $exceptions = array($exceptions);}
+            foreach($exceptions as $exception){
+                if (strpos($_SERVER["REQUEST_URI"], "clients/" . $exception)){
+                    return true;
+                }
+            }
+            $profileID = $this->request->session()->read('Profile.id');
+            if (!$profileID) {
+                $url = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+                $this->redirect('/login?url=' . urlencode($url));
+            }
+        }
+
         function acceptablelanguages($includeDebug = false){
             $acceptablelanguages = $this->getColumnNames("strings", array("ID", "Name"), true);
             if ($includeDebug){$acceptablelanguages[] = "Debug";}

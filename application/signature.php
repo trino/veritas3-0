@@ -59,7 +59,7 @@
 
     function includeCanvas($name, $savebutton = true){
         if (!isset($GLOBALS["canvasCSS"])) {
-
+            //echo '<script src="assets/jquery-2.0.3.min.js"></script>';
             echo '<link rel="stylesheet" href="assets/bootstrap.min.css">';
             echo '<link rel="stylesheet" href="assets/bootstrap-theme.min.css">';
             echo '<script src="assets/bootstrap.min.js"></script>';
@@ -74,6 +74,7 @@
 
     function clear<?= $name; ?>(){
         signaturePad<?= $name; ?>.clear();
+        $('#error').html("Sign above");
     }
     function save<?= $name; ?>(){
         if (signaturePad<?= $name; ?>.isEmpty()) {
@@ -106,7 +107,7 @@
     });
 
     var uri = 'signature.php';
-    var saved = "";
+    var saved<?= $name; ?> = "";
 
     function QuickSave<?= $name; ?>(){
         $('#savebtn<?= $name; ?>').click();
@@ -125,14 +126,14 @@
             dataType: "HTML",
             data: "image=" + data,
             success: function (msg) {
-                saved=msg;
+                saved<?= $name; ?>=msg;
                 $('#error<?= $name; ?>').html("Success!");
                 $('#<?= $name; ?>').val(msg);
             },
             error: function (result, status, error) {
                 var resultText = result.responseText;
                 $('#error<?= $name; ?>').html(resultText);
-                saved="";
+                saved<?= $name; ?>="";
             }
         });
     }
