@@ -74,6 +74,7 @@
 
     function clear<?= $name; ?>(){
         signaturePad<?= $name; ?>.clear();
+        saved<?= $name; ?>="";
         $('#error').html("Sign above");
     }
     function save<?= $name; ?>(){
