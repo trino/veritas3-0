@@ -252,9 +252,9 @@ if($newsigmethod){include("signature.php");}
             <div class="form-group col-md-6">
                 <?php
                     if($newsigmethod){
-                        includeCanvas("signature_company_witness2");
+                        //includeCanvas("signature_company_witness2");
                     } else {
-                        include('../webroot/canvas/gfs_sign2.php');
+                        //include('../webroot/canvas/gfs_sign2.php');
                     }
                 ?>
                 <div class="col-sm-10" style="display: none">
@@ -508,9 +508,9 @@ if($newsigmethod){include("signature.php");}
                 <div class="form-group col-md-6">
                     <?php
                     if($newsigmethod){
-                        includeCanvas("signature_company_witness");
+                        //includeCanvas("signature_company_witness");
                     } else {
-                        include('../webroot/canvas/gfs_sign4.php');
+                        //include('../webroot/canvas/gfs_sign4.php');
                     }
                     ?>
                     <div class="col-sm-10" style="display: none">
