@@ -27,6 +27,9 @@
         }
     }
 
+    $newsigmethod = true;
+    if($newsigmethod){include("signature.php");}
+
     $con = connectdb();
 
     if (isset($_GET["client"])) {
@@ -1356,7 +1359,11 @@ through 7 inclusive, and acknowledge that with my signature below.
                     <label class="">Signature</label>
                     <font color="red"  class="">(Required)</font>
                     <?php
-                        include('../webroot/canvas/apply.php');//won't work outside of cake
+                        if($newsigmethod){
+                            includeCanvas("gfs_signature", false);
+                        } else {
+                            include('../webroot/canvas/apply.php');
+                        }
                     ?>
               </div>
 

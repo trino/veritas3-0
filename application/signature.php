@@ -47,7 +47,7 @@
     }
 
     function saveimage($text, $filename = ""){
-        $dir = "assets";
+        $dir = "../webroot/canvas";
         if(!$filename){$filename = getnewfilename($dir, "png");}
         file_put_contents($filename, base64_decode($text));
         return right($filename, strlen($filename) - strlen($dir) - 1);
@@ -56,27 +56,26 @@
     function right($text, $length){
         return substr($text, -$length);
     }
-?>
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-    <title>Signature App</title>
-</head>
-<body>
 
-<script src="assets/jquery-2.0.3.min.js"></script>
-<link rel="stylesheet" href="assets/bootstrap.min.css">
-<link rel="stylesheet" href="assets/bootstrap-theme.min.css">
-<script src="assets/bootstrap.min.js"></script>
-<script src="assets/signature_pad.js"></script>
+    function includeCanvas($name, $savebutton = true){
+        if (!isset($GLOBALS["canvasCSS"])) {
+            echo '<script src="assets/jquery-2.0.3.min.js"></script>';
+            echo '<link rel="stylesheet" href="assets/bootstrap.min.css">';
+            echo '<link rel="stylesheet" href="assets/bootstrap-theme.min.css">';
+            echo '<script src="assets/bootstrap.min.js"></script>';
+            echo '<script src="assets/signature_pad.js"></script>';
+            $GLOBALS["canvasCSS"] = true;
+        }
+
+?>
 
 <script>
     $(document).ready(function () {
         // Handler for .ready() called.
 
-        var wrapper = document.getElementById("signature-pad"),
-            clearButton = wrapper.querySelector("[data-action=clear]"),
-            saveButton = wrapper.querySelector("[data-action=save]"),
+        var wrapper = document.getElementById("signature-pad<?= $name; ?>"),
+            clearButton = wrapper.querySelector("[data-action=clear<?= $name; ?>]"),
+            saveButton = wrapper.querySelector("[data-action=save<?= $name; ?>]"),
             canvas = wrapper.querySelector("canvas"),
             signaturePad;
 
@@ -103,19 +102,19 @@
             if (signaturePad.isEmpty()) {
                 alert("Please provide a signature first.");
             } else {
-                SaveImage(signaturePad.toDataURL());
+                SaveImage<?= $name; ?>(signaturePad.toDataURL());
             }
         });
     });
 
-    var uri = window.location.href;// 'canvastest.php';
+    var uri = 'signature.php';
     var saved = "";
 
-    function QuickSave(){
-        $('#savebtn').click();
+    function QuickSave<?= $name; ?>(){
+        $('#savebtn<?= $name; ?>').click();
     }
 
-    function SaveImage(dataURL) {
+    function SaveImage<?= $name; ?>(dataURL) {
         //$('#test').html('<IMG SRC="' + dataURL + '">');
         dataURL = dataURL.replace('data:image/png;base64,', '');
         var data = encodeURIComponent(dataURL);//JSON.stringify({value: dataURL});
@@ -129,31 +128,32 @@
             data: "image=" + data,
             success: function (msg) {
                 saved=msg;
-                alert(msg);
                 //$('#error').html(msg);
+                $('#<?= $name; ?>').val(msg);
             },
             error: function (result, status, error) {
                 var resultText = result.responseText;
-                $('#error').html(resultText);
+                $('#error<?= $name; ?>').html(resultText);
                 saved="";
             }
         });
     }
 </script>
 <div class="panel panel-default">
-    <div class="panel-body" id="signature-pad">
+    <div class="panel-body" id="signature-pad<?= $name; ?>">
         <div>
-            <canvas style="width: 400px; height: 200px;"></canvas>
+            <canvas style="width: 100%; height: 200px;"></canvas>
         </div>
         <div>
+            <INPUT TYPE="HIDDEN" ID="<?= $name; ?>" NAME="<?= $name; ?>">
             <div class="alert alert-info">Sign above</div>
-            <button data-action="clear" class="btn btn-info">Clear</button>
-            <button data-action="save" id="savebtn" class="btn btn-success" style="display: none">Save</button>
-            <button class="btn btn-success" onclick="QuickSave();">Save</button>
+            <button data-action="clear<?= $name; ?>" class="btn btn-info">Clear</button>
+            <button data-action="save<?= $name; ?>" id="savebtn<?= $name; ?>" class="btn btn-success" <?php if(!$savebutton) { echo 'style="display: none"'; } ?>>Save</button>
+            <!--button class="btn btn-success" onclick="QuickSave<?= $name; ?>();">Save</button-->
         </div>
         <!--DIV id="test"></DIV-->
-        <DIV id="error"></DIV>
+        <DIV id="error<?= $name; ?>"></DIV>
     </div>
 </div>
-</body>
-</html>
+
+<?php } ?>
