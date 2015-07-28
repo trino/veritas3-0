@@ -59,7 +59,7 @@
 
     function includeCanvas($name, $savebutton = true){
         if (!isset($GLOBALS["canvasCSS"])) {
-            echo '<script src="assets/jquery-2.0.3.min.js"></script>';
+
             echo '<link rel="stylesheet" href="assets/bootstrap.min.css">';
             echo '<link rel="stylesheet" href="assets/bootstrap-theme.min.css">';
             echo '<script src="assets/bootstrap.min.js"></script>';
@@ -70,14 +70,24 @@
 ?>
 
 <script>
+    var signaturePad<?= $name; ?>;
+
+    function clear<?= $name; ?>(){
+        signaturePad<?= $name; ?>.clear();
+    }
+    function save<?= $name; ?>(){
+        if (signaturePad<?= $name; ?>.isEmpty()) {
+            alert("Please provide a signature first.");
+        } else {
+            SaveImage<?= $name; ?>(signaturePad<?= $name; ?>.toDataURL());
+        }
+    }
+
     $(document).ready(function () {
         // Handler for .ready() called.
 
         var wrapper = document.getElementById("signature-pad<?= $name; ?>"),
-            clearButton = wrapper.querySelector("[data-action=clear<?= $name; ?>]"),
-            saveButton = wrapper.querySelector("[data-action=save<?= $name; ?>]"),
-            canvas = wrapper.querySelector("canvas"),
-            signaturePad;
+            canvas = wrapper.querySelector("canvas");
 
         // Adjust canvas coordinate space taking into account pixel ratio,
         // to make it look crisp on mobile devices.
@@ -92,19 +102,7 @@
         window.onresize = resizeCanvas;
         resizeCanvas();
 
-        signaturePad = new SignaturePad(canvas);
-
-        clearButton.addEventListener("click", function (event) {
-            signaturePad.clear();
-        });
-
-        saveButton.addEventListener("click", function (event) {
-            if (signaturePad.isEmpty()) {
-                alert("Please provide a signature first.");
-            } else {
-                SaveImage<?= $name; ?>(signaturePad.toDataURL());
-            }
-        });
+        signaturePad<?= $name; ?> = new SignaturePad(canvas);
     });
 
     var uri = 'signature.php';
@@ -128,7 +126,7 @@
             data: "image=" + data,
             success: function (msg) {
                 saved=msg;
-                //$('#error').html(msg);
+                $('#error<?= $name; ?>').html("Success!");
                 $('#<?= $name; ?>').val(msg);
             },
             error: function (result, status, error) {
@@ -146,13 +144,11 @@
         </div>
         <div>
             <INPUT TYPE="HIDDEN" ID="<?= $name; ?>" NAME="<?= $name; ?>">
-            <div class="alert alert-info">Sign above</div>
-            <button data-action="clear<?= $name; ?>" class="btn btn-info">Clear</button>
-            <button data-action="save<?= $name; ?>" id="savebtn<?= $name; ?>" class="btn btn-success" <?php if(!$savebutton) { echo 'style="display: none"'; } ?>>Save</button>
+            <div class="alert alert-info" id="error<?= $name; ?>">Sign above</div>
+            <input type="button" onclick="clear<?= $name; ?>();" class="btn btn-info" value="Clear">
+            <input type="button" onclick="save<?= $name; ?>();" id="savebtn<?= $name; ?>" class="btn btn-success" <?php if(!$savebutton) { echo 'style="display: none"'; } ?> value="Save">
             <!--button class="btn btn-success" onclick="QuickSave<?= $name; ?>();">Save</button-->
         </div>
-        <!--DIV id="test"></DIV-->
-        <DIV id="error<?= $name; ?>"></DIV>
     </div>
 </div>
 

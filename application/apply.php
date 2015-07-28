@@ -1360,7 +1360,7 @@ through 7 inclusive, and acknowledge that with my signature below.
                     <font color="red"  class="">(Required)</font>
                     <?php
                         if($newsigmethod){
-                            includeCanvas("gfs_signature", false);
+                            includeCanvas("gfs_signature");
                         } else {
                             include('../webroot/canvas/apply.php');
                         }
