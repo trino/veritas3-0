@@ -7,41 +7,34 @@ use Cake\Controller\Controller;
 
 
 class MessagesController extends AppController {
-    public function intialize()
-    {
+    public function intialize() {
         parent::intialize();
-        if(!$this->request->session()->read('Profile.id'))
-        {
+        $this->loadComponent('Settings');
+        $this->Settings->verifylogin($this, "messages");
+        /*
+        if(!$this->request->session()->read('Profile.id')) {
             die('here');
             $this->redirect('/login');
-        }
-        else die('there');
+        } else {
+            die('there');
+        }*/
         echo $this->request->session()->read('Profile.id');
         //$this->loadComponent('Settings');
         
     }
     public function index() {
-	   if(!$this->request->session()->read('Profile.id'))
-        {
-                $url = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
-                $this->redirect('/login?url='.urlencode($url));
-        }
+	   $this->Settings->verifylogin($this, "messages");
 	}
-    public function inbox()
-    {
+    public function inbox() {
         $this->layout = 'blank';
-        if(!$this->request->session()->read('Profile.id'))
-        {
+        if(!$this->request->session()->read('Profile.id')) {
             $this->redirect('/login');
         }
     }
-    public function view()
-    {
+
+    public function view() {
         $this->layout = 'blank';
-        if(!$this->request->session()->read('Profile.id'))
-        {
-            $this->redirect('/login');
-        }
+        $this->Settings->verifylogin($this, "messages");
     }
     
-    }
+}

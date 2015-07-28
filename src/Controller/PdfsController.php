@@ -8,18 +8,12 @@ use Cake\ORM\TableRegistry;
 
 include_once(APP . '..\webroot\subpages\soap\nusoap.php');
 
-class PdfsController extends AppController
-{
+class PdfsController extends AppController {
     
-    public function intialize()
-    {
+    public function intialize() {
         parent::intialize();
         $this->loadComponent('Settings');
-        if(!$this->request->session()->read('Profile.id'))
-        {
-                $url = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
-                $this->redirect('/login?url='.urlencode($url));
-        }
+        $this->Settings->verifylogin($this, "pdfs");
     }
     
     function getConsent($oid)

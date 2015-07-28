@@ -37,10 +37,7 @@ class OrdersController extends AppController {
         $this->loadComponent('Document');
         $this->loadComponent('Mailer');
         $this->loadComponent('Trans');
-        if (!$this->request->session()->read('Profile.id')) {
-            $url = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
-            $this->redirect('/login?url=' . urlencode($url));
-        }
+        $this->Settings->verifylogin($this, "orders");
     }
 
     public function vieworder($cid = null, $did = null, $table = null) {

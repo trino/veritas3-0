@@ -24,11 +24,9 @@ class PagesController extends AppController {
         parent::initialize();
         $this->loadComponent('Settings');
         $this->loadComponent('Trans');
-        if(!$this->request->session()->read('Profile.id')) {
-            $this->redirect('/login');
-        }
-        
+         $this->Settings->verifylogin($this, "pages");
     }
+
 	public function index() {
 	   $this->loadComponent('Document');
        $this->set('doc_comp',$this->Document);

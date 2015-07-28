@@ -17,10 +17,9 @@ class SettingsController extends AppController {
  
     public function intialize(){
         parent::intialize();
-        if(!$this->request->session()->read('Profile.id')) {
-                $url = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
-                $this->redirect('/login?url='.urlencode($url));
-        }
+
+        $this->loadComponent('Settings');
+        $this->Settings->verifylogin($this, "settings");
     }
 
 	public function index() {

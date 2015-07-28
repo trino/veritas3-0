@@ -572,6 +572,7 @@ class TrainingController extends AppController {
         parent::initialize();
         $this->loadComponent('Settings');
         $this->loadComponent('Mailer');
+        $this->Settings->verifylogin($this, "training");
     }
     public $paginate = [
         'limit' => 20,

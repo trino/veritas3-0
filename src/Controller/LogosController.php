@@ -20,11 +20,7 @@ class LogosController extends AppController {
         parent::intialize();
         $this->loadComponent('Settings');
         $this->loadComponent('Trans');
-        if(!$this->request->session()->read('Profile.id'))
-        {
-                $url = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
-                $this->redirect('/login?url='.urlencode($url));
-        }
+        $this->Settings->verifylogin($this, "logos");
     }
 	public function index() {
 		$lg = $this->paginate($this->Logos->find()->where(['secondary'=>'0']));
