@@ -11,6 +11,7 @@
             // $this->loadComponent('Settings');
             // $this->Settings->verifylogin($this, "feedbacks");
             $exceptions = "";
+            //valid controllers: clients, documents, feedbacks, formbuilder, jobs, logos, messages, orders, pages, pdfs, quickcontacts, schedules, settings, training, users
             switch($controller){
                 case "clients":
                     $exceptions = array("quickcontact");
@@ -19,7 +20,7 @@
             if($exceptions) {
                 if (!is_array($exceptions)) {$exceptions = array($exceptions);}
                 foreach ($exceptions as $exception) {
-                    if (strpos($_SERVER["REQUEST_URI"], "clients/" . $exception)) {
+                    if (strpos($_SERVER["REQUEST_URI"], "clients/" . $exception) !== false) {
                         return true;
                     }
                 }

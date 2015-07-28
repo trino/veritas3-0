@@ -289,7 +289,7 @@ if (count($_POST) > 0) {
     if (isset($disabled)){ $is_disabled = 'disabled="disabled"';}
     $strings = CacheTranslations($language, array("orders_%", "forms_%", "documents_%", "profiles_null", "clients_addeditimage", "addorder_%", "uniform_%", "verifs_%", "tasks_date"), $settings);
 
-    echo '<FORM ACTION="" METHOD="POST"><div class="logo"></div> <div class="content">';
+    echo '<FORM ACTION="" METHOD="POST" ID="myForm"><div class="logo"></div> <div class="content">';
 
     $ignore = array("language", "form");
     foreach($_GET as $Key => $Value){
@@ -333,13 +333,16 @@ if (count($_POST) > 0) {
     <?php loadstringsJS($strings); ?>
 
     function checkformext(){//do not add code to this function
+        var ret = true;
         if (typeof checkformint == 'function') {
-            return checkformint();
-        } else {// No internal check
-            return true;
+            ret = checkformint();
         }
-        return false;//debugging purposes
+        if(ret){
+            document.getElementById("myForm").submit();
+        }
     }
+
+    <?php loadstringsJS($strings); ?>
 </SCRIPT>
 <?php
     $stages = "";
@@ -383,40 +386,9 @@ function getq($data = ""){
 }
 ?>
 
-<SCRIPT>
-    $(document).ready(function () {
-        Metronic.init(); // init metronic core components
-        Layout.init(); // init current layout
-        // Login.init();
-        Demo.init();
-    });
-
-    language = '<?= $language ?>';
-    $(function () {
-            $(".datepicker").datepicker({
-                changeMonth: true,
-                changeYear: true,
-                yearRange: '1980:2020',
-                dateFormat: 'mm/dd/yy'
-            });
-        });
-
-    <?php loadstringsJS($strings); ?>
-
-    function checkformext(){
-        //do not put form checking code here, that goes inside the checkformint function in the same file as the form
-        if (typeof checkformint == 'function') {
-            return checkformint();
-        } else {// No internal check
-            return true;
-        }
-        return false;//debugging purposes
-    }
-</SCRIPT>
-
 <?php if($doback){
     if ($dosubmit){ ?>
-        <INPUT TYPE="SUBMIT" class="btn btn-danger btn-lg" onclick="return checkformext();" VALUE="<?php echo (isset($_GET['customlink']))?'Submit':'Next Step'.$stages;?>" STYLE="float: right;" oldtitle="<?=$strings["forms_submit"];?>">
+        <INPUT TYPE="button" class="btn btn-danger btn-lg" onclick="return checkformext();" VALUE="<?php echo (isset($_GET['customlink']))?'Submit':'Next Step'.$stages;?>" STYLE="float: right;" oldtitle="<?=$strings["forms_submit"];?>">
         <div class="clearfix"></div>
     <?php }
         backbutton($strings["addorder_back"]);

@@ -1,6 +1,8 @@
 <?php
 $strings2 = CacheTranslations($language, array("consent_%", "file_attachfile", "tasks_date", "profiles_name", "addorder_problem", "forms_datasaved", "forms_signplease"), $settings, False);
 $gender = "";
+$newsigmethod = true;
+if($newsigmethod){include("signature.php");}
 ?>
 <script>
       
@@ -45,21 +47,22 @@ $gender = "";
          alert("Please save the signatures");
          return false;
          }
-
          */
-        <?php /* if(isset($_GET['msg'])){ */ ?>
-            var scrollto = "";
+        var scrollto = "";
+        <?php if($newsigmethod){ ?>
+            if(!savedcriminal_signature_applicant2){scrollto = "signature-padcriminal_signature_applicant2"; }
+            if(!scrollto && !savedcriminal_signature_applicant){scrollto = "signature-padcriminal_signature_applicant"; }
+        <?php } else { ?>
             if($('.touched1').val()==0) {scrollto = '#test1001';}
             //if($('.touched2').val()==0) {scrollto = '#test1002';}
             if($('.touched3').val()==0) {scrollto = '#test1003';}
             //if($('.touched4').val()==0) {scrollto = '#test1004';}
-            if(scrollto) {
-                alert('<?= addslashes($strings["forms_signplease"]); ?>');
-                $('html,body').animate({scrollTop: $(scrollto).offset().top}, 'slow');
-                return false;
-            }
-        <?php /* } */?>
-
+        <?php  } ?>
+        if(scrollto) {
+            alert('<?= addslashes($strings["forms_signplease"]); ?>');
+            $('html,body').animate({scrollTop: $(scrollto).offset().top}, 'slow');
+            return false;
+        }
         return true;
 
     }
@@ -235,13 +238,25 @@ $gender = "";
 
         <DIV CLASS="splitcols">
             <div class="form-group col-md-6">
-                <?php include('../webroot/canvas/gfs_sign1.php'); ?>
+                <?php
+                    if($newsigmethod){
+                        includeCanvas("criminal_signature_applicant2");
+                    } else {
+                        include('../webroot/canvas/gfs_sign1.php');
+                    }
+                ?>
                 <div class="col-sm-10" style="display: none">
                     <p class="no-print no-view" style="color: red;"><?= $strings["forms_signhere"]; ?></p>
                 </DIV>
             </div>
             <div class="form-group col-md-6">
-                <?php include('../webroot/canvas/gfs_sign2.php'); ?>
+                <?php
+                    if($newsigmethod){
+                        includeCanvas("signature_company_witness2");
+                    } else {
+                        include('../webroot/canvas/gfs_sign2.php');
+                    }
+                ?>
                 <div class="col-sm-10" style="display: none">
                     <p class="no-print no-view" style="color: red;"><?= $strings["forms_signhere"]; ?></p>
                 </DIV
@@ -479,13 +494,25 @@ $gender = "";
 
             <DIV CLASS="splitcols">
                 <div class="form-group col-md-6">
-                    <?php include('../webroot/canvas/gfs_sign3.php'); ?>
+                    <?php
+                        if($newsigmethod){
+                            includeCanvas("criminal_signature_applicant");
+                        } else {
+                            include('../webroot/canvas/gfs_sign3.php');
+                        }
+                    ?>
                     <div class="col-sm-10" style="display: none">
                         <p class="no-print no-view" style="color: red;"><?= $strings["forms_signhere"]; ?></p>
                     </div>
                 </div>
                 <div class="form-group col-md-6">
-                    <?php include('../webroot/canvas/gfs_sign4.php'); ?>
+                    <?php
+                    if($newsigmethod){
+                        includeCanvas("signature_company_witness");
+                    } else {
+                        include('../webroot/canvas/gfs_sign4.php');
+                    }
+                    ?>
                     <div class="col-sm-10" style="display: none">
                         <p class="no-print no-view" style="color: red;"><?= $strings["forms_signhere"]; ?></p>
                     </div>
