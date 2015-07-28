@@ -196,6 +196,7 @@
                                         echo '> ' . $strings["clients_enablerequalify"] . '<span class="req_msg"></span></label>';
 
                                         if ($sidebar->orders_create == 1) {
+                                            
                                             $title = getFieldname("Name", $language);
                                             foreach ($products as $product) {
                                                  $alias = $product->Sidebar_Alias;
