@@ -204,7 +204,7 @@ else{
         <div class="hideoldie">
         <div>
                     <div class="col-md-6">
-                    <label class="control-label col-md-4 required">Title:  </label>
+                    <label class="control-label col-md-4 required">Title:</label>
                     <div class="col-md-8">              
                        <select class="form-control required" name="title" required>
                        <option value="Mr." <?php if(isset($profile) && $profile->title =='Mr.')echo "selected='selected'";?>>Mr.</option>
@@ -215,7 +215,7 @@ else{
             </div>
             
             <div class="col-md-6">
-                    <label class="control-label col-md-3 required">Name: </label>
+                    <label class="control-label col-md-3 required">Name:</label>
                     <div class="col-md-3">              
                         <input class="form-control" name="lname" placeholder="Last" required value="<?php if(isset($application_for_employment_gfs))echo $application_for_employment_gfs->lname;?>" />
                     </div> 
@@ -232,7 +232,7 @@ else{
         <p>&nbsp;</p>
 
               <div class="col-md-6">
-                    <label class="control-label col-md-4 required">Telephone: </label>
+                    <label class="control-label col-md-4 required">Telephone:</label>
                     <div class="col-md-3">              
                         <input class="form-control required" name="code" required placeholder="Area Code" value="<?php if(isset($application_for_employment_gfs))echo $application_for_employment_gfs->code;?>" />
                     </div>  
@@ -241,7 +241,7 @@ else{
                     </div>
             </div> 
             <div class="col-md-6">
-                    <label class="control-label col-md-3 required">Email: </label>
+                    <label class="control-label col-md-3 required">Email:</label>
                     <div class="col-md-9">              
                         <input class="form-control email required" type="email"  name="email" required value="<?php if(isset($application_for_employment_gfs))echo $application_for_employment_gfs->email;?>" />
                     </div>  
@@ -249,7 +249,7 @@ else{
                  <div class="clearfix"></div>  
         <p>&nbsp;</p>
                <div class="col-md-6">
-                    <label class="control-label col-md-4 required">Gender:  </label>
+                    <label class="control-label col-md-4 required">Gender:</label>
                     <div class="col-md-8">
                     <select class="form-control req_driver required" required name="gender">
                         <option>Select Gender</option>
@@ -260,7 +260,7 @@ else{
                     </div>  
             </div>
             <div class="col-md-6">
-                    <label class="control-label col-md-3 required">Country of Birth:  </label>
+                    <label class="control-label col-md-3 required">Country of Birth:</label>
                     <div class="col-md-9">              
                         <input class="form-control birth required" type="text" name="placeofbirth" required value="<?php if(isset($profile))echo $profile->placeofbirth;?>" />
                     </div>  
@@ -283,7 +283,7 @@ else{
         ?>
         
         <div class="col-md-12">
-            <label class="control-label col-md-3 required">Date of Birth (YYYY MM DD):   </label>
+            <label class="control-label col-md-3 required">Date of Birth (YYYY MM DD):</label>
             <div class="col-md-3 no-margin">
             <select name="doby" class="form-control req_driver required">
             <?php for($i=date('Y');$i>1950; --$i){
@@ -351,7 +351,7 @@ else{
         <p>&nbsp;</p>
         
           <div class="col-md-12">
-            <label class="control-label col-md-4 required">Address:   </label>
+            <label class="control-label col-md-4 required">Address:</label>
             <div class="col-md-4">
             <input type="text" class="form-control req_driver required" placeholder="Address" required name="street" value="<?php if(isset($profile))echo $profile->street;?>">
             </div>
@@ -405,7 +405,7 @@ else{
                         </div>
             </div>
             <div class="col-md-12">
-                    <label class="control-label col-md-4 required">Have you ever applied for work with us before? </label>
+                    <label class="control-label col-md-4 required">Have you ever applied for work with us before?</label>
                     <div class="col-md-3 radio-list yesNoCheck">
                         <label class="radio-inline">
                         <?php 
@@ -465,7 +465,7 @@ else{
                      <div class="col-md-4"></div>
                     <div id="yesDiv" style="display: none;" class="col-md-8">
                     <div class="row">
-                        <label class="control-label col-md-3">If yes, when? </label> 
+                        <label class="control-label col-md-3">If yes, when?</label>
                         <div class="col-md-9">              
                             <textarea class="form-control" name="worked"><?php if(isset($application_for_employment_gfs))echo $application_for_employment_gfs->worked;?></textarea>
                         </div>
@@ -474,21 +474,21 @@ else{
             </div>
             <p>&nbsp;</p>
             <div class="col-md-12">
-                    <label class="control-label col-md-4">List anyone you know who woks for us: </label>  
+                    <label class="control-label col-md-4">List anyone you know who woks for us:</label>
                     <div class="col-md-8">
                         <input class="form-control" name="for_us" value="<?php if(isset($application_for_employment_gfs))echo $application_for_employment_gfs->for_us;?>" /> 
                     </div>
             </div>
             <p>&nbsp;</p>
             <div class="col-md-12">
-                    <label class="control-label col-md-4">Did anyone refer you? </label>  
+                    <label class="control-label col-md-4">Did anyone refer you?</label>
                     <div class="col-md-8">
                         <input class="form-control" name="refer"value="<?php if(isset($application_for_employment_gfs))echo $application_for_employment_gfs->refer;?>" /> 
                     </div>
             </div>
             <p>&nbsp;</p>
             <div class="col-md-6" style="padding-right:0px ;">
-                    <label class="control-label col-md-7 required">Are you 18 years of age or older? </label>
+                    <label class="control-label col-md-7 required">Are you 18 years of age or older?</label>
                     <div class="col-md-4 radio-list" style="padding-right:0px ;">
                         <label class="radio-inline">
                         <?php 
@@ -525,7 +525,7 @@ else{
                     </div>
             </div>
             <div class="col-md-6" style="padding-right:0px ;">
-                    <label class="control-label col-md-8 required">Are you legally eligible to work in Canada? </label>
+                    <label class="control-label col-md-8 required">Are you legally eligible to work in Canada?</label>
                     <div class="col-md-4 radio-list" style="padding-right:0px ;">
                         <label class="radio-inline">
                         <?php 
@@ -593,22 +593,22 @@ else{
 
         <div class="col-md-4">
             <div class="form-group">
-                <label class="control-label required">Driver's License #: </label>
-                <input name="driver_license_no" type="text" required class="form-control req_driver">
+                <label class="control-label required">Driver's License #:</label>
+                <input name="driver_license_no" type="text" required class="form-control required req_driver">
             </div>
         </div>
         <div class="col-md-4">
             <div class="form-group">
-                <label class="control-label required">Province issued: </label>
+                <label class="control-label required">Province issued:</label>
 
-                <select name="driver_province" required class="form-control req_driver" required=""><option value="">Select Province</option><option value="AB">Alberta</option><option value="BC">British Columbia</option><option value="MB">Manitoba</option><option value="NB">New Brunswick</option><option value="NL">Newfoundland and Labrador</option><option value="NT">Northwest Territories</option><option value="NS">Nova Scotia</option><option value="NU">Nunavut</option><option value="ON">Ontario</option><option value="PE" selected="">Prince Edward Island</option><option value="QC">Quebec</option><option value="SK">Saskatchewan</option><option value="YT">Yukon Territories</option></select>
+                <select name="driver_province" required class="form-control req_driver"><option value="">Select Province</option><option value="AB">Alberta</option><option value="BC">British Columbia</option><option value="MB">Manitoba</option><option value="NB">New Brunswick</option><option value="NL">Newfoundland and Labrador</option><option value="NT">Northwest Territories</option><option value="NS">Nova Scotia</option><option value="NU">Nunavut</option><option value="ON">Ontario</option><option value="PE" selected="">Prince Edward Island</option><option value="QC">Quebec</option><option value="SK">Saskatchewan</option><option value="YT">Yukon Territories</option></select>
 
             </div>
         </div>
         <div class="col-md-4">
             <div class="form-group">
-                <label class="control-label required">Expiry Date: </label>
-                <input name="expiry_date" required type="text" class="form-control req_driver datepicker">
+                <label class="control-label required">Expiry Date:</label>
+                <input name="expiry_date" required type="text" class="form-control req_driver required datepicker">
             </div>
         </div>
         </div>
@@ -622,8 +622,8 @@ else{
 
             <div class="col-md-4">
                 <div class="form-group">
-                    <label class="control-label required">SIN: </label>
-                    <input name="sin" type="text" required class="form-control req_driver">
+                    <label class="control-label required">SIN:</label>
+                    <input name="sin" type="text" required class="form-control required req_driver">
                 </div>
             </div>
         </div>
@@ -707,15 +707,15 @@ else{
                     </div>
                     <p>&nbsp;</p>
                     <div class="col-md-12">
-                        <label class="control-label col-md-1">2. </label>
+                        <label class="control-label col-md-1">2.</label>
                         <div class="col-md-3">
                             <input class="form-control" name="applied1" value="<?php if(isset($application_for_employment_gfs))echo $application_for_employment_gfs->applied1;?>" /> 
                         </div>
-                        <label class="control-label col-md-3">Rate of pay expected $ </label>
+                        <label class="control-label col-md-3">Rate of pay expected $</label>
                         <div class="col-md-2">
                             <input class="form-control" name="rate1" value="<?php if(isset($application_for_employment_gfs))echo $application_for_employment_gfs->rate1;?>" /> 
                         </div>
-                        <label class="control-label col-md-1">per </label>
+                        <label class="control-label col-md-1">per</label>
                         <div class="col-md-2">
                             <input class="form-control" name="per1" value="<?php if(isset($application_for_employment_gfs))echo $application_for_employment_gfs->per1;?>" /> 
                         </div>
@@ -790,7 +790,7 @@ else{
             </div>
             <p>&nbsp;</p>
             <div class="col-md-12">
-                    <label class="control-label col-md-5">Are you able to do the job(s) for which you are applying? </label>  
+                    <label class="control-label col-md-5">Are you able to do the job(s) for which you are applying?</label>
                     <div class="col-md-7 radio-list">
                         <label class="radio-inline">
                         <?php 
@@ -849,7 +849,7 @@ else{
             <div id="notAbleDiv" style="display: none;">
             <p>&nbsp;</p>
             <div class="col-md-12">
-                <label class="control-label col-md-5">If no, please explain: </label> 
+                <label class="control-label col-md-5">If no, please explain:</label>
                 <div class="col-md-7">              
                     <textarea class="form-control" name="no_explain"><?php if(isset($application_for_employment_gfs))echo $application_for_employment_gfs->no_explain;?></textarea>
                 </div>
@@ -1386,17 +1386,41 @@ backbutton();
 </div>
 </div>
 <script>
+        Element.prototype.hasClass = function(className) {
+            return this.className && new RegExp("(^|\\s)" + className + "(\\s|$)").test(this.className);
+        };
+
         function save_signature(uselessnumber){
             document.getElementById("myForm").submit();
         }
 
+        function strip(html) {
+            var tmp = document.createElement("DIV");
+            tmp.innerHTML = html;
+            return tmp.textContent || tmp.innerText || "";
+        }
+
         function check_username() {
-            var element;
+            var element, inputs, index;
+
+            inputs = document.getElementsByTagName('input');
+            for (index = 0; index < inputs.length; ++index) {
+                // deal with inputs[index] element.
+                element = inputs[index];
+                if(!element.value && element.hasClass('required')){
+                    var name = element.parentElement.parentElement.children[0].innerHTML;
+                    name = strip(name.replace(":", "")).trim();
+                    alert(name + " is required");
+                    element.scrollIntoView();
+                    return false;
+                }
+            }
 
             for (var checkbox = 1; checkbox < 8; checkbox ++){
                 element = document.getElementById("checkbox" + checkbox);
                 if(!element.checked){
                     alert("Please read and agree to checkbox " + checkbox);
+                    element.scrollIntoView();
                     return false;
                 }
             }
