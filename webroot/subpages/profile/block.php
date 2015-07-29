@@ -142,18 +142,21 @@
                                             $pt = explode(",", $profile->ptypes);
                                             $cnt = 0;
                                             foreach ($ptypes as $product){
-                                                ++$cnt;
-                                                ?>
-                                                <td style="width:25%;" class="titleptype_<?php echo $product->id;?>">
-                                                    <input name="ptypes[]" <?= $is_disabled ?>
-                                                           type="checkbox" <?php if (in_array($product->id, $pt)) {
-                                                        echo "checked='checked'";
-                                                    }?> class="cenable" id="cchk_<?php echo $product->id;?>"
-                                                           value="<?php echo $product->id;?>"/><label
-                                                        for="cchk_<?php echo $product->id;?>"><?php echo $product->title;?></label>
-                                                </td>
-                                                <?php if ($cnt % 4 == 0) {
-                                                    echo "</tr><tr>";
+                                                if($product->id > 0) {
+                                                    ++$cnt;
+                                                    ?>
+                                                    <td style="width:25%;"
+                                                        class="titleptype_<?php echo $product->id; ?>">
+                                                        <input name="ptypes[]" <?= $is_disabled ?>
+                                                               type="checkbox" <?php if (in_array($product->id, $pt)) {
+                                                            echo "checked='checked'";
+                                                        } ?> class="cenable" id="cchk_<?php echo $product->id; ?>"
+                                                               value="<?php echo $product->id; ?>"/><label
+                                                            for="cchk_<?php echo $product->id; ?>"><?php echo $product->title; ?></label>
+                                                    </td>
+                                                    <?php if ($cnt % 4 == 0) {
+                                                        echo "</tr><tr>";
+                                                    }
                                                 }
                                             }
                                         ?>
@@ -1508,6 +1511,7 @@
 
             $('#save_blocks').text('Saving..');
             var str = $('#blockform input').serialize();
+
             $.ajax({
                 url: '<?php echo $this->request->webroot; ?>profiles/blocks',
                 data: str,

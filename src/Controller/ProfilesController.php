@@ -2066,11 +2066,11 @@ public function saveDriver()
         $display = $_POST; //defining new variable for system base below upcoming foreach
 
         //for user base
-        $this->loadModel('Profilessubdocument');
-        $this->Profilessubdocument->deleteAll(['profile_id' => $id]);
+        $subp = TableRegistry::get('Profilessubdocument');
+        $query2 = $subp->query();
+        $query2->delete()->where(['profile_id' => $id])->execute();
+
         foreach ($_POST['profile'] as $k2 => $v) {
-            $subp = TableRegistry::get('Profilessubdocument');
-            $query2 = $subp->query();
             $TopBlock = 0;
             if (isset($_POST['topblock'][$k2])) {
                 $TopBlock = $_POST['topblock'][$k2];
@@ -2078,7 +2078,6 @@ public function saveDriver()
             $query2->insert(['profile_id', 'subdoc_id', 'display', 'Topblock'])
                 ->values(['profile_id' => $id, 'subdoc_id' => $k2, 'display' => $_POST['profile'][$k2], 'Topblock' => $TopBlock])
                 ->execute();
-            unset($subp);
         }
         foreach ($_POST as $k => $v) {
             if ($k != 'profile') {
