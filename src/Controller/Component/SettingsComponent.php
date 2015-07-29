@@ -238,54 +238,43 @@
             }
         }
 
-        function check_permission($user_id,$target_id) {
+        function check_permission($user_id,$target_id) {//checks is user_id can delete target_id
             $user_profile = TableRegistry::get('profiles');
-            $user = $user_profile->find()->where(['id'=>$user_id])->first();//the user making the ooperation
+            $user = $user_profile->find()->where(['id'=>$user_id])->first();//the user making the operation (delete)
             if($user) {
                 $profile = $user_profile->find()->where(['id' => $target_id]);
-                $target = $profile->first();//the target user the operation will be performed upon
+                $target = $profile->first();//the target user the operation (delete) will be performed upon
                 $usertype = $user->profile_type;
 
                 $setting = TableRegistry::get('sidebar');
                 $setting = $setting->find()->where(['user_id' => $user_id])->first();
                 /*=================================================================================*/
                 /*
-                if($setting->profile_delete == '1')
-                {
-                   if($q1->profile_type  == '1' && $q1->super == '1' && $q1->admin == '1')
-                   {
-                       if($uid != $pid)
-                       {
+                if($setting->profile_delete == '1'){
+                   if($q1->profile_type  == '1' && $q1->super == '1' && $q1->admin == '1'){
+                       if($uid != $pid)   {
                            return 1;
-                       }
-                       else return 0;
-                   }
-                   else if(($q1->profile_type == '1' || $q1->admin == '1'))
-                   {
-                       if($q2->profile_type!='1' && $q2->super!='1' && $q2->admin!='1')
-                       {
-                           if($uid != $pid)
-                           {
+                       } else {
+                            return 0;
+                        }
+                   }else if(($q1->profile_type == '1' || $q1->admin == '1')){
+                       if($q2->profile_type!='1' && $q2->super!='1' && $q2->admin!='1') {
+                           if($uid != $pid) {
                                return 1;
-                           }
-                           else return 0;
+                           }  else {
+                                return 0;
+                            }
                        }
-                   }
-                   else
-                   {
-                       if($q2->profile_type == '5')
-                       {
+                   }  else  {
+                       if($q2->profile_type == '5')   {
                            return 1;
-                       }
-                       else return 0;
+                       } else {
+                            return 0;
+                        }
                    }
                 } */
-                if ($user_id != $target_id) {
-                    if ($setting->profile_delete == '1') {
-                        if ($user->super == '1') {
-                            return 1;
-                        }
-                    } else if ($user->profile_type == '2') {
+                if ($user_id != $target_id) {//cannot delete self
+                    if ($user->super || $setting->profile_delete == '1' || $user->profile_type == '2') {
                         return 1;
                     }
                 }

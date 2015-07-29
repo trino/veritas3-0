@@ -2201,6 +2201,24 @@ public function saveDriver()
         return $query;
     }
 
+    function possess($userID){
+        if ($this->request->session()->read('Profile.super')){
+            $q = $this->Profiles->find()->where(["id" => $userID])->first();
+            if($q) {
+                $this->request->session()->write('Profile.id', $q->id);
+                $this->request->session()->write('Profile.username', $q->username);
+                $this->request->session()->write('Profile.fname', $q->fname);
+                $this->request->session()->write('Profile.lname', $q->lname);
+                $this->request->session()->write('Profile.isb_id', $q->isb_id);
+                $this->request->session()->write('Profile.mname', $q->mname);
+                $this->request->session()->write('Profile.profile_type', $q->profile_type);
+                $this->request->session()->write('Profile.language', $q->language);
+                $this->request->session()->write('Profile.email', $q->email);
+            }
+        }
+        $this->redirect('/profiles');
+    }
+
     function getAjaxProfile($id = 0, $mode = 0) {
         $this->layout = 'blank';
         if($mode==0) {

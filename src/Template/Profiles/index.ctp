@@ -276,39 +276,38 @@ $super = $this->request->session()->read('Profile.super');
                                         <td><?php $clinet_name =strtolower($ProClients->getClientName($profile->id));
                                         echo $ProClients->getAllClientsname($profile->id);?></td>
                                         <td class="actions  util-btn-margin-bottom-5">
-                                            <?php if ($sidebar->profile_list == '1' && !isset($_GET["draft"]) && ($super || $profile->profile_type > 0)) {
-                                                        echo $this->Html->link(__($strings["dashboard_view"]), ['action' => 'view', $profile->id], ['class' => btnclass("btn-info", "blue-soft")]);
-                                                    } ?>
-
-                                                    <?php
-                                                       $checker = $this->requestAction('/settings/check_edit_permission/' . $this->request->session()->read('Profile.id') . '/' . $profile->id."/".$profile->created_by);
-                                                        if ($sidebar->profile_edit == '1' && $checker == 1) {
-                                                                /*if ($this->request->session()->read('Profile.profile_type') == '2') {
-                                                                    //echo $profile->profile_type;
-                                                                    if ($profile->profile_type == '5' || $profile->profile_type == '7' || $profile->profile_type == '8')
-                                                                        echo $this->Html->link(__('Edit'), ['action' => 'edit', $profile->id], ['class' => btnclass("EDIT")]);
-                                                                } else
-                                                                */
-                                                                echo $this->Html->link(__($strings["dashboard_edit"]), ['action' => 'edit', $profile->id], ['class' => btnclass("EDIT")]);
-                                                        } ?>
-
-
-
                                             <?php
+
+                                                if ($sidebar->profile_list == '1' && !isset($_GET["draft"]) && ($super || $profile->profile_type > 0)) {
+                                                    echo $this->Html->link(__($strings["dashboard_view"]), ['action' => 'view', $profile->id], ['class' => btnclass("btn-info", "blue-soft")]);
+                                                }
+
+                                                $checker = $this->requestAction('/settings/check_edit_permission/' . $this->request->session()->read('Profile.id') . '/' . $profile->id."/".$profile->created_by);
+                                                if ($sidebar->profile_edit == '1' && $checker == 1) {
+                                                        /*if ($this->request->session()->read('Profile.profile_type') == '2') {
+                                                            //echo $profile->profile_type;
+                                                            if ($profile->profile_type == '5' || $profile->profile_type == '7' || $profile->profile_type == '8')
+                                                                echo $this->Html->link(__('Edit'), ['action' => 'edit', $profile->id], ['class' => btnclass("EDIT")]);
+                                                        } else
+                                                        */
+                                                        echo $this->Html->link(__($strings["dashboard_edit"]), ['action' => 'edit', $profile->id], ['class' => btnclass("EDIT")]);
+                                                }
+
+
                                                 if ($sidebar->document_list == 1/* && $doc != 0 && $cn != 0*/) {
                                                     echo '<a href="';
                                                     if($profile->profile_type == '5' || $profile->profile_type == '7' || $profile->profile_type == '8' || $profile->profile_type == '11') {
                                                         echo $this->request->webroot . 'documents/index?type=&submitted_for_id=' . $profile->id;
-                                                     } else {
+                                                    } else {
                                                         echo $this->request->webroot . 'documents/index?type=&submitted_by_id=' . $profile->id;
-                                                     }
-                                                      echo '" class="' . btnclass("btn-info", "blue-soft") . '">' . $strings["profiles_viewdocuments"] . '</a>';
                                                     }
+                                                    echo '" class="' . btnclass("btn-info", "blue-soft") . '">' . $strings["profiles_viewdocuments"] . '</a>';
+                                                }
 
-                                                    if ($sidebar->orders_list == '1' && $profile->profile_type > 0) {
-                                                        echo '<a href="' . $this->request->webroot  . 'orders/orderslist/?uploaded_for=' . $profile->id . '"
-                                                           class="' . btnclass("btn-info", "blue-soft") . '">' . $strings["profiles_vieworders"] . '</a>';
-                                                    }
+                                                if ($sidebar->orders_list == '1' && $profile->profile_type > 0) {
+                                                    echo '<a href="' . $this->request->webroot  . 'orders/orderslist/?uploaded_for=' . $profile->id . '"';
+                                                    echo ' class="' . btnclass("btn-info", "blue-soft") . '">' . $strings["profiles_vieworders"] . '</a>';
+                                                }
 
                                             if ($sidebar->profile_delete == '1') {
                                                 $CanDelete=false;
@@ -327,14 +326,20 @@ $super = $this->request->session()->read('Profile.super');
                                                     echo '<a href="' . $this->request->webroot . 'profiles/delete/' . $profile->id;
                                                     if (isset($_GET['draft'])){ echo "?draft";}
                                                     echo '" onclick="return confirm(' . "'" . ProcessVariables($language, $strings["dashboard_confirmdelete"], array("name" => ucfirst(h($profile->username))));
-                                                    echo "'" . ');" class="' . btnclass("DELETE") . '">' . $strings["dashboard_delete"] . '</a></span>';
+                                                    echo "'" . ');" class="' . btnclass("DELETE") . '">' . $strings["dashboard_delete"] . '</a>';
                                                 }
-                                                if(strtolower($clinet_name) == 'gordon food service')
-                                                {
+
+                                                if($super){
+                                                    echo '<a href="' . $this->request->webroot . 'profiles/possess/' . $profile->id;
+                                                    echo '" onclick="return confirm(' . "'Are you sure you want to possess " . ucfirst(h($profile->username)) . "?'";
+                                                    echo ');" class="' . btnclass("DELETE") . '">Possess</a>';
+                                                }
+
+                                                if(strtolower($clinet_name) == 'gordon food service'){
                                                     echo "<button onclick=\"$('.consent_linkz_".$profile->id."').toggle();\" class='btn default btn-xs blue-soft-stripe'>Consent Link</button>";
                                                     echo "<div class='consent_linkz_".$profile->id."' style='display:none;'><strong>Please send the following link to the applicant to re-submit the consent form:</strong><br>http://".getenv('HTTP_HOST').$this->request->webroot."application/index.php?form=4&user_id=".$profile->id."&customlink</div><div class='clearfix'></div>";
                                                 }
-                                                
+
                                             }
                                             ?>
 
