@@ -313,7 +313,7 @@
                     <input type="hidden" name="id_piece2" class="mee_att_2" value="<?php if (isset($mee_att['attach_doc']) && $mee_att['attach_doc']->id_piece2) {
                 echo $mee_att['attach_doc']->id_piece2;
             } ?>" />
-                    <?= printrequired($action, $forms, "id_piece", $DriverProvince, 0, "Required"); ?>
+                    <?= printrequired($action, $forms, "id_piece", $DriverProvince, 0, $strings2["upload_required"]); ?>
                 </div>
             </div>
         </div>
@@ -343,7 +343,7 @@
                     <input type="hidden" name="driver_record_abstract" class="mee_att_3" value="<?php if (isset($mee_att['attach_doc']) && $mee_att['attach_doc']->driver_record_abstract) {
                 echo $mee_att['attach_doc']->driver_record_abstract;
             } ?>" />
-                    <?= printrequired($action, $forms, "driver_record_abstract", $DriverProvince); ?>
+                    <?= printrequired($action, $forms, "driver_record_abstract", $DriverProvince, 0, $strings2["upload_required"]); ?>
                 </div>
             </div>
         </div>
@@ -367,7 +367,7 @@
                     <input type="hidden" name="cvor" class="mee_att_4" value="<?php if (isset($mee_att['attach_doc']) && $mee_att['attach_doc']->cvor) {
                 echo $mee_att['attach_doc']->cvor;
             } ?>" />
-                    <?= printrequired($action, $forms, "cvor", $DriverProvince); ?>
+                    <?= printrequired($action, $forms, "cvor", $DriverProvince, 0, $strings2["upload_required"]); ?>
                 </div>
             </div>
         </div>
@@ -391,7 +391,7 @@
                     <input type="hidden" name="resume" class="mee_att_5" value="<?php if (isset($mee_att['attach_doc']) && $mee_att['attach_doc']->resume) {
                 echo $mee_att['attach_doc']->resume;
             } ?>" />
-                    <?= printrequired($action, $forms, "resume", $DriverProvince); ?>
+                    <?= printrequired($action, $forms, "resume", $DriverProvince, 0, $strings2["upload_required"]); ?>
                 </div>
             </div>
         </div>
@@ -415,7 +415,7 @@
                     <input type="hidden" name="certification" class="mee_att_6" value="<?php if (isset($mee_att['attach_doc']) && $mee_att['attach_doc']->certification) {
                 echo $mee_att['attach_doc']->certification;
             } ?>" />
-                    <?= printrequired($action, $forms, "certification", $DriverProvince); ?>
+                    <?= printrequired($action, $forms, "certification", $DriverProvince, 0, $strings2["upload_required"]); ?>
                 </div>
             </div>
         </div>
