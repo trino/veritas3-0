@@ -5,7 +5,7 @@
     include_once('subpages/api.php');
     $language = $this->request->session()->read('Profile.language');
     $controller =  $this->request->params['controller'];
-    $strings = CacheTranslations($language, array($controller  . "_%", "documents_%"),$settings);
+    $strings = CacheTranslations($language, array($controller  . "_%", "documents_%", "forms_dateformat"),$settings);
     if($debug && $language == "Debug"){ $Trans = " [Translated]"; } else {$Trans = "";}
 
     function getColor($products, $OrderType, $Default = "blue"){
@@ -175,7 +175,7 @@
                                 <th><?= $this->Paginator->sort('uploaded_for', $strings["documents_submittedfor"]); ?></th>
                                 <th><?= $this->Paginator->sort('client_id', $strings["settings_client"]); ?></th>
                                 <th><?=$strings["orders_division"]; ?></th>
-                                <th><?= $this->Paginator->sort('created', $strings["documents_created"]); ?></th>
+                                <th><?= $this->Paginator->sort('created', $strings["documents_created"] . " (" . $strings["forms_dateformat"] . ")"); ?></th>
                                 <th class="actions"><?= __($strings["dashboard_actions"]) ?></th>
                                 <!--th><?= $this->Paginator->sort('bright_planet_html_binary', 'Status'); ?></th-->
                                 <th><?= $this->Paginator->sort('complete', $strings["documents_status"]); ?></th>

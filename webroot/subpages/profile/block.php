@@ -1378,6 +1378,12 @@
 <!-- put this back when the form is gone   </div>     </div>   -->
 
 <script>
+    function reload(){
+        setTimeout(function(){
+            window.location.reload();
+        },1000);
+    }
+
     function selectall(startswith, classname){
         var checked = $('.' + classname).is(':checked');
         $('#blockform input[type="checkbox"]').each(function () {
@@ -1508,8 +1514,6 @@
             })
         });
         $('#save_blocks').click(function () {
-
-            $('#save_blocks').text('Saving..');
             var str = $('#blockform input').serialize();
 
             $.ajax({
@@ -1524,12 +1528,12 @@
                         $('#savectype').click();
                     }
                     $('#save_display').click();
-                    //alert(res);
+                    //alert(res); return false;
                     $('.res').text(res);
                     $('.flash').show();
                     $('.flash').fadeOut(7000);
                     $('#save_blocks').text(' Save Changes ');
-                    window.location.reload();
+                    reload();//window.location.reload();
                 }
             })
         });

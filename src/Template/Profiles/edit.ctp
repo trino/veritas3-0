@@ -106,6 +106,11 @@
         } else if ($param == 'edit') {
             echo $this->Html->link(__($strings["dashboard_view"]), ['action' => 'view', $profile->id], ['class' => 'floatright btn btn-info btnspc']);
         }
+        if($this->request->session()->read('Profile.super') && $this->request->session()->read('Profile.id') != $profile->id) {
+            echo '<a href="' . $this->request->webroot . 'profiles/possess/' . $profile->id;
+            echo '" onclick="return confirm(' . "'Are you sure you want to possess " . formatname($profile) . "?'";
+            echo ');" class="floatright btn btnspc btn-danger">Possess</a>';
+        }
     }
     if ($sidebar->profile_edit == '1' && $param == 'view') {
         $checker = $this->requestAction('settings/check_edit_permission/' . $this->request->session()->read('Profile.id') . '/' . $profile->id);

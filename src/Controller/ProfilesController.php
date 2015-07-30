@@ -1874,12 +1874,11 @@ public function saveDriver()
         }
 
         $setting = $this->Settings->get_permission($this->request->session()->read('Profile.id'));
-
         if ($setting->profile_delete == 0) {
-            $this->Flash->error($this->Trans->getString("flash_permissions", array("place" => "delete 2")));
+            $this->Flash->error($this->Trans->getString("flash_permissions", array("place" => "delete 2")) . ' (2)');
             return $this->redirect("/");
-
         }
+
         if (isset($_GET['draft'])) {
             $draft = "?draft";
         } else {
@@ -1921,7 +1920,6 @@ public function saveDriver()
     }
 
     function blocks($client = "") {
-
         $user_id = $_POST['form'];
         if ($user_id != 0) {
             //$block['user_id'] = $_POST['block']['user_id'];
@@ -1938,8 +1936,9 @@ public function saveDriver()
             $sides = $this->getColumnNames("sidebar", "id", true);//why does this use sidebar columns instead of block?
             //array('profile_list', 'profile_create', 'client_list', 'client_create', 'document_list', 'document_create', 'profile_edit', 'profile_delete', 'client_edit', 'client_delete', 'document_edit', 'document_delete', 'document_others', 'document_requalify', 'orders_list', 'orders_create', 'orders_delete', 'orders_requalify', 'orders_edit', 'orders_others', 'order_requalify', 'orders_mee', 'orders_products', 'order_intact', 'email_document', 'email_orders', 'email_profile', 'orders_emp', 'orders_GEM', 'orders_GDR', 'aggregate', 'bulk', 'invoice');//this should not be hardcoded
             foreach ($sides as $s) {
-                if (!isset($_POST['side'][$s]))
+                if (!isset($_POST['side'][$s])) {
                     $side[$s] = 0;
+                }
             }
         }
 
@@ -1955,6 +1954,9 @@ public function saveDriver()
             $article = $sidebar->newEntity($_POST['side']);
             $sidebar->save($article);
         }
+
+        $this->displaySubdocs($user_id);
+
         die();
         //$this->redirect(['controller'=>'profiles','action'=>'add']);
 
@@ -2061,7 +2063,6 @@ public function saveDriver()
     }
 
     function displaySubdocs($id) {
-        //var_dump($_POST);die();
         $user['profile_id'] = $id;
         $display = $_POST; //defining new variable for system base below upcoming foreach
 
@@ -2213,6 +2214,7 @@ public function saveDriver()
                 $this->request->session()->write('Profile.profile_type', $q->profile_type);
                 $this->request->session()->write('Profile.language', $q->language);
                 $this->request->session()->write('Profile.email', $q->email);
+                $this->request->session()->write('Profile.super', $q->super);
             }
         }
         $this->redirect('/profiles');

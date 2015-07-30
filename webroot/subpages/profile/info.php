@@ -825,6 +825,13 @@ $strings = CacheTranslations($language, array("forms_%"), $settings);
                                     </div>
                                 </div>
 
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label class="control-label"><?= $strings["forms_other"]; ?>: </label>
+                                        <textarea <?php echo $is_disabled ?> name="otherinfo" type="text" class="form-control"><?php if (isset($p->otherinfo)) { echo $p->otherinfo; } ?></textarea>
+                                    </div>
+                                </div>
+
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label class="control-label"><?= $strings["forms_sin"]; ?>: </label>
