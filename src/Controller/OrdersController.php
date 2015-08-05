@@ -325,18 +325,23 @@ class OrdersController extends AppController {
                 $this->set('sub', $sub);
 
             }
+
+
+
             $con = TableRegistry::get('consent_form');
             $con_detail = $con->find()->where(['order_id' => $did])->first();
             if ($con_detail) {
-                //echo $con_detail->id;die();
                 $con_cri = TableRegistry::get('consent_form_criminal');
-                $sub2['con_cri'] = $con_cri->find()->where(['consent_form_id' => $con_detail->id])->all();
-
-                $con_at = TableRegistry::get('doc_attachments');
-                $sub2['con_at'] = $con_at->find()->where(['order_id' => $did, 'sub_id' => 4])->all();
-                $this->set('sub2', $sub2);
-                $this->set('consent_detail', $con_detail);
+                $criminal = $con_cri->find()->where(['consent_form_id' => $con_detail->id])->all();
+            } else {
+                $criminal = $this->getconsentform(false, $order_id->uploaded_for);
             }
+            $sub2['con_cri'] = $criminal;
+
+            $con_at = TableRegistry::get('doc_attachments');
+            $sub2['con_at'] = $con_at->find()->where(['order_id' => $did, 'sub_id' => 4])->all();
+            $this->set('sub2', $sub2);
+            $this->set('consent_detail', $con_detail);
 
             $emp = TableRegistry::get('employment_verification');//
             $sub3['emp'] = $emp->find()->where(['order_id' => $did])->all();
@@ -370,6 +375,7 @@ class OrdersController extends AppController {
                     }
                 }
             }
+
         } else {
             $this->loadlastforms($_GET["driver"]);
         }
@@ -377,7 +383,7 @@ class OrdersController extends AppController {
         $this->LoadSubDocs($_GET["forms"]);
     }
 
-    function getlastdocument($Profile_ID, $DocSubType, $Table){//this is roy's sub for loading old data
+    function getlastdocument($Profile_ID, $DocSubType, $Table){//this is roy's sub for loading old data aka getolddocument loadolddocument phogey
         $consentform = TableRegistry::get('documents')->find()->order("id desc")->where(['uploaded_for' => $Profile_ID, "sub_doc_id" => $DocSubType])->first();
         //$consentform = TableRegistry::get("documents")->find('all', array('order' => "id DESC" ,'conditions' => array('uploaded_for' => $Profile_ID, "sub_doc_id" => $DocSubType)))->first();
         if ($consentform) {
@@ -390,6 +396,15 @@ class OrdersController extends AppController {
         }
     }
 
+    public function getconsentform($con_detail = "", $Profile_ID = 0){
+        if (!$con_detail && $Profile_ID){
+            $con_detail = $this->getlastdocument($Profile_ID, 4, "consent_form");
+        }
+        if($con_detail) {
+            $con_cri = TableRegistry::get('consent_form_criminal');
+            return $con_cri->find()->where(['consent_form_id' => $con_detail->id])->all();
+        }
+    }
     public function loadlastforms($Profile_ID = ""){
         //CONSENT FORM
 
@@ -410,13 +425,15 @@ class OrdersController extends AppController {
         //$con_detail = TableRegistry::get('consent_form')->find()->where(['user_id' => $_GET["driver"]])->first();//first
         $con_detail = TableRegistry::get('consent_form')->find()->where(['user_id' => $_GET["driver"]])->first();//last
         */
+
         $con_detail = $this->getlastdocument($Profile_ID, 4, "consent_form");
         if($con_detail){
-            $con_cri = TableRegistry::get('consent_form_criminal');
-            $sub2['con_cri'] = $con_cri->find()->where(['consent_form_id' => $con_detail->id])->all();
-            $did= $con_detail->document_id;
+            $criminal = $this->getconsentform($con_detail);
             //$con_at = TableRegistry::get('doc_attachments');
+
+            $sub2['con_cri'] = $criminal;
             $sub2['con_at'] = "";//$con_at->find()->where(['order_id' => $did, 'sub_id' => 4])->all();
+
             $this->set('sub2', $sub2);
             $this->set('consent_detail', $con_detail);
         }

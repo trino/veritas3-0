@@ -29,10 +29,11 @@
         $allattachments = merge($allattachments, $sub4['att']);
     }
 
-    function merge($dest, $src)
-    {
-        foreach ($src as $item) {
-            $dest[] = $item;
+    function merge($dest, $src) {
+        if (is_iterable($src)) {
+            foreach ($src as $item) {
+                $dest[] = $item;
+            }
         }
         return $dest;
         //if (is_object($src)) { $dest->append($src); }

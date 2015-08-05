@@ -209,7 +209,7 @@
 
     function listfiles($client_docs, $dir, $field_name = 'client_doc', $delete, $method = 1, $ShowUser = False,$consent=false) {
         //return false;//warning: disabled
-
+        if(!is_iterable($client_docs)){return false;}
         $webroot = $GLOBALS['webroot'];
         $strings = pulltranslation(array("forms_attachedfiles", "file_missing", "file_download", "dashboard_delete"));
 

@@ -9,6 +9,10 @@ function languages($includeDebug = false){
     return $acceptablelanguages;
 }
 
+function is_iterable($var) {
+    return (is_array($var) || $var instanceof Traversable);
+}
+
 function languagenames(){
     $table =  TableRegistry::get('strings');
     $table = $table->find()->where(["Name" => "name"])->first();
