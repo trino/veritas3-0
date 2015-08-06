@@ -13,7 +13,7 @@ class DocumentComponent extends Component
         $Table = TableRegistry::get("documents");
         //debug($Table->query("UPDATE `documents` SET uploaded_for = user_id WHERE uploaded_for = 0"));
 
-        $Documents =  $Table->find()->where(["uploaded_for" => 0]);
+        $Documents =  $Table->find()->where(['OR'=> array('uploaded_for'=>null, 'uploaded_for'=>0)]);
         foreach($Documents as $Document){
             $Table->query()->update()
                 ->set(['uploaded_for'=>$Document->user_id])
