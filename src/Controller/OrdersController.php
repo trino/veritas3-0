@@ -333,10 +333,10 @@ class OrdersController extends AppController {
             if ($con_detail) {
                 $con_cri = TableRegistry::get('consent_form_criminal');
                 $criminal = $con_cri->find()->where(['consent_form_id' => $con_detail->id])->all();
+                $sub2['con_cri'] = $criminal;
             } else {
-                $criminal = $this->getconsentform(false, $order_id->uploaded_for);
+                $con_detail = $this->getlastdocument($order_id->uploaded_for, 4, "consent_form");
             }
-            $sub2['con_cri'] = $criminal;
 
             $con_at = TableRegistry::get('doc_attachments');
             $sub2['con_at'] = $con_at->find()->where(['order_id' => $did, 'sub_id' => 4])->all();
@@ -401,10 +401,11 @@ class OrdersController extends AppController {
             $con_detail = $this->getlastdocument($Profile_ID, 4, "consent_form");
         }
         if($con_detail) {
-            $con_cri = TableRegistry::get('consent_form_criminal');
-            return $con_cri->find()->where(['consent_form_id' => $con_detail->id])->all();
+            $con_detail = TableRegistry::get('consent_form_criminal')->find()->where(['consent_form_id' => $con_detail->id])->all();
+            return $con_detail;
         }
     }
+
     public function loadlastforms($Profile_ID = ""){
         //CONSENT FORM
 
