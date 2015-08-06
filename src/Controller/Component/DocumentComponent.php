@@ -9,6 +9,22 @@ use Cake\View\Helper\SessionHelper;
 
 class DocumentComponent extends Component
 {
+    function fixsubmittedfor(){
+        $Table = TableRegistry::get("documents");
+        //debug($Table->query("UPDATE `documents` SET uploaded_for = user_id WHERE uploaded_for = 0"));
+
+        $Documents =  $Table->find()->where(["uploaded_for" => 0]);
+        foreach($Documents as $Document){
+            $Table->query()->update()
+                ->set(['uploaded_for'=>$Document->user_id])
+                ->where(['id' => $Document->id])
+                ->execute();
+        }
+        //die();
+
+
+    }
+
     public function savedoc($Mailer, $cid = 0, $did = 0, $emailenabled = True)
         {
              $controller = $this->_registry->getController();
@@ -174,17 +190,19 @@ class DocumentComponent extends Component
 
             } else {
                 $docs = TableRegistry::get('Documents');
-                if (isset($_GET['draft']) && $_GET['draft']){
+                if (isset($_GET['draft']) && $_GET['draft']) {
                     $arr['draft'] = 1;
                     //$controller->Flash->success('Document saved as draft');
-                    }
-                else{
+                } else {
                     $arr['draft'] = 0;
                     //$controller->Flash->success('Document submitted successfully');
-                    }
+                }
                 $arr['sub_doc_id'] = $_POST['sub_doc_id'];
-                if (isset($_POST['uploaded_for']))
+                if (isset($_POST['uploaded_for'])){
                     $arr['uploaded_for'] = $_POST['uploaded_for'];
+                }else {
+                    $arr['uploaded_for'] = $controller->request->session()->read('Profile.id');
+                }
 
                 $arr['client_id'] = $cid;
                 $arr['document_type'] = urldecode($_GET['document']);
@@ -453,7 +471,7 @@ class DocumentComponent extends Component
                 if (isset($_POST['uploaded_for']))
                     $uploaded_for = $_POST['uploaded_for'];
                 else
-                    $uploaded_for = '';
+                    $uploaded_for = $controller->request->session()->read('Profile.id');
                 $for_doc = array('document_type'=>'Pre-Screening','sub_doc_id'=>1,'order_id'=>$arr['order_id'],'user_id'=>$arr['user_id'],'uploaded_for'=>$uploaded_for);
                 $this->saveDocForOrder($for_doc);
             } else {
@@ -537,7 +555,7 @@ class DocumentComponent extends Component
                 if (isset($_POST['uploaded_for']))
                     $uploaded_for = $_POST['uploaded_for'];
                 else
-                    $uploaded_for = '';
+                    $uploaded_for = $controller->request->session()->read('Profile.id');;
                 $for_doc = array('document_type'=>'Driver Application','sub_doc_id'=>2,'order_id'=>$arr['order_id'],'user_id'=>$arr['user_id'],'uploaded_for'=>$uploaded_for);
                 $this->saveDocForOrder($for_doc);
             } else {
@@ -663,7 +681,7 @@ class DocumentComponent extends Component
                 if (isset($_POST['uploaded_for']))
                     $uploaded_for = $_POST['uploaded_for'];
                 else
-                    $uploaded_for = '';
+                    $uploaded_for = $controller->request->session()->read('Profile.id');
                 $for_doc = array('document_type'=>'Road test','sub_doc_id'=>3,'order_id'=>$arr['order_id'],'user_id'=>$arr['user_id'],'uploaded_for'=>$uploaded_for);
                 $this->saveDocForOrder($for_doc);
                 
@@ -739,7 +757,7 @@ class DocumentComponent extends Component
                 if (isset($_POST['uploaded_for']))
                     $uploaded_for = $_POST['uploaded_for'];
                 else
-                    $uploaded_for = '';
+                    $uploaded_for = $controller->request->session()->read('Profile.id');
                 $for_doc = array('document_type'=>'Consent Form','sub_doc_id'=>4,'order_id'=>$arr['order_id'],'user_id'=>$arr['user_id'],'uploaded_for'=>$uploaded_for);
                 $this->saveDocForOrder($for_doc);
                 
@@ -834,7 +852,7 @@ class DocumentComponent extends Component
                 if (isset($_POST['uploaded_for']))
                     $uploaded_for = $_POST['uploaded_for'];
                 else
-                    $uploaded_for = '';
+                    $uploaded_for = $controller->request->session()->read('Profile.id');
                 
                 $for_doc = array('document_type'=>'Employment Verification','sub_doc_id'=>9,'order_id'=>$arr['order_id'],'user_id'=>$arr['user_id'],'uploaded_for'=>$uploaded_for);                
                 $this->saveDocForOrder($for_doc);
@@ -1032,7 +1050,7 @@ class DocumentComponent extends Component
                 if (isset($_POST['uploaded_for']))
                     $uploaded_for = $_POST['uploaded_for'];
                 else
-                    $uploaded_for = '';
+                    $uploaded_for = $controller->request->session()->read('Profile.id');
                 
                 $for_doc = array('document_type'=>'Education Verification','sub_doc_id'=>10,'order_id'=>$arr['order_id'],'user_id'=>$arr['user_id'],'uploaded_for'=>$uploaded_for);                
                 $this->saveDocForOrder($for_doc);
@@ -1197,7 +1215,7 @@ class DocumentComponent extends Component
                 if (isset($_POST['uploaded_for'])) {
                     $uploaded_for = $_POST['uploaded_for'];
                 }else {
-                    $uploaded_for = '';
+                    $uploaded_for = $controller->request->session()->read('Profile.id');
                 }
                 $for_doc = array('document_type' => 'MEE Attachments', 'sub_doc_id' => 15, 'order_id' => $arr['order_id'], 'user_id' => $arr['user_id'], 'uploaded_for' => $uploaded_for);
                 $this->saveDocForOrder($for_doc);

@@ -44,6 +44,9 @@ class DocumentsController extends AppController{
     {
         $cond = '';
         $this->set('doc_comp', $this->Document);
+
+        $this->Document->fixsubmittedfor();
+
         $setting = $this->Settings->get_permission($this->request->session()->read('Profile.id'));
         $doc = $this->Document->getDocumentcount();
         $cn = $this->Document->getUserDocumentcount();
