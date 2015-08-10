@@ -341,10 +341,10 @@
 //echo $this->Html->link(__('View'), ['action' => 'vieworder', $order->client_id, $order->id], ['class' => 'btn btn-info']);
                                                     /*else
                                                     echo $this->Html->link(__('View'), ['action' => 'vieworder', $order->client_id, $order->id, $_GET['table']], ['class' => 'btn btn-info']);*/
-                                                } ?>
+                                                }
 
-                                            <?php
                                                 $super = $this->request->session()->read('Profile.super');// || $profiletype->caneditall;
+                                                $candelete = $sidebar->orders_delete;
                                                 //if (isset($super) && isset($_GET['draft'])) {
                                                     if ($sidebar->orders_edit == '1' && $order->order_type!='BUL' && $order->order_type!='REQ' && ($super==1 || $this->request->session()->read('Profile.id')==$order->user_id)) {
                                                         if (!isset($_GET['table']) && $order->draft == 1) {
@@ -367,8 +367,8 @@ echo $this->Html->link(__('Edit'), ['controller' => 'orders', 'action' => 'addor
                                                 <!--a class="clearfix btn btn-warning" href="<?php echo $this->request->webroot; ?>documents/productSelection?driver=<?php echo $order->uploaded_for; ?>"/>Re-qualify</a-->
                                             <?php
                                             }
-                                            ?>
-                                            <?php if (!isset($_GET['draft']) && is_object($order->profile) && ($order->draft == 0)) {
+
+                                            if (!isset($_GET['draft']) && is_object($order->profile) && ($order->draft == 0)) {
                                                 ?>
                                                 <a href="<?php echo $this->request->webroot; ?>profiles/view/<?php echo $order->profile->id ?>?getprofilescore=1"
                                                    class="<?= btnclass("btn-info", "blue-soft") ?>"><?= $strings["orders_scorecard"]; ?></a>
@@ -376,7 +376,7 @@ echo $this->Html->link(__('Edit'), ['controller' => 'orders', 'action' => 'addor
                                             }
 
 
-                                                if (isset($super) || (isset($_GET['draft']) && $this->request->session()->read('Profile.id') == $order->user_id)) {
+                                                if ($super || (isset($_GET['draft']) || $candelete && $this->request->session()->read('Profile.id') == $order->user_id)) {
                                                     ?><a
                                                     href="<?php echo $this->request->webroot; ?>orders/deleteorder/<?php echo $order->id; ?><?php if (isset($_GET['draft'])) echo "?draft"; ?>"
                                                     class="<?= btnclass("DELETE") ?>"
@@ -386,8 +386,8 @@ echo $this->Html->link(__('Edit'), ['controller' => 'orders', 'action' => 'addor
                                                 }
 
 
-                                            ?>
-                                            <?php //if (!isset($_GET['draft'])) echo $this->Html->link(__('Score Card'), ['controller' => 'orders', 'action' => 'viewReport', $order->client_id, $order->id], ['class' => 'btn btn-success']);
+
+                                          //if (!isset($_GET['draft'])) echo $this->Html->link(__('Score Card'), ['controller' => 'orders', 'action' => 'viewReport', $order->client_id, $order->id], ['class' => 'btn btn-success']);
                                             ?>
                                         </td>
 
@@ -395,26 +395,18 @@ echo $this->Html->link(__('Edit'), ['controller' => 'orders', 'action' => 'addor
                                         <td valign="middle">
                                             <?php
                                             //   var_dump($order);
-                                            if($order->draft == 1)
-                                            {
+                                            if($order->draft == 1) {
                                                 ?>
-                                                 <span class="label label-sm label-warning"
-                                                          style="float:right;padding:4px;"><?= $strings["documents_draft"]; ?></span>
+                                                 <span class="label label-sm label-warning"  style="float:right;padding:4px;"><?= $strings["documents_draft"]; ?></span>
                                                 <?php
 
-                                            }else
-                                                if ($order->complete == 0) {
+                                            }else if ($order->complete == 0) {
                                                     ?>
-
-
-
-                                                    <span class="label label-sm label-primary"
-                                                          style="float:right;padding:4px;"><?= $strings["documents_pending"];?></span>
+                                                    <span class="label label-sm label-primary" style="float:right;padding:4px;"><?= $strings["documents_pending"];?></span>
                                                 <?php
 
                                             } else { ?>
-                                                <span class="label label-sm label-success"
-                                                      style="float:right;padding:4px;"><?= $strings["documents_complete"];?></span>
+                                                <span class="label label-sm label-success"  style="float:right;padding:4px;"><?= $strings["documents_complete"];?></span>
                                             <?php } ?>
                                         </td>
 
