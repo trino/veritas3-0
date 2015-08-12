@@ -169,7 +169,7 @@ copy2globals($strings2, array("score_dupe", "score_submitted", "score_submitted"
         if($color){
             echo '<!-- BEGIN PROFILE CONTENT --><div class="row"><div class="clearfix"></div><div class="col-md-12">';
             echo '<!-- BEGIN PORTLET --><div class="portlet"><div class="portlet box ' . $color . '"><div class="portlet-title"><div class="caption">';
-            echo $caption. '</div>' . $secondcaption . '</div><div class="portlet-body">';
+            echo $caption. '</div>' . $secondcaption . '</div><div class="portlet-body" style="min-height: 100px !important;">';
         } else {
             echo '<!-- END PORTLET --></DIV></DIV></DIV></DIV></DIV>';
         }
