@@ -931,6 +931,11 @@ class ProfilesController extends AppController{
             $this->set('disabled', 1);
             $this->set('id', $id);
             $this->loadclients($profile->id);
+
+            $order = TableRegistry::get('documents')->find()->where(['order_id' => 0, 'uploaded_for' => $id])->order('id DESC');
+            $this->set('documents', $order);
+            $order = TableRegistry::get('subdocuments')->find();
+            $this->set('subdocuments', $order);
         }
         $this->render("edit");
     }

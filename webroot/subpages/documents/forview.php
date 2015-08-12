@@ -1,3 +1,20 @@
+<style>
+    @media print {
+        .page-header {
+            display: none;
+        }
+
+        .page-footer, .nav-tabs, .page-title, .page-bar, .theme-panel, .page-sidebar-wrapper {
+            display: none !important;
+        }
+
+        .portlet-body, .portlet-title {
+            border-top: 1px solid #578EBE;
+        }
+
+    }
+</style>
+
 <?php
 if ($this->request->session()->read('debug')) {
     echo "<span style ='color:red;'>subpages/documents/forview.php #INC144</span>";
@@ -19,30 +36,9 @@ function dotest($Number, $pp, $order, $duplicate_log, $ins2 = "ins"){
 
 $strings2 = CacheTranslations($language, array("score_%", "orders_noresults", "file_download", "documents_pending"), $settings, False);
 copy2globals($strings2, array("score_dupe", "score_submitted", "score_submitted", "score_notattached", "score_pass", "score_discrepancies", "score_coachingrequired", "score_verified", "score_potentialtosucceed", "score_idealcandidate", "score_incomplete", "score_satisfactory", "score_requiresattention", "score_duplicateorder"));
-?>
-<style>
-    @media print {
-        .page-header {
-            display: none;
-        }
-
-        .page-footer, .nav-tabs, .page-title, .page-bar, .theme-panel, .page-sidebar-wrapper {
-            display: none !important;
-        }
-
-        .portlet-body, .portlet-title {
-            border-top: 1px solid #578EBE;
-        }
-
-    }
-
-</style>
-<?php
-{
 
     //include('subpages/documents/forprofileview.php');
-    function PrintLine($lineclass, $name, $cnt, $doc_id, $c_id, $o_id, $webroot, $bypass = false,$sub=0)
-    {
+    function PrintLine($lineclass, $name, $cnt, $doc_id, $c_id, $o_id, $webroot, $bypass = false,$sub=0) {
         if ($cnt > 0 || $bypass) {
             echo '<tr class="' . $lineclass . '" role="row"><td><span class="icon-notebook"></span></td>';
             if ($doc_id) {
@@ -152,8 +148,7 @@ copy2globals($strings2, array("score_dupe", "score_submitted", "score_submitted"
             }
     */
 
-    function return_link($pdi, $order_id)
-    {
+    function return_link($pdi, $order_id) {
         if (file_exists("orders/order_" . $order_id . '/' . $pdi . '.pdf')) {
             $link = "orders/order_" . $order_id . '/' . $pdi . '.pdf';
             return $link;
@@ -170,33 +165,16 @@ copy2globals($strings2, array("score_dupe", "score_submitted", "score_submitted"
         return false;
     }
 
-    /*
-            function create_files_from_binary($order_id, $pdi, $binary)
-            {
-                $createfile_pdf = "orders/order_" . $order_id . '/' . $pdi . '.pdf';
-                $createfile_html = "orders/order_" . $order_id . '/' . $pdi . 'html';
-                $createfile_text = "orders/order_" . $order_id . '/' . $pdi . 'txt';
+    function portlet($color = "", $caption = "", $secondcaption = "") {
+        if($color){
+            echo '<!-- BEGIN PROFILE CONTENT --><div class="row"><div class="clearfix"></div><div class="col-md-12">';
+            echo '<!-- BEGIN PORTLET --><div class="portlet"><div class="portlet box ' . $color . '"><div class="portlet-title"><div class="caption">';
+            echo $caption. '</div>' . $secondcaption . '</div><div class="portlet-body">';
+        } else {
+            echo '<!-- END PORTLET --></DIV></DIV></DIV></DIV></DIV>';
+        }
+    }
 
-                if (!file_exists($createfile_pdf) && !file_exists($createfile_text) && !file_exists($createfile_html)) {
-
-                    if (isset($binary) && $binary != "") {
-                        file_put_contents('unknown_file', base64_decode($binary));
-                        $finfo = finfo_open(FILEINFO_MIME_TYPE);
-                        $mime = finfo_file($finfo, 'unknown_file');
-
-                        if ($mime == "application/pdf") {
-                            rename("unknown_file", "orders/order_" . $order_id . '/' . $pdi . '.pdf');
-                        } elseif ($mime == "text/html") {
-                            rename("unknown_file", "orders/order_" . $order_id . '/' . $pdi . '.html');
-                        } elseif ($mime == "text/plain") {
-                            rename("unknown_file", "orders/order_" . $order_id . '/' . $pdi . '.html');
-                        } else {
-                            rename("unknown_file", "orders/order_" . $order_id . '/' . $pdi . '.html');
-                        }
-                    }
-                }
-            }
-    */
     $counting = 0;
     $drcl_d = $orders;
     foreach ($drcl_d as $drcld) {
@@ -207,6 +185,19 @@ copy2globals($strings2, array("score_dupe", "score_submitted", "score_submitted"
                 }
             }
         }
+    }
+
+    if (iterator_count($documents)) {
+        portlet("yellow", $strings["index_documents"]);
+        $line = "even";
+        $fieldname = getFieldname("title", $language);
+        echo '<div class="col-md-12" style="margin-bottom: 8px;"><H4 style="margin-left: -7px;"><i class="icon-doc font-blue-hoki"></i><span class="caption-subject bold font-blue-hoki uppercase"> ' . $strings2["score_docs"] . '</span></H4></div><table class="table" style="margin-bottom: 0px;">';
+        foreach ($documents as $document) {
+            $subdocument = getIterator($subdocuments, "id", $document->sub_doc_id);
+            $line = PrintLine($line, $subdocument->$fieldname, 1, $document->id, $document->client_id, 0, $this->request->webroot, true, $document->sub_doc_id);
+        }
+        echo '</TABLE><div class="clearfix"></div>';
+        portlet();
     }
 
     $k = 0;
@@ -234,78 +225,6 @@ copy2globals($strings2, array("score_dupe", "score_submitted", "score_submitted"
 
             $settings = $this->requestAction('settings/get_settings');
             $uploaded_by = $doc_comp->getUser($order->user_id);
-
-            /*
-            if ($order->bright_planet_html_binary && $order->bright_planet_html_binary != "done") {
-                create_files_from_binary($order->id, 'bright_planet_html', $order->bright_planet_html_binary);
-
-                foreach ($p as $pp) {
-                    if ($pp == 1) {
-                        $sendit = strip_tags(trim(get_mee_results_binary($order->bright_planet_html_binary, "Driver's Record Abstract")));
-                        $this->requestAction('orders/save_bright_planet_grade/' . $order->id . '/ins_1/' . $sendit);
-                    } elseif ($pp == 77) {
-                        $sendit = strip_tags(trim(get_mee_results_binary($order->bright_planet_html_binary, "Pre-employment Screening Program Report")));
-                        $this->requestAction('orders/save_bright_planet_grade/' . $order->id . '/ins_77/' . $sendit);
-                    } elseif ($pp == 14) {
-                        $sendit = strip_tags(trim(get_mee_results_binary($order->bright_planet_html_binary, "CVOR")));
-                        $this->requestAction('orders/save_bright_planet_grade/' . $order->id . '/ins_14/' . $sendit);
-                    } elseif ($pp == 1603) {
-                        $sendit = strip_tags(trim(get_mee_results_binary($order->bright_planet_html_binary, "Premium National Criminal Record Check")));
-                        $this->requestAction('orders/save_bright_planet_grade/' . $order->id . '/ebs_1603/' . $sendit);
-                    } elseif ($pp == 1650) {
-                        $sendit = strip_tags(trim(get_mee_results_binary($order->bright_planet_html_binary, "Certifications")));
-                        $this->requestAction('orders/save_bright_planet_grade/' . $order->id . '/ebs_1650/' . $sendit);
-                    } elseif ($pp == 78) {
-                        $sendit = strip_tags(trim(get_mee_results_binary($order->bright_planet_html_binary, "TransClick")));
-                        $this->requestAction('orders/save_bright_planet_grade/' . $order->id . '/ins_78/' . $sendit);
-                    } elseif ($pp == 1627) {
-                        $sendit = strip_tags(trim(get_mee_results_binary($order->bright_planet_html_binary, "Letter Of Experience")));
-                        $this->requestAction('orders/save_bright_planet_grade/' . $order->id . '/ebs_1627/' . $sendit);
-                    } elseif ($pp == 72) {
-                        $sendit = strip_tags(trim(get_mee_results_binary($order->bright_planet_html_binary, "Letter Of Experience")));
-                        $this->requestAction('orders/save_bright_planet_grade/' . $order->id . '/ins_72/' . $sendit);
-                    }
-
-                }
-                $this->requestAction('orders/save_bright_planet_grade/' . $order->id . '/bright_planet_html_binary/done');
-            }
-
-
-
-            if ($order->ebs_1603_binary && $order->ebs_1603_binary != "done") {
-                create_files_from_binary($order->id, '1603', $order->ebs_1603_binary);
-                $this->requestAction('orders/save_bright_planet_grade/' . $order->id . '/ebs_1603_binary/done');
-            }
-            if ($order->ins_1_binary && $order->ins_1_binary != "done") {
-                create_files_from_binary($order->id, '1', $order->ins_1_binary);
-                $this->requestAction('orders/save_bright_planet_grade/' . $order->id . '/ins_1_binary/done');
-            }
-            if ($order->ins_14_binary && $order->ins_14_binary != "done") {
-                create_files_from_binary($order->id, '14', $order->ins_14_binary);
-                $this->requestAction('orders/save_bright_planet_grade/' . $order->id . '/ins_14_binary/done');
-            }
-            if ($order->ins_77_binary && $order->ins_77_binary != "done") {
-                create_files_from_binary($order->id, '77', $order->ins_77_binary);
-                $this->requestAction('orders/save_bright_planet_grade/' . $order->id . '/ins_77_binary/done');
-            }
-            if ($order->ins_78_binary && $order->ins_78_binary != "done") {
-                create_files_from_binary($order->id, '78', $order->ins_78_binary);
-                $this->requestAction('orders/save_bright_planet_grade/' . $order->id . '/ins_78_binary/done');
-            }
-            if ($order->ebs_1650_binary && $order->ebs_1650_binary != "done") {
-                create_files_from_binary($order->id, '1650', $order->ebs_1650_binary);
-                $this->requestAction('orders/save_bright_planet_grade/' . $order->id . '/ebs_1650_binary/done');
-            }
-            if ($order->ebs_1627_binary && $order->ebs_1627_binary != "done") {
-                create_files_from_binary($order->id, '1627', $order->ebs_1627_binary);
-                $this->requestAction('orders/save_bright_planet_grade/' . $order->id . '/ebs_1627_binary/done');
-            }
-            if ($order->ins_72_binary && $order->ins_72_binary != "done") {
-                create_files_from_binary($order->id, '72', $order->ins_72_binary);
-                $this->requestAction('orders/save_bright_planet_grade/' . $order->id . '/ins_72_binary/done');
-            }
-
-            */
             ?>
 
                 <!-- BEGIN PROFILE CONTENT -->
@@ -562,5 +481,3 @@ copy2globals($strings2, array("score_dupe", "score_submitted", "score_submitted"
     }
     ?>
         <!-- END PROFILE CONTENT -->
-    <?php
-}
