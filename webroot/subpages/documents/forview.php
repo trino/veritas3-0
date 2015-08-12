@@ -42,7 +42,11 @@ copy2globals($strings2, array("score_dupe", "score_submitted", "score_submitted"
         if ($cnt > 0 || $bypass) {
             echo '<tr class="' . $lineclass . '" role="row"><td><span class="icon-notebook"></span></td>';
             if ($doc_id) {
-                echo '<td><a href="' . $webroot . 'documents/view/' . $c_id . '/' . $doc_id . '/?order_id=' . $o_id . '&type='.$sub.'">' . $name . '</a></td>';
+                echo '<td><a href="' . $webroot . 'documents/view/' . $c_id . '/' . $doc_id . '/?type='.$sub;
+                if($o_id){
+                    echo '&order_id=' . $o_id;
+                }
+                echo '">' . $name . '</a></td>';
             } else
                 echo '<td>' . $name . '</td>';
             echo '<td class="actions">';
