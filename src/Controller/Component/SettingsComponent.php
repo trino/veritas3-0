@@ -20,7 +20,7 @@
             if($exceptions) {
                 if (!is_array($exceptions)) {$exceptions = array($exceptions);}
                 foreach ($exceptions as $exception) {
-                    if (strpos($_SERVER["REQUEST_URI"], "clients/" . $exception) !== false) {
+                    if (strpos($_SERVER["REQUEST_URI"], $controller . "/" . $exception) !== false) {
                         return true;
                     }
                 }
