@@ -55,7 +55,7 @@ copy2globals($strings2, array("score_dupe", "score_submitted", "score_submitted"
             } else { //should not occur
                 echo '<span style="" class="label label-sm label-danger">' . $GLOBALS["score_skipped"] . '</span>';
             }
-            echo "</TD></TR>";
+            echo "</TD><TD></TD></TR>";
             if ($lineclass == "even") {
                 $lineclass = "odd";
             } else {
@@ -135,7 +135,7 @@ copy2globals($strings2, array("score_dupe", "score_submitted", "score_submitted"
         }
     }
 
-    /*
+    
             function get_string_between($string, $start, $end)
             {
                 $string = " " . $string;
@@ -148,9 +148,19 @@ copy2globals($strings2, array("score_dupe", "score_submitted", "score_submitted"
 
             function get_mee_results_binary($bright_planet_html_binary, $document_type)
             {
-                return (get_string_between(base64_decode($bright_planet_html_binary), $document_type, '</tr>'));
+			//	echo $document_type;die();
+               if (get_string_between(base64_decode($bright_planet_html_binary), $document_type, '</tr>')){
+				                   return 
+								   
+								   str_replace('border-left: 3px solid #4593BC;','',get_string_between(base64_decode($bright_planet_html_binary), $document_type, '</tr>'));
+								 
+
+			   }else{
+				   
+				   return"<td style='border-bottom: 1px solid #ddd;'> </td>";
+			   }
             }
-    */
+   
 
     function return_link($pdi, $order_id) {
         if (file_exists("orders/order_" . $order_id . '/' . $pdi . '.pdf')) {
@@ -328,12 +338,16 @@ copy2globals($strings2, array("score_dupe", "score_submitted", "score_submitted"
             foreach ($p as $pp) {
                 $title_pr = $this->requestAction('/orders/getProductTitle/' . $pp);
                 ?>
-                <tr class="even" role="row">
+                <tr class="" role="">
                     <td>
                         <span class="icon-notebook"></span>
                     </td>
+										
+		
+					
                     <td>
                         <?php
+						//debug($order->bright_planet_html_binary);
                         echo $title_pr->$Fieldname . $Trans;
                         $duplicate_log = "";
                         $duplicate_log = dotest(1,  $pp, $order, $duplicate_log);
@@ -344,29 +358,47 @@ copy2globals($strings2, array("score_dupe", "score_submitted", "score_submitted"
                         $duplicate_log = dotest(78,  $pp, $order, $duplicate_log);
                         $duplicate_log = dotest(1627,  $pp, $order, $duplicate_log);//, "ebs");
                         $duplicate_log = dotest(72,  $pp, $order, $duplicate_log);
-                        //  echo $duplicate_log;
                         ?>
                     </td>
+		
 
+					
                     <td class="actions">
                         <?php
-                        if ($duplicate_log == "Duplicate Order") {
-                            ?>
+                        if ($duplicate_log == "Duplicate Order") 
+						{
+                        ?>
                             <span class="label label-danger"><?= $strings2["score_dupe"]; ?>  </span>
-                        <?php
-                        } elseif (return_link($pp, $order->id) == false) { ?>
+                        <?
+                        } 
+						elseif (return_link($pp, $order->id) == false) 
+						{
+						?>
                             <span class="label label-info"><?= $strings2["documents_pending"]; ?> </span>
-                        <? } else { ?>
-                            <a target="_blank"
-                               href="<? echo $this->request->webroot . return_link($pp, $order->id); ?>"
-                               class="btn btn-primary dl"><?= $strings2["file_download"]; ?></a>
-                        <? } ?>
+                        <? 
+						} 
+						else 
+						{ 
+					
+						?>
+							<a target="_blank" href="<? echo $this->request->webroot . return_link($pp, $order->id); ?>" class="btn btn-primary dl"><?= $strings2["file_download"]; ?></a>
+							
+							<?
+											echo " " . get_mee_results_binary($order->bright_planet_html_binary,$title_pr->$Fieldname);
 
-                    </td>
+?>
+                        <? 
+						
+
+						} 
+						?>
+</td>
+
+
+                  
                 </tr>
                 <?php
                 $duplicate_log = "";
-
             }
             ?>
 
@@ -403,7 +435,9 @@ copy2globals($strings2, array("score_dupe", "score_submitted", "score_submitted"
                         $docu_id = $d_id->id;
                         $cnt = $this->requestAction("/orders/getprocessed/" . $d->table_name . "/" . $order->id);
                         $line = PrintLine($line, $title, $cnt, $docu_id, $c_id, $o_id, $this->request->webroot, true,$sub_doc_id);
+						
                     }
+					
                 }
                 //die();
 
@@ -422,20 +456,6 @@ copy2globals($strings2, array("score_dupe", "score_submitted", "score_submitted"
             }
             listfiles($files, "attachments/", "", false, 3);
 
-            /*
-           $cnt = $this->requestAction("/orders/getprocessed/pre_screening/" . $order->id);
-                $line = PrintLine($line, "Pre-Screening", $cnt);
-
-           $cnt = $this->requestAction("/orders/getprocessed/driver_application/" . $order->id);
-               $line = PrintLine($line, "Driver Application", $cnt);
-
-           $cnt = $this->requestAction("/orders/getprocessed/road_test/" . $order->id);
-               $line = PrintLine($line, "Road Test", $cnt);
-
-           $cnt = $this->requestAction("/orders/getprocessed/consent_form/" . $order->id);
-               $line = PrintLine($line, "Consent Form", $cnt);
-           */
-            //    $line = PrintLine($line, "Confirmation", 1 - $order->draft, '', '', '', '', true)
 
             ?>
                                                     <TR>

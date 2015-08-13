@@ -38,7 +38,7 @@
     $creditcheck_ins_31 = false;                            // 31 Credit Check
 
     echo $order_info->order_type;
-    if ($order_info->order_type == "MEE" || $order_info->order_type == "GDO") {
+    if ($order_info->order_type == "MEE" || $order_info->order_type == "GDO" || $order_info->order_type == "EMP" || $order_info->order_type == "SAL") {
         $driver_order_79 = true; // only TRUE if complete mee orders  - DONT CHANGE
         $ordertype = "MEE";
     }
