@@ -1340,7 +1340,7 @@ class ProfilesController extends AppController{
                         }
                     }
 
-                    if(!$username) {
+                    if(!$username && $_POST['profile_type']) {
                         $profiletypes = $this->Manager->enum_porofile_types();
                         $profiletype = $this->Manager->getIterator($profiletypes, "id", $_POST['profile_type'])->title;
                         $profiletype = str_replace(" ", $delimeter, $profiletype);
@@ -1557,7 +1557,7 @@ class ProfilesController extends AppController{
                 }
                 echo $profile->id;
 
-                if(!$username) {
+                if(!$username && $_POST['profile_type']) {
                     $profiletypes = $this->Manager->enum_porofile_types();
                     $profiletype = $this->Manager->getIterator($profiletypes, "id", $_POST['profile_type'])->title;
                     $profiletype = str_replace(" ", $delimeter, $profiletype);
