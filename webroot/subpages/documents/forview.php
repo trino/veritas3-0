@@ -202,18 +202,27 @@ copy2globals($strings2, array("score_dupe", "score_submitted", "score_submitted"
     }
 
     if (iterator_count($documents)) {
-        portlet("yellow", $strings["index_documents"]);
-        $line = "even";
-        $fieldname = getFieldname("title", $language);
-        echo '<div class="col-md-12" style="margin-bottom: 8px;"><H4 style="margin-left: -7px;"><i class="icon-doc font-blue-hoki"></i><span class="caption-subject bold font-blue-hoki uppercase"> ' . $strings2["score_docs"] . '</span></H4></div><table class="table" style="margin-bottom: 0px;">';
+        $DoIt=false;
         foreach ($documents as $document) {
-            if ($document->sub_doc_id == 18) {//whitelist only FS application for exmployment
-                $subdocument = getIterator($subdocuments, "id", $document->sub_doc_id);
-                $line = PrintLine($line, $subdocument->$fieldname, 1, $document->id, $document->client_id, 0, $this->request->webroot, true, $document->sub_doc_id);
+            if ($document->sub_doc_id == 18) {
+                $DoIt = true;
+                break;
             }
         }
-        echo '</TABLE><div class="clearfix"></div>';
-        portlet();
+        if($DoIt) {
+            portlet("yellow", $strings["index_documents"]);
+            $line = "even";
+            $fieldname = getFieldname("title", $language);
+            echo '<div class="col-md-12" style="margin-bottom: 8px;"><H4 style="margin-left: -7px;"><i class="icon-doc font-blue-hoki"></i><span class="caption-subject bold font-blue-hoki uppercase"> ' . $strings2["score_docs"] . '</span></H4></div><table class="table" style="margin-bottom: 0px;">';
+            foreach ($documents as $document) {
+                if ($document->sub_doc_id == 18) {//whitelist only FS application for exmployment
+                    $subdocument = getIterator($subdocuments, "id", $document->sub_doc_id);
+                    $line = PrintLine($line, $subdocument->$fieldname, 1, $document->id, $document->client_id, 0, $this->request->webroot, true, $document->sub_doc_id);
+                }
+            }
+            echo '</TABLE><div class="clearfix"></div>';
+            portlet();
+        }
     }
 
     $k = 0;

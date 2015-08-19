@@ -151,6 +151,10 @@ function makedropdownoption($Key, $Value, $TheValue){
                             <LI>
                                 <a href="#tab_1_18" data-toggle="tab">Translation</a>
                             </LI>
+
+                                    <li>
+                                        <a href="<?= $this->request->webroot; ?>profiles/jsonschema">JSON Schema</a>
+                                    </li>
                             <?php
                             }
                         }

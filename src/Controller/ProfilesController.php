@@ -3541,8 +3541,7 @@ public function saveDriver()
         }
     }
 
-    function getDriverProv($driver)
-    {
+    function getDriverProv($driver) {
         $dri = TableRegistry::get('profiles')->find()->where(['id'=>$driver])->first();
         $pro = $dri->driver_province;
         $this->response->body($pro);
@@ -3551,5 +3550,12 @@ public function saveDriver()
     }
     
 
+    function jsonschema(){
+        $this->set("tables", $this->Manager->enum_tables());
+        if (isset($_GET["table"])){
+            $this->set("columns", getColumnNames($_GET["table"], "", false));
+            $this->set("test", $this->Manager->enum_table($_GET["table"])->first());
+        }
+    }
 }
 ?>
