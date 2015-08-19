@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 23, 2015 at 05:33 PM
+-- Generation Time: Aug 19, 2015 at 04:37 PM
 -- Server version: 5.6.17
 -- PHP Version: 5.5.12
 
@@ -39,7 +39,7 @@ CREATE TABLE IF NOT EXISTS `strings` (
 --
 
 INSERT INTO `strings` (`ID`, `Name`, `English`, `French`) VALUES
-(1, 'Date', '1437664011', '<-- This is used by the system to auto-update'),
+(1, 'Date', '1437665633', '<-- This is used by the system to auto-update'),
 (2, 'dashboard_affirmative', 'Yes', 'Oui'),
 (3, 'dashboard_negative', 'No', 'Non'),
 (4, 'dashboard_selectall', 'Select All', 'Tout sélectionner'),
@@ -383,7 +383,7 @@ INSERT INTO `strings` (`ID`, `Name`, `English`, `French`) VALUES
 (347, 'forms_male', 'Male', 'Homme'),
 (348, 'forms_female', 'Female', 'Femme'),
 (349, 'forms_selectgender', 'Select Gender', 'Sélectionner le sexe'),
-(350, 'forms_placeofbirth', 'Place of Birth', 'Lieu de naissance'),
+(350, 'forms_placeofbirth', 'Country of Birth', 'Pays de naissance'),
 (351, 'forms_dateofbirth', 'Date of Birth', 'Date de naissance'),
 (352, 'forms_country', 'Country', 'Pays'),
 (353, 'forms_driverslicense', 'Driver''s License', 'Permis de conduire'),
