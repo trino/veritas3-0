@@ -87,6 +87,7 @@ $dosubmit = true;
 $clientname = "Gordon Food Service";
 $language = get("language", "English");
 $settings = array();
+$is_disabled=false;
 
 function offsettime($value, $period = "minutes", $date = "", $format = "Y-m-d H:i:s"){
     if (!$date) {$date = date($format);}
@@ -355,10 +356,13 @@ if (count($_POST) > 0) {
             $stages = " (3 of 3)";
             include("forms/consent.php");
         break;
+        case 24:
+            include("../webroot/subpages/documents/edu_verifs.php");
+        break;
         default:
             $doback = false;
             echo $strings["uniform_pleaseselect"] . ":<UL>";
-            $forms = array(4,9);
+            $forms = array(4,9,24);
             $fieldname = "title";
             if ($language != "English" && $language != "Debug"){ $fieldname.=$language;}
             foreach ($forms as $formID){

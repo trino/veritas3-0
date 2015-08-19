@@ -84,6 +84,9 @@ printCSS($this);
     function docname($ID, $subdoccli, $language) {
         $keyname = getFieldname("title", $language);
         $object = getIterator($subdoccli, "sub_id", $ID)->subtype;
+        if(!$object){
+            return "Unknown";
+        }
         if ($language == 'Debug') { return $object->English . " [Trans]";}
         return $object->$keyname;
     }
@@ -235,237 +238,55 @@ printCSS($this);
                     <div class="clearfix"></div>
                     <div class="moredocxs">
 
-                        <?php
-
-                        $controller = $this->request->params['controller'];
-                        $controller = strtolower($controller);
-                        ?>
-
-                        <?php
-                        if($_GET['type']==1)
-                        {
-                            $dx = $subdoc->find()->where(['id'=>$_GET['type']])->first();
-                       ?>
-                        <div class="subform1">
-                            <?php
-                            if($controller == 'documents' ) {
-                                $colr = $this->requestAction('/documents/getColorId/1');
-                                if(!$colr){$colr = $class[0];}
-                                makeportlet($did, $colr,docname(1, $subdoccli, $language));
-                            } else {
-
-                            }
-                             include('subpages/documents/company_pre_screen_question.php');
-                            if($controller == 'documents' ) {
-                                echo '</div></div></div></div></div></div>' ;
-                            }
-                            echo "</div>";
-                         }
-
-                        ?>
-
-                        <?php
-                        if($_GET['type']==2)
-                        {
-                            $dx = $subdoc->find()->where(['id'=>$_GET['type']])->first();
-
-                            echo '<div class="subform2">';
-
-                       ?>
-
-                            <?php include('subpages/documents/driver_application.php');?>
-
-                        <?php
-                        echo "</div>";
-                        }
-                        if($_GET['type']==3)
-                        {
-                          $dx = $subdoc->find()->where(['id'=>$_GET['type']])->first();
-            ?>
-                        <div class="subform3"><?php
-                            if($controller == 'documents' ) {
-
-                                $colr = $this->requestAction('/documents/getColorId/3');
-                                if(!$colr){$colr = $class[2];}
-
-                                makeportlet($did, $colr, docname(3, $subdoccli, $language) );
-                            } else {
-
-                            }
-                            include('subpages/documents/driver_evaluation_form.php');
-                            if($controller == 'documents' ) {
-                                echo '</div></div></div></div></div></div>' ;
-                            }
-                            ?>
-                        </div>
-                        <?php }?>
-                        <?php
-                        if($_GET['type']==4)
-                        {
-                          $dx = $subdoc->find()->where(['id'=>$_GET['type']])->first();
-                        ?>
-                        <div class="subform4">
-                            <?php
-                            if($controller == 'documents' ) {
-                                $colr = $this->requestAction('/documents/getColorId/4');
-                                if(!$colr) {$colr = $class[3];}
-                                makeportlet($did, $colr,docname(4, $subdoccli, $language));
-                            }
-                            else {
-
-                            }
-                            include('subpages/documents/document_tab_3.php');
-                            if($controller == 'documents' ) {
-                                echo '</div></div></div></div></div></div>' ;
-                            }
-                            ?>
-                        </div>
-                        <?php }?>
-                        <?php
-                        if($_GET['type']==5)
-                        {
-                          $dx = $subdoc->find()->where(['id'=>$_GET['type']])->first();
-                        ?>
-                        <div class="subform5">
-                            <?php
-                            if($controller == 'documents' ) {
-                                $colr = $this->requestAction('/documents/getColorId/5');
-                                if(!$colr) {$colr = $class[4];}
-                                makeportlet($did, $colr,docname(5, $subdoccli, $language));
-                            } else {
-
-                            }
-                            include('subpages/documents/survey.php');
-                            if($controller == 'documents' ) {
-                                echo '</div></div></div></div></div></div>' ;
-                            }
-                            ?>
-                        </div>
-                        <?php
-                        }
-
-                            if($_GET['type']==6)
-                        {
-                          $dx = $subdoc->find()->where(['id'=>$_GET['type']])->first();
-                        ?>
-                        <div class="subform6">
-                            <?php
-                            if($controller == 'documents' )
-                            {
-
-                                $colr = $this->requestAction('/documents/getColorId/6');
-                                if(!$colr) {$colr = $class[5];}
-                                makeportlet($did, $colr,docname(6, $subdoccli, $language));
-                            }
-                            else {
-
-                            }
-                            ?>
-                            <?php include('subpages/documents/feedbacks.php');
-                            if($controller == 'documents' ) {
-                                echo '</div></div></div></div></div></div>' ;
-                            }
-                            ?>
-                        </div>
-                        <?php
-                        }
-
-                            if($_GET['type']==7)
-                        {
-                          $dx = $subdoc->find()->where(['id'=>$_GET['type']])->first();
-                        ?>
-                        <div class="subform7">
-                            <?php
-                            if($controller == 'documents' ) {
-                                $colr = $this->requestAction('/documents/getColorId/7');
-                                if(!$colr) {$colr = $class[6];}
-                                makeportlet($did, $colr,docname(7, $subdoccli, $language));
-                            }
-                            else {
-
-                            }
-                            ?>
-                            <?php include('subpages/documents/attachments.php');
-                            if($controller == 'documents' ) {
-                                echo '</div></div></div></div></div></div>' ;
-                            }
-                            ?>
-                        </div>
-                        <?php
-                        }
-
-                            if($_GET['type']==8)
-                        {
-                          $dx = $subdoc->find()->where(['id'=>$_GET['type']])->first();
-                        ?>
-                        <div class="subform8">
-                            <?php
-                            if($controller == 'documents' ) {
-                                $colr = $this->requestAction('/documents/getColorId/8');
-                                if(!$colr) {$colr = $class[7];}
-                                makeportlet($did, $colr,docname(8, $subdoccli, $language));
-                            } else {
-
-                            }
-                            ?>
-                            <?php include('subpages/documents/audits.php');
-                            if($controller == 'documents' ) {
-                                echo '</div></div></div></div></div></div>' ;
-                            }
-                            ?>
-                        </div>
-                        <?php
-                        }
-
-                            if($_GET['type']==9)
-                        {
-                          $dx = $subdoc->find()->where(['id'=>$_GET['type']])->first();
-                        ?>
-                        <div class="subform9">
-                            <?php
-                            if($controller == 'documents' ) {
-                                $colr = $this->requestAction('/documents/getColorId/9');
-                                if(!$colr) {$colr = $class[8];}
-                                makeportlet($did, $colr,docname(9, $subdoccli, $language));
-                            } else {
-
-                            }
-                            ?>
-                            <?php include('subpages/documents/employment_verification_form.php');
-                            if($controller == 'documents' ) {
-                                echo '</div></div></div></div></div></div>' ;
-                            }
-                            ?>
-                        </div>
-                        <?php
-                        }
-
-                            if($_GET['type']==10)
-                        {
-                            //die($_GET['type']);
-                            $dx = $subdoc->find()->where(['id'=>$_GET['type']])->first();
-
-
-                        ?>
-
-                        <div class="subform10">
-                            <?php
-                            if($controller == 'documents' ) {
-
-                                $colr = $this->requestAction('/documents/getColorId/10');
-                                if(!$colr) {$colr = $class[9];}
-                                makeportlet($did, $colr,docname(10, $subdoccli, $language));
-                             } else {
-
-                            }
-                        ?>
-                        <?php include('subpages/documents/education_verification_form.php');
-                        if($controller == 'documents' ) {
-                        echo '</div></div></div></div></div></div>' ;
-                        }
-                         ?>
-                    </div>
                     <?php
+                        $controller = strtolower($this->request->params['controller']);
+                        $class = array();
+
+                        $GLOBALS["doc_id"]=0;
+                        function printdoc($_this, $ID, $controller, $subdoc, $class, $did, $subdoccli, $language, $filename){
+                            if($_GET['type']==$ID){
+                                $GLOBALS["doc_id"] = $ID;
+                                $GLOBALS["doc_filename"] = $filename;
+                            }
+                            /*
+                            if($_GET['type']==$ID){
+                                $dx = $subdoc->find()->where(['id'=>$_GET['type']])->first();
+                                echo '<div class="subform' . $ID . '">';
+                                if($controller == 'documents' ) {
+                                    $colr = $_this->requestAction('/documents/getColorId/' . $ID);
+                                    //if(!$colr){$colr = $class[$ID-1];}
+                                    makeportlet($did, $colr, docname($ID, $subdoccli, $language));
+                                }
+                                include($filename);
+                                if($controller == 'documents' ) {
+                                    echo '</div></div></div></div></div></div>' ;
+                                }
+                                echo "</div>";
+                            }
+                            */
+                        }
+
+                        printdoc($this, 1, $controller, $subdoc, $class, $did, $subdoccli, $language, 'subpages/documents/company_pre_screen_question.php');
+
+                        if($_GET['type']==2)  {
+                            $dx = $subdoc->find()->where(['id'=>$_GET['type']])->first();
+                            echo '<div class="subform2">';
+                            ?><?php include('subpages/documents/driver_application.php');?><?php
+                            echo "</div>";
+                        }
+
+                        printdoc($this, 3, $controller, $subdoc, $class, $did, $subdoccli, $language, 'subpages/documents/driver_evaluation_form.php');
+                        printdoc($this, 4, $controller, $subdoc, $class, $did, $subdoccli, $language, 'subpages/documents/document_tab_3.php');
+                        printdoc($this, 5, $controller, $subdoc, $class, $did, $subdoccli, $language, 'subpages/documents/survey.php');
+                        printdoc($this, 6, $controller, $subdoc, $class, $did, $subdoccli, $language, 'subpages/documents/feedbacks.php');
+                        printdoc($this, 7, $controller, $subdoc, $class, $did, $subdoccli, $language, 'subpages/documents/attachments.php');
+                        printdoc($this, 8, $controller, $subdoc, $class, $did, $subdoccli, $language, 'subpages/documents/audits.php');
+                        printdoc($this, 9, $controller, $subdoc, $class, $did, $subdoccli, $language, 'subpages/documents/employment_verification_form.php');
+                        printdoc($this,10, $controller, $subdoc, $class, $did, $subdoccli, $language, 'subpages/documents/education_verification_form.php');
+                        printdoc($this,24, $controller, $subdoc, $class, $did, $subdoccli, $language, 'subpages/documents/edu_verifs.php');
+
+                        if($GLOBALS["doc_id"]){
+                            include('subpages/documents/include.php');//must be done this way to use $this
                         }
 
                         ?>
