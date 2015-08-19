@@ -1378,9 +1378,22 @@
 <!-- put this back when the form is gone   </div>     </div>   -->
 
 <script>
-    function reload(){
+    function getURL(){
+        var URL = window.location.href;
+        var Q = URL.indexOf("?");
+        if (Q>-1){
+            URL = URL.substr(0, Q);
+        }
+        return URL;
+    }
+
+    function reload(URL){
         setTimeout(function(){
-            window.location.reload();
+            if(URL) {
+                location.href = getURL() + "?activetab=" + URL;
+            } else {
+                window.location.reload();
+            }
         },1000);
     }
 
@@ -1533,7 +1546,7 @@
                     $('.flash').show();
                     $('.flash').fadeOut(7000);
                     $('#save_blocks').text(' Save Changes ');
-                    reload();//window.location.reload();
+                    reload("permissions");//window.location.reload();
                 }
             })
         });
