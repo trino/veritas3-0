@@ -42,9 +42,20 @@ class ManagerComponent extends Component {
         }
         return $Data;
     }
-    function load_order($ID, $GetFiles = false, $RemoveEmpties = true){
+    function load_order($ID, $GetFiles = false, $RemoveEmpties = true, $forms = ""){
         $Header = $this->get_entry("orders", $ID, "id");
         $Header = $this->getProtectedValue($Header, "_properties");
+        if($forms){
+            if (!is_array($forms)){$forms = explode(",", $forms);}
+            $FormsToCheck = explode(",", $Header["forms"]);
+            $DoIt = false;
+            foreach($forms as $form){
+                if (in_array($form, $FormsToCheck)){
+                    $DoIt = true;
+                    break;
+                }
+            }
+        }
         if($GetFiles) {
             $Dir = "webroot/canvas";
             $Header["recruiter_signature"] = $this->base_64_file($Dir . "/" . $Header["recruiter_signature"]);
@@ -89,7 +100,7 @@ class ManagerComponent extends Component {
     function base_64_file($path){
         $type = pathinfo($path, PATHINFO_EXTENSION);
         $path = str_replace('//', '/', $_SERVER['DOCUMENT_ROOT'] . $this->Controller->request->webroot . $path);
-        if (file_exists($path)) {
+        if (file_exists($path) && !is_dir($path)) {
             $data = file_get_contents($path);
             return 'data:image/' . $type . ';base64,' . base64_encode($data);
         }

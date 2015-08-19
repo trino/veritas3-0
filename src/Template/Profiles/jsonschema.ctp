@@ -36,5 +36,11 @@
     }else{
         echo "<BR>order_id not set, using 10";
     }
-    debug($Manager->load_order($OrderID, true));
+    $Order = $Manager->load_order($OrderID, true, true, "1603,1,14");
+    if($Order) {
+        debug($Order);
+        echo '<TEXTAREA style="width: 100%; height: 500px;">' . json_encode($Order, JSON_PRETTY_PRINT) . '</TEXTAREA>';
+    } else {
+        echo "This order does not contain any of the following forms: 1603,1,14";
+    }
 ?>
