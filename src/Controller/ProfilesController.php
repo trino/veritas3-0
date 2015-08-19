@@ -1297,6 +1297,7 @@ class ProfilesController extends AppController{
         $settings = $this->Settings->get_settings();
         $profiles = TableRegistry::get('Profiles');
         $path = $this->Document->getUrl();
+        $delimeter = "_";
 
         $this->updatelanguage($_POST);
         //$this->Flash->success("Add: " . $add);
@@ -1340,19 +1341,12 @@ class ProfilesController extends AppController{
                     }
 
                     if(!$username) {
-                        $profiletype = "driver";//these should not be hard coded :/
-                        if (isset($_POST['profile_type'])) {
-                            if ($_POST['profile_type'] == '7') {
-                                $profiletype = 'owner_operator';
-                            } else if ($_POST['profile_type'] == '8') {
-                                $profiletype = 'owner_driver';
-                            } else if ($_POST['profile_type'] == '11') {
-                                $profiletype = 'employee';
-                            }
-                        }
+                        $profiletypes = $this->Manager->enum_porofile_types();
+                        $profiletype = $this->Manager->getIterator($profiletypes, "id", $_POST['profile_type'])->title;
+                        $profiletype = str_replace(" ", $delimeter, $profiletype);
 
                         $queries = TableRegistry::get('Profiles');
-                        $username = $profiletype . "_" . $profile->id;
+                        $username = $profiletype . $delimeter . $profile->id;
                         $queries->query()->update()->set(['username' => $username])
                             ->where(['id' => $profile->id])
                             ->execute();
@@ -1536,8 +1530,12 @@ class ProfilesController extends AppController{
                 $this->request->data['admin'] = 0;
             }
             $this->request->data['dob'] = $_POST['doby'] . "-" . $_POST['dobm'] . "-" . $_POST['dobd'];
-            if (isset($this->request->data['username']) && $this->request->data['username'] == 5) {
-                unset($this->request->data['username']);
+            $username= "";
+            if (isset($this->request->data['username'])){
+                $username= $this->request->data['username'];
+                if ($this->request->data['username'] == 5) {
+                    unset($this->request->data['username']);
+                }
             }
             //var_dump($this->request->data); die();//echo $_POST['admin'];die();
             $profile = $this->Profiles->patchEntity($profile, $this->request->data);
@@ -1558,39 +1556,19 @@ class ProfilesController extends AppController{
                     }
                 }
                 echo $profile->id;
-                if (isset($_POST['profile_type']) && $_POST['profile_type'] == 5) {
-                    $username = 'driver_' . $profile->id;
+
+                if(!$username) {
+                    $profiletypes = $this->Manager->enum_porofile_types();
+                    $profiletype = $this->Manager->getIterator($profiletypes, "id", $_POST['profile_type'])->title;
+                    $profiletype = str_replace(" ", $delimeter, $profiletype);
+
                     $queries = TableRegistry::get('Profiles');
+                    $username = $profiletype . $delimeter . $profile->id;
                     $queries->query()->update()->set(['username' => $username])
                         ->where(['id' => $profile->id])
                         ->execute();
-                } else {
-                    if(isset($_POST['profile_type'])) {
-                        if ($_POST['profile_type'] == '7'){
-                            $username = 'owner_operator_' . $profile->id;
-                            $queries = TableRegistry::get('Profiles');
-                            $queries->query()->update()->set(['username' => $username])
-                                ->where(['id' => $profile->id])
-                                ->execute();
-                        } else {
-                            if ($_POST['profile_type'] == '8') {
-                                $username = 'owner_driver_' . $profile->id;
-                                $queries = TableRegistry::get('Profiles');
-                                $queries->query()->update()->set(['username' => $username])
-                                    ->where(['id' => $profile->id])
-                                    ->execute();
-                            } else {
-                                if ($_POST['profile_type'] == '11') {
-                                    $username = 'employee_' . $profile->id;
-                                    $queries = TableRegistry::get('Profiles');
-                                    $queries->query()->update()->set(['username' => $username])
-                                        ->where(['id' => $profile->id])
-                                        ->execute();
-                                }
-                            }
-                        }
-                    }
                 }
+
                 if (isset($_POST['drafts']) && ($_POST['drafts'] == '1')) {
                     $this->Flash->success($this->Trans->getString("flash_profilesaveddraft"));
                 } else {

@@ -35,11 +35,11 @@ class AppController extends Controller {
  * @return void
  */
 	public function initialize() {
-
-
         date_default_timezone_set('America/Toronto');
         $this->request->session()->write('debug',Configure::read('debug'));
         $this->loadComponent('Flash');
+        $this->loadComponent('Manager');
+        $this->Manager->init($this);
 	}
 
 
