@@ -166,7 +166,7 @@
 <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
 <soap:Body><ProductDetails xmlns="http://tempuri.org/">' .
 
-            '<UID>' . $ins_id . '</UID><productdetails>&lt;ProductData&gt;&lt;dupe_date&gt;' . date("Y-m-d") . '&lt;/dupe_date&gt;&lt;isb_firstNameIfDiff&gt;' . $driverinfo->fname . '&lt;/isb_firstNameIfDiff&gt;&lt;isb_lastNameIfDiff&gt;' . $driverinfo->lname . '&lt;/isb_lastNameIfDiff&gt;&lt;isb_Gender&gt;' . $driverinfo->gender . '&lt;/isb_Gender&gt;&lt;isb_AppAddress_32&gt;' . $driverinfo->street . '&lt;/isb_AppAddress_32&gt;&lt;isb_AppCity_32&gt;' . $driverinfo->city . '&lt;/isb_AppCity_32&gt;&lt;isb_AppStateProv_32&gt;' . $driverinfo->province . '&lt;/isb_AppStateProv_32&gt;&lt;isb_USDOT_MC&gt;11&lt;/isb_USDOT_MC&gt;&lt;/ProductData&gt;'
+            '<UID>' . $ins_id . '</UID><productdetails>&lt;ProductData&gt;&lt;dupe_date&gt;' . date("Y-m-d") . '&lt;/dupe_date&gt;&lt;isb_firstNameIfDiff&gt;' . $driverinfo->fname . '&lt;/isb_firstNameIfDiff&gt;&lt;isb_lastNameIfDiff&gt;' . $driverinfo->lname . '&lt;/isb_lastNameIfDiff&gt;&lt;isb_DOB&gt;' . $driverinfo->dob . '&lt;/isb_DOB&gt;&lt;isb_Gender&gt;' . $driverinfo->gender . '&lt;/isb_Gender&gt;&lt;isb_AppAddress_32&gt;' . $driverinfo->street . '&lt;/isb_AppAddress_32&gt;&lt;isb_AppCity_32&gt;' . $driverinfo->city . '&lt;/isb_AppCity_32&gt;&lt;isb_AppStateProv_32&gt;' . $driverinfo->province . '&lt;/isb_AppStateProv_32&gt;&lt;isb_USDOT_MC&gt;11&lt;/isb_USDOT_MC&gt;&lt;/ProductData&gt;'
             . '</productdetails><productID>32</productID><tp>INS</tp><prod>true</prod></ProductDetails></soap:Body></soap:Envelope>';
 
         $result = $client->call('ProductDetails', $soap_xml);
@@ -386,7 +386,7 @@
     if ($premium_national_ebs_1603 == true) {
         $soap_xml = '<?xml version="1.0" encoding="utf-8"?>
 <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-<soap:Body><ProductDetails xmlns="http://tempuri.org/">' . '<UID>' . $ebs_id . '</UID><productdetails>&lt;ProductData&gt;&lt;dupe_date&gt;' . date("Y-m-d") . '&lt;/dupe_date&gt;&lt;isb_appothername&gt;' . $driverinfo->fname . ' ' . $driverinfo->lname .'&lt;/isb_appothername &gt;&lt;isb_DOB&gt;' . $driverinfo->dob . '&lt;/isb_DOB&gt;&lt;isb_Sex&gt;Male&lt;/isb_Sex&gt;&lt;/ProductData&gt;' . '</productdetails><productID>1603</productID><tp>EBS</tp><prod>true</prod></ProductDetails></soap:Body></soap:Envelope>';
+<soap:Body><ProductDetails xmlns="http://tempuri.org/">' . '<UID>' . $ebs_id . '</UID><productdetails>&lt;ProductData&gt;&lt;dupe_date&gt;' . date("Y-m-d") . '&lt;/dupe_date&gt;&lt;isb_appothername&gt;' . $driverinfo->mname .'&lt;/isb_appothername &gt;&lt;isb_DOB&gt;' . $driverinfo->dob . '&lt;/isb_DOB&gt;&lt;isb_Sex&gt;Male&lt;/isb_Sex&gt;&lt;/ProductData&gt;' . '</productdetails><productID>1603</productID><tp>EBS</tp><prod>true</prod></ProductDetails></soap:Body></soap:Envelope>';
 
         $result = $client->call('ProductDetails', $soap_xml);
 //get between
