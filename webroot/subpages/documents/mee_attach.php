@@ -190,7 +190,13 @@
         <?php
             $id_count = 7;
             $mand = "upload_optional";//isrequired($forms, $AttachmentName, $DriversProvince, $attachments = 0){
-            if (printrequired($action, $forms, "id_piece", $DriverProvince, 0, $strings2["upload_required"])) { $mand = "upload_mandatory"; }//count($attachment) > 0 ||
+
+        // printrequired($action, $forms, $AttachmentName, $DriversProvince, $attachment = 0, $message = "Required")
+        // isrequired($forms, $AttachmentName, $DriversProvince, $attachment)
+
+            if (isrequired($forms, "id_piece", $DriverProvince, 0)) { $mand = "upload_mandatory"; }//count($attachment) > 0 ||
+            //if (printrequired($action, $forms, "id_piece", $DriverProvince, 0, $strings2["upload_required"])) { $mand = "upload_mandatory"; }//count($attachment) > 0 ||
+
             echo '<HR></div><div class="col-md-12"><strong>' . $strings2[$mand] . '</strong></div>';
 
             //printdivrequired needs to know if there are attachments BEFORE hand
