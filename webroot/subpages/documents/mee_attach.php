@@ -190,7 +190,7 @@
         <?php
             $id_count = 7;
             $mand = "upload_optional";//isrequired($forms, $AttachmentName, $DriversProvince, $attachments = 0){
-            if (count($attachment) > 0 || isrequired($forms, "id_piece", $DriverProvince, 0, True)) { $mand = "upload_mandatory"; }
+            if (printrequired($action, $forms, "id_piece", $DriverProvince, 0, $strings2["upload_required"])) { $mand = "upload_mandatory"; }//count($attachment) > 0 ||
             echo '<HR></div><div class="col-md-12"><strong>' . $strings2[$mand] . '</strong></div>';
 
             //printdivrequired needs to know if there are attachments BEFORE hand
@@ -243,16 +243,14 @@
             $mee_more = false;
             $lprov = array('BC','QC','SK');
             $get_prov = $this->requestAction('/profiles/getDriverProv/'.$_GET['driver']);
-            if(($this->request->params['action'] == 'addorder' || $this->request->params['action'] == 'add') && !$mee_more && in_array($get_prov,$lprov))
-            {
+            if(($this->request->params['action'] == 'addorder' || $this->request->params['action'] == 'add') && !$mee_more && in_array($get_prov,$lprov)) {
                 makeBrowseButton(7, true, false, '<FONT COLOR="RED">* ' . $strings2["upload_required"] . '</FONT>');
             }
             if($did  && in_array($get_prov,$lprov)){
-                
                 $skip=true;
                 $morecount = $morecount-1;
                 foreach($mee_more as $key => $file) {//id, mee_id, attachments
-                //var_dump($file);
+                    //var_dump($file);
                     if(printfile($this->request->webroot, 8, $file,'','norem')) {
                         break;
                     }
@@ -273,46 +271,30 @@
         </div>
 
     <?php }
-
-
-
-
-
-?>
-
-
-    <?php
-
-
-
-
-
         if (printdivrequired($action, $forms, "id_piece", $DriverProvince, getattachment($mee_att, "id_piece1") . getattachment($mee_att, "id_piece2"))) {
             $docsprinted+=1; ?>
             <div class="col-md-12" style="margin-top: 15px;">
                 <div class="col-md-4" align="right"><?= $strings2["upload_uploadpiec"]; ?>: </div>
                 <div class="col-md-8">
-                    <span><a href="javascript:void(0)" class="btn btn-primary" id="mee_att_1"><?= $strings["forms_browse"]; ?></a>
-                    &nbsp;<span class="uploaded">
-
-                    <?php
-            if (isset($mee_att['attach_doc']) && $mee_att['attach_doc']->id_piece1) { ?>
-                <a class="dl"
-                   href="<?php echo $this->request->webroot; ?>documents/download/<?php echo $mee_att['attach_doc']->id_piece1; ?>"><?php echo printanattachment($mee_att['attach_doc']->id_piece1); ?></a><?php } ?></span>
-
-
-               </span>
-               <span><a href="javascript:void(0)" class="btn btn-primary" id="mee_att_2"><?= $strings["forms_browse"]; ?></a>&nbsp;<span class="uploaded"><?php if (isset($mee_att['attach_doc']) && $mee_att['attach_doc']->id_piece2) { ?>
-                <a class="dl"
-                   href="<?php echo $this->request->webroot; ?>documents/download/<?php echo $mee_att['attach_doc']->id_piece2; ?>"><?php echo printanattachment($mee_att['attach_doc']->id_piece2); ?></a><?php } ?></span>
-               </span>
-
+                    <span>
+                        <a href="javascript:void(0)" class="btn btn-primary" id="mee_att_1"><?= $strings["forms_browse"]; ?></a>&nbsp;
+                        <span class="uploaded">
+                            <?php if (isset($mee_att['attach_doc']) && $mee_att['attach_doc']->id_piece1) { ?>
+                                <a class="dl" href="<?php echo $this->request->webroot; ?>documents/download/<?php echo $mee_att['attach_doc']->id_piece1; ?>"><?php echo printanattachment($mee_att['attach_doc']->id_piece1); ?></a><?php } ?>
+                        </span>
+                    </span>
+                    <span>
+                        <a href="javascript:void(0)" class="btn btn-primary" id="mee_att_2"><?= $strings["forms_browse"]; ?></a>&nbsp;
+                        <span class="uploaded"><?php if (isset($mee_att['attach_doc']) && $mee_att['attach_doc']->id_piece2) { ?>
+                            <a class="dl" href="<?php echo $this->request->webroot; ?>documents/download/<?php echo $mee_att['attach_doc']->id_piece2; ?>"><?php echo printanattachment($mee_att['attach_doc']->id_piece2); ?></a><?php } ?>
+                        </span>
+                    </span>
                     <input type="hidden" name="id_piece1" class="mee_att_1" value="<?php if (isset($mee_att['attach_doc']) && $mee_att['attach_doc']->id_piece1) {
-                echo $mee_att['attach_doc']->id_piece1;
-            } ?>" />
+                        echo $mee_att['attach_doc']->id_piece1;
+                    } ?>" />
                     <input type="hidden" name="id_piece2" class="mee_att_2" value="<?php if (isset($mee_att['attach_doc']) && $mee_att['attach_doc']->id_piece2) {
-                echo $mee_att['attach_doc']->id_piece2;
-            } ?>" />
+                        echo $mee_att['attach_doc']->id_piece2;
+                    } ?>" />
                     <?= printrequired($action, $forms, "id_piece", $DriverProvince, 0, $strings2["upload_required"]); ?>
                 </div>
             </div>
@@ -327,7 +309,7 @@
         }
 
         nodocs($docsprinted);
-        if ($mand != "Optional") {
+        if ($mand != "upload_optional") {
             echo '<div class="col-md-12"><hr></div><div class="col-md-12"><strong>' . $strings2["upload_optional"] . '</strong><br><br></div>';
         }
 
