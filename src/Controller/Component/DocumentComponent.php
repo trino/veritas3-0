@@ -7,12 +7,11 @@ use Cake\Event\Event;
 use Cake\View\Helper\SessionHelper;
     
 
-class DocumentComponent extends Component
-{
+class DocumentComponent extends Component {
+
     function fixsubmittedfor(){
         $Table = TableRegistry::get("documents");
         //debug($Table->query("UPDATE `documents` SET uploaded_for = user_id WHERE uploaded_for = 0"));
-
         $Documents =  $Table->find()->where(['OR'=> array('uploaded_for'=>null, 'uploaded_for'=>0)]);
         foreach($Documents as $Document){
             $Table->query()->update()
@@ -20,13 +19,9 @@ class DocumentComponent extends Component
                 ->where(['id' => $Document->id])
                 ->execute();
         }
-        //die();
-
-
     }
 
-    public function savedoc($Mailer, $cid = 0, $did = 0, $emailenabled = True)
-        {
+    public function savedoc($Mailer, $cid = 0, $did = 0, $emailenabled = True){
              $controller = $this->_registry->getController();
               $settings = TableRegistry::get('settings');
               $setting = $settings->find()->first();

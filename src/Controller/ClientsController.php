@@ -119,7 +119,7 @@
             }
             $setting = $this->Settings->get_permission($this->request->session()->read('Profile.id'));
             if ($setting->client_list == 0) {
-                $this->Flash->error($this->Trans->getString("flash_permissions"));
+                $this->Flash->error($this->Trans->getString("flash_permissions") . ' (020)');
                 return $this->redirect("/");
             }
             if (isset($_GET['draft'])) {
@@ -136,7 +136,7 @@
         function search() {
             $setting = $this->Settings->get_permission($this->request->session()->read('Profile.id'));
             if ($setting->client_list == 0) {
-                $this->Flash->error($this->Trans->getString("flash_permissions"));
+                $this->Flash->error($this->Trans->getString("flash_permissions") . ' (019)');
                 return $this->redirect("/");
             }
             if (isset($_GET['draft'])) {
@@ -174,7 +174,7 @@
             $setting = $this->Settings->get_permission($this->request->session()->read('Profile.id'));
 
             if ($setting->client_list == 0) {
-                $this->Flash->error($this->Trans->getString("flash_permissions"));
+                $this->Flash->error($this->Trans->getString("flash_permissions") . ' (018)');
                 return $this->redirect("/");
             }
             $this->loadModel("ClientTypes");
@@ -287,7 +287,7 @@
             $this->loadModel("ClientTypes");
             $this->set('client_types', $this->ClientTypes->find()->where(['enable' => '1'])->all());
             if ($setting->client_create == 0) {
-                $this->Flash->error($this->Trans->getString("flash_permissions"));
+                $this->Flash->error($this->Trans->getString("flash_permissions") . ' (017)');
                 return $this->redirect("/");
 
             }
@@ -738,12 +738,12 @@
 
             $checker = $this->Settings->check_client_permission($this->request->session()->read('Profile.id'), $id);
             if ($checker == 0) {
-                $this->Flash->error($this->Trans->getString("flash_permissions"));
+                $this->Flash->error($this->Trans->getString("flash_permissions") . ' (016)');
                 return $this->redirect("/clients/index");
             }
             $setting = $this->Settings->get_permission($this->request->session()->read('Profile.id'));
             if (isset($_GET['view']) && $setting->client_list == 0) {
-                $this->Flash->error($this->Trans->getString("flash_permissions"));
+                $this->Flash->error($this->Trans->getString("flash_permissions") . ' (015)');
                 return $this->redirect("/clients");
             }
             if(isset($_GET['flash'])) {
@@ -806,13 +806,13 @@
             }
             $checker = $this->Settings->check_client_permission($this->request->session()->read('Profile.id'), $id);
             if ($checker == 0) {
-                $this->Flash->error($this->Trans->getString("flash_permissions"));
+                $this->Flash->error($this->Trans->getString("flash_permissions") . ' (014)');
                 return $this->redirect("/clients/index" . $draft);
             }
             $setting = $this->Settings->get_permission($this->request->session()->read('Profile.id'));
 
             if ($setting->client_delete == 0) {
-                $this->Flash->error($this->Trans->getString("flash_permissions"));
+                $this->Flash->error($this->Trans->getString("flash_permissions") . ' (013)');
                 return $this->redirect("/");
             }
             $profile = $this->Clients->get($id);
@@ -1437,7 +1437,7 @@
                     }
                 }
             } else {
-                $this->Flash->error($this->Trans->getString("flash_permissions"));
+                $this->Flash->error($this->Trans->getString("flash_permissions") . ' (012)');
                 return $this->redirect("/");
             }
         }

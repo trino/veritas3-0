@@ -50,7 +50,7 @@ class OrdersController extends AppController {
         $doc = $this->Document->getDocumentcount();
         $cn = $this->Document->getUserDocumentcount();
         if ($setting->orders_list == 0 || count($doc) == 0 || $cn == 0) {
-            $this->Flash->error($this->Trans->getString("flash_permissions"));
+            $this->Flash->error($this->Trans->getString("flash_permissions") . ' (011)');
             return $this->redirect("/");
 
         }
@@ -205,7 +205,7 @@ class OrdersController extends AppController {
 
         //die(count($doc));
         if ($setting->orders_create == 0 || count($doc) == 0 || $cn == 0) {
-            $this->Flash->error($this->Trans->getString("flash_permissions"));
+            $this->Flash->error($this->Trans->getString("flash_permissions") . ' (010)');
             return $this->redirect("/");
         }
 
@@ -534,7 +534,7 @@ class OrdersController extends AppController {
         }
         $setting = $this->Settings->get_permission($this->request->session()->read('Profile.id'));
         if ($setting->orders_delete == 0) {
-            $this->Flash->error($this->Trans->getString("flash_permissions"));
+            $this->Flash->error($this->Trans->getString("flash_permissions") . ' (009)');
             return $this->redirect("/");
         }
 
@@ -573,7 +573,7 @@ class OrdersController extends AppController {
         $cn = $this->Document->getUserDocumentcount();
 
         if ($setting->orders_list == 0 || count($doc) == 0 || $cn == 0) {
-            $this->Flash->error($this->Trans->getString("flash_permissions"));
+            $this->Flash->error($this->Trans->getString("flash_permissions") . ' (008)');
             return $this->redirect("/");
         }
 
@@ -1174,7 +1174,7 @@ class OrdersController extends AppController {
         $this->set('products', TableRegistry::get('product_types')->find('all'));
 
         if ($setting->orders_list == 0 || count($doc) == 0 || $cn == 0) {
-            $this->Flash->error($this->Trans->getString("flash_permissions"));
+            $this->Flash->error($this->Trans->getString("flash_permissions") . ' (007)');
             return $this->redirect("/");
         }
 

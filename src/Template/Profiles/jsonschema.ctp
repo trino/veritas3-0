@@ -38,9 +38,20 @@
     }
     $Order = $Manager->load_order($OrderID, true, true, "1603,1,14");
     if($Order) {
-        debug($Order);
         echo '<TEXTAREA style="width: 100%; height: 500px;">' . json_encode($Order, JSON_PRETTY_PRINT) . '</TEXTAREA>';
+        $Order= $Manager->json_to_order($Order);
     } else {
         echo "This order does not contain any of the following forms: 1603,1,14";
     }
+
+    $JSON = $Manager->profile_to_array($Me,true, true);
+    echo '<TEXTAREA style="width: 100%; height: 500px;">' . $JSON . '</TEXTAREA>';
+
+    $Data = $Manager->json_to_profile($JSON);
+    echo "<BR>ProfileID: " . $Data;
+
+    $Client = $Manager->client_to_array(17);
+    echo "<BR>ClientID: " . $Manager->json_to_client($Client);
+
+
 ?>

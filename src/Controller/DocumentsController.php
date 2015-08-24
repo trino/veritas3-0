@@ -242,7 +242,7 @@ class DocumentsController extends AppController{
             $doc = $this->Document->getDocumentcount();
             $cn = $this->Document->getUserDocumentcount();
             if ($setting->document_list == 0 || count($doc) == 0 || $cn == 0) {
-                $this->Flash->error($this->Trans->getString("flash_permissions"));
+                $this->Flash->error($this->Trans->getString("flash_permissions") . ' (024)');
                 return $this->redirect("/");
             }
             /*$profile = $this->Clients->get($id);
@@ -546,14 +546,14 @@ class DocumentsController extends AppController{
                 $query = $doc->find()->where(['id' => $did])->first();
                 $this->set('document', $query);
                 if ($setting->document_edit == 0 || count($doc) == 0 || $cn == 0) {
-                    $this->Flash->error($this->Trans->getString("flash_permissions"));
+                    $this->Flash->error($this->Trans->getString("flash_permissions") . ' (023)');
                     return $this->redirect("/");
 
                 }
 
             } else {
                 if ($setting->document_create == 0 || count($doc) == 0 || $cn == 0) {
-                    $this->Flash->error($this->Trans->getString("flash_permissions"));
+                    $this->Flash->error($this->Trans->getString("flash_permissions") . ' (022)');
                     return $this->redirect("/");
 
                 }
@@ -847,7 +847,7 @@ class DocumentsController extends AppController{
         $setting = $this->Settings->get_permission($this->request->session()->read('Profile.id'));
 
         if ($setting->document_delete == 0) {
-            $this->Flash->error($this->Trans->getString("flash_permissions"));
+            $this->Flash->error($this->Trans->getString("flash_permissions") . ' (021)');
             return $this->redirect("/");
 
         }

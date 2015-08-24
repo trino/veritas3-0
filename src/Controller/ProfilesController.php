@@ -625,7 +625,7 @@ class ProfilesController extends AppController{
         $condition = $this->Settings->getprofilebyclient($u, $super);
         //var_dump($condition);die();
         if ($setting->profile_list == 0) {
-            $this->Flash->error($this->Trans->getString("flash_permissions", array("place" => "index")));
+            $this->Flash->error($this->Trans->getString("flash_permissions", array("place" => "index")) . ' (005)');
             return $this->redirect("/");
         }
         if (isset($_GET['draft'])) {
@@ -842,7 +842,7 @@ class ProfilesController extends AppController{
                 if($setting->profile_list == 0) { $place .= "profile_list";}
                 if($userid != $id && $setting->viewprofiles ==0) { $place .= "viewprofiles";}
 
-                $this->Flash->error($this->Trans->getString("flash_permissions", array("place" => $place)));
+                //$this->Flash->error($this->Trans->getString("flash_permissions", array("place" => $place)) . ' (006)');
                 return $this->redirect("/");
             }
 
@@ -1052,7 +1052,7 @@ class ProfilesController extends AppController{
         }*/
 
         if ($setting->profile_create == 0 && !$this->request->session()->read('Profile.super')) {
-            $this->Flash->error($this->Trans->getString("flash_permissions", array("place" => "add")));
+            $this->Flash->error($this->Trans->getString("flash_permissions", array("place" => "add")) . ' (004)');
             return $this->redirect("/");
 
         }
@@ -1747,7 +1747,7 @@ public function saveDriver()
 
         $setting = $this->Settings->get_permission($userid);
         if (($setting->profile_edit == 0 || $setting->viewprofiles ==0) && $id != $userid) {
-            $this->Flash->error($this->Trans->getString("flash_permissions", array("place" => "edit")) . ' (0)');
+            $this->Flash->error($this->Trans->getString("flash_permissions", array("place" => "edit")) . ' (000)');
             return $this->redirect("/");
         } else {
             $this->set('myuser', '1');
@@ -1851,14 +1851,14 @@ public function saveDriver()
 
         $checker = $this->Settings->check_permission($this->request->session()->read('Profile.id'), $id);
         if ($checker == 0) {
-            $this->Flash->error($this->Trans->getString("flash_permissions", array("place" => "delete 1")) . ' (1)');
+            $this->Flash->error($this->Trans->getString("flash_permissions", array("place" => "delete 1")) . ' (001)');
             return $this->redirect("/profiles/index");
             die();
         }
 
         $setting = $this->Settings->get_permission($this->request->session()->read('Profile.id'));
         if ($setting->profile_delete == 0) {
-            $this->Flash->error($this->Trans->getString("flash_permissions", array("place" => "delete 2")) . ' (2)');
+            $this->Flash->error($this->Trans->getString("flash_permissions", array("place" => "delete 2")) . ' (002)');
             return $this->redirect("/");
         }
 
@@ -2304,7 +2304,7 @@ public function saveDriver()
     function filterBy() {
         $setting = $this->Settings->get_permission($this->request->session()->read('Profile.id'));
         if ($setting->profile_list == 0) {
-            $this->Flash->error($this->Trans->getString("flash_permissions", array("place" => "filter by")));
+            $this->Flash->error($this->Trans->getString("flash_permissions", array("place" => "filter by")) . '(003)');
             return $this->redirect("/");
         }
         $profile_type = $_GET['filter_profile_type'];
