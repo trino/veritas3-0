@@ -128,6 +128,7 @@
                 $draft = 0;
             }
             $querys = TableRegistry::get('Clients');
+
             $query = $querys->find()->where(['drafts' => $draft]);
             $query = $querys->find();
             $this->set('client', $this->appendattachments($this->paginate($query)));

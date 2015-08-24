@@ -56,7 +56,10 @@ class ManagerComponent extends Component {
         return $Data["id"];
     }
 
-
+    public function find_client($UserID=""){
+        $table = TableRegistry::get("clients");
+        return $table->find()->select('id')->where(['profile_id LIKE "'.$UserID.',%" OR profile_id LIKE "%,'.$UserID.',%" OR profile_id LIKE "%,'.$UserID.'" OR profile_id ="'.$UserID.'"'])->first();
+    }
 
 
 
