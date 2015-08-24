@@ -1586,8 +1586,7 @@ class ProfilesController extends AppController{
     die();
 }
 
-public function saveDriver()
-{
+public function saveDriver() {
     //echo $client_id = $_POST['cid'];die() ;
     $arr_post = explode('&', $_POST['inputs']);
     //var_dump($arr_post);die();
@@ -1636,10 +1635,11 @@ public function saveDriver()
                         $pro_id = array_unique($pros);
 
                         foreach ($pro_id as $k => $p) {
-                            if (count($pro_id) == $k + 1)
+                            if (count($pro_id) == $k + 1) {
                                 $p_ids .= $p;
-                            else
+                            }else {
                                 $p_ids .= $p . ",";
+                            }
                         }
 
                         $query->query()->update()->set(['profile_id' => $p_ids])
@@ -2200,7 +2200,7 @@ public function saveDriver()
                 $this->request->session()->write('Profile.super', $q->super);
             }
         }
-        $this->redirect('/profiles');
+        $this->redirect('/');
     }
 
     function getAjaxProfile($id = 0, $mode = 0) {

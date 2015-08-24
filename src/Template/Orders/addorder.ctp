@@ -1815,7 +1815,13 @@ printCSS($this);
     function saveDriver(cid) {
         var fields = $('#createDriver').serialize();
         fields = fields + '&profile_type=' + $('.member_type').val();
-
+        var bypass = <?php
+           if (isset($_GET["driver"]) && $_GET["driver"]){
+                echo "true";
+           } else {
+                echo "false";
+           }
+        ?>;
 
         var param = {
             cid: cid,
@@ -1826,16 +1832,14 @@ printCSS($this);
             data: param,
             type: 'POST',
             success: function (res) {
-                if (res != 'exist') {
+                if (res != 'exist' || bypass) {
                     $('#uploaded_for').val(res);
                     $('.driver_id').val(res);
                     showforms('driver_application.php');
                     showforms('driver_evaluation_form.php');
                     showforms('document_tab_3.php');
                     showforms('company_pre_screen_question.php');
-                    
-                }
-                else {
+                } else {
                     alert('<?= addslashes($strings["dashboard_emailexists"]); ?>');
                     $('#driverEm').focus();
                     $('#driverEm').attr('style', 'border-color:red');
