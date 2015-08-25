@@ -488,11 +488,11 @@
                             //$this->Mailer->sendEmail($from, $e, "Application for Employment", "A new applicant has applied for employment.<br><br> Please click <a href='".LOGIN."application/apply.php?form_id=".$application->id."' target='_blank'>here</a> to view the form.<br><br>Regards,<br>The MEE Team");
                        // }
                     }
-                    if($Client_ID==26) {
-                        $this->redirect('/application/index.php?form=9&msg=success&user_id=' . $p_id);
-                    } else {
-                        $this->redirect('/application/index.php?form=thankyou&client_id=' . $Client_ID);
-                    }
+                    //if($Client_ID==26) {
+                        $this->redirect('/application/index.php?form=9&msg=success&user_id=' . $p_id . '&client_id=' . $Client_ID);
+                    //} else {
+                    //    $this->redirect('/application/index.php?form=thankyou&client_id=' . $Client_ID);
+                    //}
                 }
             }
         }

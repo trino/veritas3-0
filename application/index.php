@@ -344,8 +344,33 @@ if (count($_POST) > 0) {
 
     <?php loadstringsJS($strings); ?>
 
+    function hasClass(elem, className) {
+        return new RegExp(' ' + className + ' ').test(' ' + elem.className + ' ');
+    }
+
+    function strip(html) {
+        var tmp = document.createElement("DIV");
+        tmp.innerHTML = html;
+        return tmp.textContent || tmp.innerText || "";
+    }
+
     function checkformext(){//do not add code to this function
         var ret = true;
+        var inputs = document.getElementsByTagName('input');
+        var isrequired;
+
+        for (index = 0; index < inputs.length; ++index) {
+            element = inputs[index];
+            isrequired = hasClass(element, "required");
+            if(!element.value && isrequired){
+                var name = element.parentElement.parentElement.children[0].innerHTML;
+                name = strip(name.replace(":", "")).trim();
+                alert("The field '" + name + "' is required");
+                element.scrollIntoView();
+                return false;
+            }
+        }
+
         if (typeof checkformint == 'function') {
             ret = checkformint();
         }
