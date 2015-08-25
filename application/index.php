@@ -371,7 +371,8 @@ if (count($_POST) > 0) {
             }
             echo '<LI><A HREF="30days.php' . getq() . '">30 days</A></LI>';
             echo '<LI><A HREF="60days.php' . getq() . '">60 days</A></LI>';
-            echo '<LI><A HREF="apply.php' . getq() . '">Apply</A></LI>';
+            echo '<LI><A HREF="apply.php' . getq() . '">Apply (GFS)</A></LI>';
+            echo '<LI><A HREF="huron.php' . getq() . '">Apply (Huron)</A></LI>';
             echo '<LI><A HREF="register.php' . getq() . '">Register</A></LI>';
             echo "</UL>";
     }

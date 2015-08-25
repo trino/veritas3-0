@@ -12,17 +12,14 @@
        include_once('subpages/api.php');
     */
 
-    class RapidController extends AppController
-    {
-        public function initialize()
-        {
+    class RapidController extends AppController {
+        public function initialize() {
             parent::initialize();
             $this->loadComponent('Mailer');
             $this->loadComponent('Document');
         }
 
-        public function index()
-        {
+        public function index() {
             $this->set('uid', '0');
             $this->set('id', '0');
 
@@ -103,8 +100,7 @@
             die();
         }
 
-        function days($type = "")
-        {
+        function days($type = "", $ClientID = 26) {
             $train = "";
             if (isset($_POST)) {
                 $_POST['created'] = date('Y-m-d');
@@ -132,7 +128,7 @@
                         $this->Mailer->sendEmail($from, $rec_email, "Survey form submitted", "" . $pro->username . " has submitted the " . $type . "days survey. Click <a href='" . LOGIN . "application/" . $type . "days.php?p_id=" . $_POST['profile_id'] . "&form_id=" . $data->id . "' target='_blank'>here</a> to view the form. <br /><br />Regards,<br /> The MEE Team");
 
                     }*/
-                    $emails = $this->getallrecruiters('26');
+                    $emails = $this->getallrecruiters($ClientID);
                     $path = LOGIN . "application/" . $type . "days.php?p_id=" . $_POST['profile_id'] . "&form_id=" . $data->id ;
                     $site = TableRegistry::get('settings')->find()->first()->mee;//, "site" => $site
 
@@ -225,14 +221,14 @@
                 $forms = $c->requalify_product;
                 $fname = explode(',',$forms);
                 $new_form = "";
-                foreach($fname as $n)
-                {
-                    if($n=='1')
+                foreach($fname as $n) {
+                    if($n=='1') {
                         $nam = '(MVR)';
-                    elseif($n=='14')
+                    }elseif($n=='14') {
                         $nam = '(CVOR)';
-                    elseif($n=='72')
+                    }elseif($n=='72') {
                         $nam = '(DL)';
+                    }
                     $new_form .=$nam.",";
 
                 }
@@ -258,20 +254,17 @@
                 $temp = '';
                 foreach ($profile as $p) {
 
-                    if($p->expiry_date=='')
+                    if($p->expiry_date=='') {
                         $p->expiry_date = '0000-00-00';
+                    }
                     //echo $p->expiry_date."<br/>" ;
                     //echo strtotime($p->expiry_date)."<br/>".time();
-                    if(($p->profile_type=='5'||$p->profile_type=='7'||$p->profile_type=='8'))
-                    {
+                    if(($p->profile_type=='5'||$p->profile_type=='7'||$p->profile_type=='8')) {
                         //echo $p->id."</br>";
                         //echo $p->created_by;
-                        if(strtotime($p->expiry_date) > time())
-                        {
+                        if(strtotime($p->expiry_date) > time()) {
                             $epired_profile .= $p->username.",";
-                        }
-                        else
-                        {
+                        } else {
                             if ($c->requalify_re == '1') {
                                 $date = $p->hired_date;
                             }
@@ -284,9 +277,9 @@
                                 if (count($cron_p) == 0) {
                                     $user_count++;
                                     $pro .= $p->id . ",";
-                                    if ($temp == $p->created_by)
+                                    if ($temp == $p->created_by) {
                                         $p_name .= $p->username . ",";
-                                    else {
+                                    }else {
                                         if ($temp != "") {
 
                                             array_push($pronames, $p_name);
@@ -299,11 +292,9 @@
                                 }
 
                                 $rec = TableRegistry::get('profiles')->find()->where(['id' => $p->created_by])->first();
-                                if ($rec->email)
-                                {
+                                if ($rec->email) {
                                     $rec_email = $rec->email;
                                     array_push($em, $rec->email);
-
                                 }
 
                             }
@@ -346,7 +337,6 @@
                 $message .= "Recruited Profiles:" . $em_names . "</br>";
 
                 if ($pro != "") {
-
                     $drivers = explode(',', $pro);
                     //$forms = $_POST['forms'];
                     $arr['forms'] = $forms;
@@ -416,19 +406,18 @@
 
         }
 
-        function getnextdate($date, $frequency)
-        {
+        function getnextdate($date, $frequency) {
             $today = date('Y-m-d');
             $nxt_date = date('Y-m-d', strtotime($date . '+' . $frequency . ' months'));
             if (strtotime($nxt_date) < strtotime($today)) {
                 $d = $this->getnextdate($nxt_date, $frequency);
-            } else
+            } else {
                 $d = $nxt_date;
+            }
             return $d;
         }
 
-        function getcronProfiles($c_profile)
-        {
+        function getcronProfiles($c_profile) {
             $p_type = "";
             $profile_type = TableRegistry::get("profile_types")->find('all')->where(['placesorders' => 1]);
             foreach ($profile_type as $ty) {
@@ -442,9 +431,8 @@
 
         
 
-        function application_employment() {
+        function application_employment($Client_ID = 26) {
             if(isset($_POST)) {
-                $Client_ID = 26;//GFS
                 $profile['fname']=$_POST['fname'];
                 $profile['lname']=$_POST['lname'];
                 $profile['mname']=$_POST['mname'];
@@ -474,7 +462,11 @@
                     $c = $client->find()->where(['id'=>$Client_ID])->first();
                     $p_ids = $c->profile_id;
                     $_POST['profile_id'] = $p_id;
-                    $profile_ids = $p_ids.",".$p_id;
+                    if($p_ids) {
+                        $profile_ids = $p_ids . "," . $p_id;
+                    } else {
+                        $profile_ids = $p_id;
+                    }
                     $client->query()->update()->set(['profile_id'=>$profile_ids])->where(['id'=>$Client_ID])->execute();
 
                     //18  GFS Application for Employment  1   application_for_employment_gfs.php  application_for_employment_gfs  1   1   GFS Demande d'emploi    0
@@ -501,8 +493,7 @@
             }
         }
 
-        function cron_client($pid, $cid)
-        {
+        function cron_client($pid, $cid) {
             $r = "";
             $cronp = TableRegistry::get('client_crons')->find('all')->where(['profile_id' => $pid, 'client_id' => $cid, 'orders_sent' => '1']);
             foreach ($cronp as $c) {
@@ -514,21 +505,19 @@
         }
         
 
-        function getcron($date)
-        {
+        function getcron($date) {
             $cron = TableRegistry::get('client_crons')->find()->where(['cron_date'=>$date]);
         }
         
-        function check_status($date,$client_id,$profile_id)
-        {
+        function check_status($date,$client_id,$profile_id) {
             $crons = TableRegistry::get('client_crons');
             $cron_p = $crons->find()->where(['profile_id' => $profile_id, 'client_id' => $client_id, 'cron_date' => $date,'manual'=>'1'])->first();
             $this->response->body(count($cron_p));
             return $this->response;
             die();   
         }
-        function cron_user($date,$client_id,$profile_id)
-        {
+
+        function cron_user($date,$client_id,$profile_id) {
             $user_count = 0;
             $client = TableRegistry::get('clients')->find()->where(['id'=> $client_id])->first();
             $forms = $client->requalify_product;
@@ -542,11 +531,8 @@
            
 
             $rec = TableRegistry::get('profiles')->find()->where(['id' => $profile->created_by])->first();
-            if ($rec->email) 
-            {
+            if ($rec->email) {
                 $e = $rec->email;
-                
-
             }
                     if ($profile_id != "") {
 
