@@ -15,6 +15,7 @@
     $webroot2 = str_replace("/application/", "/", $webroot2);
 
     if (!isset($ClientID)) {$ClientID = 26;}
+    if(!isset($NoClass)){$NoClass = "notrequired";}
 
     $con = "";
     $logo = 'img/logos/';
@@ -578,7 +579,7 @@
             <div class="col-md-4">
                 <div class="form-group">
                     <label class="control-label required">SIN:</label>
-                    <input name="sin" type="text" required class="form-control required req_driver">
+                    <input name="sin" type="text" <?php if($ClientID==26) { echo "required"; } ?> class="form-control <?php if($ClientID==26) { echo "required"; } ?> req_driver">
                 </div>
             </div>
         </div>
@@ -1365,7 +1366,7 @@ backbutton();
                 if(!element.value && element.hasClass('required')){
                     var name = element.parentElement.parentElement.children[0].innerHTML;
                     name = strip(name.replace(":", "")).trim();
-                    alert(name + " is required");
+                    alert("The field '" + name + "' is required");
                     element.scrollIntoView();
                     return false;
                 }

@@ -84,10 +84,20 @@ $offsethours = 0;
 $AllowUploads = ' style="display: none"';
 $doback = true;
 $dosubmit = true;
-$clientname = "Gordon Food Service";
 $language = get("language", "English");
 $settings = array();
 $is_disabled=false;
+
+if(isset($_GET["client_id"])){
+    $clientID = $_GET["client_id"];
+    $client = first("SELECT * FROM clients WHERE id = " . $clientID);
+    $logo = "img/jobs/" . $client["image"];
+} else {
+    $client = first("SELECT * FROM clients WHERE company_name LIKE 'GFS%' OR company_name LIKE 'Gordon%'");//Find gordon food services
+    $clientID = $client["id"];
+    $logo = "img/logo.png";
+}
+$clientname = $client["company_name"];
 
 function offsettime($value, $period = "minutes", $date = "", $format = "Y-m-d H:i:s"){
     if (!$date) {$date = date($format);}
@@ -218,11 +228,16 @@ function AJAX($Query){
 }
 
 function handlemsg($strings = "", $bypass = false) {
+    global $clientname;
     $message = "";
     if ($bypass || isset($_GET["msg"])) {
         if (!$bypass && isset($_GET["msg"])) {$bypass = $_GET["msg"];}
         if (isset($strings["uniform_" . $bypass])) {$message = $strings["uniform_" . $bypass];}
         if ($message) {
+            $Client_ID = 26;
+            if(isset($_GET["client_id"])){ $Client_ID =$_GET["client_id"]; }
+            $message = str_replace("%client%", $clientname, str_replace("Gordon Food Service", $clientname, $message));
+
             echo '<div class="alert alert-info"><button class="close" data-close="alert"></button>' . $message . '</div>';
         }
     }
@@ -235,13 +250,7 @@ if (count($_POST) > 0) {
     //$_POST = converge($_POST); //do not do
     echo '<div class="logo"></div><div class="content">';
     $dosubmit = false;
-    if(isset($_GET["client_id"])){
-        $clientID = $_GET["client_id"];
-        $client = first("SELECT * FROM clients WHERE id = " . $clientID);
-    } else {
-        $client = first("SELECT * FROM clients WHERE company_name LIKE 'GFS%' OR company_name LIKE 'Gordon%'");//Find gordon food services
-        $clientID = $client["id"];
-    }
+
     $userID = get("user_id", 81);//TEST DATA
     $Execute = true;//False = test mode
     unset($_POST["msg"]);
@@ -299,19 +308,21 @@ if (count($_POST) > 0) {
         }
     }
 
+    $form="";
+    if(isset($_GET["form"])){$form=$_GET["form"];}
     if (isset($_GET["user_id"])){
         if(get("form")) {
             $profile = first("SELECT * FROM profiles WHERE id = " . $_GET["user_id"]);
             //print_r ($profile);
         }
-    } else {
+    } else if($form != "thankyou") {
         $dosubmit= false;
         echo '<div class="alert alert-danger display-hide no-print" style="display: block;">' . $strings["uniform_nouserid"] . '</div>';
     }
     handlemsg($strings);
 
    // echo '<a href="javascript:window.print();" class="floatright btn btn-info no-print" style="float:right;">' . $strings["dashboard_print"] . '</a>';
-    echo '<DIV ALIGN="CENTER"><img src="' . $webroot . 'img/logo.png"  /></DIV>';//gfs
+    echo '<DIV ALIGN="CENTER"><img style="max-width: 100px;" src="' . $webroot . $logo . '"  /></DIV>';//gfs
 ?>
 <SCRIPT>
     $(document).ready(function () {
@@ -348,6 +359,10 @@ if (count($_POST) > 0) {
 <?php
     $stages = "";
     switch (get("form")){
+        case "thankyou":
+            handlemsg($strings, "done");
+            $dosubmit= false;
+        break;
         case 9:
             $stages = " (2 of 3)";
             include("forms/loe.php");//works!
