@@ -367,7 +367,9 @@ if (count($_POST) > 0) {
             if ($language != "English" && $language != "Debug"){ $fieldname.=$language;}
             foreach ($forms as $formID){
                 $form = first("SELECT * FROM subdocuments WHERE id = " . $formID);
-                echo '<LI><A HREF="' . getq("form=" . $formID) . '">'. $form[$fieldname] . '</A></LI>';
+                if($form[$fieldname]) {
+                    echo '<LI><A HREF="' . getq("form=" . $formID) . '">' . $form[$fieldname] . '</A></LI>';
+                }
             }
             echo '<LI><A HREF="30days.php' . getq() . '">30 days</A></LI>';
             echo '<LI><A HREF="60days.php' . getq() . '">60 days</A></LI>';

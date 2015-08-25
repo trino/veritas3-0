@@ -190,7 +190,7 @@
         <div class="clearfix"></div>
         
         <div class="col-md-12" align="center">
-            <img src="<?= $webroot . $logo ;?>" />
+            <img style="max-height: 100px;" src="<?= $webroot . $logo ;?>" />
             <h2><?= $company_name; ?> Application for Employment</h2>
             
             <div class="clearfix"></div>
