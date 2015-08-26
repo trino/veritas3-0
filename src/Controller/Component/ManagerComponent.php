@@ -20,7 +20,7 @@ class ManagerComponent extends Component {
         $Sidebar = $this->get_entry("sidebar", $ID, "user_id");
         $Blocks = $this->get_entry("blocks", $ID, "user_id");
         $Type = $this->get_entry("profile_types", $Profile->profile_type, "id");
-        $Data = array("Profile" => $this->properties_to_array($Profile), "Sidebar" => $this->properties_to_array($Sidebar), "Blocks" => $this->properties_to_array($Blocks), "Type" => $this->properties_to_array($Type));
+        $Data = array("Datatype" => "Profile", "Profile" => $this->properties_to_array($Profile), "Sidebar" => $this->properties_to_array($Sidebar), "Blocks" => $this->properties_to_array($Blocks), "Type" => $this->properties_to_array($Type));
         if ($JSON) {
             $JSON=false;
             if($Pretty){$JSON=JSON_PRETTY_PRINT;}
@@ -29,8 +29,14 @@ class ManagerComponent extends Component {
         return $Data;
     }
 
+    function enum_profiles(){
+        return $this->enum_all("profiles");
+    }
+
     function json_to_profile($Data){
         if(!is_array($Data)) {$Data = json_decode($Data, true);}
+        if($Data["Datatype"] != "Profile"){return false;}
+
         $Profile = $Data["Profile"];
         $Profile2 = $this->get_entry("profiles", $Profile["email"], "email");
         if ($Profile2) {return $Profile2->id;}//is a local profile that exists
@@ -108,6 +114,16 @@ class ManagerComponent extends Component {
         }
     }
 
+    function enum_orders(){
+        return $this->enum_all("orders");
+    }
+
+    function order_to_json($ID, $OnlyIfForms="", $Pretty = true){
+        $Order = $this->load_order($ID, true, true, $OnlyIfForms);
+        if ($Pretty) {return json_encode($Order, JSON_PRETTY_PRINT);}
+        return json_encode($Order);
+    }
+
     function load_order($ID, $GetFiles = false, $RemoveEmpties = true, $forms = ""){
         //loads an order in to a single variable, includes the documents, profiles, profile types, client, divisions
         //creating each of which if they do not exist already, except for document types which cannot be soft-created
@@ -123,6 +139,7 @@ class ManagerComponent extends Component {
                     break;
                 }
             }
+            if(!$DoIt){return false;}
         }
         if($GetFiles) {
             $Dir = "webroot/canvas";
@@ -136,7 +153,7 @@ class ManagerComponent extends Component {
         $Header["division"] = $this->get_division($Header["division"])->title;
         $Header["client_id"] = $this->client_to_array($Header["client_id"]);
 
-        $Order = (object) array("Header" => $Header);
+        $Order = (object) array("Datatype" => "Order", "Header" => $Header);
         $Forms = $this->enum_all("documents", array("order_id" => $ID));
         $Order->Forms = array();
         foreach($Forms as $Form){
@@ -171,12 +188,14 @@ class ManagerComponent extends Component {
         return $Order;
     }
 
-    function json_to_order($Data){
+    function json_to_order($Data, $ReturnAll=false){
         if (is_object($Data)) {
             $Data = (array) $Data;
         }else{
             $Data = json_decode($Data, true);
         }
+
+        if ($Data["Datatype"] != "Order"){ return false;}
 
         $Header = $Data["Header"];
         $Forms = $Data["Forms"];
@@ -195,18 +214,24 @@ class ManagerComponent extends Component {
         if (isset($Header["recruiter_signature"])){$Header["recruiter_signature"] = $this->unbase_64_file($Header["recruiter_signature"], $Dir);}
         $Order_ID = $this->construct_order($Header);
 
+        $Data = array("OrderID" => $Order_ID);
+        $DocumentID=0;
         foreach($Forms as $Form){
-            $this->construct_document($Form, $Order_ID, $User_ID, $Client_ID, $Uploaded_for, $Dir);
+            $DocumentID = $this->construct_document($Form, $Order_ID, $User_ID, $Client_ID, $Uploaded_for, $Dir, $DocumentID);
+            $DocumentID = $this->construct_document($Form, $Order_ID, $User_ID, $Client_ID, $Uploaded_for, $Dir, $DocumentID);
+            $Data[] = $DocumentID;
         }
+        if($ReturnAll){return $Data;}
+        return $Order_ID;
     }
 
     function construct_order($Header){
         unset($Header["id"]);
         return $this->new_entry("orders", "id", $Header)["id"];
     }
-    function construct_document($Form, $Order_ID, $User_ID, $Client_ID, $Uploaded_for, $Dir){
-        $Header =  $Form->Header;
-        $Data = $Form->Data;
+    function construct_document($Form, $Order_ID, $User_ID, $Client_ID, $Uploaded_for, $Dir, $OldDocumentID=0){
+        $Header =  $Form["Header"];
+        $Data = $Form["Data"];
 
         unset($Header["id"]);
         $Header["order_id"] = $Order_ID;
@@ -245,7 +270,7 @@ class ManagerComponent extends Component {
         }
         return $pass;
     }
-    function unbase_64_file($Data, $Path, $Filename = "", $DoWrite = false){//Set $DoWrite to true in production
+    function unbase_64_file($Data, $Path, $Filename = ""){
         $Comma = strpos($Data, ",");//chop off "data:image/EXT;base64,"
         if($Comma) {
             $Header = $this->left($Data, $Comma);
@@ -258,7 +283,7 @@ class ManagerComponent extends Component {
                     $Filename = $this->randomtext(10) . "_" . $this->randomtext(10) . "." . $Type;
                 }
             }
-            if($DoWrite) {file_put_contents($Path . "/" . $Filename, $Data);}
+            file_put_contents($Path . "/" . $Filename, $Data);
             return $Filename;
         }
         return $Data;
@@ -325,7 +350,7 @@ class ManagerComponent extends Component {
             foreach($DivisionName as $Division){
                 $this->new_division($ClientID, $Division, $AppendToClient);
             }
-        } else {
+        } else if ($DivisionName) {
             if($AppendToClient) {
                 $Client = $this->get_client($ClientID);
                 $Divisions = $this->appendstring($Client->division, $DivisionName, "\r\n");
@@ -334,6 +359,11 @@ class ManagerComponent extends Component {
             return $this->new_entry("client_divison", "id", array("client_id" => $ClientID, "title" => $DivisionName));
         }
     }
+    function get_client($ClientID){
+        return $this->get_entry("clients", $ClientID, "id");
+    }
+
+
 
     ///////////////////////////////////////JSON API//////////////////////////////
     function table_to_array($Table, $Conditions, $KeyColumn, $ValueColumn){
@@ -491,8 +521,7 @@ class ManagerComponent extends Component {
             $table->query()->update()->set($Data)->where([$PrimaryKey => $Value])->execute();
             $Data[$PrimaryKey] = $Value;
         } else {
-            //$table->query()->insert(array_keys($Data))->values($Data)->execute();
-            $Data2 = $table->newEntity($Data);
+            $Data2 = $table->newEntity($this->remove_empties($Data));
             $table->save($Data2);
             if($PrimaryKey){
                 $Data[$PrimaryKey] = $Data2->$PrimaryKey;

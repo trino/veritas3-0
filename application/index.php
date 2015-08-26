@@ -92,10 +92,12 @@ if(isset($_GET["client_id"])){
     $clientID = $_GET["client_id"];
     $client = first("SELECT * FROM clients WHERE id = " . $clientID);
     $logo = "img/jobs/" . $client["image"];
+    $isGFS = false;
 } else {
     $client = first("SELECT * FROM clients WHERE company_name LIKE 'GFS%' OR company_name LIKE 'Gordon%'");//Find gordon food services
     $clientID = $client["id"];
     $logo = "img/logo.png";
+    $isGFS = true;
 }
 $clientname = $client["company_name"];
 
@@ -281,7 +283,7 @@ if (count($_POST) > 0) {
                 }
                 break;
             case 9://letter of experience
-                $redir = '<script> window.location = "?form=4&msg=success&user_id=' . $_POST["user_id"] . '"; </script>';
+                $redir = '<script> window.location = "?form=4&msg=success&user_id=' . $_POST["user_id"] . '&client_id=' . $clientID . '"; </script>';
                 break;
         }
 
@@ -435,6 +437,7 @@ function getq($data = ""){
 
 <?php if($doback){
     if ($dosubmit){ ?>
+        <div class="clearfix"></div>
         <INPUT TYPE="button" class="btn btn-danger btn-lg" onclick="return checkformext();" VALUE="<?php echo (isset($_GET['customlink']))?'Submit':'Next Step'.$stages;?>" STYLE="float: right;" oldtitle="<?=$strings["forms_submit"];?>">
         <div class="clearfix"></div>
     <?php }

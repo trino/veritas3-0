@@ -3556,6 +3556,36 @@ public function saveDriver() {
             $this->set("columns", getColumnNames($_GET["table"], "", false));
             $this->set("test", $this->Manager->enum_table($_GET["table"])->first());
         }
+
+        $JSON=$this->Manager->get("action");
+        if($JSON) {
+            $JSON="";
+            if (isset($_POST["JSON"])) {$JSON = $_POST["JSON"];}
+            switch ($this->Manager->get("action")) {
+                case "order_to_json";
+                    $JSON = $this->Manager->order_to_json($_GET["OrderID"]);
+                    break;
+                case "profile_to_json";
+                    $JSON = $this->Manager->profile_to_array($_GET["ProfileID"], true, true);
+                    break;
+                case "json_to_profile";
+                    $JSON = $this->convertedto($this->Manager->json_to_profile($JSON), "Profile");
+                    break;
+                case "json_to_order";
+                    $JSON = $this->convertedto($this->Manager->json_to_order($JSON), "Order");
+                    break;
+                default;
+                    $JSON = $this->Manager->get("action") . " is unhandled";
+            }
+            $this->set("JSON", $JSON);
+        }
+    }
+    function convertedto($JSON, $Type){
+        if($JSON) {
+            return "JSON converted to " . $Type . " ID: " . $JSON;
+        } else {
+            return "The JSON was not a valid " . $Type;
+        }
     }
 }
 ?>

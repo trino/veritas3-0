@@ -2,6 +2,12 @@
     $strings2 = CacheTranslations($language, array("verifs_%", "tasks_date", "file_attachfile", "file_download"), $settings, False);
     $datetype = "text";
 ?>
+<STYLE>
+    .left15{
+        position: relative;
+        left: -15px;
+    }
+</STYLE>
 <div class="form-group row">
     <center><h3 class="col-md-12">Letter of Experience</h3></center>
     <H2> <?= $strings["verifs_referencenum"]; ?>: 1 </H2>
@@ -10,12 +16,11 @@
 <div class="gndn">
         <div class="form-group row">
             <div class=" col-md-12">
-            <font color="red" style="display:none;">A minimum of 2 of references must be filled out. Click "<?= $strings["forms_addmore"]; ?>" to add another form</font>
-</div>
+                <font color="red" style="display:none;">A minimum of 2 of references must be filled out. Click "<?= $strings["forms_addmore"]; ?>" to add another form</font>
+            </div>
+
             <label class="control-label  col-md-12"></label>
-
             <label class="control-label required col-md-3"><?= $strings["forms_companyname"]; ?>:</label>
-
             <div class=" col-md-9">
                 <input type="text" required class="form-control required" name="company_name[]"/>
             </div>
@@ -143,19 +148,22 @@
             </div>
 
         </div>
-        <div id="more_div"></div>
+    </div>
 
+    <div id="more_div" class="left15"></div>
 
-    <div id="add_more_div" >
+    <div id="add_more_div">
         <p>&nbsp;</p>
         <input type="hidden" name="count_past_emp" id="count_past_emp" value="<?php if (isset($sub3['emp'])) {
             echo count($sub3['emp']);
-        } else { ?>1<?php }?>">
+        } else { echo '1'; }?>">
         <a href="javascript:void(0);" class="btn green no-print" onclick="add_more();"><?= $strings["forms_addmore"]; ?></a>
     </div>
 
 <SCRIPT>
     var references = 1;
+    var requiredreferences = 2;
+
     function add_more() {//$("#add_more").click(function () {
         $.ajax({
             url: "<?= $webroot;?>subpages/documents/past_employer.php?language=" + language + "&references=" + references,
@@ -189,7 +197,8 @@
         return true;
     }
 
-    add_more();
+    for(var i = references; i <requiredreferences; i++){
+        references=i;
+        add_more();
+    }
 </SCRIPT>
-
-</div>

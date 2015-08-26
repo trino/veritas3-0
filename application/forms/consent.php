@@ -77,16 +77,16 @@ if($newsigmethod){include("signature.php");}
     <div class="gndn">
         <div class="form-group row col-md-12 splitcols">
 
-            <div class="col-md-4"><label class="control-label required"><?= $strings["forms_lastname"]; ?>: </label>
-                <input type="text" class="form-control required" required name="last_name" value="<?php if (isset($profile))echo $profile["lname"];?>"/>
-            </div>
-
             <div class="col-md-4"><label class="control-label required"><?= $strings["forms_firstname"]; ?>: </label>
                 <input type="text" class="form-control required" required name="first_name" value="<?php if (isset($profile))echo $profile["fname"];?>"/>
             </div>
 
             <div class="col-md-4"><label class="control-label"><?= $strings["forms_middlename"]; ?>: </label>
                 <input type="text" class="form-control" name="mid_name" value="<?php if (isset($profile))echo $profile["mname"];?>"/>
+            </div>
+
+            <div class="col-md-4"><label class="control-label required"><?= $strings["forms_lastname"]; ?>: </label>
+                <input type="text" class="form-control required" required name="last_name" value="<?php if (isset($profile))echo $profile["lname"];?>"/>
             </div>
 
             <div class="col-md-4"><label class="control-label">
@@ -147,10 +147,9 @@ if($newsigmethod){include("signature.php");}
             </div>
         </div>
 
-        <div class="form-group row  col-md-12">
-            <label class="control-label required  col-md-12"><?= $strings2["consent_currentadd"]; ?>: </label>
-        </div>
+
         <div class="form-group row col-md-12 splitcols">
+            <label class="control-label col-md-12 required"><?= $strings2["consent_currentadd"]; ?>: </label>
             <div class="col-md-3">
                 <input type="text" class="form-control required" required placeholder="<?= $strings2["consent_streetandn"]; ?>" value="<?php if (isset($profile))echo $profile["street"];?>"
                        name="current_street_address"/>
@@ -172,11 +171,8 @@ if($newsigmethod){include("signature.php");}
             </div>
         </div>
 
-        <div class="form-group row col-md-12">
-            <label class="control-label col-md-12 "><?= $strings2["consent_previousad"]; ?>: </label>
-        </div>
-
         <div class="form-group row col-md-12 splitcols">
+            <label class="control-label col-md-12 "><?= $strings2["consent_previousad"]; ?>: </label>
             <div class="col-md-3">
                 <input type="text" class="form-control" placeholder="<?= $strings2["consent_streetandn"]; ?>" name="previous_street_address" value="<?php if (isset($consent_detail))echo $consent_detail->previous_street_address;?>"/>
             </div>
@@ -299,58 +295,56 @@ if($newsigmethod){include("signature.php");}
         <div class="col-md-12">
             <p>*<?= $strings2["consent_d2"]; ?></p>
             <h4><?= $strings2["consent_d3"]; ?></h4>
+        </div>
 
-            <div class="form-group row col-md-12 splitcols">
-
-
-                <div class="col-md-4"><label class="control-label"><?= $strings2["consent_surname"]; ?>: </label>
-                    <input type="text" class="form-control" name="criminal_surname" value="<?php if (isset($consent_detail))echo $consent_detail->criminal_surname;?>"/>
-                </div>
-
-
-                <div class="col-md-4"><label class="control-label"><?= $strings2["consent_givenname"]; ?>: </label>
-                    <input type="text" class="form-control" name="criminal_given_name" value="<?php if (isset($consent_detail))echo $consent_detail->criminal_given_name;?>"/>
-                </div>
-
-                <div class="col-md-4"><label class="control-label"><?= $strings["forms_gender"]; ?>: </label>
-                    <SELECT name="criminal_sex" class="form-control" >
-                        <?php
-                            printoption($strings["forms_selectgender"], "");
-                            printoption($strings["forms_male"], $gender, "Male");
-                            printoption($strings["forms_female"], $gender, "Female");
-                        ?>
-                    </SELECT>
-                    <!--<input type="text" class="form-control" name="criminal_sex"/>-->
-                </div>
-
-                <DIV CLASS="splitcols">
-                    <div class="col-md-4"><label class="control-label"><?= $strings["forms_dateofbirth"]; ?>: </label>
-                        <input type="text" class="form-control datepicker" placeholder="<?= $strings["forms_dateformat"]; ?>" value="<?php if (isset($profile))echo $profile["dob"];?>"
-                               name="criminal_date_birth"/>
-                    </div>
-
-                    <div class="col-md-4"><label class="control-label"><?= $strings2["tasks_date"]; ?>: </label>
-                        <input type="text" class="form-control datepicker" placeholder="<?= $strings["forms_dateformat"]; ?>" name="criminal_date"
-                               value="<?php if (isset($consent_detail)) {echo $consent_detail->criminal_date;} else { echo date("Y-m-d"); }?>">
-                    </div>
-                </DIV>
+        <div class="form-group row col-md-12 splitcols">
+            <div class="col-md-4"><label class="control-label"><?= $strings2["consent_surname"]; ?>: </label>
+                <input type="text" class="form-control" name="criminal_surname" value="<?php if (isset($consent_detail))echo $consent_detail->criminal_surname;?>"/>
             </div>
 
 
-            <div class="form-group row splitcols">
-                <label class="control-label col-md-3"><?= $strings2["consent_currentadd"]; ?>: </label>
+            <div class="col-md-4"><label class="control-label"><?= $strings2["consent_givenname"]; ?>: </label>
+                <input type="text" class="form-control" name="criminal_given_name" value="<?php if (isset($consent_detail))echo $consent_detail->criminal_given_name;?>"/>
+            </div>
 
-                <div class="col-md-3">
-                    <input type="text" class="form-control" placeholder="<?= $strings["forms_address"]; ?>" name="criminal_current_address" value="<?php if (isset($consent_detail))echo $consent_detail->criminal_current_address;?>"/>
+            <div class="col-md-4"><label class="control-label"><?= $strings["forms_gender"]; ?>: </label>
+                <SELECT name="criminal_sex" class="form-control" >
+                    <?php
+                        printoption($strings["forms_selectgender"], "");
+                        printoption($strings["forms_male"], $gender, "Male");
+                        printoption($strings["forms_female"], $gender, "Female");
+                    ?>
+                </SELECT>
+                <!--<input type="text" class="form-control" name="criminal_sex"/>-->
+            </div>
+
+            <DIV CLASS="splitcols">
+                <div class="col-md-4"><label class="control-label"><?= $strings["forms_dateofbirth"]; ?>: </label>
+                    <input type="text" class="form-control datepicker" placeholder="<?= $strings["forms_dateformat"]; ?>" value="<?php if (isset($profile))echo $profile["dob"];?>"
+                           name="criminal_date_birth"/>
                 </div>
-                <div class="col-md-3">
-                    <?php provinces("criminal_current_province"); ?>
-                    <!--                 <input type="text" class="form-control" placeholder="Province" name="criminal_current_province"/>-->
+
+                <div class="col-md-4"><label class="control-label"><?= $strings2["tasks_date"]; ?>: </label>
+                    <input type="text" class="form-control datepicker" placeholder="<?= $strings["forms_dateformat"]; ?>" name="criminal_date"
+                           value="<?php if (isset($consent_detail)) {echo $consent_detail->criminal_date;} else { echo date("Y-m-d"); }?>">
                 </div>
-                <div class="col-md-3">
-                    <input type="text" class="form-control" placeholder="<?= $strings["forms_postalcode"]; ?>" value="<?php if (isset($consent_detail))echo $consent_detail->criminal_current_postal_code;?>"
-                           name="criminal_current_postal_code"/>
-                </div>
+            </DIV>
+        </div>
+
+
+        <div class="form-group row col-md-12 splitcols">
+            <label class="control-label col-md-12"><?= $strings2["consent_currentadd"]; ?>: </label>
+
+            <div class="col-md-4">
+                <input type="text" class="form-control" placeholder="<?= $strings["forms_address"]; ?>" name="criminal_current_address" value="<?php if (isset($consent_detail))echo $consent_detail->criminal_current_address;?>"/>
+            </div>
+            <div class="col-md-4">
+                <?php provinces("criminal_current_province"); ?>
+                <!--                 <input type="text" class="form-control" placeholder="Province" name="criminal_current_province"/>-->
+            </div>
+            <div class="col-md-4">
+                <input type="text" class="form-control" placeholder="<?= $strings["forms_postalcode"]; ?>" value="<?php if (isset($consent_detail))echo $consent_detail->criminal_current_postal_code;?>"
+                       name="criminal_current_postal_code"/>
             </div>
         </div>
 
