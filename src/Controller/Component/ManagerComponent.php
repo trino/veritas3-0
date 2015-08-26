@@ -72,7 +72,7 @@ class ManagerComponent extends Component {
 
 
     //////////////////////////////////profile type API/////////////////////////////////
-    function enum_porofile_types(){
+    function enum_profile_types(){
         return $this->enum_table("profile_types");
     }
 
@@ -90,6 +90,13 @@ class ManagerComponent extends Component {
             return $Subdoc;
         }
         return $Doc;
+    }
+
+    function get_document_id($OrderID, $SubDoc){
+        return $this->enum_all("documents", array("order_id" => $OrderID, "sub_doc_id" => $SubDoc))->first()->id;
+    }
+    function get_order_id($DocumentID){
+        return $this->get_entry("documents", $DocumentID, "id")->order_id;
     }
 
     function load_subdoc_type($ID){

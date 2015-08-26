@@ -462,13 +462,17 @@ printCSS($this);
                                         if($k_c==1) {
                                             $k_co = $tab_count;
                                         } else {
-                                            if($k_co<$tab_count)
+                                            if($k_co<$tab_count) {
                                                 $k_co = $tab_count;
+                                            }
                                         }
                                         ?>
                                         <div class="tabber <?= $tab; ?>" id="tab<?php echo $tab_count; ?>">
                                             <?php
-                                            if ($action == "View") {printdocumentinfo($d->id);}
+                                            if ($action == "View") {
+                                                $DocID = $Manager->get_document_id($did, $d->id);
+                                                printdocumentinfo($DocID);
+                                            }
                                             include('subpages/documents/' . $d->form); ?>
                                         </div>
                                     <?php }}}

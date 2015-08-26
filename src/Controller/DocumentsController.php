@@ -19,6 +19,7 @@ class DocumentsController extends AppController{
         return $this->response;
         die();
     }
+
     function isdebugging(){
         $this->response->body($this->request->session()->read('debug'));
         return $this->response;
@@ -40,8 +41,7 @@ class DocumentsController extends AppController{
         $this->Settings->verifylogin($this, "documents");
     }
 
-    public function index()
-    {
+    public function index() {
         $cond = '';
         $this->set('doc_comp', $this->Document);
 
@@ -65,6 +65,10 @@ class DocumentsController extends AppController{
 
 
         $language = $this->request->session()->read('Profile.language');
+
+
+
+
         $docs = TableRegistry::get('Documents');
         $cls = TableRegistry::get('Clients');
         //$attachments = TableRegistry::get('attachments');
@@ -78,11 +82,7 @@ class DocumentsController extends AppController{
         $doc = $doc->select()->where(['(order_id = 0 OR (order_id <> 0 AND order_id IN (SELECT id FROM orders)))']);
         if (isset($_GET['draft'])) {
             $doc = $doc->select()->where(['draft' => 1, '(order_id = 0 OR (order_id <> 0 AND order_id IN (SELECT id FROM orders)))']);
-        } /*else {
-                $doc = $doc->select()->where(['draft' => 0, '(order_id = 0 OR (order_id <> 0 AND order_id IN (SELECT id FROM orders)))']);
-                
-            }*/
-       // $cond = '';
+        }
 
         if (isset($_GET['searchdoc']) && $_GET['searchdoc']) {
             $cond = $this->AppendSQL($cond, '(title LIKE "%' . $_GET['searchdoc'] . '%" OR document_type LIKE "%' . $_GET['searchdoc'] . '%" OR description LIKE "%' . $_GET['searchdoc'] . '%")');
@@ -107,9 +107,7 @@ class DocumentsController extends AppController{
         if (isset($_GET['client_id']) && $_GET['client_id']) {
             $cond = $this->AppendSQL($cond, 'client_id = ' . $_GET['client_id']);
         }
-        /*if (isset($_GET['type']) && $_GET['type']) {
-            $cond = $this->AppendSQL($cond, 'document_type = "' . $_GET['type'] . '"');
-        }*/
+
         if (isset($_GET['type']) && $_GET['type']) {
             $cond = $this->AppendSQL($cond, 'sub_doc_id = "' . $_GET['type'] . '"');
         }
@@ -181,7 +179,6 @@ class DocumentsController extends AppController{
         }else{
             $this->Flash->error($this->Trans->getString("flash_docnot" . $saved));
         }
-
         if($redirect){
             $this->redirect(array('action' => 'index'.$draft));
         }
@@ -303,8 +300,9 @@ class DocumentsController extends AppController{
                 }
                 $this->set('pre_at', $pre_at);
 
-
                 $mee_a['attach_doc'] = $this->load_sub_doc('mee_attachments', 'mee_att', $did);
+                $this->set("mee_att", $mee_a);
+
                 $this->load_sub_doc('pre_screening', 'ps_detail', $did);
                 $this->load_sub_doc('road_test', 'deval_detail', $did);
                 $da_detail = $this->load_sub_doc('driver_application', 'da_detail', $did);

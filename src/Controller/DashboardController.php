@@ -12,26 +12,20 @@ class DashboardController extends AppController {
 
      public function initialize() {
         parent::initialize();
-        if(!$this->request->session()->read('Profile.id'))
-        {
-            $this->redirect('/login');
-        }
-        
+        $this->loadComponent('Settings');
+        $this->Settings->verifylogin($this, "dashboard");
     }
+
 	public function index() {
-		
 	}
     
-    function test()
-    {
+    function test() {
         $this->layout = 'blank';
     }
-    function cms($slug)
-    {
-        
+
+    function cms($slug) {
     }
-    function view($slug)
-    {
-        
+
+    function view($slug) {
     }
 }
