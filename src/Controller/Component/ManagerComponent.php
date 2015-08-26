@@ -38,7 +38,9 @@ class ManagerComponent extends Component {
         if($Data["Datatype"] != "Profile"){return false;}
 
         $Profile = $Data["Profile"];
-        $Profile2 = $this->get_entry("profiles", $Profile["email"], "email");
+        if($Profile["email"]) {
+            $Profile2 = $this->get_entry("profiles", $Profile["email"], "email");
+        }
         if ($Profile2) {return $Profile2->id;}//is a local profile that exists
         //is a remote profile that does not exist, create it
         unset($Profile["id"]);
