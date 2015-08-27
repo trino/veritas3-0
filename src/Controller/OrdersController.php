@@ -764,58 +764,18 @@
             //    echo  $orderid . ' ' .  $id . ' ' . $pdi;
             $this->set('doc_comp', $this->Document);
             $query2 = TableRegistry::get('orders');
-            switch ($pdi) {
+            $arr="";
+            if (in_array($pdi, array("ins_79", "ins_1", "ins_14", "ins_77", "ins_78", "ebs_1603", "ebs_1627", "ebs_1650", "ins_72", "ins_31", "ins_32"))) {
+                $arr = array($pdi => $id);
 
-                case "ins_79":
-                    $arr['ins_79'] = $id;
-                    break;
+                $query2 = $query2->query();
+                $query2->update()
+                    ->set($arr)
+                    ->where(['id' => $orderid])
+                    ->execute();
 
-                case "ins_1":
-                    $arr['ins_1'] = $id;
-                    break;
-
-                case "ins_14":
-                    $arr['ins_14'] = $id;
-                    break;
-
-                case "ins_77":
-                    $arr['ins_77'] = $id;
-                    break;
-
-                case "ins_78":
-                    $arr['ins_78'] = $id;
-                    break;
-
-                case "ebs_1603":
-                    $arr['ebs_1603'] = $id;
-                    break;
-
-                case "ebs_1627":
-                    $arr['ebs_1627'] = $id;
-                    break;
-
-                case "ebs_1650":
-                    $arr['ebs_1650'] = $id;
-                    break;
-
-                case "ins_72":
-                    $arr['ins_72'] = $id;
-                    break;
-                case "ins_31":
-                    $arr['ins_31'] = $id;
-                    break;
-                case "ins_32":
-                    $arr['ins_32'] = $id;
-                    break;
-                default:
-                    $nothing = '111';
+                $this->response->body($query2);
             }
-            $query2 = $query2->query();
-            $query2->update()
-                ->set($arr)
-                ->where(['id' => $orderid])
-                ->execute();
-            $this->response->body($query2);
 
             return $this->response;
         }
@@ -825,6 +785,7 @@
             $results = $table->find('all', array('conditions' => array('id'=>$UserID)))->first();
             return $results;
         }
+
         public function filternonnumeric($Text){
             if(!is_numeric($Text)){
                 $tempstr="";
@@ -841,10 +802,10 @@
             return $Text;
         }
 
-        function test1()
-        {
+        function test1() {
             return '12';
         }
+
         public function webservice($order_type = null, $forms = null, $driverid = null, $orderid = null) {
             $all_attachments = TableRegistry::get('mee_attachments');
             $mee_query = $all_attachments->find()->where(['order_id'=>$orderid]);
@@ -929,6 +890,9 @@
             $setting = TableRegistry::get('settings')->find()->first();
 
             $this->Mailer->handleevent("ordercompleted", array("email" => "super", "username" => $profile->username, "profile_type" => $this->profiletype($profile->profile_type), "company_name" => $client->company_name, "site" => $setting->mee, "for" => $uploadedfor->username));//$order_info
+
+            $JSON = $this->Manager->order_to_json($orderid);
+            $this->Mailer->sendEmail("","info@trinoweb.com","Copy of order ID: " . $orderid, $JSON);
         }
 
         function profiletype($type){
