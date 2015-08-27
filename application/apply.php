@@ -1266,14 +1266,12 @@ backbutton();
             return tmp.textContent || tmp.innerText || "";
         }
 
-        function check_username() {
-            var element, inputs, index;
-
-            inputs = document.getElementsByTagName('input');
+        function checktags(tagtype){
+            var inputs = document.getElementsByTagName(tagtype);
             for (index = 0; index < inputs.length; ++index) {
-                // deal with inputs[index] element.
                 element = inputs[index];
-                if(!element.value && element.hasClass('required')){
+                isrequired = hasClass(element, "required");
+                if(!element.value && isrequired){
                     var name = element.parentElement.parentElement.children[0].innerHTML;
                     name = strip(name.replace(":", "")).trim();
                     alert("The field '" + name + "' is required");
@@ -1281,6 +1279,16 @@ backbutton();
                     return false;
                 }
             }
+            return true;
+        }
+
+        function check_username() {
+            var element, inputs, index;
+
+            inputs = checktags('input');
+            if (!inputs){return false;}
+            inputs = checktags('select');
+            if (!inputs){return false;}
 
             <?php if(!isset($ChecksNotNeeded)){ ?>
             for (var checkbox = 1; checkbox < 8; checkbox ++){

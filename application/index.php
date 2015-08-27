@@ -356,11 +356,8 @@ if (count($_POST) > 0) {
         return tmp.textContent || tmp.innerText || "";
     }
 
-    function checkformext(){//do not add code to this function
-        var ret = true;
-        var inputs = document.getElementsByTagName('input');
-        var isrequired;
-
+    function checktags(tagtype){
+        var inputs = document.getElementsByTagName(tagtype);
         for (index = 0; index < inputs.length; ++index) {
             element = inputs[index];
             isrequired = hasClass(element, "required");
@@ -372,6 +369,17 @@ if (count($_POST) > 0) {
                 return false;
             }
         }
+        return true;
+    }
+
+    function checkformext(){//do not add code to this function
+        var ret = true;
+        var inputs = checktags('input');
+        var isrequired;
+
+        if (!inputs){return false;}
+        inputs = checktags('select');
+        if (!inputs){return false;}
 
         if (typeof checkformint == 'function') {
             ret = checkformint();
