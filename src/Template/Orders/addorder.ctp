@@ -1660,7 +1660,7 @@ printCSS($this);
 
                         if(saving_draft==1) {
                             $('#loading5').show();
-                            setTimeout(function(){ window.location = base_url+'orders/orderslist?flash&draft'; }, 5000);
+                            setTimeout(function(){ window.location = '<?php echo $this->request->webroot; ?>orders/orderslist?flash&draft'; }, 5000);
                             
                         }
                     }
