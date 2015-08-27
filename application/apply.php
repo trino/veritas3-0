@@ -1256,6 +1256,10 @@ backbutton();
             return this.className && new RegExp("(^|\\s)" + className + "(\\s|$)").test(this.className);
         };
 
+        function hasClass(elem, className) {
+            return new RegExp(' ' + className + ' ').test(' ' + elem.className + ' ');
+        }
+
         function save_signature(uselessnumber){
             document.getElementById("myForm").submit();
         }
