@@ -9,7 +9,6 @@
         }
 
         .portlet-body, .portlet-title {
-            border-top: 1px solid #578EBE;
         }
 
     }
@@ -28,7 +27,7 @@ function dotest($Number, $pp, $order, $duplicate_log, $ins2 = "ins"){
         if ($order->$ins == "Duplicate Order") {
             $duplicate_log = $GLOBALS["score_dupe"];
         } else {
-            get_color($order->$ins);
+          //  get_color($order->$ins);
         }
     }
     return $duplicate_log;
@@ -374,35 +373,36 @@ copy2globals($strings2, array("score_dupe", "score_submitted", "score_submitted"
 		
 
 					
-                    <td class="actions">
-                        <?php
-                        if ($duplicate_log == "Duplicate Order") 
-						{
-                        ?>
-                            <span class="label label-danger"><?= $strings2["score_dupe"]; ?>  </span>
-                        <?
-                        } 
-						elseif (return_link($pp, $order->id) == false) 
-						{
-						?>
-                            <span class="label label-info"><?= $strings2["documents_pending"]; ?> </span>
-                        <? 
-						} 
-						else 
-						{ 
-					
-						?>
-							<a target="_blank" href="<? echo $this->request->webroot . return_link($pp, $order->id); ?>" class="btn btn-primary dl"><?= $strings2["file_download"]; ?></a>
-							
-							<?
-											echo " " . get_mee_results_binary($order->bright_planet_html_binary,$title_pr->$Fieldname);
+<td class="actions">
+<?php
+if ($duplicate_log == "Duplicate Order") 
+{
+?>
+<span class="label label-danger"><?= $strings2["score_dupe"]; ?>  </span>
+<?
+} 
+elseif (return_link($pp, $order->id) == false) 
+{
+?>
+<span class="label label-info"><?= $strings2["documents_pending"]; ?> </span>
+<? 
+} 
+else{
 
 ?>
-                        <? 
-						
+<a target="_blank" href="<? echo $this->request->webroot . return_link($pp, $order->id); ?>" class="btn btn-primary dl"><?= $strings2["file_download"]; ?></a>
 
-						} 
-						?>
+<?
+}
+
+if($order->complete == 1){
+echo "" . get_mee_results_binary($order->bright_planet_html_binary,$title_pr->$Fieldname);
+}
+?>
+<? 
+
+
+?>
 </td>
 
 
