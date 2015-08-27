@@ -985,7 +985,7 @@
             $att = $attach
                 ->find()
                 ->where(['order_id' => $id, 'sub_id' => 41, 'attachment <> ""'])->all();
-
+/*
         var_dump($profile->username);
         var_dump($profile->profile_type);
         var_dump($client->company_name);
@@ -993,7 +993,7 @@
         echo "DriverID: " . $driverid;
         var_dump($uploadedfor);
 
-
+*/
             $this->set('order_id', $id);
             $this->set(compact('att'));
         }
