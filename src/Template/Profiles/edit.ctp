@@ -465,7 +465,7 @@
                 msg = '<span class="msg" style="color:red"> <?= addslashes($strings["forms_removed"]); ?></span>';
             }
 
-            <?php if($profile->admin == 0 & $profile->super == 0){; ?>
+            <?php if(isset($profile) && ($profile->admin == 0 && $profile->super == 0)){; ?>
             $('.addclientz').each(function () {
                 if($(this).val() != client_id){
                     $(this).prop( "disabled", addclient ==1 );
@@ -683,7 +683,7 @@
     function sendemails() {
         $.ajax({
             url: '<?php echo $this->request->webroot;?>clients/quickcontact',
-            data: 'Type=emailout&user_id=' + <?= $profile->id; ?>,
+            data: 'Type=emailout&user_id=' + '<?php if(isset($profile->id))echo $profile->id; ?>',
             type: 'get',
             success: function (res) {
                 //alert(res);
