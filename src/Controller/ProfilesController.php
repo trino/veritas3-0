@@ -1065,10 +1065,14 @@ class ProfilesController extends AppController{
 
         $_POST['created'] = date('Y-m-d');
         //var_dump($profile);die();
-        if (isset($_POST['password']) && $_POST['password'] == '') {
-            unset($_POST['password']);
+        if (isset($_POST['pass_word']) && $_POST['pass_word'] == '') {
+            unset($_POST['pass_word']);
         }
+        else
+        if(isset($_POST['password']))
+        $_POST['password'] = $_POST['pass_word'];
         if ($this->request->is('post')) {
+            //$_POST['password'] = $_POST['pass_word'];
 
             if (isset($_POST['profile_type']) && $_POST['profile_type'] == 1) {
                 $_POST['admin'] = 1;
@@ -1305,13 +1309,13 @@ class ProfilesController extends AppController{
             $profile_type = $this->request->session()->read('Profile.profile_type');
             $_POST['created'] = date('Y-m-d');
             $username = $_POST["username"];
-            if (isset($_POST['password']) && $_POST['password'] == '') {
+            if (isset($_POST['pass_word']) && $_POST['pass_word'] == '') {
                 $password = '';
-                unset($_POST['password']);
+                unset($_POST['pass_word']);
             } else {
-                if (isset($_POST['password']) && $_POST['password'] != '') {
-                    $password = $_POST['password'];
-                    $_POST['password'] = md5($_POST['password']);
+                if (isset($_POST['pass_word']) && $_POST['pass_word'] != '') {
+                    $password = $_POST['pass_word'];
+                    $_POST['password'] = md5($_POST['pass_word']);
                 }
             }
 
@@ -1773,7 +1777,8 @@ public function saveDriver() {
         //echo $profile->password;die();
 
         if ($this->request->is(['patch', 'post', 'put'])) {
-            if (isset($_POST['password']) && $_POST['password'] == '') {
+            $this->request->data['password'] = $_POST['pass_word'];
+            if (isset($_POST['pass_word']) && $_POST['pass_word'] == '') {
                 //die('here');
                 $this->request->data['password'] = $profile->password;
             }

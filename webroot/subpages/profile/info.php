@@ -468,8 +468,8 @@ $strings = CacheTranslations($language, array("forms_%"), $settings);
 
                                         <input  <?php echo $is_disabled ?> type="password" value="" onkeyup="emailthecreds();"
                                                                            autocomplete="off"
-                                                                           name="password" id="password"
-                                                                           class="form-control <?php if (!isset($p->password)) {?>req_rec<?php }?>" <?php if (isset($p->password) && $p->password) {//do nothing
+                                                                           name="pass_word" id="password"
+                                                                           class="form-control  <?php if (!isset($p->password)) {?>req_rec<?php }?>" <?php if (isset($p->password) && $p->password) {//do nothing
                                         } ?>/>
                                     </div>
                                 </div>
