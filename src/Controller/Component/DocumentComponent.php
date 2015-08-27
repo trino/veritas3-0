@@ -179,8 +179,9 @@ class DocumentComponent extends Component {
                         }
                         
                            echo $did;
-                           if (!is_dir(APP.'../webroot/orders/order_'.$did))
-                            mkdir(APP.'../webroot/orders/order_'.$did, 0777);
+                           if (!is_dir(APP.'../webroot/orders/order_'.$did)) {
+                               mkdir(APP . '../webroot/orders/order_' . $did, 0777);
+                           }
                 }
 
             } else {
