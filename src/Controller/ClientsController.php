@@ -25,15 +25,15 @@
             $this->Settings->verifylogin($this, "clients");
         }
 
-        function getclient_id($id, $ClientID = 17) {
-            $client = TableRegistry::get('clients')->find()->where(['id' => $ClientID])->first();
+        function getclient_id($id) {
+            $client = TableRegistry::get('clients')->find()->where(['id' => '17'])->first();
             $pid = $client->profile_id;
             $pids = explode(",", $pid);
             if (in_array($id, $pids)) {
                 $q = '1';
-            } else {
+
+            } else
                 $q = 0;
-            }
             $this->response->body($q);
             return $this->response;
             die();
@@ -128,7 +128,6 @@
                 $draft = 0;
             }
             $querys = TableRegistry::get('Clients');
-
             $query = $querys->find()->where(['drafts' => $draft]);
             $query = $querys->find();
             $this->set('client', $this->appendattachments($this->paginate($query)));

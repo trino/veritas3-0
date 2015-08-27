@@ -7,9 +7,8 @@ use Cake\Event\Event;
 use Cake\View\Helper\SessionHelper;
     
 
-class DocumentComponent extends Component {
-
-    function fixsubmittedfor(){
+class DocumentComponent extends Component{
+	function fixsubmittedfor(){
         $Table = TableRegistry::get("documents");
         //debug($Table->query("UPDATE `documents` SET uploaded_for = user_id WHERE uploaded_for = 0"));
         $Documents =  $Table->find()->where(['OR'=> array('uploaded_for'=>null, 'uploaded_for'=>0)]);
@@ -20,7 +19,7 @@ class DocumentComponent extends Component {
                 ->execute();
         }
     }
-
+	
     public function savedoc($Mailer, $cid = 0, $did = 0, $emailenabled = True){
              $controller = $this->_registry->getController();
               $settings = TableRegistry::get('settings');
@@ -185,19 +184,17 @@ class DocumentComponent extends Component {
 
             } else {
                 $docs = TableRegistry::get('Documents');
-                if (isset($_GET['draft']) && $_GET['draft']) {
+                if (isset($_GET['draft']) && $_GET['draft']){
                     $arr['draft'] = 1;
                     //$controller->Flash->success('Document saved as draft');
-                } else {
+                    }
+                else{
                     $arr['draft'] = 0;
                     //$controller->Flash->success('Document submitted successfully');
-                }
+                    }
                 $arr['sub_doc_id'] = $_POST['sub_doc_id'];
-                if (isset($_POST['uploaded_for'])){
+                if (isset($_POST['uploaded_for']))
                     $arr['uploaded_for'] = $_POST['uploaded_for'];
-                }else {
-                    $arr['uploaded_for'] = $controller->request->session()->read('Profile.id');
-                }
 
                 $arr['client_id'] = $cid;
                 $arr['document_type'] = urldecode($_GET['document']);
@@ -466,7 +463,7 @@ class DocumentComponent extends Component {
                 if (isset($_POST['uploaded_for']))
                     $uploaded_for = $_POST['uploaded_for'];
                 else
-                    $uploaded_for = $controller->request->session()->read('Profile.id');
+                    $uploaded_for = '';
                 $for_doc = array('document_type'=>'Pre-Screening','sub_doc_id'=>1,'order_id'=>$arr['order_id'],'user_id'=>$arr['user_id'],'uploaded_for'=>$uploaded_for);
                 $this->saveDocForOrder($for_doc);
             } else {
@@ -550,7 +547,7 @@ class DocumentComponent extends Component {
                 if (isset($_POST['uploaded_for']))
                     $uploaded_for = $_POST['uploaded_for'];
                 else
-                    $uploaded_for = $controller->request->session()->read('Profile.id');;
+                    $uploaded_for = '';
                 $for_doc = array('document_type'=>'Driver Application','sub_doc_id'=>2,'order_id'=>$arr['order_id'],'user_id'=>$arr['user_id'],'uploaded_for'=>$uploaded_for);
                 $this->saveDocForOrder($for_doc);
             } else {
@@ -676,7 +673,7 @@ class DocumentComponent extends Component {
                 if (isset($_POST['uploaded_for']))
                     $uploaded_for = $_POST['uploaded_for'];
                 else
-                    $uploaded_for = $controller->request->session()->read('Profile.id');
+                    $uploaded_for = '';
                 $for_doc = array('document_type'=>'Road test','sub_doc_id'=>3,'order_id'=>$arr['order_id'],'user_id'=>$arr['user_id'],'uploaded_for'=>$uploaded_for);
                 $this->saveDocForOrder($for_doc);
                 
@@ -752,7 +749,7 @@ class DocumentComponent extends Component {
                 if (isset($_POST['uploaded_for']))
                     $uploaded_for = $_POST['uploaded_for'];
                 else
-                    $uploaded_for = $controller->request->session()->read('Profile.id');
+                    $uploaded_for = '';
                 $for_doc = array('document_type'=>'Consent Form','sub_doc_id'=>4,'order_id'=>$arr['order_id'],'user_id'=>$arr['user_id'],'uploaded_for'=>$uploaded_for);
                 $this->saveDocForOrder($for_doc);
                 
@@ -847,7 +844,7 @@ class DocumentComponent extends Component {
                 if (isset($_POST['uploaded_for']))
                     $uploaded_for = $_POST['uploaded_for'];
                 else
-                    $uploaded_for = $controller->request->session()->read('Profile.id');
+                    $uploaded_for = '';
                 
                 $for_doc = array('document_type'=>'Employment Verification','sub_doc_id'=>9,'order_id'=>$arr['order_id'],'user_id'=>$arr['user_id'],'uploaded_for'=>$uploaded_for);                
                 $this->saveDocForOrder($for_doc);
@@ -1045,7 +1042,7 @@ class DocumentComponent extends Component {
                 if (isset($_POST['uploaded_for']))
                     $uploaded_for = $_POST['uploaded_for'];
                 else
-                    $uploaded_for = $controller->request->session()->read('Profile.id');
+                    $uploaded_for = '';
                 
                 $for_doc = array('document_type'=>'Education Verification','sub_doc_id'=>10,'order_id'=>$arr['order_id'],'user_id'=>$arr['user_id'],'uploaded_for'=>$uploaded_for);                
                 $this->saveDocForOrder($for_doc);
@@ -1210,7 +1207,7 @@ class DocumentComponent extends Component {
                 if (isset($_POST['uploaded_for'])) {
                     $uploaded_for = $_POST['uploaded_for'];
                 }else {
-                    $uploaded_for = $controller->request->session()->read('Profile.id');
+                    $uploaded_for = '';
                 }
                 $for_doc = array('document_type' => 'MEE Attachments', 'sub_doc_id' => 15, 'order_id' => $arr['order_id'], 'user_id' => $arr['user_id'], 'uploaded_for' => $uploaded_for);
                 $this->saveDocForOrder($for_doc);
@@ -1823,16 +1820,8 @@ class DocumentComponent extends Component {
         if(!is_object($Table)) {$Table = TableRegistry::get($Table);}
         return $Table->find()->where([$Key => $Value])->first();
     }
-    function insertdb($Table, $Data, $PrimaryKey = "", $Value = ""){
+    function insertdb($Table, $Data){
         if(!is_object($Table)) {$Table = TableRegistry::get($Table);}
-        if($PrimaryKey && $Value){
-            $col = $this->findcol($Table,$PrimaryKey,$Value);
-            if($col){
-                $Table->query()->update()->set($Data)->where([$PrimaryKey => $Value])->execute();
-                return $Data;
-            }
-            $Data[$PrimaryKey] = $Value;
-        }
         $ret = $Table->newEntity($Data);
         $Table->save($ret);
         return $ret;
@@ -1864,81 +1853,4 @@ class DocumentComponent extends Component {
         $ret = "<BR>" . $this->insertdb($table, $data)->id;
         return $docid . $ret;
     }
-
-    function getProtectedValue($obj,$name) {
-        $array = (array)$obj;
-        $prefix = chr(0).'*'.chr(0);
-        if (isset($array[$prefix.$name])) {
-            return $array[$prefix . $name];
-        }
-    }
-    function makeCSV($data, $newline = "\r\n"){
-        $retvalue = "";
-        $haswrittencolumns = false;
-        foreach($data as $entry){
-            $currentline = "";
-            if (is_object($entry)) {
-                $entry = $this->getProtectedValue($entry, "_properties");
-            }
-            if(!$haswrittencolumns){
-                foreach($entry as $key => $value){
-                    $newkey = "";
-                    if (is_array($value)){
-                        if($this->isassocarray($value)){
-                            $newkey = $value;
-                        }
-                    } elseif(is_object($value)){
-                        $newkey = $this->getProtectedValue($value, "_properties");
-                    }
-                    if (is_array($newkey)) {
-                        foreach($newkey as $key2 => $value2) {
-                            $currentline = $this->appendstring($currentline, $key . "." . $key2);
-                        }
-                    } else {
-                        $currentline = $this->appendstring($currentline, $key);
-                    }
-                }
-                $haswrittencolumns=true;
-                $retvalue = $currentline;
-                $currentline = "";
-            }
-
-            foreach($entry as $key => $value){
-                $currentline = $this->appendstring($currentline, $this->CSVvalue($value));
-            }
-
-            $retvalue .= $newline . $currentline;
-        }
-        return $retvalue;
-    }
-
-    function appendstring($Current, $Append, $delimeter = ","){
-        if($Current){return $Current . $delimeter . $Append;}
-        return $Append;
-    }
-
-    function CSVvalue($value){
-        if (is_object($value)){$value = $this->getProtectedValue($value, "_properties");}
-        if (is_array($value)) {
-            if ($this->isassocarray($value)) {
-                $currentline = "";
-                foreach ($value as $Key => $thevalue) {
-                    if ($currentline) {
-                        $currentline .= ",";
-                    }
-                    $currentline .= $this->CSVvalue($thevalue);
-                }
-                return $currentline;
-            } else {
-                return $this->CSVvalue(implode(",", $value));
-            }
-        } else {
-            if (strpos($value, '+') !== False){$value = "'" . $value;}
-            if ( (strpos($value, ",") || strpos($value, "\r\n") || strpos($value, '"') || strpos($value, '-') || strpos($value, '\\') || strpos($value, '+')) !== False) {
-                return '"' . str_replace('"', '""', $value) . '"';
-            }
-            return $value;
-        }
-    }
-
 }

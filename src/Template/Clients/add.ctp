@@ -442,7 +442,7 @@
                                                                             </option>
                                                                         </select>
                                                                     </div>
-    <?php if ($issuper && false){ ?>
+    <?php if ($issuper){ ?>
                                                                     <div class="form-group col-md-4">
                                                                         <label class="control-label"><?= $strings["forms_forceemail"];?>:</label>
                                                                         <input type="text" class="form-control"

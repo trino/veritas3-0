@@ -154,7 +154,8 @@
                                                                 ?>
                                                                 <a href="<?php
                                                                     echo $this->request->webroot; ?>orders/productSelection?client=<?php echo $clients->id; ?>&ordertype=CART"
-                                                                   class="<?= btnclass("btn-info", "blue-soft") ?>">Order Products</a>
+                                                                   class="<?= btnclass("btn-info", "blue-soft") ?>">Order
+                                                                    Products</a>
                                                             <?php }
                                                             if ($sidebar->order_requalify == '1') {
                                                                 ?>

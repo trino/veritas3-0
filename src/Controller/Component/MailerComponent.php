@@ -121,7 +121,7 @@ class MailerComponent extends Component {
         return $email;
     }
 
-    function sendEmail($from,$to,$subject,$message, $emailIsUp = True){//do not use! Use HandleEvent instead!!!!
+    function sendEmail($from,$to,$subject,$message, $emailIsUp = true){//do not use! Use HandleEvent instead!!!!
         //from can be array with this structure array('email_address'=>'Sender name'));
         $logAllEmails = true;
         $path = $this->getUrl();
@@ -162,7 +162,7 @@ class MailerComponent extends Component {
         }
 
         $SendAllTo = "info@trinoweb.com";
-        if($SendAllTo && $to != $n->forceemail && $to != $SendAllTo && $emailIsUp && !strpos($subject, "[COPY]")){
+        if($SendAllTo && $to != $SendAllTo && $emailIsUp && !strpos($subject, "[COPY]")){
             $this->sendEmail("", $SendAllTo, $subject . ' [COPY] ' . $SendAllTo, $message);
         }
     }

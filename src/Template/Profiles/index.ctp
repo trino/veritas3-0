@@ -331,7 +331,7 @@ $super = $this->request->session()->read('Profile.super');
 
                                                 if($super){
                                                     echo '<a href="' . $this->request->webroot . 'profiles/possess/' . $profile->id;
-                                                    echo '" onclick="return confirm(' . "'Are you sure you want to possess " . formatname($profile) . "?'";
+                                                    echo '" onclick="return confirm(' . "'Are you sure you want to possess " . ucfirst(h($profile->username)) . "?'";
                                                     echo ');" class="' . btnclass("DELETE") . '">Possess</a>';
                                                 }
 

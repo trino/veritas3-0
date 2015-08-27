@@ -7,10 +7,9 @@
         -->
 <?php
  if($this->request->session()->read('debug')){ echo "<span style ='color:red;'>subpages/profile/page.php #INC123</span>";}
-include_once("subpages/api.php");
-$languages = languages();
 
-function makepage($languages, $webroot, $tabIndex, $name, $cms, $active){
+
+function makepage($webroot, $tabIndex, $name, $cms, $active){
     //$cms = $This->requestAction("/pages/get_content/' . $name . '");
     $Title = ucfirst(str_replace("_", " ", $name));
 
@@ -21,46 +20,35 @@ function makepage($languages, $webroot, $tabIndex, $name, $cms, $active){
 <form action="' . $webroot . 'pages/edit/' . $name . '" method="post" class="form-horizontal form-bordered" id="' . $name . '">
     <div class="form-body">
         <div class="form-group last">
-            <label class="col-md-2"></label>';
-
-    echo '<INPUT TYPE="HIDDEN" NAME="languages" VALUE="' . implode(",", $languages) . '">';
-    foreach($languages as $language) {
-        echo '<label class="col-md-5" align="CENTER">' . $language . '</label>';
-    }
-
-    echo '    </div>
+            <label class="col-md-2"></label>
+            <label class="col-md-5" align="CENTER">English</label>
+            <label class="col-md-5" align="CENTER">français</label>
+        </div>
     </div>
 
     <div class="form-body">
         <div class="form-group last">
-            <label class="control-label col-md-2">' . $Title . ' Title</label>';
-
-    foreach($languages as $language) {
-        if ($language == "English") {$language = "";}
-        $keyname = "title"  . $language;
-
-        echo '    <div class="col-md-5">
-                <input class="form-control" name="title' . $language . '" id="title' . $language . '-' . $name . '" value="' . ucfirst($cms->$keyname) . '"/>
-            </div>';
-    }
-           echo '
+            <label class="control-label col-md-2">' . $Title . ' Title</label>
+            <div class="col-md-5">
+                <input class="form-control" name="title" id="title-' . $name . '" value="' . ucfirst($cms->title) . '"/>
+            </div>
+             <div class="col-md-5">
+                <input class="form-control" name="titleFrench" id="titleFrench-' . $name . '" value="' . ucfirst($cms->titleFrench) . '"/>
+            </div>
         </div>
     </div>
     <div class="form-body">
         <div class="form-group last">
-            <label class="control-label col-md-2">Description</label>';
-
-    foreach($languages as $language) {
-        if ($language == "English") {$language = "";}
-        $keyname = "desc" . $language;
-
-        echo '   <div class="col-md-5">
+            <label class="control-label col-md-2">Description</label>
+            <div class="col-md-5">
                                                                     <textarea class="ckeditor form-control"
-                                                                              name="desc' . $language . '" rows="6" id="desc' . $language . '">' . $cms->$keyname . '</textarea>
-            </div>';
-    }
-
-       echo ' </div>
+                                                                              name="editor1" rows="6" id="desc' . $name . '">' . $cms->desc . '</textarea>
+            </div>
+            <div class="col-md-5">
+                                                                    <textarea class="ckeditor form-control"
+                                                                              name="editor2" rows="6" id="descFrench' . $name . '">' . $cms->descFrench . '</textarea>
+            </div>
+        </div>
     </div>
     <div class="form-actions" style="margin-left: -10px;margin-right: -10px;">
         <div class="row" align="right">
@@ -91,7 +79,7 @@ foreach($pages as $key => $value){
 echo '</ul><div class="portlet-body"><div class="tab-content">';
 $class = "active";
 foreach($pages as $key => $value){
-    $class = makepage($languages, $this->request->webroot, $key, $value, $this->requestAction("/pages/get_content/" . $value), $class);
+    $class = makepage($this->request->webroot, $key, $value, $this->requestAction("/pages/get_content/" . $value), $class);
 }
  ?>
 

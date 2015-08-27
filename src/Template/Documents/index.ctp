@@ -5,7 +5,7 @@
     include_once('subpages/api.php');
     $language = $this->request->session()->read('Profile.language');
     $controller =  $this->request->params['controller'];
-    $strings = CacheTranslations($language, array($controller  . "_%", "forms_dateformat"),$settings);
+    $strings = CacheTranslations($language, $controller  . "_%",$settings);
     if($debug && $language == "Debug"){ $Trans = " [Translated]"; } else {$Trans = "";}
 ?>
 
@@ -219,7 +219,7 @@
 
                                 <?php } ?>
 
-                                <th><?= $this->Paginator->sort('created', $strings["documents_created"] . " (" . $strings["forms_dateformat"] . ")"); ?></th>
+                                <th><?= $this->Paginator->sort('created', $strings["documents_created"]); ?></th>
                                 <th><?= $this->Paginator->sort('client_id', $strings["settings_client"]); ?></th>
                                 <th class="actions"><?= __($strings["dashboard_actions"]) ?></th>
                                 <th><?= $this->Paginator->sort('draft', $strings["documents_status"]); ?></th>

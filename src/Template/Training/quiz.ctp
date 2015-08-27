@@ -1,26 +1,21 @@
-<?php
-    $settings = $this->requestAction('settings/get_settings');
-    $sidebar = $this->requestAction("settings/get_side/" . $this->Session->read('Profile.id'));
-    include_once('subpages/api.php');
-    $language = $this->request->session()->read('Profile.language');
-    $strings = CacheTranslations($language, array("training_%", "forms_save", "score_incomplete"),$settings);
-?>
+<?php $settings = $this->requestAction('settings/get_settings'); ?>
+<?php $sidebar = $this->requestAction("settings/get_side/" . $this->Session->read('Profile.id')); ?>
 <h3 class="page-title">
-    <?= $strings["training_quiz"] ?>
+    Quiz
 </h3>
 <div class="page-bar">
     <ul class="page-breadcrumb">
         <li>
             <i class="fa fa-home"></i>
-            <a href="<?php echo $this->request->webroot; ?>"><?= $strings["dashboard_dashboard"] ?></a>
+            <a href="<?php echo $this->request->webroot; ?>">Dashboard</a>
             <i class="fa fa-angle-right"></i>
         </li>
         <li>
-            <a href="<?php echo $this->request->webroot; ?>training"><?= $strings["index_training"] ?></a>
+            <a href="<?php echo $this->request->webroot; ?>training">Training</a>
             <i class="fa fa-angle-right"></i>
         </li>
         <li>
-            <a href=""><?= $strings["training_quiz"] ?></a>
+            <a href="">Quiz</a>
         </li>
     </ul>
     <div class="page-toolbar">
@@ -30,13 +25,14 @@
             <i class="fa fa-angle-down"></i>
         </div-->
     </div>
-    <a href="javascript:window.print();" class="floatright btn btn-info"><?= $strings["dashboard_print"] ?></a>
+    <a href="javascript:window.print();" class="floatright btn btn-info">Print</a>
 </div>
 
 <?php
     $question = 0;
     $QuizID = $_GET["quizid"];
-    function clean($data, $datatype = 0) {
+    function clean($data, $datatype = 0)
+    {
         if (is_object($data)) {
             switch ($datatype) {
                 case 0:
@@ -66,19 +62,13 @@
         return $data;
     }
 
-    function processnumber($string, $number){
-        if(strpos($string, "%#%") === false){ return $string . " " . $number;}
-        return str_replace("%#%", $number, $string);;
-    }
-
-    function question($strings, $section) {
+    function question($section)
+    {
         global $question;
         switch ($section) {
             case "0":
                 echo '<div class="row"><div class="col-md-12"><div class="portlet box blue-steel"><div class="portlet-title">';
-                echo '<div class="caption"><i class="fa fa-graduation-cap"></i>';
-                echo processnumber($strings["training_questionnumber"], $question);
-                echo '</div></div><div class="portlet-body">';
+                echo '<div class="caption"><i class="fa fa-graduation-cap"></i>Question ' . $question . '</div></div><div class="portlet-body">';
                 echo '<div class="row"><div class="col-md-2">';
                 break;
             case "1":
@@ -90,7 +80,8 @@
         }
     }
 
-    function answers($strings, $QuizID, $QuestionID, $text, $answers, $Index = 0, $usersanswer, $correctanswer) {
+    function answers($QuizID, $QuestionID, $text, $answers, $Index = 0, $usersanswer, $correctanswer)
+    {
         $disabled = "";
         $selected = -1;
         $iscorrect = false;
@@ -102,9 +93,9 @@
         $QuestionID = $QuizID . ':' . $Index;
         echo '<input type="hidden" name="' . $QuestionID . ':sequencecheck" value="' . $Qold . '" />';
         echo '<div class="qtext"><p>' . $text . '</p></div>';
-        echo '<div class="ablock"><div class="prompt">' . $strings["training_selectone"] . ':';
+        echo '<div class="ablock"><div class="prompt">Select one:';
         if ($correctanswer == -1) {
-            echo " <font color='red'><B>" . $strings["training_missing"] . "</B></font>";
+            echo " <font color='red'><B>Incomplete</B></font>";
         }
         echo '</div><div class="answer"><TABLE>';
         for ($temp = 0; $temp < count($answers); $temp += 1) {
@@ -117,10 +108,10 @@
                 echo '/></TD><TD><label for="' . $QuestionID . ":" . $temp . '">' . chr($temp + ord("a")) . ". " . $answers[$temp];
                 if (is_object($usersanswer) && $selected == $temp) {
                     if ($correctanswer == $temp) {
-                        echo " <font color='green'><B>" . $strings["training_correct"] . "!</B></font>";
+                        echo " <font color='green'><B>Correct!</B></font>";
                         $iscorrect = true;
                     } else {
-                        echo " <font color='red'><B>" . $strings["training_incorrect"] . "</B></font>";
+                        echo " <font color='red'><B>Incorrect</B></font>";
                     }
                 }
                 echo '</label></div></TD></TR>';
@@ -130,18 +121,19 @@
         return $iscorrect;
     }
 
-    function questionheader($strings, $QuizID, $QuestionID, $markedOutOf, $Index = 0, $usersanswer) {
+    function questionheader($QuizID, $QuestionID, $markedOutOf, $Index = 0, $usersanswer)
+    {
         $flagged = "";
-        $answered = $strings["training_notanswered"];
+        $answered = "Not yet answered";
         if (is_object($usersanswer)) {
             if ($usersanswer->flagged) {
                 $flagged = " checked";
             }
             $flagged .= " disabled";
-            $answered = $strings["training_answered"];
+            $answered = "Answered";
         }
         $QuestionID = $QuizID . ':' . $Index;
-        echo '<div class="state">' . $answered . '</div><div class="grade">' . processnumber($strings["training_outof"], $markedOutOf) . '</div>';
+        echo '<div class="state">' . $answered . '</div><div class="grade">Marked out of ' . $markedOutOf . '</div>';
         //echo '<div class="questionflag editable" aria-atomic="true" aria-relevant="text" aria-live="assertive">';
         //echo '<input type="hidden" name="' . $QuestionID . '_flagged" value="0" />';
         //echo '<input type="checkbox" id="' . $QuestionID . '_flaggedcheckbox" name="' . $QuestionID . '_flaggedcheckbox" value="1" ' . $flagged . '/>';
@@ -150,7 +142,8 @@
         //echo '<img alt=' . $Index . ' src="http://asap-training.com/theme/image.php?theme=aardvark&amp;component=core&amp;rev=1415027139&amp;image=i%2Funflagged" alt="Not flagged" id="' . $Index . ':flaggedimg" /></label></div>';
     }
 
-    function preprocess($usersanswer, $correctanswer) {
+    function preprocess($usersanswer, $correctanswer)
+    {
         $correct = "missing";
         if (is_object($usersanswer)) {
             $correct = "incorrect";
@@ -163,7 +156,8 @@
         return $correct;
     }
 
-    function FullQuestion($strings, $QuizID, $text, $answers, $index = 0, $markedOutOf = "1.00", $usersanswer, $correctanswer) {
+    function FullQuestion($QuizID, $text, $answers, $index = 0, $markedOutOf = "1.00", $usersanswer, $correctanswer)
+    {
         global $question;
         $question += 1;
         $correct = "incorrect";
@@ -172,44 +166,42 @@
                 $correct == "missing";
             }
         }
-        question($strings, 0);
-        questionheader($strings, $QuizID, $question, $markedOutOf, $index, $usersanswer);
-        question($strings, 1);
-        if (answers($strings, $QuizID, $question, $text, $answers, $index, $usersanswer, $correctanswer)) {
+        question(0);
+        questionheader($QuizID, $question, $markedOutOf, $index, $usersanswer);
+        question(1);
+        if (answers($QuizID, $question, $text, $answers, $index, $usersanswer, $correctanswer)) {
             $correct = "correct";
         }
-        question($strings, 2);
+        question(2);
         return $correct;
     }
 
     if (is_object($useranswers)) {
         if ($results["missing"] < $results["total"]) {
-            PrintResults($strings, $results, $user);
+            PrintResults($results, $user);
         }
     }
 
-    function PrintResults($strings, $results, $user) {
+    function PrintResults($results, $user)
+    {
         if ($results['total'] > 0) {//http://localhost/veritas3/img/profile/172647_974786.jpg
             //debug($user); <label class="control-label">Profile Type : </label>
             echo '<div class="row"><div class="col-md-12"><div class="portlet box yellow"><div class="portlet-title">';
-            echo '<div class="caption"><i class="fa fa-graduation-cap"></i>';
-            //'Results for: ' . ucfirst($user->fname) . " " . ucfirst($user->lname) . " (" . ucfirst($user->username) . ") on " . $results['datetaken'] ;
-            echo ProcessVariables("training_resultsfor", $strings["training_resultsfor"], array("fname" => ucfirst($user->fname), "lname" => ucfirst($user->lname), "username" => ucfirst($user->username), "date" => $results['datetaken']));
-
-            echo '</div></div><div class="portlet-body"><div class="row">';
+            echo '<div class="caption"><i class="fa fa-graduation-cap"></i>Results for: ' . ucfirst($user->fname) . " " . ucfirst($user->lname) . " (" . ucfirst($user->username) . ") on ";
+            echo $results['datetaken'] . '</div></div><div class="portlet-body"><div class="row">';
             echo '<div class="col-md-2"><img src="../img/profile/' . $user->image . '" style="max-height: 100px; max-width: 100px;"></div>';
-            PrintResult($strings["training_incorrect"], $results['incorrect']);
-            PrintResult($strings["training_missing"], $results['missing']);
-            PrintResult($strings["training_correct"], $results['correct']);
+            PrintResult("Incorrect", $results['incorrect']);
+            PrintResult("Missing", $results['missing']);
+            PrintResult("Correct", $results['correct']);
             $score = $results['correct'] / $results['total'] * 100;
-            PrintResult($strings["training_score"], round($score, 2) . "%");
-            if ($score >= $results['pass']) {
-                PrintResult($strings["training_grade"], "<font color='green'>" . $strings["training_pass"] . "</A>");
+            PrintResult("Score", round($score, 2) . "%");
+            if ($score >= 80) {
+                PrintResult("Grade", "<font color='green'>Pass</A>");
             } else {
-                PrintResult($strings["training_grade"], "<font color='red'>" . $strings["training_fail"] . "</A>");
+                PrintResult("Grade", "<font color='red'>Fail</A>");
             }
             echo '</font></div>';
-            if ($score >= $results['pass']) {
+            if ($score >= 80) {
 
                 //     echo $this->request->webroot;
                 //   echo $this->request->webroot; die();
@@ -218,7 +210,7 @@
           //      $link232 = $this->request->webroot . 'training/certificate?quizid=' . $_GET['quizid'] . '&userid=' . $user->id;
                 $link232 = 'certificate?quizid=' . $_GET['quizid'] . '&userid=' . $user->id;
 
-                echo '<CENTER><a class=" btn btn-danger" href="' . $link232 . '">' . $strings["training_viewcertificate"] . '</A></CENTER>';
+                echo '<CENTER><a class=" btn btn-danger" href="' . $link232 . '">Click here to view the certificate</A></CENTER>';
 
             }
             echo '</div></div>';
@@ -244,14 +236,14 @@
     foreach ($questions as $question) {
         $question = clean($question, 1);
         $answer = usersanswer($useranswers, $question->QuestionID);
-        $result = FullQuestion($strings, $QuizID, $question->Question, array($question->Choice0, $question->Choice1, $question->Choice2, $question->Choice3, $question->Choice4, $question->Choice5), $question->QuestionID, "1.00", $answer, $question->Answer);
+        $result = FullQuestion($QuizID, $question->Question, array($question->Choice0, $question->Choice1, $question->Choice2, $question->Choice3, $question->Choice4, $question->Choice5), $question->QuestionID, "1.00", $answer, $question->Answer);
         //$results[$result] += 1;
         //$results["total"] += 1;
     }
     if (is_object($answer)) {
-        //PrintResults($strings, $results, $user);
+        //PrintResults($results, $user);
     } else {
-        echo '<DIV align="center"><button type="submit" class="btn blue" style="margin-bottom: 15px;" onclick="return confirm(' . "'" . $strings["training_areyousure"] . "'" . ');"><i class="fa fa-check"></i> ' . $strings["forms_save"] . '</button></DIV>';
+        echo '<DIV align="center"><button type="submit" class="btn blue" style="margin-bottom: 15px;" onclick="return confirm(' . "'Are you sure you are done?'" . ');"><i class="fa fa-check"></i> Save</button></DIV>';
     }
     echo "</form>";
     //}

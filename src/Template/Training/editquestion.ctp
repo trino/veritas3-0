@@ -118,8 +118,7 @@ if (isset($question)) {$question = clean($question,1);}
         </div>
         <div class="col-md-2">
             <div class="form-group">
-                <A href="#" class="btn btn-info" onclick="truefalse('True', 'False');">True/False</A>
-                <A href="#" class="btn btn-info" onclick="truefalse('Vrai', 'Faux');">Vrai/Faux</A>
+                <A href="#" class="btn btn-info" onclick="truefalse();">True/False</A>
             </div>
         </div>
     </form>
@@ -130,9 +129,9 @@ if (isset($question)) {$question = clean($question,1);}
         return true;
     }
 
-    function truefalse(True, False){
+    function truefalse(){
         changed=true;
-        document.getElementById("Choice0").value=True;
-        document.getElementById("Choice1").value=False;
+        document.getElementById("Choice0").value="True";
+        document.getElementById("Choice1").value="False";
     }
 </script>

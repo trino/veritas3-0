@@ -1,7 +1,6 @@
 <?php
     $is_disabled1 = 'disabled="disabled"';
-    include_once("subpages/api.php");
-    $languages = languages();
+    $languages = array("English", "French");
 
     if($this->Session->read('Profile.super')) {//&& $this->Session->read('Profile.id')== $this->request['pass'][0] PASS 0 returned unknown offset
         $is_disabled1 = '';
@@ -32,6 +31,7 @@
 <form action="<?php echo $this->request->webroot; ?>settings/change_text" role="form" method="post" id="displayformz">
         <div class="form-group" id="notli">
             <?php
+
                 echo '<INPUT TYPE="HIDDEN" NAME="languages" VALUE="' . implode(",", $languages) . '">';
                 foreach($languages as $language) {
                     if ($language == "English") {$language = "";}

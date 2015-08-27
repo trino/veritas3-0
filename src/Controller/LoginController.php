@@ -81,9 +81,7 @@ class LoginController extends AppController{
                     $this->Flash->error($this->Trans->getString("flash_invalidlogin", "", $language));
                     $URL = '/login?language=' . $language;
                     if ($usedcookie || isset($_POST["nocookie"]) || isset($_GET["nocookie"])) {$URL .= "&nocookie";}
-                    if(!isset($_GET["nocookie"])){
-                        $this->redirect($URL);
-                    }
+                    $this->redirect($URL);
                 //}
             }
         }else {

@@ -8,7 +8,7 @@ include_once('subpages/api.php');
 $language = $this->request->session()->read('Profile.language');
 $GLOBALS["language"] = $language;
 //$registry = $this->requestAction('/settings/getRegistry');
-$strings = CacheTranslations($language, array("analytics_%","month_%", "forms_dateformat") ,$settings);//,$registry);
+$strings = CacheTranslations($language, array("analytics_%","month_%") ,$settings);//,$registry);
 //print_r($strings);
 
 function left($text, $length){
@@ -283,9 +283,9 @@ jQuery(document).ready(function() {
 											<div class="col-md-11" align="right" style="margin-right:0;padding-right:0">
 												<div class="input-group input-large date-picker input-daterange" data-date="10/11/2012" data-date-format="mm/dd/yyyy">
 													<span class="input-group-addon"><?= $strings["analytics_start"]; ?></span>
-													<input type="text" class="form-control" title="<?= $strings["forms_dateformat"]; ?>" name="from" value="<?php echo $enddate; ?>" style="min-width: 100px;">
+													<input type="text" class="form-control" name="from" value="<?php echo $enddate; ?>" style="min-width: 100px;">
 													<span class="input-group-addon"><?= $strings["analytics_finish"]; ?></span>
-													<input type="text" class="form-control" title="<?= $strings["forms_dateformat"]; ?>" name="to" title="<?= $strings["analytics_leaveblank"] ?>" value="<?php echo get2("to", date("Y-m-d")); ?>" style="min-width: 100px;">
+													<input type="text" class="form-control" name="to" title="<?= $strings["analytics_leaveblank"] ?>" value="<?php echo get2("to", date("Y-m-d")); ?>" style="min-width: 100px;">
                                                     <!--button type="submit" class="btn btn-primary" style="float">Search</button-->
 
 												</div>

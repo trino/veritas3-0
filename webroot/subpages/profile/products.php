@@ -1,6 +1,5 @@
 <?php
     if ($this->request->session()->read('debug')) { echo "<span style ='color:red;'>subpages/profile/products.php #INC124</span>";}
-
     $provincelist = array("AB" => "Alberta", "BC" => "British Columbia", "MB" => "Manitoba", "NB" => "New Brunswick", "NFL" => "Newfoundland and Labrador", "NWT" => "Northwest Territories", "NS" => "Nova Scotia", "NUN" => "Nunavut", "ONT" => "Ontario", "PEI" => "Prince Edward Island", "QC" => "Quebec", "SK" => "Saskatchewan", "YT" => "Yukon Territories");
 
     function ucfirst2($Text){

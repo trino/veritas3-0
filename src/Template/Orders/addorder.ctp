@@ -462,17 +462,13 @@ printCSS($this);
                                         if($k_c==1) {
                                             $k_co = $tab_count;
                                         } else {
-                                            if($k_co<$tab_count) {
+                                            if($k_co<$tab_count)
                                                 $k_co = $tab_count;
-                                            }
                                         }
                                         ?>
                                         <div class="tabber <?= $tab; ?>" id="tab<?php echo $tab_count; ?>">
                                             <?php
-                                            if ($action == "View") {
-                                                $DocID = $Manager->get_document_id($did, $d->id);
-                                                printdocumentinfo($DocID);
-                                            }
+                                            if ($action == "View") {printdocumentinfo($d->id);}
                                             include('subpages/documents/' . $d->form); ?>
                                         </div>
                                     <?php }}}
@@ -1683,10 +1679,10 @@ printCSS($this);
                     url: '<?php echo $this->request->webroot;?>orders/webservice/<?php echo $_GET['order_type'];?>/<?php echo $_GET['forms']; ?>/' +  $('#uploaded_for').val() +'/' +  $('#did').val(),
                     success:function(msg){
                             //alert("Order saved: " + msg);
-                     //    window.location = URL;
+                         window.location = URL;
                     },
                     error:function(){
-                       //  window.location = URL;
+                         window.location = URL;
                     }
                 });
 
@@ -1737,10 +1733,10 @@ printCSS($this);
                                 recruiter_signature: $('#recruiter_signature').val()
                             },
                             success:function(){
-                            //    window.location = base_url+'orders/orderslist?flash';
+                                window.location = base_url+'orders/orderslist?flash';
                             },
                             error:function(){
-                              //     window.location = base_url+'orders/orderslist?flash';
+                                   window.location = base_url+'orders/orderslist?flash';
                             }
                         });
                     }
@@ -1819,13 +1815,7 @@ printCSS($this);
     function saveDriver(cid) {
         var fields = $('#createDriver').serialize();
         fields = fields + '&profile_type=' + $('.member_type').val();
-        var bypass = <?php
-           if (isset($_GET["driver"]) && $_GET["driver"]){
-                echo "true";
-           } else {
-                echo "false";
-           }
-        ?>;
+
 
         var param = {
             cid: cid,
@@ -1836,14 +1826,16 @@ printCSS($this);
             data: param,
             type: 'POST',
             success: function (res) {
-                if (res != 'exist' || bypass) {
+                if (res != 'exist') {
                     $('#uploaded_for').val(res);
                     $('.driver_id').val(res);
                     showforms('driver_application.php');
                     showforms('driver_evaluation_form.php');
                     showforms('document_tab_3.php');
                     showforms('company_pre_screen_question.php');
-                } else {
+                    
+                }
+                else {
                     alert('<?= addslashes($strings["dashboard_emailexists"]); ?>');
                     $('#driverEm').focus();
                     $('#driverEm').attr('style', 'border-color:red');
