@@ -118,7 +118,13 @@
         }
 
         function getAllClient(){
-            $query = TableRegistry::get('Clients')->find('all');
+            if(!$this->request->session()->read('Profile.super')){
+                $this->loadComponent("Document");
+                $Client = $this->Document->find_client();
+                $query = TableRegistry::get('Clients')->find('all', array("id" => $Client));
+            }else{
+                $query = TableRegistry::get('Clients')->find('all');
+            }
             $this->set('clients', $query);
         }
 
