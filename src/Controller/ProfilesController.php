@@ -1142,8 +1142,7 @@ class ProfilesController extends AppController{
         $this->render("edit");
     }
 
-    function checkusername($profile, $post){
-
+    function checkusername($profile, $post){//updates username of $profile->id
         $username = trim($post["username"]);
         if(!$username) {
             $username = str_replace(" ", "_", TableRegistry::get('profile_types')->find()->where(['id' => $profile->profile_type])->first()->title . "_" . $profile->id);
@@ -1604,11 +1603,13 @@ public function saveDriver() {
     }
     //var_dump($post);die();
     $que = $this->Profiles->find()->where(['email' => $post['email'], 'id <> ' => $post['id']])->first();
-
     if ($que) {
-        //echo count($que);
-        echo 'exist';
-        die();
+        $Profile = $this->Profiles->find()->where(['id ' => $post['id']])->first();
+        if ($Profile->email != $post['email']) {//some have the same email for testing
+            //echo count($que);
+            echo 'exist';
+            die();
+        }
     }
     //$post = $_POST['inputs'];
     // var_dump($post);die();

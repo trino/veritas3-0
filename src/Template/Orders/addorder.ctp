@@ -393,7 +393,7 @@ printCSS($this);
                                 if (!$did) {
                                     ?>
                                     <input type="hidden" name="user_id"
-                                           value="<?php $this->request->session()->read('Profile.id');?>"
+                                           value="<?= $this->request->session()->read('Profile.id');?>"
                                            id="user_id"/>
 
                                 <?php
@@ -456,19 +456,17 @@ printCSS($this);
                                     if (true){ //($prosubdoc['display'] != 0 && $d->display == 1) {
                                         $k_c++;
 
-                                        $tab_count = $d->id;
-
-                                        $tab_count = $tab_count + 1;
-                                        if($k_c==1) {
+                                        $tab_count = $d->id + 1;
+                                        if($k_c==1 || $k_co<$tab_count) {
                                             $k_co = $tab_count;
-                                        } else {
-                                            if($k_co<$tab_count)
-                                                $k_co = $tab_count;
                                         }
                                         ?>
                                         <div class="tabber <?= $tab; ?>" id="tab<?php echo $tab_count; ?>">
                                             <?php
-                                            if ($action == "View") {printdocumentinfo($d->id);}
+                                            if ($action == "View") {
+                                                $DocID = $Manager->get_document_id($did, $d->id);
+                                                printdocumentinfo($DocID);
+                                            }
                                             include('subpages/documents/' . $d->form); ?>
                                         </div>
                                     <?php }}}
@@ -1812,10 +1810,18 @@ printCSS($this);
             }
         });
     }
+
+    function nextform(){
+        showforms('driver_application.php');
+        showforms('driver_evaluation_form.php');
+        showforms('document_tab_3.php');
+        showforms('company_pre_screen_question.php');
+    }
+
     function saveDriver(cid) {
         var fields = $('#createDriver').serialize();
         fields = fields + '&profile_type=' + $('.member_type').val();
-
+        //alert("<?= $action; ?>");
 
         var param = {
             cid: cid,
@@ -1829,13 +1835,8 @@ printCSS($this);
                 if (res != 'exist') {
                     $('#uploaded_for').val(res);
                     $('.driver_id').val(res);
-                    showforms('driver_application.php');
-                    showforms('driver_evaluation_form.php');
-                    showforms('document_tab_3.php');
-                    showforms('company_pre_screen_question.php');
-                    
-                }
-                else {
+                    nextform();
+                }  else {
                     alert('<?= addslashes($strings["dashboard_emailexists"]); ?>');
                     $('#driverEm').focus();
                     $('#driverEm').attr('style', 'border-color:red');
@@ -1845,6 +1846,7 @@ printCSS($this);
             }
         });
     }
+
     function savePrescreen(url, order_id, cid) {
         var fields = $('#form_tab1').serialize();
         $(':disabled[name]', '#form_tab1').each(function () {
