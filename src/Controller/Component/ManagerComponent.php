@@ -8,7 +8,7 @@ use Cake\Datasource\ConnectionManager;
 class ManagerComponent extends Component {
     function init($Controller){
         $Controller->set("Manager", $this);
-        $Controller->set("Me", $this->request->session()->read('Profile.id'));
+        $Controller->set("Me", $Controller->request->session()->read('Profile.id'));
         $this->Controller = $Controller;
     }
 
