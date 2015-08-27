@@ -338,6 +338,72 @@ var FormWizard = function () {
                 Metronic.scrollTo($('.page-title'));
             }
 
+            function validate_data(Data, DataType){
+                if(Data) {
+                    switch (DataType.toLowerCase()) {
+                        case "email":
+                            var re = /\S+@\S+\.\S+/;
+                            return re.test(Data);
+                            break;
+                        case "postalcode":
+                            Data = Data.replace(/ /g, '').toUpperCase();
+                            var regex = new RegExp(/^[ABCEGHJKLMNPRSTVXY]\d[ABCEGHJKLMNPRSTVWXYZ]?\d[ABCEGHJKLMNPRSTVWXYZ]\d$/i);
+                            return regex.test(Data);
+                            break;
+                        case "phone":
+                            var phoneRe = /^[2-9]\d{2}[2-9]\d{2}\d{4}$/;
+                            var digits = Data.replace(/\D/g, "");
+                            return (digits.match(phoneRe) !== null);
+                            break;
+                        default:
+                            alert(DataType + " is unhandled");
+                    }
+                }
+                return true;
+            }
+
+            function hasClass(elem, className) {
+                return new RegExp(' ' + className + ' ').test(' ' + elem.className + ' ');
+            }
+            function strip(html) {
+                var tmp = document.createElement("DIV");
+                tmp.innerHTML = html.trim();
+                return tmp.textContent || tmp.innerText || "";
+            }
+
+            function checktags(TabID, tagtype){
+                var element = document.getElementById(TabID);
+                var inputs = element.getElementsByTagName(tagtype);
+                var RET = new Array();
+                RET['Status'] = true;
+                for (index = 0; index < inputs.length; ++index) {
+                    element = inputs[index];
+                    isrequired = hasClass(element, "required") || element.hasAttribute("required");
+                    var value = element.value;
+                    var isValid = true;
+                    var Reason = "";
+                    if(!value && isrequired){
+                        Reason = "required";
+                        isValid = false;
+                    } else if (element.hasAttribute("role")){
+                        Reason= element.getAttribute("role");
+                        isValid = validate_data(value, Reason);
+                    }
+
+                    if(!isValid){
+                        var name = element.parentElement.previousElementSibling.innerHTML;
+                        name = strip(name.replace(":", ""));
+                        RET['Status'] = false;
+                        RET['Element'] = name;
+                        RET['Reason'] = Reason;
+                        RET['Value'] = value;
+                        element.scrollIntoView();
+                        return RET;
+                    }
+                }
+                return RET;
+            }
+
             // default form wizard
             $('#form_wizard_1').bootstrapWizard({
                 'nextSelector': '.button-next',
@@ -349,24 +415,26 @@ var FormWizard = function () {
                     
                 },
                 onNext: function (tab, navigation, index) {
+                    var ActiveTab = $('.tabber.active').attr('id');
+
+                    var Reason = checktags(ActiveTab, "input");
+                    if(Reason["Status"]){Reason = checktags(ActiveTab, "select");}
+                    if(!Reason["Status"]){
+                        alert(Reason["Element"] + " (" + Reason["Value"] + ") is not valid (" + Reason['Reason'] + ")");
+                        return false;
+                    }
 
                     if ($('.tabber.active').attr('class').replace('confirmation') != $('.tabber.active').attr('class') || $('.tabber.active').attr('id') == 'tab19') {
                         //alert($('.tabber.active .touched_edit').val());
                         if($('.tabber.active').attr('class').replace('confirmation') != $('.tabber.active').attr('class')){
-                        if ($('.tabber.active .touched').val() != '1' && $('.tabber.active .touched_edit').val() != '1') {
+                            if ($('.tabber.active .touched').val() != '1' && $('.tabber.active .touched_edit').val() != '1') {
+                                alert(SignPlease);
+                                return false;
+                            }
+                        } else if ($('.tabber.active .touched').val() != '1' && $('.tabber.active .touched_edit8').val() != '1') {
                             alert(SignPlease);
+                            $('html,body').animate({ scrollTop: $('#sig8').offset().top}, 'slow');
                             return false;
-                        }
-                        }
-                        else
-                        {
-                         if ($('.tabber.active .touched').val() != '1' && $('.tabber.active .touched_edit8').val() != '1') {
-                            alert(SignPlease);
-                            $('html,body').animate({
-                                        scrollTop: $('#sig8').offset().top},
-                                    'slow');
-                            return false;
-                        }   
                         }
                     }
                     //alert(tab);
@@ -398,15 +466,6 @@ var FormWizard = function () {
                             }
 
                         }
-                        /* for(var i =1; i<=6; i++){
-                            if (i != 2) {//skip second piece ID
-                                if ($('.mee_att_' + i).length) {
-                                    if ($('.mee_att_' + i).val().length == 0) {
-                                        MissingData = "Missing a required attachment";
-                                    }
-                                }
-                            }
-                        } */
                         if(MissingData.length>0) {
                             alert(MissingData);
                             return false;
@@ -414,154 +473,91 @@ var FormWizard = function () {
                     }
 
                     if($('.tabber.active').attr('id') == 'tab3'){//Challenger Driver Application
-                        
-                        if(!$('#confirm_check').is(':checked') && $('.button-next').attr('id')!='nextview')
-                        {
-                            
+                        if(!$('#confirm_check').is(':checked') && $('.button-next').attr('id')!='nextview') {
                             alert(PleaseConfirm);
                             $('#confirm_check').focus();
-                            $('html,body').animate({
-                                        scrollTop: $('#confirm_check').offset().top},
-                                    'slow');
+                            $('html,body').animate({scrollTop: $('#confirm_check').offset().top},'slow');
                             return false;
-                           // }
-                        }
-                            else{
-                            
+                        } else{
                             handleTitle(tab, navigation, index);
                         }
-                    }
-                    else
-                    if($('.tabber.active').attr('id') == 'tab100000x'){//Challenger Driver Application
-                        
-                        if(!$('#confirm_check1').is(':checked') )
-                        {
-                            
+                    } else if($('.tabber.active').attr('id') == 'tab100000x'){//Challenger Driver Application
+                        if(!$('#confirm_check1').is(':checked') ) {
                             alert(PleaseConfirm);
                             $('#confirm_check1').focus();
-                            $('html,body').animate({
-                                        scrollTop: $('#confirm_check1').offset().top},
-                                    'slow');
+                            $('html,body').animate({ scrollTop: $('#confirm_check1').offset().top}, 'slow');
                             return false;
-                           // }
-                        }
-                            else{
-                            
+                        } else{
                             handleTitle(tab, navigation, index);
                         }
-                    }
-                    else
-                    if($('#tab5').attr('class') == 'tabber tab-pane active' || $('#tab1').attr('class') == 'tabber tab-pane active')
-                    {
+                    } else if($('#tab5').attr('class') == 'tabber tab-pane active' || $('#tab1').attr('class') == 'tabber tab-pane active') {
                         if($('#tab5').attr('class') == 'tabber tab-pane active'){
-                        var curr = $('#tab5');
-                        var form_name = 'consent';
-                        }
-                        else{
-                        var curr = $('#tab1');
-                        form_name = 'other';
+                            var curr = $('#tab5');
+                            var form_name = 'consent';
+                        } else{
+                            var curr = $('#tab1');
+                            var form_name = 'other';
                         }
                         
                         var er = 0;
                         
                         curr.find('.required').each(function(){
-                            if($(this).val()=='' && $(this).attr('name')!='' && $(this).attr('name')!='undefined'  && $(this).attr('name'))
-                            {
-                                
+                            if($(this).val()=='' && $(this).attr('name')!='' && $(this).attr('name')!='undefined'  && $(this).attr('name')) {
                                 $(this).attr('style','border-color:red');
                                 $(this).addClass('myerror');
-                                
                                 er = 1;
-                            }
-                            else
-                            {
+                            } else {
                                 $(this).removeClass('myerror');
                                 $(this).removeAttr('style');
                                 
                             }
                         });
                         
-                        if($('#check_div').val()=='1' && $('#divison').val()=='')
-                        {
+                        if($('#check_div').val()=='1' && $('#divison').val()=='') {
                             er = 1;
                             $('#divison').addClass('myerror');
                             $('#divison').addClass('required');
                             $('#divison').attr('style','border-color:red');
-                        }
-                        else
-                        {
+                        } else {
                             $('#divison').removeClass('myerror');
-                                $('#divison').removeAttr('style');
+                            $('#divison').removeAttr('style');
                         }
                         if(er){
                             alert(FillAll);
-                            $('html,body').animate({
-                                        scrollTop: $('.myerror').offset().top},
-                                    'slow');
-                        return false;
-
-                        }
-                        else{
-                            if(form_name == 'consent')
-                            {
-
-                                if($('#sig2 .touched').val()!='1' && $('#sig2 .touched_edit2').val()!='1')
-                                {
+                            $('html,body').animate({scrollTop: $('.myerror').offset().top}, 'slow');
+                            return false;
+                        } else{
+                            if(form_name == 'consent') {
+                                if($('#sig2 .touched').val()!='1' && $('#sig2 .touched_edit2').val()!='1') {
                                     alert(SaveSig);
-                                    $('html,body').animate({
-                                        scrollTop: $('#sig2').offset().top},
+                                    $('html,body').animate({scrollTop: $('#sig2').offset().top},
                                     'slow');
+                                    return false;
+                                } else if($('#sig4 .touched').val()!='1' && $('#sig4 .touched_edit4').val()!='1') {
+                                    alert(SaveSig);
+                                    $('html,body').animate({scrollTop: $('#sig4').offset().top}, 'slow');
                                     return false;
                                 }
                                 else
-                                if($('#sig4 .touched').val()!='1' && $('#sig4 .touched_edit4').val()!='1')
-                                {
+                                if($('#sig1 .touched').val()!='1' && $('#sig1 .touched_edit1').val()!='1') {
                                     alert(SaveSig);
-                                    $('html,body').animate({
-                                        scrollTop: $('#sig4').offset().top},
-                                    'slow');
+                                    $('html,body').animate({scrollTop: $('#sig1').offset().top},'slow');
                                     return false;
-                                }
-                                else
-                                if($('#sig1 .touched').val()!='1' && $('#sig1 .touched_edit1').val()!='1')
-                                {
+                                } else if($('#sig3 .touched').val()!='1' && $('#sig3 .touched_edit3').val()!='1') {
                                     alert(SaveSig);
-                                    $('html,body').animate({
-                                        scrollTop: $('#sig1').offset().top},
-                                    'slow');
+                                    $('html,body').animate({scrollTop: $('#sig3').offset().top},  'slow');
                                     return false;
+                                } else {
+                                    handleTitle(tab, navigation, index);
                                 }
-                                
-                                else
-                                if($('#sig3 .touched').val()!='1' && $('#sig3 .touched_edit3').val()!='1')
-                                {
-                                    alert(SaveSig);
-                                    $('html,body').animate({
-                                        scrollTop: $('#sig3').offset().top},
-                                    'slow');
-                                    return false;
-                                }
-                                else
-                                 handleTitle(tab, navigation, index);
-                                
-                                
-                                
+                            } else {
+                                handleTitle(tab, navigation, index);
                             }
-                            else{
-                        
-                        handleTitle(tab, navigation, index);
                         }
-                    }
-
-                    }
-                    
-                    else{
+                    } else{
                         //alert('test');
                         handleTitle(tab, navigation, index);
                     }
-                    
-
-
                 },
                 onPrevious: function (tab, navigation, index) {
                     success.hide();

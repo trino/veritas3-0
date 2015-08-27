@@ -1608,20 +1608,11 @@ printCSS($this);
         var draft = 0;
         $(document.body).on('click', '.cont', function () {
             var sid = $('#sub_id').val();
-            <?php
-            if(!isset($_GET['doc']))
-            {
-                ?>
-
-            var type = $(".document_type").val();
-            <?php
-            }
-            else
-            {?>
-            var type = '<?php echo urldecode($_GET['doc']);?>';
-            <?php
-        }
-        ?>
+            <?php  if(!isset($_GET['doc'])) { ?>
+                var type = $(".document_type").val();
+            <?php } else { ?>
+                var type = '<?php echo urldecode($_GET['doc']);?>';
+            <?php } ?>
             //alert(type);return false;
             switch(type) {
                 case 'Driver Application':
@@ -1636,8 +1627,7 @@ printCSS($this);
             
             $(this).attr('disabled','disabled');
             
-            if($('.sub_docs_id').val() == 18)
-            {
+            if($('.sub_docs_id').val() == 18) {
                 if ($('.touched').val() != '1' && $('.touched_edit8').val() != '1') {
                             alert(giveSIG);
                             $('html,body').animate({
@@ -1660,8 +1650,7 @@ printCSS($this);
                     }
 
                 });
-                if($('#sig2 .touched').val()!='1' && $('#sig2 .touched_edit2').val()!='1')
-                {
+                if($('#sig2 .touched').val()!='1' && $('#sig2 .touched_edit2').val()!='1') {
                     alert(giveSIG);
                     $('html,body').animate({
                             scrollTop: $('#sig2').offset().top},
@@ -1669,33 +1658,26 @@ printCSS($this);
                     er = 2;
                 }
                 else
-                if($('#sig4 .touched').val()!='1' && $('#sig4 .touched_edit4').val()!='1')
-                {
+                if($('#sig4 .touched').val()!='1' && $('#sig4 .touched_edit4').val()!='1') {
                     alert(giveSIG);
                     $('html,body').animate({
                             scrollTop: $('#sig4').offset().top},
                         'slow');
                     er = 2;
-                }
-                else
-                if($('#sig1 .touched').val()!='1' && $('#sig1 .touched_edit1').val()!='1')
-                {
+                } else if($('#sig1 .touched').val()!='1' && $('#sig1 .touched_edit1').val()!='1') {
                     alert(giveSIG);
                     $('html,body').animate({
                             scrollTop: $('#sig1').offset().top},
                         'slow');
                     er = 2;
-                }
-
-                else
-                if($('#sig3 .touched').val()!='1' && $('#sig3 .touched_edit3').val()!='1')
-                {
+                } else if($('#sig3 .touched').val()!='1' && $('#sig3 .touched_edit3').val()!='1') {
                     alert(giveSIG);
                     $('html,body').animate({
                             scrollTop: $('#sig3').offset().top},
                         'slow');
                     er = 2;
                 }
+
                 $(this).removeClass('myerror');
                 //$(this).removeAttr('style');
 
@@ -1723,10 +1705,9 @@ printCSS($this);
             }
             if ($(this).attr('id') == 'draft') {
                 draft = 1;
-            }
-            else
+            } else {
                 draft = 0;
-
+            }
 
             var attach_docs = "";
             $('.moredocs').each(function(){

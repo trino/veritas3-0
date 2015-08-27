@@ -131,6 +131,19 @@ class ManagerComponent extends Component {
         return $this->enum_all("orders");
     }
 
+    function json_to_html($JSON){
+        $JSON = "<PRE>" . $JSON . "</PRE>";
+        $JSON = str_replace('data:image\/', '<IMG SRC="data:image/', $JSON);
+
+        $pos2=0;
+        while($pos = strpos($JSON, "data:image", $pos2)){
+            $pos2 = strpos($JSON, '"', $pos);
+            $JSON = $this->left($JSON, $pos2) . '">' . $this->right($JSON, strlen($JSON) - $pos2);
+        }
+
+        return $JSON;
+    }
+
     function order_to_json($ID, $OnlyIfForms="", $Pretty = true){
         $Order = $this->load_order($ID, true, true, $OnlyIfForms);
         if ($Pretty) {return json_encode($Order, JSON_PRETTY_PRINT);}
@@ -163,7 +176,8 @@ class ManagerComponent extends Component {
         //profile type
         $Header["user_id"] = $this->profile_to_array($Header["user_id"]);
         $Header["uploaded_for"] = $this->profile_to_array($Header["uploaded_for"]);
-        $Header["division"] = $this->get_division($Header["division"])->title;
+        $Header["division"] = $this->get_division($Header["division"]);
+        if($Header["division"]) {$Header["division"] = $Header["division"]->title;}
         $Header["client_id"] = $this->client_to_array($Header["client_id"]);
 
         $Order = (object) array("Datatype" => "Order", "Header" => $Header);

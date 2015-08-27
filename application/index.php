@@ -360,8 +360,9 @@ if (count($_POST) > 0) {
         var inputs = document.getElementsByTagName(tagtype);
         for (index = 0; index < inputs.length; ++index) {
             element = inputs[index];
-            isrequired = hasClass(element, "required");
-            if(!element.value && isrequired){
+            isrequired = hasClass(element, "required") || element.hasAttribute("required");
+            var value = element.value;
+            if(!value && isrequired){
                 var name = element.parentElement.parentElement.children[0].innerHTML;
                 name = strip(name.replace(":", "")).trim();
                 alert("The field '" + name + "' is required");

@@ -53,6 +53,8 @@
     if (isset($disabled)) {$is_disabled = 'disabled="disabled"';}
     if (isset($profile)) {$p = $profile;}
     $settings = $this->requestAction('settings/get_settings');
+    include_once('subpages/api.php');
+    $languages = languages();
 
 function makeselect($is_disabled=false, $Name=""){
     if($Name){
@@ -135,7 +137,7 @@ function makedropdownoption($Key, $Value, $TheValue){
                                     <a href="#tab_1_13" data-toggle="tab">Add/Edit Documents</a>
                             </li>
                             <li>
-                                <a href="producteditor">Product Types</a>
+                                <a href="<?= $this->request->webroot; ?>profiles/producteditor">Product Types</a>
                             </li>
                             <li>
                                 <a href="#tab_1_30" data-toggle="tab">All Crons</a>
@@ -146,6 +148,13 @@ function makedropdownoption($Key, $Value, $TheValue){
                             <LI>
                                 <a href="#tab_1_17" data-toggle="tab">Email Editor</a>
                             </LI>
+                            <LI>
+                                <a href="#tab_1_18" data-toggle="tab">Translation</a>
+                            </LI>
+
+                                    <li>
+                                        <a href="<?= $this->request->webroot; ?>profiles/jsonschema">JSON Schema</a>
+                                    </li>
                             <?php
                             }
                         }
@@ -213,7 +222,9 @@ function makedropdownoption($Key, $Value, $TheValue){
                 <div class="tab-pane" id="tab_1_17">
                     <?php include('subpages/profile/emails.php'); ?>
                 </div>
-
+                <div class="tab-pane" id="tab_1_18">
+                    <?php include('subpages/profile/translation.php'); ?>
+                </div>
 
                     <div class="tab-pane" id="tab_1_14">
                         <div class="tabbable tabbable-custom">
@@ -251,123 +262,15 @@ function makedropdownoption($Key, $Value, $TheValue){
                     }
                     if($this->request->session()->read('Profile.super')){
                           if(isset($_GET['activedisplay'])){
-                            ?>
-                            <div class="tab-pane active"  id="tab_1_13">
-                            <?php
+                            echo '<div class="tab-pane active"  id="tab_1_13">';
                           }else{
-                            ?>
-                            <div class="tab-pane"  id="tab_1_13">
-                          <?php
+                            echo '<div class="tab-pane"  id="tab_1_13">';
                           }
                           ?>
-                          <div class="col-md-12" style="text-align: right;">
-                                <a href="#" class="btn btn-success"  style="margin:10px 0;" onclick="$('#sub_add').toggle(150);">Add New SubDocument</a>
-                                <div class="col-md-12" id="sub_add" style="display: none;margin:10px 0;padding:0">
-                                    <div class="col-md-10" style="text-align: right;padding:0;">
-                                        <input type="text" placeholder="Sub-Document English title" class="form-control subdocname" />
-                                        <input type="text" placeholder="Sub-Document French title" class="form-control subdocnameFrench" />
-                                        <span class="error passerror flashSubDoc"
-                                          style="display: none;">Subdocument name already exists</span>
-                                        <span class="error passerror flashSubDoc1"
-                                          style="display: none;">Please enter a subdocument name.</span>
-                                    </div>
-                                    <div class="col-md-2" style="text-align: right;padding:0;">
-                                        <a class="btn btn-primary addsubdoc" href="javascript:void(0)">Add</a>
-                                    </div>
-                                    <div class="clearfix"></div>
-                                </div>
-                            </div>
-                                        <div class="clearfix"></div>
-                    <?php $subdoc = $this->requestAction('/clients/getSub'); ?>
-                        <table class="table table-light table-hover sortable">
-                            <tr class="myclass">
-                                <th>English Title</th>
-                                <th>French Title</th>
-                                <th class="" colspan="2">Action</th>
-                            </tr>
-                                <?php
-                                foreach($subdoc as $sub) {
-                                ?>
-                            <tr>
-                                <td>
-                                    <span><?php echo ucfirst($sub['title']); ?></span>
-                                </td>
-                                <td>
-                                    <span><?php echo ucfirst($sub['titleFrench']); ?></span>
-                                </td>
-                                <td>
-                                    <a href="javascript:void(0)" class="btn-xs btn-success"
-                                       onclick="$('#edit_sub_<?php echo $sub['id']; ?>').toggle(150);$('.msg').hide();">Edit</a>
-                                </td>
-                                <td>
-                                    <div class="col-md-12" id="edit_sub_<?php echo $sub['id']; ?>"
-                                         style="display: none;margin:10px 0;padding:0">
-                                        <div class="col-md-12" style="text-align: right;padding:0;">
-                                            <input type="text" id="editsubdocname_<?php echo $sub['id']; ?>"
-                                                   value="<?php echo ucfirst($sub['title']); ?>"
-                                                   placeholder="Sub-Document English title"
-                                                   class="form-control editsubdocname"/>
-                                            <input type="text" id="editsubdocnameFrench_<?php echo $sub['id']; ?>"
-                                                   value="<?php echo ucfirst($sub['titleFrench']); ?>"
-                                                   placeholder="Sub-Document French title"
-                                                   class="form-control editsubdocname"/>
-                                            <span class="error" id="flasheditSub_<?php echo $sub['id']; ?>"
-                                                  style="display: none;">Subdocument name already exists</span>
-                                            <span class="error" id="flasheditSub1_<?php echo $sub['id']; ?>"
-                                                  style="display: none;">Please enter a subdocument name.</span>
-                                        </div>
-                                        <br/><br/>
 
-                                        <div class="col-md-12" style="text-align: right;padding:0;">
-                                            <select class="form-control" id="select_color_<?php echo $sub['id']; ?>">
-                                                <option value="">Select a color class</option>
-                                                <?php
-                                                $color = $this->requestAction('clients/getColorClass');
-                                                if ($color) {
-                                                    foreach ($color as $c) {
-                                                        ?>
-                                                        <option
-                                                            value="<?php echo $c->id; ?>" <?php if (isset($sub['color_id']) && $sub['color_id'] == $c->id) { ?> selected="selected"<?php } ?>
-                                                            style="background: <?php echo $c->rgb; ?>;"><?php echo $c->color; ?></option>
-                                                    <?php
-                                                    }
-                                                }
-                                                makeselect();
+                            <?php include('subpages/profile/editdocs.php'); ?>
 
-                                                makeselect($is_disabled, "select_icon_" . $sub['id']);
-                                                makedropdownoption("", "Default", $sub["icon"]);
-                                                makedropdownoption("fa icon-footprint", "Footprint", $sub["icon"]);
-                                                makedropdownoption("fa icon-surveillance", "Surveillance", $sub["icon"]);
-                                                makedropdownoption("fa icon-physical", "Physical", $sub["icon"]);
-                                                makeselect();
-
-                                                makeselect($is_disabled, "select_product_" . $sub['id']);
-                                                foreach ($products as $product){
-                                                    makedropdownoption($product->number, $product->title, $sub["ProductID"]);
-                                                }
-                                            makeselect();
-                                             ?>
-
-
-
-
-                                            <span class="error" id="flashSelectColor_<?php echo $sub['id']; ?>"
-                                              style="display: none; width: auto;">Please  select a color.</span>
-                                          </div> <br /> <br />
-                                        <div class="col-md-12" style="text-align: right;padding:0;">
-                                            <a class="btn-xs btn-primary editsubdoc" id="subbtn<?php echo $sub['id']; ?>" href="javascript:void(0)">Save</a>
-                                            <a href="?DeleteDoc=<?php echo $sub['id']; ?>" class="btn-xs btn-danger deletesubdoc" id="delsubbtn" onclick="return confirm('Are you sure you want to delete <?= $sub['title'] ?>?');">Delete</a>
-                                        </div>
-                                        <div class="clearfix"></div>
-                                    </div>
-                                    <span id="msg_<?php echo $sub['id']; ?>"></span>
-                                <!--</div>-->
-                            </td>
-                            </tr>
-                                    <?php
-                                }
-                                }
-                                ?>
+                         <?php } ?>
 
                         </table>
                         <?php
@@ -426,29 +329,39 @@ function makedropdownoption($Key, $Value, $TheValue){
             }
         });
     }
+
+     </script>
+    <SCRIPT>
+
     $(function () {
 
-        $('#cleardata').click(function(){
-            $(this).attr("disabled","disabled");
+        $('#cleardata').click(function () {
+            $(this).attr("disabled", "disabled");
             var dn = confirm("Confirm Clear Database Data.");
-            if(dn == true)
-            {
+            if (dn == true) {
                 $.ajax({
-                    url:"<?php echo $this->request->webroot;?>profiles/cleardb",
-                    type:"post",
-                    success:function(msg){
-                            $('#cleardata').removeAttr("disabled");
-                            if(msg =='Cleared')
+                    url: "<?php echo $this->request->webroot;?>profiles/cleardb",
+                    type: "post",
+                    success: function (msg) {
+                        $('#cleardata').removeAttr("disabled");
+                        if (msg == 'Cleared')
                             $(".cleardata_flash").show();
                     }
                 });
             }
 
         });
+    });
+    </SCRIPT><SCRIPT>
+        $(function () {
 
         $('.addsubdoc').click(function(){
-           var subname = $('.subdocname').val();
-           var subnameFrench = $('.subdocnameFrench').val();
+            <?php
+                foreach($languages as $language){
+                   if($language == "English"){$language = "";}
+                   echo "var subname" . $language ." = $('.subdocname" . $language . "').val();";
+               }
+           ?>
            if(subname == ''  ) {
                 $('.flashSubDoc1').show();
                 $('.flashSubDoc').hide();
@@ -457,38 +370,55 @@ function makedropdownoption($Key, $Value, $TheValue){
                                 scrollTop: $('.page-title').offset().top
                             },
                             'slow');
-
-                        return false;
+                return false;
            } else {
-            $.ajax({
-                url: '<?php echo $this->request->webroot;?>clients/check_document',
-                data: 'subdocumentname=' + subname + '&subdocumentnameFrench=' + subnameFrench,
-                type: 'post',
-                success: function (res) {//alert(res);
-                    if (res == '1') {
-                        //alert(res);
-                        $('.flashSubDoc').show();
-                        $('.flashSubDoc1').hide();
-                        $('.subdocname').focus();
-                        $('html,body').animate({
-                                scrollTop: $('.page-title').offset().top
-                            },
-                            'slow');
-
-                        return false;
-                    } else {
-                         window.location = '<?php echo $this->request->webroot;?>clients/addsubdocs/?sub=' + subname + "&subFrench=" + subnameFrench;
+               var data = 'languages=<?= implode(",", $languages); ?>'<?php //'subdocumentname=' + subname + '&subdocumentnameFrench=' + subnameFrench
+                     foreach($languages as $language){
+                        if($language == "English"){$language = "";}
+                       echo " + '&subdocumentname" . $language . "=' + subname" . $language;
                     }
-                }
-            });
+                ?>;
+               $.ajax({
+                   url: '<?php echo $this->request->webroot;?>clients/check_document',
+                   data: data,
+                   type: 'post',
+                   success: function (res) {//alert(res);
+                       if (res == '1') {
+                           //alert(res);
+                           $('.flashSubDoc').show();
+                           $('.flashSubDoc1').hide();
+                           $('.subdocname').focus();
+                           $('html,body').animate({
+                                   scrollTop: $('.page-title').offset().top
+                               },
+                               'slow');
+
+                           return false;
+                       } else {
+                           window.location = '<?php echo $this->request->webroot;?>clients/addsubdocs/?'<?php
+                                 foreach($languages as $language){
+                                    if($language == "English"){$language = "";}
+                                    echo " + '&sub" . $language . "=' + subname" . $language;
+                                }
+                                echo " + '&languages=" . implode(",", $languages) . "'";
+                            ?>;
+                       }
+                   }
+               });
             }
         });
-
+        });
+</SCRIPT><SCRIPT>
+    $(function () {
         $('.editsubdoc').click(function(){
             $(this).html('Saving..');
             var id = $(this).attr('id').replace('subbtn','');
-            var subname = $('#editsubdocname_'+id).val();
-            var subnameFrench = $('#editsubdocnameFrench_'+id).val();
+            <?php
+                 foreach($languages as $language){
+                    if($language == "English"){$language = "";}
+                    echo "var subname" . $language ." = $('#editsubdocname" . $language . "_'+id).val();";
+                }
+            ?>
             var color = $('#select_color_'+id).val();
             var icon = $('#select_icon_'+id).val();
             var product = $('#select_product_'+id).val();
@@ -516,7 +446,12 @@ function makedropdownoption($Key, $Value, $TheValue){
 
             $.ajax({
                 url: '<?php echo $this->request->webroot;?>clients/check_document/'+id,
-                data: 'subdocumentname=' + subname + '&subdocumentnameFrench=' + subnameFrench,
+                data: 'languages=<?= implode(",", $languages); ?>'<?php //'subdocumentname=' + subname + '&subdocumentnameFrench=' + subnameFrench
+                     foreach($languages as $language){
+                        if($language == "English"){$language = "";}
+                       echo " + '&subdocumentname" . $language . "=' + subname" . $language;
+                    }
+                ?>,
                 type: 'post',
                 success: function (res) {//alert(res);
                     if (res == '1') {
@@ -563,7 +498,12 @@ function makedropdownoption($Key, $Value, $TheValue){
            } else if(color && subname != '' ) {
             $.ajax({
                 url: '<?php echo $this->request->webroot;?>clients/check_document/'+id,
-                data: 'subdocumentname=' + subname+ '&subdocumentnameFrench' + subnameFrench,
+                data: 'languages=<?= implode(",", $languages); ?>'<?php //'subdocumentname=' + subname + '&subdocumentnameFrench=' + subnameFrench
+                     foreach($languages as $language){
+                        if($language == "English"){$language = "";}
+                       echo " + '&subdocumentname" . $language . "=' + subname" . $language;
+                    }
+                ?>,
                 type: 'post',
                 success: function (res) {//alert(res);
                     if (res == '1') {
@@ -580,8 +520,15 @@ function makedropdownoption($Key, $Value, $TheValue){
 
                         return false;
                     } else {
-                            msg = '<span class="msg" style="color:#45B6AF">Saved</span>';
-                            var url = '<?php echo $this->request->webroot;?>clients/addsubdocs/?sub=' + subname + '&subFrench=' + subnameFrench + '&updatedoc_id=' + id;
+                            msg = '<span class="msg" style="color:#45B6AF">Saved</span>'; //searchforhere
+                            var url = '<?php echo $this->request->webroot;?>clients/addsubdocs/?'<?php
+                                //sub=' + subname + '&subFrench=' + subnameFrench
+                                 foreach($languages as $language){
+                                    if($language == "English"){$language = "";}
+                                    echo " + '&sub" . $language . "=' + subname" . $language;
+                                }
+                                echo " + '&languages=" . implode(",", $languages) . "'";
+                            ?> + '&updatedoc_id=' + id;
                             url = url + "&icon=" + icon + "&productid=" + product;
                             if(color){url = url + '&color=' + color;}
                     $.ajax({
@@ -699,9 +646,7 @@ function makedropdownoption($Key, $Value, $TheValue){
             });
         }
     <?php
-    }
-    else
-    {
+    }  else  {
     ?>
         function searchClient() {
             var key = $('#searchClient').val();
@@ -715,9 +660,7 @@ function makedropdownoption($Key, $Value, $TheValue){
                 }
             });
         }
-    <?php
-    }
-    ?>
+    <?php   }   ?>
     $(function () {
         $('.scrolldiv').slimScroll({
             height: '250px'

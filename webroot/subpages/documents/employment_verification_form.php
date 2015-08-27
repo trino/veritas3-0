@@ -83,18 +83,18 @@ $strings2 = CacheTranslations($language, array("verifs_%", "tasks_date", "file_a
                             </div>
                             <label class="control-label col-md-3"><?= $strings["forms_phone"]; ?>: </label>
                             <div class="col-md-3">
-                                <input type="phone" class="form-control" name="supervisor_phone[]" value="<?php echo $emp->supervisor_phone;?>"/>
+                                <input type="text" role="phone" class="form-control" name="supervisor_phone[]" value="<?php echo $emp->supervisor_phone;?>"/>
                             </div>
                        </div>
 
                        <div class="form-group col-md-12">
                             <label class="control-label col-md-3"><?= $strings2["verifs_superemail"]; ?>: </label>
                             <div class="col-md-3">
-                                <input type="email" class="form-control email1" name="supervisor_email[]" value="<?php echo $emp->supervisor_email;?>"/>
+                                <input type="text" role="email" class="form-control email1" name="supervisor_email[]" value="<?php echo $emp->supervisor_email;?>"/>
                             </div>
                             <label class="control-label col-md-3"><?= $strings2["verifs_secondarye"]; ?>: </label>
                             <div class="col-md-3">
-                                <input type="email" class="form-control email1" name="supervisor_secondary_email[]" value="<?php echo $emp->supervisor_secondary_email;?>"/>
+                                <input type="text" role="email" class="form-control email1" name="supervisor_secondary_email[]" value="<?php echo $emp->supervisor_secondary_email;?>"/>
                             </div>
                        </div>
 
