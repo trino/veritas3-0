@@ -821,10 +821,9 @@ class OrdersController extends AppController {
     }
 
     public function getprofile($UserID){
-        $table = TableRegistry::get("profiles");
-        $results = $table->find('all', array('conditions' => array('id'=>$UserID)))->first();
-        return $results;
+        return $this->Manager->get_profile($UserID);
     }
+
     public function filternonnumeric($Text){
         if(!is_numeric($Text)){
             $tempstr="";
@@ -841,10 +840,10 @@ class OrdersController extends AppController {
         return $Text;
     }
 
-    function test1()
-    {
+    function test1() {
         return '12';
     }
+
     public function webservice($order_type = null, $forms = null, $driverid = null, $orderid = null) {
         $all_attachments = TableRegistry::get('mee_attachments');
         $mee_query = $all_attachments->find()->where(['order_id'=>$orderid]);
@@ -932,7 +931,7 @@ class OrdersController extends AppController {
         var_dump($profile->profile_type);
         var_dump($client->company_name);
         var_dump($setting->mee);
-        var_dump($uploadedfor->username);
+        var_dump($uploadedfor);
 
         $this->Mailer->handleevent("ordercompleted", array("email" => "super", "username" => $profile->username, "profile_type" => $this->profiletype($profile->profile_type), "company_name" => $client->company_name, "site" => $setting->mee, "for" => $uploadedfor->username));//$order_info
     }

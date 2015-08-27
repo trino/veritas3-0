@@ -14,6 +14,10 @@ class ManagerComponent extends Component {
 
 
     //////////////////////////profile API//////////////////////////////////////////
+    public function get_profile($UserID){
+        return $this->get_entry("profiles", $UserID, "id");;
+    }
+
     function profile_to_array($ID, $JSON = false, $Pretty = false){
         $Profile = $this->get_entry("profiles", $ID, "id");
         //if(!strpos($Profile->otherinfo, ":")) {$Profile->otherinfo = $this->AppName() . ":" . $ID;}
