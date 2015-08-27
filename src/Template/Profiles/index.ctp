@@ -113,8 +113,6 @@ $super = $this->request->session()->read('Profile.super');
 
                     </div>
                     <div class="btn-set pull-right">
-
-
                         <form action="<?php echo $this->request->webroot; ?>profiles/index" method="get">
                             <?php if (isset($_GET['draft'])) { ?><input type="hidden" name="draft"/><?php } ?>
 

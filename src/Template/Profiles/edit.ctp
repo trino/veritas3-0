@@ -149,7 +149,7 @@
                                     }
                                  ?>"
                                 />
-                            <?php if (isset($id) && !(isset($disabled))) { ?>
+                            <?php if (isset($id) && !(isset($disabled))&& $this->request->params['action']=='edit') { ?>
                                 <center>
                                     <div class="form-group">
                                         <label class="sr-only" for="exampleInputEmail22"><?= $strings["clients_addeditimage"]; ?></label>

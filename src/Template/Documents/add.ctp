@@ -160,7 +160,7 @@ printCSS($this);
 
                     <div class="col-md-12 doc_select" style="margin: 10px 0;padding:0">
 
-                        <select name="doctype" class="form-control select2me no-print" data-placeholder="<?= $strings["documents_selectdocument"]; ?>" onchange="window.location='<?php echo $this->request->webroot;?>documents/add/<?php echo $cid;?>?type='+$(this).val()" <?php if($this->request->params['action']=='view'){?>disabled="disabled"<?php }?>>
+                        <select name="doctype" class="form-control select2me no-print" data-placeholder="<?= $strings["documents_selectdocument"]; ?>" onchange="window.location='<?php echo $this->request->webroot;?>documents/add/<?php echo $cid;?>?type='+$(this).val()" <?php if($this->request->params['action']=='view' || $this->request->params['pass']['1']!=''){?>disabled="disabled"<?php }?>>
                             <option value="0"><?= $strings["documents_selectdocument"]; ?></option>
                             <?php
                              $doc = $doc_comp->getDocument('document');

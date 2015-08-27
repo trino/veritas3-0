@@ -653,12 +653,12 @@ class ProfilesController extends AppController{
             $cond .= ' (LOWER(title) LIKE "%' . $searchs . '%" OR LOWER(fname) LIKE "%' . $searchs . '%" OR LOWER(lname) LIKE "%' . $searchs . '%" OR LOWER(username) LIKE "%' . $searchs . '%" OR LOWER(address) LIKE "%' . $searchs . '%")';
         }
 
-        if (isset($_GET['filter_profile_type']) && $_GET['filter_profile_type']) {
+        if (isset($_GET['filter_profile_type']) && $_GET['filter_profile_type']!='') {
             if ($cond){ $cond.= ' AND'; }
             if($_GET['filter_profile_type'] == "NULL") {
                 $cond .= ' profile_type IS NULL';
             }else {
-                $cond .= ' (profile_type = "' . $profile_type . '" OR admin = "' . $profile_type . '")';
+                $cond .= ' (profile_type = "' . $profile_type .'")';
             }
         }
 
@@ -698,12 +698,13 @@ class ProfilesController extends AppController{
         if (isset($search)) {
             $this->set('search_text', $search);
         }
-        if (isset($profile_type)) {
+        if (isset($profile_type)&& $profile_type!="") {
             $this->set('return_profile_type', $profile_type);
         }
         if (isset($client)) {
             $this->set('return_client', $client);
         }
+        //debug($query);
         //$this->render('index');
 
         /*old code*/
