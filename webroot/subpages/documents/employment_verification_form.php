@@ -458,12 +458,7 @@ $strings2 = CacheTranslations($language, array("verifs_%", "tasks_date", "file_a
                             </div>
                             
                             <?php
-                            if($counter==2)
-                            {
-                                ?>
-                        </div>
-                                <?php
-                            }
+                            
                         }
                       
                     }
@@ -472,6 +467,13 @@ $strings2 = CacheTranslations($language, array("verifs_%", "tasks_date", "file_a
                         ?>
                         <div id="more_div"></div>
                         <?php
+                    }
+                    else
+                    if($counter>1)
+                    {?>
+                    </div>
+                    <?php
+                        
                     }
                      
                 }
