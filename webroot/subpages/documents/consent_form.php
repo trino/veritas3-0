@@ -481,6 +481,7 @@
                 }
                 */
             ?>
+            <?php if($this->request->params['controller']!='Documents'){?>
             <div class="allattach">
             <?php
                 if (!isset($sub2['con_at'])) {
@@ -552,7 +553,7 @@
                     ?>
                 </div>
             </div>
-
+           
             <div class="form-group col-md-12 no-print">
                 <div class="col-md-3">
                 </div>
@@ -560,9 +561,10 @@
                     <a href="javascript:void(0);" class="btn btn-success moremore" id="add_more_consent_doc"><?= $strings["forms_addmore"]; ?></a>
                 </div>
             </div>
-
+           
             <div class="clearfix"></div>
             </div>
+            <?php }?>
         </div>
 </form>
 

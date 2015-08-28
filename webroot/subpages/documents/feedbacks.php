@@ -285,7 +285,8 @@ if(isset($feeds)) {$feed = $feeds; }
 <div class="clearfix"></div>
 
 
-
+<?php if($this->request->params['controller']!='Documents'){?>
  <div class="addattachment6 form-group col-md-12"></div>
+ <?php }?>
  </form> 
 <div class="clearfix"></div>

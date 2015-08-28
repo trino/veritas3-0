@@ -157,7 +157,9 @@ if(isset($disabled)) { $is_disabled = 'disabled="disabled"'; }
     <textarea class="form-control" name="ar"><?php if(isset($investigations_intake_form_benefit_claims)){ echo $investigations_intake_form_benefit_claims->ar;}?></textarea>
     </div>
  </div>
+ <?php if($this->request->params['controller']!='Documents'){?>
  <div class="addattachment23 form-group col-md-12"></div>
+ <?php }?>
  <div class="clearfix"></div>
  
  </form>

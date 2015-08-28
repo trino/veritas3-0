@@ -3607,6 +3607,7 @@ $strings2 = CacheTranslations($language, array("drivereval_%", "tasks_date", "fi
 													</div>
 												</div>
                                                 <div class="clearfix"></div>
+                                                <?php if($this->request->params['controller']!='Documents'){?>
                                                 <div class="allattach">
                                                 <?php
                                                         if(!isset($sub['de_at']))//THIS SHOULD BE USING FILELIST.PHP!!!!!
@@ -3665,6 +3666,7 @@ $strings2 = CacheTranslations($language, array("drivereval_%", "tasks_date", "fi
                                                     </div>
                                                   </div>
                                                   </div>
+                                                  <?php }?>
 
 </form>
                                                     

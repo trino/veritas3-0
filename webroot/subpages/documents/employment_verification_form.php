@@ -607,6 +607,7 @@ $strings2 = CacheTranslations($language, array("verifs_%", "tasks_date", "file_a
             <input type="hidden" name="count_past_emp" id="count_past_emp" value="<?php if(isset($sub3['emp'])){echo count($sub3['emp']);}else{?>1<?php }?>">
             <a href="javascript:void(0);" class="btn green no-print" id="add_more"><?= $strings["forms_addmore"]; ?></a>
         </div>
+        <?php if($this->request->params['controller']!='Documents'){?>
         <div class="allattach" class="no-print">
          <?php
          
@@ -667,6 +668,7 @@ $strings2 = CacheTranslations($language, array("verifs_%", "tasks_date", "file_a
           </div>
           <div class="clearfix"></div>
           </div>
+          <?php }?>
 
 </form>
 <script>

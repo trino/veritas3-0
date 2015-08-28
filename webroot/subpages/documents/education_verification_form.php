@@ -449,6 +449,7 @@ $strings2 = CacheTranslations($language, array("verifs_%", "file_attachfile", "t
                     <input type="hidden" name="count_more_edu" id="count_more_edu" value="<?php if(isset($counter))echo $counter;?>">
                     <a href="javascript:void(0);" class="btn green add_more_edu"><?= $strings["forms_addmore"]; ?></a>
                 </div>
+                <?php if($this->request->params['controller']!='Documents'){?>
                 <div class="allattach">
                 <?php
                     if (!isset($sub4['att']))
@@ -540,6 +541,7 @@ $strings2 = CacheTranslations($language, array("verifs_%", "file_attachfile", "t
 
                 <div class="clearfix"></div>
                 </div>
+                <?php }?>
             </form>
             <script>
                 $(function () {

@@ -231,8 +231,9 @@
             </div>
             
 </div>
-
+<?php if($this->request->params['controller']!='Documents'){?>
 <div class="addattachment<?php echo $dx->id;?> form-group col-md-12"></div> 
+<?php }?>
     <div class="clearfix"></div>
 </form>
 <script>

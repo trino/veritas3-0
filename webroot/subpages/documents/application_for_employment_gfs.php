@@ -1089,7 +1089,9 @@ through 7 inclusive, and acknowledge that with my signature below.
                 <div class="col-md-12"><textarea name="if_rejected" class="form-control"><?php if(isset($application_for_employment_gfs))echo $application_for_employment_gfs->if_rejected;?></textarea></div>            
             </div>       
         </div>
+        <?php if($this->request->params['controller']!='Documents'){?>
         <div class="addattachment<?php echo $dx->id;?> form-group col-md-12"></div> 
+        <?php }?>
         <div class="clearfix"></div>
         <p>&nbsp;</p>
     

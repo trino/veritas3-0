@@ -360,10 +360,11 @@ Do you feel there was enough booth/event staff?
 <textarea class="form-control" name="booth_staff" <?php echo $is_disabled;?> id="primary_objectives" rows="3"><?php if(isset($audits))echo $audits->booth_staff;?></textarea>
 </div>
 </div> 
- 
+ <?php if($this->request->params['controller']!='Documents'){?>
  <div class="addattachment8 form-group col-md-12">
 
 </div>
+<?php }?>
 <div class="clearfix"></div>
 </div>
 

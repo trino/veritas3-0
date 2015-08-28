@@ -897,6 +897,7 @@ include_once 'subpages/filelist.php';
                 <textarea class="form-control" name="recruiter_comment_recommendation"></textarea>
             </div>
         </div>
+        <?php if($this->request->params['controller']!='Documents'){?>
         <div class="allattach">
         <?php
 
@@ -970,7 +971,7 @@ include_once 'subpages/filelist.php';
                 ?>
             </div>
         </div>
-
+        <?php if($this->request->params['controller']!='Documents'){?>
         <div class="form-group row">
             <div class="col-md-3">
             </div>
@@ -978,10 +979,11 @@ include_once 'subpages/filelist.php';
                 <a href="javascript:void(0);" class="add_attach btn btn-success">Add More</a>
             </div>
         </div>
+        <?php }?>
         <div class="clearfix"></div>
         </div>
         
-        <?php //include('canvas/example.php');?>
+        <?php }//include('canvas/example.php');?>
         <?php //include('canvas/example2.php');?>
         <div class="clearfix"></div>
     
