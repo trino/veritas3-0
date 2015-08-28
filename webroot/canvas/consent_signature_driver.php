@@ -43,7 +43,7 @@ if ($this->request->session()->read('debug')) {
     		<div class="links" style="margin-top: 5px;">
     			<strong style="display: none;">OPTIONS:</strong>
     			<a href="#" onclick='addImage();' style="display: none;">Add Image</a>
-                <p class="no-print no-view" style="color: red;"><?= $strings["forms_signhere"]; ?></p>
+                <p class="no-print no-view" style="color: red;<?php if(isset($consent_detail) && $consent_detail->criminal_signature_applicant){?>display:none;<?php }?>"><?= $strings["forms_signhere"]; ?></p>
     			<a href="javascript:void(0)" class="no-print" onclick='$("#test3").data("jqScribble").clear();$(this).parent().parent().find(".touched").val("0");'><?= $strings["forms_clear"]; ?></a>
                 <a href="javascript:void(0)" class="no-print" onclick="$(this).parent().parent().find('.touched').val('1');save_signature('3');"><?= $strings["forms_save"]; ?></a>  	 <span class="saved3" style="color: green;"></span>
                 <br />
