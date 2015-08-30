@@ -427,3 +427,20 @@ orange Pricing table
     padding-left: 0 !important;
     padding-right: 0 !important;
 }
+
+.overlay-wrapper {
+    background: rgba(255, 255, 255, 0.7) none repeat scroll 0 0;
+    height: 100%;
+    left: 0;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 99999;
+    display: none;
+}
+
+.overlay {
+    left: 50%;
+    position: absolute;
+    top: 50%;
+}
