@@ -37,7 +37,7 @@
 
 
 include_once 'subpages/filelist.php';
-if( isset($sub)){ listfiles($sub['da_at'], "attachments/", "", false,3); }
+if( isset($sub['da_at'])){ listfiles($sub['da_at'], "attachments/", "", false,3); }
     ?><P>
     <div class="form-group row">
         <div class="col-md-12">
@@ -67,7 +67,7 @@ if( isset($sub)){ listfiles($sub['da_at'], "attachments/", "", false,3); }
             <div class="form-group row">
                 <label class="control-label col-md-3">Social Insurance No.: </label>
 				<div class="col-md-9">
-					<input type="text" class="form-control" name="social_insurance_number"/>
+					<input type="text" role="sin" class="form-control" name="social_insurance_number"/>
 				</div>
             </div>
 
@@ -84,7 +84,7 @@ if( isset($sub)){ listfiles($sub['da_at'], "attachments/", "", false,3); }
                     <?php provinces("state_province") ?>
 				</div>
                 <div class="col-md-2">
-					<input type="text" class="form-control" placeholder="Postal Code" name="postal_code"/>
+					<input type="text" role="postalcode" class="form-control" placeholder="Postal Code" name="postal_code"/>
 				</div>
 			</div>
 
@@ -103,7 +103,7 @@ if( isset($sub)){ listfiles($sub['da_at'], "attachments/", "", false,3); }
                     <?php provinces("past3_state_provinve1") ?>
 				</div>
                 <div class="col-md-3">
-					<input type="text" class="form-control" placeholder="Postal Code" name="past3_postal_code1"/>
+					<input type="text" role="postalcode" class="form-control" placeholder="Postal Code" name="past3_postal_code1"/>
 				</div>
                 <div class="col-md-3">
 					<input type="text" class="form-control" placeholder="Duration" name="past3_duration1"/>
@@ -120,7 +120,7 @@ if( isset($sub)){ listfiles($sub['da_at'], "attachments/", "", false,3); }
                     <?php provinces("past3_state_province2") ?>
 				</div>
                 <div class="col-md-3">
-					<input type="text" class="form-control" placeholder="Postal Code" name="past3_postal_code2"/>
+					<input type="text" role="postalcode" class="form-control" placeholder="Postal Code" name="past3_postal_code2"/>
 				</div>
                 <div class="col-md-3">
 					<input type="text" class="form-control" placeholder="Duration" name="past3_duration2"/>
@@ -130,14 +130,14 @@ if( isset($sub)){ listfiles($sub['da_at'], "attachments/", "", false,3); }
                 <div class="form-group row">
                     <label class="control-label col-md-3">Contact information:</label>
                     <div class="col-md-3">
-                        <input type="text" class="form-control" placeholder="Phone number" name="phone"/>
+                        <input type="text" role="phone" class="form-control" placeholder="Phone number" name="phone"/>
                     </div>
 
                     <div class="col-md-3">
                         <input type="text" class="form-control" placeholder="Cell Phone" name="mobile"/>
                     </div>
                     <div class="col-md-3">
-                        <input type="text" class="form-control email1" placeholder="Email Address" name="email"/>
+                        <input type="text" role="email" class="form-control email1" placeholder="Email Address" name="email"/>
                     </div>
                 </div>
 
@@ -153,7 +153,7 @@ if( isset($sub)){ listfiles($sub['da_at'], "attachments/", "", false,3); }
 					<input type="text" class="form-control" placeholder="Relationship" name="emergency_notify_relation"/>
 				</div>
                 <div class="col-md-3">
-					<input type="text" class="form-control" placeholder="Phone" name="emergency_notify_phone"/>
+					<input type="text" role="phone" class="form-control" placeholder="Phone" name="emergency_notify_phone"/>
 				</div>
             </div>
             <div class="clearfix"></div>

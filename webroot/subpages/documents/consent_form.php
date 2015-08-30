@@ -49,7 +49,7 @@
             </div>
 
             <div class="col-md-4"><label class="control-label"><?= $strings["forms_phone"]; ?>: </label>
-                <input type="text" class="form-control" name="phone" value="<?php if (isset($consent_detail))echo $consent_detail->phone;?>"/>
+                <input type="text" class="form-control" role="phone" name="phone" value="<?php if (isset($consent_detail))echo $consent_detail->phone;?>"/>
             </div>
 
 
@@ -68,7 +68,7 @@
 
 
             <div class="col-md-4"><label class="control-label"><?= $strings["forms_email"]; ?>: </label>
-                <input type="text" class="form-control email1 " name="applicants_email" value="<?php if (isset($consent_detail))echo $consent_detail->applicants_email;?>"/>
+                <input type="text" class="form-control email1 " role="email" name="applicants_email" value="<?php if (isset($consent_detail))echo $consent_detail->applicants_email;?>"/>
             </div>
         </div>
 
@@ -90,7 +90,7 @@
                 <?php provinces("current_province"); ?>
             </div>
             <div class="col-md-3">
-                <input type="text" class="form-control required" placeholder="<?= $strings["forms_postalcode"]; ?>" name="current_postal_code" value="<?php if (isset($consent_detail))echo $consent_detail->current_postal_code;?>"/>
+                <input type="text" class="form-control required" role="postalcode" placeholder="<?= $strings["forms_postalcode"]; ?>" name="current_postal_code" value="<?php if (isset($consent_detail))echo $consent_detail->current_postal_code;?>"/>
             </div>
         </div>
 
@@ -112,7 +112,7 @@
                 <!-- <input type="text" class="form-control" placeholder="Province" name="previous_province"/> -->
             </div>
             <div class="col-md-3">
-                <input type="text" class="form-control" placeholder="<?= $strings["forms_postalcode"]; ?>" name="previous_postal_code" value="<?php if (isset($consent_detail))echo $consent_detail->last_name;?>"/>
+                <input type="text" class="form-control" role="postalcode" placeholder="<?= $strings["forms_postalcode"]; ?>" name="previous_postal_code" value="<?php if (isset($consent_detail))echo $consent_detail->last_name;?>"/>
             </div>
         </div>
 
@@ -240,7 +240,7 @@
                 </div>
                 <div class="col-md-3">
                     <input type="text" class="form-control" placeholder="<?= $strings["forms_postalcode"]; ?>" value="<?php if (isset($consent_detail))echo $consent_detail->criminal_current_postal_code;?>"
-                           name="criminal_current_postal_code"/>
+                         role="postalcode"  name="criminal_current_postal_code"/>
                 </div>
             </div>
         </div>

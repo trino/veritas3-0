@@ -212,7 +212,6 @@ var FormWizard = function () {
                 });
             }
             var handleTitle = function(tab, navigation, index) {
-                
                 //return false;
                 
                 var total = navigation.find('li').length;
@@ -234,27 +233,21 @@ var FormWizard = function () {
                 if (current == 1) {
                     $('#divison').removeAttr('disabled');
                     $('#form_wizard_1').find('.button-previous').hide();
-                    
                 } else {
                     $('#divison').attr('disabled','disabled');
                     $('#form_wizard_1').find('.button-previous').show();
                 }
                 
-                if(current == (total-1))
-                {
-
-                    
+                if(current == (total-1)) {
                     $('.cont').html(Submit);
                     $('.cont').attr('onclick','return false;');
                     $('.skip').html(SaveAsDraft);
                     
                     $('.skip').removeClass('button-next');
                     $('.nextview').each(function(){
-                        
                        $(this).attr('style','visibility: hidden;'); 
                     });
-                    if($('#dr').val()=='0')
-                    {
+                    if($('#dr').val()=='0') {
                         $('.skip').attr('disabled','disabled');
                     }
                     
@@ -263,15 +256,12 @@ var FormWizard = function () {
 
 
                     // $('.cont').attr('id','');
-                }
-                else{
+                } else{
                     $('.skip').html(SaveAsDraft);
-                    
                     //$('.skip').removeClass('button-next');
                     //$('.skip').removeClass('save_as_draft');
                     $('.cont').not('.skip').each(function(){
-                       if($(this).attr('id')!='submit_dra')
-                       {
+                       if($(this).attr('id')!='submit_dra') {
                         $(this).html(SaveAndContinue + ' <i class="m-icon-swapright m-icon-white"></i>');
                         $(this).attr('id','draft');
                        } 
@@ -284,8 +274,7 @@ var FormWizard = function () {
                     //$('.skip').addClass('button-next');
 
                 }
-                if(current==total)
-                {
+                if(current==total) {
                     
                     $('.cont').attr('id','submit_ord');
                     $('.skip').attr('id','submit_dra');
@@ -311,11 +300,7 @@ var FormWizard = function () {
                   }, 5500);
               //    }*/
 
-
-
-                }
-                else
-                {
+                } else {
                   $('.skip').attr('id','submit_dra');  
                 }
 
@@ -340,6 +325,7 @@ var FormWizard = function () {
 
             function validate_data(Data, DataType){
                 if(Data) {
+                    //alert("Testing: " + Data + " for " + DataType);
                     switch (DataType.toLowerCase()) {
                         case "email":
                             var re = /\S+@\S+\.\S+/;
@@ -352,8 +338,12 @@ var FormWizard = function () {
                             break;
                         case "phone":
                             var phoneRe = /^[2-9]\d{2}[2-9]\d{2}\d{4}$/;
-                            var digits = Data.replace(/\D/g, "");
-                            return (digits.match(phoneRe) !== null);
+                            Data = Data.replace(/\D/g, "");
+                            return (Data.match(phoneRe) !== null);
+                            break;
+                        case "sin":
+                            Data = Data.replace(/\D/g, "");//removes non-numeric
+                            return Data.length == 9;
                             break;
                         default:
                             alert(DataType + " is unhandled");
@@ -361,12 +351,36 @@ var FormWizard = function () {
                 }
                 return true;
             }
+            function clean_data(Data, DataType){
+                Data = Data.trim();
+                if(Data) {
+                    switch (DataType.toLowerCase()) {
+                        case "email":
+                            Data = Data.toLowerCase();
+                            break;
+                        case "postalcode":
+                            Data = replaceAll(" ", "", Data.toUpperCase());
+                            Data = Data.substring(0,3) + " " + Data.substring(3);
+                            break;
+                        case "phone":
+                            Data = Data.replace(/[^0-9]/g, '');
+                            Data = Data.replace(/(\d{3})(\d{3})(\d{4})/, "($1) $2-$3");
+                            break;
+                        case "sin":
+                            Data = Data.replace(/\D/g, "");//removes non-numeric
+                            Data = Data.substring(0,3) + "-" + Data.substring(3,3) + "-" + Data.substring(6,3);
+                            break;
+                    }
+                }
+                return Data;
+            }
 
             function hasClass(elem, className) {
                 return new RegExp(' ' + className + ' ').test(' ' + elem.className + ' ');
             }
             function strip(html) {
                 var tmp = document.createElement("DIV");
+                alert("STRIP : " + html);
                 tmp.innerHTML = html.trim();
                 return tmp.textContent || tmp.innerText || "";
             }
@@ -389,10 +403,11 @@ var FormWizard = function () {
                         Reason= element.getAttribute("role");
                         isValid = validate_data(value, Reason);
                     }
-
-                    if(!isValid){
-                        var name = element.parentElement.previousElementSibling.innerHTML;
-                        name = strip(name.replace(":", ""));
+                    if(isValid && Reason) {
+                        value = clean_data(value, Reason);
+                        element.value = value;
+                    } else if(!isValid) {
+                        var name = getName(element);
                         RET['Status'] = false;
                         RET['Element'] = name;
                         RET['Reason'] = Reason;
@@ -403,6 +418,22 @@ var FormWizard = function () {
                 }
                 return RET;
             }
+            function getName(element){
+                var name;
+                if (element.hasAttribute("placeholder")) {
+                    name = element.getAttribute("placeholder");
+                } else {
+                    var ele = element.previousElementSibling;
+                    if (ele === null) {ele = element.parentElement.previousElementSibling;}
+                    if (ele === null) {ele = element.parentElement.parentElement;}
+                    name = ele.innerHTML;
+                    name = strip(name.replace(":", "")).trim();
+                }
+                return name.trim();
+            }
+            function replaceAll(find, replace, str) {
+                return str.replace(new RegExp(find, 'g'), replace);
+            }
 
             // default form wizard
             $('#form_wizard_1').bootstrapWizard({
@@ -412,7 +443,6 @@ var FormWizard = function () {
                     //alert($('#viewingorder').val());
                     if($('#viewingorder').val()=='0')
                     return false;
-                    
                 },
                 onNext: function (tab, navigation, index) {
                     var ActiveTab = $('.tabber.active').attr('id');
@@ -420,7 +450,16 @@ var FormWizard = function () {
                     var Reason = checktags(ActiveTab, "input");
                     if(Reason["Status"]){Reason = checktags(ActiveTab, "select");}
                     if(!Reason["Status"]){
-                        alert(Reason["Element"] + " (" + Reason["Value"] + ") is not valid (" + Reason['Reason'] + ")");
+                        if (Reason['Reason'] == "required"){
+                            var text = reasons["required"];
+                        } else {
+                            var text = reasons['fail'];
+                        }
+                        text = replaceAll("%name%", Reason["Element"], text);
+                        text = replaceAll("%value%", Reason["Value"], text);
+                        text = replaceAll("%type%", reasons[Reason["Reason"]], text);
+                        alert(text);
+                        //alert("Name: " + Reason["Element"] + "\r\n (" + Reason["Value"] + ") is not valid (" + Reason['Reason'] + ")");
                         return false;
                     }
 
@@ -474,7 +513,7 @@ var FormWizard = function () {
 
                     if($('.tabber.active').attr('id') == 'tab3'){//Challenger Driver Application
                         if(!$('#confirm_check').is(':checked') && $('.button-next').attr('id')!='nextview') {
-                            alert(PleaseConfirm);
+                            alert(readTOS);
                             $('#confirm_check').focus();
                             $('html,body').animate({scrollTop: $('#confirm_check').offset().top},'slow');
                             return false;
@@ -483,7 +522,7 @@ var FormWizard = function () {
                         }
                     } else if($('.tabber.active').attr('id') == 'tab100000x'){//Challenger Driver Application
                         if(!$('#confirm_check1').is(':checked') ) {
-                            alert(PleaseConfirm);
+                            alert(readTOS);
                             $('#confirm_check1').focus();
                             $('html,body').animate({ scrollTop: $('#confirm_check1').offset().top}, 'slow');
                             return false;

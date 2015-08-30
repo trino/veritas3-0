@@ -174,10 +174,10 @@
                                 <div class="form-group">
                                     <label class="control-label"><?= $strings["forms_email"]; ?>:</label>
                                     <input <?php echo $is_disabled ?> name="email" id="driverEm" type="email"
-                                                                      placeholder="eg. test@domain.com"
+                                                                      placeholder="eg. test@domain.com" role="email"
                                                                       class="form-control un email required" <?php if (isset($p->email)) { ?> value="<?php echo $p->email; ?>" <?php } ?>/>
                             <span class="error passerror flashEmail"
-                                  style="display: none;">Email already exists</span>
+                                  style="display: none;"><?= $strings["dashboard_emailexists"]; ?></span>
                                 </div>
                             </div>
                             <div class="clearfix flashEmail" style="display: none;">
@@ -232,8 +232,8 @@
                                 <div class="form-group">
 
                                     <label class="control-label"><?= $strings["forms_phone"]; ?>:</label>
-                                    <input <?php echo $is_disabled ?> name="phone" type="text"
-                                                                      placeholder="eg. +1 646 580 6284"
+                                    <input <?php echo $is_disabled ?> name="phone" type="text" role="phone"
+                                                                      placeholder="eg. (646)580-6284"
                                                                       class="form-control req_driver required" <?php if (isset($p->phone)) { ?> value="<?php echo $p->phone; ?>" <?php } ?>/>
                                 </div>
                             </div>
@@ -364,7 +364,7 @@
                                     <div class="form-group">
                                         <input <?php echo $is_disabled ?>  type="text"
                                                                            placeholder="<?= $strings["forms_postalcode"]; ?>"
-                                                                           class="form-control req_driver required"
+                                                                           class="form-control req_driver required" role="postalcode"
                                                                            name="postal"  <?php if (isset($p->postal)) { ?> value="<?php echo $p->postal; ?>" <?php } ?>/>
                                     </div>
                                 </div>
@@ -372,9 +372,9 @@
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <input <?php echo $is_disabled ?>  type="text"
-                                                                           placeholder="<?= $strings["forms_country"]; ?>" value="Canada"
+                                                                           placeholder="<?= $strings["forms_country"]; ?>"
                                                                            class="form-control req_driver required"
-                                                                           name="country" <?php if (isset($p->country)) { ?> value="<?php echo $p->country; ?>" <?php } ?>/>
+                                                                           name="country"  value="<?php if (isset($p->country)) { echo $p->country; } else {echo 'Canada';} ?>"/>
                                     </div>
                                 </div>
 
@@ -399,10 +399,11 @@
                                         <label class="control-label"><?= $strings["forms_provinceissued"]; ?>:</label>
 
                                         <?php
-                                            if (isset($p->driver_province))
+                                            if (isset($p->driver_province)) {
                                                 printprovinces("driver_province", $p->driver_province, $is_disabled);
-                                            else
+                                            }else {
                                                 printprovinces("driver_province", "", $is_disabled);
+                                            }
                                         ?>
 
 

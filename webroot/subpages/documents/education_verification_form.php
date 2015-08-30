@@ -2,8 +2,7 @@
     if ($this->request->session()->read('debug')) {
         echo "<span style ='color:red;'>subpages/documents/education_verification_form.php #INC142</span>";
     }
-$strings2 = CacheTranslations($language, array("verifs_%", "file_attachfile", "tasks_date"), $settings, False);
-
+    $strings2 = CacheTranslations($language, array("verifs_%", "file_attachfile", "tasks_date"), $settings, False);
 ?>
 <div id="form_tab10">
     <input class="document_type" type="hidden" name="document_type" value="<?php echo $dx->title;?>"/>
@@ -65,7 +64,7 @@ $strings2 = CacheTranslations($language, array("verifs_%", "file_attachfile", "t
                                 <label class="control-label col-md-3"><?= $strings["forms_phone"]; ?></label>
 
                                 <div class="col-md-3">
-                                    <input type="text" class="form-control" name="supervisior_phone[]"
+                                    <input type="text" class="form-control" name="supervisior_phone[]" role="phone"
                                            value="<?php echo $emp->supervisior_phone;?>"/>
                                 </div>
                             </div>
@@ -75,13 +74,13 @@ $strings2 = CacheTranslations($language, array("verifs_%", "file_attachfile", "t
                                 <label class="control-label col-md-3">Supervisor's Email</label>
 
                                 <div class="col-md-3">
-                                    <input type="text" class="form-control email1" name="supervisior_email[]"
+                                    <input type="text" class="form-control email1" name="supervisior_email[]" role="email"
                                            value="<?php echo $emp->supervisior_email;?>"/>
                                 </div>
                                 <label class="control-label col-md-3">Secondary Email</label>
 
                                 <div class="col-md-3">
-                                    <input type="text" class="form-control email1" name="supervisior_secondary_email[]"
+                                    <input type="text" class="form-control email1" name="supervisior_secondary_email[]" role="email"
                                            value="<?php echo $emp->supervisior_secondary_email;?>"/>
                                 </div>
                             </div>
@@ -107,23 +106,17 @@ $strings2 = CacheTranslations($language, array("verifs_%", "file_attachfile", "t
                                 <div class="col-md-3">
                                     &nbsp;&nbsp;
                                     <?php 
-                                    if($this->request->params['action'] == 'vieworder'  || $this->request->params['action']== 'view')
-                                    {
-                                        if($emp->claim_tutor == '1')
-                                        {
+                                    if($this->request->params['action'] == 'vieworder'  || $this->request->params['action']== 'view') {
+                                        if($emp->claim_tutor == '1') {
                                             ?>
                                             &#10004;
                                             <?php
-                                        }
-                                        else 
-                                        {
+                                        } else {
                                             ?>
                                             &#10006;
                                             <?php
                                         } 
-                                    }
-                                    else
-                                    {
+                                    } else {
                                         ?>                                      
                                         <input type="radio" name="claim_tutor[]" value="1" <?php if ($emp->claim_tutor == '1'){ ?>checked="checked"<?php }?>/> 
                                         <?php
@@ -131,23 +124,17 @@ $strings2 = CacheTranslations($language, array("verifs_%", "file_attachfile", "t
                                      ?>
                                     &nbsp;&nbsp;Yes&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                     <?php 
-                                    if($this->request->params['action'] == 'vieworder'  || $this->request->params['action']== 'view')
-                                    {
-                                        if($emp->claim_tutor == '0')
-                                        {
+                                    if($this->request->params['action'] == 'vieworder'  || $this->request->params['action']== 'view') {
+                                        if($emp->claim_tutor == '0') {
                                             ?>
                                             &#10004;
                                             <?php
-                                        }
-                                        else 
-                                        {
+                                        } else {
                                             ?>
                                             &#10006;
                                             <?php
                                         } 
-                                    }
-                                    else
-                                    {
+                                    } else {
                                         ?>                                      
                                         <input type="radio" name="claim_tutor[]" value="0" <?php if ($emp->claim_tutor == '0'){ ?>checked="checked"<?php }?>/> 
                                         <?php
@@ -309,7 +296,7 @@ $strings2 = CacheTranslations($language, array("verifs_%", "file_attachfile", "t
                             <label class="control-label col-md-3"><?= $strings["forms_phone"]; ?>: </label>
 
                             <div class="col-md-3">
-                                <input type="text" class="form-control" name="supervisior_phone[]"/>
+                                <input type="text" class="form-control" role="phone" name="supervisior_phone[]"/>
                             </div>
                         </div>
 
@@ -318,12 +305,12 @@ $strings2 = CacheTranslations($language, array("verifs_%", "file_attachfile", "t
                             <label class="control-label col-md-3"><?= $strings2["verifs_superemail"]; ?>: </label>
 
                             <div class="col-md-3">
-                                <input type="text" class="form-control email1" name="supervisior_email[]"/>
+                                <input type="text" class="form-control email1" role="email" name="supervisior_email[]"/>
                             </div>
                             <label class="control-label col-md-3"><?= $strings2["verifs_secondarye"]; ?>: </label>
 
                             <div class="col-md-3">
-                                <input type="text" class="form-control email1" name="supervisior_secondary_email[]"/>
+                                <input type="text" class="form-control email1" role="email" name="supervisior_secondary_email[]"/>
                             </div>
                         </div>
 
