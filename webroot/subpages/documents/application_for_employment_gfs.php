@@ -67,7 +67,7 @@ function makerow($profile, $Fields){
                         <input class="form-control" name="code" placeholder="Area Code" value="<?php if(isset($application_for_employment_gfs))echo $application_for_employment_gfs->code;?>" />
                     </div>  
                     <div class="col-md-5">              
-                        <input class="form-control" name="phone" value="<?php if(isset($application_for_employment_gfs))echo $application_for_employment_gfs->phone;?>" />
+                        <input class="form-control" role="phone" name="phone" value="<?php if(isset($application_for_employment_gfs))echo $application_for_employment_gfs->phone;?>" />
                     </div>
             </div> 
         </div>

@@ -36,7 +36,7 @@
     </div>
     <div class="col-md-3">
         <label class="contol-label"> TELEPHONE NUMBER </label>
-        <input type="text" class="form-control" name="telephone_no" value="<?php if(isset($bc_forms)) echo $bc_forms->telephone_no;?>"/>
+        <input type="text" class="form-control" role="phone" name="telephone_no" value="<?php if(isset($bc_forms)) echo $bc_forms->telephone_no;?>"/>
     </div>
     
     <div class="col-md-6">
@@ -97,7 +97,7 @@
                 </div>
                 <div class="col-md-3">
                 <label class="control-label"> POSTAL/ZIP CODE </label>
-                <input type="text" class="form-control" name="postal" value="<?php if(isset($bc_forms)) echo $bc_forms->postal;?>"/>
+                <input type="text" class="form-control" role="postalcode" name="postal" value="<?php if(isset($bc_forms)) echo $bc_forms->postal;?>"/>
                 </div>
                 
             <div class="col-md-12">
@@ -120,7 +120,7 @@
                 </div>
                 <div class="col-md-3">
                 <label class="control-label"> POSTAL/ZIP CODE </label>
-                <input type="text" class="form-control" name="postal1" value="<?php if(isset($bc_forms)) echo $bc_forms->postal1;?>"/>
+                <input type="text" class="form-control" role="postalcode" name="postal1" value="<?php if(isset($bc_forms)) echo $bc_forms->postal1;?>"/>
                 </div>
                 <div class="clearfix"></div>
                    
@@ -203,7 +203,7 @@
                 else
                 {
                     ?>                                      
-                    <input type="checkbox" name="email" value="1" <?php if(isset($bc_forms)&& $bc_forms->email=='1')echo "checked='checked'";?>/> 
+                    <input type="checkbox" role="email" name="email" value="1" <?php if(isset($bc_forms)&& $bc_forms->email=='1')echo "checked='checked'";?>/> 
                     <?php
                 }
              ?>
@@ -212,7 +212,7 @@
                 <div class="col-md-11">
                     <div class="col-md-12">
                     <label class="control-label"> TO MY EMAIL ADDRESS </label>
-                    <input type="text" class="form-control" name="email_add" value="<?php if(isset($bc_forms)) echo $bc_forms->email_add;?>"/>
+                    <input type="text" class="form-control" role="email" name="email_add" value="<?php if(isset($bc_forms)) echo $bc_forms->email_add;?>"/>
                     </div>
                     
                     <div class="col-md-12">
@@ -222,7 +222,7 @@
                     </div>
                     <div class="col-md-12">
                     <label class="control-label"> EMAIL ADDRESS </label>
-                    <input type="text" class="form-control" name="email_add1" value="<?php if(isset($bc_forms)) echo $bc_forms->email_add1;?>"/>
+                    <input type="text" class="form-control" role="email" name="email_add1" value="<?php if(isset($bc_forms)) echo $bc_forms->email_add1;?>"/>
                     </div>
             
                     <div class="clearfix"></div>

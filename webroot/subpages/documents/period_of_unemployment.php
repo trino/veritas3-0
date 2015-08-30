@@ -31,7 +31,7 @@
 					<input type="text" class="form-control" placeholder="Province"/>
 				</div>
                 <div class="col-md-3">
-					<input type="text" class="form-control" placeholder="Postal Code"/>
+					<input type="text" role="postalcode" class="form-control" placeholder="Postal Code"/>
 				</div>
 			</div>
             
@@ -49,7 +49,7 @@
             <div class="form-group col-md-12">
                 <label class="control-label col-md-3">Phone Number: </label>
                 <div class="col-md-3">
-					<input type="text" class="form-control"/>
+					<input type="text" role="phone" class="form-control"/>
 				</div>
                 <label class="control-label col-md-3">Position Held: </label>
                 <div class="col-md-3">

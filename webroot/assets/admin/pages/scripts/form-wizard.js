@@ -1,4 +1,81 @@
 var path =  document.URL; //window.location.pathname;
+function validate_data(Data, DataType){
+                if(Data) {
+                    switch (DataType.toLowerCase()) {
+                        case "email":
+                            var re = /\S+@\S+\.\S+/;
+                            return re.test(Data);
+                            break;
+                        case "postalcode":
+                            Data = Data.replace(/ /g, '').toUpperCase();
+                            var regex = new RegExp(/^[ABCEGHJKLMNPRSTVXY]\d[ABCEGHJKLMNPRSTVWXYZ]?\d[ABCEGHJKLMNPRSTVWXYZ]\d$/i);
+                            return regex.test(Data);
+                            break;
+                        case "phone":
+                           
+                            var phoneRe = /^[2-9]\d{2}[2-9]\d{2}\d{4}$/;
+                            var digits = Data.replace(/\D/g, "");
+                            return (digits.match(phoneRe) !== null);
+                            break;
+                        default:
+                            alert(DataType + " is unhandled");
+                    }
+                }
+                return true;
+            }
+        function checktags(TabID, tagtype){
+                var checker = true;
+                $('#'+TabID+' input').each(function(){
+                   if($(this).attr('role'))
+                   {
+                    var role = $(this).attr('role');
+                    var val =  $(this).val();
+                    
+                    if(val && !validate_data(val,role))
+                    {
+                        $('html,body').animate({ scrollTop: $(this).offset().top}, 'slow');
+                        $(this).attr('style','border-color:red');
+                        checker = false;
+                    }
+                   } 
+                });
+                if(!checker)
+                return false;
+                else
+                return true;
+            /*
+                var element = document.getElementById(TabID);
+                var inputs = element.getElementsByTagName(tagtype);
+                
+                var RET = new Array();
+                RET['Status'] = true;
+                for (index = 0; index < inputs.length; ++index) {
+                    element = inputs[index];
+                    isrequired = hasClass(element, "required") || element.hasAttribute("required");
+                    var value = element.value;
+                    var isValid = true;
+                    var Reason = "";
+                    if(!value && isrequired){
+                        Reason = "required";
+                        isValid = false;
+                    } else if (element.hasAttribute("role")){
+                        Reason= element.getAttribute("role");
+                        isValid = validate_data(value, Reason);
+                    }
+
+                    if(!isValid){
+                        var name = element.parentElement.previousElementSibling.innerHTML;
+                        name = strip(name.replace(":", ""));
+                        RET['Status'] = false;
+                        RET['Element'] = name;
+                        RET['Reason'] = Reason;
+                        RET['Value'] = value;
+                        element.scrollIntoView();
+                        return RET;
+                    }
+                }
+                return RET;*/
+            }
 
 function webroot(){
     var txt =  document.URL;
@@ -338,29 +415,7 @@ var FormWizard = function () {
                 Metronic.scrollTo($('.page-title'));
             }
 
-            function validate_data(Data, DataType){
-                if(Data) {
-                    switch (DataType.toLowerCase()) {
-                        case "email":
-                            var re = /\S+@\S+\.\S+/;
-                            return re.test(Data);
-                            break;
-                        case "postalcode":
-                            Data = Data.replace(/ /g, '').toUpperCase();
-                            var regex = new RegExp(/^[ABCEGHJKLMNPRSTVXY]\d[ABCEGHJKLMNPRSTVWXYZ]?\d[ABCEGHJKLMNPRSTVWXYZ]\d$/i);
-                            return regex.test(Data);
-                            break;
-                        case "phone":
-                            var phoneRe = /^[2-9]\d{2}[2-9]\d{2}\d{4}$/;
-                            var digits = Data.replace(/\D/g, "");
-                            return (digits.match(phoneRe) !== null);
-                            break;
-                        default:
-                            alert(DataType + " is unhandled");
-                    }
-                }
-                return true;
-            }
+            
 
             function hasClass(elem, className) {
                 return new RegExp(' ' + className + ' ').test(' ' + elem.className + ' ');
@@ -371,38 +426,7 @@ var FormWizard = function () {
                 return tmp.textContent || tmp.innerText || "";
             }
 
-            function checktags(TabID, tagtype){
-                var element = document.getElementById(TabID);
-                var inputs = element.getElementsByTagName(tagtype);
-                var RET = new Array();
-                RET['Status'] = true;
-                for (index = 0; index < inputs.length; ++index) {
-                    element = inputs[index];
-                    isrequired = hasClass(element, "required") || element.hasAttribute("required");
-                    var value = element.value;
-                    var isValid = true;
-                    var Reason = "";
-                    if(!value && isrequired){
-                        Reason = "required";
-                        isValid = false;
-                    } else if (element.hasAttribute("role")){
-                        Reason= element.getAttribute("role");
-                        isValid = validate_data(value, Reason);
-                    }
-
-                    if(!isValid){
-                        var name = element.parentElement.previousElementSibling.innerHTML;
-                        name = strip(name.replace(":", ""));
-                        RET['Status'] = false;
-                        RET['Element'] = name;
-                        RET['Reason'] = Reason;
-                        RET['Value'] = value;
-                        element.scrollIntoView();
-                        return RET;
-                    }
-                }
-                return RET;
-            }
+            
 
             // default form wizard
             $('#form_wizard_1').bootstrapWizard({
@@ -418,11 +442,13 @@ var FormWizard = function () {
                     var ActiveTab = $('.tabber.active').attr('id');
 
                     var Reason = checktags(ActiveTab, "input");
-                    if(Reason["Status"]){Reason = checktags(ActiveTab, "select");}
+                    /*if(Reason["Status"]){Reason = checktags(ActiveTab, "select");}
                     if(!Reason["Status"]){
                         alert(Reason["Element"] + " (" + Reason["Value"] + ") is not valid (" + Reason['Reason'] + ")");
                         return false;
-                    }
+                    }*/
+                    if(!Reason)
+                    return false;
 
                     if ($('.tabber.active').attr('class').replace('confirmation') != $('.tabber.active').attr('class') || $('.tabber.active').attr('id') == 'tab19') {
                         //alert($('.tabber.active .touched_edit').val());

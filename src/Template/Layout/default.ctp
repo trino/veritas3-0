@@ -457,6 +457,44 @@
 </div>
 
 <script>
+/*
+function validate_data(Data, DataType){
+                if(Data) {
+                    switch (DataType.toLowerCase()) {
+                        case "email":
+                            var re = /\S+@\S+\.\S+/;
+                            return re.test(Data);
+                            break;
+                        case "postalcode":
+                            Data = Data.replace(/ /g, '').toUpperCase();
+                            var regex = new RegExp(/^[ABCEGHJKLMNPRSTVXY]\d[ABCEGHJKLMNPRSTVWXYZ]?\d[ABCEGHJKLMNPRSTVWXYZ]\d$/i);
+                            return regex.test(Data);
+                            break;
+                        case "phone":
+                            var phoneRe = /^[2-9]\d{2}[2-9]\d{2}\d{4}$/;
+                            var digits = Data.replace(/\D/g, "");
+                            return (digits.match(phoneRe) !== null);
+                            break;
+                        default:
+                            alert(DataType + " is unhandled");
+                    }
+                }
+                return true;
+            }
+            
+            function check_role(){
+                $('.roles').each(function(){
+                    var role = $(this).attr('role');
+                    var val = $(this).val();
+                    var check = validate_data(val,role);
+                    if(!check)
+                    {
+                        alert('Invalid '+role);
+                        $('html,body').animate({ scrollTop: $(this).offset().top}, 'slow');
+                    }
+                    
+                });
+            }*/
     jQuery(document).ready(function () {
 
         Metronic.init(); // init metronic core componets

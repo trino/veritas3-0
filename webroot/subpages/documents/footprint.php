@@ -35,12 +35,12 @@ if(isset($disabled)) { $is_disabled = 'disabled="disabled"'; }
   
   <div class="col-md-6">
     <label for="email" class="control-label">Email </label>
-    <input type="email" name="email" class="form-control" value="<?php if(isset($footprint))echo $footprint->email;?>" >
+    <input type="email" name="email" role="email" class="form-control" value="<?php if(isset($footprint))echo $footprint->email;?>" >
   </div>
 
   <div class="col-md-6">
     <label for="Alternateemail" class="control-label">Alternate Email </label>
-    <input type="email" name="email1" class="form-control" value="<?php if(isset($footprint))echo $footprint->email1;?>" >
+    <input type="email" name="email1" role="email" class="form-control" value="<?php if(isset($footprint))echo $footprint->email1;?>" >
   </div>
   <div class="clearfix"></div>
 
@@ -64,7 +64,7 @@ if(isset($disabled)) { $is_disabled = 'disabled="disabled"'; }
     <input type="text" name="state" class="form-control" value="<?php if(isset($footprint))echo $footprint->state;?>" >
   </div>
   <div class="col-md-4"><label for="Postal" class="control-label"> Postal Code: </label>
-    <input type="text" name="postal" class="form-control" value="<?php if(isset($footprint))echo $footprint->postal;?>" >
+    <input type="text" name="postal" role="postalcode" class="form-control" value="<?php if(isset($footprint))echo $footprint->postal;?>" >
   </div>
   <div class="clearfix"></div>
 </div>
@@ -88,7 +88,7 @@ if(isset($disabled)) { $is_disabled = 'disabled="disabled"'; }
     <input type="tel" name="work_phone" class="form-control" value="<?php if(isset($footprint))echo $footprint->work_phone;?>" >
   </div>
   <div class="col-md-6"><label for="Homephone" class="control-label">  Home Phone: </label>
-    <input type="tel" name="home_phone" class="form-control" value="<?php if(isset($footprint))echo $footprint->home_phone;?>" >
+    <input type="tel" name="home_phone" role="phone" class="form-control" value="<?php if(isset($footprint))echo $footprint->home_phone;?>" >
   </div>
   <div class="clearfix"></div>
 </div>

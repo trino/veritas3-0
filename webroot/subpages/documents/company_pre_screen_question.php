@@ -36,7 +36,7 @@ include_once 'subpages/filelist.php';
 
         <div class="col-md-4">
             <label class="control-label">Applicant's Phone Number: </label>
-            <input type="text" class="form-control" name="applicant_phone_number"/>
+            <input type="text" class="form-control" role="phone" name="applicant_phone_number"/>
         </div>
         <div class="col-md-4">
             <label class="control-label">Applicant's Name: </label>
@@ -44,7 +44,7 @@ include_once 'subpages/filelist.php';
         </div>
         <div class="col-md-4" id="email_cons">
             <label class="control-label">Applicant's Email: </label>
-            <input type="text" class="form-control email1" name="applicant_email">
+            <input type="text" role="email" class="form-control email1" name="applicant_email">
         </div>
         <div class="col-md-4">
             <label class="control-label">Date: </label>
