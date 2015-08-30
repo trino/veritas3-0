@@ -417,3 +417,13 @@ orange Pricing table
         width:100%;
     }
 }
+
+#more_div .col-md-3, #more_div .col-md-9, #more_div .col-md-6 {
+    padding-left: 0 !important;
+    padding-right: 15px !important;
+}
+
+#more_div .col-md-12 {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+}
