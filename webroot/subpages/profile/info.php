@@ -962,34 +962,7 @@ $strings = CacheTranslations($language, array("forms_%"), $settings);
             if(element != null) {
                 if (!element.checked) {element.value = "";}
             }
-            var cnt =0;
-            $('#save_clientz input').each(function(){
-                
-                if($(this).attr('role')){
-                  
-                    var t = validate_data1($(this).val(),$(this).attr('role'));
-                    if(!t)
-                    {
-                        cnt++;
-                        $(this).css({'border':'1px solid red'});
-                        $('html,body').animate({ scrollTop: $(this).parent().offset().top}, 'slow');
-                       
-                      
-                    }
-                    else
-                    {
-                        $(this).css({'border':'1px solid #e5e5e5'});
-                       
-                    }
-                }
-                
-                
-            });
-           
-                if(cnt>0)
-                {
-                    return false;
-                }
+      
 
             $.ajax({
                 url: '<?php echo $this->request->webroot;?>profiles/check_user/<?php echo $uid;?>',
@@ -1031,13 +1004,13 @@ $strings = CacheTranslations($language, array("forms_%"), $settings);
                                         
                                         $(this).attr('disabled', 'disabled');
                                         $('#hiddensub').click();
-                                        $('.overlay-wrapper').show();
+                                        
                                     }
                                 }
                             });
                         } else {
                             $('#hiddensub').click();
-                             $('.overlay-wrapper').show();
+                            
                         }
                     }
                 }
@@ -1106,6 +1079,35 @@ $strings = CacheTranslations($language, array("forms_%"), $settings);
         });
         $('#save_clientz').submit(function (event) {
             event.preventDefault();
+                  var cnt =0;
+            $('#save_clientz input').each(function(){
+                
+                if($(this).attr('role')){
+                  
+                    var t = validate_data1($(this).val(),$(this).attr('role'));
+                    if(!t)
+                    {
+                        cnt++;
+                        $(this).css({'border':'1px solid red'});
+                        $('html,body').animate({ scrollTop: $(this).parent().offset().top}, 'slow');
+                       
+                      
+                    }
+                    else
+                    {
+                        $(this).css({'border':'1px solid #e5e5e5'});
+                       
+                    }
+                }
+                
+                
+            });
+           
+                if(cnt>0)
+                {
+                    return false;
+                }
+             $('.overlay-wrapper').show();
             $('#savepro').text("<?= addslashes($strings["forms_saving"]); ?>");
             var strs = $(this).serialize();
             $('#save_clientz').each(function () {
