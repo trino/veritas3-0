@@ -635,7 +635,11 @@ function validate_data(Data, DataType){
 
 
 </script>
-
+<div class="overlay-wrapper">
+<div class="overlay">
+<img src="<?php echo $this->request->webroot;?>assets/admin/layout/img/ajax-loading.gif" />
+</div>
+</div>
 <!-- END JAVASCRIPTS -->
 </body>
 <!-- END BODY -->

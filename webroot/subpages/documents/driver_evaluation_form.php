@@ -491,7 +491,7 @@ $strings2 = CacheTranslations($language, array("drivereval_%", "tasks_date", "fi
                                                             }
                                                          ?>
                                                                         <?= $strings2["drivereval_seatandmir"]; ?> </label></div>
-                                                                <div class="col-md-6">
+                                                                <div class="col-md-6 checkbox-list ">
         															<label>
                                                                     <?php 
                                                             if($this->request->params['action'] == 'vieworder'  || $this->request->params['action']== 'view')
