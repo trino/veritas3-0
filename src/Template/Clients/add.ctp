@@ -164,10 +164,8 @@
                                                     <?php
                                                         }
                                                     ?>
-                                                    <form role="form" action="" method="post" id="client_form"
-                                                          class="save_client_all">
-                                                        <input type="hidden" name="drafts" id="client_drafts"
-                                                               value="0"/>
+                                                    <form role="form" action="" method="post" id="client_form" class="save_client_all" >
+                                                        <input type="hidden" name="drafts" id="client_drafts" value="0"/>
 
 
                                                         <div class="row">
@@ -266,14 +264,13 @@
                                                             <?php if ($settings->client_option == 0) { ?>
                                                                 <div class="form-group col-md-4">
                                                                     <label class="control-label"><?= $strings["forms_postalzip"];?>:</label>
-                                                                    <input type="text" class="form-control"
+                                                                    <input type="text" class="form-control" role='postalcode'
                                                                            name="postal" <?php if (isset($client->postal)) { ?> value="<?php echo $client->postal; ?>" <?php } ?>/>
                                                                 </div>
                                                                 <div class="form-group col-md-4">
                                                                     <label class="control-label"><?= $strings["forms_companyphone"];?>:</label>
-                                                                    <input type="text" class="form-control"
-                                                                           name="company_phone"
-                                                                        <?php if (isset($client->company_phone)) { ?> value="<?php echo $client->company_phone; ?>" <?php } ?>
+                                                                    <input type="text" class="form-control" id="company_phone"
+                                                                           name="company_phone" role='phone' <?php if (isset($client->company_phone)) { ?> value="<?php echo $client->company_phone; ?>" <?php } ?>
                                                                         />
                                                                 </div>
                                                             <?php } ?>
@@ -285,7 +282,7 @@
                                                             <?php if ($settings->client_option == 0) { ?>
                                                                 <div class="form-group col-md-4">
                                                                     <label class="control-label"><?= $strings["forms_divisions"];?>:</label>
-                                                        <textarea name="division" id="division"
+                                                                    <textarea name="division" id="division"
                                                                   placeholder="<?= $strings["forms_oneperline"];?>"
                                                                   class="form-control"><?php if (isset($client->division)) echo $client->division; ?></textarea>
                                                                 </div>
@@ -329,8 +326,6 @@
 
 
                                                                 <?php if ($settings->mee == "MEE") { ?>
-
-
                                                                     <div class="form-group col-md-4">
                                                                         <label class="control-label"><?= $strings["forms_referredby"];?>:</label>
                                                                         <select class="form-control" name="referred_by" id="referred_by">
@@ -418,7 +413,7 @@
                                                                     </div>
                                                                     <div class="form-group col-md-4">
                                                                         <label class="control-label"><?= $strings["forms_billingpostalcode"];?>:</label>
-                                                                        <input type="text" class="form-control"
+                                                                        <input type="text" class="form-control" role='postalcode'
                                                                                name="billing_postal_code"
                                                                                value="<?php echo isset($client->billing_postal_code) ? $client->billing_postal_code : '' ?>"/>
                                                                     </div>
@@ -521,7 +516,7 @@
                                                                  style="height:75px; margin-bottom:-1px;padding-right: 30px;margin-right: 5px;margin-left: 5px;"
                                                                  align="right">
                                                                 <div class="row">
-                                                                    <button type="submit" class="btn btn-primary"
+                                                                    <button type="submit" class="btn btn-primary" 
                                                                             id="save_client_p1"><?= $strings["forms_savechanges"]; ?>
                                                                     </button>
                                                                     <!--button type="submit" class="btn btn-info" onclick="$('#client_drafts').val('1',function(){$('#save_client_p1').click();});">Save As Draft</button-->
@@ -818,6 +813,35 @@
                     ?>
                     $('.save_client_all').submit(function (event) {
                         event.preventDefault();
+                        var cnt =0;
+                        $('.save_client_all input').each(function(){
+                            
+                            if($(this).attr('role')){
+                              
+                                var t = validate_data1($(this).val(),$(this).attr('role'));
+                                if(!t)
+                                {
+                                    cnt++;
+                                    $(this).css({'border':'1px solid red'});
+                                    $('html,body').animate({ scrollTop: $(this).parent().offset().top}, 'slow');
+                                   
+                                  
+                                }
+                                else
+                                {
+                                    $(this).css({'border':'1px solid #e5e5e5'});
+                                   
+                                }
+                            }
+                            
+                            
+                        });
+                       
+                            if(cnt>0)
+                            {
+                                return false;
+                            }
+                           $('.overlay-wrapper').show(); 
                         $('#save_client_p1').text('<?= $strings["forms_saving"];?>');
                         var str = '';
                         /*
@@ -864,7 +888,8 @@
                         str = str + '&invoice_terms=' + $('#invoice_terms').val();
                         str = str + '&description=' + $('#description').val();
 
-//alert(str);
+//alert(str);           
+                        
                         $.ajax({
                             url: '<?php echo $this->request->webroot;?>clients/saveClients/<?php echo $id?>',
                             data: str,
@@ -923,7 +948,7 @@
                             data: 'id=' + id,
                             url: "<?php echo $this->request->webroot;?>clients/removefiles/" + file,
                             success: function (msg) {
-
+                                    
                             }
                         });
                         $(this).parent().parent().remove();
@@ -964,7 +989,6 @@
 
 
             <script>
-
                 function initiate_ajax_upload(button_id, doc) {
                     var button = $('#' + button_id), interval;
                     if (doc == 'doc') {
