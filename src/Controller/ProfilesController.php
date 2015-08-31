@@ -51,7 +51,7 @@ class ProfilesController extends AppController{
                 echo $rand;
 
             } else {
-                echo "error";
+                echo "../error.png";
             }
         }
         die();
