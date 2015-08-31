@@ -1,40 +1,40 @@
 <script src="<?php echo $this->request->webroot; ?>js/jquery.easyui.min.js" type="text/javascript"></script>
 <?php
-$param = $this->request->params['action'];
-include_once 'subpages/filelist.php';
-if(!isset($_GET['type'])) {$_GET['type'] = 0;}
-$doc_ext = array('pdf','doc','docx','txt','csv','xls','xlsx');
-$img_ext = array('jpg','jpeg','png','bmp','gif');
-$is_disabled = ''; 
-$view ="";
-if (isset($disabled)) {
-    $is_disabled = 'disabled="disabled"';
-    $view = "view";
-}
+    $param = $this->request->params['action'];
+    include_once 'subpages/filelist.php';
+    if(!isset($_GET['type'])) {$_GET['type'] = 0;}
+    $doc_ext = array('pdf','doc','docx','txt','csv','xls','xlsx');
+    $img_ext = array('jpg','jpeg','png','bmp','gif');
+    $is_disabled = '';
+    $view ="";
+    if (isset($disabled)) {
+        $is_disabled = 'disabled="disabled"';
+        $view = "view";
+    }
 
-$settings = $this->requestAction('settings/get_settings');
-$action = ucfirst($param);
-if ($action == "Add") {
-    $action = "Create";
-    if(isset($did) && $did) { $action = "Edit";}
-}
+    $settings = $this->requestAction('settings/get_settings');
+    $action = ucfirst($param);
+    if ($action == "Add") {
+        $action = "Create";
+        if(isset($did) && $did) { $action = "Edit";}
+    }
 
-if (isset($this->request->params['pass'][0])) {
-    $ClientID = $this->request->params['pass'][0];
-}
+    if (isset($this->request->params['pass'][0])) {
+        $ClientID = $this->request->params['pass'][0];
+    }
 
-if (isset($this->request->params['pass'][1])) {
-    $id1 = $this->request->params['pass'][1];
-    $id2="?type=".$_GET['type'];
-    if (isset($_GET['order_id'])) { $id2= '?order_id=' . $_GET['order_id']; }
-}
+    if (isset($this->request->params['pass'][1])) {
+        $id1 = $this->request->params['pass'][1];
+        $id2="?type=".$_GET['type'];
+        if (isset($_GET['order_id'])) { $id2= '?order_id=' . $_GET['order_id']; }
+    }
 
-include_once('subpages/api.php');
-$language = $this->request->session()->read('Profile.language');
-$strings = CacheTranslations($language, array("documents_%", "forms_%", "clients_addeditimage", "infoorder_selectclient"), $settings);//,$registry);//$registry = $this->requestAction('/settings/getRegistry');
-if($language == "Debug") { $Trans = " [Trans]";} else { $Trans = ""; }
-$title = $strings["index_" . strtolower($action) . "document"];
-printCSS($this);
+    include_once('subpages/api.php');
+    $language = $this->request->session()->read('Profile.language');
+    $strings = CacheTranslations($language, array("documents_%", "forms_%", "clients_addeditimage", "infoorder_selectclient"), $settings);//,$registry);//$registry = $this->requestAction('/settings/getRegistry');
+    if($language == "Debug") { $Trans = " [Trans]";} else { $Trans = ""; }
+    $title = $strings["index_" . strtolower($action) . "document"];
+    printCSS($this);
 ?>
 <h3 class="page-title">
     <?= $title; ?>
@@ -53,22 +53,22 @@ printCSS($this);
     </ul>
 
     <?php
-    if (isset($disabled)) {
-        echo ' <a href="javascript:window.print();" class="floatright btn btn-primary">' . $strings["dashboard_print"] . '</a>';
-    }
-    $opposite = "edit"; $url="add";
-    if ($action=="Edit"){ $opposite = "view"; $url= "view";}
-    if($did){
-    if(str_replace('?','',$id1.$id2)==$id1.$id2)
-    $sep = '?';
-    else
-    $sep = '&';}
-    if (isset($this->request->params['pass'][1])&& !isset($_GET['order_id'])) { echo '<a href="../../' . $url . '/' . $ClientID . "/" . $id1 . $id2 .$sep. 'type='.$_GET['type'].'" class="floatright btn btn-info btnspc">' . $strings["dashboard_" . $opposite] . '</a>'; }
+        if (isset($disabled)) {
+            echo ' <a href="javascript:window.print();" class="floatright btn btn-primary">' . $strings["dashboard_print"] . '</a>';
+        }
+        $opposite = "edit"; $url="add";
+        if ($action=="Edit"){ $opposite = "view"; $url= "view";}
+        if($did){
+            if(str_replace('?','',$id1.$id2)==$id1.$id2)
+                $sep = '?';
+            else
+                $sep = '&';}
+        if (isset($this->request->params['pass'][1])&& !isset($_GET['order_id'])) { echo '<a href="../../' . $url . '/' . $ClientID . "/" . $id1 . $id2 .$sep. 'type='.$_GET['type'].'" class="floatright btn btn-info btnspc">' . $strings["dashboard_" . $opposite] . '</a>'; }
 
 
-    function makeportlet($did, $color="", $Title=""){
-        if (strlen($Title)>0){
-            echo '<div class="row">
+        function makeportlet($did, $color="", $Title=""){
+            if (strlen($Title)>0){
+                echo '<div class="row">
                             <div class="col-md-12">
                             <div class="portlet box ' . $color .'">
 
@@ -80,16 +80,16 @@ printCSS($this);
                                     <div class="portlet-body form">
                                     <div class="form-body" id="parentdiv" style="padding-bottom: 0px;">
                                                     <div class="tab-content">';
-            printdocumentinfo($did);
+                printdocumentinfo($did);
+            }
         }
-    }
 
-    function docname($ID, $subdoccli, $language) {
-        $keyname = getFieldname("title", $language);
-        $object = getIterator($subdoccli, "sub_id", $ID)->subtype;
-        if ($language == 'Debug') { return $object->English . " [Trans]";}
-        return $object->$keyname;
-    }
+        function docname($ID, $subdoccli, $language) {
+            $keyname = getFieldname("title", $language);
+            $object = getIterator($subdoccli, "sub_id", $ID)->subtype;
+            if ($language == 'Debug') { return $object->English . " [Trans]";}
+            return $object->$keyname;
+        }
     ?>
 
 
@@ -102,32 +102,32 @@ printCSS($this);
 <div class="row">
     <div class="col-md-12">
         <?php
-        $tab = 'nodisplay';
+            $tab = 'nodisplay';
         ?>
         <div class="form">
             <div class="form-horizontal">
                 <div class="">
                     <?php
 
-                    if ($param != 'view') {
-                        $tab = 'tab-pane';
-                        $doc = $doc_comp->getDocument();
-                        ?>
-                    <?php
-                    }
+                        if ($param != 'view') {
+                            $tab = 'tab-pane';
+                            $doc = $doc_comp->getDocument();
+                            ?>
+                            <?php
+                        }
                     ?>
                     <!--<a href="javascript:void(0);" onclick="$('.dashboard-stat').parent().each(function(){$(this).show(300);});$(this).hide();$('.moredocxs').hide();$('.btndocs').hide();$('.clients_select').show();" class="btn btn-success moreback" style="display: none;">Back</a>-->
 
                     <?php
-                    $doc_count = 0;
-                    /*if($cid)
-                        include('subpages/home_blocks.php');*/
-                    if(isset($mod->uploaded_for)){
-                        $driver = $mod->uploaded_for;
-                        $_GET['driver'] = $mod->uploaded_for;
+                        $doc_count = 0;
+                        /*if($cid)
+                            include('subpages/home_blocks.php');*/
+                        if(isset($mod->uploaded_for)){
+                            $driver = $mod->uploaded_for;
+                            $_GET['driver'] = $mod->uploaded_for;
                         }
-                    else
-                        $driver=0;
+                        else
+                            $driver=0;
                     ?>
                     <div class="col-md-4" style="padding-right: 0;
   padding-left: 0;">
@@ -137,102 +137,102 @@ printCSS($this);
                             </div>
                             <div class="portlet-body form" >
 
-                    <div class="col-md-12 clients_select no-print" style="margin: 10px 0;padding:0">
+                                <div class="col-md-12 clients_select no-print" style="margin: 10px 0;padding:0">
 
-                        <select name="clients" class="form-control select2me no-print" data-placeholder="<?=$settings->client?>" id="changeclient" <?php if($this->request->params['action']=='view'){?>disabled="disabled"<?php }?> onchange="changeclient_onchange();">
-                            <option value="0"><?= $strings["infoorder_selectclient"]; ?></option>
-                            <?php
-                            $profile_id = $this->request->session()->read('Profile.id');
-                            foreach ($clients as $c){
-                                $profiles = explode(",", $c->profile_id);
+                                    <select name="clients" class="form-control select2me no-print" data-placeholder="<?=$settings->client?>" id="changeclient" <?php if($this->request->params['action']=='view'){?>disabled="disabled"<?php }?> onchange="changeclient_onchange();">
+                                        <option value="0"><?= $strings["infoorder_selectclient"]; ?></option>
+                                        <?php
+                                            $profile_id = $this->request->session()->read('Profile.id');
+                                            foreach ($clients as $c){
+                                                $profiles = explode(",", $c->profile_id);
 
-                                if(in_array($profile_id, $profiles)|| $this->request->session()->read('Profile.super'))
-                                { ?>
-                                    <option value="<?php echo $c->id;?>" <?php if($cid ==$c->id)echo "selected='selected'";?>><?php echo $c->company_name;?></option>
+                                                if(in_array($profile_id, $profiles)|| $this->request->session()->read('Profile.super'))
+                                                { ?>
+                                                    <option value="<?php echo $c->id;?>" <?php if($cid ==$c->id)echo "selected='selected'";?>><?php echo $c->company_name;?></option>
+                                                    <?php
+                                                }
+                                            }
+                                        ?>
+                                    </select>
+
+                                </div>
                                 <?php
-                                }
-                            }
-                            ?>
-                        </select>
+                                    if($cid)
+                                    {
+                                        ?>
 
-                    </div>
-                    <?php
-                    if($cid)
-                    {
-                        ?>
+                                        <div class="col-md-12 doc_select" style="margin: 10px 0;padding:0">
 
-                    <div class="col-md-12 doc_select" style="margin: 10px 0;padding:0">
+                                            <select name="doctype" class="form-control select2me no-print" data-placeholder="<?= $strings["documents_selectdocument"]; ?>" onchange="window.location='<?php echo $this->request->webroot;?>documents/add/<?php echo $cid;?>?type='+$(this).val()" <?php if($this->request->params['action']=='view' || $this->request->params['pass']['1']!=''){?>disabled="disabled"<?php }?>>
+                                                <option value="0"><?= $strings["documents_selectdocument"]; ?></option>
+                                                <?php
+                                                    $doc = $doc_comp->getDocument('document');
+                                                    $subdoccli = $this->requestAction('/clients/getSubCli2/'.$cid.'/document/true/true');
 
-                        <select name="doctype" class="form-control select2me no-print" data-placeholder="<?= $strings["documents_selectdocument"]; ?>" onchange="window.location='<?php echo $this->request->webroot;?>documents/add/<?php echo $cid;?>?type='+$(this).val()" <?php if($this->request->params['action']=='view' || $this->request->params['pass']['1']!=''){?>disabled="disabled"<?php }?>>
-                            <option value="0"><?= $strings["documents_selectdocument"]; ?></option>
-                            <?php
-                             $doc = $doc_comp->getDocument('document');
-                             $subdoccli = $this->requestAction('/clients/getSubCli2/'.$cid.'/document/true/true');
+                                                    $subdoccli2 = $subdoccli;
+                                                    //$doc2 = $doc;
+                                                    $i = 2;
+                                                    $end = 0;
+                                                    $k_c=0;
+                                                    $index=0;
+                                                    $keyname = getFieldname("title", $language);
 
-                                        $subdoccli2 = $subdoccli;
-                                        //$doc2 = $doc;
-                                        $i = 2;
-                                        $end = 0;
-                                        $k_c=0;
-                                        $index=0;
-                                        $keyname = getFieldname("title", $language);
+                                                    foreach ($subdoccli as $sd) {
+                                                        $index+=1;
+                                                        $d = $sd->subtype;//$this->requestAction('/clients/getFirstSub/'.$sd->sub_id);
+                                                        ?>
+                                                        <option value="<?php echo $d->id;?>" <?php if($_GET['type'] ==$d->id)echo "selected='selected'";?>><?php echo ucfirst(str_replace('_',' ',$d->$keyname . $Trans));?></option>
+                                                        <?php
+                                                    }
+                                                ?>
+                                            </select>
 
-                                        foreach ($subdoccli as $sd) {
-                                            $index+=1;
-                                            $d = $sd->subtype;//$this->requestAction('/clients/getFirstSub/'.$sd->sub_id);
-                                          ?>
-                                    <option value="<?php echo $d->id;?>" <?php if($_GET['type'] ==$d->id)echo "selected='selected'";?>><?php echo ucfirst(str_replace('_',' ',$d->$keyname . $Trans));?></option>
-                                <?php
-                            }
-                            ?>
-                        </select>
-
-                    </div>
+                                        </div>
 
 
-                        <div class="col-md-12" style="margin: 10px 0;padding:0 ;">
+                                        <div class="col-md-12" style="margin: 10px 0;padding:0 ;">
 
-                        <?php $dr_cl = $doc_comp->getDriverClient(0, $cid);?>
-                        <select class="form-control select2me no-print" data-placeholder="No Driver"
-                                id="selecting_driver" <?php if ($driver || $this->request->params['action']=='view' ){ ?>disabled="disabled"<?php } ?>>
-                            <option value="0"><?= $strings["documents_nodriver"]; ?>
-                            </option>
-                            <?php
+                                            <?php $dr_cl = $doc_comp->getDriverClient(0, $cid);?>
+                                            <select class="form-control select2me no-print" data-placeholder="No Driver"
+                                                    id="selecting_driver" <?php if ($driver || $this->request->params['action']=='view' ){ ?>disabled="disabled"<?php } ?>>
+                                                <option value="0"><?= $strings["documents_nodriver"]; ?>
+                                                </option>
+                                                <?php
 
 
-                            foreach ($dr_cl['driver'] as $dr) {
+                                                    foreach ($dr_cl['driver'] as $dr) {
 
-                                $driver_id = $dr->id;
+                                                        $driver_id = $dr->id;
+                                                        ?>
+                                                        <option value="<?php echo $dr->id; ?>"
+                                                                <?php if ($dr->id == $driver){ ?>selected="selected"<?php } ?>><?php echo $dr->fname . ' ' . $dr->mname . ' ' . $dr->lname ?></option>
+                                                        <?php
+                                                    }
+                                                ?>
+                                            </select>
+
+                                            <input type="hidden" name="did" value="<?php echo $did; ?>" id="did"/>
+                                            <?php
+                                                if(isset($_GET['type']))
+                                                {
+                                                    $sid = $_GET['type'];
+                                                }
+                                                else
+                                                    $sid = 0;
+                                            ?>
+                                            <input type="hidden" name="sub_doc_id" value="<?php echo $sid; ?>" id="sub_id"/>
+
+                                        </div>
+
+
+
+
+
+                                        <div class="clearfix"></div>
+                                        <?php
+                                    }
                                 ?>
-                                <option value="<?php echo $dr->id; ?>"
-                                        <?php if ($dr->id == $driver){ ?>selected="selected"<?php } ?>><?php echo $dr->fname . ' ' . $dr->mname . ' ' . $dr->lname ?></option>
-                            <?php
-                            }
-                            ?>
-                        </select>
-
-                        <input type="hidden" name="did" value="<?php echo $did; ?>" id="did"/>
-                        <?php
-                        if(isset($_GET['type']))
-                        {
-                            $sid = $_GET['type'];
-                        }
-                        else
-                        $sid = 0;
-                        ?>
-                        <input type="hidden" name="sub_doc_id" value="<?php echo $sid; ?>" id="sub_id"/>
-
-                    </div>
-
-
-
-
-
-                    <div class="clearfix"></div>
-                    <?php
-                    }
-                    ?>
-                    </div>
+                            </div>
                         </div>
                     </div>
                     <div class="clearfix"></div>
@@ -240,301 +240,301 @@ printCSS($this);
 
                         <?php
 
-                        $controller = $this->request->params['controller'];
-                        $controller = strtolower($controller);
+                            $controller = $this->request->params['controller'];
+                            $controller = strtolower($controller);
                         ?>
 
                         <?php
-                        if($_GET['type']==1)
-                        {
+                            if($_GET['type']==1)
+                            {
                             $dx = $subdoc->find()->where(['id'=>$_GET['type']])->first();
-                       ?>
+                        ?>
                         <div class="subform1">
                             <?php
-                            if($controller == 'documents' ) {
-                                $colr = $this->requestAction('/documents/getColorId/1');
-                                if(!$colr){$colr = $class[0];}
-                                makeportlet($did, $colr,docname(1, $subdoccli, $language));
-                            } else {
+                                if($controller == 'documents' ) {
+                                    $colr = $this->requestAction('/documents/getColorId/1');
+                                    if(!$colr){$colr = $class[0];}
+                                    makeportlet($did, $colr,docname(1, $subdoccli, $language));
+                                } else {
 
-                            }
-                             include('subpages/documents/company_pre_screen_question.php');
-                            if($controller == 'documents' ) {
-                                echo '</div></div></div></div></div></div>' ;
-                            }
-                            echo "</div>";
-                         }
+                                }
+                                include('subpages/documents/company_pre_screen_question.php');
+                                if($controller == 'documents' ) {
+                                    echo '</div></div></div></div></div></div>' ;
+                                }
+                                echo "</div>";
+                                }
 
-                        ?>
-
-                        <?php
-                        if($_GET['type']==2)
-                        {
-                            $dx = $subdoc->find()->where(['id'=>$_GET['type']])->first();
-
-                            echo '<div class="subform2">';
-
-                       ?>
-
-                            <?php include('subpages/documents/driver_application.php');?>
-
-                        <?php
-                        echo "</div>";
-                        }
-                        if($_GET['type']==3)
-                        {
-                          $dx = $subdoc->find()->where(['id'=>$_GET['type']])->first();
-            ?>
-                        <div class="subform3"><?php
-                            if($controller == 'documents' ) {
-
-                                $colr = $this->requestAction('/documents/getColorId/3');
-                                if(!$colr){$colr = $class[2];}
-
-                                makeportlet($did, $colr, docname(3, $subdoccli, $language) );
-                            } else {
-
-                            }
-                            include('subpages/documents/driver_evaluation_form.php');
-                            if($controller == 'documents' ) {
-                                echo '</div></div></div></div></div></div>' ;
-                            }
                             ?>
-                        </div>
-                        <?php }?>
-                        <?php
-                        if($_GET['type']==4)
-                        {
-                          $dx = $subdoc->find()->where(['id'=>$_GET['type']])->first();
-                        ?>
-                        <div class="subform4">
-                            <?php
-                            if($controller == 'documents' ) {
-                                $colr = $this->requestAction('/documents/getColorId/4');
-                                if(!$colr) {$colr = $class[3];}
-                                makeportlet($did, $colr,docname(4, $subdoccli, $language));
-                            }
-                            else {
 
-                            }
-                            include('subpages/documents/document_tab_3.php');
-                            if($controller == 'documents' ) {
-                                echo '</div></div></div></div></div></div>' ;
-                            }
+                            <?php
+                                if($_GET['type']==2)
+                                {
+                                    $dx = $subdoc->find()->where(['id'=>$_GET['type']])->first();
+
+                                    echo '<div class="subform2">';
+
+                                    ?>
+
+                                    <?php include('subpages/documents/driver_application.php');?>
+
+                                    <?php
+                                    echo "</div>";
+                                }
+                                if($_GET['type']==3)
+                                {
+                                    $dx = $subdoc->find()->where(['id'=>$_GET['type']])->first();
+                                    ?>
+                                    <div class="subform3"><?php
+                                            if($controller == 'documents' ) {
+
+                                                $colr = $this->requestAction('/documents/getColorId/3');
+                                                if(!$colr){$colr = $class[2];}
+
+                                                makeportlet($did, $colr, docname(3, $subdoccli, $language) );
+                                            } else {
+
+                                            }
+                                            include('subpages/documents/driver_evaluation_form.php');
+                                            if($controller == 'documents' ) {
+                                                echo '</div></div></div></div></div></div>' ;
+                                            }
+                                        ?>
+                                    </div>
+                                <?php }?>
+                            <?php
+                                if($_GET['type']==4)
+                                {
+                                    $dx = $subdoc->find()->where(['id'=>$_GET['type']])->first();
+                                    ?>
+                                    <div class="subform4">
+                                        <?php
+                                            if($controller == 'documents' ) {
+                                                $colr = $this->requestAction('/documents/getColorId/4');
+                                                if(!$colr) {$colr = $class[3];}
+                                                makeportlet($did, $colr,docname(4, $subdoccli, $language));
+                                            }
+                                            else {
+
+                                            }
+                                            include('subpages/documents/document_tab_3.php');
+                                            if($controller == 'documents' ) {
+                                                echo '</div></div></div></div></div></div>' ;
+                                            }
+                                        ?>
+                                    </div>
+                                <?php }?>
+                            <?php
+                                if($_GET['type']==5)
+                                {
+                                    $dx = $subdoc->find()->where(['id'=>$_GET['type']])->first();
+                                    ?>
+                                    <div class="subform5">
+                                        <?php
+                                            if($controller == 'documents' ) {
+                                                $colr = $this->requestAction('/documents/getColorId/5');
+                                                if(!$colr) {$colr = $class[4];}
+                                                makeportlet($did, $colr,docname(5, $subdoccli, $language));
+                                            } else {
+
+                                            }
+                                            include('subpages/documents/survey.php');
+                                            if($controller == 'documents' ) {
+                                                echo '</div></div></div></div></div></div>' ;
+                                            }
+                                        ?>
+                                    </div>
+                                    <?php
+                                }
+
+                                if($_GET['type']==6)
+                                {
+                                    $dx = $subdoc->find()->where(['id'=>$_GET['type']])->first();
+                                    ?>
+                                    <div class="subform6">
+                                        <?php
+                                            if($controller == 'documents' )
+                                            {
+
+                                                $colr = $this->requestAction('/documents/getColorId/6');
+                                                if(!$colr) {$colr = $class[5];}
+                                                makeportlet($did, $colr,docname(6, $subdoccli, $language));
+                                            }
+                                            else {
+
+                                            }
+                                        ?>
+                                        <?php include('subpages/documents/feedbacks.php');
+                                            if($controller == 'documents' ) {
+                                                echo '</div></div></div></div></div></div>' ;
+                                            }
+                                        ?>
+                                    </div>
+                                    <?php
+                                }
+
+                                if($_GET['type']==7)
+                                {
+                                    $dx = $subdoc->find()->where(['id'=>$_GET['type']])->first();
+                                    ?>
+                                    <div class="subform7">
+                                        <?php
+                                            if($controller == 'documents' ) {
+                                                $colr = $this->requestAction('/documents/getColorId/7');
+                                                if(!$colr) {$colr = $class[6];}
+                                                makeportlet($did, $colr,docname(7, $subdoccli, $language));
+                                            }
+                                            else {
+
+                                            }
+                                        ?>
+                                        <?php include('subpages/documents/attachments.php');
+                                            if($controller == 'documents' ) {
+                                                echo '</div></div></div></div></div></div>' ;
+                                            }
+                                        ?>
+                                    </div>
+                                    <?php
+                                }
+
+                                if($_GET['type']==8)
+                                {
+                                    $dx = $subdoc->find()->where(['id'=>$_GET['type']])->first();
+                                    ?>
+                                    <div class="subform8">
+                                        <?php
+                                            if($controller == 'documents' ) {
+                                                $colr = $this->requestAction('/documents/getColorId/8');
+                                                if(!$colr) {$colr = $class[7];}
+                                                makeportlet($did, $colr,docname(8, $subdoccli, $language));
+                                            } else {
+
+                                            }
+                                        ?>
+                                        <?php include('subpages/documents/audits.php');
+                                            if($controller == 'documents' ) {
+                                                echo '</div></div></div></div></div></div>' ;
+                                            }
+                                        ?>
+                                    </div>
+                                    <?php
+                                }
+
+                                if($_GET['type']==9)
+                                {
+                                    $dx = $subdoc->find()->where(['id'=>$_GET['type']])->first();
+                                    ?>
+                                    <div class="subform9">
+                                        <?php
+                                            if($controller == 'documents' ) {
+                                                $colr = $this->requestAction('/documents/getColorId/9');
+                                                if(!$colr) {$colr = $class[8];}
+                                                makeportlet($did, $colr,docname(9, $subdoccli, $language));
+                                            } else {
+
+                                            }
+                                        ?>
+                                        <?php include('subpages/documents/employment_verification_form.php');
+                                            if($controller == 'documents' ) {
+                                                echo '</div></div></div></div></div></div>' ;
+                                            }
+                                        ?>
+                                    </div>
+                                    <?php
+                                }
+
+                                if($_GET['type']==10)
+                                {
+                                    //die($_GET['type']);
+                                    $dx = $subdoc->find()->where(['id'=>$_GET['type']])->first();
+
+
+                                    ?>
+
+                                    <div class="subform10">
+                                        <?php
+                                            if($controller == 'documents' ) {
+
+                                                $colr = $this->requestAction('/documents/getColorId/10');
+                                                if(!$colr) {$colr = $class[9];}
+                                                makeportlet($did, $colr,docname(10, $subdoccli, $language));
+                                            } else {
+
+                                            }
+                                        ?>
+                                        <?php include('subpages/documents/education_verification_form.php');
+                                            if($controller == 'documents' ) {
+                                                echo '</div></div></div></div></div></div>' ;
+                                            }
+                                        ?>
+                                    </div>
+                                    <?php
+                                }
+
                             ?>
-                        </div>
-                        <?php }?>
-                        <?php
-                        if($_GET['type']==5)
-                        {
-                          $dx = $subdoc->find()->where(['id'=>$_GET['type']])->first();
-                        ?>
-                        <div class="subform5">
-                            <?php
-                            if($controller == 'documents' ) {
-                                $colr = $this->requestAction('/documents/getColorId/5');
-                                if(!$colr) {$colr = $class[4];}
-                                makeportlet($did, $colr,docname(5, $subdoccli, $language));
-                            } else {
-
-                            }
-                            include('subpages/documents/survey.php');
-                            if($controller == 'documents' ) {
-                                echo '</div></div></div></div></div></div>' ;
-                            }
-                            ?>
-                        </div>
-                        <?php
-                        }
-
-                            if($_GET['type']==6)
-                        {
-                          $dx = $subdoc->find()->where(['id'=>$_GET['type']])->first();
-                        ?>
-                        <div class="subform6">
-                            <?php
-                            if($controller == 'documents' )
+                            <?php foreach($doc as $dx)
                             {
+                                if($dx->id >10){
+                                    if($_GET['type'] == $dx->id){
+                                        ?>
+                                        <div class="subform<?php echo $dx->id;?>">
+                                            <input type="hidden" class="document_type" name="document_type" value="<?php echo $dx->title;?>"/>
+                                            <input type="hidden" name="sub_doc_id" value="<?php echo $dx->id;?>" class="sub_docs_id"  />
+                                            <?php
+                                                if($controller == 'documents' ) {
+                                                    $colr = $this->requestAction('/documents/getColorId/'.$dx->id);
+                                                    if(!$colr) {$colr = $class[9];}
+                                                    makeportlet($did, $colr,$dx->$keyname  . $Trans);
+                                                } else {
 
-                                $colr = $this->requestAction('/documents/getColorId/6');
-                                if(!$colr) {$colr = $class[5];}
-                                makeportlet($did, $colr,docname(6, $subdoccli, $language));
-                            }
-                            else {
-
+                                                }
+                                            ?>
+                                            <?php if($dx->form && file_exists('subpages/documents/'.$dx->form))include('subpages/documents/'.$dx->form);
+                                                if($controller == 'documents' ) {
+                                                    echo '</div></div></div></div></div></div>' ;
+                                                }
+                                            ?>
+                                        </div>
+                                        <?php
+                                    }}
                             }
                             ?>
-                            <?php include('subpages/documents/feedbacks.php');
-                            if($controller == 'documents' ) {
-                                echo '</div></div></div></div></div></div>' ;
-                            }
-                            ?>
+
                         </div>
-                        <?php
-                        }
-
-                            if($_GET['type']==7)
-                        {
-                          $dx = $subdoc->find()->where(['id'=>$_GET['type']])->first();
-                        ?>
-                        <div class="subform7">
-                            <?php
-                            if($controller == 'documents' ) {
-                                $colr = $this->requestAction('/documents/getColorId/7');
-                                if(!$colr) {$colr = $class[6];}
-                                makeportlet($did, $colr,docname(7, $subdoccli, $language));
-                            }
-                            else {
-
-                            }
-                            ?>
-                            <?php include('subpages/documents/attachments.php');
-                            if($controller == 'documents' ) {
-                                echo '</div></div></div></div></div></div>' ;
-                            }
-                            ?>
-                        </div>
-                        <?php
-                        }
-
-                            if($_GET['type']==8)
-                        {
-                          $dx = $subdoc->find()->where(['id'=>$_GET['type']])->first();
-                        ?>
-                        <div class="subform8">
-                            <?php
-                            if($controller == 'documents' ) {
-                                $colr = $this->requestAction('/documents/getColorId/8');
-                                if(!$colr) {$colr = $class[7];}
-                                makeportlet($did, $colr,docname(8, $subdoccli, $language));
-                            } else {
-
-                            }
-                            ?>
-                            <?php include('subpages/documents/audits.php');
-                            if($controller == 'documents' ) {
-                                echo '</div></div></div></div></div></div>' ;
-                            }
-                            ?>
-                        </div>
-                        <?php
-                        }
-
-                            if($_GET['type']==9)
-                        {
-                          $dx = $subdoc->find()->where(['id'=>$_GET['type']])->first();
-                        ?>
-                        <div class="subform9">
-                            <?php
-                            if($controller == 'documents' ) {
-                                $colr = $this->requestAction('/documents/getColorId/9');
-                                if(!$colr) {$colr = $class[8];}
-                                makeportlet($did, $colr,docname(9, $subdoccli, $language));
-                            } else {
-
-                            }
-                            ?>
-                            <?php include('subpages/documents/employment_verification_form.php');
-                            if($controller == 'documents' ) {
-                                echo '</div></div></div></div></div></div>' ;
-                            }
-                            ?>
-                        </div>
-                        <?php
-                        }
-
-                            if($_GET['type']==10)
-                        {
-                            //die($_GET['type']);
-                            $dx = $subdoc->find()->where(['id'=>$_GET['type']])->first();
-
-
-                        ?>
-
-                        <div class="subform10">
-                            <?php
-                            if($controller == 'documents' ) {
-
-                                $colr = $this->requestAction('/documents/getColorId/10');
-                                if(!$colr) {$colr = $class[9];}
-                                makeportlet($did, $colr,docname(10, $subdoccli, $language));
-                             } else {
-
-                            }
-                        ?>
-                        <?php include('subpages/documents/education_verification_form.php');
-                        if($controller == 'documents' ) {
-                        echo '</div></div></div></div></div></div>' ;
-                        }
-                         ?>
                     </div>
-                    <?php
-                        }
-
-                        ?>
-                    <?php foreach($doc as $dx)
-                    {
-                        if($dx->id >10){
-                            if($_GET['type'] == $dx->id){
-                        ?>
-                        <div class="subform<?php echo $dx->id;?>">
-                             <input type="hidden" class="document_type" name="document_type" value="<?php echo $dx->title;?>"/>
-                                <input type="hidden" name="sub_doc_id" value="<?php echo $dx->id;?>" class="sub_docs_id"  />
-                            <?php
-                        if($controller == 'documents' ) {
-                            $colr = $this->requestAction('/documents/getColorId/'.$dx->id);
-                            if(!$colr) {$colr = $class[9];}
-                            makeportlet($did, $colr,$dx->$keyname  . $Trans);
-                        } else {
-
-                        }
-                        ?>
-                        <?php if($dx->form && file_exists('subpages/documents/'.$dx->form))include('subpages/documents/'.$dx->form);
-                        if($controller == 'documents' ) {
-                            echo '</div></div></div></div></div></div>' ;
-                        }
-                         ?>
-                        </div>
-                    <?php
-                        }}
-                    }
-                    ?>
-
-                    </div>
-                </div>
-                <div class="form-actions">
-                    <div class="row">
-                        <div class="col-md-offset-3 col-md-9 btndocs" <?php if(!isset($_GET['type'])){?>style="display: none;"<?php }?>>
+                    <div class="form-actions">
+                        <div class="row">
+                            <div class="col-md-offset-3 col-md-9 btndocs" <?php if(!isset($_GET['type'])){?>style="display: none;"<?php }?>>
 
 
-                            <a href="javascript:void(0)" class="btn green cont"><?= $strings["forms_save"]; ?></a>
+                                <a href="javascript:void(0)" class="btn green cont"><?= $strings["forms_save"]; ?></a>
 
-                            <?php
-                            if(!isset($_GET['order_id']))
-                            {
+                                <?php
+                                    if(!isset($_GET['order_id']))
+                                    {
+                                        ?>
+
+                                        <a href="javascript:;" id="draft" class="btn blue cont">
+                                            <?= $strings["forms_savedraft"]; ?> <i class="m-icon-swapright m-icon-white"></i>
+                                        </a>
+                                        <?php
+                                    }
                                 ?>
+                                <div class="margin-top-10 alert alert-success display-hide flashDoc" style="display: none;">
+                                    <button class="close" data-close="alert"></button>
+                                    <?php echo ucfirst($settings->document); ?> <?= $strings["forms_uploaded"]; ?>
+                                </div>
 
-                                <a href="javascript:;" id="draft" class="btn blue cont">
-                                    <?= $strings["forms_savedraft"]; ?> <i class="m-icon-swapright m-icon-white"></i>
-                                </a>
-                            <?php
-                            }
-                            ?>
-                            <div class="margin-top-10 alert alert-success display-hide flashDoc" style="display: none;">
-                                <button class="close" data-close="alert"></button>
-                                <?php echo ucfirst($settings->document); ?> <?= $strings["forms_uploaded"]; ?>
+
                             </div>
 
-
                         </div>
-
                     </div>
                 </div>
             </div>
-        </div>
 
+        </div>
     </div>
-</div>
 </div>
 
 
@@ -544,12 +544,12 @@ printCSS($this);
     var fillALL = '<?= addslashes($strings["forms_fillall"]); ?>';
 
     client_id = '<?=$cid?>',
-    doc_id = '<?=$did?>';
+        doc_id = '<?=$did?>';
     $(function(){
         if(doc_id && doc_id != '0')
         {
             <?php if(isset($_GET['type'])){ ?>
-            
+
             showforms('<?php $subdet = $this->requestAction('/orders/getSubDetail/'.$_GET['type']); echo $subdet->form."?doc_id=".$subdet->id;?>');
             <?php }?>
         }
@@ -592,20 +592,20 @@ printCSS($this);
                 save_signature('8');
             }
         }
-        
+
 
     }
     function save_signature(numb)
     {
         //alert('rest');return;
-        
+
         $("#test"+numb).data("jqScribble").save(function(imageData)
         {
             //alert($('#signature_company_witness2').parent().find('.touched').val());
             if((numb=='1' && $('#recruiter_signature').parent().find('.touched').val()==1) || (numb=='3' && $('#criminal_signature_applicant').parent().find('.touched').val()==1) || (numb=='4' && $('#signature_company_witness').parent().find('.touched').val()==1) || (numb=='5' && $('#criminal_signature_applicant2').parent().find('.touched').val()==1) || (numb=='6' && $('#signature_company_witness2').parent().find('.touched').val()==1) || (numb=='8' && $('#gfs_signature').parent().find('.touched').val()==1)){
                 $.post('<?php echo $this->request->webroot; ?>canvas/image_save.php', {imagedata: imageData}, function(response)
                 {
-                    
+
                     if(numb=='1')
                     {
 
@@ -641,7 +641,7 @@ printCSS($this);
     }
     //showforms(doc_type);
     function showforms(form_type) {
-        
+
         $('.moredocxs').show();
         $('.btndocs').show();
         $('.clients_select').hide();
@@ -664,91 +664,91 @@ printCSS($this);
             $('.subform'+k+' .sub_docs_id').remove();
 
         }
-         <?php foreach($doc as $dx)
-                {
-                    if($dx->id >11)
-                    {
-                    ?>
-                    if(s_arr[1] == <?php echo $dx->id;?>){
-                        $('#form_tab<?php echo $dx->id;?>').prepend('<input class="document_type" type="hidden" name="document_type" value="<?php echo addslashes($dx->title);?>" />' +
-                        '<input type="hidden" class="sub_docs_id" name="sub_doc_id" value="<?php echo $dx->id;?>"  />');
-                        $('.addattachment<?php echo $dx->id;?>').load('<?php echo $this->request->webroot;?>documents/attach_doc/<?php echo $did."/".$view;?>', function(){
-                            if ($("#addMore1").length)
-                            initiate_ajax_upload1('addMore1', 'doc');
-                         });
-                    }
+        <?php foreach($doc as $dx)
+               {
+                   if($dx->id >11)
+                   {
+                   ?>
+        if(s_arr[1] == <?php echo $dx->id;?>){
+            $('#form_tab<?php echo $dx->id;?>').prepend('<input class="document_type" type="hidden" name="document_type" value="<?php echo addslashes($dx->title);?>" />' +
+                '<input type="hidden" class="sub_docs_id" name="sub_doc_id" value="<?php echo $dx->id;?>"  />');
+            $('.addattachment<?php echo $dx->id;?>').load('<?php echo $this->request->webroot;?>documents/attach_doc/<?php echo $did."/".$view;?>', function(){
+                if ($("#addMore1").length)
+                    initiate_ajax_upload1('addMore1', 'doc');
+            });
+        }
         <?php       }
                 }
         ?>
         if (s_arr[1] == 5) {
             $('#form_tab5').prepend('<input class="document_type" type="hidden" name="document_type" value="Survey" />' +
-            '<input type="hidden" class="sub_docs_id" name="sub_doc_id" value="5"  />');
+                '<input type="hidden" class="sub_docs_id" name="sub_doc_id" value="5"  />');
             $('.addattachment5').load('<?php echo $this->request->webroot;?>documents/attach_doc/<?php echo $did."/".$view;?>', function(){
                 if ($("#addMore1").length)
-                initiate_ajax_upload1('addMore1', 'doc');
-             });
+                    initiate_ajax_upload1('addMore1', 'doc');
+            });
         }
         if (s_arr[1] == 6) {
             $('#form_tab6').prepend('<input class="document_type" type="hidden" name="document_type" value="Feedback" />' +
-            '<input type="hidden" class="sub_docs_id" name="sub_doc_id" value="6"  />');
+                '<input type="hidden" class="sub_docs_id" name="sub_doc_id" value="6"  />');
             $('.addattachment6').load('<?php echo $this->request->webroot;?>documents/attach_doc/<?php echo $did."/".$view;?>', function(){
                 if ($("#addMore1").length)
-                initiate_ajax_upload1('addMore1', 'doc');
-             });
+                    initiate_ajax_upload1('addMore1', 'doc');
+            });
         }
         if (s_arr[1] == 7) {
             $('#form_tab7').prepend('<input class="document_type" type="hidden" name="document_type" value="Attachment" />' +
-            '<input type="hidden" class="sub_docs_id" name="sub_doc_id" value="7"  />');
+                '<input type="hidden" class="sub_docs_id" name="sub_doc_id" value="7"  />');
             $('.addattachment7').load('<?php echo $this->request->webroot;?>documents/attach_doc/<?php echo $did."/".$view;?>', function(){
                 if ($("#addMore1").length)
-                initiate_ajax_upload1('addMore1', 'doc');
-             });
+                    initiate_ajax_upload1('addMore1', 'doc');
+            });
         }
         if (s_arr[1] == 8) {
             $('#form_tab8').prepend('<input class="document_type" type="hidden" name="document_type" value="Audits" />' +
-            '<input type="hidden" class="sub_docs_id" name="sub_doc_id" value="8"  />');
-             $('.addattachment8').load('<?php echo $this->request->webroot;?>documents/attach_doc/<?php echo $did."/".$view;?>', function(){
+                '<input type="hidden" class="sub_docs_id" name="sub_doc_id" value="8"  />');
+            $('.addattachment8').load('<?php echo $this->request->webroot;?>documents/attach_doc/<?php echo $did."/".$view;?>', function(){
                 if ($("#addMore1").length)
-                initiate_ajax_upload1('addMore1', 'doc');
-             });
+                    initiate_ajax_upload1('addMore1', 'doc');
+            });
 
         }
         if (s_arr[1] == 9) {
             $('#form_tab9').prepend('<input class="document_type" type="hidden" name="document_type" value="Employment Verification" />' +
-            '<input type="hidden" class="sub_docs_id" name="sub_doc_id" value="9"  />');
+                '<input type="hidden" class="sub_docs_id" name="sub_doc_id" value="9"  />');
 
 
         }
         if (s_arr[1] == 10) {
             $('#form_tab10').prepend('<input class="document_type" type="hidden" name="document_type" value="Education Verification" />' +
-            '<input type="hidden" class="sub_docs_id" name="sub_doc_id" value="10"  />');
+                '<input type="hidden" class="sub_docs_id" name="sub_doc_id" value="10"  />');
 
         }
         if (s_arr[1] == 11) {
             $('#form_tab11').prepend('<input class="document_type" type="hidden" name="document_type" value="Basic Pre-Screen Questions" />' +
-            '<input type="hidden" class="sub_docs_id" name="sub_doc_id" value="11"  />');
+                '<input type="hidden" class="sub_docs_id" name="sub_doc_id" value="11"  />');
             $('.addattachment11').load('<?php echo $this->request->webroot;?>documents/attach_doc/<?php echo $did."/".$view;?>', function(){
                 if($("#addMore1").length)
-                initiate_ajax_upload1('addMore1', 'doc');
-             });
+                    initiate_ajax_upload1('addMore1', 'doc');
+            });
 
         }
 
         if (s_arr[1] == 1) {
             $('#form_tab1').prepend('<input type="hidden" class="document_type" name="document_type" value="Pre-Screening"/>' +
-            '<input type="hidden" name="sub_doc_id" value="1" class="sub_docs_id" id="af" />');
+                '<input type="hidden" name="sub_doc_id" value="1" class="sub_docs_id" id="af" />');
         }
         if (s_arr[1] == 2) {
             $('#form_tab2').prepend('<input type="hidden" class="document_type" name="document_type" value="Driver Application"/>' +
-            '<input type="hidden" name="sub_doc_id" value="2" class="sub_docs_id" id="af" />');
+                '<input type="hidden" name="sub_doc_id" value="2" class="sub_docs_id" id="af" />');
         }
         if (s_arr[1] == 3) {
             $('#form_tab3').prepend('<input class="document_type" type="hidden" name="document_type" value="Road test" />' +
-            '<input type="hidden" class="sub_docs_id" name="sub_doc_id" value="3" id="af" />');
+                '<input type="hidden" class="sub_docs_id" name="sub_doc_id" value="3" id="af" />');
         }
         if (s_arr[1] == 4) {
             $('#form_tab4').prepend('<input class="document_type" type="hidden" name="document_type" value="Consent Form" />' +
-            '<input type="hidden" class="sub_docs_id" name="sub_doc_id" value="4"  />');
+                '<input type="hidden" class="sub_docs_id" name="sub_doc_id" value="4"  />');
         }
 
 
@@ -792,7 +792,7 @@ printCSS($this);
                 // debugger;
                 var url = '<?php echo $this->request->webroot;?>documents/getOrderData/' + client_id + '/' + doc_id + '/?document=1<?php if(isset($_GET['order_id'])){?>&order_id=<?php echo $_GET['order_id'];}?>',
                     param = {form_type: ftype};
-                    //alert(ftype);
+                //alert(ftype);
                 //alert(url);
                 $.getJSON(url, param, function (res) {
                     if (res) {
@@ -972,7 +972,7 @@ printCSS($this);
                             }
 
                         } else if (ftype == "driver_evaluation_form.php") {
-                            
+
                             $('#form_tab3').form('load', res);
 
                             if (res.transmission_manual_shift == 1) {
@@ -1461,127 +1461,14 @@ printCSS($this);
     function addmoredoc(idname)
     {
         var total_count = $('.'+idname).data('count');
-            $('.'+idname).data('count', parseInt(total_count) + 1);
-            total_count = $('.'+idname).data('count');
-            var input_field = '<div  class="form-group col-md-12" style="padding-left:15px;"><div class="col-md-12"><a href="javascript:void(0);" id="'+idname + total_count + '" class="btn btn-primary"><?= addslashes($strings["forms_browse"]); ?></a><input type="hidden" name="attach_doc[]" value="" class="'+idname + total_count + '_doc moredocs" /> <a href="javascript:void(0);" class = "btn btn-danger img_delete" id="delete_'+idname + total_count + '" title =""><?= addslashes($strings["dashboard_delete"]); ?></a><span></span></div></div>';
-            $('.'+idname).append(input_field);
-            if($('#'+idname + total_count).length)
+        $('.'+idname).data('count', parseInt(total_count) + 1);
+        total_count = $('.'+idname).data('count');
+        var input_field = '<div  class="form-group col-md-12" style="padding-left:15px;"><div class="col-md-12"><a href="javascript:void(0);" id="'+idname + total_count + '" class="btn btn-primary"><?= addslashes($strings["forms_browse"]); ?></a><input type="hidden" name="attach_doc[]" value="" class="'+idname + total_count + '_doc moredocs" /> <a href="javascript:void(0);" class = "btn btn-danger img_delete" id="delete_'+idname + total_count + '" title =""><?= addslashes($strings["dashboard_delete"]); ?></a><span></span></div></div>';
+        $('.'+idname).append(input_field);
+        if($('#'+idname + total_count).length)
             initiate_ajax_upload1(idname + total_count, 'doc');
     }
-   function validate_data(Data, DataType){
-                if(Data) {
-                    //alert("Testing: " + Data + " for " + DataType);
-                    switch (DataType.toLowerCase()) {
-                        case "email":
-                            var re = /\S+@\S+\.\S+/;
-                            return re.test(Data);
-                            break;
-                        case "postalcode":
-                            Data = Data.replace(/ /g, '').toUpperCase();
-                            var regex = new RegExp(/^[ABCEGHJKLMNPRSTVXY]\d[ABCEGHJKLMNPRSTVWXYZ]?\d[ABCEGHJKLMNPRSTVWXYZ]\d$/i);
-                            return regex.test(Data);
-                            break;
-                        case "phone":
-                            var phoneRe = /^[2-9]\d{2}[2-9]\d{2}\d{4}$/;
-                            Data = Data.replace(/\D/g, "");
-                            return (Data.match(phoneRe) !== null);
-                            break;
-                        case "sin":
-                            Data = Data.replace(/\D/g, "");//removes non-numeric
-                            return Data.length == 9;
-                            break;
-                        default:
-                            alert(DataType + " is unhandled");
-                    }
-                }
-                return true;
-            }
-            function clean_data(Data, DataType){
-                Data = Data.trim();
-                if(Data) {
-                    switch (DataType.toLowerCase()) {
-                        case "email":
-                            Data = Data.toLowerCase();
-                            break;
-                        case "postalcode":
-                            Data = replaceAll(" ", "", Data.toUpperCase());
-                            Data = Data.substring(0,3) + " " + Data.substring(3);
-                            break;
-                        case "phone":
-                            Data = Data.replace(/[^0-9]/g, '');
-                            Data = Data.replace(/(\d{3})(\d{3})(\d{4})/, "($1) $2-$3");
-                            break;
-                        case "sin":
-                            Data = Data.replace(/\D/g, "");//removes non-numeric
-                            Data = Data.substring(0,3) + "-" + Data.substring(3,3) + "-" + Data.substring(6,3);
-                            break;
-                    }
-                }
-                return Data;
-            }
 
-            function hasClass(elem, className) {
-                return new RegExp(' ' + className + ' ').test(' ' + elem.className + ' ');
-            }
-            function strip(html) {
-                var tmp = document.createElement("DIV");
-              //  alert("STRIP : " + html);
-                tmp.innerHTML = html.trim();
-                return tmp.textContent || tmp.innerText || "";
-            }
-
-            function getName(element){
-                var name;
-                if (element.hasAttribute("placeholder")) {
-                    name = element.getAttribute("placeholder");
-                } else {
-                    var ele = element.previousElementSibling;
-                    if (ele === null) {ele = element.parentElement.previousElementSibling;}
-                    if (ele === null) {ele = element.parentElement.parentElement;}
-                    name = ele.innerHTML;
-                    name = strip(name.replace(":", "")).trim();
-                }
-                return name.trim();
-            }
-            function replaceAll(find, replace, str) {
-                return str.replace(new RegExp(find, 'g'), replace);
-            }
-            function checktags(TabID, tagtype){
-                var element = document.getElementById(TabID);
-                var inputs = element.getElementsByTagName(tagtype);
-                var RET = new Array();
-                RET['Status'] = true;
-                for (index = 0; index < inputs.length; ++index) {
-                    element = inputs[index];
-                    isrequired = hasClass(element, "required") || element.hasAttribute("required");
-                    var value = element.value;
-                    var isValid = true;
-                    var Reason = "";
-                    if(!value && isrequired){
-                        Reason = "required";
-                        isValid = false;
-                    } else if (element.hasAttribute("role")){
-                        Reason= element.getAttribute("role");
-                        isValid = validate_data(value, Reason);
-                    }
-                    if(isValid && Reason) {
-                        //alert('there');
-                        value = clean_data(value, Reason);
-                        element.value = value;
-                    } else if(!isValid) {
-                        //alert('here');
-                        var name = getName(element);
-                        RET['Status'] = false;
-                        RET['Element'] = name;
-                        RET['Reason'] = Reason;
-                        RET['Value'] = value;
-                        $('html,body').animate({ scrollTop: $(element).offset().top}, 'slow');
-                        $(element).attr('style','border-color:red');
-                        return RET;
-                    }
-                }
-                return RET;
-            }
     jQuery(document).ready(function () {
         var subdocid = $('#sub_id').val();
         subdocid = parseFloat(subdocid);
@@ -1589,18 +1476,18 @@ printCSS($this);
         if(isset($_GET['type']))
         {
             ?>
-            <?php foreach($doc as $dx)
+        <?php foreach($doc as $dx)
+            {
+                if($dx->id >11)
                 {
-                    if($dx->id >11)
-                    {
-                    ?>
-                    if(subdocid == <?php echo $dx->id;?>){
+                ?>
+        if(subdocid == <?php echo $dx->id;?>){
 
-                        $('.addattachment<?php echo $dx->id;?>').load('<?php echo $this->request->webroot;?>documents/attach_doc/<?php echo $did."/".$view;?>', function(){
-                            if($('#addMore1').length)
-                            initiate_ajax_upload1('addMore1', 'doc');
-                         });
-                    }
+            $('.addattachment<?php echo $dx->id;?>').load('<?php echo $this->request->webroot;?>documents/attach_doc/<?php echo $did."/".$view;?>', function(){
+                if($('#addMore1').length)
+                    initiate_ajax_upload1('addMore1', 'doc');
+            });
+        }
         <?php       }
                 }
         ?>
@@ -1608,29 +1495,29 @@ printCSS($this);
 
             $('.addattachment5').load('<?php echo $this->request->webroot;?>documents/attach_doc/<?php echo $did."/".$view;?>', function(){
                 if($('#addMore1').length)
-                initiate_ajax_upload1('addMore1', 'doc');
-             });
+                    initiate_ajax_upload1('addMore1', 'doc');
+            });
         }
         if (subdocid == 6) {
 
             $('.addattachment6').load('<?php echo $this->request->webroot;?>documents/attach_doc/<?php echo $did."/".$view;?>', function(){
                 if($('#addMore1').length)
-                initiate_ajax_upload1('addMore1', 'doc');
-             });
+                    initiate_ajax_upload1('addMore1', 'doc');
+            });
         }
         if (subdocid == 7) {
 
             $('.addattachment7').load('<?php echo $this->request->webroot;?>documents/attach_doc/<?php echo $did."/".$view;?>', function(){
                 if($('#addMore1').length)
-                initiate_ajax_upload1('addMore1', 'doc');
-             });
+                    initiate_ajax_upload1('addMore1', 'doc');
+            });
         }
         if (subdocid == 8) {
 
-             $('.addattachment8').load('<?php echo $this->request->webroot;?>documents/attach_doc/<?php echo $did."/".$view;?>', function(){
+            $('.addattachment8').load('<?php echo $this->request->webroot;?>documents/attach_doc/<?php echo $did."/".$view;?>', function(){
                 if($('#addMore1').length)
-                initiate_ajax_upload1('addMore1', 'doc');
-             });
+                    initiate_ajax_upload1('addMore1', 'doc');
+            });
 
         }
 
@@ -1638,15 +1525,15 @@ printCSS($this);
 
             $('.addattachment11').load('<?php echo $this->request->webroot;?>documents/attach_doc/<?php echo $did."/".$view;?>', function(){
                 if($('#addMore1').length)
-                initiate_ajax_upload1('addMore1', 'doc');
-             });
+                    initiate_ajax_upload1('addMore1', 'doc');
+            });
 
         }
 
 
-            <?php
-        }
-        ?>
+        <?php
+    }
+    ?>
 
         $('#changeclient').change(function(){
             changeclient_onchange();
@@ -1708,24 +1595,24 @@ printCSS($this);
         {
             ?>
         /*for (var h = 1; h <= parseFloat('<?php echo $doc_count;?>'); h++) {
-            $('#form_tab' + h + ' input').attr('disabled', 'disabled');
-            $('#form_tab' + h + ' textarea').attr('disabled', 'disabled');
-            $('#form_tab' + h + ' select').attr('disabled', 'disabled');
-            $('#form_tab' + h + ' button').hide();
-            $('#form_tab' + h + ' a').not('.dl').hide();
-            $('.nav a').show();
-            $('#form_tab' + h + ' input[type="submit"]').hide();
-            $('.form-actions').hide();
-        }*/
+         $('#form_tab' + h + ' input').attr('disabled', 'disabled');
+         $('#form_tab' + h + ' textarea').attr('disabled', 'disabled');
+         $('#form_tab' + h + ' select').attr('disabled', 'disabled');
+         $('#form_tab' + h + ' button').hide();
+         $('#form_tab' + h + ' a').not('.dl').hide();
+         $('.nav a').show();
+         $('#form_tab' + h + ' input[type="submit"]').hide();
+         $('.form-actions').hide();
+         }*/
         var h = '<?php echo $_GET['type'];?>';
         $('#form_tab' + h + ' input').attr('disabled', 'disabled');
-            $('#form_tab' + h + ' textarea').attr('disabled', 'disabled');
-            $('#form_tab' + h + ' select').attr('disabled', 'disabled');
-            $('#form_tab' + h + ' button').hide();
-            $('#form_tab' + h + ' a').not('.dl').hide();
-            $('.nav a').show();
-            $('#form_tab' + h + ' input[type="submit"]').hide();
-            $('.form-actions').hide();
+        $('#form_tab' + h + ' textarea').attr('disabled', 'disabled');
+        $('#form_tab' + h + ' select').attr('disabled', 'disabled');
+        $('#form_tab' + h + ' button').hide();
+        $('#form_tab' + h + ' a').not('.dl').hide();
+        $('.nav a').show();
+        $('#form_tab' + h + ' input[type="submit"]').hide();
+        $('.form-actions').hide();
         <?php
     }
     if(isset($did) && $did)
@@ -1737,16 +1624,17 @@ printCSS($this);
     ?>
         var draft = 0;
         $(document.body).on('click', '.cont', function () {
-            
-            var checkerr = checktags('parentdiv','input');
-            console.log(checkerr);
-            if(!checkerr['status'])
-            return false;
+
+            /*var checkerr = checktags('parentdiv','input');
+             console.log(checkerr);
+             if(!checkerr['status'])
+             return false;*/
+
             var sid = $('#sub_id').val();
             <?php  if(!isset($_GET['doc'])) { ?>
-                var type = $(".document_type").val();
+            var type = $(".document_type").val();
             <?php } else { ?>
-                var type = '<?php echo urldecode($_GET['doc']);?>';
+            var type = '<?php echo urldecode($_GET['doc']);?>';
             <?php } ?>
             //alert(type);return false;
             switch(type) {
@@ -1759,18 +1647,18 @@ printCSS($this);
                     }
                     break;
             }
-            
+
             $(this).attr('disabled','disabled');
-            
+
             if($('.sub_docs_id').val() == 18) {
                 if ($('.touched').val() != '1' && $('.touched_edit8').val() != '1') {
-                            alert(giveSIG);
-                            $('html,body').animate({
-                                        scrollTop: $('#sig8').offset().top},
-                                    'slow');
-                                     $(this).removeAttr('disabled');
-                            return false;
-                            }
+                    alert(giveSIG);
+                    $('html,body').animate({
+                            scrollTop: $('#sig8').offset().top},
+                        'slow');
+                    $(this).removeAttr('disabled');
+                    return false;
+                }
             }
             if($('.subform4 #subtab_2_1').attr('class')=='tab-pane active' && $('.subform4').attr('style')!='display: none;'){
                 //alert('tes');
@@ -1982,7 +1870,7 @@ printCSS($this);
                     }
                     else if(sid == '11')
                     {
-                         var act = $('#form_tab11').attr('action');
+                        var act = $('#form_tab11').attr('action');
 
                         $('#form_tab11').attr('action', function (i, val) {
                             return val + '?draft=' + draft;
@@ -1994,7 +1882,7 @@ printCSS($this);
                     else
                     if (sid == "15") {
                         //alert('test');return;
-                         var order_id = $('#did').val(),
+                        var order_id = $('#did').val(),
                             cid = '<?php echo $cid;?>',
                             url = '<?php echo $this->request->webroot;?>documents/mee_attach/' + order_id + '/' + cid + '/?document=' + type + '&draft=' + draft+'<?php if(isset($_GET['order_id'])){?>&order_id=<?php echo $_GET['order_id'];}?>';
                         var param = $('#form_tab15').serialize();
@@ -2004,36 +1892,36 @@ printCSS($this);
                             type: 'POST',
                             success: function (res) {
 
-                                    if(draft==0)
-                                        window.location = '<?php echo $this->request->webroot?>documents/index?flash';
-                                    else
-                                        window.location = '<?php echo $this->request->webroot?>documents/index?flash';
-                                        }
+                                if(draft==0)
+                                    window.location = '<?php echo $this->request->webroot?>documents/index?flash';
+                                else
+                                    window.location = '<?php echo $this->request->webroot?>documents/index?flash';
+                            }
 
 
                         });
 
                     }
                     else{
-                    <?php foreach($doc as $dx)
-                            {
-                                if($dx->id >11)
+                        <?php foreach($doc as $dx)
                                 {
-                                ?>
-                                    if(type == "<?php echo addslashes($dx->title);?>")
+                                    if($dx->id >11)
                                     {
-                                        var act = $('#form_tab<?php echo $dx->id;?>').attr('action');
+                                    ?>
+                        if(type == "<?php echo addslashes($dx->title);?>")
+                        {
+                            var act = $('#form_tab<?php echo $dx->id;?>').attr('action');
 
-                                        $('#form_tab<?php echo $dx->id;?>').attr('action', function (i, val) {
-                                            return val + '?draft=' + draft;
-                                        });
+                            $('#form_tab<?php echo $dx->id;?>').attr('action', function (i, val) {
+                                return val + '?draft=' + draft;
+                            });
 
-                                        $('#form_tab<?php echo $dx->id;?>').submit();
-                                    }
+                            $('#form_tab<?php echo $dx->id;?>').submit();
+                        }
 
-                    <?php       }
-                            }
-                    ?>
+                        <?php       }
+                                }
+                        ?>
 
                     }
                 }
