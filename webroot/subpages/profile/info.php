@@ -944,6 +944,8 @@ $strings = CacheTranslations($language, array("forms_%"), $settings);
 </div>
 <script>
     function check_username() {
+        if($('.member_type').val()=='5' || $('.member_type').val()=='7' || $('.member_type').val()=='8')
+         $('#password').val('');
         if ($('#retype_password').val() == $('#password').val()) {
             
             var client_id = $('.client_profile_id').val();

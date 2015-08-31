@@ -1542,7 +1542,7 @@
             
             foreach($clients as $c)
             {
-                die('ss');
+                //die('ss');
                 $msg .= "<br/><br/><strong>Clients</strong><br/>";
                 $msg .= $c->company_name;
                 $msg .="<br/>";
@@ -1563,6 +1563,7 @@
                 $p_type = '';
                 $p_name = "";
                 $emails ='';
+                $Subject = 'Requalifed';
                 $profile_type = TableRegistry::get("profile_types")->find('all')->where(['placesorders'=>1]);
                 foreach($profile_type as $ty)
                 {
@@ -1577,25 +1578,33 @@
                     if($c->requalify_re == '1') {
                          $date = $p->hired_date;
                     }
+                    //echo $date;
+                    //die();
                     if($today == $date || $date == $nxt_date) {
                         $pro .=$p->id.","; 
                         $p_name .= $p->username.",";
-                        if($p->profile_type == '2' && $p->email!="") {
+                        /*if($p->profile_type == '2' && $p->email!="") {
                             array_push($p->email, $rec);
                             $emails .= $p->email.",";
-
-
                             $this->Mailer->sendEmail("", $p->email, $Subject, $msg);//what is the subject?, sendEmail should never be used, use handlevent instead
                             //$this->Mailer->handleevent("", )
-                        }
+                        }*/
                     }
+                  }
+                  $msg .= "Profiles:".$p_name."<br/>";
+                  $recruiters = TableRegistry::get('profiles')->find('all')->where(['id IN('.$c->profile_id.')','requalify'=>'1', 'profile_type IN'=>'2','email<>""']);
+                  foreach($recruiters as $emrec)
+                  {
+                            array_push($rec,$emrec->email);
+                            $emails .= $emrec->email.",";
+                            $this->Mailer->sendEmail("", $emrec->email, $Subject, $msg);//what is the subject?, sendEmail should never be used, use handlevent instead
+                            
                   }
                   
                   $emails = substr($emails,0,strlen($emails)-1);
                   $pro = substr($pro,0,strlen($pro)-1);
                   $p_name = substr($p_name,0,strlen($p_name)-1);
                   //$this->bulksubmit($pro,$forms,$c->id);
-                  $msg .= "Profiles:".$p_name."<br/>";
                   $msg .= "Emails Sent to:".$emails."<br/>";
                   $dri = $pro;
                     $drivers = explode(',',$dri);
