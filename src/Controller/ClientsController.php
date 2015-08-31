@@ -1537,12 +1537,15 @@
         function cron()
         {
             $msg ="";
+            $client_crons = TableRegistry::get('client_crons');
+            
             $clients = TableRegistry::get('clients')->find('all')->where(['requalify'=>'1']);
             $marr = array();
             
+            
             foreach($clients as $c)
             {
-                //die('ss');
+                
                 $msg .= "<br/><br/><strong>Clients</strong><br/>";
                 $msg .= $c->company_name;
                 $msg .="<br/>";
@@ -1572,9 +1575,22 @@
                 $p_types = substr($p_type,0,strlen($p_type)-1);
                 $users = explode(',',$c->profile_id);
                 $rec = array();
-                $profile = TableRegistry::get('profiles')->find('all')->where(['id IN('.$c->profile_id.')','requalify'=>'1', 'profile_type IN('.$p_types.')']);
-                  
-                  foreach($profile as $p) {
+                //escape already processed profiles
+                $escape_id = $client_crons->find('all')->where(['client_id'=>$c->id,'orders_sent'=>'1','cron_date'=>$today]);
+                $escape_ids = '';
+                foreach($escape_id as $ei)
+                {
+                    $escape_ids .= $ei->profile_id.",";
+                }
+                if($escape_ids!= '')
+                    $escape_ids = substr($escape_ids,0,strlen($escape_ids)-1);
+                else
+                    $escape_ids ='0';
+                $profile = TableRegistry::get('profiles')->find('all')->where(['id IN('.$c->profile_id.')','id NOT IN ('.$escape_ids.')','requalify'=>'1', 'profile_type IN('.$p_types.')']);
+                unset($escape_ids);
+                //debug($profile);
+                //die();
+                foreach($profile as $p) {
                     if($c->requalify_re == '1') {
                          $date = $p->hired_date;
                     }
@@ -1591,6 +1607,7 @@
                         }*/
                     }
                   }
+                  if($pro !=""){
                   $msg .= "Profiles:".$p_name."<br/>";
                   $recruiters = TableRegistry::get('profiles')->find('all')->where(['id IN('.$c->profile_id.')','requalify'=>'1', 'profile_type IN'=>'2','email<>""']);
                   foreach($recruiters as $emrec)
@@ -1607,6 +1624,7 @@
                   //$this->bulksubmit($pro,$forms,$c->id);
                   $msg .= "Emails Sent to:".$emails."<br/>";
                   $dri = $pro;
+              
                     $drivers = explode(',',$dri);
                     //$forms = $_POST['forms'];
                     $arr['forms'] = $forms;
@@ -1623,9 +1641,19 @@
                     foreach($drivers as $driver) {
                         $arr['uploaded_for'] = $driver;
                         $ord = TableRegistry::get('orders');
-                                            
                         $doc = $ord->newEntity($arr);
-                        $ord->save($doc);
+                        if($ord->save($doc))
+                        {
+                            
+                            $cc['profile_id'] = $driver;
+                            $cc['cron_date'] = date('Y-m-d');
+                            $cc['client_id'] = $c->id;
+                            $cc['orders_sent'] = '1';
+                            $cc['order_id'] = $doc->id;
+                            $cc['manual'] = '0';
+                            $crons = $client_crons->newEntity($cc);
+                            $client_crons->save($crons);
+                        }
                         //$this->webservice('BUL', $arr['forms'], $arr['user_id'], $doc->id);
                         if($arr['driver']) {
                             $arr['driver'] = $arr['driver'] . ',' . $driver;
@@ -1637,10 +1665,16 @@
                         }else {
                             $arr['order_id'] = $doc->id;
                         }
+                        
                     }
                     array_push($marr,$arr);
                     
                     unset($arr);
+                }
+                else
+                {
+                    $msg .= "No Profiles found.";
+                }
                                 
             }
                     $this->set('arrs',$marr);
