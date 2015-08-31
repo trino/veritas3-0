@@ -78,6 +78,7 @@ include_once('subpages/api.php');
 $language = $this->request->session()->read('Profile.language');
 $strings = CacheTranslations($language, array("forms_%"), $settings);
 */
+loadreasons($param, $strings, true);
 ?>
 
 <div class="portlet-body form">
@@ -432,7 +433,7 @@ $strings = CacheTranslations($language, array("forms_%"), $settings);
                                 <div class="form-group">
                                     <label class="control-label"><?= $strings["forms_email"]; ?>: </label>
                                     <input <?php echo $is_disabled ?> name="email" type="email" onkeyup="emailthecreds();" id="email"
-                                                                      placeholder=""
+                                                                      role="email"
                                                                       class="form-control un email req_driver req_rec req_sales" <?php if (isset($p->email)) { ?> value="<?php echo $p->email; ?>" <?php } ?><?php if (isset($p->profile_type) && ($p->profile_type == '9' || $p->profile_type=='12')) { ?> required="required" <?php } ?>/>
                             <span class="error passerror flashEmail"
                                   style="display: none;"><?= $strings["dashboard_emailexists"]; ?></span>
@@ -835,7 +836,7 @@ $strings = CacheTranslations($language, array("forms_%"), $settings);
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label class="control-label"><?= $strings["forms_sin"]; ?>: </label>
-                                        <input <?php echo $is_disabled ?> name="sin" type="text"
+                                        <input <?php echo $is_disabled ?> name="sin" type="text" role="sin"
                                                                           class="form-control" <?php if (isset($p->sin)) { ?>
                                             value="<?php echo $p->sin; ?>" <?php } ?> />
                                     </div>
@@ -944,6 +945,8 @@ $strings = CacheTranslations($language, array("forms_%"), $settings);
 </div>
 <script>
     function check_username() {
+        //if(!checkalltags("subtab_4_1")){return false;}
+
         if($('.member_type').val()=='5' || $('.member_type').val()=='7' || $('.member_type').val()=='8')
          $('#password').val('');
         if ($('#retype_password').val() == $('#password').val()) {
@@ -1081,34 +1084,8 @@ $strings = CacheTranslations($language, array("forms_%"), $settings);
         });
         $('#save_clientz').submit(function (event) {
             event.preventDefault();
-                  var cnt =0;
-            $('#save_clientz input').each(function(){
-                
-                if($(this).attr('role')){
-                  
-                    var t = validate_data1($(this).val(),$(this).attr('role'));
-                    if(!t)
-                    {
-                        cnt++;
-                        $(this).css({'border':'1px solid red'});
-                        $('html,body').animate({ scrollTop: $(this).parent().offset().top}, 'slow');
-                       
-                      
-                    }
-                    else
-                    {
-                        $(this).css({'border':'1px solid #e5e5e5'});
-                       
-                    }
-                }
-                
-                
-            });
-           
-                if(cnt>0)
-                {
-                    return false;
-                }
+            if(!checkalltags("subtab_4_1")){return false;}
+
              $('.overlay-wrapper').show();
             $('#savepro').text("<?= addslashes($strings["forms_saving"]); ?>");
             var strs = $(this).serialize();

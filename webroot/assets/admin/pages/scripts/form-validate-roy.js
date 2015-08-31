@@ -12,6 +12,13 @@ function validate_data(Data, DataType){
                 var re = /\S+@\S+\.\S+/;
                 return re.test(Data);
                 break;
+            case "postalzip":
+                return validate_data(Data, "postalcode") || validate_data(Data, "zipcode");
+                break;
+            case "zipcode"://99577-0727
+                Data = clean_data(Data, "number");
+                return Data.length == 5 || Data.length == 9;
+                break;
             case "postalcode":
                 Data = Data.replace(/ /g, '').toUpperCase();
                 var regex = new RegExp(/^[ABCEGHJKLMNPRSTVXY]\d[ABCEGHJKLMNPRSTVWXYZ]?\d[ABCEGHJKLMNPRSTVWXYZ]\d$/i);
@@ -19,15 +26,15 @@ function validate_data(Data, DataType){
                 break;
             case "phone":
                 var phoneRe = /^[2-9]\d{2}[2-9]\d{2}\d{4}$/;
-                Data = Data.replace(/\D/g, "");
+                Data = clean_data(Data, "number");
                 return (Data.match(phoneRe) !== null);
                 break;
             case "sin":
-                Data = Data.replace(/\D/g, "");//removes non-numeric
+                Data = clean_data(Data, "number");
                 return Data.length == 9;
                 break;
             default:
-                alert(DataType + " is unhandled");
+                alert("'" + DataType + "' is unhandled");
         }
     }
     return true;
@@ -48,6 +55,14 @@ function clean_data(Data, DataType){
                 break;
             case "email":
                 Data = Data.toLowerCase();
+                break;
+            case "postalzip":
+                if (validate_data(Data, "postalcode")){Data = clean_data(Data, "postalcode");}
+                if (validate_data(Data, "zipcode")){Data = clean_data(Data, "zipcode");}
+                break;
+            case "zipcode":
+                Data = clean_data(Data, "number");
+                if(Data.length == 9){Data = Data.substring(0,5) + "-" + Data.substring(4);}
                 break;
             case "postalcode":
                 Data = clean_data(replaceAll(" ", "", Data.toUpperCase()), "alphanumeric");
@@ -84,6 +99,17 @@ function checkalltags(TabID){
     return true;
 }
 
+function radiovalue(Name){
+    var radios = document.getElementsByName(Name);
+    for (var i = 0, length = radios.length; i < length; i++) {
+        if (radios[i].checked) {
+            return radios[i].value;
+            break;
+        }
+    }
+    return "";
+}
+
 function isVisible (element) {
     return element.clientWidth !== 0 && element.clientHeight !== 0 && element.style.opacity !== 0 && element.style.visibility !== 'hidden';
 }
@@ -99,7 +125,7 @@ function checktags(TabID, tagtype){
     }
     var RET = new Array();
     RET['Status'] = true;
-
+    if(!reasons){return RET;}
     for (index = 0; index < inputs.length; ++index) {
         element = inputs[index];
         if(isVisible(element)) {//ignores invisible elements
@@ -111,8 +137,13 @@ function checktags(TabID, tagtype){
             }
             var isValid = true;
             var Reason = "";
-            if (tagtype == "checkbox"){
-                if (!element.checked){value = "";}
+            switch (tagtype){
+                case "checkbox":
+                    if (!element.checked){value = "";}
+                    break;
+                case "radio":
+                    value = radiovalue(name);
+                    break;
             }
 
             if (!value && isrequired) {

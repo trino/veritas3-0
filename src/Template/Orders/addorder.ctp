@@ -54,7 +54,7 @@ printCSS($this);
     var giveSIG = '<?= addslashes($strings["forms_signplease"]); ?>';
     var fillALL = '<?= addslashes($strings["forms_fillall"]); ?>';
 
-    <?php loadreasons($strings); ?>
+    <?php loadreasons($action, $strings); ?>
 
 </script>
 

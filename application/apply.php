@@ -1266,6 +1266,7 @@ backbutton();
     reasons["email"] = 'Email Address';
     reasons["sin"] = 'SIN';
     reasons["required"] = 'Please fill out all the required fields.';
+    reasons['postalzip'] = 'Postal or Zip code';
 
         function check_username() {
             var element, inputs, index;

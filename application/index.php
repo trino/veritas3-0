@@ -335,6 +335,7 @@ if (count($_POST) > 0) {
     reasons["email"] = '<?= addslashes($strings["forms_email"]); ?>';
     reasons["sin"] = '<?= addslashes($strings["forms_sin"]); ?>';
     reasons["required"] = '<?= addslashes($strings["forms_fillall"]); ?>';
+    reasons["postalzip"] = '<?= addslashes($strings["forms_postalzip"]); ?>';
 
     $(document).ready(function () {
         Metronic.init(); // init metronic core components

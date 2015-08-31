@@ -62,6 +62,8 @@
         include_once('subpages/profile/theme.php');
     }
     //includejavascript($strings);
+
+    loadreasons($param, $strings, true);
 ?>
 <!-- END SAMPLE PORTLET CONFIGURATION MODAL FORM-->
 

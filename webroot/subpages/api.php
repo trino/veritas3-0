@@ -567,15 +567,21 @@ function changevalidation($inputtype, $message){
     <?php
 }
 
-function loadreasons($strings, $IncludeScript = false){
+function loadreasons($action, $strings, $IncludeScript = false){
     if($IncludeScript) {echo '<SCRIPT>';}
-    echo "var reasons = new Array();";
-    echo "reasons['fail'] = '" . addslashes($strings["forms_failed"]) . "';";
-    echo "reasons['postalcode'] = '" . addslashes($strings["forms_postalcode"]) . "';";
-    echo "reasons['phone'] = '" . addslashes($strings["forms_phone"]) . "';";
-    echo "reasons['email'] = '" . addslashes($strings["forms_email"]) . "';";
-    echo "reasons['sin'] = '" . addslashes($strings["forms_sin"]) . "';";
-    echo "reasons['required'] = '" . addslashes($strings["forms_fillall"]) . "';";
+    //valid actions to validate on are: Create, not: View
+    if($action == "Create" || $action == "add"){
+        echo "var reasons = new Array();";
+        echo "reasons['fail'] = '" . addslashes($strings["forms_failed"]) . "';";
+        echo "reasons['postalcode'] = '" . addslashes($strings["forms_postalcode"]) . "';";
+        echo "reasons['phone'] = '" . addslashes($strings["forms_phone"]) . "';";
+        echo "reasons['email'] = '" . addslashes($strings["forms_email"]) . "';";
+        echo "reasons['sin'] = '" . addslashes($strings["forms_sin"]) . "';";
+        echo "reasons['required'] = '" . addslashes($strings["forms_fillall"]) . "';";
+        echo "reasons['postalzip'] = '" . addslashes($strings["forms_postalzip"]) . "';";
+    } else {
+        echo "var reasons = false; //Action is: " . $action;
+    }
     if($IncludeScript) {echo '</SCRIPT>';}
 }
 

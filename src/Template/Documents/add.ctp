@@ -36,7 +36,7 @@
     $title = $strings["index_" . strtolower($action) . "document"];
     printCSS($this);
 
-    loadreasons($strings, true);
+    loadreasons($action, $strings, true);
 ?>
 <h3 class="page-title">
     <?= $title; ?>

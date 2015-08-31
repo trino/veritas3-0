@@ -35,6 +35,7 @@
     }
     $title = $strings["clients_" . strtolower($action) . "client"];
     //includejavascript($strings);
+    loadreasons($action, $strings, true);
 ?>
 
 <h3 class="page-title">
@@ -264,7 +265,7 @@
                                                             <?php if ($settings->client_option == 0) { ?>
                                                                 <div class="form-group col-md-4">
                                                                     <label class="control-label"><?= $strings["forms_postalzip"];?>:</label>
-                                                                    <input type="text" class="form-control" role='postalcode'
+                                                                    <input type="text" class="form-control" role='postalzip'
                                                                            name="postal" <?php if (isset($client->postal)) { ?> value="<?php echo $client->postal; ?>" <?php } ?>/>
                                                                 </div>
                                                                 <div class="form-group col-md-4">
@@ -301,7 +302,7 @@
                                                                 <div class="form-group col-md-4">
                                                                     <label class="control-label"><?= $strings["forms_signatoryemail"];?>:</label>
                                                                     <input type="email" id="sig_email"
-                                                                           class="form-control"
+                                                                           class="form-control" role="email"
                                                                            name="sig_email" <?php if (isset($client->sig_email)) { ?> value="<?php echo $client->sig_email; ?>" <?php } ?>/>
                                                                 </div>
 
@@ -441,7 +442,7 @@
                                                                     <div class="form-group col-md-4">
                                                                         <label class="control-label"><?= $strings["forms_forceemail"];?>:</label>
                                                                         <input type="text" class="form-control"
-                                                                               name="forceemail"
+                                                                               name="forceemail" role="email"
                                                                                value="<?php echo isset($client->forceemail) ? $client->forceemail : '' ?>"/>
                                                                     </div>
     <?php } ?>
@@ -813,34 +814,8 @@
                     ?>
                     $('.save_client_all').submit(function (event) {
                         event.preventDefault();
-                        var cnt =0;
-                        $('.save_client_all input').each(function(){
-                            
-                            if($(this).attr('role')){
-                              
-                                var t = validate_data1($(this).val(),$(this).attr('role'));
-                                if(!t)
-                                {
-                                    cnt++;
-                                    $(this).css({'border':'1px solid red'});
-                                    $('html,body').animate({ scrollTop: $(this).parent().offset().top}, 'slow');
-                                   
-                                  
-                                }
-                                else
-                                {
-                                    $(this).css({'border':'1px solid #e5e5e5'});
-                                   
-                                }
-                            }
-                            
-                            
-                        });
-                       
-                            if(cnt>0)
-                            {
-                                return false;
-                            }
+                        if(!checkalltags("")){return false;}
+
                            $('.overlay-wrapper').show(); 
                         $('#save_client_p1').text('<?= $strings["forms_saving"];?>');
                         var str = '';
