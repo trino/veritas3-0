@@ -5,7 +5,7 @@ include_once 'subpages/filelist.php';
 if(!isset($_GET['type'])) {$_GET['type'] = 0;}
 $doc_ext = array('pdf','doc','docx','txt','csv','xls','xlsx');
 $img_ext = array('jpg','jpeg','png','bmp','gif');
-$is_disabled = '';
+$is_disabled = ''; 
 $view ="";
 if (isset($disabled)) {
     $is_disabled = 'disabled="disabled"';
