@@ -1758,6 +1758,7 @@ printCSS($this);
     });
     function saveSignature() {
         if ($(".tabber.active").prev('.tabber').find("input[name='document_type']").val() == 'Consent Form') {
+            //check_role();
             //save_signature('3');
             //save_signature('4');
             //save_signature('5');

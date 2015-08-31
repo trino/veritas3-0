@@ -36,7 +36,7 @@ if(isset($disabled)) { $is_disabled = 'disabled="disabled"'; }
  <div class="form-group col-md-12">
     <label class="control-label col-md-6">Client's Business Phone Number</label>
     <div class="col-md-6">
-    <input type="text" class="form-control" name="cbpn" value="<?php if(isset($investigations_intake_form_benefit_claims)){ echo $investigations_intake_form_benefit_claims->cbpn;}?>" />
+    <input type="text" role="phone" class="form-control" name="cbpn" value="<?php if(isset($investigations_intake_form_benefit_claims)){ echo $investigations_intake_form_benefit_claims->cbpn;}?>" />
     </div>
  </div>
   <div class="form-group col-md-12">
@@ -48,7 +48,7 @@ if(isset($disabled)) { $is_disabled = 'disabled="disabled"'; }
   <div class="form-group col-md-12">
     <label class="control-label col-md-6">Email Address</label>
     <div class="col-md-6">
-    <input type="text" class="form-control" name="email" value="<?php if(isset($investigations_intake_form_benefit_claims)){ echo $investigations_intake_form_benefit_claims->email;}?>" />
+    <input type="text" class="form-control" role="email" name="email" value="<?php if(isset($investigations_intake_form_benefit_claims)){ echo $investigations_intake_form_benefit_claims->email;}?>" />
     </div>
  </div>
  <div class="form-group col-md-12">
@@ -108,7 +108,7 @@ if(isset($disabled)) { $is_disabled = 'disabled="disabled"'; }
    <div class="form-group col-md-12">
     <label class="control-label col-md-6">Subject's Telephone Number</label>
     <div class="col-md-6">
-    <input type="text" class="form-control" name="stn" value="<?php if(isset($investigations_intake_form_benefit_claims)){ echo $investigations_intake_form_benefit_claims->stn;}?>" />
+    <input type="text" class="form-control" role="phone" name="stn" value="<?php if(isset($investigations_intake_form_benefit_claims)){ echo $investigations_intake_form_benefit_claims->stn;}?>" />
     </div>
  </div>
    <div class="form-group col-md-12">
@@ -157,7 +157,9 @@ if(isset($disabled)) { $is_disabled = 'disabled="disabled"'; }
     <textarea class="form-control" name="ar"><?php if(isset($investigations_intake_form_benefit_claims)){ echo $investigations_intake_form_benefit_claims->ar;}?></textarea>
     </div>
  </div>
+ <?php if($this->request->params['controller']!='Documents'){?>
  <div class="addattachment23 form-group col-md-12"></div>
+ <?php }?>
  <div class="clearfix"></div>
  
  </form>

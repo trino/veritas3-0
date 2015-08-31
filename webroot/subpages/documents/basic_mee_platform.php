@@ -576,7 +576,7 @@
                     <div class="col-md-6"> 
                         <input type="text" class="form-control" name="emergency_name" value="<?php if(isset($basic_mee_platform))echo $basic_mee_platform->emergency_name;?>" placeholder="Name" style="margin-bottom: 5px;" />
                         <input type="text" class="form-control" name="emergency_relation" value="<?php if(isset($basic_mee_platform))echo $basic_mee_platform->emergency_relation;?>" placeholder="Relationship" style="margin-bottom: 5px;" />             
-                        <input type="text" class="form-control" name="emergency_phone" value="<?php if(isset($basic_mee_platform))echo $basic_mee_platform->emergency_phone;?>" placeholder="Phone" style="margin-bottom: 5px;" />
+                        <input type="text" class="form-control" role="phone" name="emergency_phone" value="<?php if(isset($basic_mee_platform))echo $basic_mee_platform->emergency_phone;?>" placeholder="Phone" style="margin-bottom: 5px;" />
                         
                     </div>
         </div>
@@ -932,8 +932,9 @@
 
 
 
-
+        <?php if($this->request->params['controller']!='Documents'){?>
         <div class="addattachment<?php echo $dx->id;?> form-group col-md-12"></div> 
+        <?php }?>
         <div class="clearfix"></div>
         
         

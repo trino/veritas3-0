@@ -253,7 +253,7 @@
                                 <?php
                                 if ($counter == 2) {
                                     ?>
-                                    </div>
+                                    
                                 <?php
                                 }
                             }
@@ -262,6 +262,12 @@
                             ?>
                             <div id="more_edu"></div>
                         <?php
+                        }
+                        if($counter>1)
+                        {
+                            ?>
+                            </div>
+                            <?php
                         }
                         
                     } else {
@@ -430,6 +436,7 @@
                     <input type="hidden" name="count_more_edu" id="count_more_edu" value="<?php if(isset($counter))echo $counter;?>">
                     <a href="javascript:void(0);" class="btn green add_more_edu"><?= $strings["forms_addmore"]; ?></a>
                 </div>
+                <?php if($this->request->params['controller']!='Documents'){?>
                 <div class="allattach">
                 <?php
                     if (!isset($sub4['att']))
@@ -521,6 +528,7 @@
 
                 <div class="clearfix"></div>
                 </div>
+                <?php }?>
             </form>
             <script>
                 $(function () {

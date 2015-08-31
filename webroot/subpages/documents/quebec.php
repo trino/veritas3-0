@@ -34,7 +34,7 @@
             </div>
             <div class="col-md-2">
                 <label class="control-label"> Postal code </label>
-                <input type="text" class="form-control" name="postal_code" value="<?php if(isset($quebec_forms)) echo $quebec_forms->postal_code;?>"/>
+                <input type="text" role="postalcode" class="form-control" name="postal_code" value="<?php if(isset($quebec_forms)) echo $quebec_forms->postal_code;?>"/>
             </div>
             <div class="col-md-2">
                 <label class="control-label"> Area code </label>
@@ -42,7 +42,7 @@
             </div>
             <div class="col-md-2">
                 <label class="control-label"> Telephone </label>
-                <input type="text" class="form-control" name="telephone" value="<?php if(isset($quebec_forms)) echo $quebec_forms->telephone;?>"/>
+                <input type="text" class="form-control" role="phone" name="telephone" value="<?php if(isset($quebec_forms)) echo $quebec_forms->telephone;?>"/>
             </div>
             <div class="col-md-1">
                 <label class="control-label"> Extension </label>
@@ -69,7 +69,7 @@
             </div>
             <div class="col-md-2">
                 <label class="control-label"> Postal code </label>
-                <input type="text" class="form-control" name="postal_code1" value="<?php if(isset($quebec_forms)) echo $quebec_forms->postal_code1;?>"/>
+                <input type="text" class="form-control" role="postalcode" name="postal_code1" value="<?php if(isset($quebec_forms)) echo $quebec_forms->postal_code1;?>"/>
             </div>
             <div class="col-md-2">
                 <label class="control-label"> Area code </label>
@@ -77,7 +77,7 @@
             </div>
             <div class="col-md-2">
                 <label class="control-label"> Telephone </label>
-                <input type="text" class="form-control" name="telephone1" value="<?php if(isset($quebec_forms)) echo $quebec_forms->telephone1;?>"/>
+                <input type="text" class="form-control" role="phone" name="telephone1" value="<?php if(isset($quebec_forms)) echo $quebec_forms->telephone1;?>"/>
             </div>
             <div class="col-md-1">
                 <label class="control-label"> Extension </label>
@@ -112,7 +112,7 @@
                 </div>
                 <div class="col-md-3">
                 <label class="control-label"> Telephone (work) </label>
-                <input type="text" class="form-control" name="tel_work" value="<?php if(isset($quebec_forms)) echo $quebec_forms->tel_work;?>"/>
+                <input type="text" class="form-control" role="phone" name="tel_work" value="<?php if(isset($quebec_forms)) echo $quebec_forms->tel_work;?>"/>
                 </div>
                 <div class="clearfix"></div>
                 <div class="col-md-12">
@@ -153,8 +153,9 @@
             <p><strong>Societe de I'assurance automobile du Quebec</strong></p>
             
         </div>
-    
+    <?php if($this->request->params['controller']!='Documents'){?>
     <div class="addattachment<?php echo $dx->id;?> form-group col-md-12"></div> 
+    <?php }?>
     <div class="clearfix"></div>
 </form>
 <script>

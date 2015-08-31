@@ -458,12 +458,7 @@ $strings2 = CacheTranslations($language, array("verifs_%", "tasks_date", "file_a
                             </div>
                             
                             <?php
-                            if($counter==2)
-                            {
-                                ?>
-                        </div>
-                                <?php
-                            }
+                            
                         }
                       
                     }
@@ -472,6 +467,13 @@ $strings2 = CacheTranslations($language, array("verifs_%", "tasks_date", "file_a
                         ?>
                         <div id="more_div"></div>
                         <?php
+                    }
+                    else
+                    if($counter>1)
+                    {?>
+                    </div>
+                    <?php
+                        
                     }
                      
                 }
@@ -605,6 +607,7 @@ $strings2 = CacheTranslations($language, array("verifs_%", "tasks_date", "file_a
             <input type="hidden" name="count_past_emp" id="count_past_emp" value="<?php if(isset($sub3['emp'])){echo count($sub3['emp']);}else{?>1<?php }?>">
             <a href="javascript:void(0);" class="btn green no-print" id="add_more"><?= $strings["forms_addmore"]; ?></a>
         </div>
+        <?php if($this->request->params['controller']!='Documents'){?>
         <div class="allattach" class="no-print">
          <?php
          
@@ -665,13 +668,14 @@ $strings2 = CacheTranslations($language, array("verifs_%", "tasks_date", "file_a
           </div>
           <div class="clearfix"></div>
           </div>
+          <?php }?>
 
 </form>
 <script>
     <?php loadstringsJS(array_merge($strings, $strings2)); ?>
 $(function(){
     <?php
-        if(($this->request->params['action']=='addorder' || $this->request->params['action']=='add')&&!count($sub3['att']))
+        if(($this->request->params['action']=='addorder' || $this->request->params['action']=='add') && !count($sub3['att']))
         {
             ?>
             fileUpload('emp1');

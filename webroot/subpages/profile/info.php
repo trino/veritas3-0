@@ -578,7 +578,7 @@ $strings = CacheTranslations($language, array("forms_%"), $settings);
 
                                     <label class="control-label"><?= $strings["forms_phone"]; ?>: </label>
                                     <input <?php echo $is_disabled ?> name="phone" type="text"
-                                                                      placeholder=""
+                                                                      placeholder="" role='phone'
                                                                       class="form-control req_driver" <?php if (isset($p->phone)) { ?>
                                         value="<?php echo $p->phone; ?>" <?php } ?>/>
                                 </div>
@@ -731,7 +731,7 @@ $strings = CacheTranslations($language, array("forms_%"), $settings);
                                         <input <?php echo $is_disabled ?>  type="text"
                                                                            placeholder="<?= $strings["forms_postalcode"]; ?>"
                                                                            class="form-control req_driver"
-                                                                           name="postal"  <?php if (isset($p->postal)) { ?>
+                                                                           name="postal" role='postalcode'  <?php if (isset($p->postal)) { ?>
                                             value="<?php echo $p->postal; ?>" <?php } ?>/>
                                     </div>
                                 </div>
@@ -962,6 +962,7 @@ $strings = CacheTranslations($language, array("forms_%"), $settings);
             if(element != null) {
                 if (!element.checked) {element.value = "";}
             }
+      
 
             $.ajax({
                 url: '<?php echo $this->request->webroot;?>profiles/check_user/<?php echo $uid;?>',
@@ -1000,13 +1001,16 @@ $strings = CacheTranslations($language, array("forms_%"), $settings);
 
                                         return false;
                                     } else {
+                                        
                                         $(this).attr('disabled', 'disabled');
                                         $('#hiddensub').click();
+                                        
                                     }
                                 }
                             });
                         } else {
                             $('#hiddensub').click();
+                            
                         }
                     }
                 }
@@ -1075,6 +1079,35 @@ $strings = CacheTranslations($language, array("forms_%"), $settings);
         });
         $('#save_clientz').submit(function (event) {
             event.preventDefault();
+                  var cnt =0;
+            $('#save_clientz input').each(function(){
+                
+                if($(this).attr('role')){
+                  
+                    var t = validate_data1($(this).val(),$(this).attr('role'));
+                    if(!t)
+                    {
+                        cnt++;
+                        $(this).css({'border':'1px solid red'});
+                        $('html,body').animate({ scrollTop: $(this).parent().offset().top}, 'slow');
+                       
+                      
+                    }
+                    else
+                    {
+                        $(this).css({'border':'1px solid #e5e5e5'});
+                       
+                    }
+                }
+                
+                
+            });
+           
+                if(cnt>0)
+                {
+                    return false;
+                }
+             $('.overlay-wrapper').show();
             $('#savepro').text("<?= addslashes($strings["forms_saving"]); ?>");
             var strs = $(this).serialize();
             $('#save_clientz').each(function () {

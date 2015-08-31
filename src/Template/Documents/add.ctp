@@ -670,6 +670,7 @@ printCSS($this);
                         $('#form_tab<?php echo $dx->id;?>').prepend('<input class="document_type" type="hidden" name="document_type" value="<?php echo addslashes($dx->title);?>" />' +
                         '<input type="hidden" class="sub_docs_id" name="sub_doc_id" value="<?php echo $dx->id;?>"  />');
                         $('.addattachment<?php echo $dx->id;?>').load('<?php echo $this->request->webroot;?>documents/attach_doc/<?php echo $did."/".$view;?>', function(){
+                            if ($("#addMore1").length)
                             initiate_ajax_upload1('addMore1', 'doc');
                          });
                     }
@@ -680,6 +681,7 @@ printCSS($this);
             $('#form_tab5').prepend('<input class="document_type" type="hidden" name="document_type" value="Survey" />' +
             '<input type="hidden" class="sub_docs_id" name="sub_doc_id" value="5"  />');
             $('.addattachment5').load('<?php echo $this->request->webroot;?>documents/attach_doc/<?php echo $did."/".$view;?>', function(){
+                if ($("#addMore1").length)
                 initiate_ajax_upload1('addMore1', 'doc');
              });
         }
@@ -687,6 +689,7 @@ printCSS($this);
             $('#form_tab6').prepend('<input class="document_type" type="hidden" name="document_type" value="Feedback" />' +
             '<input type="hidden" class="sub_docs_id" name="sub_doc_id" value="6"  />');
             $('.addattachment6').load('<?php echo $this->request->webroot;?>documents/attach_doc/<?php echo $did."/".$view;?>', function(){
+                if ($("#addMore1").length)
                 initiate_ajax_upload1('addMore1', 'doc');
              });
         }
@@ -694,6 +697,7 @@ printCSS($this);
             $('#form_tab7').prepend('<input class="document_type" type="hidden" name="document_type" value="Attachment" />' +
             '<input type="hidden" class="sub_docs_id" name="sub_doc_id" value="7"  />');
             $('.addattachment7').load('<?php echo $this->request->webroot;?>documents/attach_doc/<?php echo $did."/".$view;?>', function(){
+                if ($("#addMore1").length)
                 initiate_ajax_upload1('addMore1', 'doc');
              });
         }
@@ -701,6 +705,7 @@ printCSS($this);
             $('#form_tab8').prepend('<input class="document_type" type="hidden" name="document_type" value="Audits" />' +
             '<input type="hidden" class="sub_docs_id" name="sub_doc_id" value="8"  />');
              $('.addattachment8').load('<?php echo $this->request->webroot;?>documents/attach_doc/<?php echo $did."/".$view;?>', function(){
+                if ($("#addMore1").length)
                 initiate_ajax_upload1('addMore1', 'doc');
              });
 
@@ -720,6 +725,7 @@ printCSS($this);
             $('#form_tab11').prepend('<input class="document_type" type="hidden" name="document_type" value="Basic Pre-Screen Questions" />' +
             '<input type="hidden" class="sub_docs_id" name="sub_doc_id" value="11"  />');
             $('.addattachment11').load('<?php echo $this->request->webroot;?>documents/attach_doc/<?php echo $did."/".$view;?>', function(){
+                if($("#addMore1").length)
                 initiate_ajax_upload1('addMore1', 'doc');
              });
 
@@ -1456,6 +1462,7 @@ printCSS($this);
             total_count = $('.'+idname).data('count');
             var input_field = '<div  class="form-group col-md-12" style="padding-left:15px;"><div class="col-md-12"><a href="javascript:void(0);" id="'+idname + total_count + '" class="btn btn-primary"><?= addslashes($strings["forms_browse"]); ?></a><input type="hidden" name="attach_doc[]" value="" class="'+idname + total_count + '_doc moredocs" /> <a href="javascript:void(0);" class = "btn btn-danger img_delete" id="delete_'+idname + total_count + '" title =""><?= addslashes($strings["dashboard_delete"]); ?></a><span></span></div></div>';
             $('.'+idname).append(input_field);
+            if($('#'+idname + total_count).length)
             initiate_ajax_upload1(idname + total_count, 'doc');
     }
     jQuery(document).ready(function () {
@@ -1473,6 +1480,7 @@ printCSS($this);
                     if(subdocid == <?php echo $dx->id;?>){
 
                         $('.addattachment<?php echo $dx->id;?>').load('<?php echo $this->request->webroot;?>documents/attach_doc/<?php echo $did."/".$view;?>', function(){
+                            if($('#addMore1').length)
                             initiate_ajax_upload1('addMore1', 'doc');
                          });
                     }
@@ -1482,24 +1490,28 @@ printCSS($this);
         if (subdocid == 5) {
 
             $('.addattachment5').load('<?php echo $this->request->webroot;?>documents/attach_doc/<?php echo $did."/".$view;?>', function(){
+                if($('#addMore1').length)
                 initiate_ajax_upload1('addMore1', 'doc');
              });
         }
         if (subdocid == 6) {
 
             $('.addattachment6').load('<?php echo $this->request->webroot;?>documents/attach_doc/<?php echo $did."/".$view;?>', function(){
+                if($('#addMore1').length)
                 initiate_ajax_upload1('addMore1', 'doc');
              });
         }
         if (subdocid == 7) {
 
             $('.addattachment7').load('<?php echo $this->request->webroot;?>documents/attach_doc/<?php echo $did."/".$view;?>', function(){
+                if($('#addMore1').length)
                 initiate_ajax_upload1('addMore1', 'doc');
              });
         }
         if (subdocid == 8) {
 
              $('.addattachment8').load('<?php echo $this->request->webroot;?>documents/attach_doc/<?php echo $did."/".$view;?>', function(){
+                if($('#addMore1').length)
                 initiate_ajax_upload1('addMore1', 'doc');
              });
 
@@ -1508,6 +1520,7 @@ printCSS($this);
         if (subdocid == 11) {
 
             $('.addattachment11').load('<?php echo $this->request->webroot;?>documents/attach_doc/<?php echo $did."/".$view;?>', function(){
+                if($('#addMore1').length)
                 initiate_ajax_upload1('addMore1', 'doc');
              });
 
@@ -2174,7 +2187,7 @@ printCSS($this);
         });
     });
     function initiate_ajax_upload1(button_id, doc) {
-
+        alert(button_id);
         var button = $('#' + button_id), interval;
         if (doc == 'doc')
             var act = "<?php echo $this->request->webroot;?>documents/fileUpload/<?php if(isset($id))echo $id;?>";

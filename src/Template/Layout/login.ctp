@@ -1,6 +1,6 @@
 
 <!DOCTYPE html>
-
+<!--[if IE 7]> <html lang="en" class="ie7 no-js"> <![endif]-->
 <!--[if IE 8]> <html lang="en" class="ie8 no-js"> <![endif]-->
 <!--[if IE 9]> <html lang="en" class="ie9 no-js"> <![endif]-->
 <!--[if !IE]><!-->
@@ -408,6 +408,17 @@ $(function(){
         }
     ?>
 </div>
+<script>
+$(function(){
+    if ($('html').hasClass('no-js'))
+    {
+        $('body').css({'color':'#fff'});
+        $('body').html('Unfortunately your browser is not supported, please download chrome <a href="https://www.google.com/chrome/browser/desktop/">here</a>.');
+    }
+
+    
+})
+</script>
 </body>
 <!-- END BODY -->
 </html>

@@ -234,6 +234,7 @@
      * @param {Object} options See defaults below.
      */
     window.AjaxUpload = function(button, options){
+        
         this._settings = {
             // Location of the server-side upload script
             action: 'upload.php',
@@ -289,8 +290,8 @@
         }
         
         if ( ! button || button.nodeType !== 1){
-            
-            throw new Error("Please make sure that you're passing a valid element"); 
+            return false;
+            //throw new Error("Please make sure that you're passing a valid element"); 
         }
                 
         if ( button.nodeName.toUpperCase() == 'A'){

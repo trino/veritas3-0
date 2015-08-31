@@ -399,7 +399,9 @@ if(isset($disabled)) { $is_disabled = 'disabled="disabled"'; }
     <input type="text" class="form-control" name="no32" value="<?php if(isset($generic))echo $generic->no32;?>" />
     </div>
  </div>
+ <?php if($this->request->params['controller']!='Documents'){?>
  <div class="addattachment11 form-group col-md-12"></div>
+ <?php }?>
  <div class="clearfix"></div>
  
  </form>

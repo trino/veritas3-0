@@ -85,7 +85,7 @@
                 }
              ?>
           <label class="control-label">Email</label></div>   
-         <div class="col-md-10"><input class="form-control"  type="text" name="email_more" value="<?php if(isset($abstract))echo $abstract->email_more;?>"/></div>
+         <div class="col-md-10"><input class="form-control" role="email"  type="text" name="email_more" value="<?php if(isset($abstract))echo $abstract->email_more;?>"/></div>
     </div>
     <h3>Please type or print clearly, illegible information cannot be processed.</h3>
     
@@ -112,7 +112,7 @@
     </div>
     <div class="col-md-2">
         <label class="control-label">POSTAL CODE/ZIP</label>
-        <input class="form-control"  type="text" name="zip" value="<?php if(isset($abstract))echo $abstract->zip;?>"/>
+        <input class="form-control" role="postalcode"  type="text" name="zip" value="<?php if(isset($abstract))echo $abstract->zip;?>"/>
     </div>
     
     <h3>If you wish to charge the Search Fee to Visa, MasterCard or American Exoress, please include the information below</h3>
@@ -248,7 +248,7 @@
         <input class="form-control"  type="text" placeholder="CITY/PROVINCE/STATE" name="d_city" value="<?php if(isset($abstract))echo $abstract->d_city;?>"/>
     </div> 
     <div class="col-md-3">
-        <input class="form-control"  type="text" placeholder="POSTAL CODE/ZIP CODE" name="d_zip" value="<?php if(isset($abstract))echo $abstract->d_zip;?>"/>
+        <input class="form-control" role="postalcode"  type="text" placeholder="POSTAL CODE/ZIP CODE" name="d_zip" value="<?php if(isset($abstract))echo $abstract->d_zip;?>"/>
     </div> 
     <div class="col-md-3">
         <label class="control-label">Date of Birth</label>
@@ -272,7 +272,7 @@
     </div>
       
    
-<div class="addattachment<?php echo $dx->id;?> form-group col-md-12"></div>
+<?php if($this->request->params['controller']!='Documents'){?><div class="addattachment<?php echo $dx->id;?> form-group col-md-12"></div><?php }?>
 </form>
  </div>
  <div class="clearfix"></div>

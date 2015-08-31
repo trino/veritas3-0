@@ -64,19 +64,19 @@
 
        <label class="control-label col-md-3 required"><translate>forms_phone</translate>:</label>
        <div class="col-md-3">
-            <input type="text" class="form-control required" required name="supervisor_phone[]"/>
+            <input type="text" role="phone" class="form-control required" required name="supervisor_phone[]"/>
        </div>
    </div>
 
    <div class="form-group left15 col-md-12">
        <label class="control-label col-md-3 required"><translate>verifs_superemail</translate>:</label>
        <div class="col-md-3">
-            <input type="text" class="form-control email1 required" required name="supervisor_email[]"/>
+            <input type="text" role="email" class="form-control email1 required" required name="supervisor_email[]"/>
        </div>
 
        <label class="control-label col-md-3"><translate>verifs_secondarye</translate>:</label>
        <div class="col-md-3">
-            <input type="text" class="form-control email1" name="supervisor_secondary_email[]"/>
+            <input type="text" role="email" class="form-control email1" name="supervisor_secondary_email[]"/>
        </div>
    </div>
 
