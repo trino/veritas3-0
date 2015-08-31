@@ -363,14 +363,27 @@ if (count($_POST) > 0) {
             isrequired = hasClass(element, "required") || element.hasAttribute("required");
             var value = element.value;
             if(!value && isrequired){
-                var name = element.parentElement.parentElement.children[0].innerHTML;
-                name = strip(name.replace(":", "")).trim();
+                var name = getName(element);
                 alert("The field '" + name + "' is required");
                 element.scrollIntoView();
                 return false;
             }
         }
         return true;
+    }
+
+    function getName(element){
+        var name;
+        if (element.hasAttribute("placeholder")) {
+            name = element.getAttribute("placeholder");
+        } else {
+            var ele = element.previousElementSibling;
+            if (ele === null) {ele = element.parentElement.previousElementSibling;}
+            if (ele === null) {ele = element.parentElement.parentElement;}
+            name = ele.innerHTML;
+            name = strip(name.replace(":", "")).trim();
+        }
+        return name.trim();
     }
 
     function checkformext(){//do not add code to this function

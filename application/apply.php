@@ -1270,6 +1270,20 @@ backbutton();
             return tmp.textContent || tmp.innerText || "";
         }
 
+        function getName(element){
+            var name;
+            if (element.hasAttribute("placeholder")) {
+                name = element.getAttribute("placeholder");
+            } else {
+                var ele = element.previousElementSibling;
+                if (ele === null) {ele = element.parentElement.previousElementSibling;}
+                if (ele === null) {ele = element.parentElement.parentElement;}
+                name = ele.innerHTML;
+                name = strip(name.replace(":", "")).trim();
+            }
+            return name.trim();
+        }
+
         function checktags(tagtype){
             var inputs = document.getElementsByTagName(tagtype);
             for (index = 0; index < inputs.length; ++index) {
@@ -1277,8 +1291,7 @@ backbutton();
                 isrequired = hasClass(element, "required") || element.hasAttribute("required");
                 var value = element.value;
                 if(!value && isrequired){
-                    var name = element.parentElement.parentElement.children[0].innerHTML;
-                    name = strip(name.replace(":", "")).trim();
+                    var name = getName(element);
                     alert("The field '" + name + "' is required");
                     element.scrollIntoView();
                     return false;
