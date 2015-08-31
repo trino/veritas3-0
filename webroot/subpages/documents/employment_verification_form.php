@@ -675,6 +675,8 @@ $strings2 = CacheTranslations($language, array("verifs_%", "tasks_date", "file_a
     <?php loadstringsJS(array_merge($strings, $strings2)); ?>
 $(function(){
     <?php
+        if(!isset($sub3['att']))
+        $sub3['att'] = array();
         if(($this->request->params['action']=='addorder' || $this->request->params['action']=='add') && !count($sub3['att']))
         {
             ?>

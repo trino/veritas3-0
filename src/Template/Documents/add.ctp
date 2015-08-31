@@ -1468,8 +1468,9 @@ printCSS($this);
             if($('#'+idname + total_count).length)
             initiate_ajax_upload1(idname + total_count, 'doc');
     }
-    function validate_data(Data, DataType){
+   function validate_data(Data, DataType){
                 if(Data) {
+                    //alert("Testing: " + Data + " for " + DataType);
                     switch (DataType.toLowerCase()) {
                         case "email":
                             var re = /\S+@\S+\.\S+/;
@@ -1482,8 +1483,12 @@ printCSS($this);
                             break;
                         case "phone":
                             var phoneRe = /^[2-9]\d{2}[2-9]\d{2}\d{4}$/;
-                            var digits = Data.replace(/\D/g, "");
-                            return (digits.match(phoneRe) !== null);
+                            Data = Data.replace(/\D/g, "");
+                            return (Data.match(phoneRe) !== null);
+                            break;
+                        case "sin":
+                            Data = Data.replace(/\D/g, "");//removes non-numeric
+                            return Data.length == 9;
                             break;
                         default:
                             alert(DataType + " is unhandled");
@@ -1491,28 +1496,59 @@ printCSS($this);
                 }
                 return true;
             }
-        function checktags(TabID, tagtype){
-                var checker = true;
-                $('#'+TabID+' input').each(function(){
-                   if($(this).attr('role')) {
-                    var role = $(this).attr('role');
-                    var val =  $(this).val();
-                    if(val && !validate_data(val,role)) {
-                        $('html,body').animate({ scrollTop: $(this).offset().top}, 'slow');
-                        $(this).attr('style','border-color:red');
-                        checker = false;
+            function clean_data(Data, DataType){
+                Data = Data.trim();
+                if(Data) {
+                    switch (DataType.toLowerCase()) {
+                        case "email":
+                            Data = Data.toLowerCase();
+                            break;
+                        case "postalcode":
+                            Data = replaceAll(" ", "", Data.toUpperCase());
+                            Data = Data.substring(0,3) + " " + Data.substring(3);
+                            break;
+                        case "phone":
+                            Data = Data.replace(/[^0-9]/g, '');
+                            Data = Data.replace(/(\d{3})(\d{3})(\d{4})/, "($1) $2-$3");
+                            break;
+                        case "sin":
+                            Data = Data.replace(/\D/g, "");//removes non-numeric
+                            Data = Data.substring(0,3) + "-" + Data.substring(3,3) + "-" + Data.substring(6,3);
+                            break;
                     }
-                   } 
-                });
-                if(!checker) {
-                    return false;
-                }else {
-                    return true;
                 }
-            /*
+                return Data;
+            }
+
+            function hasClass(elem, className) {
+                return new RegExp(' ' + className + ' ').test(' ' + elem.className + ' ');
+            }
+            function strip(html) {
+                var tmp = document.createElement("DIV");
+                alert("STRIP : " + html);
+                tmp.innerHTML = html.trim();
+                return tmp.textContent || tmp.innerText || "";
+            }
+
+            function getName(element){
+                var name;
+                if (element.hasAttribute("placeholder")) {
+                    name = element.getAttribute("placeholder");
+                } else {
+                    var ele = element.previousElementSibling;
+                    if (ele === null) {ele = element.parentElement.previousElementSibling;}
+                    if (ele === null) {ele = element.parentElement.parentElement;}
+                    name = ele.innerHTML;
+                    name = strip(name.replace(":", "")).trim();
+                }
+                return name.trim();
+            }
+            function replaceAll(find, replace, str) {
+                return str.replace(new RegExp(find, 'g'), replace);
+            }
+            function checktags(TabID, tagtype){
                 var element = document.getElementById(TabID);
                 var inputs = element.getElementsByTagName(tagtype);
-                
                 var RET = new Array();
                 RET['Status'] = true;
                 for (index = 0; index < inputs.length; ++index) {
@@ -1528,19 +1564,23 @@ printCSS($this);
                         Reason= element.getAttribute("role");
                         isValid = validate_data(value, Reason);
                     }
-
-                    if(!isValid){
-                        var name = element.parentElement.previousElementSibling.innerHTML;
-                        name = strip(name.replace(":", ""));
+                    if(isValid && Reason) {
+                        //alert('there');
+                        value = clean_data(value, Reason);
+                        element.value = value;
+                    } else if(!isValid) {
+                        //alert('here');
+                        var name = getName(element);
                         RET['Status'] = false;
                         RET['Element'] = name;
                         RET['Reason'] = Reason;
                         RET['Value'] = value;
-                        element.scrollIntoView();
+                        $('html,body').animate({ scrollTop: $(element).offset().top}, 'slow');
+                        $(element).attr('style','border-color:red');
                         return RET;
                     }
                 }
-                return RET;*/
+                return RET;
             }
     jQuery(document).ready(function () {
         var subdocid = $('#sub_id').val();
@@ -1698,7 +1738,10 @@ printCSS($this);
         var draft = 0;
         $(document.body).on('click', '.cont', function () {
             
-            checktags('parentdiv','input');
+            var checkerr = checktags('parentdiv','input');
+            console.log(checkerr);
+            if(!checkerr['status'])
+            return false;
             var sid = $('#sub_id').val();
             <?php  if(!isset($_GET['doc'])) { ?>
                 var type = $(".document_type").val();
