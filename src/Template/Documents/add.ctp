@@ -1525,7 +1525,7 @@ printCSS($this);
             }
             function strip(html) {
                 var tmp = document.createElement("DIV");
-                alert("STRIP : " + html);
+              //  alert("STRIP : " + html);
                 tmp.innerHTML = html.trim();
                 return tmp.textContent || tmp.innerText || "";
             }
