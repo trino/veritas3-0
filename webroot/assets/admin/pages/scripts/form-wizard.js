@@ -20,7 +20,7 @@ function validate_data(Data, DataType){
                             return (digits.match(phoneRe) !== null);
                             break;
                         default:
-                            alert(DataType + " is unhandled");
+                            alert(DataType + " is 1unhandled");
                     }
                 }
                 return true;
