@@ -400,8 +400,10 @@
                             echo '<a class="' . btnclass("VIEW") . '" href="' . $VIEWURL . '">' . $strings["dashboard_view"] . '</a>';
                         }
 
-                        if ($sidebar->document_edit == '1' && ($profiletype->caneditall == 1 || $this->request->session()->read('Profile.super')==1 || $this->request->session()->read('Profile.id')==$docs->user_id)) {
-                            echo '<a class="' . btnclass("EDIT") . '" href="' . $EDITURL .'">' . $strings["dashboard_edit"] . '</a>';
+                        if ($sidebar->document_edit == '1' &&  ($profiletype->caneditall == 1 || $this->request->session()->read('Profile.super')==1 || $this->request->session()->read('Profile.id')==$docs->user_id)) {
+                            if (!$docs->order_id || $this->request->session()->read('Profile.super')) {
+                                echo '<a class="' . btnclass("EDIT") . '" href="' . $EDITURL . '">' . $strings["dashboard_edit"] . '</a>';
+                            }
                         }
 
                         $isssuper = $this->request->session()->read('Profile.super');

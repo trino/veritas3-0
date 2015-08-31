@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Aug 19, 2015 at 04:37 PM
+-- Generation Time: Aug 31, 2015 at 04:01 PM
 -- Server version: 5.6.17
 -- PHP Version: 5.5.12
 
@@ -32,14 +32,14 @@ CREATE TABLE IF NOT EXISTS `strings` (
   `English` varchar(4096) NOT NULL,
   `French` varchar(4096) NOT NULL,
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=736 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=737 ;
 
 --
 -- Dumping data for table `strings`
 --
 
 INSERT INTO `strings` (`ID`, `Name`, `English`, `French`) VALUES
-(1, 'Date', '1437665633', '<-- This is used by the system to auto-update'),
+(1, 'Date', '1440017470', '<-- This is used by the system to auto-update'),
 (2, 'dashboard_affirmative', 'Yes', 'Oui'),
 (3, 'dashboard_negative', 'No', 'Non'),
 (4, 'dashboard_selectall', 'Select All', 'Tout sélectionner'),
@@ -201,7 +201,7 @@ INSERT INTO `strings` (`ID`, `Name`, `English`, `French`) VALUES
 (165, 'flash_newclientmessage', 'Domain: %path% <br>%Client% Name: %name% <br>Created by: %username% (%Profile% Type: %ut%) <br> Created on: %created%', 'Domaine: %path% <br> %client% Nom: %name% <br> Créé par: %username% (%Profile% type: %ut%) <br> Créé le: %created%'),
 (166, 'flash_docsaved', 'The %document% has been saved.', 'Le %document% de a été enregistré.'),
 (167, 'flash_cantviewdocs', 'Sorry, you don''t have the required permission to view %document%s. Please contact the administrator to enable it.', 'Désolé, vous ne disposez pas de l''autorisation nécessaire pour visualiser les %document%s. S''il vous plaît contactez l''administrateur pour l''activer.'),
-(168, 'flash_cantuploaddocs', 'Sorry you don''t have the required permission to upload %document%s. Please contact the administrator to enable it.', 'Désolé vous ne disposez pas de l''autorisation nécessaire pour télécharger des %document%s. S''il vous plaît contactez l''administrateur pour l''activer.'),
+(168, 'flash_cantuploaddocs', 'Sorry, you don''t have the required permission to upload %document%s. Please contact the administrator to enable it.', 'Désolé vous ne disposez pas de l''autorisation nécessaire pour télécharger des %document%s. S''il vous plaît contactez l''administrateur pour l''activer.'),
 (169, 'flash_docdeleted', '%Document% has been deleted.', '%Document% a été supprimé.'),
 (170, 'flash_docnotdeleted', '%Document% could not be deleted. Please try again.', '%Document% n''a pas pu être supprimé. S''il vous plaît essayer à nouveau.'),
 (171, 'flash_docnotsaved', '%Document% could not be saved. Please try again.', '%Document% n''a pas pu être sauvé. S''il vous plaît essayer à nouveau.'),
@@ -751,7 +751,8 @@ INSERT INTO `strings` (`ID`, `Name`, `English`, `French`) VALUES
 (732, 'training_notanswered', 'Not yet answered', 'Non encore répondu'),
 (733, 'training_answered', 'Answered', 'Répondu'),
 (734, 'training_resultsfor', 'Results for: %fname% %lname% (%username%) on %date%', 'Résultats pour: %fname% %lname% (%username%) sur %date%'),
-(735, 'training_answerssaved', '%num% answers were saved', '%num% réponses ont été sauvés');
+(735, 'training_answerssaved', '%num% answers were saved', '%num% réponses ont été sauvés'),
+(736, 'forms_failed', '''%name%'' (%value%) is not a valid %type%', '''%name%'' (%value%) est non valable. (Attendu ''%type%'')');
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
