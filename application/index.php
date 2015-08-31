@@ -326,6 +326,7 @@ if (count($_POST) > 0) {
    // echo '<a href="javascript:window.print();" class="floatright btn btn-info no-print" style="float:right;">' . $strings["dashboard_print"] . '</a>';
     echo '<DIV ALIGN="CENTER"><img style="max-width: 100px;" src="' . $webroot . $logo . '"  /></DIV>';//gfs
 ?>
+<script src="../webroot/assets/admin/pages/scripts/form-validate-roy.js"></script>
 <SCRIPT>
     $(document).ready(function () {
         Metronic.init(); // init metronic core components
@@ -346,54 +347,9 @@ if (count($_POST) > 0) {
 
     <?php loadstringsJS($strings); ?>
 
-    function hasClass(elem, className) {
-        return new RegExp(' ' + className + ' ').test(' ' + elem.className + ' ');
-    }
-
-    function strip(html) {
-        var tmp = document.createElement("DIV");
-        tmp.innerHTML = html;
-        return tmp.textContent || tmp.innerText || "";
-    }
-
-    function checktags(tagtype){
-        var inputs = document.getElementsByTagName(tagtype);
-        for (index = 0; index < inputs.length; ++index) {
-            element = inputs[index];
-            isrequired = hasClass(element, "required") || element.hasAttribute("required");
-            var value = element.value;
-            if(!value && isrequired){
-                var name = getName(element);
-                alert("The field '" + name + "' is required");
-                element.scrollIntoView();
-                return false;
-            }
-        }
-        return true;
-    }
-
-    function getName(element){
-        var name;
-        if (element.hasAttribute("placeholder")) {
-            name = element.getAttribute("placeholder");
-        } else {
-            var ele = element.previousElementSibling;
-            if (ele === null) {ele = element.parentElement.previousElementSibling;}
-            if (ele === null) {ele = element.parentElement.parentElement;}
-            name = ele.innerHTML;
-            name = strip(name.replace(":", "")).trim();
-        }
-        return name.trim();
-    }
-
     function checkformext(){//do not add code to this function
         var ret = true;
-        var inputs = checktags('input');
-        var isrequired;
-
-        if (!inputs){return false;}
-        inputs = checktags('select');
-        if (!inputs){return false;}
+        if (!checkalltags()){return false;}
 
         if (typeof checkformint == 'function') {
             ret = checkformint();

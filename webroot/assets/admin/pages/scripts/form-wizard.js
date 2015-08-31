@@ -1,81 +1,4 @@
 var path =  document.URL; //window.location.pathname;
-function validate_data(Data, DataType){
-                if(Data) {
-                    switch (DataType.toLowerCase()) {
-                        case "email":
-                            var re = /\S+@\S+\.\S+/;
-                            return re.test(Data);
-                            break;
-                        case "postalcode":
-                            Data = Data.replace(/ /g, '').toUpperCase();
-                            var regex = new RegExp(/^[ABCEGHJKLMNPRSTVXY]\d[ABCEGHJKLMNPRSTVWXYZ]?\d[ABCEGHJKLMNPRSTVWXYZ]\d$/i);
-                            return regex.test(Data);
-                            break;
-                        case "phone":
-                           
-                            var phoneRe = /^[2-9]\d{2}[2-9]\d{2}\d{4}$/;
-                            var digits = Data.replace(/\D/g, "");
-                            return (digits.match(phoneRe) !== null);
-                            break;
-                        default:
-                            alert(DataType + " is unhandled");
-                    }
-                }
-                return true;
-            }
-        function checktags(TabID, tagtype){
-                var checker = true;
-                $('#'+TabID+' input').each(function(){
-                   if($(this).attr('role'))
-                   {
-                    var role = $(this).attr('role');
-                    var val =  $(this).val();
-                    
-                    if(val && !validate_data(val,role))
-                    {
-                        $('html,body').animate({ scrollTop: $(this).offset().top}, 'slow');
-                        $(this).attr('style','border-color:red');
-                        checker = false;
-                    }
-                   } 
-                });
-                if(!checker)
-                return false;
-                else
-                return true;
-            /*
-                var element = document.getElementById(TabID);
-                var inputs = element.getElementsByTagName(tagtype);
-                
-                var RET = new Array();
-                RET['Status'] = true;
-                for (index = 0; index < inputs.length; ++index) {
-                    element = inputs[index];
-                    isrequired = hasClass(element, "required") || element.hasAttribute("required");
-                    var value = element.value;
-                    var isValid = true;
-                    var Reason = "";
-                    if(!value && isrequired){
-                        Reason = "required";
-                        isValid = false;
-                    } else if (element.hasAttribute("role")){
-                        Reason= element.getAttribute("role");
-                        isValid = validate_data(value, Reason);
-                    }
-
-                    if(!isValid){
-                        var name = element.parentElement.previousElementSibling.innerHTML;
-                        name = strip(name.replace(":", ""));
-                        RET['Status'] = false;
-                        RET['Element'] = name;
-                        RET['Reason'] = Reason;
-                        RET['Value'] = value;
-                        element.scrollIntoView();
-                        return RET;
-                    }
-                }
-                return RET;*/
-            }
 
 function webroot(){
     var txt =  document.URL;
@@ -98,32 +21,24 @@ var base_url = webroot();
 var table=0;
 var draft = 0;
 $(function(){
-  
-$(document.body).on('click', '.skip', function () {
-
-            draft=1;
-                //alert(draft);
-                }); 
-$(document.body).on('click', '.button-next', function () {
-
-            draft=0;
-                //alert(draft);
-                });                  
-if($('#tablename').val()=='pre_screening')
- table=0;
-else
-if($('#tablename').val()=='driver_application')
-    table=1;
-else
-if($('#tablename').val()=='road_test')
-   table=2;
-else
-if($('#tablename').val()=='consent_form')
-table= 3;
-
-
-
+    $(document.body).on('click', '.skip', function () {
+        draft=1;
+        //alert(draft);
     });
+    $(document.body).on('click', '.button-next', function () {
+        draft=0;
+        //alert(draft);
+    });
+    if($('#tablename').val()=='pre_screening') {
+        table = 0;
+    }else if($('#tablename').val()=='driver_application') {
+        table = 1;
+    } else if($('#tablename').val()=='road_test') {
+        table = 2;
+    } else if($('#tablename').val()=='consent_form') {
+        table = 3;
+    }
+});
 
 
 
@@ -400,118 +315,7 @@ var FormWizard = function () {
                 Metronic.scrollTo($('.page-title'));
             }
 
-            function validate_data(Data, DataType){
-                if(Data) {
-                    //alert("Testing: " + Data + " for " + DataType);
-                    switch (DataType.toLowerCase()) {
-                        case "email":
-                            var re = /\S+@\S+\.\S+/;
-                            return re.test(Data);
-                            break;
-                        case "postalcode":
-                            Data = Data.replace(/ /g, '').toUpperCase();
-                            var regex = new RegExp(/^[ABCEGHJKLMNPRSTVXY]\d[ABCEGHJKLMNPRSTVWXYZ]?\d[ABCEGHJKLMNPRSTVWXYZ]\d$/i);
-                            return regex.test(Data);
-                            break;
-                        case "phone":
-                            var phoneRe = /^[2-9]\d{2}[2-9]\d{2}\d{4}$/;
-                            Data = Data.replace(/\D/g, "");
-                            return (Data.match(phoneRe) !== null);
-                            break;
-                        case "sin":
-                            Data = Data.replace(/\D/g, "");//removes non-numeric
-                            return Data.length == 9;
-                            break;
-                        default:
-                            alert(DataType + " is unhandled");
-                    }
-                }
-                return true;
-            }
-            function clean_data(Data, DataType){
-                Data = Data.trim();
-                if(Data) {
-                    switch (DataType.toLowerCase()) {
-                        case "email":
-                            Data = Data.toLowerCase();
-                            break;
-                        case "postalcode":
-                            Data = replaceAll(" ", "", Data.toUpperCase());
-                            Data = Data.substring(0,3) + " " + Data.substring(3);
-                            break;
-                        case "phone":
-                            Data = Data.replace(/[^0-9]/g, '');
-                            Data = Data.replace(/(\d{3})(\d{3})(\d{4})/, "($1) $2-$3");
-                            break;
-                        case "sin":
-                            Data = Data.replace(/\D/g, "");//removes non-numeric
-                            Data = Data.substring(0,3) + "-" + Data.substring(3,3) + "-" + Data.substring(6,3);
-                            break;
-                    }
-                }
-                return Data;
-            }
 
-            function hasClass(elem, className) {
-                return new RegExp(' ' + className + ' ').test(' ' + elem.className + ' ');
-            }
-            function strip(html) {
-                var tmp = document.createElement("DIV");
-                alert("STRIP : " + html);
-                tmp.innerHTML = html.trim();
-                return tmp.textContent || tmp.innerText || "";
-            }
-
-
-            function checktags(TabID, tagtype){
-                var element = document.getElementById(TabID);
-                var inputs = element.getElementsByTagName(tagtype);
-                var RET = new Array();
-                RET['Status'] = true;
-                for (index = 0; index < inputs.length; ++index) {
-                    element = inputs[index];
-                    isrequired = hasClass(element, "required") || element.hasAttribute("required");
-                    var value = element.value;
-                    var isValid = true;
-                    var Reason = "";
-                    if(!value && isrequired){
-                        Reason = "required";
-                        isValid = false;
-                    } else if (element.hasAttribute("role")){
-                        Reason= element.getAttribute("role");
-                        isValid = validate_data(value, Reason);
-                    }
-                    if(isValid && Reason) {
-                        value = clean_data(value, Reason);
-                        element.value = value;
-                    } else if(!isValid) {
-                        var name = getName(element);
-                        RET['Status'] = false;
-                        RET['Element'] = name;
-                        RET['Reason'] = Reason;
-                        RET['Value'] = value;
-                        element.scrollIntoView();
-                        return RET;
-                    }
-                }
-                return RET;
-            }
-            function getName(element){
-                var name;
-                if (element.hasAttribute("placeholder")) {
-                    name = element.getAttribute("placeholder");
-                } else {
-                    var ele = element.previousElementSibling;
-                    if (ele === null) {ele = element.parentElement.previousElementSibling;}
-                    if (ele === null) {ele = element.parentElement.parentElement;}
-                    name = ele.innerHTML;
-                    name = strip(name.replace(":", "")).trim();
-                }
-                return name.trim();
-            }
-            function replaceAll(find, replace, str) {
-                return str.replace(new RegExp(find, 'g'), replace);
-            }
 
             // default form wizard
             $('#form_wizard_1').bootstrapWizard({

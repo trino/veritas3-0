@@ -6,6 +6,10 @@ if(!isset($ClientID)){$ClientID=26;}
 $Client = $Manager->get_client($ClientID);
 //$settings = $Manager->get_settings();
 
+if($ClientID != 26){
+    echo '<STYLE>.nothuron{display: none; !important;}</STYLE>';
+}
+
 function makerow($profile, $Fields){
     if($profile){
         $theindex = 0;
@@ -96,23 +100,13 @@ function makerow($profile, $Fields){
                     <div class="col-md-2 radio-list yesNoCheck">
                         <label class="radio-inline">
                         <?php 
-                        if($this->request->params['action'] == 'vieworder'  || $this->request->params['action']== 'view')
-                        {
-                            if(isset($application_for_employment_gfs) && $application_for_employment_gfs->workedbefore=='1')
-                            {
-                                ?>
-                                &#10004;
-                                <?php
-                            }
-                            else 
-                            {
-                                ?>
-                                &#10006;
-                                <?php
+                        if($this->request->params['action'] == 'vieworder'  || $this->request->params['action']== 'view') {
+                            if(isset($application_for_employment_gfs) && $application_for_employment_gfs->workedbefore=='1') {
+                                echo '&#10004;';
+                            } else {
+                                echo '&#10006;';
                             } 
-                        }
-                        else
-                        {
+                        } else {
                             ?>                                      
                             <input type="radio" class="form-control" name="workedbefore" id="yesCheck" value="1" 
                             <?php if(isset($application_for_employment_gfs) && $application_for_employment_gfs->workedbefore=='1')echo "checked='checked'";?>/>
@@ -122,23 +116,13 @@ function makerow($profile, $Fields){
                         </label>
                         <label class="radio-inline">
                         <?php 
-                        if($this->request->params['action'] == 'vieworder'  || $this->request->params['action']== 'view')
-                        {
-                            if(isset($application_for_employment_gfs) && $application_for_employment_gfs->workedbefore=='0')
-                            {
-                                ?>
-                                &#10004;
-                                <?php
-                            }
-                            else 
-                            {
-                                ?>
-                                &#10006;
-                                <?php
+                        if($this->request->params['action'] == 'vieworder'  || $this->request->params['action']== 'view') {
+                            if(isset($application_for_employment_gfs) && $application_for_employment_gfs->workedbefore=='0') {
+                                echo '&#10004;';
+                            } else {
+                                echo '&#10006;';
                             } 
-                        }
-                        else
-                        {
+                        } else {
                             ?>                                      
                             <input type="radio" class="form-control" name="workedbefore" id="noCheck" value="0" 
                             <?php if(isset($application_for_employment_gfs) && $application_for_employment_gfs->workedbefore=='0')echo "checked='checked'";?>/>
@@ -156,15 +140,15 @@ function makerow($profile, $Fields){
                     </div> 
             </div>
             <p>&nbsp;</p>
-            <div class="col-md-12">
-                    <label class="control-label col-md-4">List anyone you know who woks for us: </label>  
+            <div class="col-md-12 nothuron">
+                    <label class="control-label col-md-4">List anyone you know who woks for us: </label>
                     <div class="col-md-8">
                         <input class="form-control" name="for_us"value="<?php if(isset($application_for_employment_gfs))echo $application_for_employment_gfs->for_us;?>" /> 
                     </div>
             </div>
             <p>&nbsp;</p>
-            <div class="col-md-12">
-                    <label class="control-label col-md-4">Did anyone refer you? </label>  
+            <div class="col-md-12 nothuron">
+                    <label class="control-label col-md-4">Did anyone refer you? </label>
                     <div class="col-md-8">
                         <input class="form-control" name="refer"value="<?php if(isset($application_for_employment_gfs))echo $application_for_employment_gfs->refer;?>" /> 
                     </div>
@@ -175,23 +159,13 @@ function makerow($profile, $Fields){
                     <div class="col-md-4 radio-list">
                         <label class="radio-inline">
                         <?php 
-                        if($this->request->params['action'] == 'vieworder'  || $this->request->params['action']== 'view')
-                        {
-                            if(isset($application_for_employment_gfs) && $application_for_employment_gfs->age=='1')
-                            {
-                                ?>
-                                &#10004;
-                                <?php
-                            }
-                            else 
-                            {
-                                ?>
-                                &#10006;
-                                <?php
+                        if($this->request->params['action'] == 'vieworder'  || $this->request->params['action']== 'view') {
+                            if(isset($application_for_employment_gfs) && $application_for_employment_gfs->age=='1') {
+                                echo '&#10004;';
+                            } else {
+                                echo '&#10006;';
                             } 
-                        }
-                        else
-                        {
+                        } else {
                             ?>                                      
                             <input type="radio" class="form-control" name="age" value="1" <?php if(isset($application_for_employment_gfs) && $application_for_employment_gfs->age=='1')echo "checked='checked'";?>/>
                             <?php
@@ -201,23 +175,13 @@ function makerow($profile, $Fields){
                         </label>
                         <label class="radio-inline">
                         <?php 
-                        if($this->request->params['action'] == 'vieworder'  || $this->request->params['action']== 'view')
-                        {
-                            if(isset($application_for_employment_gfs) && $application_for_employment_gfs->age=='0')
-                            {
-                                ?>
-                                &#10004;
-                                <?php
-                            }
-                            else 
-                            {
-                                ?>
-                                &#10006;
-                                <?php
+                        if($this->request->params['action'] == 'vieworder'  || $this->request->params['action']== 'view') {
+                            if(isset($application_for_employment_gfs) && $application_for_employment_gfs->age=='0') {
+                                echo '&#10004;';
+                            } else {
+                                echo '&#10006;';
                             } 
-                        }
-                        else
-                        {
+                        } else {
                             ?>                                      
                             <input type="radio" class="form-control" name="age" value="0" <?php if(isset($application_for_employment_gfs) && $application_for_employment_gfs->age=='0')echo "checked='checked'";?>/>
                             <?php
@@ -232,23 +196,13 @@ function makerow($profile, $Fields){
                     <div class="col-md-4 radio-list">
                         <label class="radio-inline">
                         <?php 
-                        if($this->request->params['action'] == 'vieworder'  || $this->request->params['action']== 'view')
-                        {
-                            if(isset($application_for_employment_gfs) && $application_for_employment_gfs->legal=='1')
-                            {
-                                ?>
-                                &#10004;
-                                <?php
-                            }
-                            else 
-                            {
-                                ?>
-                                &#10006;
-                                <?php
+                        if($this->request->params['action'] == 'vieworder'  || $this->request->params['action']== 'view') {
+                            if(isset($application_for_employment_gfs) && $application_for_employment_gfs->legal=='1') {
+                                echo '&#10004;';
+                            } else {
+                                echo '&#10006;';
                             } 
-                        }
-                        else
-                        {
+                        } else {
                             ?>                                      
                             <input type="radio" class="form-control" name="legal" value="1" <?php if(isset($application_for_employment_gfs) && $application_for_employment_gfs->legal=='1')echo "checked='checked'";?>/>
                             <?php
@@ -258,23 +212,13 @@ function makerow($profile, $Fields){
                         </label>
                         <label class="radio-inline">
                         <?php 
-                        if($this->request->params['action'] == 'vieworder'  || $this->request->params['action']== 'view')
-                        {
-                            if(isset($application_for_employment_gfs) && $application_for_employment_gfs->legal=='0')
-                            {
-                                ?>
-                                &#10004;
-                                <?php
-                            }
-                            else 
-                            {
-                                ?>
-                                &#10006;
-                                <?php
+                        if($this->request->params['action'] == 'vieworder'  || $this->request->params['action']== 'view') {
+                            if(isset($application_for_employment_gfs) && $application_for_employment_gfs->legal=='0') {
+                                echo '&#10004;';
+                            } else {
+                                echo '&#10006;';
                             } 
-                        }
-                        else
-                        {
+                        } else {
                             ?>                                      
                             <input type="radio" class="form-control" name="legal" value="0" <?php if(isset($application_for_employment_gfs) && $application_for_employment_gfs->legal=='0')echo "checked='checked'";?>/>
                             <?php
@@ -317,15 +261,15 @@ function makerow($profile, $Fields){
     <p>&nbsp;</p>
 
 
-    <div class="col-md-12">
+    <div class="col-md-12 nothuron">
         <h3 class="col-md-12">SIN Card</h3>
     </div>
     <div class="col-md-12">
 
-        <div class="col-md-4">
+        <div class="col-md-4 nothuron">
             <div class="form-group">
                 <label class="control-label required">SIN:</label>
-                <input name="sin" type="text" required class="form-control required req_driver" value="<?php if(isset($application_for_employment_gfs))echo $application_for_employment_gfs->sin;?>" >
+                <input name="sin" type="text" required class="form-control <?php if($ClientID==26) { echo "required"; } ?> req_driver" value="<?php if(isset($application_for_employment_gfs))echo $application_for_employment_gfs->sin;?>" >
             </div>
         </div>
     </div>
@@ -390,7 +334,7 @@ function makerow($profile, $Fields){
                     </div>
             </div>
             <p>&nbsp;</p>
-            <div class="col-md-12">
+            <div class="col-md-12 nothuron">
                     <div class="col-md-12">
                         <label class="control-label col-md-2">Job(s) Applied for: </label> 
                     </div> 
@@ -430,23 +374,13 @@ function makerow($profile, $Fields){
                     <div class="col-md-7 radio-list">
                         <label class="radio-inline">
                         <?php 
-                        if($this->request->params['action'] == 'vieworder'  || $this->request->params['action']== 'view')
-                        {
-                            if(isset($application_for_employment_gfs) && $application_for_employment_gfs->legal1=='1')
-                            {
-                                ?>
-                                &#10004;
-                                <?php
-                            }
-                            else 
-                            {
-                                ?>
-                                &#10006;
-                                <?php
+                        if($this->request->params['action'] == 'vieworder'  || $this->request->params['action']== 'view') {
+                            if(isset($application_for_employment_gfs) && $application_for_employment_gfs->legal1=='1') {
+                                echo '&#10004;';
+                            } else {
+                                echo '&#10006;';
                             } 
-                        }
-                        else
-                        {
+                        } else {
                             ?>                                      
                             <input type="radio" class="form-control" name="legal1" id="partTime" value="1" <?php if(isset($application_for_employment_gfs) && $application_for_employment_gfs->legal1=='1')echo "checked='checked'";?>/>
                             <?php
@@ -456,23 +390,13 @@ function makerow($profile, $Fields){
                         </label>
                         <label class="radio-inline">
                         <?php 
-                        if($this->request->params['action'] == 'vieworder'  || $this->request->params['action']== 'view')
-                        {
-                            if(isset($application_for_employment_gfs) && $application_for_employment_gfs->legal1=='0')
-                            {
-                                ?>
-                                &#10004;
-                                <?php
-                            }
-                            else 
-                            {
-                                ?>
-                                &#10006;
-                                <?php
+                        if($this->request->params['action'] == 'vieworder'  || $this->request->params['action']== 'view') {
+                            if(isset($application_for_employment_gfs) && $application_for_employment_gfs->legal1=='0') {
+                                echo '&#10004;';
+                            } else {
+                                echo '&#10006;';
                             } 
-                        }
-                        else
-                        {
+                        } else {
                             ?>                                      
                             <input type="radio" class="form-control" name="legal1" id="fullTime" value="0" <?php if(isset($application_for_employment_gfs) && $application_for_employment_gfs->legal1=='0')echo "checked='checked'";?>/>
                             <?php
@@ -497,23 +421,13 @@ function makerow($profile, $Fields){
                     <div class="col-md-7 radio-list">
                         <label class="radio-inline">
                         <?php 
-                        if($this->request->params['action'] == 'vieworder'  || $this->request->params['action']== 'view')
-                        {
-                            if(isset($application_for_employment_gfs) && $application_for_employment_gfs->legal2=='1')
-                            {
-                                ?>
-                                &#10004;
-                                <?php
-                            }
-                            else 
-                            {
-                                ?>
-                                &#10006;
-                                <?php
+                        if($this->request->params['action'] == 'vieworder'  || $this->request->params['action']== 'view') {
+                            if(isset($application_for_employment_gfs) && $application_for_employment_gfs->legal2=='1') {
+                                echo '&#10004;';
+                            } else {
+                                echo '&#10006;';
                             } 
-                        }
-                        else
-                        {
+                        } else {
                             ?>                                      
                             <input type="radio" class="form-control" name="legal2" id="ableToWork" value="1" <?php if(isset($application_for_employment_gfs) && $application_for_employment_gfs->legal2=='1')echo "checked='checked'";?>/> 
                             <?php
@@ -523,23 +437,13 @@ function makerow($profile, $Fields){
                         </label>
                         <label class="radio-inline">
                         <?php 
-                        if($this->request->params['action'] == 'vieworder'  || $this->request->params['action']== 'view')
-                        {
-                            if(isset($application_for_employment_gfs) && $application_for_employment_gfs->legal2=='2')
-                            {
-                                ?>
-                                &#10004;
-                                <?php
-                            }
-                            else 
-                            {
-                                ?>
-                                &#10006;
-                                <?php
+                        if($this->request->params['action'] == 'vieworder'  || $this->request->params['action']== 'view') {
+                            if(isset($application_for_employment_gfs) && $application_for_employment_gfs->legal2=='2') {
+                                echo '&#10004;';
+                            } else {
+                                echo '&#10006;';
                             } 
-                        }
-                        else
-                        {
+                        } else {
                             ?>                                      
                             <input type="radio" class="form-control" name="legal2" id="notAbleToWork" value="2" <?php if(isset($application_for_employment_gfs) && $application_for_employment_gfs->legal2=='0')echo "checked='checked'";?>/>
                             <?php
@@ -824,23 +728,17 @@ function makerow($profile, $Fields){
             <div class="col-md-6 radio-list">
             <label class="radio-inline">
             <?php 
-                        if($this->request->params['action'] == 'vieworder'  || $this->request->params['action']== 'view')
-                        {
-                            if(isset($application_for_employment_gfs) && $application_for_employment_gfs->physical_exam=='1')
-                            {
+                        if($this->request->params['action'] == 'vieworder'  || $this->request->params['action']== 'view') {
+                            if(isset($application_for_employment_gfs) && $application_for_employment_gfs->physical_exam=='1') {
                                 ?>
-                                &#10004;
+                                echo '&#10004;';
                                 <?php
-                            }
-                            else 
-                            {
+                            } else {
                                 ?>
-                                &#10006;
+                                echo '&#10006;';
                                 <?php
                             } 
-                        }
-                        else
-                        {
+                        } else {
                             ?>                                      
                             <input type="radio" name="physical_exam" value="1" <?php if(isset($application_for_employment_gfs)&& $application_for_employment_gfs->physical_exam=='1')echo "checked='checked'";?> /> 
                             <?php
@@ -850,23 +748,13 @@ function makerow($profile, $Fields){
              </label>
              <label class="radio-inline">
              <?php 
-                        if($this->request->params['action'] == 'vieworder'  || $this->request->params['action']== 'view')
-                        {
-                            if(isset($application_for_employment_gfs) && $application_for_employment_gfs->physical_exam=='0')
-                            {
-                                ?>
-                                &#10004;
-                                <?php
-                            }
-                            else 
-                            {
-                                ?>
-                                &#10006;
-                                <?php
+                        if($this->request->params['action'] == 'vieworder'  || $this->request->params['action']== 'view') {
+                            if(isset($application_for_employment_gfs) && $application_for_employment_gfs->physical_exam=='0') {
+                                echo '&#10004;';
+                            } else {
+                                echo '&#10006;';
                             } 
-                        }
-                        else
-                        {
+                        } else {
                             ?>                                      
                             <input type="radio" name="physical_exam" value="0" <?php if(isset($application_for_employment_gfs)&& $application_for_employment_gfs->physical_exam=='0')echo "checked='checked'";?> /> 
                             <?php
@@ -890,23 +778,13 @@ function makerow($profile, $Fields){
             <div class="col-md-6 radio-list">
                 <label class="radio-inline">
                 <?php 
-                        if($this->request->params['action'] == 'vieworder'  || $this->request->params['action']== 'view')
-                        {
-                            if(isset($application_for_employment_gfs) && $application_for_employment_gfs->willing_relocate=='1')
-                            {
-                                ?>
-                                &#10004;
-                                <?php
-                            }
-                            else 
-                            {
-                                ?>
-                                &#10006;
-                                <?php
+                        if($this->request->params['action'] == 'vieworder'  || $this->request->params['action']== 'view') {
+                            if(isset($application_for_employment_gfs) && $application_for_employment_gfs->willing_relocate=='1') {
+                                echo '&#10004;';
+                            } else {
+                                echo '&#10006;';
                             } 
-                        }
-                        else
-                        {
+                        } else {
                             ?>                                      
                             <input type="radio" name="willing_relocate" value="1" <?php if(isset($application_for_employment_gfs)&& $application_for_employment_gfs->willing_relocate=='1')echo "checked='checked'";?>/> 
                             <?php
@@ -917,23 +795,13 @@ function makerow($profile, $Fields){
                  </label>
                  <label class="radio-inline">
                  <?php 
-                        if($this->request->params['action'] == 'vieworder'  || $this->request->params['action']== 'view')
-                        {
-                            if(isset($application_for_employment_gfs) && $application_for_employment_gfs->willing_relocate=='0')
-                            {
-                                ?>
-                                &#10004;
-                                <?php
-                            }
-                            else 
-                            {
-                                ?>
-                                &#10006;
-                                <?php
+                        if($this->request->params['action'] == 'vieworder'  || $this->request->params['action']== 'view') {
+                            if(isset($application_for_employment_gfs) && $application_for_employment_gfs->willing_relocate=='0') {
+                                echo '&#10004;';
+                            } else {
+                                echo '&#10006;';
                             } 
-                        }
-                        else
-                        {
+                        } else {
                             ?>                                      
                             <input type="radio" name="willing_relocate" value="0" <?php if(isset($application_for_employment_gfs)&& $application_for_employment_gfs->willing_relocate=='0')echo "checked='checked'";?>/> 
                             <?php
@@ -958,7 +826,7 @@ function makerow($profile, $Fields){
              <textarea name="other_information" class="form-control" placeholder="OTHER INFORMATION"><?php if(isset($application_for_employment_gfs))echo $application_for_employment_gfs->other_information;?></textarea>
         </div>
         <p>&nbsp;</p>
-        <div class="col-md-12">
+        <div class="col-md-12 nothuron">
              <h3>BUSINESS REFERENCES</h3>
              <table class="table table-bordered">
                 <thead>
@@ -984,7 +852,7 @@ function makerow($profile, $Fields){
         </div>
         
         <p>&nbsp;</p>
-        <div class="col-md-12">
+        <div class="col-md-12 nothuron">
             <h3>APPLICANT’S CERTIFICATION AND AGREEMENT</h3>   
             <strong>PLEASE READ EACH SECTION CAREFULLY AND CHECK THE BOX:</strong> 
             <p>&nbsp;</p>  

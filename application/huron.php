@@ -6,6 +6,6 @@
 <?php
     $ClientID=41;//41 on live!!!
     $ChecksNotNeeded = true;
-    $NoClass = "nohuron";
+    $NoClass = "nothuron";
     include("apply.php");
 ?>

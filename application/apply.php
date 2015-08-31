@@ -153,6 +153,10 @@
             // Login.init();
             Demo.init();
         });
+
+        function save_signature(uselessnumber){
+            document.getElementById("myForm").submit();
+        }
     </script>
     <style>
     p{text-align:justify!important;}
@@ -458,7 +462,7 @@
             </div>
 
             <div class="col-md-12 nothuron">
-                    <label class="control-label col-md-4 nothuron">Did anyone refer you?</label>
+                    <label class="control-label col-md-4">Did anyone refer you?</label>
                     <div class="col-md-8">
                         <input class="form-control" name="refer"value="<?php if(isset($application_for_employment_gfs))echo $application_for_employment_gfs->refer;?>" /> 
                     </div>
@@ -1251,62 +1255,14 @@ backbutton();
 ?>
 </div>
 </div>
+
+<script src="../webroot/assets/admin/pages/scripts/form-validate-roy.js"></script>
+
 <script>
-        Element.prototype.hasClass = function(className) {
-            return this.className && new RegExp("(^|\\s)" + className + "(\\s|$)").test(this.className);
-        };
-
-        function hasClass(elem, className) {
-            return new RegExp(' ' + className + ' ').test(' ' + elem.className + ' ');
-        }
-
-        function save_signature(uselessnumber){
-            document.getElementById("myForm").submit();
-        }
-
-        function strip(html) {
-            var tmp = document.createElement("DIV");
-            tmp.innerHTML = html;
-            return tmp.textContent || tmp.innerText || "";
-        }
-
-        function getName(element){
-            var name;
-            if (element.hasAttribute("placeholder")) {
-                name = element.getAttribute("placeholder");
-            } else {
-                var ele = element.previousElementSibling;
-                if (ele === null) {ele = element.parentElement.previousElementSibling;}
-                if (ele === null) {ele = element.parentElement.parentElement;}
-                name = ele.innerHTML;
-                name = strip(name.replace(":", "")).trim();
-            }
-            return name.trim();
-        }
-
-        function checktags(tagtype){
-            var inputs = document.getElementsByTagName(tagtype);
-            for (index = 0; index < inputs.length; ++index) {
-                element = inputs[index];
-                isrequired = hasClass(element, "required") || element.hasAttribute("required");
-                var value = element.value;
-                if(!value && isrequired){
-                    var name = getName(element);
-                    alert("The field '" + name + "' is required");
-                    element.scrollIntoView();
-                    return false;
-                }
-            }
-            return true;
-        }
-
         function check_username() {
             var element, inputs, index;
 
-            inputs = checktags('input');
-            if (!inputs){return false;}
-            inputs = checktags('select');
-            if (!inputs){return false;}
+            if (!checkalltags()){return false;}
 
             <?php if(!isset($ChecksNotNeeded)){ ?>
             for (var checkbox = 1; checkbox < 8; checkbox ++){

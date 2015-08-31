@@ -212,6 +212,7 @@
     <?php //<script src="<?php echo $this->request->webroot; assets/admin/pages/scripts/form-wizard.js"></script>
         //includejavascript($strings);
         JSinclude($this, "assets/admin/pages/scripts/form-wizard.js");
+        JSinclude($this, "assets/admin/pages/scripts/form-validate-roy.js");
     ?>
 
     <script src="<?php echo $this->request->webroot; ?>assets/admin/pages/scripts/components-pickers.js"></script>
