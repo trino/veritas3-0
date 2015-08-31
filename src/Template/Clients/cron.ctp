@@ -5,7 +5,7 @@
 ?>
 <script>
 $(function(){
-    /*
+
     <?php foreach($arrs as $arr){?>
     var forms = '<?php echo $arr['forms'];?>';
     var driver = '<?php echo $arr['driver'];?>';
@@ -24,7 +24,7 @@ $(function(){
         });
     }
    <?php }?>
-   */
+
 })
 
 </script>

@@ -729,7 +729,7 @@ $strings = CacheTranslations($language, array("forms_%"), $settings);
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <input <?php echo $is_disabled ?>  type="text"
-                                                                           placeholder="<?= $strings["forms_postalcode"]; ?>"
+                                                                           placeholder="<?= $strings["forms_postalcode"]; ?> (M5V2X2)"
                                                                            class="form-control req_driver"
                                                                            name="postal" role='postalcode'  <?php if (isset($p->postal)) { ?>
                                             value="<?php echo $p->postal; ?>" <?php } ?>/>
