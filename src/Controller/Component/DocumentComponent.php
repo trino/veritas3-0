@@ -147,7 +147,9 @@ class DocumentComponent extends Component{
 //$arr['document_type'] = urldecode($_GET['document']);
                                             $username =   $user_id = $controller->request->session()->read('Profile.username');
                                             $ret = array("site" => $setting->mee,"email" => $em, "company_name" => $client_name, "username" => $username, "id" => $did, "path" => $path, "profile_type" => $ut, "place" => 1);
-                                            if($emailenabled) {$Mailer->handleevent("documentcreated", $ret);}
+                                            if($emailenabled) {
+
+                                                $Mailer->handleevent("documentcreated", $ret);}
 /*
                                             $from = array('info@'.$path => $setting->mee);
                                             $to = $p;

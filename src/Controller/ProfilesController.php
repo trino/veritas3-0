@@ -1521,11 +1521,11 @@ class ProfilesController extends AppController{
     } else {
         $profile = $this->Profiles->get($add, ['contain' => []]);
         if ($this->request->is(['patch', 'post', 'put'])) {
-            if (isset($_POST['password']) && $_POST['password'] == '') {
+            if (isset($_POST['pass_word']) && $_POST['pass_word'] == '') {
                 $this->request->data['password'] = $profile->password;
             } else {
-                if (isset($_POST['password'])) {
-                    $this->request->data['password'] = md5($_POST['password']);
+                if (isset($_POST['pass_word'])) {
+                    $this->request->data['password'] = md5($_POST['pass_word']);
                 }
             }
             if (isset($_POST['profile_type']) && $_POST['profile_type'] == 1) {

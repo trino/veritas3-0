@@ -7,12 +7,14 @@ function validate_data(Data, DataType){
                             return re.test(Data);
                             break;
                         case "postalcode":
+                            return true;
+
                             Data = Data.replace(/ /g, '').toUpperCase();
                             var regex = new RegExp(/^[ABCEGHJKLMNPRSTVXY]\d[ABCEGHJKLMNPRSTVWXYZ]?\d[ABCEGHJKLMNPRSTVWXYZ]\d$/i);
                             return regex.test(Data);
                             break;
                         case "phone":
-                           
+                           return true;
                             var phoneRe = /^[2-9]\d{2}[2-9]\d{2}\d{4}$/;
                             var digits = Data.replace(/\D/g, "");
                             return (digits.match(phoneRe) !== null);

@@ -251,7 +251,7 @@
             <strong><?= $strings2["consent_d4"]; ?></strong>
             <ul>
                 <li><?= $strings2["consent_d5"]; ?></li>
-                <li><?= $strings2["consent_d6"]; ?>.</li>
+                <li><?= $strings2["consent_d6"]; ?></li>
             </ul>
         </div>
 
