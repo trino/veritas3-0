@@ -569,8 +569,8 @@ function changevalidation($inputtype, $message){
 
 function loadreasons($action, $strings, $IncludeScript = false){
     if($IncludeScript) {echo '<SCRIPT>';}
-    //valid actions to validate on are: Create, not: View
-    if($action == "Create" || $action == "add"){
+    $action = strtolower($action);
+    if($action == "create" || $action == "add" || $action == "edit"){
         echo "var reasons = new Array();";
         echo "reasons['fail'] = '" . addslashes($strings["forms_failed"]) . "';";
         echo "reasons['postalcode'] = '" . addslashes($strings["forms_postalcode"]) . "';";
