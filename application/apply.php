@@ -202,7 +202,7 @@
         <div class="clearfix"></div>
 
         <div class="hideoldie">
-            <div>
+
                     <div class="col-md-6">
                     <label class="control-label col-md-4 required" required>Title:</label>
                     <div class="col-md-8">

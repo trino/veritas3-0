@@ -89,11 +89,7 @@
                 <?php provinces("current_province"); ?>
             </div>
             <div class="col-md-3">
-<<<<<<< HEAD
-                <input type="text" class="form-control required" role="postalcode" placeholder="<?= $strings["forms_postalcode"]; ?>" name="current_postal_code" value="<?php if (isset($consent_detail))echo $consent_detail->current_postal_code;?>"/>
-=======
                 <input type="text" role="postalcode" class="form-control required" placeholder="<?= $strings["forms_postalcode"]; ?>" name="current_postal_code" value="<?php if (isset($consent_detail))echo $consent_detail->current_postal_code;?>"/>
->>>>>>> origin/master
             </div>
         </div>
 
@@ -114,12 +110,7 @@
                 <?php provinces("previous_province"); ?>
                 <!-- <input type="text" class="form-control" placeholder="Province" name="previous_province"/> -->
             </div>
-            <div class="col-md-3">
-<<<<<<< HEAD
-                <input type="text" class="form-control" role="postalcode" placeholder="<?= $strings["forms_postalcode"]; ?>" name="previous_postal_code" value="<?php if (isset($consent_detail))echo $consent_detail->last_name;?>"/>
-=======
-                <input type="text" role="postal" class="form-control" placeholder="<?= $strings["forms_postalcode"]; ?>" name="previous_postal_code" value="<?php if (isset($consent_detail))echo $consent_detail->last_name;?>"/>
->>>>>>> origin/master
+                <input type="text" role="postalcode" class="form-control" placeholder="<?= $strings["forms_postalcode"]; ?>" name="previous_postal_code" value="<?php if (isset($consent_detail))echo $consent_detail->last_name;?>"/>
             </div>
         </div>
 
@@ -246,13 +237,8 @@
                     <!--                 <input type="text" class="form-control" placeholder="Province" name="criminal_current_province"/>-->
                 </div>
                 <div class="col-md-3">
-<<<<<<< HEAD
-                    <input type="text" class="form-control" placeholder="<?= $strings["forms_postalcode"]; ?>" value="<?php if (isset($consent_detail))echo $consent_detail->criminal_current_postal_code;?>"
-                         role="postalcode"  name="criminal_current_postal_code"/>
-=======
                     <input type="text" role="postalcode" class="form-control" placeholder="<?= $strings["forms_postalcode"]; ?>" value="<?php if (isset($consent_detail))echo $consent_detail->criminal_current_postal_code;?>"
                            name="criminal_current_postal_code"/>
->>>>>>> origin/master
                 </div>
             </div>
         </div>
@@ -261,7 +247,7 @@
             <strong><?= $strings2["consent_d4"]; ?></strong>
             <ul>
                 <li><?= $strings2["consent_d5"]; ?></li>
-                <li><?= $strings2["consent_d6"]; ?>.</li>
+                <li><?= $strings2["consent_d6"]; ?></li>
             </ul>
         </div>
 

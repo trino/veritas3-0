@@ -75,7 +75,7 @@ printCSS($this);
                                         </div>
                                     </div>
                                     <div class="portlet-body form">
-                                    <div class="form-body" style="padding-bottom: 0px;">
+                                    <div class="form-body" id="parentdiv" style="padding-bottom: 0px;">
                                                     <div class="tab-content">';
             printdocumentinfo($did);
         }
@@ -1465,6 +1465,80 @@ printCSS($this);
             if($('#'+idname + total_count).length)
             initiate_ajax_upload1(idname + total_count, 'doc');
     }
+    function validate_data(Data, DataType){
+                if(Data) {
+                    switch (DataType.toLowerCase()) {
+                        case "email":
+                            var re = /\S+@\S+\.\S+/;
+                            return re.test(Data);
+                            break;
+                        case "postalcode":
+                            Data = Data.replace(/ /g, '').toUpperCase();
+                            var regex = new RegExp(/^[ABCEGHJKLMNPRSTVXY]\d[ABCEGHJKLMNPRSTVWXYZ]?\d[ABCEGHJKLMNPRSTVWXYZ]\d$/i);
+                            return regex.test(Data);
+                            break;
+                        case "phone":
+                            var phoneRe = /^[2-9]\d{2}[2-9]\d{2}\d{4}$/;
+                            var digits = Data.replace(/\D/g, "");
+                            return (digits.match(phoneRe) !== null);
+                            break;
+                        default:
+                            alert(DataType + " is unhandled");
+                    }
+                }
+                return true;
+            }
+        function checktags(TabID, tagtype){
+                var checker = true;
+                $('#'+TabID+' input').each(function(){
+                   if($(this).attr('role')) {
+                    var role = $(this).attr('role');
+                    var val =  $(this).val();
+                    if(val && !validate_data(val,role)) {
+                        $('html,body').animate({ scrollTop: $(this).offset().top}, 'slow');
+                        $(this).attr('style','border-color:red');
+                        checker = false;
+                    }
+                   } 
+                });
+                if(!checker) {
+                    return false;
+                }else {
+                    return true;
+                }
+            /*
+                var element = document.getElementById(TabID);
+                var inputs = element.getElementsByTagName(tagtype);
+                
+                var RET = new Array();
+                RET['Status'] = true;
+                for (index = 0; index < inputs.length; ++index) {
+                    element = inputs[index];
+                    isrequired = hasClass(element, "required") || element.hasAttribute("required");
+                    var value = element.value;
+                    var isValid = true;
+                    var Reason = "";
+                    if(!value && isrequired){
+                        Reason = "required";
+                        isValid = false;
+                    } else if (element.hasAttribute("role")){
+                        Reason= element.getAttribute("role");
+                        isValid = validate_data(value, Reason);
+                    }
+
+                    if(!isValid){
+                        var name = element.parentElement.previousElementSibling.innerHTML;
+                        name = strip(name.replace(":", ""));
+                        RET['Status'] = false;
+                        RET['Element'] = name;
+                        RET['Reason'] = Reason;
+                        RET['Value'] = value;
+                        element.scrollIntoView();
+                        return RET;
+                    }
+                }
+                return RET;*/
+            }
     jQuery(document).ready(function () {
         var subdocid = $('#sub_id').val();
         subdocid = parseFloat(subdocid);
@@ -1620,6 +1694,8 @@ printCSS($this);
     ?>
         var draft = 0;
         $(document.body).on('click', '.cont', function () {
+            
+            checktags('parentdiv','input');
             var sid = $('#sub_id').val();
             <?php  if(!isset($_GET['doc'])) { ?>
                 var type = $(".document_type").val();
