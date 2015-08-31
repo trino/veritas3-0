@@ -481,88 +481,89 @@
             ?>
             <?php if($this->request->params['controller']!='Documents'){?>
             <div class="allattach">
-            <?php
-                if (!isset($sub2['con_at'])) {
-                    $sub2['con_at'] = array();
-                }
-                if (!count($sub2['con_at'])) {
-                    ?>
-                    <div class="form-group col-md-12 no-view" style="display:block;margin-top:5px; margin-bottom: 5px;">
-                        <label class="control-label col-md-3"><?= $strings2["consent_attachid"]; ?>: </label>
-
-                        <div class="col-md-9">
-                            <input type="hidden" name="attach_doc[]" class="consent1"/>
-                            <a href="javascript:void(0);" id="consent1" class="btn btn-primary no-print"><?= $strings["forms_browse"]; ?></a>
-                            <span class="uploaded"></span>
+                <?php
+                    if (!isset($sub2['con_at'])) {
+                        $sub2['con_at'] = array();
+                    }
+                    if (!count($sub2['con_at'])) {
+                        ?>
+                        <div class="form-group col-md-12 no-view" style="display:block;margin-top:5px; margin-bottom: 5px;">
+                            <label class="control-label col-md-3"><?= $strings2["consent_attachid"]; ?>: </label>
+    
+                            <div class="col-md-9">
+                                <input type="hidden" name="attach_doc[]" class="consent1"/>
+                                <a href="javascript:void(0);" id="consent1" class="btn btn-primary no-print"><?= $strings["forms_browse"]; ?></a>
+                                <span class="uploaded"></span>
+                            </div>
                         </div>
-                    </div>
-                <?php } ?>
-            <div class="form-group col-md-12">
-                <div id="more_consent_doc"
-                     data-consent="<?php if (count($sub2['con_at'])) echo count($sub2['con_at']); else echo '1'; ?>">
-                    <?php
-                        if (count($sub2['con_at'])) {
-                            $at = 0;
-                            foreach ($sub2['con_at'] as $pa) {
-                                if($pa->attachment){
-                                $at++;
-                                ?>
-                                <div class="del_append_consent">
-                                    <label class="control-label col-md-3"><?= $strings2["file_attachfile"]; ?>: </label>
-
-                                    <div class="col-md-6 pad_bot">
-                                        <input type="hidden" class="consent<?php echo $at; ?>" name="attach_doc[]"
-                                               value="<?php echo $pa->attachment; ?>"/>
-                                        <a href="#" id="consent<?php echo $at; ?>" class="btn btn-primary no-print"><?= $strings["forms_browse"]; ?></a>
-                                        <a href="javascript:void(0);" class="btn btn-danger" id="delete_doc"
-                                           onclick="$(this).parent().remove();"><?= $strings["dashboard_delete"]; ?></a>
-                                    <span class="uploaded"><?php echo $pa->attachment; ?>  <?php if ($pa->attachment) {
-                                            $ext_arr = explode('.', $pa->attachment);
-                                            $ext = end($ext_arr);
-                                            $ext = strtolower($ext);
-                                            if (in_array($ext, $img_ext)) { ?><img
-                                                src="<?php echo $this->request->webroot; ?>attachments/<?php echo $pa->attachment; ?>"
-                                                style="max-width:120px;" /><?php } elseif (in_array($ext, $doc_ext)) { ?>
-                                                <a class="dl"
-                                                   href="<?php echo $this->request->webroot; ?>attachments/<?php echo $pa->attachment; ?>">
-                                                    Download</a><?php } else { ?><br/>
-                                                <video width="320" height="240" controls>
-                                                    <source
-                                                        src="<?php echo $this->request->webroot; ?>attachments/<?php echo $pa->attachment; ?>"
-                                                        type="video/mp4">
-                                                    <source
-                                                        src="<?php echo $this->request->webroot; ?>attachments/<?php echo str_replace('.mp4', '.ogg', $pa->attachment); ?>"
-                                                        type="video/ogg">
-                                                    <?= $strings["forms_novideo"]; ?>
-                                                </video>
-                                            <?php }
-                                        } ?></span>
+                    <?php } ?>
+                <div class="form-group col-md-12">
+                    <div id="more_consent_doc"
+                         data-consent="<?php if (count($sub2['con_at'])) echo count($sub2['con_at']); else echo '1'; ?>">
+                        <?php
+                            if (count($sub2['con_at'])) {
+                                $at = 0;
+                                foreach ($sub2['con_at'] as $pa) {
+                                    if($pa->attachment){
+                                    $at++;
+                                    ?>
+                                    <div class="del_append_consent">
+                                        <label class="control-label col-md-3"><?= $strings2["file_attachfile"]; ?>: </label>
+    
+                                        <div class="col-md-6 pad_bot">
+                                            <input type="hidden" class="consent<?php echo $at; ?>" name="attach_doc[]"
+                                                   value="<?php echo $pa->attachment; ?>"/>
+                                            <a href="#" id="consent<?php echo $at; ?>" class="btn btn-primary no-print"><?= $strings["forms_browse"]; ?></a>
+                                            <a href="javascript:void(0);" class="btn btn-danger" id="delete_doc"
+                                               onclick="$(this).parent().remove();"><?= $strings["dashboard_delete"]; ?></a>
+                                        <span class="uploaded"><?php echo $pa->attachment; ?>  <?php if ($pa->attachment) {
+                                                $ext_arr = explode('.', $pa->attachment);
+                                                $ext = end($ext_arr);
+                                                $ext = strtolower($ext);
+                                                if (in_array($ext, $img_ext)) { ?><img
+                                                    src="<?php echo $this->request->webroot; ?>attachments/<?php echo $pa->attachment; ?>"
+                                                    style="max-width:120px;" /><?php } elseif (in_array($ext, $doc_ext)) { ?>
+                                                    <a class="dl"
+                                                       href="<?php echo $this->request->webroot; ?>attachments/<?php echo $pa->attachment; ?>">
+                                                        Download</a><?php } else { ?><br/>
+                                                    <video width="320" height="240" controls>
+                                                        <source
+                                                            src="<?php echo $this->request->webroot; ?>attachments/<?php echo $pa->attachment; ?>"
+                                                            type="video/mp4">
+                                                        <source
+                                                            src="<?php echo $this->request->webroot; ?>attachments/<?php echo str_replace('.mp4', '.ogg', $pa->attachment); ?>"
+                                                            type="video/ogg">
+                                                        <?= $strings["forms_novideo"]; ?>
+                                                    </video>
+                                                <?php }
+                                            } ?></span>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="clearfix"></div>
-                                <script>
-                                    $(function () {
-                                        fileUpload('consent<?php echo $at;?>');
-                                    });
-                                </script>
-                            <?php
-                            }}
-                        }
-                    ?>
+                                    <div class="clearfix"></div>
+                                    <script>
+                                        $(function () {
+                                            fileUpload('consent<?php echo $at;?>');
+                                        });
+                                    </script>
+                                <?php
+                                }}
+                            }
+                        ?>
+                    </div>
                 </div>
-            </div>
            
-            <div class="form-group col-md-12 no-print">
-                <div class="col-md-3">
+                <div class="form-group col-md-12 no-print">
+                    <div class="col-md-3">
+                    </div>
+                    <div class="col-md-9">
+                        <a href="javascript:void(0);" class="btn btn-success moremore" id="add_more_consent_doc"><?= $strings["forms_addmore"]; ?></a>
+                    </div>
                 </div>
-                <div class="col-md-9">
-                    <a href="javascript:void(0);" class="btn btn-success moremore" id="add_more_consent_doc"><?= $strings["forms_addmore"]; ?></a>
-                </div>
-            </div>
            
-            <div class="clearfix"></div>
+                <div class="clearfix"></div>
             </div>
             <?php }?>
+        </div>
         </div>
 </form>
 
@@ -597,4 +598,4 @@
             $(this).closest('.del_append_consent').remove();
         });
     });
-</script></div>
+</script>
