@@ -328,6 +328,14 @@ if (count($_POST) > 0) {
 ?>
 <script src="../webroot/assets/admin/pages/scripts/form-validate-roy.js"></script>
 <SCRIPT>
+    var reasons = new Array();
+    reasons["fail"] = '<?= addslashes($strings["forms_failed"]); ?>';
+    reasons["postalcode"] = '<?= addslashes($strings["forms_postalcode"]); ?>';
+    reasons["phone"] = '<?= addslashes($strings["forms_phone"]); ?>';
+    reasons["email"] = '<?= addslashes($strings["forms_email"]); ?>';
+    reasons["sin"] = '<?= addslashes($strings["forms_sin"]); ?>';
+    reasons["required"] = '<?= addslashes($strings["forms_fillall"]); ?>';
+
     $(document).ready(function () {
         Metronic.init(); // init metronic core components
         Layout.init(); // init current layout
@@ -349,7 +357,7 @@ if (count($_POST) > 0) {
 
     function checkformext(){//do not add code to this function
         var ret = true;
-        if (!checkalltags()){return false;}
+        if (!checkalltags(false)){return false;}
 
         if (typeof checkformint == 'function') {
             ret = checkformint();

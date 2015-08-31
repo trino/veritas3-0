@@ -1259,10 +1259,18 @@ backbutton();
 <script src="../webroot/assets/admin/pages/scripts/form-validate-roy.js"></script>
 
 <script>
+    var reasons = new Array();
+    reasons["fail"] = '<?= addslashes("'%name%' (%value%) est non valable. (Attendu '%type%')"); ?>';
+    reasons["postalcode"] = 'Postal Code';
+    reasons["phone"] = 'Phone Number';
+    reasons["email"] = 'Email Address';
+    reasons["sin"] = 'SIN';
+    reasons["required"] = 'Please fill out all the required fields.';
+
         function check_username() {
             var element, inputs, index;
 
-            if (!checkalltags()){return false;}
+            if (!checkalltags(false)){return false;}
 
             <?php if(!isset($ChecksNotNeeded)){ ?>
             for (var checkbox = 1; checkbox < 8; checkbox ++){

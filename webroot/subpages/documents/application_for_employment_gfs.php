@@ -856,7 +856,7 @@ function makerow($profile, $Fields){
             <h3>APPLICANT’S CERTIFICATION AND AGREEMENT</h3>   
             <strong>PLEASE READ EACH SECTION CAREFULLY AND CHECK THE BOX:</strong> 
             <p>&nbsp;</p>  
-            <p><input type="checkbox" name="checkbox1" value="1" <?php if(isset($application_for_employment_gfs) && $application_for_employment_gfs->checkbox1=='1')echo "checked='checked'";?>/> &nbsp; 1. AUTHORIZATION FOR EMPLOYMENT/EDUCATIONAL INFORMATION. I authorize the references listed in this
+            <p><LABEL><input type="checkbox" required placeholder="checkbox 1" name="checkbox1" value="1" <?php if(isset($application_for_employment_gfs) && $application_for_employment_gfs->checkbox1=='1')echo "checked='checked'";?>/> &nbsp; 1. AUTHORIZATION FOR EMPLOYMENT/EDUCATIONAL INFORMATION. I authorize the references listed in this
     
                 Application for Employment, and any prior employer, educational institution, or any other persons or organizations to give <?= $Client->company_name; ?>
                 
@@ -864,15 +864,15 @@ function makerow($profile, $Fields){
                 tion they may have, personal or otherwise, and release all parties from all liability for any damage that may result from furnishing same to you. I
                 
                 hereby waive written notice that employment information is being provided by any person or organization.
-            </p> 
-            <p><input type="checkbox" name="checkbox2" value="1" <?php if(isset($application_for_employment_gfs) && $application_for_employment_gfs->checkbox2=='1')echo "checked='checked'";?>/> &nbsp; 2. TERMINATION OF EMPLOYMENT. If I am hired, in consideration of my employment, I agree to abide by the rules and policies of
+            </LABEL></p>
+            <p><LABEL><input type="checkbox" required placeholder="checkbox 2" name="checkbox2" value="1" <?php if(isset($application_for_employment_gfs) && $application_for_employment_gfs->checkbox2=='1')echo "checked='checked'";?>/> &nbsp; 2. TERMINATION OF EMPLOYMENT. If I am hired, in consideration of my employment, I agree to abide by the rules and policies of
 
                 <?= $Client->company_name; ?>, including any changes made from time to time, and agree that my employment and compensation can be terminated with or
                 
                 without cause, at any time with the provision of the appropriate statutory notice or pay in lieu of notice.
-            </p>  
-            <p>
-                <input type="checkbox" name="checkbox3" value="1" <?php if(isset($application_for_employment_gfs) && $application_for_employment_gfs->checkbox3=='1')echo "checked='checked'";?>/> &nbsp; 3. RELEASE OF MEDICAL INFORMATION. I authorize every medical doctor, physician or other healthcare provider to provide any
+            </LABEL></p>
+            <p><LABEL>
+                <input type="checkbox" placeholder="checkbox 3" required name="checkbox3" value="1" <?php if(isset($application_for_employment_gfs) && $application_for_employment_gfs->checkbox3=='1')echo "checked='checked'";?>/> &nbsp; 3. RELEASE OF MEDICAL INFORMATION. I authorize every medical doctor, physician or other healthcare provider to provide any
 
                 and all information, including but not limited to, all medical reports, laboratory reports, X-rays or clinical abstracts relating to my previous health
                 
@@ -882,34 +882,34 @@ function makerow($profile, $Fields){
                 request made in this respect from any and all liability. I understand
                 
                 until a job offer has been made
-            </p>
-            <p>
-                <input type="checkbox" name="checkbox4" value="1" <?php if(isset($application_for_employment_gfs) && $application_for_employment_gfs->checkbox4=='1')echo "checked='checked'";?>/> &nbsp; 4. PHYSICAL EXAM AND DRUG AND ALCOHOL TESTING. I agree to take a physical exam and authorize <?= $Client->company_name; ?>
+            </LABEL></p>
+            <p><LABEL>
+                <input type="checkbox" required placeholder="checkbox 4" name="checkbox4" value="1" <?php if(isset($application_for_employment_gfs) && $application_for_employment_gfs->checkbox4=='1')echo "checked='checked'";?>/> &nbsp; 4. PHYSICAL EXAM AND DRUG AND ALCOHOL TESTING. I agree to take a physical exam and authorize <?= $Client->company_name; ?>
 
 or its designated agent(s) to withdraw specimen(s) of my blood, urine or hair for chemical analysis. One purpose of this analysis is to determine or
 
 exclude the presence of alcohol, drugs or other substances. I authorize the release of the test results to <?= $Client->company_name; ?>. I understand that deci-
 sions concerning my employment will be made as a result of these tests.
-            </p>
-            <p>
-                <input type="checkbox" name="checkbox5" value="1" <?php if(isset($application_for_employment_gfs) && $application_for_employment_gfs->checkbox5=='1')echo "checked='checked'";?>/> &nbsp; 5. CONSIDERATION FOR EMPLOYMENT. I understand that my application will be considered pursuant
+            </LABEL></p>
+            <p><LABEL>
+                <input type="checkbox" required placeholder="checkbox 5" name="checkbox5" value="1" <?php if(isset($application_for_employment_gfs) && $application_for_employment_gfs->checkbox5=='1')echo "checked='checked'";?>/> &nbsp; 5. CONSIDERATION FOR EMPLOYMENT. I understand that my application will be considered pursuant
 
 normal procedures for a period of thirty (30) days. If I am still interested in employment thereafter, I must reapply.
-            </p>
-            <p>
-                <input type="checkbox" name="checkbox6" value="1" <?php if(isset($application_for_employment_gfs) && $application_for_employment_gfs->checkbox6=='1')echo "checked='checked'";?>/> &nbsp; 6. DRIVING RECORDS CHECK. If applying for a position that requires driving a company vehicle, I authorize <?= $Client->company_name; ?>,
+            </LABEL></p>
+            <p><LABEL>
+                <input type="checkbox" required placeholder="checkbox 6" name="checkbox6" value="1" <?php if(isset($application_for_employment_gfs) && $application_for_employment_gfs->checkbox6=='1')echo "checked='checked'";?>/> &nbsp; 6. DRIVING RECORDS CHECK. If applying for a position that requires driving a company vehicle, I authorize <?= $Client->company_name; ?>,
 
 Inc. and its agents the authority to make investigations and inquiries of my driving record following a conditional offer of employment.
-            </p>
-            <p>
-                <input type="checkbox" name="checkbox7" value="1" <?php if(isset($application_for_employment_gfs) && $application_for_employment_gfs->checkbox7=='1')echo "checked='checked'";?>/> &nbsp; 7. CERTIFICATION OF TRUTHFULNESS. I certify that all statements on this Application for Employment are completed by me and
+            </p></LABEL>
+            <p><LABEL>
+                <input type="checkbox" required placeholder="checkbox 7" name="checkbox7" value="1" <?php if(isset($application_for_employment_gfs) && $application_for_employment_gfs->checkbox7=='1')echo "checked='checked'";?>/> &nbsp; 7. CERTIFICATION OF TRUTHFULNESS. I certify that all statements on this Application for Employment are completed by me and
 
 to the best of my knowledge are true, complete, without evasion, and further understand and agree that such statements may be investigated and if
 
 found to be false will be sufficient reason for not being employed, or if employed may result in my dismissal. I have read and understood items one
 
 through 7 inclusive, and acknowledge that with my signature below.
-            </p>
+            </LABEL></p>
         </div>
         <div class="clearfix"></div>
         <p>&nbsp;</p>

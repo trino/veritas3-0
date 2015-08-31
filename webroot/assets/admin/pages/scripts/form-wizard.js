@@ -330,22 +330,9 @@ var FormWizard = function () {
                     var ActiveTab = $('.tabber.active').attr('id');
 
                     var Reason = checktags(ActiveTab, "input");
-                    /*if(Reason["Status"]){Reason = checktags(ActiveTab, "select");}
-                    if(!Reason["Status"]){
-                        if (Reason['Reason'] == "required"){
-                            var text = reasons["required"];
-                        } else {
-                            var text = reasons['fail'];
-                        }
-                        text = replaceAll("%name%", Reason["Element"], text);
-                        text = replaceAll("%value%", Reason["Value"], text);
-                        text = replaceAll("%type%", reasons[Reason["Reason"]], text);
-                        alert(text);
-                        //alert("Name: " + Reason["Element"] + "\r\n (" + Reason["Value"] + ") is not valid (" + Reason['Reason'] + ")");
-                        return false;
-                    }*/
-                    if(!Reason)
-                    return false;
+                    if(Reason["Status"]){Reason = checktags(ActiveTab, "select");}
+
+                    if(!Reason["Status"]) {return false;}
 
                     if ($('.tabber.active').attr('class').replace('confirmation') != $('.tabber.active').attr('class') || $('.tabber.active').attr('id') == 'tab19') {
                         //alert($('.tabber.active .touched_edit').val());

@@ -35,6 +35,8 @@
     if($language == "Debug") { $Trans = " [Trans]";} else { $Trans = ""; }
     $title = $strings["index_" . strtolower($action) . "document"];
     printCSS($this);
+
+    loadreasons($strings, true);
 ?>
 <h3 class="page-title">
     <?= $title; ?>
@@ -79,7 +81,7 @@
                                     </div>
                                     <div class="portlet-body form">
                                     <div class="form-body" id="parentdiv" style="padding-bottom: 0px;">
-                                                    <div class="tab-content">';
+                                                    <div class="tab-content" ID="tab0">';
                 printdocumentinfo($did);
             }
         }
@@ -1624,18 +1626,15 @@
     ?>
         var draft = 0;
         $(document.body).on('click', '.cont', function () {
-
-            /*var checkerr = checktags('parentdiv','input');
-             console.log(checkerr);
-             if(!checkerr['status'])
-             return false;*/
+            var isvalid = checkalltags("tab0");
+            if(!isvalid){return false;}
 
             var sid = $('#sub_id').val();
-            <?php  if(!isset($_GET['doc'])) { ?>
-            var type = $(".document_type").val();
-            <?php } else { ?>
-            var type = '<?php echo urldecode($_GET['doc']);?>';
-            <?php } ?>
+            var type = <?php if(!isset($_GET['doc'])) {
+                echo '$(".document_type").val()';
+            } else {
+                echo '"' . urldecode($_GET['doc']) . '"';
+            } ?>;
             //alert(type);return false;
             switch(type) {
                 case 'Driver Application':

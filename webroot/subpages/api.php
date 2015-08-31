@@ -567,6 +567,18 @@ function changevalidation($inputtype, $message){
     <?php
 }
 
+function loadreasons($strings, $IncludeScript = false){
+    if($IncludeScript) {echo '<SCRIPT>';}
+    echo "var reasons = new Array();";
+    echo "reasons['fail'] = '" . addslashes($strings["forms_failed"]) . "';";
+    echo "reasons['postalcode'] = '" . addslashes($strings["forms_postalcode"]) . "';";
+    echo "reasons['phone'] = '" . addslashes($strings["forms_phone"]) . "';";
+    echo "reasons['email'] = '" . addslashes($strings["forms_email"]) . "';";
+    echo "reasons['sin'] = '" . addslashes($strings["forms_sin"]) . "';";
+    echo "reasons['required'] = '" . addslashes($strings["forms_fillall"]) . "';";
+    if($IncludeScript) {echo '</SCRIPT>';}
+}
+
 function copy2globals($strings, $values){
     foreach($values as $value){
         $GLOBALS[$value] = $strings[$value];

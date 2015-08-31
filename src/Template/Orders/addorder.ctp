@@ -54,13 +54,7 @@ printCSS($this);
     var giveSIG = '<?= addslashes($strings["forms_signplease"]); ?>';
     var fillALL = '<?= addslashes($strings["forms_fillall"]); ?>';
 
-    var reasons = new Array();
-    reasons["fail"] = '<?= addslashes($strings["forms_failed"]); ?>';
-    reasons["postalcode"] = '<?= addslashes($strings["forms_postalcode"]); ?>';
-    reasons["phone"] = '<?= addslashes($strings["forms_phone"]); ?>';
-    reasons["email"] = '<?= addslashes($strings["forms_email"]); ?>';
-    reasons["sin"] = '<?= addslashes($strings["forms_sin"]); ?>';
-    reasons["required"] = '<?= addslashes($strings["forms_fillall"]); ?>';
+    <?php loadreasons($strings); ?>
 
 </script>
 
