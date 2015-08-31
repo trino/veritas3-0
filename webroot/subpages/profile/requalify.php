@@ -36,6 +36,7 @@
                         <td><a href="<?= $this->request->webroot;?>clients/edit/<?= $d->client_id; ?>?view"><?php echo $this->requestAction('/settings/getclient/'.$d->client_id);?></A></td>
                         <td><?php echo $this->requestAction('/settings/getprofile/'.$d->profile_id);?></td>
                         <td>Requalifed</td>
+                        <td>Yes</td>
                     </tr>        
                 <?php
                 }
