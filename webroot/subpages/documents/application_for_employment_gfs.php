@@ -1,6 +1,10 @@
 <?php
- if($this->request->session()->read('debug')){  echo "<span style ='color:red;'>subpages/documents/application_for_employment_gfs.php #INC206</span>";}
-    if (!isset($profile)){ $profile= "";}
+if($this->request->session()->read('debug')){  echo "<span style ='color:red;'>subpages/documents/application_for_employment_gfs.php #INC206</span>";}
+if (!isset($profile)){ $profile= "";}
+
+if(!isset($ClientID)){$ClientID=26;}
+$Client = $Manager->get_client($ClientID);
+//$settings = $Manager->get_settings();
 
 function makerow($profile, $Fields){
     if($profile){
@@ -40,7 +44,13 @@ function makerow($profile, $Fields){
         <div class="clearfix"></div>
         <hr/>
         <div class="col-md-12">
-            <div class="col-md-6"><img src="<?php echo $this->request->webroot;?>img/gfs.png" style="width: 120px;" /></div>
+            <div class="col-md-6"><img src="<?php
+                if ($ClientID == 26) {
+                    echo $this->request->webroot . "img/gfs.png";
+                } else {
+                    echo clientimage($this->request->webroot, $settings, $Client);
+                }
+                ?>" style="width: 120px;" /></div>
             <div class="clearfix"></div>
         </div>
         <div class="clearfix"></div>
@@ -980,7 +990,7 @@ function makerow($profile, $Fields){
             <p>&nbsp;</p>  
             <p><input type="checkbox" name="checkbox1" value="1" <?php if(isset($application_for_employment_gfs) && $application_for_employment_gfs->checkbox1=='1')echo "checked='checked'";?>/> &nbsp; 1. AUTHORIZATION FOR EMPLOYMENT/EDUCATIONAL INFORMATION. I authorize the references listed in this
     
-                Application for Employment, and any prior employer, educational institution, or any other persons or organizations to give Gordon Food Service
+                Application for Employment, and any prior employer, educational institution, or any other persons or organizations to give <?= $Client->company_name; ?>
                 
                 any and all information concerning my previous employment/educational accomplishments, disciplinary information or any other pertinent informa-
                 tion they may have, personal or otherwise, and release all parties from all liability for any damage that may result from furnishing same to you. I
@@ -989,7 +999,7 @@ function makerow($profile, $Fields){
             </p> 
             <p><input type="checkbox" name="checkbox2" value="1" <?php if(isset($application_for_employment_gfs) && $application_for_employment_gfs->checkbox2=='1')echo "checked='checked'";?>/> &nbsp; 2. TERMINATION OF EMPLOYMENT. If I am hired, in consideration of my employment, I agree to abide by the rules and policies of
 
-                Gordon Food Service, including any changes made from time to time, and agree that my employment and compensation can be terminated with or
+                <?= $Client->company_name; ?>, including any changes made from time to time, and agree that my employment and compensation can be terminated with or
                 
                 without cause, at any time with the provision of the appropriate statutory notice or pay in lieu of notice.
             </p>  
@@ -1006,11 +1016,11 @@ function makerow($profile, $Fields){
                 until a job offer has been made
             </p>
             <p>
-                <input type="checkbox" name="checkbox4" value="1" <?php if(isset($application_for_employment_gfs) && $application_for_employment_gfs->checkbox4=='1')echo "checked='checked'";?>/> &nbsp; 4. PHYSICAL EXAM AND DRUG AND ALCOHOL TESTING. I agree to take a physical exam and authorize Gordon Food Service
+                <input type="checkbox" name="checkbox4" value="1" <?php if(isset($application_for_employment_gfs) && $application_for_employment_gfs->checkbox4=='1')echo "checked='checked'";?>/> &nbsp; 4. PHYSICAL EXAM AND DRUG AND ALCOHOL TESTING. I agree to take a physical exam and authorize <?= $Client->company_name; ?>
 
 or its designated agent(s) to withdraw specimen(s) of my blood, urine or hair for chemical analysis. One purpose of this analysis is to determine or
 
-exclude the presence of alcohol, drugs or other substances. I authorize the release of the test results to Gordon Food Service. I understand that deci-
+exclude the presence of alcohol, drugs or other substances. I authorize the release of the test results to <?= $Client->company_name; ?>. I understand that deci-
 sions concerning my employment will be made as a result of these tests.
             </p>
             <p>
@@ -1019,7 +1029,7 @@ sions concerning my employment will be made as a result of these tests.
 normal procedures for a period of thirty (30) days. If I am still interested in employment thereafter, I must reapply.
             </p>
             <p>
-                <input type="checkbox" name="checkbox6" value="1" <?php if(isset($application_for_employment_gfs) && $application_for_employment_gfs->checkbox6=='1')echo "checked='checked'";?>/> &nbsp; 6. DRIVING RECORDS CHECK. If applying for a position that requires driving a company vehicle, I authorize Gordon Food Service,
+                <input type="checkbox" name="checkbox6" value="1" <?php if(isset($application_for_employment_gfs) && $application_for_employment_gfs->checkbox6=='1')echo "checked='checked'";?>/> &nbsp; 6. DRIVING RECORDS CHECK. If applying for a position that requires driving a company vehicle, I authorize <?= $Client->company_name; ?>,
 
 Inc. and its agents the authority to make investigations and inquiries of my driving record following a conditional offer of employment.
             </p>
@@ -1049,7 +1059,7 @@ through 7 inclusive, and acknowledge that with my signature below.
         <p>&nbsp;</p>
         
         <div class="col-md-12" style="">
-            <h3 style="color: #FFF;background: #5B5A5A;padding:5px;">Process Record - For Use by Gordon Food Service Representatives ONLY!</h3>
+            <h3 style="color: #FFF;background: #5B5A5A;padding:5px;">Process Record - For Use by <?= $Client->company_name; ?> Representatives ONLY!</h3>
         </div>
         <div class="col-md-12">
             <div class="col-md-4">

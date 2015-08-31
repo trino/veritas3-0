@@ -14,6 +14,9 @@ if ($action == "Addorder") {
     $action = "Create" ;
     if ($did>0){ $action = "Edit";}
 }
+if (isset($this->request->params['pass'][0])) {
+    $ClientID = $this->request->params['pass'][0];
+}
 $doc_ext = array('pdf', 'doc', 'docx', 'txt', 'csv', 'xls', 'xlsx');
 $img_ext = array('jpg', 'jpeg', 'png', 'bmp', 'gif');
 if($did) {

@@ -19,8 +19,11 @@ if ($action == "Add") {
     if(isset($did) && $did) { $action = "Edit";}
 }
 
+if (isset($this->request->params['pass'][0])) {
+    $ClientID = $this->request->params['pass'][0];
+}
+
 if (isset($this->request->params['pass'][1])) {
-    $id0 = $this->request->params['pass'][0];
     $id1 = $this->request->params['pass'][1];
     $id2="?type=".$_GET['type'];
     if (isset($_GET['order_id'])) { $id2= '?order_id=' . $_GET['order_id']; }
@@ -60,7 +63,7 @@ printCSS($this);
     $sep = '?';
     else
     $sep = '&';}
-    if (isset($this->request->params['pass'][1])&& !isset($_GET['order_id'])) { echo '<a href="../../' . $url . '/' . $id0 . "/" . $id1 . $id2 .$sep. 'type='.$_GET['type'].'" class="floatright btn btn-info btnspc">' . $strings["dashboard_" . $opposite] . '</a>'; }
+    if (isset($this->request->params['pass'][1])&& !isset($_GET['order_id'])) { echo '<a href="../../' . $url . '/' . $ClientID . "/" . $id1 . $id2 .$sep. 'type='.$_GET['type'].'" class="floatright btn btn-info btnspc">' . $strings["dashboard_" . $opposite] . '</a>'; }
 
 
     function makeportlet($did, $color="", $Title=""){
