@@ -1559,9 +1559,9 @@
                 $frequency = $c->requalify_frequency;
                 $forms = $c->requalify_product;
                 $msg .= "Selected Forms: ".$forms."<br/>";
-                $nxt_sec = strtotime($today)+($frequency*24*60*60*30);
+                //$nxt_sec = strtotime($today)+($frequency*24*60*60*30);
                 
-                $nxt_date = date('Y-m-d',$nxt_sec);
+                $nxt_date = $this->getnextdate($today,$frequency);
                 $pro = '';
                 $p_type = '';
                 $p_name = "";
@@ -1591,8 +1591,13 @@
                 //debug($profile);
                 //die();
                 foreach($profile as $p) {
+                    //echo $p->id;
                     if($c->requalify_re == '1') {
                          $date = $p->hired_date;
+                    }
+                    if(strtotime($date) < strtotime($today))
+                    {
+                      $date =  $this->getnextdate($date,$frequency); 
                     }
                     //echo $date;
                     //die();
@@ -1682,6 +1687,17 @@
             
             
             
+        }
+          function getnextdate($date, $frequency) {
+            $today = date('Y-m-d');
+            $nxt_date = date('Y-m-d', strtotime($date)+($frequency*24*60*60*30));
+            
+            if (strtotime($nxt_date) < strtotime($today)) {
+                $d = $this->getnextdate($nxt_date, $frequency);
+            } else {
+                $d = $nxt_date;
+            }
+            return $d;
         }
         /*
         public function bulksubmit() {
