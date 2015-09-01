@@ -110,8 +110,12 @@
                 <?php provinces("previous_province"); ?>
                 <!-- <input type="text" class="form-control" placeholder="Province" name="previous_province"/> -->
             </div>
-                <input type="text" role="postalcode" class="form-control" placeholder="<?= $strings["forms_postalcode"]; ?>" name="previous_postal_code" value="<?php if (isset($consent_detail))echo $consent_detail->last_name;?>"/>
+            <div class="col-md-3">
+
+            <input type="text" role="postalcode" class="form-control" placeholder="<?= $strings["forms_postalcode"]; ?>" name="previous_postal_code" value="<?php if (isset($consent_detail))echo $consent_detail->previous_postal_code;?>"/>
             </div>
+            </div>
+
         </div>
 
         <div class="form-group row">
