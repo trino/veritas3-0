@@ -1495,6 +1495,7 @@
 
         $('#saveptype').live('click', function () {
             $(this).text("Saving");
+            $('.overlay-wrapper').show();
             var cids = $('.ptypeform input[type="checkbox"]').serialize();
             var id = <?php echo $id;?>;
             $.ajax({
@@ -1506,11 +1507,13 @@
                     $('.ptype').show();
                     $('.ptype').fadeOut(7000);
                     $('#saveptype').text('Submit');
+                    $('.overlay-wrapper').hide();
                 }
             })
         });
 
         $('#savectype').live('click', function () {
+            $('.overlay-wrapper').show();
             $(this).text("Saving");
             var cids = $('.ctypeform input[type="checkbox"]').serialize();
             var id = <?php echo $id;?>;
@@ -1523,10 +1526,12 @@
                     $('.ctype').show();
                     $('.ctype').fadeOut(7000);
                     $('#savectype').text('Submit');
+                    $('.overlay-wrapper').hide();
                 }
             })
         });
         $('#save_blocks').click(function () {
+            $('.overlay-wrapper').show();
             var str = $('#blockform input').serialize();
 
             $.ajax({
@@ -1547,12 +1552,14 @@
                     $('.flash').fadeOut(7000);
                     $('#save_blocks').text(' Save Changes ');
                     reload("permissions");//window.location.reload();
+                    $('.overlay-wrapper').hide();
                 }
             })
         });
 
 
         $('#save_home').click(function () {
+            $('.overlay-wrapper').show();
             $('#save_home').text('Saving..');
             var str = $('#homeform input').serialize();
             $.ajax({
@@ -1565,10 +1572,12 @@
                     $('.flash').show();
                     $('.flash').fadeOut(7000);
                     $('#save_home').text(' Save Changes ');
+                    $('.overlay-wrapper').hide();
                 }
             })
         });
         $('#save_display').click(function () {
+            $('.overlay-wrapper').show();
             $('#save_display').text('Saving..');
             var str = $('.doc_more input').serialize();
             $.ajax({
@@ -1579,6 +1588,7 @@
                     $('.flash').show();
                     $('.flash').fadeOut(7000);
                     $('#save_display').text(' Save Changes ');
+                    $('.overlay-wrapper').hide();
                 }
             })
         });
