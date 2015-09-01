@@ -162,6 +162,19 @@ class ManagerComponent extends Component {
         return json_encode($Order);
     }
 
+    function make_order_path($Order){
+        if(!is_object($Order)){
+            $Order = $this->get_entry("orders", $Order, "id");
+        }
+        //http://localhost/veritas3-0/orders/vieworder/CLIENT_ID/ORDER_ID?order_type=TYPE&forms=FORMS
+        $EDITURL = $this->Controller->request->webroot . "orders/addorder/" . $Order->client_id . "/" . $Order->id;
+        if ($Order->order_type) {
+            $EDITURL.= '?order_type=' . urlencode($Order->order_type);
+            if ($Order->forms) { $EDITURL.= '&forms=' . $Order->forms; }
+        }
+        return $EDITURL;
+    }
+
     function load_order($ID, $GetFiles = false, $RemoveEmpties = true, $forms = ""){
         //loads an order in to a single variable, includes the documents, profiles, profile types, client, divisions
         //creating each of which if they do not exist already, except for document types which cannot be soft-created

@@ -210,11 +210,13 @@
                                     }
                                     $client = $this->requestAction("clients/getClient/" . $order->client_id);
 
-                                    $EDITURL = $this->request->webroot . "orders/addorder/" . $order->client_id . "/" . $order->id;
+                                    $EDITURL = $Manager->make_order_path($order);
+                                    /*$this->request->webroot . "orders/addorder/" . $order->client_id . "/" . $order->id;
                                     if ($order->order_type) {
                                         $EDITURL.= '?order_type=' . urlencode($order->order_type);
                                         if ($order->forms) { $EDITURL.= '&forms=' . $order->forms; }
                                     }
+                                    */
 
                                     ?>
                                     <tr class="<?= $row_color_class; ?>" role="row">

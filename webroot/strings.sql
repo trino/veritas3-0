@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Aug 31, 2015 at 04:01 PM
+-- Generation Time: Sep 01, 2015 at 03:56 PM
 -- Server version: 5.6.17
 -- PHP Version: 5.5.12
 
@@ -32,14 +32,14 @@ CREATE TABLE IF NOT EXISTS `strings` (
   `English` varchar(4096) NOT NULL,
   `French` varchar(4096) NOT NULL,
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=737 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=738 ;
 
 --
 -- Dumping data for table `strings`
 --
 
 INSERT INTO `strings` (`ID`, `Name`, `English`, `French`) VALUES
-(1, 'Date', '1440017470', '<-- This is used by the system to auto-update'),
+(1, 'Date', '1441029746', '<-- This is used by the system to auto-update'),
 (2, 'dashboard_affirmative', 'Yes', 'Oui'),
 (3, 'dashboard_negative', 'No', 'Non'),
 (4, 'dashboard_selectall', 'Select All', 'Tout sélectionner'),
@@ -622,7 +622,7 @@ INSERT INTO `strings` (`ID`, `Name`, `English`, `French`) VALUES
 (593, 'email_ordercompleted_subject', 'Order Submitted', 'email_ordercompleted_subject'),
 (594, 'email_ordercompleted_message', 'A new order has been created in %webroot%<BR>\n<BR>\nBy: %username% (Profile Type: %profile_type%)<BR>\nDate: %created%<BR>\nClient Name: %company_name%<BR>\nFor: %for%<BR>\n<BR>\nRegards,<BR>\nThe %site% Team', 'email_ordercompleted_message'),
 (595, 'email_cronordercomplete_subject', 'Order Completed', ''),
-(596, 'email_cronordercomplete_message', 'Your MEE order has been processed and is ready to download<BR>\n<A HREF="%webroot%">Please login here to retrieve your score card.</A><BR>\n<BR>\nRegards,<BR>\nThe ISB %site% Team<BR>', ''),
+(596, 'email_cronordercomplete_message', 'Your MEE order has been processed and is ready to download<BR>\n<A HREF="%path%">Click here to view the order</A><BR>\n<BR>\nRegards,<BR>\nThe ISB %site% Team<BR>', ''),
 (597, 'email_survey_subject', 'Complete your survey', ''),
 (598, 'email_survey_message', 'Hello %username%, We hope you have enjoyed your first %months% of employment with Gordon Food Service.<BR>\nYour feedback is important to us at GFS and with that in mind we would like you to fill out the following online survey.<BR>\nPlease click <A HREF="%path%">here</A> to proceed with the survey.<BR>\nThank you in advance.<BR>\n<BR>\nRegards,<BR>\nThe ISB %site% Team<BR>', ''),
 (599, 'email_documentcreated_subject', 'Document Submitted', ''),
@@ -700,7 +700,7 @@ INSERT INTO `strings` (`ID`, `Name`, `English`, `French`) VALUES
 (672, 'documents_selectdocument', 'Select %Document%', 'Sélectionnez %document%'),
 (673, 'forms_credssent', 'Credentials sent', 'Pouvoirs envoyés'),
 (679, 'email_profilecreated_variables', 'username, email, path, createdby, type, password, id', ''),
-(680, 'email_documentcreated_variables', 'email, username, path, site, place, profile_type, company_name, document_type', ''),
+(680, 'email_documentcreated_variables', 'site, email, company_name, username, id, path, profile_type, place', ''),
 (681, 'email_ordercompleted_variables', 'email, username, profile_type, company_name, site, for', ''),
 (682, 'email_gfs_variables', 'email, path1, path2, site, username', ''),
 (683, 'email_newapplicant_subject', 'Application for Employment [DISABLED]', 'email_newapplicant_subject'),
@@ -752,7 +752,8 @@ INSERT INTO `strings` (`ID`, `Name`, `English`, `French`) VALUES
 (733, 'training_answered', 'Answered', 'Répondu'),
 (734, 'training_resultsfor', 'Results for: %fname% %lname% (%username%) on %date%', 'Résultats pour: %fname% %lname% (%username%) sur %date%'),
 (735, 'training_answerssaved', '%num% answers were saved', '%num% réponses ont été sauvés'),
-(736, 'forms_failed', '''%name%'' (%value%) is not a valid %type%', '''%name%'' (%value%) est non valable. (Attendu ''%type%'')');
+(736, 'forms_failed', '''%name%'' (%value%) is not a valid %type%', '''%name%'' (%value%) est non valable. (Attendu ''%type%'')'),
+(737, 'email_clientcreated_variables', 'email, company_name, profile_type, username, path, site', '');
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

@@ -158,10 +158,12 @@ function formatname($profile){
                                 } else {
                                     $row_color_class = "even";
                                 }
-                                    if($order->user_id)
-                                    $uploaded_by = $doc_comp->getUser($order->user_id);
-                                    if($order->uploaded_for)                                    
-                                    $uploaded_for = $doc_comp->getUser($order->uploaded_for);
+                                    if($order->user_id) {
+                                        $uploaded_by = $doc_comp->getUser($order->user_id);
+                                    }
+                                    if($order->uploaded_for) {
+                                        $uploaded_for = $doc_comp->getUser($order->uploaded_for);
+                                    }
                                
                                 $client = $this->requestAction("clients/getClient/" . $order->client_id);
                                 ?>
@@ -169,8 +171,8 @@ function formatname($profile){
                                     <td><?php $this->Number->format($order->id); //echo $order->profile->title;
                                         if($order->hasattachments) { echo '<BR><i  title="Has Attachment" class="fa fa-paperclip"></i>';}  ?></td>
                                     <td><?= h($order->title) ?></td>
-                                    <td><?php if(isset($uploaded_by))echo h($uploaded_by->username) ?></td>
-                                    <td><?php if(isset($uploaded_for))echo h($uploaded_for->fname.' '.$uploaded_for->mname.' '.$uploaded_for->lname) ?></td>
+                                    <td><?php if(isset($uploaded_by)) {echo h($uploaded_by->username)} ?></td>
+                                    <td><?php if(isset($uploaded_for)) {echo h($uploaded_for->fname.' '.$uploaded_for->mname.' '.$uploaded_for->lname)} ?></td>
                                     <td><?php
                                         if (is_object($client)) {
                                             echo h($client->company_name);
