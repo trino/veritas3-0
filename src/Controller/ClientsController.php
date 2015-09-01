@@ -1586,7 +1586,7 @@
                     $escape_ids = substr($escape_ids,0,strlen($escape_ids)-1);
                 else
                     $escape_ids ='0';
-                $profile = TableRegistry::get('profiles')->find('all')->where(['id IN('.$c->profile_id.')','id NOT IN ('.$escape_ids.')','requalify'=>'1', 'profile_type IN('.$p_types.')']);
+                $profile = TableRegistry::get('profiles')->find('all')->where(['id IN('.$c->profile_id.')','id NOT IN ('.$escape_ids.')','requalify'=>'1', 'profile_type IN('.$p_types.')','expiry_date<>""','expiry_date>'.$today]);
                 unset($escape_ids);
                 //debug($profile);
                 //die();

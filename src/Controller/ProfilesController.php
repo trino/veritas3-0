@@ -186,7 +186,17 @@ class ProfilesController extends AppController{
                 $date = $c->requalify_date;
             }
             $epired_profile ="";
-            $profile = TableRegistry::get('profiles')->find('all')->where(['id IN(' . $c->profile_id . ')', 'profile_type IN(' . $p_types . ')', 'is_hired' => '1', 'requalify' => '1'])->order('created_by');
+            $escape_id = $client_crons->find('all')->where(['client_id'=>$c->id,'orders_sent'=>'1','cron_date'=>$today]);
+            $escape_ids = '';
+            foreach($escape_id as $ei)
+            {
+                $escape_ids .= $ei->profile_id.",";
+            }
+            if($escape_ids!= '')
+                $escape_ids = substr($escape_ids,0,strlen($escape_ids)-1);
+            else
+                $escape_ids ='0';
+            $profile = TableRegistry::get('profiles')->find('all')->where(['id IN(' . $c->profile_id . ')','id NOT IN ('.$escape_ids.')', 'profile_type IN(' . $p_types . ')', 'is_hired' => '1', 'requalify' => '1'])->order('created_by');
                 //debug($profile);die();
                 $temp = '';
                 foreach ($profile as $p) {
