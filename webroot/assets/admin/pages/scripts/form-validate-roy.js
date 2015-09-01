@@ -62,7 +62,7 @@ function clean_data(Data, DataType){
                 break;
             case "zipcode":
                 Data = clean_data(Data, "number");
-                if(Data.length == 9){Data = Data.substring(0,5) + "-" + Data.substring(4);}
+                if(Data.length == 9){Data = Data.substring(0,5) + "-" + Data.substring(5,9);}
                 break;
             case "postalcode":
                 Data = clean_data(replaceAll(" ", "", Data.toUpperCase()), "alphanumeric");
@@ -74,7 +74,7 @@ function clean_data(Data, DataType){
                 break;
             case "sin":
                 Data = clean_data(Data, "number");
-                Data = Data.substring(0,3) + "-" + Data.substring(3,3) + "-" + Data.substring(6,3);
+                Data = Data.substring(0,3) + "-" + Data.substring(3,6)  + "-" + Data.substring(6,9) ;
                 break;
         }
     }
