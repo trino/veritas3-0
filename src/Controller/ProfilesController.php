@@ -3639,6 +3639,9 @@ public function saveDriver() {
                     $JSON = $this->Manager->order_to_email($_GET["OrderID"]);
                     $HTML = true;
                     break;
+                case "validate_all";
+                    $this->validate_all_data();
+                    $JSON = "Done!";
                 default;
                     $JSON = $this->Manager->get("action") . " is unhandled";
             }
@@ -3653,5 +3656,48 @@ public function saveDriver() {
             return "The JSON was not a valid " . $Type;
         }
     }
+
+    function validate_all_data(){
+        $Tables = array();//TableName = array(ColumnName => RuleName); (If columname contains the rule name, you don't need to specify it)
+        //Rules: number, alphabetic, alphanumeric, ip, mac, url, email, postalcode, phone, sin, zipcode, postalzip
+
+        $Tables["application_for_employment_gfs"] = array("phone", "code" => "postalcode");
+        $Tables["clients"] = array("company_phone", "postal" => "postalzip", "admin_email", "admin_phone");
+        $Tables["consent_form"] = array("phone", "current_postal_code", "previous_postal_code", "applicants_email", "criminal_current_postal_code");
+        $Tables["driver_application"] = array("social_insurance_number" => "sin", "postal_code", "past3_postal_code1", "past3_postal_code2", "phone", "mobile" => "phone", "email", "emergency_notify_phone");
+        $Tables["education_verification"] = array("supervisior_phone", "supervisior_email", "supervisior_secondary_email");
+        $Tables["employment_verification"] = array("supervisior_phone", "supervisior_email", "supervisior_secondary_email");
+        $Tables["footprint"] = array("custemail", "email", "email1", "postal", "work_phone", "home_phone", "cell_phone");
+        $Tables["investigations_intake_form_benefit_claims"] = array("email");
+        $Tables["pre_screening"] = array("applicant_phone_number", "applicant_email");
+        $Tables["profiles"] = array("email", "postal", "phone", "applicants_email");
+        $Tables["quebec_forms"] = array("postal_code", "telephone", "area_code" => "number", "extension" => "number", "postal_code1", "area_code1" => "number", "telephone1", "extension1" => "number", "tel_home" => "phone", "tel_work" => "phone");
+
+        foreach($Tables as $Name => $Table){
+            $Rows = $this->Manager->enum_all($Name);
+            $PrimaryKey = $this->Manager->get_primary_key($Name);
+            foreach($Rows as $Row) {
+                $NewData = array();
+                foreach ($Table as $Column => $DataType) {
+                    if(is_numeric($Column)){
+                        $Column = $DataType;
+                        $DataType="";
+                        if (strpos(strtolower($Column), "email") !== false){$DataType = "email";}
+                        if (strpos(strtolower($Column), "phone") !== false){$DataType = "phone";}
+                        if (strpos(strtolower($Column), "postal") !== false){$DataType = "postalcode";}
+                    }
+                    if($DataType) {
+                        $Data = $this->Manager->validate_data($Row->$Column, $DataType);
+                        if ($Data != $Row->$Column) {$NewData[$Column] = $Data;}
+                    }
+                }
+                if($NewData) {
+                    echo "UPDATE " . print_r($NewData, true) . " WHERE " . $Name . "." . $PrimaryKey . ' = ' . $Row->$PrimaryKey . '<BR>';
+                    //$this->Manager->update_database($Name, $PrimaryKey, $Row->$PrimaryKey, $NewData);//uncomment to write to the database
+                }
+            }
+        }
+    }
+
 }
 ?>

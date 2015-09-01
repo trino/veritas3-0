@@ -28,12 +28,13 @@
     makeaction("profile_to_json", "Convert profile to JSON", "ProfileID", $Manager->enum_profiles(), "id", "username");
 ?>
 
+
 <FORM method="POST">
     Action:
     <SELECT NAME="action">
         <OPTION>Show JSON</OPTION>
         <OPTION value="json_to_html">Show JSON HTML</OPTION>
-        <?php printoption(array("json_to_profile" => "JSON to Profile", "json_to_order" => "JSON to Order", "order_to_html" => "Order to HTML"), $Action); ?>
+        <?php printoption(array("json_to_profile" => "JSON to Profile", "json_to_order" => "JSON to Order", "order_to_html" => "Order to HTML", "validate_all" => "Validate ALL"), $Action); ?>
     </SELECT>
     <INPUT TYPE="submit">
     <?php

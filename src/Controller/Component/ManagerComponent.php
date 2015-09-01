@@ -682,6 +682,9 @@ class ManagerComponent extends Component {
     function right($text, $length){
         return substr($text, -$length);
     }
+    function mid($text, $start, $length){
+        return substr($text,$start, $length);
+    }
 
     function getside($text, $delimeter, $Left = true){
         $text = explode($delimeter, $text);
@@ -764,5 +767,92 @@ class ManagerComponent extends Component {
         curl_close($session);
         return $response;
     }
+
+
+    function validate_data($Data, $DataType){
+        switch(strtolower($DataType)) {
+            case "number":
+                return preg_replace("/[^0-9,.]/", "", $Data);
+                break;
+            case "alphabetic":
+                return preg_replace("/[^a-zA-Z]/" ,"", $Data);
+                break;
+            case "alphanumeric":
+                return preg_replace("/[^[:alnum:][:space:]]/ui" ,"", $Data);
+                break;
+
+            //http://php.net/manual/en/filter.filters.validate.php FILTER_VALIDATE_BOOLEAN FILTER_VALIDATE_FLOAT FILTER_VALIDATE_INT FILTER_VALIDATE_REGEXP
+            case "ip":
+                if (filter_var($Data, FILTER_VALIDATE_IP)) {return $Data;}
+                break;
+            case "mac":
+                if (filter_var($Data, FILTER_VALIDATE_MAC)) {return $Data;}
+                break;
+            case "url":
+                if (filter_var($Data, FILTER_VALIDATE_URL)) {return $Data;}
+                break;
+            case "email":
+                if (filter_var($Data, FILTER_VALIDATE_EMAIL)){return strtolower(trim($Data));}
+                break;
+
+            case "postalcode":
+                if ($this->validate_postal_code($Data)) {return $this->clean_postalcode($Data);}
+                break;
+            case "phone":
+                $Data = $this->validate_data($Data, "number");
+                if (strlen($Data) == 7 || strlen($Data) == 10 || strlen($Data) == 11){return $this->format_phone($Data);}
+                break;
+            case "sin":
+                $Data = $this->validate_data($Data, "number");
+                if (strlen($Data) == 9){return $this->left($Data,3) . "-" . $this->mid($Data,3,3) . "-" . $this->right($Data, 3);}
+                break;
+            case "zipcode":
+                $Data = $this->validate_data($Data, "number");
+                if (strlen($Data) == 5){return $Data;}
+                if (strlen($Data) == 9){return $this->left($Data,5) . "-" . $this->right($Data,4);}
+                break;
+            case "postalzip":
+                $Code = $this->validate_data($Data, "postalcode");
+                if($Code){return $Code;}
+                $Code = $this->validate_data($Data, "zipcode");
+                if($Code){return $Code;}
+                break;
+        }
+        return "";
+    }
+
+    function clean_postalcode($PostalCode){
+        $PostalCode = strtoupper($this->validate_data($PostalCode, "alphanumeric"));
+        if($this->validate_postal_code($PostalCode)){
+            $delimeter = " ";
+            return $this->left($PostalCode, 3) . $delimeter . $this->right($PostalCode, 3);
+        }
+    }
+
+    function validate_postal_code($PostalCode)  {//function by Roshan Bhattara(http://roshanbh.com.np)
+        return preg_match("/^([a-ceghj-npr-tv-z]){1}[0-9]{1}[a-ceghj-npr-tv-z]{1}[0-9]{1}[a-ceghj-npr-tv-z]{1}[0-9]{1}$/i", $PostalCode);
+    }
+
+    function format_phone($phone) {
+        $phone = $this->validate_data($phone, "number");
+        if(!isset($phone{3})) { return ''; }// note: making sure we have something
+        $phone = preg_replace("/[^0-9]/", "", $phone);// note: strip out everything but numbers
+        $length = strlen($phone);
+        switch($length) {
+            case 7:
+                return preg_replace("/([0-9]{3})([0-9]{4})/", "$1-$2", $phone);
+                break;
+            case 10:
+                return preg_replace("/([0-9]{3})([0-9]{3})([0-9]{4})/", "($1) $2-$3", $phone);
+                break;
+            case 11:
+                return preg_replace("/([0-9]{1}) ([0-9]{3})([0-9]{3})([0-9]{4})/", "$1($2) $3-$4", $phone);
+                break;
+            default:
+                return $phone;
+                break;
+        }
+    }
+
 }
 ?>
