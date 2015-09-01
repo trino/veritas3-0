@@ -27,16 +27,35 @@ class DocumentComponent extends Component{
 //         echo "<pre>";print_r($_POST);
             if (!isset($_GET['document'])) {
                 // saving in order table
+                $txtfile = '';
                 $orders = TableRegistry::get('orders');
-                if(!$did || $did == '0')
+                if(!$did || $did == '0'){
                 $arr['title'] = 'order_' . $_POST['uploaded_for'] . '_' . date('Y-m-d H:i:s');
+                $txtfile = $txtfile.'Title: '.$arr['title']."\n";}
                 $arr['uploaded_for'] = $_POST['uploaded_for'];
+                $txtfile = $txtfile.'Uploaded for: User Id# '.$arr['uploaded_for']."\n";
+                $txtfile = $txtfile.'Uploaded By: User Id# '.$this->request->session()->read('Profile.id')."\n";
                 $sig = explode('/',$_POST['recruiter_signature']);
-                if(isset($_GET['order_type']))
+                if(isset($_GET['order_type'])){
                 $arr['order_type'] = $_GET['order_type'];
-                if(isset($_GET['forms']))
+                $txtfile = $txtfile.'Order Type: '.$arr['order_type']."\n";
+                }
+                if(isset($_GET['forms'])){
                 $arr['forms'] = $_GET['forms'];
+                $txtfile = $txtfile.'Product selected: Numbers#'.$arr['forms']."\n";
+                }
                 $arr['recruiter_signature'] = end($sig);
+                if(!isset($_GET['draft']) || (isset($_GET['draft']) && !$_GET['draft'])){
+                
+                $myfile = fopen(APP."../webroot/order_submitted/Order_".date('Y_m_d_h_i_s').".txt", "w") or die("Unable to open file!");
+                
+                fwrite($myfile, $txtfile);
+                fclose($myfile);
+                }
+                //echo APP."../Order_".date('Y_m_d_h_i_s').".txt";
+                //die('here');
+                
+                
                 if($did) {
                     $o_model = TableRegistry::get('Orders');
                     $orde = $o_model->find()->where(['id' => $did])->first();

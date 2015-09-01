@@ -59,6 +59,7 @@ webroot/img/jobs/**
 webroot/img/logos/**
 webroot/img/profile/**
 webroot/canvas/*.png
+webroot/order_submitted/*
 !empty
 *.tar.gz
 *.tar
