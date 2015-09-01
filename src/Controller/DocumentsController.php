@@ -907,13 +907,28 @@ class DocumentsController extends AppController{
     }
 
     function analytics(){
+        $isAdmin = $this->Manager->read("super") || $this->Manager->read("admin");
+        $conditions = array('draft' => 0);
+        $isAdmin=false;
+        if(!$isAdmin){
+            $ClientIDs = $this->Manager->find_client("", false);
+            if($ClientIDs){
+                if (is_array($ClientIDs)) {
+                    $conditions[] = "client_id = " . implode(" OR client_ID = ", $ClientIDs);
+                } else {
+                    $conditions['client_id'] = $ClientIDs;
+                    $this->set('client',$this->Manager->get_client($ClientIDs));
+                }
+            }
+        }
+
         $this->set('doc_comp',$this->Document);
         $orders = TableRegistry::get('orders');
-        $order = $orders->find()->order(['orders.id' => 'DESC'])->where(['draft' => 0])->select();
+        $order = $orders->find()->order(['orders.id' => 'DESC'])->where($conditions)->select();
         $this->set('orders', $order);
 
         $docs = TableRegistry::get('documents');
-        $doc = $docs->find()->select()->where(['draft' => 0]);
+        $doc = $docs->find()->select()->where($conditions);
         $this->set('documents',$doc);
 
         $clients = TableRegistry::get('Clients');

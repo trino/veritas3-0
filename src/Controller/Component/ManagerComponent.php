@@ -12,8 +12,11 @@ class ManagerComponent extends Component {
         $this->Controller = $Controller;
     }
 
-
     //////////////////////////profile API//////////////////////////////////////////
+    function read($Key){
+        return $this->Controller->request->session()->read('Profile.' . $Key);
+    }
+
     public function get_profile($UserID){
         return $this->get_entry("profiles", $UserID, "id");;
     }
@@ -68,9 +71,18 @@ class ManagerComponent extends Component {
         return $Data["id"];
     }
 
-    public function find_client($UserID=""){
-        $table = TableRegistry::get("clients");
-        return $table->find()->select('id')->where(['profile_id LIKE "'.$UserID.',%" OR profile_id LIKE "%,'.$UserID.',%" OR profile_id LIKE "%,'.$UserID.'" OR profile_id ="'.$UserID.'"'])->first();
+    public function find_client($UserID="", $LimitToOne = true){
+        if(!$UserID){$UserID = $this->read("id");}
+        $clients = TableRegistry::get("clients")->find()->select('id')->where(['profile_id LIKE "'.$UserID.',%" OR profile_id LIKE "%,'.$UserID.',%" OR profile_id LIKE "%,'.$UserID.'" OR profile_id ="'.$UserID.'"']);
+        if (iterator_count($clients) == 1 || $LimitToOne) {
+            return $clients->first()->id;
+        } else if (iterator_count($clients) > 1) {
+            $Data = array();
+            foreach($clients as $client){
+                $Data[] = $client->id;
+            }
+            return $Data;
+        }
     }
 
 

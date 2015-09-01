@@ -2,6 +2,8 @@
 $settings = $this->requestAction('settings/get_settings');
 $profileID = $this->Session->read('Profile.id');
 $sidebar = $this->requestAction("settings/all_settings/" . $profileID . "/sidebar");
+$company_name="";
+if (isset($client)){$company_name = " (" . $client->company_name . ")";}
 
 //* Date format= 2015-02-05  "Y-m-d" http://www.flotcharts.org/flot/examples/
 include_once('subpages/api.php');
@@ -370,11 +372,11 @@ if($sidebar->profile_list==1) {//profiles
 }
 
 if($sidebar->document_list==1) {//documents
-    newchart("yellow-casablanca", "icon-doc", $strings["index_documents"], "documents", $docdates, $documents, $startdate, $enddate, $isdraft, $subdocuments, $clienttypes, $strings);//new documents
+    newchart("yellow-casablanca", "icon-doc", $strings["index_documents"] . $company_name, "documents", $docdates, $documents, $startdate, $enddate, $isdraft, $subdocuments, $clienttypes, $strings);//new documents
 }
 
 if($sidebar->orders_list==1) {//orders
-    newchart("yellow", "icon-docs", $strings["index_orders"], "orders", $orderdates, $orders, $startdate, $enddate, $isdraft, $profiletypes, $clienttypes, $strings);//new orders
+    newchart("yellow", "icon-docs", $strings["index_orders"] . $company_name, "orders", $orderdates, $orders, $startdate, $enddate, $isdraft, $profiletypes, $clienttypes, $strings);//new orders
 }
 
 if($sidebar->training==1) {//cpurses/training
