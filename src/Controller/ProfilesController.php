@@ -190,10 +190,6 @@ class ProfilesController extends AppController{
                 //debug($profile);die();
                 $temp = '';
                 foreach ($profile as $p) {
-                    
-                 
-                        //echo $p->expiry_date."<br/>" ;
-                    //echo strtotime($p->expiry_date)."<br/>".time();
                     if(($p->profile_type=='5'|| $p->profile_type=='7'|| $p->profile_type=='8'))
                     {
                         
@@ -210,28 +206,33 @@ class ProfilesController extends AppController{
                             
                             if ($c->requalify_re == '1') {
                                 $date = $p->hired_date;
+                                if(strtotime($date) < strtotime($today))
+                                {
+                                  $date =  $this->getnextdate($date,$frequency); 
+                                }                                
                             }
+                            
                             //echo "<br/>".$date;
                             
                                 
                                  //echo $nxt_date = date('Y-m-d', strtotime($date . '+' . $frequency . ' months'));
-                                 for($i=$date;$i<=$nyear;$i= date('Y-m-d', strtotime($i . '+' . $frequency . ' months')))
-                                 {
-                                    if($i>=$mx && $i <= $nyear)
-                                    {
+                                 //for($i=$date;$i<=$nyear;$i= date('Y-m-d', strtotime($i . '+' . $frequency . ' months')))
+                                 //{
+                                    //if($i>=$mx && $i <= $nyear)
+                                    //{
                                         //echo $i."<br/>";
                                         //echo $date."<br/>";
-                                         $n_req['cron_date']= $i;
+                                         $n_req['cron_date']= $date;
                                          $n_req['client_id'] = $c->id;
                                          $n_req['profile_id'] = $p->id;
                                          $n_req['forms'] = $c->requalify_product;
                                          array_push($reqs,$n_req);
                                          unset($n_req);
                                      
-                                    }
+                                    //}
                               
                                
-                                }
+                                //}
                       
                         }
                     }
@@ -244,7 +245,7 @@ class ProfilesController extends AppController{
         $this->set('new_req',$reqs);
             
     }
-    function getnextdate($date, $frequency)
+    /*function getnextdate($date, $frequency)
     {
         $maxdate = '2015-12-31';
         $nxt_date = date('Y-m-d', strtotime($date . '+' . $frequency . ' months'));
@@ -255,7 +256,20 @@ class ProfilesController extends AppController{
         else
             $d = $nxt_date;
         return $d;
+    }*/
+    function getnextdate($date, $frequency)
+    {
+        $today = date('Y-m-d');
+        $nxt_date = date('Y-m-d', strtotime($date)+($frequency*24*60*60*30));
+        if (strtotime($nxt_date) < strtotime($today))
+        {
+            $d = $this->getnextdate($nxt_date, $frequency);
+        } 
+        else
+            $d = $nxt_date;
+        return $d;
     }
+
 
     public function products(){
         if (isset($_POST["Type"])) {

@@ -1594,11 +1594,12 @@
                     //echo $p->id;
                     if($c->requalify_re == '1') {
                          $date = $p->hired_date;
+                          if(strtotime($date) < strtotime($today))
+                            {
+                              $date =  $this->getnextdate($date,$frequency); 
+                            }
                     }
-                    if(strtotime($date) < strtotime($today))
-                    {
-                      $date =  $this->getnextdate($date,$frequency); 
-                    }
+                   
                     //echo $date;
                     //die();
                     if($today == $date || $date == $nxt_date) {
@@ -1617,9 +1618,9 @@
                   $recruiters = TableRegistry::get('profiles')->find('all')->where(['id IN('.$c->profile_id.')','requalify'=>'1', 'profile_type IN'=>'2','email<>""']);
                   foreach($recruiters as $emrec)
                   {
-                            array_push($rec,$emrec->email);
-                            $emails .= $emrec->email.",";
-                            $this->Mailer->sendEmail("", $emrec->email, $Subject, $msg);//what is the subject?, sendEmail should never be used, use handlevent instead
+                        array_push($rec,$emrec->email);
+                        $emails .= $emrec->email.",";
+                        $this->Mailer->sendEmail("", $emrec->email, $Subject, $msg);//what is the subject?, sendEmail should never be used, use handlevent instead
                             
                   }
                   
