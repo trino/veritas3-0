@@ -118,7 +118,7 @@ echo $strings["clients_requalifynotice"];
 <script>
 $(function(){
     $('.requalify_submit').click(function(){
-       
+       $('.overlay-wrapper').show();
         var datas = $('.requalify_form').serialize();
         $.ajax({
             type:"post",
@@ -127,6 +127,7 @@ $(function(){
             success: function()
             {
                 $('.requalify_flash').show();
+                $('.overlay-wrapper').hide();
             }
         });
         
