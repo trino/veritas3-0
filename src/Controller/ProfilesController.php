@@ -197,7 +197,7 @@ class ProfilesController extends AppController{
                 $escape_ids = substr($escape_ids,0,strlen($escape_ids)-1);
             else
                 $escape_ids ='0';
-            $profile = TableRegistry::get('profiles')->find('all')->where(['id IN(' . $c->profile_id . ')','id NOT IN ('.$escape_ids.')', 'profile_type IN(' . $p_types . ')', 'is_hired' => '1', 'requalify' => '1'])->order('created_by');
+            $profile = TableRegistry::get('profiles')->find('all')->where(['id IN(' . $c->profile_id . ')', 'profile_type IN(' . $p_types . ')', 'is_hired' => '1', 'requalify' => '1','expiry_date<>""','expiry_date >='=>$today])->order('created_by');
                 //debug($profile);die();
                 $temp = '';
                 foreach ($profile as $p) {
@@ -205,22 +205,38 @@ class ProfilesController extends AppController{
                     {
                         
                         //echo $p->id."</br>";
-                        //echo $p->created_by;
-                        if($p->expiry_date!= "" && strtotime($p->expiry_date) < time())
+                       
+                        /*if($p->expiry_date!= "" && strtotime($p->expiry_date)< strtotime($today))
                         {
-                           $epired_profile .= $p->username.",";
+                             echo $p->expiry_date."<br/>";die();
+                             $epired_profile .= $p->username.",";
                             
                         }
                         else
-                        {
+                        {*/
                             //echo "<pre>".$p."<pre/>";
                             
                             if ($c->requalify_re == '1') {
                                 $date = $p->hired_date;
-                                if(strtotime($date) < strtotime($today))
+                                if(strtotime($date) <= strtotime($today))
                                 {
-                                  $date =  $this->getnextdate($date,$frequency); 
-                                }                                
+                                    //$date =  $this->getnextdate($date,$frequency); 
+                                    if($date == $today)
+                                    {
+                                        if($this->checkcron($c->id, $date, $p->id))
+                                            $date = $this->getnextdate($date,$frequency);
+                                    }
+                                    else
+                                    {
+                                        $date =  $this->getnextdate($date,$frequency);
+                                          if($date == $today)
+                                             if($this->checkcron($c->id, $date, $p->id))
+                                                 $date = $this->getnextdate($date,$frequency);
+                                            
+                                    
+                                    }
+                                } 
+                                                              
                             }
                             
                             //echo "<br/>".$date;
@@ -239,13 +255,14 @@ class ProfilesController extends AppController{
                                          $n_req['forms'] = $c->requalify_product;
                                          array_push($reqs,$n_req);
                                          unset($n_req);
+                                         unset($date);
                                      
                                     //}
                               
                                
                                 //}
                       
-                        }
+                        //}
                     }
             }
 
@@ -255,6 +272,13 @@ class ProfilesController extends AppController{
         }
         $this->set('new_req',$reqs);
             
+    }
+    function checkcron($cid,$date,$pid)
+    {
+        $client_crons = TableRegistry::get('client_crons');
+        $cnt = $client_crons->find('all')->where(['client_id'=>$cid,'orders_sent'=>'1','cron_date'=>$date,'profile_id'=>$pid])->count();
+        return $cnt;
+        
     }
     /*function getnextdate($date, $frequency)
     {
