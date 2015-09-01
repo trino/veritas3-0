@@ -178,6 +178,7 @@ class ProfilesController extends AppController{
         $p_types = substr($p_type, 0, strlen($p_type) - 1);
         $clients = TableRegistry::get('clients')->find('all')->where(['requalify' => '1']);
         $reqs = array();
+        $client_crons = TableRegistry::get('client_crons');
         foreach ($clients as $c)
         {
             //echo "<pre>".$c."</pre><br/><br/><br/>";
