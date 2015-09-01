@@ -1635,6 +1635,7 @@
             } else {
                 echo '"' . urldecode($_GET['doc']) . '"';
             } ?>;
+            $('.overlay-wrapper').show();
             //alert(type);return false;
             switch(type) {
                 case 'Driver Application':
@@ -1642,6 +1643,7 @@
                         alert(readTOS);
                         $('#confirm_check').focus();
                         $('html,body').animate({scrollTop: $('#confirm_check').offset().top}, 'slow');
+                        $('.overlay-wrapper').hide();
                         return false;
                     }
                     break;
@@ -1656,6 +1658,7 @@
                             scrollTop: $('#sig8').offset().top},
                         'slow');
                     $(this).removeAttr('disabled');
+                    $('.overlay-wrapper').hide();
                     return false;
                 }
             }
@@ -1710,11 +1713,12 @@
                         $('html,body').animate({
                                 scrollTop: $('.myerror').offset().top},
                             'slow');
-
+                        $('.overlay-wrapper').hide();
                         return false;
                     }
                     else
                     if(er==2){
+                        $('.overlay-wrapper').hide();
                         return false;
                     }
 
