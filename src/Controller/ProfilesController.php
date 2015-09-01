@@ -176,7 +176,7 @@ class ProfilesController extends AppController{
             $p_type .= $ty->id . ",";
         }
         $p_types = substr($p_type, 0, strlen($p_type) - 1);
-        $clients = TableRegistry::get('clients')->find('all')->where(['requalify' => '1']);
+        $clients = TableRegistry::get('clients')->find('all')->where(['requalify' => '1','requalify_product <> ""']);
         $reqs = array();
         $client_crons = TableRegistry::get('client_crons');
         foreach ($clients as $c)

@@ -1596,7 +1596,8 @@
                          $date = $p->hired_date;
                           if(strtotime($date) < strtotime($today))
                             {
-                              $date =  $this->getnextdate($date,$frequency); 
+                                $date =  $this->getnextdate($date,$frequency);
+                                
                             }
                     }
                    

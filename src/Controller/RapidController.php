@@ -191,12 +191,19 @@
         public function getTableByAnyKey($Table, $Key, $Value) {
             return TableRegistry::get($Table)->find('all', array('conditions' => array($Key => $Value)))->first();
         }
-
+        
+        function checkcron($cid,$date,$pid)
+        {
+            $client_crons = TableRegistry::get('client_crons');
+            $cnt = $client_crons->find('all')->where(['client_id'=>$cid,'orders_sent'=>'1','cron_date'=>$date,'profile_id'=>$pid])->count();
+            return $cnt;
+            
+        }
         function cron() {
 
             $today = date('Y-m-d');
             $msg = "";
-            $clients = TableRegistry::get('clients')->find('all')->where(['requalify' => '1']);
+            $clients = TableRegistry::get('clients')->find('all')->where(['requalify' => '1','requalify_product <> ""']);
             $marr = array();
             $a = TableRegistry::get('profiles')->find()->where(['super' => '1'])->first();
             $admin_email = $a->email;
@@ -267,6 +274,26 @@
                         } else {
                             if ($c->requalify_re == '1') {
                                 $date = $p->hired_date;
+                                 if(strtotime($date) <= strtotime($today))
+                                {
+                                    //$date =  $this->getnextdate($date,$frequency); 
+                                    if($date == $today)
+                                    {
+                                        if($this->checkcron($c->id, $date, $p->id))
+                                            $date = $this->getnextdate($date,$frequency);
+                                    }
+                                    else
+                                    {
+                                        $date =  $this->getnextdate($date,$frequency);
+                                          if($date == $today)
+                                             if($this->checkcron($c->id, $date, $p->id))
+                                                 $date = $this->getnextdate($date,$frequency);
+                                            
+                                    
+                                    }
+                                } 
+                                  
+                                
                             }
                             //echo $date;
                             $nxt_date = $this->getnextdate($date, $frequency);
@@ -408,7 +435,7 @@
 
         function getnextdate($date, $frequency) {
             $today = date('Y-m-d');
-            $nxt_date = date('Y-m-d', strtotime($date . '+' . $frequency . ' months'));
+            $nxt_date = date('Y-m-d', strtotime($date)+ $frequency*30*24*60*60);
             if (strtotime($nxt_date) < strtotime($today)) {
                 $d = $this->getnextdate($nxt_date, $frequency);
             } else {
@@ -528,16 +555,13 @@
             $profile = TableRegistry::get('profiles')->find()->where(['id'=>$profile_id])->first();
             $crons = TableRegistry::get('client_crons');
             $cron_p = $crons->find()->where(['profile_id' => $profile_id, 'client_id' => $client_id, 'orders_sent' => '1', 'cron_date' => $date])->first();
-            if (count($cron_p) == 0) {
+            if (count($cron_p) == 0){
                 $user_count++;
                 $pro = $profile_id;
-                
-           
-
-            $rec = TableRegistry::get('profiles')->find()->where(['id' => $profile->created_by])->first();
-            if ($rec->email) {
-                $e = $rec->email;
-            }
+                $rec = TableRegistry::get('profiles')->find()->where(['id' => $profile->created_by])->first();
+                if ($rec->email) {
+                    $e = $rec->email;
+                }
                     if ($profile_id != "") {
 
                     $drivers = explode(',', $profile_id);

@@ -193,10 +193,10 @@ function makedropdownoption($Key, $Value, $TheValue){
                         <div class="tabbable tabbable-custom">
                             <ul class="nav nav-tabs">
 
-                                <li class="active">
+                                <!--li class="active">
                                     <a href="#tab_1_111" data-toggle="tab">Survey Crons</a>
-                                </li>
-                                <li>
+                                </li-->
+                                <li class="active">
                                     <a href="#tab_1_112" data-toggle="tab">Requalification Crons</a>
                                 </li>
                                 <?php
@@ -206,10 +206,10 @@ function makedropdownoption($Key, $Value, $TheValue){
                                 ?>
                             </ul>
                             <div class="tab-content">
-                                 <div class="tab-pane active" id="tab_1_111">
+                                 <!--div class="tab-pane active" id="tab_1_111">
                                     <?php include('subpages/profile/survey.php'); ?>
-                                </div>
-                                 <div class="tab-pane" id="tab_1_112">
+                                </div-->
+                                 <div class="tab-pane active" id="tab_1_112">
                                     <?php include('subpages/profile/requalify.php'); ?>
                                 </div>
                             </div>
