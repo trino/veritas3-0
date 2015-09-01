@@ -143,17 +143,22 @@ class ManagerComponent extends Component {
         return $this->enum_all("orders");
     }
 
-    function json_to_html($JSON){
-        $JSON = "<PRE>" . $JSON . "</PRE>";
-        $JSON = str_replace('data:image\/', '<IMG SRC="data:image/', $JSON);
+    function base64_to_html($JSON, $End = '"'){
+        if (strpos($JSON, 'data:image\/')) {
+            $JSON = str_replace('data:image\/', '<IMG SRC="data:image/', $JSON);
+        } else {
+            $JSON = str_replace('data:image', '<IMG SRC="data:image', $JSON);
+        }
 
         $pos2=0;
         while($pos = strpos($JSON, "data:image", $pos2)){
-            $pos2 = strpos($JSON, '"', $pos);
+            $pos2 = strpos($JSON, $End, $pos);
             $JSON = $this->left($JSON, $pos2) . '">' . $this->right($JSON, strlen($JSON) - $pos2);
         }
-
         return $JSON;
+    }
+    function json_to_html($JSON){
+        return "<PRE>" . $this->base64_to_html($JSON) . "</PRE>";
     }
 
     function order_to_json($ID, $OnlyIfForms="", $Pretty = true){
@@ -173,6 +178,43 @@ class ManagerComponent extends Component {
             if ($Order->forms) { $EDITURL.= '&forms=' . $Order->forms; }
         }
         return $EDITURL;
+    }
+
+    function underscore2Camelcase($str) {
+        $words = explode('_', strtolower($str));
+        foreach ($words as $Key => $word) {
+            $words[$Key] = ucfirst(trim($word));
+        }
+        return implode(" ", $words);
+    }
+    function key_implode(&$array, $glueLine, $glueKVP, $FormatKeys = false) {
+        $result = array();
+        foreach ($array as $key => $value) {
+            if($FormatKeys){$key = $this->underscore2Camelcase($key);}
+            $result[] = $key . $glueKVP . $value;
+        }
+        return implode($glueLine, $result);
+    }
+    function order_to_email($OrderID){
+        $Order = $this->load_order($OrderID, true, true);
+        $Details = array();
+        $Details["Created by"] =  $Order->Header["user_id"]["Profile"]["fname"] . " " . $Order->Header["user_id"]["Profile"]["mname"] . " " . $Order->Header["user_id"]["Profile"]["lname"];
+        $Details["Created by ID"] =  $Order->Header["user_id"]["Profile"]["id"];
+        $Details["Uploaded for"] =  $Order->Header["uploaded_for"]["Profile"]["fname"] . " " . $Order->Header["uploaded_for"]["Profile"]["mname"] . " " . $Order->Header["uploaded_for"]["Profile"]["lname"];
+        $Details["Uploaded for ID"] =  $Order->Header["uploaded_for"]["Profile"]["id"];
+        $Details["Company Name"] =  $Order->Header["client_id"]["Client"]["company_name"];
+        $Details["Date"] = $Order->Header["created"];
+        foreach($Order->Forms as $Form){
+            unset($Form->Data["id"]);
+            unset($Form->Data["order_id"]);
+            unset($Form->Data["user_id"]);
+            if(count($Form->Data)) {
+                $Details["Product Details (" . $Form->Header["document_type"] . ")"] = $this->key_implode($Form->Data, "<BR>\r\n", ": ", true);
+            }
+        }
+        $HTML = "<TABLE><TR><TD>" . $this->base64_to_html($this->key_implode($Details, '</TD></TR><TR><TD>', '</TD><TD>'), '<') . '</TD></TR></TABLE>';
+        //$JSON = $this->json_to_html(json_encode($Order, JSON_PRETTY_PRINT));
+        return $HTML;// . $JSON;
     }
 
     function load_order($ID, $GetFiles = false, $RemoveEmpties = true, $forms = ""){

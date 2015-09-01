@@ -33,13 +33,13 @@
     <SELECT NAME="action">
         <OPTION>Show JSON</OPTION>
         <OPTION value="json_to_html">Show JSON HTML</OPTION>
-        <?php printoption(array("json_to_profile" => "JSON to Profile", "json_to_order" => "JSON to Order"), $Action); ?>
+        <?php printoption(array("json_to_profile" => "JSON to Profile", "json_to_order" => "JSON to Order", "order_to_html" => "Order to HTML"), $Action); ?>
     </SELECT>
     <INPUT TYPE="submit">
     <?php
-        if($Action != "json_to_html"){ echo '<TEXTAREA style="width: 100%; height: 500px;" name="JSON" id="JSON">';}
-            if(isset($JSON)){echo '' . $JSON . '';}
-        if($Action != "json_to_html"){ echo '</TEXTAREA>';}
+        if(!$HTML){ echo '<TEXTAREA style="width: 100%; height: 500px;" name="JSON" id="JSON">';}
+        if(isset($JSON)){echo '' . $JSON . '';}
+        if(!$HTML){ echo '</TEXTAREA>';}
     ?>
 </FORM>
 

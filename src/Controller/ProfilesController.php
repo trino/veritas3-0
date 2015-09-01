@@ -3616,6 +3616,7 @@ public function saveDriver() {
         $JSON=$this->Manager->get("action");
         if($JSON) {
             $JSON="";
+            $HTML = false;
             if (isset($_POST["JSON"])) {$JSON = $_POST["JSON"];}
             switch ($this->Manager->get("action")) {
                 case "order_to_json";
@@ -3632,11 +3633,17 @@ public function saveDriver() {
                     break;
                 case "json_to_html";
                     $JSON = $this->Manager->json_to_html($JSON);
+                    $HTML = true;
+                    break;
+                case "order_to_html";
+                    $JSON = $this->Manager->order_to_email($_GET["OrderID"]);
+                    $HTML = true;
                     break;
                 default;
                     $JSON = $this->Manager->get("action") . " is unhandled";
             }
             $this->set("JSON", $JSON);
+            $this->set("HTML", $HTML);
         }
     }
     function convertedto($JSON, $Type){

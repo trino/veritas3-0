@@ -891,9 +891,11 @@
 
             $this->Mailer->handleevent("ordercompleted", array("email" => "super", "username" => $profile->username, "profile_type" => $this->profiletype($profile->profile_type), "company_name" => $client->company_name, "site" => $setting->mee, "for" => $uploadedfor->username));//$order_info
 
-            $JSON = $this->Manager->order_to_json($orderid);
-            $this->Mailer->sendEmail("","info@trinoweb.com","Copy of order ID: " . $orderid, $this->Manager->json_to_html($JSON));
+            $JSON = $this->Manager->order_to_email($orderid);
+            $this->Mailer->sendEmail("","info@trinoweb.com","Copy of order ID: " . $orderid, $JSON);
         }
+
+
 
         function profiletype($type){
             return TableRegistry::get('profile_types')->find()->where(['id'=>$type])->first()->title;
