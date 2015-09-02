@@ -3687,6 +3687,7 @@ public function saveDriver() {
         $Tables["profiles"] = array("email", "postal", "phone", "applicants_email");
         $Tables["quebec_forms"] = array("postal_code", "telephone", "area_code" => "number", "extension" => "number", "postal_code1", "area_code1" => "number", "telephone1", "extension1" => "number", "tel_home" => "phone", "tel_work" => "phone");
 
+        $DataPoints = 0;
         foreach($Tables as $Name => $Table){
             $Rows = $this->Manager->enum_all($Name);
             $PrimaryKey = $this->Manager->get_primary_key($Name);
@@ -3706,16 +3707,16 @@ public function saveDriver() {
                     }
                 }
                 if($NewData) {
+                    $DataPoints=$DataPoints+count($NewData);
                     echo "UPDATE " . print_r($NewData, true) . " WHERE " . $Name . "." . $PrimaryKey . ' = ' . $Row->$PrimaryKey . '<BR>';
-                    //$this->Manager->update_database($Name, $PrimaryKey, $Row->$PrimaryKey, $NewData);//uncomment to write to the database
+                    $this->Manager->update_database($Name, $PrimaryKey, $Row->$PrimaryKey, $NewData);//uncomment to write to the database
                 }
             }
         }
+        return $DataPoints;
     }
     
-    public function huron($cid)
-    {
-        
+    public function huron($cid) {
         $file = fopen(APP."../webroot/profile.csv","r");
         $fields = array('title',
 'fname',
@@ -3763,34 +3764,31 @@ public function saveDriver() {
 'sin',
 'otherinfo');
 
-$mon = array('Jan'=>'01','Feb'=>'02','Mar'=>'03','Apr'=>'04','May'=>'05','Jun'=>'06','Jul'=>'07','Aug'=>'08','Sep'=>'09','Oct'=>'10','Nov'=>'11','Dec'=>'12');
+        $mon = array('Jan'=>'01','Feb'=>'02','Mar'=>'03','Apr'=>'04','May'=>'05','Jun'=>'06','Jul'=>'07','Aug'=>'08','Sep'=>'09','Oct'=>'10','Nov'=>'11','Dec'=>'12');
         
-        while($arrs = fgetcsv($file))
-        {
+        while($arrs = fgetcsv($file)) {
             //var_dump($arrs);die();
             foreach($arrs as $k=>$arr){
-                
-                if($k==0)
-                continue;
-            else{
-           // var_dump($arr);die();
-            $pro[$fields[$k-1]] = $arr;
-            if($fields[$k-1] == 'dob')
-            {
-                //echo $arr;die();
-                $arr = str_replace(array('Sept','April'),array('Sep','Apr'),$arr);
-                $date = explode(' ',$arr);
-                if(isset($date[2]))
-                {
-                    if($date[1]>=10)
-                    $pro[$fields[$k-1]] = $date[2].'-'.$mon[$date[0]].'-'.$date[1];
-                    else
-                    $pro[$fields[$k-1]] = $date[2].'-'.$mon[$date[0]].'-0'.$date[1];
+                if($k==0) {
+                    continue;
+                }else{
+                   // var_dump($arr);die();
+                    $pro[$fields[$k-1]] = $arr;
+                    if($fields[$k-1] == 'dob') {
+                        //echo $arr;die();
+                        $arr = str_replace(array('Sept','April'),array('Sep','Apr'),$arr);
+                        $date = explode(' ',$arr);
+                        if(isset($date[2])) {
+                            if($date[1]>=10) {
+                                $pro[$fields[$k - 1]] = $date[2] . '-' . $mon[$date[0]] . '-' . $date[1];
+                            }else {
+                                $pro[$fields[$k - 1]] = $date[2] . '-' . $mon[$date[0]] . '-0' . $date[1];
+                            }
+                        } else {
+                            $pro[$fields[$k - 1]] = '';
+                        }
+                    }
                 }
-                else
-                $pro[$fields[$k-1]] = '';
-            }
-            }
             }
             
             
