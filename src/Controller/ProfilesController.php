@@ -124,6 +124,7 @@ class ProfilesController extends AppController{
         TableRegistry::get('subdocuments')->deleteAll(array('id' => $id));
     }
     public function settings(){
+        
         $this->set("hascache", TableRegistry::get('stringscache')->find()->all()->first());
 
         if(isset($_GET["DeleteDoc"])){
@@ -197,7 +198,7 @@ class ProfilesController extends AppController{
                 $escape_ids = substr($escape_ids,0,strlen($escape_ids)-1);
             else
                 $escape_ids ='0';
-            $profile = TableRegistry::get('profiles')->find('all')->where(['id IN(' . $c->profile_id . ')', 'profile_type IN(' . $p_types . ')', 'is_hired' => '1', 'requalify' => '1','expiry_date<>""','expiry_date >='=>$today])->order('created_by');
+            $profile = TableRegistry::get('profiles')->find('all')->where(['id IN(' . $c->profile_id . ')', 'profile_type IN(' . $p_types . ')', 'is_hired' => '1', 'requalify' => '1','expiry_date <> ""','expiry_date >='=>$today])->order('created_by');
                 //debug($profile);die();
                 $temp = '';
                 foreach ($profile as $p) {
@@ -217,25 +218,34 @@ class ProfilesController extends AppController{
                             //echo "<pre>".$p."<pre/>";
                             
                             if ($c->requalify_re == '1') {
-                                $date = $p->hired_date;
-                                if(strtotime($date) <= strtotime($today))
+
+                                 $date = $p->hired_date;
+                                if(strtotime($date) < strtotime($today))
                                 {
+                                  
                                     //$date =  $this->getnextdate($date,$frequency); 
-                                    if($date == $today)
+                                    if(strtotime($date) == strtotime($today))
                                     {
+                                        
                                         if($this->checkcron($c->id, $date, $p->id))
                                             $date = $this->getnextdate($date,$frequency);
                                     }
                                     else
                                     {
+                                       
                                         $date =  $this->getnextdate($date,$frequency);
-                                          if($date == $today)
+                                          if(strtotime($date) == strtotime($today))
                                              if($this->checkcron($c->id, $date, $p->id))
                                                  $date = $this->getnextdate($date,$frequency);
                                             
                                     
                                     }
-                                } 
+                                }
+                                else
+                                    if(strtotime($date) == strtotime($today))
+                                    {
+                                        $date = $this->getnextdate($date,$frequency);
+                                    }
                                                               
                             }
                             
@@ -253,6 +263,7 @@ class ProfilesController extends AppController{
                                          $n_req['client_id'] = $c->id;
                                          $n_req['profile_id'] = $p->id;
                                          $n_req['forms'] = $c->requalify_product;
+                                         $n_req['expiry_date'] = $p->expiry_date;
                                          array_push($reqs,$n_req);
                                          unset($n_req);
                                          unset($date);
@@ -1373,7 +1384,8 @@ class ProfilesController extends AppController{
                     $_POST['admin'] = 1;
                 }
                 $_POST['dob'] = $_POST['doby'] . "-" . $_POST['dobm'] . "-" . $_POST['dobd'];
-
+                if($_POST['expiry_date']!= '')
+                $_POST['expiry_date'] = date('Y-m-d', strtotime($_POST['expiry_date']));
                 $profile = $profiles->newEntity($_POST);
                 if ($profiles->save($profile)) {
                     $this->checkusername($profile,$_POST);

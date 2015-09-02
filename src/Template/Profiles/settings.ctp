@@ -1,3 +1,4 @@
+<?php //var_dump($new_req); die();?>
 <H3 class="page-title">Settings</H3>
 <div class="page-bar">
     <ul class="page-breadcrumb">
@@ -207,7 +208,7 @@ function makedropdownoption($Key, $Value, $TheValue){
                             </ul>
                             <div class="tab-content">
                                  <!--div class="tab-pane active" id="tab_1_111">
-                                    <?php include('subpages/profile/survey.php'); ?>
+                                    <?php //include('subpages/profile/survey.php'); ?>
                                 </div-->
                                  <div class="tab-pane active" id="tab_1_112">
                                     <?php include('subpages/profile/requalify.php'); ?>
@@ -268,7 +269,7 @@ function makedropdownoption($Key, $Value, $TheValue){
                           }
                           ?>
 
-                            <?php include('subpages/profile/editdocs.php'); ?>
+                            <?php //include('subpages/profile/editdocs.php'); ?>
 
                          <?php } ?>
 
@@ -330,8 +331,7 @@ function makedropdownoption($Key, $Value, $TheValue){
         });
     }
 
-     </script>
-    <SCRIPT>
+
 
     $(function () {
 
@@ -352,7 +352,7 @@ function makedropdownoption($Key, $Value, $TheValue){
 
         });
     });
-    </SCRIPT><SCRIPT>
+
         $(function () {
 
         $('.addsubdoc').click(function(){
@@ -408,7 +408,7 @@ function makedropdownoption($Key, $Value, $TheValue){
             }
         });
         });
-</SCRIPT><SCRIPT>
+
     $(function () {
         $('.editsubdoc').click(function(){
             $(this).html('Saving..');

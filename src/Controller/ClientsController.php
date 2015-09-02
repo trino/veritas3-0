@@ -1533,7 +1533,7 @@
            die();
         }
         
-        
+        /*
         function cron()
         {
             $msg ="";
@@ -1689,7 +1689,7 @@
             
             
             
-        }
+        }*/
           function getnextdate($date, $frequency) {
             $today = date('Y-m-d');
             $nxt_date = date('Y-m-d', strtotime($date)+($frequency*24*60*60*30));

@@ -15,7 +15,7 @@ $config = [
  * Development Mode:
  * true: Errors and warnings shown.
  */
-	'debug' => false,
+	'debug' => true,
 
 /**
  * Configure basic information about the application.

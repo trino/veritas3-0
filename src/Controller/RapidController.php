@@ -257,7 +257,7 @@
 
                 $crons = TableRegistry::get('client_crons');
                 $profile = TableRegistry::get('profiles')->find('all')->where(['id IN(' . $c->profile_id . ')', 'profile_type IN(' . $p_types . ')', 'is_hired' => '1', 'requalify' => '1'])->order('created_by');
-                //debug($profile);
+                //debug($profile);die();
                 $temp = '';
                 foreach ($profile as $p) {
 
@@ -269,33 +269,43 @@
                     if(($p->profile_type=='5'||$p->profile_type=='7'||$p->profile_type=='8')) {
                         //echo $p->id."</br>";
                         //echo $p->created_by;
-                        if(strtotime($p->expiry_date) > time()) {
+                        if(strtotime($p->expiry_date) < strtotime($today)) {
                             $epired_profile .= $p->username.",";
-                        } else {
+                        }
+                         else {
                             if ($c->requalify_re == '1') {
                                 $date = $p->hired_date;
-                                 if(strtotime($date) <= strtotime($today))
-                                {
+                                 if(strtotime($date) < strtotime($today))
+                                 {
+                                    
                                     //$date =  $this->getnextdate($date,$frequency); 
-                                    if($date == $today)
+                                    if(strtotime($date) == strtotime($today))
                                     {
                                         if($this->checkcron($c->id, $date, $p->id))
                                             $date = $this->getnextdate($date,$frequency);
+                                        
+                                       
                                     }
                                     else
                                     {
                                         $date =  $this->getnextdate($date,$frequency);
-                                          if($date == $today)
+                                          if(strtotime($date) == strtotime($today))
                                              if($this->checkcron($c->id, $date, $p->id))
                                                  $date = $this->getnextdate($date,$frequency);
                                             
                                     
                                     }
-                                } 
+                                
+                                    //if(strtotime($date)< strtotime($today))
+                                      //  continue;
+                                }
+                                else
+                                    continue;
+                              
                                   
                                 
                             }
-                            //echo $date;
+                            //echo $date;die();
                             $nxt_date = $this->getnextdate($date, $frequency);
 
                             if ($today == $date || $today == $nxt_date ) {
@@ -335,11 +345,12 @@
                 $i = 0;
                 $username = substr($pronames[$i], 0, strlen($pronames[$i]) - 1);
 
-                //$mesg = "Profile(s): '" . substr($pronames[$i], 0, strlen($pronames[$i]) - 1) . "' have been re-qualified on " . $today . " for client: " . $c->company_name . ".<br /><br />Click <a href='" . LOGIN . "'>here</a> to login to view the reports.<br /><br />Regards,<br />The MEE Team";
+                $mesg = "Profile(s): '" . substr($pronames[$i], 0, strlen($pronames[$i]) - 1) . "' have been re-qualified on " . $today . " for client: " . $c->company_name . ".<br /><br />Click <a href='" . LOGIN . "'>here</a> to login to view the reports.<br /><br />Regards,<br />The MEE Team";
                 $footer="";
-                //if($epired_profile!="") {
-                //    $mesg .= "<br/>Expired Profiles:" . $epired_profile;
-                //}
+                //echo $epired_profile; die();
+                if($epired_profile!="") {
+                    $mesg .= "<br/>Expired Profiles:" . $epired_profile;
+                }
 
                 foreach ($em as $e) {
                     $this->Mailer->handleevent("requalification", array("email" => $e, "company_name" => $c->company_name, "username" => $username, "expired" => $epired_profile));
@@ -553,6 +564,13 @@
             $client = TableRegistry::get('clients')->find()->where(['id'=> $client_id])->first();
             $forms = $client->requalify_product;
             $profile = TableRegistry::get('profiles')->find()->where(['id'=>$profile_id])->first();
+            /*if(strtotime($profile->expiry_date)<strtotime($date))
+            {
+                
+             }
+            else
+            */                                        
+                        
             $crons = TableRegistry::get('client_crons');
             $cron_p = $crons->find()->where(['profile_id' => $profile_id, 'client_id' => $client_id, 'orders_sent' => '1', 'cron_date' => $date])->first();
             if (count($cron_p) == 0){
