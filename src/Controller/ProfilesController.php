@@ -162,9 +162,8 @@ class ProfilesController extends AppController{
         $client_crons = TableRegistry::get('client_crons');
         foreach ($clients as $c) {
             $frequency = $c->requalify_frequency;
-            if ($c->requalify_re == '0') {
-                $date = $c->requalify_date;
-            }
+            
+            
             $epired_profile ="";
             $escape_id = $client_crons->find('all')->where(['client_id'=>$c->id,'orders_sent'=>'1','cron_date'=>$today]);
             $escape_ids = '';
@@ -181,7 +180,18 @@ class ProfilesController extends AppController{
             $profile = TableRegistry::get('profiles')->find('all')->where(['id IN(' . $c->profile_id . ')', 'profile_type IN(' . $p_types . ')', 'is_hired' => '1', 'requalify' => '1','expiry_date <> ""','expiry_date >='=>$today])->order('created_by');
                 $temp = '';
                 foreach ($profile as $p) {
-                    if(($p->profile_type=='5'|| $p->profile_type=='7'|| $p->profile_type=='8')) {
+                    if ($c->requalify_re == '0') {
+                        $date = $c->requalify_date;
+                        if(strtotime($date)<= strtotime($today)) {
+                            $date = $this->getnextdate($date,$frequency);
+                            if($this->checkcron($c->id, $date, $p->id)) {
+                                $date = $this->getnextdate($date, $frequency);
+                            }
+                        }
+                       
+                            
+                    }
+                    if($p->profile_type=='5'|| $p->profile_type=='7'|| $p->profile_type=='8'){
                             if ($c->requalify_re == '1') {
                                 $date = $p->hired_date;
                                 if(strtotime($date) < strtotime($today)) {

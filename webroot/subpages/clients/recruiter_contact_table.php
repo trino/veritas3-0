@@ -47,33 +47,22 @@
                 <td>
                     <span><input class="profile_client" type="checkbox" id="p_<?= $i ?>"
                                  <?php if (in_array($r->id, $profile)){ ?>checked="checked"<?php }?>
-                                 value="<?php echo $r->id; ?>"/></span>
-                    <span><label for="p_<?= $i ?>"><?php echo $username; ?></label><?php if($r->profile_type!=""){ echo $profiletype;}?> </span>&nbsp;
-                    <span class="msg_<?php echo $r->id; ?>"></span>
+                                 value="<?= $r->id; ?>"/></span>
+                    <span><label for="p_<?= $i ?>"><?= $username; ?></label><?php if($r->profile_type!=""){ echo $profiletype;}?> </span>&nbsp;
+                    <span class="msg_<?= $r->id; ?>"></span>
                 </td>
-                <?php
-
-               // if (($i + 1) % 2 == 0) {
-                    ?>
                     </tr>
                 <?php
-                //}
-
                 $i++;
             }
-            //if (($i + 1) % 2 != 0) {
-                //echo "</td></tr>";
-            //}
         ?>
         </tbody>
     </table>
 </div>
 
 
-<?php } ?>
-          <?php
-                    /*if ($this->request->params['action'] == 'edit')
-                        include('subpages/clients/recruiter_contact_table.php');*/
+<?php }
+
                     if (isset($_GET['view'])) {
                         ?>
                         <table class="table table-striped table-bordered table-advance table-hover recruiters">
@@ -143,49 +132,22 @@
                 ?>
 
 
-<!--p>&nbsp;</p>
-<input type="text" id="searchContact" onkeyup="searchContact()" class="form-control" placeholder="Search Contact"/>
-<table class="table table-striped table-bordered table-advance table-hover contacts">
-    <thead>
-    <tr>
-        <th colspan="2">Add Contacts</th>
-    </tr>
-    </thead>
-    <tbody id="contactTable">
     <?php
         $i = 0;
-        foreach ($contact as $r) {
-            //if ($i % 2 == 0) {
-                ?>
-                <tr>
+        foreach ($contact as $r) {?>
+            <tr>
+                <td>
+                    <span>
+                        <input class="contact_client" type="checkbox"
+                             <?php if (in_array($r->id, $contacts)){ echo 'checked="checked"'; }?>
+                             value="<?= $r->id; ?>"/>
+                    </span>
+                    <span> <?= $r->username; ?> </span>
+                </td>
+            </tr>
             <?php
-            //}
-            ?>
-            <td>
-                <span><input class="contact_client" type="checkbox"
-                             <?php if (in_array($r->id, $contacts)){ ?>checked="checked"<?php }?>
-                             value="<?php echo $r->id; ?>"/></span>
-                <span> <?php echo $r->username; ?> </span>
-            </td>
-
-            <?php
-
-            //if (($i + 1) % 2 == 0) {
-                ?>
-                </tr>
-            <?php
-            //}
-
             $i++;
         }
-
-
-
-        /**
- * if (($i + 1) % 2 != 0) {
- *             echo "</td></tr>";
- *         }
- */
     ?>
     </tbody>
 

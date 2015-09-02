@@ -91,8 +91,6 @@
             if ($doit) { //isrequired($forms, $AttachmentName, $DriversProvince, $attachment)) {
                 echo '<div class="form-group row">';
                 return true;
-            } else {
-                //echo '<div style="display: none;">';
             }
             return $doit;
         }
@@ -120,15 +118,6 @@
 
 
         include_once 'subpages/filelist.php';
-
-        /*$controller = $this->request->params['controller'];
-        $controller = strtolower($controller);
-
-
-        printdocumentinfo($did);
-        if( isset($pre_at)){  listfiles($pre_at['attach_doc'], "attachments/", "", false,3); }
-        */
-        //echo "</div>";
 
         function getattachment($mee_att, $name){
             if (isset($mee_att['attach_doc'])) {

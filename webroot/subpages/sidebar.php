@@ -53,9 +53,7 @@
             </li>
 
             <?php
-
                 if (($sidebar->client == 1 && $this->request->session()->read('Profile.super')) || ($sidebar->client == 1 && $settings->mee == "Events Audit")) { ?>
-
                     <li class="<?php echo ($this->request['controller'] == 'Clients' && !isset($_GET['draft']) && $this->request['action'] != 'quickcontact') ? 'active open' : ''; ?>">
                         <a href="<?php echo $this->request->webroot; ?>clients">
                             <i class="icon-globe"></i>
@@ -71,31 +69,14 @@
                                             <i class="icon-list"></i>
                                             <?= $strings["index_listclients"]; ?></a>
                                     </li>
-
                                 <?php }
-                                    if ($sidebar->client_create == 1) {
-                                        ?>
-
+                                if ($sidebar->client_create == 1) {?>
                                         <li <?php echo ($this->request['controller'] == 'Clients' && $this->request['action'] == 'add') ? 'class="active"' : ''; ?>>
                                             <a href="<?php echo $this->request->webroot; ?>clients/add">
                                                 <i class="icon-plus"></i>
                                                 <?= $strings["index_createclient"]; ?></a>
                                         </li>
-
-                                    <?php
-                                    }
-                                    if ($sidebar->client_list == 1) { ?>
-
-
-                                        <!--li <?php echo ($this->request['controller'] == 'Clients' && $this->request['action'] == 'index' && isset($_GET["draft"])) ? 'class="active"' : ''; ?>>
-                                    <a href="<?php echo $this->request->webroot; ?>clients/index?draft">
-                                        <i class="fa fa-pencil"></i>
-                                        <?php echo ucfirst($settings->client); ?> Drafts</a>
-                                </li-->
-
-                                    <?php } ?>
-
-
+                                <?php } ?>
                             </ul>
                         <?php } ?>
                     </li>
@@ -126,15 +107,17 @@
                                         <i class="icon-list"></i>
                                         List All <?php echo ucfirst($settings->profile); ?>s</a>
                                 </li-->
-                            <?php } ?>
-                            <?php if ($sidebar->profile_create == 1) { ?>
+                            <?php }
+
+                            if ($sidebar->profile_create == 1) { ?>
                                 <li <?php echo ($this->request['controller'] == 'Profiles' && $this->request['action'] == 'add') ? 'class="active"' : ''; ?>>
                                     <a href="<?php echo $this->request->webroot; ?>profiles/add">
                                         <i class="icon-plus"></i>
                                         <?= $strings["index_createprofile"]; ?></a>
                                 </li>
-                            <?php } ?>
-                            <?php if ($sidebar->profile_create == 1 && 1 + 1 == 3) { ?>
+                            <?php }
+
+                            if ($sidebar->profile_create == 1 && 1 + 1 == 3) { ?>
                                 <li <?php echo ($this->request['controller'] == 'Profiles' && $this->request['action'] == 'index' && isset($_GET["draft"])) ? 'class="active"' : ''; ?>>
                                     <a href="<?php echo $this->request->webroot; ?>profiles/index?draft">
                                         <i class="fa fa-pencil"></i>
@@ -191,16 +174,18 @@
                                         <i class="icon-list"></i>
                                         <?= $strings["index_listdocuments"]; ?></a>
                                 </li>
-                            <?php } ?>
-                            <?php if ($sidebar->document_create == 1) { ?>
+                            <?php }
+
+                            if ($sidebar->document_create == 1) { ?>
                                 <li <?php echo ($this->request['controller'] == 'Documents' && $this->request['action'] == 'add' && !isset($_GET['draft'])) ? 'class="active"' : ''; ?>>
                                     <a href="<?php echo $this->request->webroot . $document_url; ?>">
                                         <i class="icon-plus"></i>
                                         <?= $strings["index_createdocument"]; ?></a>
                                 </li>
 
-                            <?php } ?>
-                            <?php if ($sidebar->document_list == 1 && false) { ?>
+                            <?php }
+
+                            if ($sidebar->document_list == 1 && false) { ?>
                                 <li <?php echo ($this->request['controller'] == 'Documents' && $this->request['action'] == 'index' && isset($_GET['draft'])) ? 'class="active"' : ''; ?>>
                                     <a href="<?php echo $this->request->webroot; ?>documents/index?draft">
                                         <i class="fa fa-pencil"></i>
@@ -253,15 +238,15 @@
                                                 echo 'class="active"';
                                             }
                                             echo '><a href="';
-                                            /*echo $this->request->webroot . $order_url;*/
                                             echo $this->request->webroot . "orders/productSelection?driver=0&ordertype=" . $product->Acronym . '">';
                                             echo '<i class="icon-plus"></i> ';
                                             echo $product->$fieldname . $Trans . "</a></li>";
 
                                     }
                                 }
-                            } ?>
-                            <?php if($sidebar->invoice=='1'){?>
+                            }
+
+                            if($sidebar->invoice=='1'){?>
                             <li <?php echo ($this->request['controller'] == 'Orders' && $this->request['action'] == 'invoice' && !isset($_GET['draft'])) ? 'class="active"' : ''; ?>>
                                     <a href="<?php echo $this->request->webroot; ?>orders/invoice">
                                         <i class="icon-list"></i>
@@ -294,8 +279,7 @@
                 </li-->
             <?php }
 
-            ?>
-            <?php if ($sidebar->analytics == 1) { ?>
+            if ($sidebar->analytics == 1) { ?>
                 <li class="<?php echo ($this->request['action'] == 'analytics') ? 'active open' : ''; ?>">
                     <a href="<?php echo $this->request->webroot; ?>documents/analytics">
                         <i class="fa fa-bar-chart-o"></i>
@@ -303,8 +287,9 @@
                         <span class="selected"></span>
                     </a>
                 </li>
-            <?php } ?>
-            <?php if ($sidebar->schedule == 1) { ?>
+            <?php }
+
+            if ($sidebar->schedule == 1) { ?>
                 <li class="<?php echo ($this->request['controller'] == 'Tasks') ? 'active open' : ''; ?>">
                     <a href="<?php echo $this->request->webroot; ?>tasks/calender">
                         <i class="fa fa-calendar"></i>
@@ -326,11 +311,9 @@
                         <?php } ?>
                     </ul>
                 </li>
-            <?php } ?>
+            <?php }
 
-
-
-            <?php if ($sidebar->logo == '1') { ?>
+            if ($sidebar->logo == '1') { ?>
                 <li class="sidebar-toggler-wrapper">
                     <?php $logo1 = $this->requestAction('Logos/getlogo/1'); ?>
                     <div class="whitecenterdiv"><?= $strings["dashboard_servicedivision"]; ?></div>

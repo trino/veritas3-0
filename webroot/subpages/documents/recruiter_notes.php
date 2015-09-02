@@ -27,9 +27,7 @@
         <div class="notes" style="">
             <?php
                 if ($notes) {
-                    foreach ($notes as $n) {
-                        //*if ($desirednote==-1 or $desirednote = $n->id){*//
-                        ?>
+                    foreach ($notes as $n) { ?>
                         <div class="item">
                             <div class="item-head">
                                 <div class="item-details">
@@ -99,18 +97,14 @@
                     type: 'post',
                     success: function (response) {
                         if (response != 'error') {
-
                             if($('#rid').val()=='0'){
                                 $('.notes').prepend(response);
-                                //alert('Note added successfully');
                             } else {
                                 $('#desc'+$('#rid').val()).html($('#recruiter_notes').val());
                                 alert('<?= addslashes($strings["forms_notesaved"]); ?>');
                             }
                             $('#rid').val('0');
                             $('#recruiter_notes').val('');
-                            //alert('Note added successfully');
-                            //window.location = "";
                         }
                     }
                 });

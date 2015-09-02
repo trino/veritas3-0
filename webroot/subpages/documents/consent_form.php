@@ -5,8 +5,6 @@
     if (isset($sub2)) { listfiles($sub2['con_at'], "attachments/", "", false, 3,false,'consent');     }
     //includejavascript($strings);
     $strings2 = CacheTranslations($language, array("consent_%", "file_attachfile", "tasks_date", "profiles_name"), $settings, False);
-    //debug($consent_detail);
-
 ?>
 <h2><?= $strings2["consent_consent"]; ?></h2>
 <form id="form_consent">
@@ -108,7 +106,6 @@
             </div>
             <div class="col-md-2">
                 <?php provinces("previous_province"); ?>
-                <!-- <input type="text" class="form-control" placeholder="Province" name="previous_province"/> -->
             </div>
             <div class="col-md-3">
 
@@ -213,8 +210,7 @@
                     <SELECT name="criminal_sex" class="form-control" >
                         <OPTION VALUE="Male"><?= $strings["forms_male"]; ?></OPTION>
                         <OPTION VALUE="Female"><?= $strings["forms_female"]; ?></OPTION>
-                    </SELECT>
-                    <!--<input type="text" class="form-control" name="criminal_sex"/>-->
+                    </SELECT
                 </div>
 
 
@@ -238,7 +234,6 @@
                 </div>
                 <div class="col-md-3">
                     <?php provinces("criminal_current_province"); ?>
-                    <!--                 <input type="text" class="form-control" placeholder="Province" name="criminal_current_province"/>-->
                 </div>
                 <div class="col-md-3">
                     <input type="text" role="postalcode" class="form-control" placeholder="<?= $strings["forms_postalcode"]; ?>" value="<?php if (isset($consent_detail))echo $consent_detail->criminal_current_postal_code;?>"
@@ -367,10 +362,6 @@
                 <div class="col-md-2">
                     <input type="text" class="form-control date-picker" name="authorize_date"/>
                 </div>
-                <!--<label class="control-label col-md-3">Signature: </label>
-                <div class="col-md-3">
-                    <input type="hidden" class="form-control" name="authorize_signature"/>
-                </div>-->
                 <input type="hidden" class="form-control" name="authorize_signature" />
 
                 <label class="control-label col-md-3"> <?= $strings2["profiles_name"]; ?>: </label>
@@ -393,96 +384,8 @@
             <div class="form-group col-md-6">
                 <?php include('canvas/consent_signature_witness.php'); ?>
             </div>
-            
-            <!--<div class="col-md-12">
-            <p>&nbsp;</p>
-            
-            <div>
-                <div class="col-md-12"><strong>Reference #1</strong></div>
-                <div class="col-md-4">
-                <label>Phone Number</label>
-                <input type="text" name="r1_phone"   class="form-control" value="<?php if (isset($consent_detail))echo $consent_detail->r1_phone;?>" />
-                </div>
-                <div class="col-md-4">
-                <label>Name</label>
-                <input type="text" name="r1_name" class="form-control" value="<?php if (isset($consent_detail))echo $consent_detail->r1_name;?>" />
-                </div>
-                <div class="col-md-4">
-                <label>Position</label>
-                <input type="text" name="r1_position" class="form-control" value="<?php if (isset($consent_detail))echo $consent_detail->r1_position;?>" />
-                </div>
-            </div>
-            
-            <p>&nbsp;</p>
-            <div>
-                <div class="col-md-12"><strong>Reference #2</strong></div>
-                <div class="col-md-4">
-                <label>Phone Number</label>
-                <input type="text" name="r2_phone" class="form-control" value="<?php if (isset($consent_detail))echo $consent_detail->r2_phone;?>" />
-                </div>
-                <div class="col-md-4">
-                <label>Name</label>
-                <input type="text" name="r2_name" class="form-control" value="<?php if (isset($consent_detail))echo $consent_detail->r2_name;?>" />
-                </div>
-                <div class="col-md-4">
-                <label>Position</label>
-                <input type="text" name="r2_position" class="form-control" value="<?php if (isset($consent_detail))echo $consent_detail->r2_position;?>" />
-                </div>
-            </div>
-            <p>&nbsp;</p>
-            </div>-->
-
             <div class="clearfix"></div>
 
-            <?php
-                /*
-                $at=0;
-                if(isset($sub2['con_at']))
-                {
-
-                    foreach($sub2['con_at'] as $pa)
-                    {
-                      $at++;
-
-                    ?>
-                    <div class="form-group col-md-12">
-                    <label class="control-label col-md-3">Attach Document <?php echo $at;?>: </label>
-                    <div class="col-md-9">
-                    <input type="hidden" name="attach_doc[]" class="consent<?php echo $at;?>" value="<?php echo $pa->attach_doc;?>" />
-                    <a href="javascript:void(0);" id="consent<?php echo $at;?>" class="btn btn-primary">Browse</a> <span class="uploaded"><?php echo $pa->attach_doc;?></span>
-                    </div>
-                    </div>
-                    <?php
-                    }
-                }
-                if($at==0)
-                {
-                    $at++;
-                    ?>
-                    <div class="form-group col-md-12">
-                    <label class="control-label col-md-3">Attach Document <?php echo $at;?>: </label>
-                    <div class="col-md-9">
-                    <input type="hidden" name="attach_doc[]" class="consent<?php echo $at;?>" value="" />
-                    <a href="javascript:void(0);" id="consent<?php echo $at;?>" class="btn btn-primary">Browse</a> <span class="uploaded"></span>
-                    </div>
-                    </div>
-                    <?php
-                    $at=1;
-                }
-                if($at==1)
-                {
-                    ?>
-                <div class="form-group col-md-12">
-                    <label class="control-label col-md-3">Attach Document 2: </label>
-                    <div class="col-md-9">
-                        <input type="hidden" name="attach_doc[]" class="consent2" />
-                        <a href="javascript:void(0);" id="consent2"  class="btn btn-primary">Browse</a> <span class="uploaded"></span>
-                    </div>
-                </div>
-                <?php
-                }
-                */
-            ?>
             <?php if($this->request->params['controller']!='Documents'){?>
             <div class="allattach">
                 <?php

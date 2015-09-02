@@ -13,19 +13,8 @@
     }
 
     function printcheck($viewing, $Value, $Checkfor){
-        if($viewing){
-
-        }
         return !$viewing;
     }
-/*
-if(isset($deval_detail) && $deval_detail->transmission_auto_shift =='2') {
-    echo '&#9745;';
-} else {
-    echo '&#9744;';
-}
-} else {
-*/
 
 ?>
 <div class="form-group row">

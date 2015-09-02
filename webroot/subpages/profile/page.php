@@ -82,27 +82,4 @@ foreach($pages as $key => $value){
     $class = makepage($this->request->webroot, $key, $value, $this->requestAction("/pages/get_content/" . $value), $class);
 }
  ?>
-
-
-
-                                                <!--div class="portlet-title">
-                                                    <div class="caption">
-                                                        <i class="fa fa-gift"></i>Page Manager - Help
-                                                    </div>
-                                                </div-->
-
                                     </div></div>
-<script>
-    /*function savepage(slug){
-        var title = $('#title-'+slug).val();
-        var editor1 = 'desc'+slug;
-        var desc = CKEDITOR.instances.editor1.getData();
-        alert(title+","+desc);
-        $.ajax({
-        });
-    }*/
-
-</script>
-
-<!-- </div></div>-->
-<!-- END PORTLET-->

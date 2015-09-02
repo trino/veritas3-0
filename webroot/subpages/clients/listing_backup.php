@@ -116,29 +116,16 @@
 
                                                     if ($sidebar->orders_create == '1' && !isset($_GET["draft"])) {
                                                         ?>
-                                                        <!--a href="<!php /*echo $this->request->webroot . $order_url;*/
-                                                            echo $this->request->webroot; ?>orders/productSelection?client=<!php echo $clients->id; ?>"
-                                                           class="btn btn-info"> Create Order</a-->
+                                                        <a href="<?= $this->request->webroot; ?>orders/productSelection?client=<?= $clients->id;                                                                         ?>&ordertype=MEE" class="btn red-flamingo">Place Order</a>
 
-                                                        <a href="<?php /*echo $this->request->webroot . $order_url;*/
-                                                        echo $this->request->webroot; ?>orders/productSelection?client=<?php echo $clients->id;                                                                         ?>&ordertype=MEE" class="btn red-flamingo">Place Order</a>
-
-                                                        <a href="<?php /*echo $this->request->webroot . $order_url;*/
-                                                        echo $this->request->webroot; ?>orders/productSelection?client=<?php echo $clients->id;                                                                         ?>&ordertype=CART" class="btn btn-success"> A La Carte/Re-qualify</a>
+                                                        <a href="<?= $this->request->webroot; ?>orders/productSelection?client=<?= $clients->id;                                                                         ?>&ordertype=CART" class="btn btn-success"> A La Carte/Re-qualify</a>
 
                                                     <?php
                                                     }
 
                                                     if ($sidebar->orders_list == '1' && !isset($_GET["draft"])) {
                                                         ?>
-                                                        <a href="<?php echo $this->request->webroot; ?>orders/orderslist/?client_id=<?php echo $clients->id; ?>"
-                                                           class="btn btn-info">
-                                                            View Orders</a>
-
-                                                        <!--a href="<?php echo $this->request->webroot; ?>documents/index/?client_id=<?php echo $clients->id; ?>"
-                                                           class="btn btn-success">
-                                                            View <?= ucfirst($settings->document); ?>s</a-->
-
+                                                        <a href="<?= $this->request->webroot; ?>orders/orderslist/?client_id=<?= $clients->id; ?>" class="btn btn-info">View Orders</a>
                                                     <?php
 
                                                     }

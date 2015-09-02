@@ -176,94 +176,6 @@ loadreasons($param, $strings, true);
                                                 }
                                             }
                                             ?>
-                                            <?php
-
-                                            /*
-                                            if ($this->request->session()->read('Profile.super')) {
-                                                ?>
-                                                <option
-                                                    value="1" <?php if (isset($p) && $p->profile_type == 1) { ?> selected="selected" <?php } ?>>
-                                                    Admin
-                                                </option>
-                                            <?php }
-
-
-                                            if ($isISB) {
-                                                ?>
-
-
-                                                <option
-                                                    value="2" <?php if (isset($p) && $p->profile_type == 2) { ?> selected="selected" <?php }
-                                                    if (!$this->request->session()->read('Profile.super')) {
-                                                        ?> disabled="disabled"
-                                                    <?php } ?>>
-                                                    Recruiter
-                                                </option>
-
-                                                <option
-                                                    value="3" <?php if (isset($p) && $p->profile_type == 3) { ?> selected="selected" <?php }
-                                                    if (!$this->request->session()->read('Profile.super')) { ?> disabled="disabled"
-                                                    <?php } ?>>
-                                                    External
-                                                </option>
-
-                                                <option
-                                                    value="4" <?php if (isset($p) && $p->profile_type == 4) { ?> selected="selected" <?php }
-                                                    if (!$this->request->session()->read('Profile.super')) { ?> disabled="disabled"
-                                                    <?php } ?>>
-                                                    Safety
-                                                </option>
-
-                                                <option
-                                                    value="5" <?php if ((isset($p) && $p->profile_type == 5) || (!isset($p) && isset($getProfileType->profile_type) && $getProfileType->profile_type == 2)) { ?> selected="selected" <?php }
-                                                    if (!$this->request->session()->read('Profile.super') && ($this->request->session()->read('Profile.profile_type') != '2')) {
-                                                        ?>
-                                                        disabled="disabled"
-                                                    <?php
-                                                    }
-                                                ?>>
-                                                    Driver
-                                                </option>
-
-                                                <option
-                                                    value="6" <?php if (isset($p) && $p->profile_type == 6) { ?> selected="selected" <?php }
-                                                    if (!$this->request->session()->read('Profile.super')) { ?> disabled="disabled"
-                                                    <?php } ?>>
-                                                    Contact
-                                                </option>
-
-                                                <option value="7" <?php if (isset($p) && $p->profile_type == 7) { ?> selected="selected" <?php }
-                                                    if (!$this->request->session()->read('Profile.super') && $this->request->session()->read('Profile.profile_type')!='2') { ?> disabled="disabled"
-                                                <?php }?>>
-                                                    Owner Operator
-                                                </option>
-
-                                                <option value="8" <?php if (isset($p) && $p->profile_type == 8) { ?> selected="selected" <?php }
-                                                                if (!$this->request->session()->read('Profile.super') && $this->request->session()->read('Profile.profile_type')!='2') { ?> disabled="disabled"
-                                                <?php } ?>>
-                                                    Owner Driver
-                                                </option>
-
-                                            <?php } else { ?>
-
-                                                <option
-                                                    value="9" <?php if (isset($p) && $p->profile_type == 9) { ?> selected="selected" <?php }
-                                                    if (!$this->request->session()->read('Profile.super')) { ?> disabled="disabled" <?php } ?>>
-                                                    Employee
-                                                </option>
-                                                <option
-                                                    value="10" <?php if (isset($p) && $p->profile_type == 10) { ?> selected="selected" <?php }
-                                                    if (!$this->request->session()->read('Profile.super')) { ?> disabled="disabled" <?php } ?>>
-                                                    Guest
-                                                </option>
-                                                <option
-                                                    value="11" <?php if (isset($p) && $p->profile_type == 11) { ?> selected="selected" <?php }
-                                                    if (!$this->request->session()->read('Profile.super')) { ?> disabled="disabled" <?php } ?> >
-                                                    Partner
-                                                </option>
-
-                                            <?php }*/ ?>
-
 
                                         </select>
                                     <?php } else {
@@ -903,10 +815,11 @@ loadreasons($param, $strings, true);
 
                                 <div class="col-md-12" align="right">
 
-
+                                    <?php if(!isset($is_disabled)){?>
                                     <a href="javascript:void(0)" class="btn btn-primary" onclick="return check_username();" id="savepro">
                                         <?= $strings["forms_savechanges"]; ?>
                                     </a>
+                                    <?php }?>
                                     <!--button class="btn btn-info"
                                             onclick="$('#profile_drafts').val('1'); $('#save_clientz').attr('novalidate','novalidate');$('#hiddensub').click();">
                                         Save As Draft

@@ -15,6 +15,7 @@
                 $.ajax({
                     url: '<?php echo $this->request->webroot;?>orders/webservice/REQ/' + forms + '/' + driv[k] + '/' + ord[k],
                     success:function(){
+                        alert('Cron ran successfully.')
                         window.location="<?php echo $this->request->webroot;?>profiles/settings";
                     }
                 });

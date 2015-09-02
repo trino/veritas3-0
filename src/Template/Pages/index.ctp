@@ -90,8 +90,6 @@ if ($sidebar->training == 1 && $sidebar->client_list == 0) {
         </li>
 
     </ul>
-
-    <!--a href="javascript:window.print();" class="floatright btn btn-info">Print</a-->
 </div>
 
 

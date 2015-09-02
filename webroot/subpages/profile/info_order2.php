@@ -147,13 +147,12 @@
                 $color=""; //color is disabled for now
 
                 $offset = ' col-xs-offset-2';
-                //if($ordertype=="BUL"){$offset = makeBulk();}
                 echo '<div class="col-xs-' . $cols . $offset . '">';
 
                 echo '<div class="pricing' . $color . ' hover-effect">';
                 echo '<div class="pricing' . $color . '-head pricing-head-active">';
                 echo '<h3>' . $Title . '<span>' . $Description . '</span></h3>';
-                echo '<h4><!--i>$</i>999<i>.99</i> <span> One Time Payment </span--></h4></div>';
+                echo '</div>';
 
                 if($ordertype) {
                     printform($counting, $settings, $client, $dr_cl, $driver, true, $_this, $strings);
@@ -179,16 +178,6 @@
                         return in_array($num, $Blocked);
                     }
                 }
-                /*
-                switch ($ordertype) {
-                    case "MEE":
-                        if ($num == 72 || $num == 32) {return false;} //Hide "Check DL" and social media search for Order MEE
-                        break;
-                    case "GEM":
-                        if ($num == 72) {return false;} //hide road test for GFS employee
-                        break;
-                }
-                */
                 return true;
             }
 
@@ -227,19 +216,11 @@
                     case 1:
                         if (!$inforequired) {
                             echo '<a href="javascript:void(0);" id="qua_btn" class="btn btn-danger  btn-lg placenow">' . $strings["infoorder_continue"] . ' <i class="m-icon-swapright m-icon-white"></i></a>';
-                        } else {
-
                         }
                         break;
                     case 2: ?>
                         <a href="javascript:void(0);" class="btn btn-info" onclick="$('.alacarte').show(200);$('.placenow').attr('disabled','');">A La Carte<i class="m-icon-swapright m-icon-white"></i></a>
                         <?php
-                        break;
-                    case 3:
-                        //echo '<a href="#" class="btn red-flamingo"> Place Order <i class="m-icon-swapright m-icon-white"></i></a>';
-                        break;
-                    case 4:
-                        //echo '<a href="#" class="btn yellow-crusta">Place Order <i class="m-icon-swapright m-icon-white"></i></a>';
                         break;
                     case 5:
                         echo '<a class=" btn btn-danger btn-lg  button-next proceed" id="cart_btn" href="javascript:void(0)">';
@@ -407,18 +388,6 @@
 
             $o_type = makeform($product->Acronym, $cols, '', $product->$name_field . $Trans, $product->$desc_field . $Trans, $products, $product->Checked == 1, $counting, $settings, $client, $dr_cl, $driver, $_this, $product->Alias, false, $product->Blocked, $strings);
         }
-        /*
-        if ($ordertype == "MEE") {
-            $o_type = makeform("MEE", $cols, "red", "Order MEE", "The all in one package", $products, true, $counting, $settings, $client, $dr_cl, $driver, $_this);
-        }
-        if ($ordertype == "CAR") {
-            $o_type = makeform("CAR", $cols, "", "Order Products", "Place an Order A La Carte", $products, false, $counting, $settings, $client, $dr_cl, $driver, $_this);
-        }
-        if ($ordertype == "QUA") {
-            $o_type = makeform("QUA", $cols, "blue", "Requalify", "Requalify existing drivers", $products, false, $counting, $settings, $client, $dr_cl, $driver, $_this, "Requalification", false);
-        }
-        */
-
     ?>
 </div>
 
@@ -722,17 +691,7 @@
         UpdatesEnabled=false;//only needs to update the last one
         for(temp=0; temp<IDs.length; temp++){
             ID = IDs[temp];
-            /*
-             if(element.checked){
-             addID("selecting_driver", ID, false);
-             }else {
-             //    removeID("selecting_driver", ID);//chrome refuses to run this code!
-             }
-             */
-            //alert(ID + " " + temp);
-            //if(document.getElementsByName("p_" + ID)[0].checked!=element.checked) {
             Check("p_" + ID, element.checked, false);
-            //}
             if(element.checked) {
                 addID("selecting_driver", ID, false);
             } else {

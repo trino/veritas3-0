@@ -71,21 +71,11 @@
     						</div>
     						<div class="details">
     							<div class="number">
-                                <?php 
-                                if(($this->request->params['controller']!='documents' && $this->request->params['action']!='add') && ($this->request->params['controller']!='documents' && $this->request->params['action']!='edit') && ($this->request->params['controller']!='documents' && $this->request->params['action']!='view')){
-                             //   echo $cnt = $this->requestAction('/orders/get_orderscount/'.$d->table_name);
-                                echo "&nbsp;";
-
-
-                                    ?>
-    							<?php /*if($d->orders==1)echo $cnt = $this->requestAction('/orders/get_orderscount/'.$d->table_name);*/ }?>	
     							</div>
     							<div class="desc">
     								 <?php
 									 	$title = ucfirst($d->$fieldname . $Trans);
-									 	//if ($title == "Feedbacks") { $title = "Feedback"; }
-                                        
-                                         $titles[strtolower(trim($title))] = 1;//what purpose does this have?
+                                        $titles[strtolower(trim($title))] = 1;//what purpose does this have?
                                         echo $title;
 									  ?>
     							</div>
@@ -94,10 +84,6 @@
     						<a class="more" href="<?php echo $this->request->webroot;?>documents/index?type=<?php echo urlencode($d->id) . '">' . $strings["index_viewmore"]; ?>
     						 <i class="m-icon-swapright m-icon-white"></i>
     						</a>
-                            <!--
-                            <a class="more" href="<?php echo $this->request->webroot;?>orders/orderslist<?php if($d->id <=4 ){?>?table=<?php echo $d->table_name;}?>">
-    						View more <i class="m-icon-swapright m-icon-white"></i>
-    						</a>-->
                             <?php
                             }
                             else{
@@ -120,106 +106,6 @@
                    
                     
                 }
-
-                    /*if ($this->request->controller == "Documents" && $this->request->action == "view") {
-                        $documenttype = $this->viewVars['mod']->document_type;
-                        if (!isset($titles[strtolower(trim($documenttype))]) && $documenttype != 'Consent Form') {
-                            echo '<div class="col-md-12">';
-                            echo '<div class="clearfix"></div><div class="alert alert-danger"><strong>Error!</strong> You no longer have permission to view this document type (' . $documenttype . ')</div>';
-                            echo '</div>';
-                        }
-                    }*/
                  ?>
-
-
-<!--					<div class="dashboard-stat blue-madison">
-                        <div class="whiteCorner"></div>
-
-                        <div class="visual">
-							<i class="fa fa-copy"></i>
-						</div>
-						<div class="details">
-							<div class="number">
-								 1349
-							</div>
-							<div class="desc">
-								 Pre-Screening
-							</div>
-						</div>
-						<a class="more" href="#">
-						View more <i class="m-icon-swapright m-icon-white"></i>
-						</a>
-					</div>
-                    <div class="dusk"></div>
-
-                </div>
-
-    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
-					<div class="dashboard-stat yellow">
-						<div class="whiteCorner"></div>
-
-                        <div class="visual">
-							<i class="fa fa-copy"></i>
-						</div>
-						<div class="details">
-							<div class="number">
-								 1012
-							</div>
-							<div class="desc">
-								Driver Application
-							</div>
-						</div>
-						<a class="more" href="#">
-						View more <i class="m-icon-swapright m-icon-white"></i>
-						</a>
-					</div>                    
-                    <div class="dusk"></div>
-
-    </div>
-                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
-
-                    <div class="dashboard-stat red">  <div class="whiteCorner"></div>
-						<div class="visual">
-							<i class="fa fa-copy"></i>
-						</div>
-						<div class="details">
-							<div class="number">
-								 803
-							</div>
-							<div class="desc">
-								<?php //echo ucfirst($settings->client);?>
-                                MEE Consent
-							</div>
-						</div>
-						<a class="more" href="#">
-						View more <i class="m-icon-swapright m-icon-white"></i>
-						</a>
-					</div>
-                    <div class="dusk"></div>
-                </div>
-                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
-
-                    <div class="dashboard-stat green">     <div class="whiteCorner"></div>
-						<div class="visual">
-							<i class="fa fa-copy"></i>
-						</div>
-						<div class="details">
-							<div class="number">
-								 541
-							</div>
-							<div class="desc">
-								<?php //echo ucfirst($settings->profile);?>
-                                Driver Evaluation
-							</div>
-						</div>
-						<a class="more" href="#">
-						View more <i class="m-icon-swapright m-icon-white"></i>
-						</a>
-					</div>
-                    <div class="dusk"></div>
-
-                </div>
-				
-			-->
 </div>
             
