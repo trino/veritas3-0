@@ -5,7 +5,12 @@
     $controller =  $this->request->params['controller'];
     $strings = CacheTranslations($language, array("forms_%" , $controller  . "_%"),$settings);
     if($language == "Debug"){ $Trans = " [Translated]"; } else {$Trans = "";}
-    if(isset($_GET["table"])){ ?>
+    if(isset($_GET["table"])){
+        $Table = $_GET["table"];
+        $Columns = $Manager->getColumnNames($Table, "", false);
+        $PrimaryKey = $Manager->get_primary_key($Table);
+        $Data = $Manager->paginate($Manager->enum_table($Table));
+        ?>
         <div class="form-actions" style="height:75px;">
             <div class="row">
                 <div class="col-md-6" align="left">
@@ -34,6 +39,14 @@
     }
 </STYLE>
 <SCRIPT>
+    window.onbeforeunload = function (e) {
+        if (changed.length > 0) {
+            var message = "Are you sure you want to quit without saving?", e = e || window.event;
+            if (e) {e.returnValue = message;}// For IE and Firefox
+            return message;// For Safari
+        }
+    };
+
     var changed = new Array();
     function mychangeevent(ID){
         var RET = checktags(ID, "single");
@@ -45,6 +58,11 @@
         } else if (Index > -1) {
             changed.splice(Index, 1 );
         }
+    }
+
+    function checkifchanged(){
+        if (changed.length == 0){return true;}
+        return confirm("Are you sure you want to leave without saving?");
     }
 
     function save(){

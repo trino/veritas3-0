@@ -14,11 +14,5 @@ class ExcelController extends AppController {
     ];
 
     public function index(){
-        if (isset($_GET["table"])){
-            $table = $this->Manager->enum_table($_GET["table"]);
-            $this->set("Data", $this->paginate($table));
-            $this->set("Columns", $this->Manager->getColumnNames($_GET["table"], "", false));
-            $this->set("PrimaryKey", $this->Manager->get_primary_key($_GET["table"]));
-        }
     }
 }

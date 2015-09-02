@@ -548,6 +548,10 @@ class ManagerComponent extends Component {
 
 
     /////////////////////////////////DATABASE API///////////////////////////////////
+    function paginate($Data){
+        return $this->Controller->paginate($Data);
+    }
+
     function enum_tables(){
         $db = ConnectionManager::get('default');
         $collection = $db->schemaCollection();// Create a schema collection.
