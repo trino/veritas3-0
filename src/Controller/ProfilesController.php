@@ -186,6 +186,8 @@ class ProfilesController extends AppController{
             $frequency = $c->requalify_frequency;
             if ($c->requalify_re == '0') {
                 $date = $c->requalify_date;
+                if(strtotime($date)< strtotime($today))
+                    $date = $this->getnextdate($date,$frequency);
             }
             $epired_profile ="";
             $escape_id = $client_crons->find('all')->where(['client_id'=>$c->id,'orders_sent'=>'1','cron_date'=>$today]);
