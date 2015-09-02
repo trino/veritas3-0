@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Sep 02, 2015 at 08:49 PM
+-- Generation Time: Sep 02, 2015 at 10:59 PM
 -- Server version: 5.6.17
 -- PHP Version: 5.5.12
 
@@ -32,14 +32,14 @@ CREATE TABLE IF NOT EXISTS `strings` (
   `English` varchar(4096) NOT NULL,
   `French` varchar(4096) NOT NULL,
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=742 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=743 ;
 
 --
 -- Dumping data for table `strings`
 --
 
 INSERT INTO `strings` (`ID`, `Name`, `English`, `French`) VALUES
-(1, 'Date', '1441200265', '<-- This is used by the system to auto-update'),
+(1, 'Date', '1441219808', '<-- This is used by the system to auto-update'),
 (2, 'dashboard_affirmative', 'Yes', 'Oui'),
 (3, 'dashboard_negative', 'No', 'Non'),
 (4, 'dashboard_selectall', 'Select All', 'Tout sélectionner'),
@@ -757,7 +757,8 @@ INSERT INTO `strings` (`ID`, `Name`, `English`, `French`) VALUES
 (738, 'email_newdriver_application_subject', 'Application for New Driver', 'email_newdriver_application_subject'),
 (739, 'email_newdriver_application_message', 'Date: %created%<BR>\n<BR>\nDear %customer_name%,<BR>\n<BR>\nThank you for your request to add a new driver to the policy of %company_name%.  To complete the application for \ninsurance please <A HREF="%path%>click on this link …</A><BR>\n<BR>\n<BR>\nThe application process can be completed in 3 easy steps…<BR>\n<BR>\nStep 1 – Provide basic Driver information<BR>\nStep 2 – Provide Driver employment history for the last 3-6 years<BR>\nStep 3 – Have the Driver sign the Authorization Form<BR>\nStep 4 - Submit<BR>\n<BR>\n<BR>\n<BR>\nOnce you have the submitted the request, we will process the application and notify you of the driver’s eligibility.<BR>\n<BR>\nThank you for choosing %broker_name%, we appreciate your business.  <BR>\n<BR>\nRespectfully, <BR>\n<BR>\n<BR>\n<BR>\n%broker_name%<BR>\n%broker_email%', 'email_newdriver_application_message'),
 (740, 'email_newdriver_postorder_subject', 'Application for New Driver', 'email_newdriver_postorder_subject'),
-(741, 'email_newdriver_postorder_message', 'Date: %created%<BR>\n<BR>\n<BR>\nDear %customer_name%<BR>\n<BR>\n<BR>\nThank you for choosing %broker_name%, we appreciate your business. <BR>\n<BR>\n<BR>\nYour MEE request for %driver_name% has been successfully submitted.<BR>\n<BR>\n<BR>\nYour confirmation number for this MEE request is %order_id%<BR>\n<BR>\n<BR>\nWe are processing your request and will notify you of the driver’s eligibility shortly.<BR>\n<BR>\n<BR>\nRespectfully, <BR>\n<BR>\n<BR>\n%broker_name%<BR>\n%broker_email%', 'email_newdriver_postorder_message');
+(741, 'email_newdriver_postorder_message', 'Date: %created%<BR>\n<BR>\n<BR>\nDear %customer_name%<BR>\n<BR>\n<BR>\nThank you for choosing %broker_name%, we appreciate your business. <BR>\n<BR>\n<BR>\nYour MEE request for %driver_name% has been successfully submitted.<BR>\n<BR>\n<BR>\nYour confirmation number for this MEE request is %order_id%<BR>\n<BR>\n<BR>\nWe are processing your request and will notify you of the driver’s eligibility shortly.<BR>\n<BR>\n<BR>\nRespectfully, <BR>\n<BR>\n<BR>\n%broker_name%<BR>\n%broker_email%', 'email_newdriver_postorder_message'),
+(742, 'forms_number', 'Number', 'Nombre');
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

@@ -33,6 +33,9 @@ function validate_data(Data, DataType){
                 Data = clean_data(Data, "number");
                 return Data.length == 9;
                 break;
+            case "number":
+                Data = clean_data(Data, "number");
+                return Data && !isNaN(Data);
             default:
                 alert("'" + DataType + "' is unhandled");
         }
@@ -114,12 +117,35 @@ function isVisible (element) {
     return element.clientWidth !== 0 && element.clientHeight !== 0 && element.style.opacity !== 0 && element.style.visibility !== 'hidden';
 }
 
-function checktags(TabID, tagtype){
+function getinputvalue(element){
+    if(typeof element !== 'object'){
+        element = document.getElementById(element);
+    }
+    var value = element.value;
+    if (element.hasAttribute("type")) {
+        tagtype = element.getAttribute("type").toLowerCase().trim();
+    }
+    switch (tagtype){
+        case "checkbox":
+            if (!element.checked){value = "";}
+            break;
+        case "radio":
+            value = radiovalue(name);
+            break;
+    }
+    return value;
+}
+
+function checktags(TabID, tagtype){//use tagtype = "single" to get a single element with the ID = TabID
     var element, inputs;
     resetelement();
     if(TabID) {
         element = document.getElementById(TabID);
-        inputs = element.getElementsByTagName(tagtype);
+        if(tagtype == "single"){
+            inputs = [element];
+        } else {
+            inputs = element.getElementsByTagName(tagtype);
+        }
     } else {
         inputs = document.getElementsByTagName(tagtype);
     }
@@ -130,21 +156,13 @@ function checktags(TabID, tagtype){
         element = inputs[index];
         if(isVisible(element)) {//ignores invisible elements
             isrequired = hasClass(element, "required") || element.hasAttribute("required");
-            var value = element.value;
+            var value = getinputvalue(element);
             var name = element.getAttribute("name");
             if (element.hasAttribute("type")) {
                 tagtype = element.getAttribute("type").toLowerCase().trim();
             }
             var isValid = true;
             var Reason = "";
-            switch (tagtype){
-                case "checkbox":
-                    if (!element.checked){value = "";}
-                    break;
-                case "radio":
-                    value = radiovalue(name);
-                    break;
-            }
 
             if (!value && isrequired) {
                 Reason = "required";
@@ -153,6 +171,7 @@ function checktags(TabID, tagtype){
                 Reason = element.getAttribute("role");
                 isValid = validate_data(value, Reason);
             }
+
             if (isValid && Reason) {
                 value = clean_data(value, Reason);
                 element.value = value;
@@ -215,6 +234,7 @@ function scrollto(Reason, element){
     //if(Reason["Type"] == "checkbox"){element = findLableForControl(element);}
     oldcolor=element.style.borderColor;
     element.style.borderColor = "red";
+    element.focus();
     lastelement = element;
 }
 

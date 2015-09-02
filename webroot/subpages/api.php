@@ -528,6 +528,7 @@ function loadreasons($action, $strings, $IncludeScript = false){
         echo "reasons['sin'] = '" . addslashes($strings["forms_sin"]) . "';";
         echo "reasons['required'] = '" . addslashes($strings["forms_fillall"]) . "';";
         echo "reasons['postalzip'] = '" . addslashes($strings["forms_postalzip"]) . "';";
+        echo "reasons['number'] = '" . addslashes($strings["forms_number"]) . "';";
     } else {
         echo "var reasons = false; //Action is: " . $action;
     }
