@@ -1138,6 +1138,8 @@ class ProfilesController extends AppController{
             if (isset($_POST['profile_type']) && $_POST['profile_type'] == 1) {
                 $_POST['admin'] = 1;
             }
+    
+
 
             $_POST['dob'] = $_POST['doby'] . "-" . $_POST['dobm'] . "-" . $_POST['dobd'];
             //debug($_POST);die();
@@ -1203,7 +1205,7 @@ class ProfilesController extends AppController{
     }
 
     function checkusername($profile, $post){//updates username of $profile->id
-        $username = trim($post["username"]);
+        $username = trim($post->username);
         if(!$username) {
             $username = str_replace(" ", "_", TableRegistry::get('profile_types')->find()->where(['id' => $profile->profile_type])->first()->title . "_" . $profile->id);
             $queries = TableRegistry::get('Profiles');
@@ -3709,6 +3711,145 @@ public function saveDriver() {
                 }
             }
         }
+    }
+    
+    public function huron($cid)
+    {
+        
+        $file = fopen(APP."../webroot/profile.csv","r");
+        $fields = array('title',
+'fname',
+'lname',
+'username',
+'email',
+'password',
+'driver',
+'address',
+'street',
+'city',
+'province',
+'postal',
+'country',
+'phone',
+'image',
+'admin',
+'super',
+'profile_type',
+'driver_license_no',
+'driver_province',
+'us_dot',
+'applicants_email',
+'transclick',
+'mname',
+'dob',
+'expiry_date',
+'gender',
+'isb_id',
+'placeofbirth',
+'created_by',
+'created',
+'drafts',
+'is_hired',
+'ptypes',
+'ctypes',
+'language',
+'automatic_email',
+'automatic_sent',
+'hear',
+'requalify',
+'hired_date',
+'emailsent',
+'send_to',
+'sin',
+'otherinfo');
+
+$mon = array('Jan'=>'01','Feb'=>'02','Mar'=>'03','Apr'=>'04','May'=>'05','Jun'=>'06','Jul'=>'07','Aug'=>'08','Sep'=>'09','Oct'=>'10','Nov'=>'11','Dec'=>'12');
+        
+        while($arrs = fgetcsv($file))
+        {
+            //var_dump($arrs);die();
+            foreach($arrs as $k=>$arr){
+                
+                if($k==0)
+                continue;
+            else{
+           // var_dump($arr);die();
+            $pro[$fields[$k-1]] = $arr;
+            if($fields[$k-1] == 'dob')
+            {
+                //echo $arr;die();
+                $arr = str_replace(array('Sept','April'),array('Sep','Apr'),$arr);
+                $date = explode(' ',$arr);
+                if(isset($date[2]))
+                {
+                    if($date[1]>=10)
+                    $pro[$fields[$k-1]] = $date[2].'-'.$mon[$date[0]].'-'.$date[1];
+                    else
+                    $pro[$fields[$k-1]] = $date[2].'-'.$mon[$date[0]].'-0'.$date[1];
+                }
+                else
+                $pro[$fields[$k-1]] = '';
+            }
+            }
+            }
+            
+            
+            
+            
+            $profiles = TableRegistry::get('Profiles');
+            $profile = $profiles->newEntity($pro);
+            if ($profiles->save($profile)) {
+               // $this->checkusername($profile->id, $pro);
+                if ($cid != "") {
+                    $client_id = array($cid);
+                    foreach ($client_id as $cid) {
+                        $query = TableRegistry::get('clients');
+                        $q = $query->find()->where(['id' => $cid])->first();
+                        $profile_id = $q->profile_id;
+                        $pros = explode(",", $profile_id);
+
+                        $p_ids = "";
+
+                        array_push($pros, $profile->id);
+                        $pro_id = array_unique($pros);
+
+                        foreach ($pro_id as $k => $p) {
+                            if (count($pro_id) == $k + 1) {
+                                $p_ids .= $p;
+                            }else {
+                                $p_ids .= $p . ",";
+                            }
+                        }
+
+                        $query->query()->update()->set(['profile_id' => $p_ids])
+                            ->where(['id' => $cid])
+                            ->execute();
+                    }
+                }
+                //die();
+                $blocks = TableRegistry::get('Blocks');
+                $query2 = $blocks->query();
+                $query2->insert(['user_id'])
+                    ->values(['user_id' => $profile->id])
+                    ->execute();
+                $side = TableRegistry::get('Sidebar');
+                $query2 = $side->query();
+                $create_que = $query2->insert(['user_id'])
+                    ->values(['user_id' => $profile->id])
+                    ->execute();
+                
+            }
+            
+            
+            
+            
+            }
+        
+        //die();
+        //print_r(fgetcsv($file));
+        
+        die();
+
     }
 
 }
