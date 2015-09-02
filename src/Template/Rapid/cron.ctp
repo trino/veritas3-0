@@ -8,7 +8,7 @@
 
 <script>
     $(function () {
-        
+
         <?php  if(isset($profiles) && $profiles> 0){
 
             foreach($arrs as $arr){
@@ -29,7 +29,7 @@
         }
         }
         ?>
-        
+
     })
 
 </script>
