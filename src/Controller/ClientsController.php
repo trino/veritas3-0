@@ -1612,7 +1612,7 @@
                             $this->Mailer->sendEmail("", $p->email, $Subject, $msg);//what is the subject?, sendEmail should never be used, use handlevent instead
                             //$this->Mailer->handleevent("", )
                         }*/
-                    }
+                   /* }
                   }
                   if($pro !=""){
                   $msg .= "Profiles:".$p_name."<br/>";
