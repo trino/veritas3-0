@@ -1,41 +1,41 @@
-<link href="<?php echo $this->request->webroot;?>assets/global/plugins/bootstrap-wysihtml5/bootstrap-wysihtml5.css" rel="stylesheet" type="text/css"/>
-<link href="<?php echo $this->request->webroot;?>assets/global/plugins/fancybox/source/jquery.fancybox.css" rel="stylesheet"/>
-<link href="<?php echo $this->request->webroot;?>assets/global/plugins/jquery-file-upload/blueimp-gallery/blueimp-gallery.min.css" rel="stylesheet"/>
-<link href="<?php echo $this->request->webroot;?>assets/global/plugins/jquery-file-upload/css/jquery.fileupload.css" rel="stylesheet"/>
-<link href="<?php echo $this->request->webroot;?>assets/global/plugins/jquery-file-upload/css/jquery.fileupload-ui.css" rel="stylesheet"/>
-<link href="<?php echo $this->request->webroot;?>assets/admin/pages/css/inbox.css" rel="stylesheet" type="text/css"/>
+<link href="<?= $this->request->webroot;?>assets/global/plugins/bootstrap-wysihtml5/bootstrap-wysihtml5.css" rel="stylesheet" type="text/css"/>
+<link href="<?= $this->request->webroot;?>assets/global/plugins/fancybox/source/jquery.fancybox.css" rel="stylesheet"/>
+<link href="<?= $this->request->webroot;?>assets/global/plugins/jquery-file-upload/blueimp-gallery/blueimp-gallery.min.css" rel="stylesheet"/>
+<link href="<?= $this->request->webroot;?>assets/global/plugins/jquery-file-upload/css/jquery.fileupload.css" rel="stylesheet"/>
+<link href="<?= $this->request->webroot;?>assets/global/plugins/jquery-file-upload/css/jquery.fileupload-ui.css" rel="stylesheet"/>
+<link href="<?= $this->request->webroot;?>assets/admin/pages/css/inbox.css" rel="stylesheet" type="text/css"/>
 
-<script src="<?php echo $this->request->webroot;?>assets/global/plugins/fancybox/source/jquery.fancybox.pack.js" type="text/javascript"></script>
-<script src="<?php echo $this->request->webroot;?>assets/global/plugins/bootstrap-wysihtml5/wysihtml5-0.3.0.js" type="text/javascript"></script>
-<script src="<?php echo $this->request->webroot;?>assets/global/plugins/bootstrap-wysihtml5/bootstrap-wysihtml5.js" type="text/javascript"></script>
+<script src="<?= $this->request->webroot;?>assets/global/plugins/fancybox/source/jquery.fancybox.pack.js" type="text/javascript"></script>
+<script src="<?= $this->request->webroot;?>assets/global/plugins/bootstrap-wysihtml5/wysihtml5-0.3.0.js" type="text/javascript"></script>
+<script src="<?= $this->request->webroot;?>assets/global/plugins/bootstrap-wysihtml5/bootstrap-wysihtml5.js" type="text/javascript"></script>
 
 
-<script src="<?php echo $this->request->webroot;?>assets/global/plugins/jquery-file-upload/js/vendor/jquery.ui.widget.js"></script>
+<script src="<?= $this->request->webroot;?>assets/global/plugins/jquery-file-upload/js/vendor/jquery.ui.widget.js"></script>
 <!-- The Templates plugin is included to render the upload/download listings -->
-<script src="<?php echo $this->request->webroot;?>assets/global/plugins/jquery-file-upload/js/vendor/tmpl.min.js"></script>
+<script src="<?= $this->request->webroot;?>assets/global/plugins/jquery-file-upload/js/vendor/tmpl.min.js"></script>
 <!-- The Load Image plugin is included for the preview images and image resizing functionality -->
-<script src="<?php echo $this->request->webroot;?>assets/global/plugins/jquery-file-upload/js/vendor/load-image.min.js"></script>
+<script src="<?= $this->request->webroot;?>assets/global/plugins/jquery-file-upload/js/vendor/load-image.min.js"></script>
 <!-- The Canvas to Blob plugin is included for image resizing functionality -->
-<script src="<?php echo $this->request->webroot;?>assets/global/plugins/jquery-file-upload/js/vendor/canvas-to-blob.min.js"></script>
+<script src="<?= $this->request->webroot;?>assets/global/plugins/jquery-file-upload/js/vendor/canvas-to-blob.min.js"></script>
 <!-- blueimp Gallery script -->
-<script src="<?php echo $this->request->webroot;?>assets/global/plugins/jquery-file-upload/blueimp-gallery/jquery.blueimp-gallery.min.js"></script>
+<script src="<?= $this->request->webroot;?>assets/global/plugins/jquery-file-upload/blueimp-gallery/jquery.blueimp-gallery.min.js"></script>
 <!-- The Iframe Transport is required for browsers without support for XHR file uploads -->
-<script src="<?php echo $this->request->webroot;?>assets/global/plugins/jquery-file-upload/js/jquery.iframe-transport.js"></script>
+<script src="<?= $this->request->webroot;?>assets/global/plugins/jquery-file-upload/js/jquery.iframe-transport.js"></script>
 <!-- The basic File Upload plugin -->
-<script src="<?php echo $this->request->webroot;?>assets/global/plugins/jquery-file-upload/js/jquery.fileupload.js"></script>
+<script src="<?= $this->request->webroot;?>assets/global/plugins/jquery-file-upload/js/jquery.fileupload.js"></script>
 <!-- The File Upload processing plugin -->
-<script src="<?php echo $this->request->webroot;?>assets/global/plugins/jquery-file-upload/js/jquery.fileupload-process.js"></script>
+<script src="<?= $this->request->webroot;?>assets/global/plugins/jquery-file-upload/js/jquery.fileupload-process.js"></script>
 <!-- The File Upload image preview & resize plugin -->
-<script src="<?php echo $this->request->webroot;?>assets/global/plugins/jquery-file-upload/js/jquery.fileupload-image.js"></script>
+<script src="<?= $this->request->webroot;?>assets/global/plugins/jquery-file-upload/js/jquery.fileupload-image.js"></script>
 <!-- The File Upload audio preview plugin -->
-<script src="<?php echo $this->request->webroot;?>assets/global/plugins/jquery-file-upload/js/jquery.fileupload-audio.js"></script>
+<script src="<?= $this->request->webroot;?>assets/global/plugins/jquery-file-upload/js/jquery.fileupload-audio.js"></script>
 <!-- The File Upload video preview plugin -->
-<script src="<?php echo $this->request->webroot;?>assets/global/plugins/jquery-file-upload/js/jquery.fileupload-video.js"></script>
+<script src="<?= $this->request->webroot;?>assets/global/plugins/jquery-file-upload/js/jquery.fileupload-video.js"></script>
 <!-- The File Upload validation plugin -->
-<script src="<?php echo $this->request->webroot;?>assets/global/plugins/jquery-file-upload/js/jquery.fileupload-validate.js"></script>
+<script src="<?= $this->request->webroot;?>assets/global/plugins/jquery-file-upload/js/jquery.fileupload-validate.js"></script>
 <!-- The File Upload user interface plugin -->
-<script src="<?php echo $this->request->webroot;?>assets/global/plugins/jquery-file-upload/js/jquery.fileupload-ui.js"></script>
-<script src="<?php echo $this->request->webroot;?>assets/admin/pages/scripts/inbox.js" type="text/javascript"></script>
+<script src="<?= $this->request->webroot;?>assets/global/plugins/jquery-file-upload/js/jquery.fileupload-ui.js"></script>
+<script src="<?= $this->request->webroot;?>assets/admin/pages/scripts/inbox.js" type="text/javascript"></script>
 <script>
 jQuery(document).ready(function() {
     Inbox.init();

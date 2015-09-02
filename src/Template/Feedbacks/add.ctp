@@ -1,13 +1,11 @@
 <?php
-if(isset($disabled))
-{
-$is_disabled = 'disabled="disabled"';
-}
-else
-{
-$is_disabled = '';
-if(isset($feeds))
-$feed = $feeds;
+if(isset($disabled)) {
+    $is_disabled = 'disabled="disabled"';
+} else {
+    $is_disabled = '';
+    if(isset($feeds)) {
+        $feed = $feeds;
+    }
 }
 ?>
 <h3 class="page-title">

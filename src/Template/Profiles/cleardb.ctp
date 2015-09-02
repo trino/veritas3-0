@@ -1,5 +1,2 @@
-
-
 <?php
-
     include("cleardb.php");

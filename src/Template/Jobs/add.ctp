@@ -1,8 +1,6 @@
 <?php
-if(isset($disabled))
-$is_disabled = 'disabled="disabled"';
-else
-$is_disabled = '';
+    $is_disabled = '';
+    if(isset($disabled)) {$is_disabled = 'disabled="disabled"';}
 ?>
 <h3 class="page-title">
     <?php echo ucfirst($settings->client);?>s
