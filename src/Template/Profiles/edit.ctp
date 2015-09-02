@@ -186,17 +186,18 @@
                                 </div>
                             <?php }
                                 if (isset($p)) {
+                                    
                                     if ($profile->Ptype && $profile->Ptype->placesorders == 1) {//driver, owner driver, owner operator, sales, employee
-
+                                    
                                         echo '<label class="uniform-inline" style="margin-bottom:10px;">
-                                                <input type="checkbox" name="stat" value="1" id="' . $profile->id . '" class="checkhiredriver"';
+                                                <input type="checkbox" name="stat" value="1" id="' . $profile->id . '" class="checkhiredriver"'.$is_disabled;
                                         if ($p->is_hired == '1') {
                                             echo " checked";
                                         }
                                         echo '/> ' . $strings["profiles_washired"] . ' <span class="hired_msg"></span></label>';
 
                                         echo '<br><label class="uniform-inline" style="clear:both;margin-bottom: 20px;">
-                                        <input type="checkbox" name="" value="1" id="' . $profile->id . '" class="checkrequalify"';
+                                        <input type="checkbox" name="" value="1" id="' . $profile->id . '" class="checkrequalify"'.$is_disabled;
                                          if ($p->requalify == '1') {
                                             echo " checked";
                                         }
