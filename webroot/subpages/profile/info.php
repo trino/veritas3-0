@@ -903,10 +903,11 @@ loadreasons($param, $strings, true);
 
                                 <div class="col-md-12" align="right">
 
-
+                                    <?php if(!isset($is_disabled)){?>
                                     <a href="javascript:void(0)" class="btn btn-primary" onclick="return check_username();" id="savepro">
                                         <?= $strings["forms_savechanges"]; ?>
                                     </a>
+                                    <?php }?>
                                     <!--button class="btn btn-info"
                                             onclick="$('#profile_drafts').val('1'); $('#save_clientz').attr('novalidate','novalidate');$('#hiddensub').click();">
                                         Save As Draft
