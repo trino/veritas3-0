@@ -62,13 +62,11 @@
                 $profiles = $this->Profiles->find()->where(['id' => $order_id->uploaded_for])->first();
                 $this->set('p', $profiles);
             }
-            //$did= $document_id->id;
-            if (isset($order_id))
+            if (isset($order_id)) {
                 $this->set('modal', $order_id);
+            }
             $this->set('cid', $cid);
             $this->set('did', $did);
-            /*$profile = $this->Clients->get($id);
-            $this->set('profile', $profile);*/
             $this->set('disabled', 1);
             if ($did) {
                 $feeds = TableRegistry::get('feedbacks');
@@ -153,8 +151,8 @@
                     $sub2['con_at'] = $con_at->find()->where(['order_id' => $did, 'sub_id' => 4])->all();
                     $this->set('sub2', $sub2);
                     $this->set('consent_detail', $con_detail);
-
                 }
+
                 $emp = TableRegistry::get('employment_verification');
                 $sub3['emp'] = $emp->find()->where(['order_id' => $did])->all();
 
@@ -231,8 +229,6 @@
                     $dr = $orde->draft;
                     if ($dr == '0' || !$dr) {
                         $dr = 0;
-
-                        //sendEmail("","","order save test","Hi, me");
                         $this->Flash->success($this->Trans->getString("flash_ordersaved"));
                         //die();
                     } else {
@@ -254,8 +250,6 @@
             if ($did) {
 
                 $feeds = TableRegistry::get('feedbacks');
-                //$pre_at = TableRegistry::get('driver_application_accident');
-
                 $feed = $feeds->find()->where(['order_id' => $did])->first();
                 $this->set('feeds', $feed);
 
@@ -407,26 +401,6 @@
         }
 
         public function loadlastforms($Profile_ID = ""){
-            //CONSENT FORM
-
-            /*
-            $consentform = TableRegistry::get('documents')->find()->where(['uploaded_for' => $Profile_ID, "sub_doc_id" => 4])->first();
-            if ($consentform) {
-                if ($consentform->order_id) {
-                    $con_detail = TableRegistry::get('consent_form')->find()->order(['id' => 'DESC'])->where(['order_id' => $consentform->order_id])->first();//last
-                } else{
-                    $con_detail = TableRegistry::get('consent_form')->find()->order(['id' => 'DESC'])->where(['id' => $consentform->document_id])->first();//last
-                }
-
-            }
-            debug($consentform);
-            die();
-            return false;
-
-            //$con_detail = TableRegistry::get('consent_form')->find()->where(['user_id' => $_GET["driver"]])->first();//first
-            $con_detail = TableRegistry::get('consent_form')->find()->where(['user_id' => $_GET["driver"]])->first();//last
-            */
-
             $con_detail = $this->getlastdocument($Profile_ID, 4, "consent_form");
             if($con_detail){
                 $criminal = $this->getconsentform($con_detail);
@@ -482,10 +456,8 @@
         }
 
         public function savedoc($cid = 0, $did = 0){
-            //$this->set('doc_comp',$this->Document);
             $this->loadComponent('Mailer');
             $ret = $this->Document->savedoc($this->Mailer, $cid, $did, false);
-            //$this->Mailer->handleevent("documentcreated", $ret);
             die();
         }
 
@@ -494,25 +466,16 @@
             die;
         }
 
-        /**
-         * saving driver application data
-         */
         public function savedDriverApp($document_id = 0, $cid = 0){
             $this->Document->savedDriverApp($document_id, $cid);
             die;
         }
 
-        /**
-         * saving driver application data
-         */
         public function savedDriverEvaluation($document_id = 0, $cid = 0){
             $this->Document->savedDriverEvaluation($document_id, $cid);
             die();
         }
 
-        /**
-         * saving driver application data
-         */
         public function savedMeeOrder($document_id = 0, $cid = 0){
             $this->Document->savedMeeOrder($document_id, $cid);
             die();
@@ -634,17 +597,6 @@
                     $cond = $cond . ' AND division = "' . $_GET['division'] . '"';
                 }
             }
-            /*if (isset($_GET['draft'])) {
-                if ($cond == '')
-                    $cond = $cond . ' orders.draft = 1';
-                else
-                    $cond = $cond . ' AND orders.draft = 1';
-            } else {
-                if ($cond == '')
-                    $cond = $cond . ' orders.draft = 0';
-                else
-                    $cond = $cond . ' AND orders.draft = 0';
-            }*/
             if ($cond) {
                 $order = $order->where([$cond])->contain(['Profiles']);
             } else {
@@ -689,8 +641,6 @@
             } else {
 
                 $cond = $this->Settings->getclientids($u, $this->request->session()->read('Profile.super'), $type);
-                //var_dump($u_cond);die();
-                //var_dump($cond);die();
                 $cnt = $model->find()->where(['((document_id IN (SELECT id FROM documents WHERE draft = 0)) OR (order_id IN (SELECT id FROM orders WHERE draft = 0)))', $u_cond, 'OR' => $cond])->contain(['Orders'])->count();
             }
             //debug($cnt); die();
@@ -856,8 +806,6 @@
             $subdocument = TableRegistry::get('subdocuments');
 
             $this->layout = "blank";
-            /*echo '<br><br>order id: '.$orderid . '<br>';
-            echo 'driverid: '. $driverid .'<br/><br/>';*/
 
             $model = TableRegistry::get('profiles');
             $driverinfo = $model->find()->where(['id' => $driverid])->first(); //$conditions[] = 'find_in_set(id, ' . $conditions2 . ')'
@@ -865,7 +813,7 @@
             $this->set('orderid', $orderid);
             $this->set('driverinfo', $driverinfo);
 
-            if ($order_type == "Requalification") {//what is this?
+            if ($order_type == "Requalification") {
                 $ordertype1 = "MEE-REQ";
             } else if ($order_type == "Order Products") {
                 $ordertype1 = "MEE-IND";
@@ -949,15 +897,7 @@
             $att = $attach
                 ->find()
                 ->where(['order_id' => $id, 'sub_id' => 41, 'attachment <> ""'])->all();
-/*
-        var_dump($profile->username);
-        var_dump($profile->profile_type);
-        var_dump($client->company_name);
-        var_dump($setting->mee);
-        echo "DriverID: " . $driverid;
-        var_dump($uploadedfor);
 
-*/
             $this->set('order_id', $id);
             $this->set(compact('att'));
         }
@@ -1167,12 +1107,6 @@
             if (!$this->request->session()->read('Profile.super')) {
                 $u =$userid;
                 $setting = $this->Settings->get_permission($u);
-                /*if ($setting->document_others == 0) {
-                    if ($cond == '')
-                        $cond = $cond . ' user_id = ' . $u;
-                    else
-                        $cond = $cond . ' AND user_id = ' . $u;
-                }*/
             }
 
             if (isset($_GET['searchdoc']) && $_GET['searchdoc']) {
@@ -1218,12 +1152,7 @@
 
             if (isset($_GET['draft'])) {
                 $cond = $this->AppendSQL($cond, 'orders.draft = 1');
-            }/* else {
-                if ($cond == '')
-                    $cond = $cond . ' orders.draft = 0';
-                else
-                    $cond = $cond . ' AND orders.draft = 0';
-            }*/
+            }
 
             if ($cond) {
                 $order = $order->where([$cond])->contain(['Profiles']);
@@ -1278,8 +1207,6 @@
                     $clients = $cmodel->find();
                 }
             }
-            //debug($clients);
-
             if ($clients->count() > 0) {
                 echo "<option value=''>Select " . ucfirst($settings->client) . "s</option>";
                 foreach ($clients as $c) {
@@ -1292,25 +1219,6 @@
             die();
         }
 
-        /*
-                public function save_bright_planet_grade($orderid = null, $product_id = null, $grade = null)
-                {
-
-                    $querys = TableRegistry::get('orders');
-
-                    $arr[$product_id] = $grade;
-
-                    $query2 = $querys->query();
-                    $query2->update()
-                        ->set($arr)
-                        ->where(['id' => $orderid])
-                        ->execute();
-                    $this->response->body($query2);
-                    return $this->response;
-
-
-                }
-        */
 
 
 
@@ -1425,19 +1333,8 @@
 
             $return = array();
             foreach($subdocuments as $document){
-                //$query=$Table->find('all')->where(array("OR" => ['FormID' => $document->id]));//1 query per document type
                 $query = $Table->find('all', array('conditions' => array("OR" => array( array('FormID' => $document->id),array('FormID' => 0)))));//cache values
                 $insert = array();
-                /*$value=false;
-                foreach($forms as $form){
-                    if ($this->isproductprovinceenabled2($query, $form,  $document->id, "ALL")){//($this->isproductprovinceenabled($Table, $form,  $document->id, "ALL")){
-                        $value=true;
-                        foreach ($provinces as $province) {
-                            $insert[$province] = true;
-                        }
-                    }
-                }
-                if(!$value) {*/
                 $insert["ID"] = $document->id;
                 foreach ($provinces as $province) {
                     foreach ($forms as $form) {
@@ -1447,7 +1344,6 @@
                         }
                     }
                 }
-                //}
                 $return[strtolower(trim($document->title))] = $insert;
             }
 

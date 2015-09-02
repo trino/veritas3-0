@@ -458,44 +458,7 @@
 </div>
 
 <script>
-/*
-function validate_data(Data, DataType){
-                if(Data) {
-                    switch (DataType.toLowerCase()) {
-                        case "email":
-                            var re = /\S+@\S+\.\S+/;
-                            return re.test(Data);
-                            break;
-                        case "postalcode":
-                            Data = Data.replace(/ /g, '').toUpperCase();
-                            var regex = new RegExp(/^[ABCEGHJKLMNPRSTVXY]\d[ABCEGHJKLMNPRSTVWXYZ]?\d[ABCEGHJKLMNPRSTVWXYZ]\d$/i);
-                            return regex.test(Data);
-                            break;
-                        case "phone":
-                            var phoneRe = /^[2-9]\d{2}[2-9]\d{2}\d{4}$/;
-                            var digits = Data.replace(/\D/g, "");
-                            return (digits.match(phoneRe) !== null);
-                            break;
-                        default:
-                            alert(DataType + " is unhandled");
-                    }
-                }
-                return true;
-            }
-            
-            function check_role(){
-                $('.roles').each(function(){
-                    var role = $(this).attr('role');
-                    var val = $(this).val();
-                    var check = validate_data(val,role);
-                    if(!check)
-                    {
-                        alert('Invalid '+role);
-                        $('html,body').animate({ scrollTop: $(this).offset().top}, 'slow');
-                    }
-                    
-                });
-            }*/
+
     jQuery(document).ready(function () {
 
         Metronic.init(); // init metronic core componets
@@ -608,33 +571,9 @@ function validate_data(Data, DataType){
         var bdy = $('.page-container').not('#notli').html();
         if (v == '2') {
             $('.page-container').html($('.page-container').html().replace(/Client/g, 'Job'));
-            /*if(n){
-             n = n.split('<option value="2">User/Job</option>').join('<option value="2" selected="selected">User/Job</option>');
-             n = n.split('<option value="1" selected="selected">Profile/Client</option>').join('<option value="1" >Profile/Client</option>');}
-             bdy = bdy.split('Profile').join('User');
-             bdy = bdy.split('Client').join('Job');
-
-             $('.page-container').not('#notli').html(bdy);
-
-             $('#notli').html(n); */
-
-
         }
         if (v == '1') {
             $('.page-container').html($('.page-container').html().replace(/Job/g, 'Client'));
-
-            /*if(n){
-             n = n.split('<option value="1">Profile/Client</option>').join('<option value="1" selected="selected">Profile/Client</option>');
-             n = n.split('<option value="2" selected="selected">User/Job</option>').join('<option value="2" >User/Job</option>');}
-             bdy = bdy.split('User').join('Profile');
-             bdy = bdy.split('Job').join('Client');
-
-             $('.page-container').not('#notli').html(bdy);
-
-             $('#notli').html(n);
-             */
-
-
         }
     }
 

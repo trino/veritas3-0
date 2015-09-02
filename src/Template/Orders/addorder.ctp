@@ -613,21 +613,6 @@ printCSS($this);
                         }
                     }
 
-                    // attach documents
-                    /*var url = '
-                    <?php echo $this->request->webroot;?>documents/getAttachedDoc/'+client_id+'/'+doc_id,
-                     param={form_type:form_type};
-                     $.getJSON(url,param,function(res){
-                     if(res.length > 0){
-                     var text='';
-                     for(var i=0;i<res.length;i++){
-                     //  text += '<img src="
-                    <?php echo $this->request->webroot;?>img/order/'+res[i].+'"/>';
-                     }
-                     $('.attach_more').html();
-                     }
-
-                     });*/
                     var prof_id = $('#uploaded_for').val();
                     if (prof_id) {
                         $.ajax({
@@ -800,15 +785,7 @@ printCSS($this);
 
                         }
                     }
-                    /*var url = '
-                    <?php echo $this->request->webroot;?>documents/getAttachedDoc/'+client_id+'/'+doc_id,
-                     param={form_type:form_type};
-                     $.getJSON(url,param,function(res){
-                     if(res.length > 0){
 
-                     }
-
-                     });*/
                     var prof_id = $('#uploaded_for').val();
                     if (prof_id) {
                         $.ajax({
@@ -1272,22 +1249,8 @@ printCSS($this);
 
 
     function assignValue(formID, obj) {
-        // debugger;
         $('#' + formID).form('load', obj);
-        // $('#'+formID).find(':input').each(function(){
-        //      var $name = $(this).attr('name');
-        //      $(this).val(obj[$name]);
-
-        // });
-        /*
-         $.each(obj,function(index,value){
-         // debugger;
-         $('#'+formID).find('input[name="'+index+'"]').val(value);
-         });*/
     }
-
-    ///////////////////////////////////////////////////////
-    ///////////////////////////////////////////////////////
 
 
     function subform(form_type) {
@@ -1941,24 +1904,6 @@ printCSS($this);
                     }
                 });
 
-
-                //employment
-                /*var url = '<?php echo $this->request->webroot;?>documents/saveEmployment/' + order_id + '/' + cid;
-                 var fields = $('#form_employment').serialize();
-                 $(':disabled[name]', '#form_employment').each(function () {
-                 fields = fields + '&' + $(this).attr('name') + '=' + $(this).val();
-                 });
-                 var employment = fields
-                 saveEmployment(url, employment);
-
-                 //education
-                 url = '<?php echo $this->request->webroot;?>documents/saveEducation/' + order_id + '/' + cid;
-                 var fields = $('#form_education').serialize();
-                 $(':disabled[name]', '#form_education').each(function () {
-                 fields = fields + '&' + $(this).attr('name') + '=' + $(this).val();
-                 });
-                 var education = fields
-                 saveEducation(url, education);*/
             }
         });
     }
@@ -2177,13 +2122,6 @@ printCSS($this);
             data: param,
             name: 'myfile',
             onSubmit: function (file, ext) {
-                /*if (! (ext && /^(jpg|png|jpeg|gif)$/.test(ext))){
-                 // extension is not allowed
-                 mestatus.text('Only JPG, PNG or GIF files are allowed');
-                 return false;
-                 }
-                 $("#picture_button").text("Uploading");
-                 this.disable();*/
             },
             onComplete: function (file, response) {
                 if (response != 'error') {
@@ -2193,13 +2131,9 @@ printCSS($this);
                 else {
                     alert('<?= addslashes($strings["addorder_invalidfile"]); ?>');
                 }
-
-                /* $("#picture").text("Select");
-                 this.enable();*/
             }
 
         });
-        /* image upload ends */
     }
 
 

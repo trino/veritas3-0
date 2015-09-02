@@ -25,12 +25,6 @@ $feed = $feeds;
 						<a href="">Add/Edit Feedbacks</a>
 					</li>
 				</ul>
-                <?php
-                /*
-				if(isset($disabled))
-                { ?>
-                <a href="javascript:window.print();" class="floatright btn btn-info">Print</a>
-                <?php }*/ ?>
 			</div>
             <div class="row">
                 <div class="col-md-12">

@@ -118,12 +118,8 @@
                             <?php
                         }
                     ?>
-                    <!--<a href="javascript:void(0);" onclick="$('.dashboard-stat').parent().each(function(){$(this).show(300);});$(this).hide();$('.moredocxs').hide();$('.btndocs').hide();$('.clients_select').show();" class="btn btn-success moreback" style="display: none;">Back</a>-->
-
                     <?php
                         $doc_count = 0;
-                        /*if($cid)
-                            include('subpages/home_blocks.php');*/
                         if(isset($mod->uploaded_for)){
                             $driver = $mod->uploaded_for;
                             $_GET['driver'] = $mod->uploaded_for;
@@ -563,74 +559,37 @@
             });
         }
     })
-    <?php
-    /*
-    if($did)
-    {
-        ?>
-        showforms('company_pre_screen_question.php');
-        showforms('driver_application.php');
-        showforms('driver_evaluation_form.php');
-        showforms('document_tab_3.php');
-        <?php
-    }*/
-    ?>
 
-    function saveSignature()
-    {
-        //alert('test');
-        if($(".subform4").attr('style') == '')
-        {
-            //save_signature('3');
-            //save_signature('4');
-            //save_signature('5');
-            //save_signature('6');
-            //save_signature('6');
-        }
-        else
-        {
-            if($('.sub_docs_id').val()=='18')
-            {
+    function saveSignature() {
+        if($(".subform4").attr('style')) {
+            if($('.sub_docs_id').val()=='18') {
                 save_signature('8');
             }
         }
-
-
     }
-    function save_signature(numb)
-    {
-        //alert('rest');return;
 
+    function save_signature(numb) {
         $("#test"+numb).data("jqScribble").save(function(imageData)
         {
             //alert($('#signature_company_witness2').parent().find('.touched').val());
             if((numb=='1' && $('#recruiter_signature').parent().find('.touched').val()==1) || (numb=='3' && $('#criminal_signature_applicant').parent().find('.touched').val()==1) || (numb=='4' && $('#signature_company_witness').parent().find('.touched').val()==1) || (numb=='5' && $('#criminal_signature_applicant2').parent().find('.touched').val()==1) || (numb=='6' && $('#signature_company_witness2').parent().find('.touched').val()==1) || (numb=='8' && $('#gfs_signature').parent().find('.touched').val()==1)){
-                $.post('<?php echo $this->request->webroot; ?>canvas/image_save.php', {imagedata: imageData}, function(response)
-                {
-
-                    if(numb=='1')
-                    {
-
+                $.post('<?php echo $this->request->webroot; ?>canvas/image_save.php', {imagedata: imageData}, function(response) {
+                    if(numb=='1') {
                         $('#recruiter_signature').val(response);
                     }
-                    if(numb=='3')
-                    {
+                    if(numb=='3') {
                         $('#criminal_signature_applicant').val(response);
                     }
-                    if(numb=='4')
-                    {
+                    if(numb=='4') {
                         $('#signature_company_witness').val(response);
                     }
-                    if(numb=='5')
-                    {
+                    if(numb=='5') {
                         $('#criminal_signature_applicant2').val(response);
                     }
-                    if(numb=='6')
-                    {
+                    if(numb=='6') {
                         $('#signature_company_witness2').val(response);
                     }
-                    if(numb=='8')
-                    {
+                    if(numb=='8') {
                         $('#gfs_signature').val(response);
                     }
                     $('.saved'+numb).html('Saved');
@@ -655,13 +614,7 @@
 
 
         $('#sub_id').val(s_arr[1]);
-        //var form_type = $(this).val();
-        //alert(form_type);
-        //var filename = form_type.replace(/\W/g, '_');
-        //var filename = filename.toLowerCase();
-        //$('.subform').show();   1
-        for(var k=1;k<=parseFloat('<?php echo $doc_count;?>');k++)
-        {
+        for(var k=1;k<=parseFloat('<?php echo $doc_count;?>');k++) {
             $('.subform'+k+' .document_type').remove();
             $('.subform'+k+' .sub_docs_id').remove();
 
@@ -757,17 +710,11 @@
 
 
 
-
-        //alert(s_arr[1]);
-        //alert(s_arr[1]);
-
-
-        if(s_arr[1]>4)
-        {
+        if(s_arr[1]>4) {
             $('.attachments').show();
-        }
-        else
+        } else {
             $('.attachments').hide();
+        }
         if (ftype != "") {
             //alert(form_type);
             for (var p = 1; p <= parseFloat('<?php echo $doc_count;?>'); p++) {
@@ -776,26 +723,8 @@
 
             }
             $('.subform' + s_arr[1]).show(200, function () {
-                /*if (s_arr[1] == '1')
-                 fileUpload('fileUpload1');
-                 if (s_arr[1] == '3')
-                 fileUpload('road1');
-                 if (s_arr[1] == '2')
-                 fileUpload('driveApp1');
-                 if (s_arr[1] == '4') {
-                 fileUpload('consent1');
-                 fileUpload('consent2');
-                 fileUpload('edu1');
-                 fileUpload('emp1');
-                 }
-                 */
-                //alert(ftype);
-                // loading data from db
-                // debugger;
                 var url = '<?php echo $this->request->webroot;?>documents/getOrderData/' + client_id + '/' + doc_id + '/?document=1<?php if(isset($_GET['order_id'])){?>&order_id=<?php echo $_GET['order_id'];}?>',
                     param = {form_type: ftype};
-                //alert(ftype);
-                //alert(url);
                 $.getJSON(url, param, function (res) {
                     if (res) {
                         if (ftype == "company_pre_screen_question.php") {
@@ -1433,24 +1362,7 @@
     }
 
     function assignValue(formID, obj) {
-        // debugger;
-        //alert(formId);
-        /* $('#'+formID).find(':input').each(function(){
-         var $name = $(this).attr('name');
-         $(this).val(obj[$name]);
-         if(obj[$name])
-         alert(ob[$name]);
-
-         });
-         /*
-         $.each(obj,function(index,value){
-         // debugger;
-         $('#'+formID).find('input[name="'+index+'"]').val(value);
-         });*/
     }
-
-    ///////////////////////////////////////////////////////
-    ///////////////////////////////////////////////////////
 
 
 
@@ -1460,8 +1372,8 @@
         $('.subform').show();
         $('.subform').load('<?php echo $this->request->webroot;?>documents/subpages/' + filename);
     }
-    function addmoredoc(idname)
-    {
+
+    function addmoredoc(idname) {
         var total_count = $('.'+idname).data('count');
         $('.'+idname).data('count', parseInt(total_count) + 1);
         total_count = $('.'+idname).data('count');
@@ -1596,16 +1508,7 @@
         if($this->request->params['action']=='view')
         {
             ?>
-        /*for (var h = 1; h <= parseFloat('<?php echo $doc_count;?>'); h++) {
-         $('#form_tab' + h + ' input').attr('disabled', 'disabled');
-         $('#form_tab' + h + ' textarea').attr('disabled', 'disabled');
-         $('#form_tab' + h + ' select').attr('disabled', 'disabled');
-         $('#form_tab' + h + ' button').hide();
-         $('#form_tab' + h + ' a').not('.dl').hide();
-         $('.nav a').show();
-         $('#form_tab' + h + ' input[type="submit"]').hide();
-         $('.form-actions').hide();
-         }*/
+
         var h = '<?php echo $_GET['type'];?>';
         $('#form_tab' + h + ' input').attr('disabled', 'disabled');
         $('#form_tab' + h + ' textarea').attr('disabled', 'disabled');
@@ -2078,31 +1981,6 @@
         });
     }
 
-    /*function saveEmployment(url, param,draft) {
-     $.ajax({
-     url: url,
-     data: param,
-     type: 'POST',
-     success: function (rea) {
-     //window.location = '<?php echo $this->request->webroot?>documents/index';
-     }
-     });
-     }
-
-     function saveEducation(url, param,draft) {
-     $.ajax({
-     url: url,
-     data: param,
-     type: 'POST',
-     success: function (res) {
-     if(draft==0){
-     window.location = '<?php echo $this->request->webroot?>documents/index?flash';
-     }
-     else{
-     window.location = '<?php echo $this->request->webroot?>documents/index?flash&draft';
-     }}
-     });
-     }*/
 
 
     function fileUpload(ID) {
@@ -2134,28 +2012,18 @@
             data: param,
             name: 'myfile',
             onSubmit: function (file, ext) {
-                /*if (! (ext && /^(jpg|png|jpeg|gif)$/.test(ext))){
-                 // extension is not allowed
-                 mestatus.text('Only JPG, PNG or GIF files are allowed');
-                 return false;
-                 }
-                 $("#picture_button").text("Uploading");
-                 this.disable();*/
+
             },
             onComplete: function (file, response) {
                 if (response != 'error') {
                     $('#' + ID).parent().find('.uploaded').text(response);
                     $('.' + ID).val(response);
-                }
-                else
+                } else {
                     alert('Invalid file type.');
-
-                /* $("#picture").text("Select");
-                 this.enable();*/
+                }
             }
 
         });
-        /* image upload ends */
     }
 </script>
 <?php //includejavascript($strings);?>

@@ -10,8 +10,8 @@ class UsersController extends AppController {
 
     public $paginate = [
             'limit' => 10,
-            
         ];
+
      public function initialize() {
         parent::initialize();
         $this->loadComponent('Trans');
@@ -20,19 +20,16 @@ class UsersController extends AppController {
     }
     
 	public function index() {
-	   
 		$this->set('users', $this->paginate($this->Users));
 	}
+
     public function check_client_count(){
-        //$this->loadModel('Clients');
         $setting = TableRegistry::get('clients');
         $u = $this->request->session()->read('Profile.id');
         $query = $setting->find()->where(['profile_id LIKE "'.$u.'%" OR profile_id LIKE "%,'.$u.',%" OR profile_id LIKE "%,'.$u.'"']);
-                 
-         var_dump($query);die();
-         
-         $this->response->body(($l));
-            return $this->response;
+		var_dump($query);die();
+		$this->response->body(($l));
+		return $this->response;
     }
 
 
@@ -43,11 +40,6 @@ class UsersController extends AppController {
         $this->render("edit");
 	}
 
-/**
- * Add method
- *
- * @return void
- */
 	public function add() {
 	    $this->loadModel('Logos');
 	    
@@ -66,13 +58,6 @@ class UsersController extends AppController {
         $this->render("edit");
 	}
 
-/**
- * Edit method
- *
- * @param string $id
- * @return void
- * @throws \Cake\Network\Exception\NotFoundException
- */
 	public function edit($id = null) {
 		$user = $this->Users->get($id, [
 			'contain' => []
@@ -89,13 +74,6 @@ class UsersController extends AppController {
 		$this->set(compact('user'));
 	}
 
-/**
- * Delete method
- *
- * @param string $id
- * @return void
- * @throws \Cake\Network\Exception\NotFoundException
- */
 	public function delete($id = null) {
 		$user = $this->Users->get($id);
 		$this->request->allowMethod(['post', 'delete']);
@@ -107,8 +85,7 @@ class UsersController extends AppController {
 		return $this->redirect(['action' => 'index']);
 	}
     
-    function logout()
-    {
+    function logout() {
         $this->request->session()->delete('User.id');
         $this->redirect('/login');
     }

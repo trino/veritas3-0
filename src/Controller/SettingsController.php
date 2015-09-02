@@ -3,21 +3,10 @@ namespace App\Controller;
 use Cake\ORM\TableRegistry;
 use App\Controller\AppController;
 
-/**
- * Logos Controller
- *
- * @property App\Model\Table\LogosTable $Logos
- */
+
 class SettingsController extends AppController {
-/**
- * Index method
- *
- * @return void
- */
- 
     public function intialize(){
         parent::intialize();
-
         $this->loadComponent('Settings');
         $this->Settings->verifylogin($this, "settings");
     }
@@ -101,7 +90,6 @@ class SettingsController extends AppController {
                 ->execute();
         echo "1";
         die();
-        //$this->redirect(['controller'=>'profiles','action'=>'edit',$this->request->session()->read("Profile.id")]);
     }
 
     function change_clients(){
@@ -161,7 +149,6 @@ class SettingsController extends AppController {
     }
     
     function all_settings($uid="", $type="", $scope="", $scope_id="", $doc_id=""){
-
         if($type != "" || $type !="0") {
             if($type =='sidebar') {
                 return $this->get_side($uid);
@@ -455,41 +442,29 @@ class SettingsController extends AppController {
         return $this->response;
     }
     
-    function get_fedbacks($uid)
-    {
+    function get_fedbacks($uid) {
         $profile = TableRegistry::get('profiles')->find()->where(['id'=>$uid])->first();
-        //echo $profile->profile_type; die();
-        if($profile->profile_type=='5')
-        {
+        $feedback = "";
+        if($profile->profile_type=='5') {
             //60day form for driver
             $feedback = TableRegistry::get("60days")->find()->where(['profile_id'=>$uid])->all();
-        }
-        elseif($profile->profile_type=='9'|| $profile->profile_type=='12')
-        {
+        } elseif($profile->profile_type=='9'|| $profile->profile_type=='12') {
             //30day form for employee & sales
             $feedback = TableRegistry::get("30days")->find()->where(['profile_id'=>$uid])->all();
         }
-        else
-            $feedback = "";
-        
          $this->response->body($feedback);
          return $this->response;
-        
     }
-    function getclient($cid)
-    {
+
+    function getclient($cid) {
         $client = TableRegistry::get('clients')->find()->where(['id'=>$cid])->first();
-        
-             $this->response->body($client->company_name);
-        
+        $this->response->body($client->company_name);
         return $this->response;
     }
-    function getprofile($pid)
-    {
+
+    function getprofile($pid) {
         $profile = TableRegistry::get('profiles')->find()->where(['id'=>$pid])->first();
-        
-             $this->response->body($profile->username);
-        
+        $this->response->body($profile->username);
         return $this->response;
     }
     

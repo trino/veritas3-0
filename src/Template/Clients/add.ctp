@@ -819,23 +819,6 @@
                            $('.overlay-wrapper').show(); 
                         $('#save_client_p1').text('<?= $strings["forms_saving"];?>');
                         var str = '';
-                        /*
-                         $('.recruiters input').each(function () {
-                         if ($(this).is(':checked')) {
-                         if (str == '')
-                         str = 'profile_id[]=' + $(this).val();
-                         else
-                         str = str + '&profile_id[]=' + $(this).val();
-                         }
-                         });
-                         $('.contacts input').each(function () {
-                         if ($(this).is(':checked')) {
-                         if (str == '')
-                         str = 'contact_id[]=' + $(this).val();
-                         else
-                         str = str + '&contact_id[]=' + $(this).val();
-                         }
-                         });*/
                         $('.moredocs').each(function () {
                             if ($(this).val() != "") {
                                 if (str == '')

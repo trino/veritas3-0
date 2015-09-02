@@ -14,8 +14,8 @@ use Cake\I18n\Time;
 class SchedulesController extends AppController {
 
     
-     public function initialize() {
-        parent::initialize();
+    public function initialize() {
+          parent::initialize();
           $this->loadComponent('Settings');
           $this->Settings->verifylogin($this, "schedules");
     }
@@ -35,22 +35,16 @@ class SchedulesController extends AppController {
         $this->render('add');
 	}
 
-/**
- * Add method
- *
- * @return void
- */
+
 	public function add() {
-	   if(isset($_POST['submit']))
-       {
-        date_default_timezone_set('Canada/Central');
-       
-            foreach($_POST as $k=>$v)
-            {
-                if($k == 'date')
-                    $arr[$k] = date('Y-m-d H:i:s',strtotime(trim(str_replace("-"," ",$v)).":00"));
-                else
-                    $arr[$k]= $v;
+	   if(isset($_POST['submit'])) {
+            date_default_timezone_set('Canada/Central');
+            foreach($_POST as $k=>$v) {
+                if($k == 'date') {
+                    $arr[$k] = date('Y-m-d H:i:s', strtotime(trim(str_replace("-", " ", $v)) . ":00"));
+                }else {
+                    $arr[$k] = $v;
+                }
             }
             $events = TableRegistry::get('Events');
     	    $arr['user_id'] = $this->request->session()->read('Profile.id');
@@ -58,39 +52,28 @@ class SchedulesController extends AppController {
     
             if ($events->save($event)) {
                 $this->Flash->success('Task saved successfully.');
-                
-            } 
-            else 
-            {
+            } else {
                 $this->Flash->error('Error creating task. Please try again.');
-                
             }
             return $this->redirect(['action' => 'calender']);
             
         }
 	}
 
-/**
- * Edit method
- *
- * @param string $id
- * @return void
- * @throws \Cake\Network\Exception\NotFoundException
- */
+
 	public function edit($id = null) {
 	    $events = TableRegistry::get('Events');
         $event = $events->find()->where(['id'=>$id])->first();
         $this->set('event',$event);
-        if(isset($_POST['submit']))
-       {
-       
-            foreach($_POST as $k=>$v)
-            {
-                if($k!='submit')
-                if($k == 'date')
-                    $arr[$k] = date('Y-m-d H:i:s',strtotime(trim(str_replace("-","",$v)).":00"));
-                else
-                    $arr[$k]= $v;
+        if(isset($_POST['submit'])) {
+            foreach($_POST as $k=>$v) {
+                if($k!='submit') {
+                    if ($k == 'date') {
+                        $arr[$k] = date('Y-m-d H:i:s', strtotime(trim(str_replace("-", "", $v)) . ":00"));
+                    } else {
+                        $arr[$k] = $v;
+                    }
+                }
             }
             $events = TableRegistry::get('Events');
             
@@ -108,13 +91,6 @@ class SchedulesController extends AppController {
        $this->render('add');
 	}
 
-/**
- * Delete method
- *
- * @param string $id
- * @return void
- * @throws \Cake\Network\Exception\NotFoundException
- */
 	public function delete($id = null) {
 	  $event = TableRegistry::get('Events');
       $query = $event->query();
@@ -125,50 +101,39 @@ class SchedulesController extends AppController {
 		return $this->redirect(['action' => 'calender']);
 	}
     
-    function logout()
-    {
+    function logout() {
         $this->request->session()->delete('Profile.id');
         $this->redirect('/login');
     }
     
-    function todo()
-    {
+    function todo() {
         
     }
+
     function picker(){
         $this->layout= 'blank';
     }
+
     function calender1(){
         $this->layout= 'blank';
     }
 
     
-    function date($date)
-    {
+    function date($date) {
         $events = TableRegistry::get('Events');
         $event = $events->find()->where(['user_id'=>$this->request->session()->read('Profile.id'),'date LIKE "'.$date.'%"'])->order(['date'])->all();
-        //debug($event);
         $this->set('events', $event);
     }
-    function calender()
-    {
+    function calender() {
         $events = TableRegistry::get('Events');
         $event = $events->find()->where(['user_id'=>$this->request->session()->read('Profile.id')])->order(['date'=>'DESC'])->all();
-        //debug($event);
         $this->set('events', $event);
     }
     
     function timezone(){
-     //   session_start();
-
-
         $offset = date("Z")/3600 ;
         $this->request->session()->write('time',$_GET['time']);
-       // $_SESSION['time'] = $_GET['time'];
-
         $this->request->session()->write('timediff',$_GET['time'] - $offset);
-
-     //   $_SESSION['timediff'] = $_GET['time'] - $offset;
     }
    
    

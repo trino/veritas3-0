@@ -134,12 +134,6 @@
         }
         $QuestionID = $QuizID . ':' . $Index;
         echo '<div class="state">' . $answered . '</div><div class="grade">Marked out of ' . $markedOutOf . '</div>';
-        //echo '<div class="questionflag editable" aria-atomic="true" aria-relevant="text" aria-live="assertive">';
-        //echo '<input type="hidden" name="' . $QuestionID . '_flagged" value="0" />';
-        //echo '<input type="checkbox" id="' . $QuestionID . '_flaggedcheckbox" name="' . $QuestionID . '_flaggedcheckbox" value="1" ' . $flagged . '/>';
-        //*<input type="hidden" value="qaid=16821&amp;qubaid=873&amp;qid=55&amp;slot=1&amp;checksum=6e752fddd87489abd0ec093720443089&amp;sesskey=JiVfZNWBDK&amp;newstate=" class="questionflagpostdata" /> I DONT KNOW WHAT THIS IS FOR
-        //echo '<label id="' . $QuestionID . '_flaggedlabel" for="' . $QuestionID . '_flaggedcheckbox">';
-        //echo '<img alt=' . $Index . ' src="http://asap-training.com/theme/image.php?theme=aardvark&amp;component=core&amp;rev=1415027139&amp;image=i%2Funflagged" alt="Not flagged" id="' . $Index . ':flaggedimg" /></label></div>';
     }
 
     function preprocess($usersanswer, $correctanswer)

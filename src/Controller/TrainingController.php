@@ -150,8 +150,7 @@ class TrainingController extends AppController {
 
     //my API
     public function i2($post){
-        foreach($post as $key => $value){//($temp=0; $temp<count($post); $temp+=1){
-            //if (!is_numeric($post[$temp])) { $post2[$temp] = $this->clean($post[$temp]);  }
+        foreach($post as $key => $value){
             if (!is_numeric($value) || $value == true) { $post2[$key] = $this->clean($value);  } else {$post2[$key] = $value;}
         }
         return $post2;
@@ -196,10 +195,7 @@ class TrainingController extends AppController {
     }
     public function getQuiz($QuizID){
         $table = TableRegistry::get('training_quiz');
-        //$answers =  $table->find()->where(['QuizID'=>$_GET["quizid"]]);
         $answers =  $table->find('all', array('conditions' => array('QuizID' => $QuizID), 'order' => array('QuestionID ASC') ));
-        //$this->set('quizid',$_GET["quizid"]);
-        //$answers= $this->paginate($answers);
         return $answers;
     }
     public function deletequiz($quizID){
@@ -266,7 +262,6 @@ class TrainingController extends AppController {
     function lastQuery(){
         $dbo = $this->getDatasource();
         $logs = $dbo->_queriesLog;
-        // return the first element of the last array (i.e. the last query)
         return current(end($logs));
     }
 
@@ -279,45 +274,17 @@ class TrainingController extends AppController {
         return is_object($users);
     }
     public function enumusers($QuizID){//LEFT JOIN IS A PAIN!
-        //$this->loadModel('TrainingAnswers');
         $table = TableRegistry::get("training_answers");
         $options = array();
         $options['conditions'] = array('training_answers.QuizID =' . $QuizID); //array('QuizID' => $QuizID);
-        //$options['fields'] =  array('UserID');// 'profiles.fname', 'profiles.lname', 'profiles.username');
-        //$options['joins'] = array(array('table' => 'profiles', 'alias' => 'profiles', 'type' => 'LEFT', 'conditions' => array('training_answers.UserID = profiles.id')));
         $options['group'] = 'training_answers.UserID';
         $users =  $table->find('all', $options)->contain("profiles");//->where(['training_answers.QuizID = ' . $QuizID . ' or 1=1'])
-            //$users =  $table->find('all', array('conditions' => array('QuizID' => $QuizID), 'fields' =>  array('training_answers.UserID', 'profiles.fname', 'profiles.lname', 'profiles.username'), 'group' => 'training_answers.UserID', 'joins' => array(array('table' => 'profiles', 'alias' => 'profiles', 'type' => 'LEFT', 'conditions' => array('training_answers.UserID = profiles.id')))));
         $quiz = $this->getQuiz($QuizID);
         foreach($users as $user){
             $score = $this->gradetest($quiz,$QuizID, $user->UserID);
-            //$user->questions = $score['questions'] ;
-            //$user->correct = $score['correct'] ;
-            //$user->percent = $score['percent'] ;
             $user->profile = $score;
         }
         $this->set('users',$users);
-        /*
-        foreach($users as $o){
-            debug($o);//->profile->fname;
-        }
-        die();
-
-        $users2= array();
-        $table = TableRegistry::get("profiles");
-        $options = array();
-        foreach($users as $user){
-            $options['conditions'] = array('id' => $user->UserID);
-            $userdata=$table->find('all',$options)->first();
-            $score = $this->gradetest($quiz,$QuizID, $user->UserID);
-            print_r($score);
-            $userdata->questions = $score['questions'] ;
-            $userdata->correct = $score['correct'] ;
-            $userdata->percent = $score['percent'] ;
-            $users2[$user->UserID] = $userdata;
-        }
-        $this->set('users',$users2);
-        */
     }
 
     public function gradetest($Quiz, $QuizID, $UserID){
@@ -368,12 +335,6 @@ class TrainingController extends AppController {
                 if (isset($Post[$QuestionName . "_flaggedcheckbox"])) {
                     $Flagged = $Post[$QuestionName . "_flaggedcheckbox"] == 1;
                 }
-
-                //echo "<P></P><BR>UserID: " . $UserID;
-                //echo "<BR>Quiz ID: " . $question->QuizID;
-                //echo "<BR>Question ID: " . $question->QuestionID;
-                //echo "<BR>Answer: " . $Answer;
-                //echo "<BR>Flagged: " . $Flagged ;
                 if ($question->Answer == $Answer) {
                     $correct++;
                 }
@@ -388,36 +349,13 @@ class TrainingController extends AppController {
             $pass = $this->getQuizHeader($QuizID)->pass;
             if ($score>=$pass) {$event = "training_passed";}
             $path = LOGIN . "training/certificate?quizid=" . $QuizID . "&userid=" . $UserID;
-            //$users = array($UserID, $this->whoenrolled($QuizID,$UserID ))
             $users = $this->enumsupers();
             $users[] = $UserID;
-            //$this->email($users, "Course completion", $message);
             $this->handleevent($event, array("email" => $users, "score" => $score, "username" => $profile->username));
-
-            //http://localhost/veritas3/training/certificate?quizid=1
-            //$this->Flash->success($answers . ' answers were saved');
             $this->loadComponent('Trans');
             $this->Flash->success($this->Trans->getString("training_answerssaved", array("num" => $answers)));
         }
     }
-
-    /*
-    public function email($to, $subject, $message){
-        if(is_array($to)){
-            foreach($to as $address){
-                $this->email($address, $subject, $message);
-            }
-        } else {
-            if(is_numeric($to)){
-                $profile=$this->getprofile($to);
-                $to=$profile->email;
-            }
-            if ($to) {
-                $this->Mailer->sendEmail("", $to, $subject, $message);
-            }
-        }
-    }
-    */
 
     public function deleteanswers($UserID, $QuizID){
         $table = TableRegistry::get("training_answers");
@@ -425,16 +363,11 @@ class TrainingController extends AppController {
     }
     public function saveanswer($UserID, $QuizID, $QuestionID, $Answer, $Flagged){
         $table = TableRegistry::get("training_answers");
-        //$results = $table->find('all', array('conditions' => array('UserID'=>$UserID, 'QuizID'=>$QuizID, 'QuestionID'=> $QuestionID)))->first();
         $table->deleteAll(array('UserID'=>$UserID, 'QuizID'=>$QuizID, 'QuestionID'=> $QuestionID), false);
-        //if(!$results) {
-            $table->query()->insert(['UserID', 'QuizID', 'QuestionID', 'Answer', 'flagged', 'created'])
-                ->values(['UserID' => $UserID, 'QuizID' => $QuizID, 'QuestionID' => $QuestionID, 'Answer' => $Answer, 'flagged' => $Flagged, 'created' => date("Y-m-d H:i:s")])->execute();
-        //}else{
-        //    $table->query()->update()->set(['UserID' => $UserID, 'QuizID' => $QuizID, 'QuestionID' => $QuestionID, 'Answer' => $Answer, 'flagged' => $Flagged])
-        //        ->where(['UserID'=>$UserID, 'QuizID'=>$QuizID, 'QuestionID'=> $QuestionID])->execute();
-        //}
+        $table->query()->insert(['UserID', 'QuizID', 'QuestionID', 'Answer', 'flagged', 'created'])
+            ->values(['UserID' => $UserID, 'QuizID' => $QuizID, 'QuestionID' => $QuestionID, 'Answer' => $Answer, 'flagged' => $Flagged, 'created' => date("Y-m-d H:i:s")])->execute();
     }
+
     public function getprofile($UserID, $set=true){
         $table = TableRegistry::get("profiles");
         $results = $table->find('all', array('conditions' => array('id'=>$UserID)))->first();
@@ -477,7 +410,6 @@ class TrainingController extends AppController {
 
             $profile = $this->getprofile($UserID, false);
             $path = LOGIN .'training/quiz?quizid=' . $QuizID;
-            //$this->email($profile->email, "You have been enrolled in a quiz", $msg);
             $this->Mailer->handleevent("training_enrolled", array("email" => "$profile->email", "path" => $path));
             return true;
         }

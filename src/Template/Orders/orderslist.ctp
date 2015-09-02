@@ -211,12 +211,6 @@
                                     $client = $this->requestAction("clients/getClient/" . $order->client_id);
 
                                     $EDITURL = $Manager->make_order_path($order);
-                                    /*$this->request->webroot . "orders/addorder/" . $order->client_id . "/" . $order->id;
-                                    if ($order->order_type) {
-                                        $EDITURL.= '?order_type=' . urlencode($order->order_type);
-                                        if ($order->forms) { $EDITURL.= '&forms=' . $order->forms; }
-                                    }
-                                    */
 
                                     ?>
                                     <tr class="<?= $row_color_class; ?>" role="row">
@@ -229,15 +223,7 @@
                                             <?php
                                             if (is_object($order) && $order->order_type) {
                                                     echo '<div style="" class="dashboard-stat ';
-                                                    /*
-                                                    $colors = array("Order_Products" => "green-haze", "Order_MEE" => "red-intense", "ReQualify" => "blue-madison");
-                                                    if (isset($colors[str_replace(' ', '_', $order->order_type)])) {
-                                                        echo $colors[str_replace(' ', '_', $order->order_type)];
-                                                    } else {
-                                                        echo "blue";
-                                                    }
-                                                    */
-                                                    //echo getColor($products, $order->order_type );
+
                                                     $ordertype = FindIterator($products, "Acronym", $order->order_type);
                                                     if (is_object($ordertype)) {
                                                         echo $ordertype->ButtonColor;
@@ -245,14 +231,7 @@
                                                         echo "grey";
                                                     }
                                                     ?>">
-                                                    <!--div class="whiteCorner"></div-->
-                                                    <!--div class="visual" style="height: 40px;">
-                                                        <i class="fa fa-copy"></i>
-                                                    </div-->
-                                                    <!--div class="details"> //WARNING: This won't work while in a table...
-                                                        <div class="number"></div>
-                                                        <div class="desc"></div>
-                                                    </div-->
+
                                                     <?php
                                                     if($order->order_type != 'BUL' && $order->order_type != 'REQ')
                                                     {
@@ -339,10 +318,7 @@
                                                                if ($order->forms) echo '&forms=' . $order->forms;
                                                            } ?>"><?= $strings["dashboard_view"]; ?></a>
 <?php
-//if (!isset($_GET['table']))
-//echo $this->Html->link(__('View'), ['action' => 'vieworder', $order->client_id, $order->id], ['class' => 'btn btn-info']);
-                                                    /*else
-                                                    echo $this->Html->link(__('View'), ['action' => 'vieworder', $order->client_id, $order->id, $_GET['table']], ['class' => 'btn btn-info']);*/
+
                                                 }
 
                                                 $super = $this->request->session()->read('Profile.super');// || $profiletype->caneditall;
@@ -354,10 +330,7 @@
                                                             <a class="<?= btnclass("EDIT") ?>"
                                                                href="<?= $EDITURL ?>"><?= $strings["dashboard_edit"]; ?></a>
 <?php
-//echo $this->Html->link(__('Edit'), ['controller' => 'orders', 'action' => 'addorder', $order->client_id, $order->id], ['class' => 'btn btn-primary']);
-                                                        } /*elseif (isset($_GET['table'])) {
-echo $this->Html->link(__('Edit'), ['controller' => 'orders', 'action' => 'addorder', $order->client_id, $order->id, $_GET['table']], ['class' => 'btn btn-primary']);
-}*/
+
 
                                                     }
 

@@ -8,9 +8,6 @@
     use Cake\Network\Email\Email;
     use Cake\Controller\Component\CookieComponent;
     use Cake\Datasource\ConnectionManager;
-    /*
-       include_once('subpages/api.php');
-    */
 
     class RapidController extends AppController {
         public function initialize() {
@@ -122,18 +119,11 @@
                 if ($modal->save($data)) {
                     $from = array('info@' . $path => $setting->mee);
                     $pro = TableRegistry::get('profiles')->find()->where(['id' => $_POST['profile_id']])->first();
-                    /*$rec = TableRegistry::get('profiles')->find()->where(['id' => $pro->created_by])->first();
-                    if ($rec->email) {
-                        $rec_email = $rec->email;
-                        $this->Mailer->sendEmail($from, $rec_email, "Survey form submitted", "" . $pro->username . " has submitted the " . $type . "days survey. Click <a href='" . LOGIN . "application/" . $type . "days.php?p_id=" . $_POST['profile_id'] . "&form_id=" . $data->id . "' target='_blank'>here</a> to view the form. <br /><br />Regards,<br /> The MEE Team");
-
-                    }*/
                     $emails = $this->getallrecruiters($ClientID);
                     $path = LOGIN . "application/" . $type . "days.php?p_id=" . $_POST['profile_id'] . "&form_id=" . $data->id ;
                     $site = TableRegistry::get('settings')->find()->first()->mee;//, "site" => $site
 
                     foreach($emails as $e) {
-                        //$this->Mailer->sendEmail($from, $e, "Survey form submitted", "The profile '" . $pro->username . "' has submitted the " . $type . "days survey. Click <a href='" . LOGIN . "application/" . $type . "days.php?p_id=" . $_POST['profile_id'] . "&form_id=" . $data->id . "' target='_blank'>here</a> to view the form.");
                         $this->Mailer->handleevent("surveycomplete", array("email" => $e, "username" => $pro->username, "type" => $type, "path" => $path, "site" => $site));
                     }
                     $this->Mailer->handleevent("surveycomplete", array("email" => "super", "username" => $pro->username, "type" => $type, "path" => $path, "site" => $site));
@@ -169,19 +159,6 @@
             }
             $path = LOGIN . "profiles/view/" . $ProfileID;
             $this->Mailer->handleevent("profilecreated", array("username" => $_POST['username'],"email" => $emails, "path" =>$path, "createdby" => "Application", "type" => "Applicant", "password" => "[Blank]", "id" =>  $ProfileID ));
-    /*
-            $Subject = "A new user just registered!";
-            $Message = 'A new user just registered on ' . LOGIN . '<br><br>Name: ' . $POST["fname"] . " " . $POST["mname"] . " " . $POST["lname"] .
-                "<br><br>Username: " . $POST["username"] .
-                "<br /><br />Click <a href='" . LOGIN . 'profiles/view/' . $ProfileID . "'>here</a> view the profile. <br /><br />Regards,<br /> The MEE Team";
-            foreach ($profilesToEmail as $Profile) {
-                $Profile = $this->getTableByAnyKey("sidebar", "user_id", $Profile);
-                if (is_object($Profile) && $Profile->email_profile == 1) {
-                    $Profile = $Profile->email;
-                    $this->Mailer->sendEmail("", $Profile, $Subject, $Message);//sendemail should never be used!
-                }
-            }
-    */
         }
 
         public function Update1Column($Table, $PrimaryKey, $PrimaryValue, $Key, $Value) {
@@ -192,15 +169,13 @@
             return TableRegistry::get($Table)->find('all', array('conditions' => array($Key => $Value)))->first();
         }
         
-        function checkcron($cid,$date,$pid)
-        {
+        function checkcron($cid,$date,$pid) {
             $client_crons = TableRegistry::get('client_crons');
             $cnt = $client_crons->find('all')->where(['client_id'=>$cid,'orders_sent'=>'1','cron_date'=>$date,'profile_id'=>$pid])->count();
             return $cnt;
-            
         }
-        function cron() {
 
+        function cron() {
             $today = date('Y-m-d');
             $msg = "";
             $clients = TableRegistry::get('clients')->find('all')->where(['requalify' => '1','requalify_product <> ""']);
@@ -271,39 +246,27 @@
                         //echo $p->created_by;
                         if(strtotime($p->expiry_date) < strtotime($today)) {
                             $epired_profile .= $p->username.",";
-                        }
-                         else {
+                        } else {
                             if ($c->requalify_re == '1') {
                                 $date = $p->hired_date;
-                                 if(strtotime($date) < strtotime($today))
-                                 {
+                                 if(strtotime($date) < strtotime($today)) {
                                     
                                     //$date =  $this->getnextdate($date,$frequency); 
-                                    if(strtotime($date) == strtotime($today))
-                                    {
-                                        if($this->checkcron($c->id, $date, $p->id))
-                                            $date = $this->getnextdate($date,$frequency);
-                                        
-                                       
-                                    }
-                                    else
-                                    {
+                                    if(strtotime($date) == strtotime($today)) {
+                                        if($this->checkcron($c->id, $date, $p->id)) {
+                                            $date = $this->getnextdate($date, $frequency);
+                                        }
+                                    } else {
                                         $date =  $this->getnextdate($date,$frequency);
-                                          if(strtotime($date) == strtotime($today))
-                                             if($this->checkcron($c->id, $date, $p->id))
-                                                 $date = $this->getnextdate($date,$frequency);
-                                            
-                                    
+                                          if(strtotime($date) == strtotime($today)) {
+                                              if ($this->checkcron($c->id, $date, $p->id)) {
+                                                  $date = $this->getnextdate($date, $frequency);
+                                              }
+                                          }
                                     }
-                                
-                                    //if(strtotime($date)< strtotime($today))
-                                      //  continue;
-                                }
-                                else
-                                    continue;
-                              
-                                  
-                                
+                                } else {
+                                     continue;
+                                 }
                             }
                             //echo $date;die();
                             $nxt_date = $this->getnextdate($date, $frequency);
@@ -420,12 +383,6 @@
 
                     }
                     array_push($marr, $arr);
-                    //var_dump($rec1); die();
-                    /*foreach ($rec1 as $r) {
-                        foreach($r as $user=>$email)
-                            $this->Mailer->sendEmail("", $email, "Driver Re-qualified", "The profile '" . $user . "' has been requalified on ".$today." .<br /><br />Click <a href='" . LOGIN ."'>here</a> to login.");
-                        //$this->Mailer->sendEmail("", $r, 'Driver(s) Re-qualified', $message);
-                    }*/
                 }
 
                 unset($arr);
@@ -520,17 +477,8 @@
                         $emails = $this->getallrecruiters($Client_ID);//GFS
                         $path = LOGIN . "documents/view/" . $Client_ID . "/" . $docID . "?type=18";//18=document type ID
                         $site = TableRegistry::get('settings')->find()->first()->mee;//, "site" => $site
-//                        $this->Mailer->handleevent("newapplicant", array("email" => $emails, "app_id" => $application->id, "profile_id" => $p_id, "path" => $path, "site" => $site));
-
-                        //foreach($emails as $e){
-                            //$this->Mailer->sendEmail($from, $e, "Application for Employment", "A new applicant has applied for employment.<br><br> Please click <a href='".LOGIN."application/apply.php?form_id=".$application->id."' target='_blank'>here</a> to view the form.<br><br>Regards,<br>The MEE Team");
-                       // }
                     }
-                    //if($Client_ID==26) {
-                        $this->redirect('/application/index.php?form=9&msg=success&user_id=' . $p_id . '&client_id=' . $Client_ID);
-                    //} else {
-                    //    $this->redirect('/application/index.php?form=thankyou&client_id=' . $Client_ID);
-                    //}
+                    $this->redirect('/application/index.php?form=9&msg=success&user_id=' . $p_id . '&client_id=' . $Client_ID);
                 }
             }
         }
@@ -564,12 +512,6 @@
             $client = TableRegistry::get('clients')->find()->where(['id'=> $client_id])->first();
             $forms = $client->requalify_product;
             $profile = TableRegistry::get('profiles')->find()->where(['id'=>$profile_id])->first();
-            /*if(strtotime($profile->expiry_date)<strtotime($date))
-            {
-                
-             }
-            else
-            */                                        
                         
             $crons = TableRegistry::get('client_crons');
             $cron_p = $crons->find()->where(['profile_id' => $profile_id, 'client_id' => $client_id, 'orders_sent' => '1', 'cron_date' => $date])->first();
@@ -632,15 +574,7 @@
                  
                 $i = 0;
                 $setting = TableRegistry::get('settings')->find()->first();
-                
-                    //$mesg = "Profile: '".$profile->username."' have been re-qualified on " . $date . " for client: " . $client->company_name . ".<br /><br />Click <a href='" . LOGIN . "'>here</a> to login to view the reports.<br /><br />Regards,<br />The MEE Team";
-                    //$this->Mailer->sendEmail("", $e, "Driver Re-qualified (" . $client->company_name . ")", $mesg);//do not use sendEmail, use handleevent instead
                 $this->Mailer->handleevent("requalification", array("site" => $setting->mee,"email" => $e, "username" => $profile->username, "company_name" => $client->company_name));
-              
-                //$a = TableRegistry::get('profiles')->find()->where(['super' => '1'])->first();
-                //$admin_email = $a->email;
-                //$this->Mailer->sendEmail("", $admin_email, 'Driver Re-qualification Cron', "Cron date:" . $date . "</br>" . $msg);//do not use sendEmail, use handleevent instead
-                //$this->Mailer->handleevent("cronordercomplete", array("site" => $setting->mee,"email" => "super"));
             }
             $this->set('profiles', 1);
         }

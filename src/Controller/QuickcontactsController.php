@@ -26,41 +26,19 @@ class QuickcontactsController extends AppController {
 
 
 	public function view($id = null) {
-		
 		$this->set('disabled', 1);
         $this->render('add');
 	}
 
-/**
- * Add method
- *
- * @return void
- */
+
 	public function add() {
-	   
-        
 	}
 
-/**
- * Edit method
- *
- * @param string $id
- * @return void
- * @throws \Cake\Network\Exception\NotFoundException
- */
 	public function edit($id = null) {
 		$this->render('add');
 	}
 
-/**
- * Delete method
- *
- * @param string $id
- * @return void
- * @throws \Cake\Network\Exception\NotFoundException
- */
 	public function delete($id = null) {
-	
 	}
     
     function quickcontact()

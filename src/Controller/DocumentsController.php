@@ -232,8 +232,6 @@ class DocumentsController extends AppController{
                 $this->set('attachments',$attachments);
             }
             $doc = $this->Document->getDocumentcount();
-
-            //debug($doc);
             $cn = $this->Document->getUserDocumentcount();
             $setting = $this->Settings->get_permission($this->request->session()->read('Profile.id'));
             $doc = $this->Document->getDocumentcount();
@@ -242,10 +240,7 @@ class DocumentsController extends AppController{
                 $this->Flash->error($this->Trans->getString("flash_permissions") . ' (024)');
                 return $this->redirect("/");
             }
-            /*$profile = $this->Clients->get($id);
-            $this->set('profile', $profile);*/
             $this->set('disabled', 1);
-            //$did=$id;
             if ($did) {
                 $doc = TableRegistry::get('Documents');
                 $query = $doc->find()->where(['id' => $did])->first();
@@ -324,16 +319,18 @@ class DocumentsController extends AppController{
                 }
 
                 $de = TableRegistry::get('road_test');
-                if(!isset($_GET['order_id']))
+                if(!isset($_GET['order_id'])) {
                     $de_detail = $de->find()->where(['document_id' => $did])->first();
-                else
+                }else {
                     $de_detail = $de->find()->where(['order_id' => $_GET['order_id']])->first();
+                }
                 if ($de_detail) {
                     $de_at = TableRegistry::get('doc_attachments');
-                    if(!isset($_GET['order_id']))
+                    if(!isset($_GET['order_id'])) {
                         $sub['de_at'] = $de_at->find()->where(['document_id' => $did])->all();
-                    else
-                        $sub['de_at'] = $de_at->find()->where(['order_id' => $_GET['order_id'],'sub_id'=>3])->all();
+                    }else {
+                        $sub['de_at'] = $de_at->find()->where(['order_id' => $_GET['order_id'], 'sub_id' => 3])->all();
+                    }
                     $this->set('sub', $sub);
                 }
 
@@ -404,31 +401,22 @@ class DocumentsController extends AppController{
     }
 
 
-    public function savePrescreening()
-    {
+    public function savePrescreening() {
         $this->Document->savePrescreening();
         die;
     }
 
-    /**
-     * saving driver application data
-     */
     public function savedDriverApp($document_id = 0, $cid = 0){
         $this->Document->savedDriverApp($document_id,$cid);
         die;
     }
 
-    /**
-     * saving driver application data
-     */
+
     public function savedDriverEvaluation($document_id = 0, $cid = 0){
         $this->Document->savedDriverEvaluation($document_id,$cid);
         die();
     }
 
-    /**
-     * saving driver application data
-     */
     public function savedMeeOrder($document_id = 0, $cid = 0){
         $this->Document->savedMeeOrder($document_id,$cid);
         die();
@@ -447,7 +435,17 @@ class DocumentsController extends AppController{
 
 
 
-
+    function getdoc($Table, $did, $Set= ""){
+        $Table = TableRegistry::get($Table);
+        if(!isset($_GET['order_id'])) {
+            $Table = $Table->find()->where(['document_id' => $did])->first();
+        }else {
+            $Table = $Table->find()->where(['order_id' => $_GET['order_id']])->first();
+        }
+        if(!$Set){$Set=$Table;}
+        if($Set != "NA") {$this->set($Set, $Table);}
+        return $Table;
+    }
     function add($cid = 0, $did = 0, $type = NULL){
         $clients = TableRegistry::get('Clients');
         if($cid==0) {
@@ -486,24 +484,16 @@ class DocumentsController extends AppController{
         $setting = $this->Settings->get_permission($this->request->session()->read('Profile.id'));
         //var_dump($setting);die();
         if (is_null($type)) {
-            // docu
-
             if ($did != 0) {
-
                 $doc = TableRegistry::get('Documents');
                 $query = $doc->find()->where(['id' => $did])->first();
                 $this->set('document', $query);
                 if ($setting->document_edit == 0 || count($doc) == 0 || $cn == 0) {
                     $this->Flash->error($this->Trans->getString("flash_cantuploaddocs"));
-                    //return $this->redirect("/");
-
                 }
-
             } else {
                if ($setting->document_create == 0 || count($doc) == 0 || $cn == 0) {
                     $this->Flash->error($this->Trans->getString("flash_cantuploaddocs"));
-                    //return $this->redirect("/");
-
                 }
             }
             if (isset($_POST['uploaded_for'])) {
@@ -590,138 +580,40 @@ class DocumentsController extends AppController{
         }
 
         if ($did) {
-            /*$this->loadModel('AttachDocs');
-            $this->AttachDocs->deleteAll(['doc_id'=>$did]);
-            $client_docs = array_unique($_POST['attach_doc']);
-            foreach($client_docs as $d)
-            {
-                if($d != "")
-                {
-                    $docs = TableRegistry::get('attach_docs');
-                    $ds['doc_id']= $did;
-                    $ds['file'] =$d;
-                     $doc = $docs->newEntity($ds);
-                     $docs->save($doc);
-                    unset($doc);
-                }
-            }*/
-
-
             $doc = TableRegistry::get('Documents');
 
             $query = $doc->find()->where(['id' => $did])->first();
             $sub_doc = TableRegistry::get('Subdocuments');
             $sd = $sub_doc->find()->all();
 
-            foreach($sd as $s)
-            {
-                if($s->id >12)
-                {
-                    if ($query->sub_doc_id == $s->id)
-                    {
-                        $mods = TableRegistry::get($s->table_name);
-                        if(!isset($_GET['order_id']))
-                            $mod = $mods->find()->where(['document_id' => $did])->first();
-                        else
-                            $mod = $mods->find()->where(['order_id' => $_GET['order_id']])->first();
-                        $this->set($s->table_name, $mod);
+            foreach($sd as $s) {
+                if($s->id >12) {
+                    if ($query->sub_doc_id == $s->id) {
+                        $this->getdoc($s->table_name, $did);
                     }
                 }
             }
 
             if ($query->sub_doc_id == '6') {
-                $feeds = TableRegistry::get('feedbacks');
-                //$pre_at = TableRegistry::get('driver_application_accident');
-                if(!isset($_GET['order_id']))
-                    $feed = $feeds->find()->where(['document_id' => $did])->first();
-                else
-                    $feed = $feeds->find()->where(['order_id' => $_GET['order_id']])->first();
-                $this->set('feeds', $feed);
+                $this->getdoc('feedbacks', $did, 'feeds');
             } elseif ($query->sub_doc_id == '5') {
-
-                $survey = TableRegistry::get('Survey');
-                //$pre_at = TableRegistry::get('driver_application_accident');
-                if(!isset($_GET['order_id']))
-                    $sur = $survey->find()->where(['document_id' => $did])->first();
-                else
-                    $sur = $survey->find()->where(['order_id' => $_GET['order_id']])->first();
-
-
-                $this->set('survey', $sur);
+                $this->getdoc('Survey', $did, 'survey');
             } elseif ($query->sub_doc_id == '7') {
-                $attachments = TableRegistry::get('attachments');
-                //$pre_at = TableRegistry::get('driver_application_accident');
-                if(!isset($_GET['order_id']))
-                    $attachment = $attachments->find()->where(['document_id' => $did])->all();
-                else
-                    $attachment = $attachments->find()->where(['order_id' => $_GET['order_id']])->all();
-                $this->set('attach', $attachment);
-
-                $this->set('attach', $attachment);
-
-            }
-            elseif ($query->sub_doc_id == '8') {
-                $attachments = TableRegistry::get('audits');
-                //$pre_at = TableRegistry::get('driver_application_accident');
-                if(!isset($_GET['order_id']))
-                    $audits = $attachments->find()->where(['document_id' => $did])->first();
-                else
-                    $audits = $attachments->find()->where(['order_id' => $_GET['order_id']])->first();
-                $this->set('audits', $audits);
-            }
-            elseif ($query->sub_doc_id == '11') {
-                $attachments = TableRegistry::get('generic_forms');
-                //$pre_at = TableRegistry::get('driver_application_accident');
-                if(!isset($_GET['order_id']))
-                    $audits = $attachments->find()->where(['document_id' => $did])->first();
-                else
-                    $audits = $attachments->find()->where(['order_id' => $_GET['order_id']])->first();
-                $this->set('generic', $audits);
+                $this->getdoc('attachments', $did, 'attach');
+            }  elseif ($query->sub_doc_id == '8') {
+                $this->getdoc('audits', $did, 'audits');
+            } elseif ($query->sub_doc_id == '11') {
+                $this->getdoc('generic_forms', $did, 'generic');
             } elseif ($query->sub_doc_id == '12') {
-                $attachments = TableRegistry::get('abstract_forms');
-                //$pre_at = TableRegistry::get('driver_application_accident');
-                if(!isset($_GET['order_id']))
-                    $audits = $attachments->find()->where(['document_id' => $did])->first();
-                else
-                    $audits = $attachments->find()->where(['order_id' => $_GET['order_id']])->first();
-                $this->set('abstract', $audits);
+                $this->getdoc('abstract_forms', $did, 'abstract');
             }
 
-            $pre = TableRegistry::get('doc_attachments');
-            //$pre_at = TableRegistry::get('driver_application_accident');
-            if(!isset($_GET['order_id']))
-                $pre_at['attach_doc'] = $pre->find()->where(['document_id' => $did])->all();
-            else
-                $pre_at['attach_doc'] = $pre->find()->where(['order_id' => $_GET['order_id'],'sub_id'=>1])->all();
-            $this->set('pre_at', $pre_at);
+            $this->getdoc('doc_attachments', $did, 'pre_at');
+            $this->getdoc('mee_attachments', $did, 'mee_att');
+            $this->getdoc('pre_screening', $did, 'ps_detail');
+            $this->getdoc('road_test', $did, 'deval_detail');
+            $da_detail = $this->getdoc('driver_application', $did, 'da_detail');
 
-            $mee_att = TableRegistry::get('mee_attachments');
-            if(!isset($_GET['order_id']))
-                $mee_a['attach_doc'] = $mee_att->find()->where(['document_id' => $did])->first();
-            else
-                $mee_a['attach_doc'] = $mee_att->find()->where(['order_id' => $_GET['order_id']])->first();
-            $this->set('mee_att', $mee_a);
-
-            if(!isset($_GET['order_id']))
-                $ps_detail = TableRegistry::get('pre_screening')->find()->where(['document_id' => $did])->first();
-            else
-                $ps_detail = TableRegistry::get('pre_screening')->find()->where(['order_id' => $_GET['order_id']])->first();
-            $this->set('ps_detail',$ps_detail);
-
-            if(!isset($_GET['order_id']))
-                $deval_detail = TableRegistry::get('road_test')->find()->where(['document_id' => $did])->first();
-            else
-                $deval_detail = TableRegistry::get('road_test')->find()->where(['order_id' => $_GET['order_id']])->first();
-            $this->set('deval_detail',$deval_detail);
-
-
-
-            $da = TableRegistry::get('driver_application');
-            if(!isset($_GET['order_id']))
-                $da_detail = $da->find()->where(['document_id' => $did])->first();
-            else
-                $da_detail = $da->find()->where(['order_id' => $_GET['order_id']])->first();
-            $this->set('da_detail',$da_detail);
             if ($da_detail) {
                 $da_ac = TableRegistry::get('driver_application_accident');
                 $sub['da_ac_detail'] = $da_ac->find()->where(['driver_application_id' => $da_detail->id])->all();
@@ -730,110 +622,80 @@ class DocumentsController extends AppController{
                 $sub['da_li_detail'] = $da_li->find()->where(['driver_application_id' => $da_detail->id])->all();
 
                 $da_at = TableRegistry::get('doc_attachments');
-                if(!isset($_GET['order_id']))
+                if(!isset($_GET['order_id'])) {
                     $sub['da_at'] = $da_at->find()->where(['document_id' => $did])->all();
-                else
-                    $sub['da_at'] = $da_at->find()->where(['order_id' => $_GET['order_id'],'sub_id'=>2])->all();
-
-
+                }else {
+                    $sub['da_at'] = $da_at->find()->where(['order_id' => $_GET['order_id'], 'sub_id' => 2])->all();
+                }
 
                 $this->set('sub', $sub);
             }
-            $de = TableRegistry::get('road_test');
-            if(!isset($_GET['order_id']))
-                $de_detail = $de->find()->where(['document_id' => $did])->first();
-            else
-                $de_detail = $de->find()->where(['order_id' => $_GET['order_id']])->first();
+
+            $de_detail =  $this->getdoc('road_test', $did, 'NA');
             if ($de_detail) {
                 $de_at = TableRegistry::get('doc_attachments');
-                if(!isset($_GET['order_id']))
+                if(!isset($_GET['order_id'])) {
                     $sub['de_at'] = $de_at->find()->where(['document_id' => $did])->all();
-                else
-                    $sub['de_at'] = $de_at->find()->where(['order_id' => $_GET['order_id'],'sub_id'=>3])->all();
+                }else {
+                    $sub['de_at'] = $de_at->find()->where(['order_id' => $_GET['order_id'], 'sub_id' => 3])->all();
+                }
                 $this->set('sub', $sub);
             }
 
 
-            $con = TableRegistry::get('consent_form');
-            if(!isset($_GET['order_id']))
-                $con_detail = $con->find()->where(['document_id' => $did])->first();
-            else
-                $con_detail = $con->find()->where(['order_id' => $_GET['order_id']])->first();
+            $con_detail =  $this->getdoc('consent_form', $did, 'NA');
             if ($con_detail) {
                 //echo $con_detail->id;die();
                 $con_cri = TableRegistry::get('consent_form_criminal');
                 $sub2['con_cri'] = $con_cri->find()->where(['consent_form_id' => $con_detail->id])->all();
-
                 $con_at = TableRegistry::get('doc_attachments');
-                if(!isset($_GET['order_id']))
+                if(!isset($_GET['order_id'])) {
                     $sub2['con_at'] = $con_at->find()->where(['document_id' => $did])->all();
-                else
-                    $sub2['con_at'] = $con_at->find()->where(['order_id' => $_GET['order_id'],'sub_id'=>4])->all();
+                }else {
+                    $sub2['con_at'] = $con_at->find()->where(['order_id' => $_GET['order_id'], 'sub_id' => 4])->all();
+                }
                 $this->set('sub2', $sub2);
                 $this->set('consent_detail', $con_detail);
 
             }
 
-            $emp = TableRegistry::get('employment_verification');
-            if(!isset($_GET['order_id']))
-                $sub3['emp'] = $emp->find()->where(['document_id' => $did])->all();
-            else
-                $sub3['emp'] = $emp->find()->where(['order_id' => $_GET['order_id']])->all();
+            $sub3['emp'] = $this->getdoc('employment_verification', $did, 'NA');
+            $sub3['edu'] = $this->getdoc('education_verification', $did, 'NA');
 
             //echo $con_detail->id;die();
             $emp_att = TableRegistry::get('doc_attachments');
-            if(!isset($_GET['order_id']))
+            if(!isset($_GET['order_id'])) {
                 $sub3['att'] = $emp_att->find()->where(['document_id' => $did])->all();
-            else
-                $sub3['att'] = $emp_att->find()->where(['order_id' => $_GET['order_id'],'sub_id'=>41])->all();
-
+            }else {
+                $sub3['att'] = $emp_att->find()->where(['order_id' => $_GET['order_id'], 'sub_id' => 41])->all();
+            }
             $this->set('sub3', $sub3);
 
-            $edu = TableRegistry::get('education_verification');
-            if(!isset($_GET['order_id']))
-                $sub4['edu'] = $edu->find()->where(['document_id' => $did])->all();
-            else
-                $sub4['edu'] = $edu->find()->where(['order_id' => $_GET['order_id']])->all();
-            //echo $con_detail->id;die();
             $edu_att = TableRegistry::get('doc_attachments');
-            if(!isset($_GET['order_id']))
+            if(!isset($_GET['order_id'])) {
                 $sub4['att'] = $edu_att->find()->where(['document_id' => $did])->all();
-            else
-                $sub4['att'] = $edu_att->find()->where(['order_id' => $_GET['order_id'],'sub_id'=>42])->all();
+            }else {
+                $sub4['att'] = $edu_att->find()->where(['order_id' => $_GET['order_id'], 'sub_id' => 42])->all();
+            }
             $this->set('sub4', $sub4);
 
         }
     }
 
-    public function forMail()
-    {
-         $settings = TableRegistry::get('settings');
-            $setting = $settings->find()->first();
+    public function forMail() {
+        $settings = TableRegistry::get('settings');
+        $setting = $settings->find()->first();
         $pro_query = TableRegistry::get('Profiles');
         $email_query = $pro_query->find()->where(['super' => 1])->first();
         $em = $email_query->email;
         $user_id = $this->request->session()->read('Profile.id');
         $uq = $pro_query->find('all')->where(['id' => $user_id])->first();
-        if (isset($uq->profile_type))
-        {
+        if (isset($uq->profile_type)) {
             $u = $uq->profile_type;
             $ut = $this->profiletype($u);
         }
         $path = $this->Document->getUrl();
         $this->Mailer->handleevent("clientcreated", array("email" => $em, "company_name" => $_POST['company_name'], "profile_type" => $ut, "username" => $uq->username, "created" =>$_POST['created'], "path" => $path, "site" => $setting->mee));
-
-        /*
-        //NEEDS TRANSLATION
-        $from = array('info@' . getHost("isbmee.com") => "Admin");;// $emailaddress;//'info@isbmee.com';
-        $to = $em;
-        $sub = 'Client created';
-        $msg = 'A client has been created<br />
-
-            By a user with following details :<br/>
-            Username : '.$uq->username.'<br/>Profile Type : '.$ut.'<br/> Dated on : '.$_POST['created'].'<br/>With client details<br /> Client Name: ' . $_POST['company_name'].'<br/><br /> Regards,<br />The '.$setting->mee.' Team';
-
-        $this->Mailer->sendEmail($from, $to, $sub, $msg);
-        */
     }
 
     function profiletype($type){
@@ -854,51 +716,36 @@ class DocumentsController extends AppController{
             $query = $doc->find();
             if ($type == 'orders') {
                 $query->select()->where(['display' => 1, 'orders' => 1])->all();
-            } else
+            } else {
                 $query->select()->where(['display' => 1, 'orders' => 0])->all();
-            foreach ($query as $q) {
-                //$sub = TableRegistry::get($q->table_name);
-                //$sub->query()->delete()->where(['document_id' => $id])->execute();
-
             }
 
             if ($this->Documents->deleteAll(array('id' => $id))) {
-
                 $this->Flash->success($this->Trans->getString("flash_docdeleted"));
             } else {
                 $this->Flash->error($this->Trans->getString("flash_docnotdeleted"));
             }
-            if($type=='draft')
-            {
+
+            if($type=='draft') {
                 return $this->redirect('/documents/index?draft');
+            } else {
+                return $this->redirect('/documents/index');
             }
-            else return $this->redirect('/documents/index');
 
         }
-        /*$profile = $this->Clients->get($id);
-        $this->request->allowMethod(['post', 'delete']);
-        if ($this->Clients->delete($profile)) {
-            $this->Flash->success('The user has been deleted.');
-        } else {
-            $this->Flash->error('User could not be deleted. Please try again.');
-        }
-        return $this->redirect(['action' => 'index']);*/
     }
 
-    public function subpages($filename)
-    {
+    public function subpages($filename) {
         $this->set('doc_comp',$this->Document);
         $this->layout = "blank";
         $this->set("filename", $filename);
     }
 
-    public function stats()
-    {
+    public function stats() {
 
     }
 
-    public function drafts()
-    {
+    public function drafts() {
 
     }
 
@@ -948,25 +795,22 @@ class DocumentsController extends AppController{
         $this->set('answers', $ans);
 
         $this->set('profiletypes', TableRegistry::get('profile_types')->find()->select());
-        $this->set('clienttypes', TableRegistry::get('client_types')->find()->select());
+        $this->set('clienttypes',  TableRegistry::get('client_types')->find()->select());
 
         $this->set('subdocuments', TableRegistry::get('subdocuments')->find()->select());
     }
 
 
-    function removefiles($file)
-    {
-        if(isset($_POST['id']) && $_POST['id']!= 0)
-        {
+    function removefiles($file) {
+        if(isset($_POST['id']) && $_POST['id']!= 0) {
             $this->loadModel("AttachDocs");
             $this->AttachDocs->deleteAll(['id'=>$_POST['id']]);
 
         }
-        @unlink(WWW_ROOT."img/jobs/".$file);
+        unlink(WWW_ROOT."img/jobs/" . $file);
         die();
     }
-    function get_documentcount($subdocid, $c_id = "")
-    {
+    function get_documentcount($subdocid, $c_id = "") {
         $this->set('doc_comp',$this->Document);
         //$cond = $this->Settings->getprofilebyclient($this->request->session()->read('Profile.id'),0);
         //var_dump($cond);die();
@@ -976,13 +820,12 @@ class DocumentsController extends AppController{
             $setting = $this->Settings->get_permission($u);
             if ($setting->document_others == 0) {
                 $u_cond = "user_id=$u";
-            }
-            else
+            } else {
                 $u_cond = "";
-
-        } else
+            }
+        } else {
             $u_cond = "";
-
+        }
         $model = TableRegistry::get("Documents");
         if ($c_id != "") {
             $cnt = $model->find()->where(["sub_doc_id" => $subdocid, 'draft' => '0', $u_cond, 'client_id' => $c_id])->count();
@@ -996,32 +839,18 @@ class DocumentsController extends AppController{
         die();
     }
 
-    function fileUpload($id = "")
-    {
+    function fileUpload($id = "") {
         // print_r($_POST);die;
         if (isset($_FILES['myfile']['name']) && $_FILES['myfile']['name']) {
             $arr = explode('.', $_FILES['myfile']['name']);
             $ext = end($arr);
             $rand = rand(100000, 999999) . '_' . rand(100000, 999999) . '.' . $ext;
-            $allowed = array(
-                'jpg',
-                'jpeg',
-                'png',
-                'bmp',
-                'gif',
-                'pdf',
-                'doc',
-                'docx',
-                'txt',
-                'xlsx',
-                'xls',
-                'csv',
-                'mp4'
-            );
+            $allowed = array('jpg', 'jpeg', 'png', 'bmp', 'gif', 'pdf', 'doc', 'docx', 'txt', 'xlsx', 'xls', 'csv', 'mp4');
             $check = strtolower($ext);
             if (in_array($check, $allowed)) {
-                if (isset($_POST['type']))
+                if (isset($_POST['type'])) {
                     $doc_type = $_POST['type'];
+                }
                 $destination = WWW_ROOT . 'attachments';
 
                 if (!file_exists($destination)){
@@ -1031,11 +860,10 @@ class DocumentsController extends AppController{
                 $source = $_FILES['myfile']['tmp_name'];
                 move_uploaded_file($source, $destination . '/' . $rand);
                 $saveData = array();
-                if (isset($_POST['order_id']))
+                if (isset($_POST['order_id'])) {
                     $saveData['order_id'] = $_POST['order_id'];
+                }
                 $saveData['path'] = $rand;
-
-
                 echo $rand;
             } else {
                 echo 'error';
@@ -1099,25 +927,9 @@ class DocumentsController extends AppController{
                             }
                         }
                         unset($doczs);
-                        /*$client_docs = array_unique($_POST['client_doc']);
-                        foreach ($client_docs as $d) {
-                            if ($d != "") {
-                                $doczs = TableRegistry::get('attachments');
-                                $ds['document_id'] = $doc->id;
-                                $ds['file'] = $d;
-                                $docz = $doczs->newEntity($ds);
-                                $doczs->save($docz);
-                                unset($doczs);
-                            }
-                        }*/
-                        //die('1');
                         $this->success(True, $draft);
-                        //$this->Flash->success('Document saved successfully.');
-                        //$this->redirect(array('action' => 'index'.$draft));
                     } else {
                         $this->success(False, $draft);
-                        //$this->Flash->error('Document could not be saved. Please try again.');
-                        //$this->redirect(array('action' => 'index'.$draft));
                     }
 
                 } else {
@@ -1134,7 +946,6 @@ class DocumentsController extends AppController{
                     $ds['title'] = $_POST['title'];
                     $docz = $doczs->newEntity($ds);
                     $doczs->save($docz);
-                    //var_dump($_POST); die();
                     if(isset($_POST['attach_doc'])) {
 
                         $model = $this->loadModel('DocAttachments');
@@ -1153,98 +964,46 @@ class DocumentsController extends AppController{
                         }
                     }
                     unset($doczs);
-                    /*$this->loadModel('Attachments');
-                    $attach = TableRegistry::get('attachments');
-                    $at = $attach->find()->where(['document_id'=>$did])->all();
-                    foreach($at as $a)
-                    {
-                         @unlink(WWW_ROOT."attachments/".$a->file);
-                    }*/
-                    /*
-                    $this->Attachments->deleteAll(['document_id' => $did]);
-                    $client_docs = array_unique($_POST['client_doc']);
-
-                    foreach ($client_docs as $d) {
-                        if ($d != "") {
-                            $doczs = TableRegistry::get('attachments');
-                            $ds['document_id'] = $did;
-                            $ds['file'] = $d;
-                            $docz = $doczs->newEntity($ds);
-                            $doczs->save($docz);
-                            unset($doczs);
-                        }
-                    }
-                    */
-                    //$this->Flash->success('Document Updated successfully.');
-                    //$this->redirect(array('action' => 'index'.$draft));
                     $this->success(True, $draft);
                 }
-            }
-            else
-            {
+            } else {
                 $did = $_REQUEST['order_id'];
                 $doczs = TableRegistry::get('attachments');
                 $check = $doczs->find()->where(['order_id'=>$did]);
                 unset($doczs);
-                if (!$check) {
-
-                }
-                else
-                {
+                if ($check) {
                     $this->loadModel('Attachments');
                     $this->Attachments->deleteAll(['order_id' => $did]);
-                    /*$client_docs = array_unique($_POST['client_doc']);*/
-
-                    /* foreach ($client_docs as $d) {
-                         $doczs = TableRegistry::get('attachments');
-                         if ($d != "") {
-                             //$doczs = TableRegistry::get('attachments');
-                             $ds['order_id'] = $did;
-                             $ds['document_id'] = 0;
-                             $ds['file'] = $d;
-                             $docz = $doczs->newEntity($ds);
-                             $doczs->save($docz);
-                             unset($doczs);
-                         }
-                     }*/
                     $doczs = TableRegistry::get('attachments');
-
-                    //$doczs = TableRegistry::get('attachments');
                     $ds['order_id'] = $did;
                     $ds['document_id'] = 0;
                     $ds['title'] = $_POST['title'];
                     $docz = $doczs->newEntity($ds);
                     $doczs->save($docz);
                     unset($doczs);
-
                 }
-                //$arr['order_id'] = $did;
                 $arr['document_id'] = 0;
 
-                if(!isset($_GET['order_id']))
+                if(!isset($_GET['order_id'])) {
                     $arr['order_id'] = $did;
-                else{
+                }else{
                     $arr['order_id'] = $_GET['order_id'];
                     $did = $_GET['order_id'];
                 }
                 $arr['document_id'] = 0;
-                if (isset($_POST['uploaded_for']))
+                $uploaded_for = '';
+                if (isset($_POST['uploaded_for'])) {
                     $uploaded_for = $_POST['uploaded_for'];
-                else
-                    $uploaded_for = '';
+                }
                 $for_doc = array('document_type'=>'Attachment','sub_doc_id'=>7,'order_id'=>$arr['order_id'],'user_id'=>'','uploaded_for'=>$uploaded_for);
                 $this->Document->saveDocForOrder($for_doc);
 
-                if(isset($_POST['attach_doc']))
-                {
-
+                if(isset($_POST['attach_doc'])) {
                     $model = $this->loadModel('DocAttachments');
                     $model->deleteAll(['order_id'=> $arr['order_id'],'sub_id'=>7]);
                     $client_docs = $_POST['attach_doc'];
-                    foreach($client_docs as $d)
-                    {
-                        if($d != "")
-                        {
+                    foreach($client_docs as $d) {
+                        if($d != "") {
                             $attach = TableRegistry::get('doc_attachments');
                             $ds['order_id']= $arr['order_id'];
                             $ds['attachment'] =$d;
@@ -1255,14 +1014,11 @@ class DocumentsController extends AppController{
                         }
                     }
                 }
-
                 die();
-
             }
-
         }
-
     }
+
     function audits($cid, $did){
             $this->set('doc_comp',$this->Document);
            
@@ -1279,7 +1035,7 @@ class DocumentsController extends AppController{
                 $arr['document_type'] = $_POST['document_type'];
                
                 
-                 if(!isset($_GET['order_id'])){
+                if(!isset($_GET['order_id'])){
                 if (!$did || $did == '0') {
                     
                     $arr['user_id'] = $this->request->session()->read('Profile.id');
@@ -1360,8 +1116,6 @@ class DocumentsController extends AppController{
                             }
                         }
                         unset($doczs);
-                    //$this->Flash->success('Document Updated successfully.');//NOTE: Shouldn't this use settings?
-                    //$this->redirect(array('action' => 'index'.$draft));
                     $this->success(True, $draft, True, $did);
                 }
                 } else {
@@ -1409,183 +1163,10 @@ class DocumentsController extends AppController{
                             unset($doczs);  
                         }
                     
-                    die();
-                }
-
-            }
-
-        }
-        /*
-        function pre_employment_road_test($cid, $did)
-        {
-            $this->set('doc_comp',$this->Document);
-           
-            if (isset($_POST)) {
-                
-                if (isset($_GET['draft']) && $_GET['draft'])
-                {
-                    $arr['draft'] = 1;
-                    $draft = '?draft';
-                }
-                else
-                {
-                    $arr['draft'] = 0;
-                    $draft = '';    
-                }
-                $arr['sub_doc_id'] = $_POST['sub_doc_id'];
-                $arr['client_id'] = $cid;
-                $arr['document_type'] = $_POST['document_type'];
-               
-                
-                 if(!isset($_GET['order_id'])){
-                if (!$did || $did == '0') {
-                    
-                    $arr['user_id'] = $this->request->session()->read('Profile.id');
-                    $arr['created'] = date('Y-m-d H:i:s');
-                    $docs = TableRegistry::get('Documents');
-                    $doc = $docs->newEntity($arr);
-
-                    if ($docs->save($doc)) {
-
-                        $doczs = TableRegistry::get('pre_employment_road_test');
-                        $ds['document_id'] = $doc->id;
-                        
-                        foreach($_POST as $k=>$v)
-                        {
-                            $ds[$k]=$v;
-                        }
-                        $docz = $doczs->newEntity($ds);
-                        $doczs->save($docz);
-                        $did = $doc->id;
-                        if(isset($_POST['attach_doc']))
-                        {
-                            //var_dump($_POST['attach_doc']);die();
-                            $model = $this->loadModel('DocAttachments');
-                            $model->deleteAll(['document_id'=> $did]);
-                            //$client_do = implode(',',$_POST['attach_doc']);
-                            //$client_docs=explode(',',$client_do);
-                            foreach($_POST['attach_doc'] as $d)
-                            {
-                                if($d != "")
-                                {
-                                    $attach = TableRegistry::get('doc_attachments');
-                                    $ds['document_id']= $did;
-                                    $ds['attachment'] =$d;
-                                    $ds['sub_id'] = $arr['sub_doc_id'];
-                                     $att = $attach->newEntity($ds);
-                                    $attach->save($att);
-                                    unset($att);
-                                }
-                            }
-
-                        }
-                        unset($doczs);
-                        $this->Flash->success('Document saved successfully.');
-                        $this->redirect(array('action' => 'index'.$draft));
-                    } else {
-                        $this->Flash->error('Document could not be saved. Please try again.');
-                        $this->redirect(array('action' => 'index'.$draft));
-                    }
-
-                }
-                else
-                {
-                    $docs = TableRegistry::get('Documents');
-                    $query2 = $docs->query();
-                    $query2->update()
-                        ->set($arr)
-                        ->where(['id' => $did])
-                        ->execute();
-                    $this->loadModel('Audits');
-                    $this->Audits->deleteAll(['document_id' => $did]);
-                    $doczs = TableRegistry::get('audits');
-                    $ds['document_id'] = $did;
-                    $ds['date'] = $_POST['year']."-".$_POST['month'];
-                    foreach($_POST as $k=>$v)
-                    {
-                        $ds[$k]=$v;
-                    }
-                    $docz = $doczs->newEntity($ds);
-                    $doczs->save($docz);
-                    if(isset($_POST['attach_doc']))
-                    {
-                        $did = $doc->id;
-                        $model = $this->loadModel('AttachDocs');
-                        $model->deleteAll(['doc_id'=> $did]);
-                        $client_docs = explode(',',$_POST['attach_doc']);
-                        foreach($client_docs as $d)
-                        {
-                            if($d != "")
-                            {
-                                $attach = TableRegistry::get('attach_docs');
-                                $ds['doc_id']= $did;
-                                $ds['file'] =$d;
-                                $att = $attach->newEntity($ds);
-                                $attach->save($att);
-                                unset($att);
-                            }
-                        }
-                    }
-                    unset($doczs);
-                    $this->Flash->success('Document Updated successfully.');
-                    $this->redirect(array('action' => 'index'.$draft));
-                }
-            }
-            else
-            {
-                $arr['document_id'] = 0;
-                if(!isset($_GET['order_id']))
-                    $arr['order_id'] = $did;
-                else{
-                    $arr['order_id'] = $_GET['order_id'];
-                    $did = $_GET['order_id'];
-                }
-                $arr['document_id'] = 0;
-                if (isset($_POST['uploaded_for']))
-                    $uploaded_for = $_POST['uploaded_for'];
-                else
-                    $uploaded_for = '';
-                $for_doc = array('document_type'=>'Audit','sub_doc_id'=>8,'order_id'=>$arr['order_id'],'user_id'=>'','uploaded_for'=>$uploaded_for);
-                $this->Document->saveDocForOrder($for_doc);
-
-                $doczs = TableRegistry::get('audits');
-                $check = $doczs->find()->where(['order_id'=>$did])->first();
-                unset($doczs);
-                if (!$check) {
-                    $ds['order_id'] = $did;
-                    $ds['document_id'] = 0;
-                    $ds['date'] = $_POST['year']."-".$_POST['month'];
-                    $doczs = TableRegistry::get('audits');
-                    foreach($_POST as $k=>$v)
-                    {
-                        $ds[$k]=$v;
-                    }
-                    $docz = $doczs->newEntity($ds);
-                    $doczs->save($docz);
-                    unset($doczs);
-                }
-                else
-                {
-                    $this->loadModel('Audits');
-                    $this->Audits->deleteAll(['order_id' => $did]);
-                    $doczs = TableRegistry::get('audits');
-                    $ds['order_id'] = $did;
-                    $ds['date'] = $_POST['year']."-".$_POST['month'];
-                    foreach($_POST as $k=>$v)
-                    {
-                        $ds[$k]=$v;
-                    }
-                    $docz = $doczs->newEntity($ds);
-                    $doczs->save($docz);
-                    unset($doczs);
-                }
-
                 die();
             }
-
         }
-
-    }*/
+    }
 
     function pre_employment_road_test($cid, $did){
         $this->set('doc_comp',$this->Document);
@@ -1619,13 +1200,9 @@ class DocumentsController extends AppController{
                         $docz = $doczs->newEntity($ds);
                         $doczs->save($docz);
                         $did = $doc->id;
-                        if(isset($_POST['attach_doc']))
-                        {
-                            //var_dump($_POST['attach_doc']);die();
+                        if(isset($_POST['attach_doc'])) {
                             $model = $this->loadModel('DocAttachments');
                             $model->deleteAll(['document_id'=> $did]);
-                            //$client_do = implode(',',$_POST['attach_doc']);
-                            //$client_docs=explode(',',$client_do);
                             foreach($_POST['attach_doc'] as $d) {
                                 if($d != "") {
                                     $attach = TableRegistry::get('doc_attachments');
@@ -1640,12 +1217,8 @@ class DocumentsController extends AppController{
 
                         }
                         unset($doczs);
-                        //$this->Flash->success('Document saved successfully.');
-                        //$this->redirect(array('action' => 'index'.$draft));
                         $this->success(True, $draft);
                     } else {
-                        //$this->Flash->error('Document could not be saved. Please try again.');
-                        //$this->redirect(array('action' => 'index'.$draft));
                         $this->success(False, $draft);
                     }
 
@@ -1684,8 +1257,6 @@ class DocumentsController extends AppController{
                     }
                     unset($doczs);
                     $this->success(True, $draft, True, $did);
-                    //$this->Flash->success('Document Updated successfully.');//NOTE: Shouldn't this use settings
-                    //$this->redirect(array('action' => 'index'.$draft));
                 }
             } else {
                 $arr['document_id'] = 0;
@@ -1770,11 +1341,8 @@ class DocumentsController extends AppController{
                         $doczs->save($docz);
                         $did = $doc->id;
                         if(isset($_POST['attach_doc'])) {
-                            //var_dump($_POST['attach_doc']);die();
                             $model = $this->loadModel('DocAttachments');
                             $model->deleteAll(['document_id'=> $did]);
-                            //$client_do = implode(',',$_POST['attach_doc']);
-                            //$client_docs=explode(',',$client_do);
                             foreach($_POST['attach_doc'] as $d) {
                                 if($d != "") {
                                     $attach = TableRegistry::get('doc_attachments');
@@ -1790,11 +1358,7 @@ class DocumentsController extends AppController{
                         }
                         unset($doczs);
                         $this->success(True, $draft);
-                        //$this->Flash->success('Document saved successfully.');
-                        //$this->redirect(array('action' => 'index'.$draft));
                     } else {
-                        //$this->Flash->error('Document could not be saved. Please try again.');
-                        //$this->redirect(array('action' => 'index'.$draft));
                         $this->success(False, $draft);
                     }
 
@@ -1833,8 +1397,6 @@ class DocumentsController extends AppController{
                         }
                     }
                     unset($doczs);
-                    //$this->Flash->success('Document Updated successfully.');
-                    //$this->redirect(array('action' => 'index'.$draft));
                     $this->success(True, $draft, True, $did);
                 }
             } else {
@@ -1918,11 +1480,8 @@ class DocumentsController extends AppController{
                         $doczs->save($docz);
                         $did = $doc->id;
                         if(isset($_POST['attach_doc'])) {
-                            //var_dump($_POST['attach_doc']);die();
                             $model = $this->loadModel('DocAttachments');
                             $model->deleteAll(['document_id'=> $did]);
-                            //$client_do = implode(',',$_POST['attach_doc']);
-                            //$client_docs=explode(',',$client_do);
                             foreach($_POST['attach_doc'] as $d) {
                                 if($d != "") {
                                     $attach = TableRegistry::get('doc_attachments');
@@ -1937,12 +1496,8 @@ class DocumentsController extends AppController{
 
                         }
                         unset($doczs);
-                        //$this->Flash->success('Document saved successfully.');
-                        //$this->redirect(array('action' => 'index'.$draft));
                         $this->success(True, $draft);
                     } else {
-                        //$this->Flash->error('Document could not be saved. Please try again.');
-                        //$this->redirect(array('action' => 'index'.$draft));
                         $this->success(False, $draft);
                     }
 
@@ -1980,8 +1535,6 @@ class DocumentsController extends AppController{
                         }
                     }
                     unset($doczs);
-                    //$this->Flash->success('Document Updated successfully.');
-                    //$this->redirect(array('action' => 'index'.$draft));
                     $this->success(True, $draft, True, $did);
                 }
             } else {
@@ -2066,11 +1619,8 @@ class DocumentsController extends AppController{
                         $doczs->save($docz);
                         $did = $doc->id;
                         if(isset($_POST['attach_doc'])) {
-                            //var_dump($_POST['attach_doc']);die();
                             $model = $this->loadModel('DocAttachments');
                             $model->deleteAll(['document_id'=> $did]);
-                            //$client_do = implode(',',$_POST['attach_doc']);
-                            //$client_docs=explode(',',$client_do);
                             foreach($_POST['attach_doc'] as $d) {
                                 if($d != "") {
                                     $attach = TableRegistry::get('doc_attachments');
@@ -2085,12 +1635,8 @@ class DocumentsController extends AppController{
 
                         }
                         unset($doczs);
-                        //$this->Flash->success('Document saved successfully.');
-                        //$this->redirect(array('action' => 'index'.$draft));
                         $this->success(True, $draft);
                     } else {
-                        //$this->Flash->error('Document could not be saved. Please try again.');
-                        //$this->redirect(array('action' => 'index'.$draft));
                         $this->success(False, $draft);
                     }
 
@@ -2128,8 +1674,6 @@ class DocumentsController extends AppController{
                         }
                     }
                     unset($doczs);
-                    //$this->Flash->success('Document Updated successfully.');
-                    //$this->redirect(array('action' => 'index'.$draft));
                     $this->success(True, $draft, True, $did);
                 }
             } else {
@@ -2219,8 +1763,6 @@ class DocumentsController extends AppController{
                         if(isset($_POST['attach_doc'])) {
                             $model = $this->loadModel('DocAttachments');
                             $model->deleteAll(['document_id'=> $did]);
-                            //$client_do = implode(',',$_POST['attach_doc']);
-                            //$client_docs=explode(',',$client_do);
                             foreach($_POST['attach_doc'] as $d) {
                                 if($d != "") {
                                     $attach = TableRegistry::get('doc_attachments');
@@ -2235,12 +1777,8 @@ class DocumentsController extends AppController{
 
                         }
                         unset($doczs);
-                        //$this->Flash->success('Document saved successfully.');
-                        //$this->redirect(array('action' => 'index'.$draft));
                         $this->success(True, $draft);
                     } else {
-                        //$this->Flash->error('Document could not be saved. Please try again.');
-                        //$this->redirect(array('action' => 'index'.$draft));
                         $this->success(False, $draft);
                     }
 
@@ -2279,8 +1817,6 @@ class DocumentsController extends AppController{
                         }
                     }
                     unset($doczs);
-                    //$this->Flash->success('Document Updated successfully.');
-                    //$this->redirect(array('action' => 'index'.$draft));
                     $this->success(True, $draft, True, $did);
                 }
             } else {
@@ -2367,11 +1903,8 @@ class DocumentsController extends AppController{
                         $doczs->save($docz);
                         $did = $doc->id;
                         if(isset($_POST['attach_doc'])) {
-                            //var_dump($_POST['attach_doc']);die();
                             $model = $this->loadModel('DocAttachments');
                             $model->deleteAll(['document_id'=> $did]);
-                            //$client_do = implode(',',$_POST['attach_doc']);
-                            //$client_docs=explode(',',$client_do);
                             foreach($_POST['attach_doc'] as $d) {
                                 if($d != "") {
                                     $attach = TableRegistry::get('doc_attachments');
@@ -2385,12 +1918,8 @@ class DocumentsController extends AppController{
                             }
                         }
                         unset($doczs);
-                        //$this->Flash->success('Document saved successfully.');
-                        //$this->redirect(array('action' => 'index'.$draft));
                         $this->success(True, $draft);
                     } else {
-                        //$this->Flash->error('Document could not be saved. Please try again.');
-                        //$this->redirect(array('action' => 'index'.$draft));
                         $this->success(False, $draft);
                     }
                 } else {
@@ -2428,8 +1957,6 @@ class DocumentsController extends AppController{
                         }
                     }
                     unset($doczs);
-                    //$this->Flash->success('Document Updated successfully.');
-                    //$this->redirect(array('action' => 'index'.$draft));
                     $this->success(True, $draft, True, $did);
                 }
             } else {
@@ -2514,11 +2041,8 @@ class DocumentsController extends AppController{
                         $doczs->save($docz);
                         $did = $doc->id;
                         if(isset($_POST['attach_doc'])) {
-                            //var_dump($_POST['attach_doc']);die();
                             $model = $this->loadModel('DocAttachments');
                             $model->deleteAll(['document_id'=> $did]);
-                            //$client_do = implode(',',$_POST['attach_doc']);
-                            //$client_docs=explode(',',$client_do);
                             foreach($_POST['attach_doc'] as $d) {
                                 if($d != "") {
                                     $attach = TableRegistry::get('doc_attachments');
@@ -2533,12 +2057,8 @@ class DocumentsController extends AppController{
 
                         }
                         unset($doczs);
-                        //$this->Flash->success('Document saved successfully.');
-                        //$this->redirect(array('action' => 'index'.$draft));
                         $this->success(True, $draft);
                     } else {
-                        //$this->Flash->error('Document could not be saved. Please try again.');
-                        //$this->redirect(array('action' => 'index'.$draft));
                         $this->success(False, $draft);
                     }
                 } else {
@@ -2575,8 +2095,6 @@ class DocumentsController extends AppController{
                         }
                     }
                     unset($doczs);
-                    //$this->Flash->success('Document Updated successfully.');
-                    //$this->redirect(array('action' => 'index'.$draft));
                     $this->success(True, $draft, True, $did);
                 }
             } else {
@@ -2681,12 +2199,8 @@ class DocumentsController extends AppController{
 
                         }
                         unset($doczs);
-                        //$this->Flash->success('Document saved successfully.');
-                        //$this->redirect(array('action' => 'index'.$draft));
                         $this->success(True, $draft);
                     } else {
-                        //$this->Flash->error('Document could not be saved. Please try again.');
-                        //$this->redirect(array('action' => 'index'.$draft));
                         $this->success(False, $draft);
                     }
                 } else {
@@ -2723,8 +2237,6 @@ class DocumentsController extends AppController{
                         }
                     }
                     unset($doczs);
-                    //$this->Flash->success('Document Updated successfully.');
-                    //$this->redirect(array('action' => 'index'.$draft));
                     $this->success(True, $draft, True, $did);
                 }
             } else {
@@ -2810,11 +2322,8 @@ class DocumentsController extends AppController{
                         $doczs->save($docz);
                         $did = $doc->id;
                         if(isset($_POST['attach_doc'])) {
-                            //var_dump($_POST['attach_doc']);die();
                             $model = $this->loadModel('DocAttachments');
                             $model->deleteAll(['document_id'=> $did]);
-                            //$client_do = implode(',',$_POST['attach_doc']);
-                            //$client_docs=explode(',',$client_do);
                             foreach($_POST['attach_doc'] as $d) {
                                 if($d != "") {
                                     $attach = TableRegistry::get('doc_attachments');
@@ -2829,11 +2338,7 @@ class DocumentsController extends AppController{
 
                         }
                         unset($doczs);
-                        //$this->Flash->success('Document saved successfully.');
-                        //$this->redirect(array('action' => 'index'.$draft));
                     } else {
-                        //$this->Flash->error('Document could not be saved. Please try again.');
-                        //$this->redirect(array('action' => 'index'.$draft));
                         $this->success(False, $draft);
                     }
                 } else {
@@ -2870,8 +2375,6 @@ class DocumentsController extends AppController{
                         }
                     }
                     unset($doczs);
-                    //$this->Flash->success('Document Updated successfully.');
-                    //$this->redirect(array('action' => 'index'.$draft));
                     $this->success(True, $draft, True, $did);
                 }
             } else {
@@ -3016,8 +2519,6 @@ class DocumentsController extends AppController{
                         }
                     }
                     unset($doczs);
-                    //$this->Flash->success('Document Updated successfully.');
-                    //$this->redirect(array('action' => 'index'.$draft));
                     $this->success(True, $draft, True, $did);
                 }
             } else {
@@ -3158,18 +2659,6 @@ class DocumentsController extends AppController{
             return $this->response;
         }
 
-        /*
-        $query = TableRegistry::get('documents');
-        $que = $query->find();
-        $que = $que->select(['sub_doc_id'])->distinct(['sub_doc_id']);
-        if($q)
-        {
-            foreach($que as $q)
-            {
-                $query = TableRegistry::get('color_class');
-                $q = $query->find('all')->where(['id'=>$q])->first();
-            }
-        }*/
     }
 
     public function appendattachments($query, $Language = "English"){

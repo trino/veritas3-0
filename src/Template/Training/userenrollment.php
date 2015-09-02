@@ -51,8 +51,6 @@ if (!$viewmode){
 
 
 <?php }
-/*if ($this->request->params['action'] == 'edit')
-    include('subpages/clients/recruiter_contact_table.php');*/
 if (isset($_GET['view'])) {
     ?>
     <table class="table table-striped table-bordered table-advance table-hover recruiters">
@@ -160,12 +158,6 @@ foreach ($contact as $r) {
 }
 
 
-
-/**
- * if (($i + 1) % 2 != 0) {
- *             echo "</td></tr>";
- *         }
- */
 ?>
     </tbody>
 

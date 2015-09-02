@@ -419,8 +419,6 @@ function enumsubdocs($thedocs, $date, $chartid, $isdraft, $profiletypes, $client
 				if ($chartid == "profiles") {//PROFILE TYPES
 					$doctype = $adoc->profile_type;
 					if (is_numeric($doctype)) {
-						//$profiletypes = ['', 'Admin', 'Recruiter', 'External', 'Safety', 'Driver', 'Contact', 'Owner Operator', 'Owner Driver', 'Employee', 'Guest', 'Partner'];
-						//$doctype = $profiletypes[$doctype];
                         $doctype = FindIterator1($profiletypes, "id", $doctype)->$title . $Trans;
 					} else {
 						$doctype = $unknown;

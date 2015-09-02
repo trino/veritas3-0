@@ -286,11 +286,6 @@
                                                 break;
                                             case 1://top block
                                                 echo '<div class="dashboard-stat ';
-                                       // $colors = array("pre-screening" => "blue-madison", "survey" => "green", "driver application" => "red", "road test" => "yellow", "consent form" => "purple", "feedbacks" => "red-intense", "attachment" => "yellow-saffron", "audits" => "grey-cascade");
-                                       /* if (isset($colors[strtolower($docs->document_type)])) {
-                                            echo $colors[strtolower($docs->document_type)];
-                                        }
-                                        */
                                                 if(isset($getColorId)) {
                                                     echo $getColorId;
                                                 }else {
@@ -298,19 +293,8 @@
                                                 }
                                     ?>">
 
-                                    <a class="more"  id="sub_doc_click1"
-                                       href="<?php
-
-                                       echo $VIEWURL;
-                                       /*
-                                       if ($sidebar->document_list == '1' && !isset($_GET["draft"])) {
-                                           if (!$docs->order_id){
-                                               echo $this->request->webroot . 'documents/view/' . $docs->client_id . '/' . $docs->id.'?type='.$docs->sub_doc_id;if($docs->sub_doc_id==4)echo '&doc='.urlencode($docs->document_type);
-                                           } else{
-                                               echo $this->request->webroot . 'documents/view/' . $docs->client_id . '/' . $docs->id . '?order_id=' . $docs->order_id.'&type='.$docs->sub_doc_id;if($docs->sub_doc_id==4)echo '&doc='.urlencode($docs->document_type);
-                                               }
-                                       } else { ?>javascript:;<?php }
-                                       */
+                                    <a class="more"  id="sub_doc_click1" href="<?php
+                                        echo $VIEWURL;
 
                                        ?>">
                                         <?= h(str_replace('_',' ',$docs->document_type)); //it won't let me put it in the desc ?>
@@ -525,13 +509,13 @@
         var base = url;
 
         <?php
-        if(isset($_GET['searchdoc']))
-        {
+        if(isset($_GET['searchdoc']))   {
         ?>
-        if (url == base)
+        if (url == base) {
             url = url + '?searchdoc=<?php echo $_GET['searchdoc']?>';
-        else
+        }else {
             url = url + '&searchdoc=<?php echo $_GET['searchdoc']?>';
+        }
         <?php
         }
         ?>
@@ -539,10 +523,11 @@
         if(isset($_GET['submitted_by_id']))
         {
         ?>
-        if (url == base)
+        if (url == base) {
             url = url + '?submitted_by_id=<?php echo $_GET['submitted_by_id']?>';
-        else
+        }else {
             url = url + '&submitted_by_id=<?php echo $_GET['submitted_by_id']?>';
+        }
         <?php
         }
         ?>
@@ -550,10 +535,11 @@
         if(isset($_GET['type']))
         {
         ?>
-        if (url == base)
+        if (url == base) {
             url = url + '?type=<?php echo $_GET['type']?>';
-        else
+        }else {
             url = url + '&type=<?php echo $_GET['type']?>';
+        }
         <?php
         }
         ?>
@@ -561,18 +547,19 @@
         if(isset($_GET['client_id']))
         {
         ?>
-        if (url == base)
+        if (url == base) {
             url = url + '?client_id=<?php echo $_GET['client_id']?>';
-        else
+        }else {
             url = url + '&client_id=<?php echo $_GET['client_id']?>';
+        }
         <?php
         }
         ?>
         if (url == base) {
             url = url + '?to=' + to + '&from=' + from;
-        }
-        else
+        } else {
             url = url + '&to=' + to + '&from=' + from;
+        }
         window.location = url;
     });
 

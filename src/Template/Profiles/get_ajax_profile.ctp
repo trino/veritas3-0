@@ -31,11 +31,6 @@ function printtdline($Text){
     echo "<TR><TD>" . $Text . "</TD></TR>";
 }
 
-/*
-echo "<TR><TD>";
-print_r($pType);
-echo "</TD></TR>";
-*/
 
 $fulllist="";
 if(iterator_count($profiles)==0){

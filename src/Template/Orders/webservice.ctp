@@ -587,18 +587,6 @@
         }
     }
 
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-    /*
-    foreach($attachments_more as $file) {
-    $realpath = getcwd() . "/attachments/" . $file->attachments;
-    if (file_exists($realpath)) {
-    echo 'ADDITIONAL: ' . $file->attachments . '<br/>';
-    }
-    }
-    */
 
 
 
@@ -609,26 +597,4 @@
 
     die();
 
-    /*
-    if ($client->fault) {
-    echo '<h2>Fault</h2><pre>';
-    print_r($result);
-    echo '</pre>';
-    } else {
-    $err = $client->getError();
-    if ($err) {
-    echo '<h2>Error</h2><pre>' . $err . '</pre>';
-    } else {
-    echo '<h2>Result</h2><pre>';
-    print_r($result);
-    echo '</pre>';
-    }
-    }
-
-    echo '<h2>Request</h2><pre>' . htmlspecialchars($client->request, ENT_QUOTES) . '</pre>';
-    echo '<h2>Response</h2><pre>' . htmlspecialchars($client->response, ENT_QUOTES) . '</pre>';
-    echo '<h2>Debug</h2><pre>' . htmlspecialchars($client->getDebug(), ENT_QUOTES) . '</pre>';
-
-    $client->clearDebug();
-    */
 ?>

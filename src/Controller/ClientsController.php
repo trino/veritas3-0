@@ -79,20 +79,7 @@
                 if (in_array($check, $allowed)) {
                     move_uploaded_file($_FILES['myfile']['tmp_name'], APP . '../webroot/img/jobs/' . $rand);
                     unset($_POST);
-                    /*if(isset($id)){
-                   $_POST['image'] = $rand;
-                   $img = TableRegistry::get('clients');
-
-                   //echo $s;die();
-                   $query = $img->query();
-                           $query->update()
-                           ->set($_POST)
-                           ->where(['id' => $id])
-                           ->execute();
-                   }*/
-
                     echo $rand;
-
                 } else {
                     echo "error";
                 }
@@ -104,7 +91,6 @@
             if (isset($_POST['id']) && $_POST['id'] != 0) {
                 $this->loadModel("ClientDocs");
                 $this->ClientDocs->deleteAll(['id' => $_POST['id']]);
-
             }
             @unlink(WWW_ROOT . "img/jobs/" . $file);
             die();
@@ -113,8 +99,6 @@
         public function index() {
             if (isset($_GET['flash'])) {
                 $setting = $this->Settings->get_permission($this->request->session()->read('Profile.id'));
-//           debug($setting);
-
                 $this->Flash->success($this->Trans->getString("flash_selectclient"));
             }
             $setting = $this->Settings->get_permission($this->request->session()->read('Profile.id'));
@@ -152,20 +136,9 @@
             $searchs = strtolower($search);
             $querys = TableRegistry::get('Clients');
             $query = $querys->find()
-                ->where(['drafts' => $draft, 'OR' =>
-                    [
-                        //['LOWER(title) LIKE' => '%'.$searchs.'%'],
-                        //['LOWER(description) LIKE' => '%'.$searchs.'%'],
-                        ['LOWER(company_name) LIKE' => '%' . $searchs . '%']
-                        //['LOWER(company_address) LIKE' => '%'.$searchs.'%']
-                    ]
+                ->where(['drafts' => $draft, 'OR' => [['LOWER(company_name) LIKE' => '%' . $searchs . '%']]
                 ]);
-            /*->orWhere(['LOWER(title) LIKE' => '%'.$searchs.'%'])
-            ->orWhere(['LOWER(description) LIKE' => '%'.$searchs.'%'])
-            ->orWhere(['LOWER(company_name) LIKE' => '%'.$searchs.'%'])
-            ->orWhere(['LOWER(company_address) LIKE' => '%'.$searchs.'%']);*/
             $this->set('client', $this->paginate($query));
-            //$this->set('client',$query);
             $this->set('search_text', $search);
             $this->render('index');
         }
@@ -183,15 +156,8 @@
             $query = $querys->find()->where(['id' => $id]);
             $this->set('client', $query->first());
             $this->set('id', $id);
-            //$this->set('disabled',1);
-            //$this->render('add');
         }
 
-        /**
-         * Add method
-         *
-         * @return void
-         */
         public function assignContact($contact, $id, $status) {
             $querys = TableRegistry::get('Clients');
             $query = $querys->find()->where(['id' => $id])->first();
@@ -350,26 +316,11 @@
             $setting = $settings->find()->first();
             $sub_sup = TableRegistry::get('subdocuments');
             $sub_sup_count = $sub_sup->find()->all();
-            //$counter = $sub_sup_count;
             $settings = $this->Settings->get_settings();
 
             $rec = '';
             $con = '';
             $count = 1;
-            /*if(isset($_POST['profile_id'])){
-
-            foreach($_POST['profile_id'] as $ri)
-            {
-                if($count==1)
-                   $rec = $ri;
-                else
-                   $rec = $rec.','.$ri;
-                $count++;
-
-            }
-            }
-            unset($_POST['profile_id']);
-            $_POST['profile_id'] = $rec;*/
             $rec = "";
             $count = 1;
             if (isset($_POST['contact_id'])) {
@@ -472,16 +423,6 @@
 
                             $this->Mailer->handleevent("clientcreated", array("email" => $em, "company_name" => $_POST['company_name'], "profile_type" => $ut, "username" => $username, "path" => $path, "site" => $setting->mee));
 
-                            /*
-                            $from = array('info@'.$path => $setting->mee);
-                            $to = $em;//use: $email_id
-                            //$sub = 'Client Created: ' . $_POST['company_name'];
-                            //$msg = 'Domain: ' . $path . '<br />' . 'Client Name: ' . $_POST['company_name'] . '<br>Created by: ' . $username . ' (Profile Type: ' . $ut . ')<br/> On: ' . $_POST['created'];
-                            $sub = $this->Trans->getString("flash_newclientsubject", array("name" =>  $_POST['company_name']), $email_id);
-                            $msg = $this->Trans->getString("flash_newclientmessage", array("name" =>  $_POST['company_name'], "path" => $path, "username" => $username, "ut" => $ut, "created" => $_POST['created']), $email_id);
-
-                            $this->Mailer->sendEmail($from, $to, $sub, $msg);
-                            */
                         } else {
                             $this->Flash->error($this->Trans->getString("flash_clientnotsaved"));
                             echo "e";
@@ -512,30 +453,11 @@
                         ->where(['id' => $id])
                         ->execute();
                     $this->Flash->success($this->Trans->getString("flash_clientsaved"));
-                    //if ($_POST['division'] != "") {
                     $this->overwritedivisions($id, $_POST['division']);
 
-                    /*
-                    $division = nl2br($_POST['division']);
-                    $dd = explode("<br />", $division);
-                    $divisions['client_id'] = $id;
-                    $client_division = TableRegistry::get('client_divison');
-                    $client_division->deleteAll(array('client_id' => $id));
-                    foreach ($dd as $d) {
-                        $divisions['title'] = trim($d);
-                        $divs = TableRegistry::get('client_divison');
-                        $div = $divs->newEntity($divisions);
-                        $divs->save($div);
-                        unset($div);
-                    }*/
-
-                    //die();
-
-                    //}
                     $this->loadModel('ClientDocs');
                     $this->ClientDocs->deleteAll(['client_id' => $id]);
                     $client_docs = array_unique($_POST['client_doc']);
-                    //var_dump($_POST['client_doc']);
                     foreach ($client_docs as $d) {
                         if ($d != "") {
                             $docs = TableRegistry::get('client_docs');
@@ -578,18 +500,6 @@
                     $dd[$currentdivision] = trim($dd[$currentdivision]);
                     $Table->query()->insert(['client_id', 'title'])->values(['client_id' => $id, 'title' => $dd[$temp]])->execute();
                 }
-
-                /* this is the old, brute-force code
-                $client_division = TableRegistry::get('client_divison');
-                $client_division->deleteAll(array('client_id' => $id));
-                foreach ($dd as $d) {
-                    $divisions['title'] = trim($d);
-                    $divs = TableRegistry::get('client_divison');
-                    $div = $divs->newEntity($divisions);
-                    $divs->save($div);
-                    unset($div);
-                }
-                */
             }
         }
 
@@ -720,13 +630,6 @@
             }
         }
 
-        /**
-         * Edit method
-         *
-         * @param string $id
-         * @return void
-         * @throws \Cake\Network\Exception\NotFoundException
-         */
         function edit($id = null){
             if(!is_numeric($id)){die("ID should be a number, but it is: " . $id);}//error message that doesn't need translating
             $check_client_id = $this->Settings->check_client_id($id);
@@ -784,13 +687,6 @@
             $this->render('add');
         }
 
-        /**
-         * Delete method
-         *
-         * @param string $id
-         * @return void
-         * @throws \Cake\Network\Exception\NotFoundException
-         */
         function delete($id = null){
             $settings = $this->Settings->get_settings();
             $check_client_id = $this->Settings->check_client_id($id);
@@ -874,7 +770,6 @@
         function getSubCli2($id, $type="", $getTitle=false, $SortByTitle=false){
             $sub = TableRegistry::get('client_sub_order');
             $query = $sub->find();
-            //$q = $query->select()->where(['client_id'=>$id,'sub_id IN (SELECT id FROM subdocuments WHERE display = 1 AND orders = 1)','sub_id IN (SELECT sub_id FROM client_sub_order WHERE display_order > 0 AND client_id = '.$id.')'])->order(['display_order'=>'ASC']);
             if($type=="") {
                 $q = $query->select()->where(['client_id' => $id, 'sub_id IN (SELECT id FROM subdocuments WHERE display = 1 AND orders = 1)', 'sub_id IN (SELECT subdoc_id FROM clientssubdocument WHERE display_order = 1 AND client_id = ' . $id . ')', 'sub_id IN (SELECT subdoc_id FROM profilessubdocument WHERE profile_id = ' . $this->request->session()->read('Profile.id') . ' AND (display = 3 OR display = 2))'])->order(['display_order' => 'ASC']);
             }elseif($type =='document') {
@@ -1069,9 +964,6 @@
             $contact = TableRegistry::get('Clients');
             $query = $contact->find()->where(['id' => $id]);
             $q = $query->first();
-            //$profile_id= explode(',',$q->profile_id);
-//    if(($profile_id))
-//    {
             $pro = TableRegistry::get('Profiles');
 
             $didit = false;
@@ -1275,7 +1167,6 @@
             $query = TableRegistry::get('clients');
             $q = $query->find()->all();
             foreach ($q as $c) {
-
                 $arr_s['client_id'] = $c->id;
                 for ($i = 1; $i < $counter; $i++) {
                     $arr_s['sub_id'] = $i;
@@ -1283,7 +1174,6 @@
                     $sc = $sub_c->newEntity($arr_s);
                     $sub_c->save($sc);
                 }
-
             }
             die();
         }
@@ -1358,14 +1248,6 @@
 
                     $q = $que->newEntity($data);
                     $que->save($q);
-                    /*$q = $que->insert(['title','display', 'table_name','orders'])
-                                ->values([
-                                    'title' => $subname,
-                                    'display' => 0,
-                                    'table_name' => $subname,
-                                    'orders' => 0
-                                ])
-                                ->execute();*/
                     if ($q) {
                         $sid = $q->id;
                         $clientsubdocs = TableRegistry::get('clientssubdocument');
@@ -1533,9 +1415,8 @@
            die();
         }
         
-        /*
-        function cron()
-        {
+
+        function cron() {
             $msg ="";
             $client_crons = TableRegistry::get('client_crons');
             
@@ -1543,14 +1424,12 @@
             $marr = array();
             
             
-            foreach($clients as $c)
-            {
+            foreach($clients as $c) {
                 
                 $msg .= "<br/><br/><strong>Clients</strong><br/>";
                 $msg .= $c->company_name;
                 $msg .="<br/>";
-                if($c->requalify_re == '0')
-                {
+                if($c->requalify_re == '0') {
                      $date = $c->requalify_date;
                 }
                 
@@ -1568,8 +1447,7 @@
                 $emails ='';
                 $Subject = 'Requalifed';
                 $profile_type = TableRegistry::get("profile_types")->find('all')->where(['placesorders'=>1]);
-                foreach($profile_type as $ty)
-                {
+                foreach($profile_type as $ty) {
                     $p_type .= $ty->id.",";
                 }
                 $p_types = substr($p_type,0,strlen($p_type)-1);
@@ -1578,14 +1456,14 @@
                 //escape already processed profiles
                 $escape_id = $client_crons->find('all')->where(['client_id'=>$c->id,'orders_sent'=>'1','cron_date'=>$today]);
                 $escape_ids = '';
-                foreach($escape_id as $ei)
-                {
+                foreach($escape_id as $ei) {
                     $escape_ids .= $ei->profile_id.",";
                 }
-                if($escape_ids!= '')
-                    $escape_ids = substr($escape_ids,0,strlen($escape_ids)-1);
-                else
-                    $escape_ids ='0';
+                if($escape_ids!= '') {
+                    $escape_ids = substr($escape_ids, 0, strlen($escape_ids) - 1);
+                }else {
+                    $escape_ids = '0';
+                }
                 $profile = TableRegistry::get('profiles')->find('all')->where(['id IN('.$c->profile_id.')','id NOT IN ('.$escape_ids.')','requalify'=>'1', 'profile_type IN('.$p_types.')','expiry_date<>""','expiry_date >='=>$today]);
                 unset($escape_ids);
                 //debug($profile);
@@ -1594,11 +1472,9 @@
                     //echo $p->id;
                     if($c->requalify_re == '1') {
                          $date = $p->hired_date;
-                          if(strtotime($date) < strtotime($today))
-                            {
+                          if(strtotime($date) < strtotime($today)) {
                                 $date =  $this->getnextdate($date,$frequency);
-                                
-                            }
+                          }
                     }
                    
                     //echo $date;
@@ -1606,19 +1482,12 @@
                     if($today == $date || $date == $nxt_date) {
                         $pro .=$p->id.","; 
                         $p_name .= $p->username.",";
-                        /*if($p->profile_type == '2' && $p->email!="") {
-                            array_push($p->email, $rec);
-                            $emails .= $p->email.",";
-                            $this->Mailer->sendEmail("", $p->email, $Subject, $msg);//what is the subject?, sendEmail should never be used, use handlevent instead
-                            //$this->Mailer->handleevent("", )
-                        }*/
                     }
                   }
                   if($pro !=""){
                   $msg .= "Profiles:".$p_name."<br/>";
                   $recruiters = TableRegistry::get('profiles')->find('all')->where(['id IN('.$c->profile_id.')','requalify'=>'1', 'profile_type IN'=>'2','email<>""']);
-                  foreach($recruiters as $emrec)
-                  {
+                  foreach($recruiters as $emrec) {
                         array_push($rec,$emrec->email);
                         $emails .= $emrec->email.",";
                         $this->Mailer->sendEmail("", $emrec->email, $Subject, $msg);//what is the subject?, sendEmail should never be used, use handlevent instead
@@ -1677,19 +1546,15 @@
                     array_push($marr,$arr);
                     
                     unset($arr);
-                }
-                else
-                {
+                } else {
                     $msg .= "No Profiles found.";
                 }
                                 
             }
                     $this->set('arrs',$marr);
                     $this->set('msg',$msg);
-            
-            
-            
-        }*/
+        }
+
           function getnextdate($date, $frequency) {
             $today = date('Y-m-d');
             $nxt_date = date('Y-m-d', strtotime($date)+($frequency*24*60*60*30));
@@ -1701,74 +1566,22 @@
             }
             return $d;
         }
-        /*
-        public function bulksubmit() {
-        $dri = $dri;
-        $drivers = explode(',',$dri);
-        //$forms = $_POST['forms'];
-        $arr['forms'] = $form;
-        $arr['order_type'] = 'BUL';
-        $arr['draft'] = 0;
-        $arr['title'] = 'order_'.date('Y-m-d H:i:s');
-        $arr['client_id'] = $cid;
-        $arr['created'] = date('Y-m-d H:i:s');
-        //$arr['division'] = $_POST['division'];
-        //$arr['user_id'] = $this->request->session()->read('Profile.id');
-        $arr['driver'] = '';
-        $arr['order_id'] = '';
-        foreach($drivers as $driver) {
-            $arr['uploaded_for'] = $driver;
-            $ord = TableRegistry::get('orders');
-                                
-            $doc = $ord->newEntity($arr);
-            $ord->save($doc);
-            //$this->webservice('BUL', $arr['forms'], $arr['user_id'], $doc->id);
-            if($arr['driver']) {
-                $arr['driver'] = $arr['driver'] . ',' . $driver;
-            }else {
-                $arr['driver'] = $driver;
-            }
-            if($arr['order_id']) {
-                $arr['order_id'] = $arr['order_id'] . ',' . $doc->id;
-            }else {
-                $arr['order_id'] = $doc->id;
-            }
-            if($doc->id)
-            {
-                $this->web('BUL',$form,$driver,$doc->id);
-            }
-            unset($doc);
-        }
-        
-        
-        
-        
-        
-        
-    }*/
-    function web($order_type = null, $forms = null, $driverid = null, $orderid = null)
-    {
+
+    function web($order_type = null, $forms = null, $driverid = null, $orderid = null) {
         $this->set('order_type',$order_type);
         $this->set('form',$forms);
         $this->set('driverid',$driverid);
         $this->set('orderid',$orderid);
     }
     
-    function assignedTo($cid,$rid)
-    {
+    function assignedTo($cid,$rid) {
         
         $cli = TableRegistry::get('clients')->find()->where(['id'=>$cid])->first();
         $pro = $cli->profile_id;
         $arr = explode(',',$pro);
         //echo $rid;
         //var_dump($arr);
-        if(in_array($rid,$arr))
-        {
-            $check = true;
-        }
-        else
-        $check = false;
-        
+        $check = in_array($rid,$arr);
         $this->response->body($check);
             return $this->response;
         

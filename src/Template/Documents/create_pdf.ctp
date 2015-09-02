@@ -369,42 +369,7 @@ $hereby = "<p><br/>I hereby consent to the search of the following:</p>
                       }      
                 
     $pdf->writeHTMLCell(0, 0, '', '', $attach, 0, 1, 0, true, '', true);
-    
-    
-    
 
-  /*      
-
-       <div class="form-group col-md-12">
-                    <label class="control-label col-md-3">Date: </label>
-                    <div class="col-md-3">
-    					<input type="text" class="form-control date-picker" name="authorize_date"/>
-    				</div>
-                    <!--<label class="control-label col-md-3">Signature: </label>
-                    <div class="col-md-3">
-    					<input type="hidden" class="form-control" name="authorize_signature"/>
-    				</div>-->
-                    <input type="hidden" class="form-control" name="authorize_signature"/>
-                </div>
-                <div class="form-group col-md-12">
-                    <label class="control-label col-md-3">Name(Please Print): </label>
-                    <div class="col-md-9">
-    					<input type="text" class="form-control" name="authorize_name"/>
-    				</div>
-                </div>
-                <div class="col-md-12">
-                    <p>NOTICE: This form is made available to monthly account holders by NICT on behalf of the U.S. Department of Transportation, Federal Motor Carrier Safety Administration (FMCSA). Account holders are required by federal law to obtain an Applicant's written or electronic consent prior to accessing the Applicant's PSP report. Further, account holders are required by FMCSA to use the language provided in paragraphs 1-4 of this document to obtain an Applicant's consent. The language must be used in whole, exactly as provided. The language may be included with other consent forms or language at the discretion of the account holder, provided the four paragraphs remain intact and the language is unchanged.</p>
-                    <p>LAST UPDATED 10/29/2012</p>
-                </div>
-*/
-// ---------------------------------------------------------
-
-// Close and output PDF document
-// This method has several options, check the source code documentation for more information.
-
-ob_end_clean();
-$pdf->Output('Consent_Form.pdf', 'F',$oid);
-
-//============================================================+
-// END OF FILE
-//============================================================+
+    ob_end_clean();
+    $pdf->Output('Consent_Form.pdf', 'F',$oid);
+ ?>
