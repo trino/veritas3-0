@@ -184,11 +184,8 @@ class ProfilesController extends AppController{
         {
             //echo "<pre>".$c."</pre><br/><br/><br/>";
             $frequency = $c->requalify_frequency;
-            if ($c->requalify_re == '0') {
-                $date = $c->requalify_date;
-                if(strtotime($date)< strtotime($today))
-                    $date = $this->getnextdate($date,$frequency);
-            }
+            
+            
             $epired_profile ="";
             $escape_id = $client_crons->find('all')->where(['client_id'=>$c->id,'orders_sent'=>'1','cron_date'=>$today]);
             $escape_ids = '';
@@ -204,6 +201,20 @@ class ProfilesController extends AppController{
                 //debug($profile);die();
                 $temp = '';
                 foreach ($profile as $p) {
+                    if ($c->requalify_re == '0') {
+               
+                        $date = $c->requalify_date;
+                        if(strtotime($date)<= strtotime($today))
+                        {
+                            $date = $this->getnextdate($date,$frequency);
+                            if($this->checkcron($c->id, $date, $p->id))
+                                  $date = $this->getnextdate($date,$frequency);
+                           
+                           
+                        }
+                       
+                            
+                    }
                     if(($p->profile_type=='5'|| $p->profile_type=='7'|| $p->profile_type=='8'))
                     {
                         
@@ -250,6 +261,7 @@ class ProfilesController extends AppController{
                                     }
                                                               
                             }
+                           
                             
                             //echo "<br/>".$date;
                             
