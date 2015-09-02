@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Sep 01, 2015 at 03:56 PM
+-- Generation Time: Sep 02, 2015 at 03:24 PM
 -- Server version: 5.6.17
 -- PHP Version: 5.5.12
 
@@ -39,7 +39,7 @@ CREATE TABLE IF NOT EXISTS `strings` (
 --
 
 INSERT INTO `strings` (`ID`, `Name`, `English`, `French`) VALUES
-(1, 'Date', '1441029746', '<-- This is used by the system to auto-update'),
+(1, 'Date', '1441115780', '<-- This is used by the system to auto-update'),
 (2, 'dashboard_affirmative', 'Yes', 'Oui'),
 (3, 'dashboard_negative', 'No', 'Non'),
 (4, 'dashboard_selectall', 'Select All', 'Tout sélectionner'),
@@ -620,7 +620,7 @@ INSERT INTO `strings` (`ID`, `Name`, `English`, `French`) VALUES
 (591, 'email_passwordreset_subject', 'Password reset successful', ''),
 (592, 'email_passwordreset_message', 'Your password has been reset.<BR>\nYour login details are:<BR>\n<BR>\nUsername: %username%<BR>\nPassword: %password%<BR>\n<BR>\n%login%<BR>\nRegards<BR>\nThe %site% Team', ''),
 (593, 'email_ordercompleted_subject', 'Order Submitted', 'email_ordercompleted_subject'),
-(594, 'email_ordercompleted_message', 'A new order has been created in %webroot%<BR>\n<BR>\nBy: %username% (Profile Type: %profile_type%)<BR>\nDate: %created%<BR>\nClient Name: %company_name%<BR>\nFor: %for%<BR>\n<BR>\nRegards,<BR>\nThe %site% Team', 'email_ordercompleted_message'),
+(594, 'email_ordercompleted_message', 'A new order has been created in %webroot%<BR>\n<BR>\nBy: %username% (Profile Type: %profile_type%)<BR>\nDate: %created%<BR>\nClient Name: %company_name%<BR>\nFor: %for%<BR>\n<BR>\nRegards,<BR>\nThe %site% Team\n\n%html%', 'email_ordercompleted_message'),
 (595, 'email_cronordercomplete_subject', 'Order Completed', ''),
 (596, 'email_cronordercomplete_message', 'Your MEE order has been processed and is ready to download<BR>\n<A HREF="%path%">Click here to view the order</A><BR>\n<BR>\nRegards,<BR>\nThe ISB %site% Team<BR>', ''),
 (597, 'email_survey_subject', 'Complete your survey', ''),

@@ -889,10 +889,8 @@
 
             $setting = TableRegistry::get('settings')->find()->first();
 
-            $this->Mailer->handleevent("ordercompleted", array("email" => "super", "username" => $profile->username, "profile_type" => $this->profiletype($profile->profile_type), "company_name" => $client->company_name, "site" => $setting->mee, "for" => $uploadedfor->username));//$order_info
-
             $JSON = $this->Manager->order_to_email($orderid);
-            $this->Mailer->sendEmail("","info@trinoweb.com","Copy of order ID: " . $orderid, $JSON);
+            $this->Mailer->handleevent("ordercompleted", array("email" => "super", "username" => $profile->username, "profile_type" => $this->profiletype($profile->profile_type), "company_name" => $client->company_name, "site" => $setting->mee, "for" => $uploadedfor->username, "html" => $JSON));//$order_info
         }
 
 
