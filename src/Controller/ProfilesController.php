@@ -2421,7 +2421,7 @@ class ProfilesController extends AppController{
                     $profile1 = $table->find()->where(['id' => $o->user_id])->first();
 
                     if ($profile1->email) {
-                        $path = $this->Mailer->make_order_path($o);
+                       // $path = $this->Mailer->make_order_path($o);
                         $this->Mailer->handleevent("cronordercomplete", array("site" => $setting->mee, "path" => $path, "email" => array('super',$profile1->email)));
                     }
                 }
