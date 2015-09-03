@@ -42,7 +42,7 @@
         $driver_order_79 = true; // only TRUE if complete mee orders  - DONT CHANGE
         $ordertype = "MEE";
     }
-  //  echo  $ordertype;die();
+    //  echo  $ordertype;die();
     $myArray = explode(',', $order_info->forms);
 
     foreach ($myArray as $splitArray) {
@@ -91,7 +91,6 @@
     echo '<br>32   social media search                     ' . $sms_ins_32;                                            // 32   social media search
     echo '<br>31   credit check                            ' . $creditcheck_ins_31;                                            // 31 creditcheck
 
-
     if (isset($driverinfo->driver_license_no) && $driverinfo->driver_license_no != "") {
     } else {
         $driverinfo->driver_license_no = "123ABC";
@@ -106,7 +105,6 @@
     } else {
         $driverinfo->email = "test@" . getHost("isbmee.com");
     }
-
 
     if ($startorder1 == true) {
         $body = '&lt;ProductData&gt;&lt;isb_FN&gt;' . $driverinfo->fname . '&lt;/isb_FN&gt;&lt;isb_LN&gt;' . $driverinfo->lname .
@@ -124,12 +122,22 @@
         $ins_id = substr($myArray[0], 4);
         $ebs_id = substr($myArray[1], 4);
 
-		
-						if(isset($ins_id)){}else{$ins_id =0;}
-		if(isset($ebs_id)){}else{$ebs_id =0;}
-		
-		
-		
+        if (isset($ins_id)) {
+        } else {
+            $ins_id = 0;
+        }
+        if (isset($ebs_id)) {
+        } else {
+            $ebs_id = 0;
+        }
+
+        echo "<br><br><br><br><br><br><br><br><br>";
+
+        echo $ins_id = substr($ins_id, 0, 36);
+        echo "<br><br><br><br><br><br><br><br><br>";
+        echo $ebs_id = substr($ebs_id, 0, 36);
+        echo "<br><br><br><br><br><br><br><br><br>";
+
         $this->requestAction('orders/save_webservice_ids/' . $orderid . '/' . $ins_id . '/' . $ebs_id);
 //     ECHO "999start order";
     } else {
@@ -317,7 +325,6 @@
 
     if ($transclick_ins_78 == true) {
 
-
         $soap_xml = '<?xml version="1.0" encoding="utf-8"?>
 <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
 <soap:Body><ProductDetails xmlns="http://tempuri.org/">' . '<UID>' . $ins_id . '</UID><productdetails>&lt;ProductData&gt;&lt;dupe_date&gt;' . date("Y-m-d H:i") . '&lt;/dupe_date&gt;&lt;isb_FirstName&gt;' . $driverinfo->fname . '&lt;/isb_FirstName&gt;&lt;isb_LastName&gt;' . $driverinfo->lname . '&lt;/isb_LastName&gt;&lt;isb_provToSearch&gt;' . $driverinfo->driver_province . '&lt;/isb_provToSearch&gt;&lt;isb_Email&gt;' . $driverinfo->email . '&lt;/isb_Email&gt;&lt;/ProductData&gt;' . '</productdetails><productID>78</productID><tp>INS</tp><prod>true</prod></ProductDetails></soap:Body></soap:Envelope>';
@@ -390,29 +397,24 @@
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     if ($premium_national_ebs_1603 == true) {
-		
-		//  var_dump($driverinfo);
 
-		  if(isset($driverinfo->mname) && $driverinfo->mname !="")
-		  {
-			  
-		  }
-		  else
-		  {
-			  $driverinfo->mname = "NA";
-			  
-		  }
-		  
+        //  var_dump($driverinfo);
+
+        if (isset($driverinfo->mname) && $driverinfo->mname != "") {
+
+        } else {
+            $driverinfo->mname = "NA";
+
+        }
+
         $soap_xml = '<?xml version="1.0" encoding="utf-8"?>
 <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-<soap:Body><ProductDetails xmlns="http://tempuri.org/">' . '<UID>' . $ebs_id . '</UID><productdetails>&lt;ProductData&gt;&lt;dupe_date&gt;' . date("Y-m-d H:i") . '&lt;/dupe_date&gt;&lt;isb_appothername&gt;' . $driverinfo->mname .'&lt;/isb_appothername &gt;&lt;isb_DOB&gt;' . $driverinfo->dob . '&lt;/isb_DOB&gt;&lt;isb_Sex&gt;Male&lt;/isb_Sex&gt;&lt;/ProductData&gt;' . '</productdetails><productID>1603</productID><tp>EBS</tp><prod>true</prod></ProductDetails></soap:Body></soap:Envelope>';
+<soap:Body><ProductDetails xmlns="http://tempuri.org/">' . '<UID>' . $ebs_id . '</UID><productdetails>&lt;ProductData&gt;&lt;dupe_date&gt;' . date("Y-m-d H:i") . '&lt;/dupe_date&gt;&lt;isb_appothername&gt;' . $driverinfo->mname . '&lt;/isb_appothername &gt;&lt;isb_DOB&gt;' . $driverinfo->dob . '&lt;/isb_DOB&gt;&lt;isb_Sex&gt;Male&lt;/isb_Sex&gt;&lt;/ProductData&gt;' . '</productdetails><productID>1603</productID><tp>EBS</tp><prod>true</prod></ProductDetails></soap:Body></soap:Envelope>';
 
         $result = $client->call('ProductDetails', $soap_xml);
-//get between
 
- // var_dump($result);
-  
- // die();
+        var_dump($result);
+
         $r = explode('[', $result['ProductDetailsResult']);
         if (isset($r[1])) {
             $r = explode(']', $r[1]);
@@ -423,7 +425,6 @@
         $this->requestAction('orders/save_pdi/' . $orderid . '/' . $pdi_1603 . '/ebs_1603');
         echo '999ebs_1603';
 
-      
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -587,13 +588,7 @@
         }
     }
 
-
-
-
     $this->requestAction('orders/writing_complete/' . $orderid);
-
-
-
 
     die();
 

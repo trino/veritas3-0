@@ -711,7 +711,7 @@
         }
 
         public function save_pdi($orderid, $id, $pdi) {
-            //    echo  $orderid . ' ' .  $id . ' ' . $pdi;
+         echo '555555555'. $orderid . ' ' .  $id . ' ' . $pdi;
             $this->set('doc_comp', $this->Document);
             $query2 = TableRegistry::get('orders');
             $arr="";

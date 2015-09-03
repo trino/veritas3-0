@@ -210,7 +210,7 @@
                     <SELECT name="criminal_sex" class="form-control" >
                         <OPTION VALUE="Male"><?= $strings["forms_male"]; ?></OPTION>
                         <OPTION VALUE="Female"><?= $strings["forms_female"]; ?></OPTION>
-                    </SELECT
+                    </SELECT>
                 </div>
 
 
