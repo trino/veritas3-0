@@ -116,6 +116,7 @@
     if(isset($_GET["table"])){
         $HTMLMode=isset($_GET["mode"]) && $_GET["mode"] == "html";
         $Table = $_GET["table"];
+        $GLOBALS["Table"] = $Table;
         $PrimaryKey = $Manager->get_primary_key($Table);
         $Columns = $Manager->getColumnNames($Table, "", false);
         $Conditions = "";
@@ -420,7 +421,7 @@
                                     }
                                     if ($Value && substr($Value,0,1) == "="){
                                         $Value = substr($Value, 1, strlen($Value)-1);
-                                        $Value = "evaluate('" . $Value . "')";
+                                        $Value = evaluate($Table, $Value);
                                     }
                                     echo '>' . $Value . '</TD>';
                                 }
@@ -507,3 +508,57 @@
         </TBODY>
     </table>
 </DIV>
+<?php
+    function evaluate($Table, $Equation) {
+
+        debug($Equation);
+        $p = new ParensParser();
+        $Equation = $p->parse($Equation);
+
+        debug($Equation);
+    }
+
+
+
+class ParensParser {//https://gist.github.com/Xeoncross/4710324
+    protected $stack = null;
+    protected $current = null;
+    protected $string = null;
+    protected $position = null;
+    protected $buffer_start = null;
+    public function parse($string) {
+        if (!$string) {return array();}
+        if ($string[0] == '(') {$string = substr($string, 1, -1);}
+        $this->current = array();
+        $this->stack = array();
+        $this->string = $string;
+        $this->length = strlen($this->string);
+        for ($this->position=0; $this->position < $this->length; $this->position++) {
+            switch ($this->string[$this->position]) {
+                case '(':
+                    $this->push();
+                    array_push($this->stack, $this->current);
+                    $this->current = array();
+                    break;
+                case ')':
+                    $this->push();
+                    $t = $this->current;
+                    $this->current = array_pop($this->stack);
+                    $this->current[] = $t;
+                    break;
+                default:
+                    if ($this->buffer_start === null) {$this->buffer_start = $this->position;}
+            }
+        }
+        return $this->current;
+    }
+    protected function push() {
+        if ($this->buffer_start !== null) {
+            $buffer = substr($this->string, $this->buffer_start, $this->position - $this->buffer_start);
+            $this->buffer_start = null;
+            $this->current[] = $buffer;
+        }
+    }
+}
+
+?>
