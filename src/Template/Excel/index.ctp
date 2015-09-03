@@ -3,6 +3,13 @@
         return substr($ID, 5, strpos($ID, "]") - 5);
     }
 
+    if (isset($_GET["action"])){
+        switch($_GET["action"]){
+            case "clearcache":
+                $Manager->clear_cache();
+                break;
+        }
+    }
     if (isset($_POST["action"])){
         if(isset($_POST["id"])){
             $ID = getID($_POST["id"]);
@@ -38,6 +45,16 @@
                     echo "Unable to create table";
                 }
                 break;
+            case "newcolumn":
+                if($_POST["type"] == "DECIMAL" && $_POST["length"] == 0){$_POST["length"] = "10,10";}
+                if($_POST["type"] == "VARCHAR" && $_POST["length"] == 0){$_POST["type"] = "TEXT";}
+                $Query = $Manager->create_column($_POST["table"], $_POST["name"], $_POST["type"],  $_POST["length"]);
+                echo $_POST["name"] . " created in " . $_POST["table"] . ' (' . $Query . ")";
+                break;
+            case "deletecolumn":
+                $Manager->delete_column($_POST["table"], $_POST["name"]);
+                echo $_POST["name"] . " deleted from " . $_POST["table"];
+                break;
             default:
                 debug($_POST);
         }
@@ -64,11 +81,40 @@
         return implode(" ", $Text);
     }
 
+    function getTag($Text, $GetTag){
+        $Start = strpos($Text, "[");
+        $End = strpos($Text, "]");
+        if($GetTag){
+            if($Start !== false && $End !== false){
+                if($Start<$End) {return substr($Text, $Start+1, $End-$Start-1);}
+            }
+        } else {
+            if($Start !== false && $End !== false) {
+                return substr($Text, 0, $Start) . substr($Text, $End + 1, strlen($Text) - $End - 1);
+            }
+            return $Text;
+        }
+    }
+    function assocsplit($Text, $PrimaryDelimeter, $SecondaryDelimeter){
+        $PrimaryArray = explode($PrimaryDelimeter, $Text);
+        $RET = array();
+        foreach ($PrimaryArray as $Value) {
+            if(strpos($Value, $SecondaryDelimeter) === false){
+                $RET[$Value] = "";
+            } else {
+                $SecondaryArray = explode($SecondaryDelimeter, $Value);
+                $RET[$SecondaryArray[0]] = $SecondaryArray[1];
+            }
+        }
+        return $RET;
+    }
+
     $Columns="";
     $Table="";
     $PrimaryKey="";
     $Tables="";
     if(isset($_GET["table"])){
+        $HTMLMode=isset($_GET["mode"]) && $_GET["mode"] == "html";
         $Table = $_GET["table"];
         $PrimaryKey = $Manager->get_primary_key($Table);
         $Columns = $Manager->getColumnNames($Table, "", false);
@@ -84,30 +130,23 @@
         ?>
         <div class="form-actions" style="height:75px;">
             <div class="row">
-                <div class="col-md-1" align="left">
+                <div class="col-md-6" align="left">
                     <div id="sample_2_paginate" class="dataTables_paginate paging_simple_numbers" style="margin-top:-10px;">
                         <ul class="pagination sorting">
                             <LI><A HREF="<?= $this->request->webroot; ?>excel">Back</A></LI>
-                            <LI><A ONCLICK="return save();">Save</A></LI>
+                            <?php if(!$HTMLMode){ ?>
+                                <LI><A ONCLICK="return save();">Save</A></LI>
+                                <LI><A HREF="?table=<?= $Table; ?>&action=clearcache">Clear Cache</A></LI>
+                            <?php } ?>
+                            <LI><A HREF="?table=<?= $Table;?>&mode=<?php
+                                if($HTMLMode){
+                                    echo 'sql">SQL';
+                                } else {
+                                    echo 'html">HTML';
+                                }
+                                ?></A></LI>
                         </ul>
                     </div>
-                </DIV>
-
-                <div class="col-md-5" align="left" style="height: 32px; vertical-align:middle; display:table-cell;">
-                    <FORM method="get" action="<?= $this->request->webroot; ?>excel">
-                        <INPUT TYPE="hidden" name="table" value="<?= $Table; ?>">
-                        <INPUT TYPE="text" name="search" placeholder="Search" value="<?php if(isset($_GET["search"])){echo $_GET["search"];} ?>">
-                        <SELECT NAME="column" style="height:24px;">
-                            <?php
-                                foreach($Columns as $ColumnName => $ColumnData){
-                                    echo '<OPTION value="' . $ColumnName . '"';
-                                    if(isset($_GET["column"]) && $_GET["column"] == $ColumnName){echo ' SELECTED';}
-                                    echo '>' . ucfirst2($ColumnName, true) . '</OPTION>';
-                                }
-                            ?>
-                        </SELECT>
-                        <input type="submit" value="Search">
-                    </FORM>
                 </DIV>
 
                 <div class="col-md-6" align="right">
@@ -121,6 +160,45 @@
                 </div>
             </div>
         </div>
+
+        <table class="table table-hover  table-striped table-bordered table-hover dataTable no-footer">
+            <TR><TD>
+                <FORM method="get" action="<?= $this->request->webroot; ?>excel">
+                    <LABEL>Search: </LABEL>
+                    <INPUT TYPE="hidden" name="table" value="<?= $Table; ?>">
+                    <INPUT TYPE="text" name="search" placeholder="Search" value="<?php if(isset($_GET["search"])){echo $_GET["search"];} ?>">
+                    <SELECT NAME="column" style="height:24px;">
+                        <?php
+                        foreach($Columns as $ColumnName => $ColumnData){
+                            echo '<OPTION value="' . $ColumnName . '"';
+                            if(isset($_GET["column"]) && $_GET["column"] == $ColumnName){echo ' SELECTED';}
+                            echo '>' . ucfirst2($ColumnName, true) . '</OPTION>';
+                        }
+                        ?>
+                    </SELECT>
+                    <input type="submit" value="Search">
+                </FORM>
+            </TD>
+            <TD>
+                <FORM method="post" action="<?= $this->request->webroot; ?>excel">
+                    <LABEL>New Column: </LABEL>
+                    <INPUT TYPE="hidden" name="action" value="newcolumn">
+                    <INPUT TYPE="hidden" name="table" value="<?= $Table; ?>">
+                    <INPUT TYPE="text" name="name" placeholder="Name" id="newcol_name">
+                    <SELECT name="type" id="newcol_type" style="height:24px;">
+                        <OPTION value="INT">Number</OPTION>
+                        <OPTION value="DECIMAL">Decimal</OPTION>
+                        <OPTION value="TINYINT">Boolean</OPTION>
+                        <OPTION value="VARCHAR">Text</OPTION>
+                    </SELECT>
+                    <LABEL>Length:</LABEL>
+                    <INPUT TYPE="text" name="length" value="0" maxlength="4" size="4" id="newcol_length">
+                    <input type="button" value="New Column" onclick="newcol();">
+                </FORM>
+            </TD>
+        </TR>
+    </TABLE>
+
     <?php } else {
         $Tables = $Manager->enum_tables();
     }?>
@@ -174,6 +252,7 @@
             data: "action=save&key=<?= $PrimaryKey; ?>&table=<?= $Table; ?>&" + Text,
             success: function (msg) {
                 alert(msg);
+                reload();
             }
         })
         changed = new Array();
@@ -190,6 +269,26 @@
                 success: function (msg) {
                     alert(msg);
                     removeelement(ID);
+                }
+            })
+        }
+        return false;
+    }
+
+    function reload(){
+        window.open(window.location,"_self");
+    }
+
+    function deletecolumn(Name){
+        if (confirm("Are you sure you want to delete '" + Name + "'?")){
+            $.ajax({
+                url: window.location,
+                type: "post",
+                dataType: "HTML",
+                data: "action=deletecolumn&table=<?= $Table; ?>&name=" + Name,
+                success: function (msg) {
+                    alert(msg);
+                    reload();
                 }
             })
         }
@@ -227,11 +326,31 @@
                 success: function (msg) {
                     tables.push(Name);
                     alert(msg);
-                    window.open(window.location + "?table=" + Name ,"_self")
+                    window.open(window.location + "?table=" + Name ,"_self");
                 }
             })
         }
         return false;
+    }
+
+    function newcol(){
+        var Name = getinputvalue("newcol_name");
+        if (columns.indexOf(Name) > -1){
+            alert("'" + Name + "' exists already");
+            return false;
+        }
+
+        $.ajax({
+            url: window.location,
+            type: "post",
+            dataType: "HTML",
+            data: "action=newcolumn&table=<?= $Table;?>&name=" + Name + "&type=" + getinputvalue("newcol_type") + "&length=" + getinputvalue("newcol_length"),
+            success: function (msg) {
+                columns.push(Name);
+                alert(msg);
+                reload();
+            }
+        })
     }
 
     <?php loadreasons("edit", $strings); ?>
@@ -244,75 +363,134 @@
             if(isset($_GET["table"])) {
                 if($PrimaryKey){
                     foreach ($Columns as $ColumnName => $ColumnData) {
-                        echo '<TH class="nowrap">';
-                        if ($ColumnName == $PrimaryKey) {
-                            echo '<i class="fa fa-key"></i>';
+                        if(!($HTMLMode && $ColumnName == $PrimaryKey)) {
+                            echo '<TH class="nowrap">';
+                            if ($ColumnName == $PrimaryKey) {
+                                echo '<i class="fa fa-key"></i>';
+                            }
+                            echo $this->Paginator->sort($ColumnName) . ' <A ONCLICK="return deletecolumn(' . "'" . $ColumnName . "'" . ');"><i class="fa fa-times"></i></A></TH>';
                         }
-                        echo $this->Paginator->sort($ColumnName) . '</TH>';
                     }
                     echo '</TR></THEAD><TBODY>';
                     foreach ($Data as $Row) {
                         $ID = "Data[" . $Row->$PrimaryKey . "]";
                         echo '<TR ID="' . $ID . '">';
                         $First = true;
+                        $NullCols=0;
                         foreach ($Columns as $ColumnName => $ColumnData) {
-                            $Me = $ID . '[' . $ColumnName . ']';
-                            $Type = "text";
-                            echo '<TD style="padding: 0;" align="center">';
-                            if ($ColumnName == $PrimaryKey) {
-                                echo '<A ONCLICK="return deleterow(' . "'" . $ID . "'" . ');"<i class="fa fa-times"></i>' . $Row->$PrimaryKey . '</A>';
+                            if($HTMLMode) {
+                                if($NullCols || $ColumnName == $PrimaryKey){
+                                    if($NullCols) {$NullCols = $NullCols-1;}
+                                } else {
+                                    $Value = $Row->$ColumnName;
+                                    $ColKeys = getTag($ColumnData["comment"],true);
+                                    $Keys = getTag($Value, true);
+                                    echo '<TD';
+                                    if($ColKeys){
+                                        if($Keys){$Keys .= "," . $ColKeys;} else {$Keys = $ColKeys;}
+                                    }
+                                    if($Keys){
+                                        $Keys = assocsplit($Keys, ",", "=");
+                                        $Value = getTag($Value, false);
+                                    }
+
+                                    if(is_array($Keys)) {
+                                        foreach ($Keys as $Key => $Data) {
+                                            switch (strtolower(trim($Key))) {
+                                                case "colspan":
+                                                    echo ' COLSPAN="' . $Data . '"';
+                                                    $NullCols = $Data - 1;
+                                                    break;
+                                                case "align":
+                                                    echo ' ALIGN="' . $Data . '"';
+                                                    break;
+                                                case "caps";
+                                                    $Value = strtoupper($Value);
+                                                    break;
+                                                case "bgcolor";
+                                                    echo ' BGCOLOR="' . $Data . '"';
+                                                    break;
+                                                case "formatpercent";
+                                                    if (is_numeric($Value)) {
+                                                        $Value = number_format($Value * 100, 2) . '%';
+                                                    }
+                                                    break;
+                                            }
+                                        }
+                                    }
+                                    if ($Value && substr($Value,0,1) == "="){
+                                        $Value = substr($Value, 1, strlen($Value)-1);
+                                        $Value = "evaluate('" . $Value . "')";
+                                    }
+                                    echo '>' . $Value . '</TD>';
+                                }
                             } else {
-                                echo '<INPUT NAME="' . $Me . '" ID="' . $Me . '" VALUE="' . $Row->$ColumnName . '" CLASS="textinput" onchange="mychangeevent(' . "'" . $Me . "'" . ', true);"';
-                                echo ' PLACEHOLDER="' . $ColumnName . "." . $Row->$PrimaryKey . '"';
+                                $Me = $ID . '[' . $ColumnName . ']';
+                                $Type = "text";
+                                echo '<TD style="padding: 0;" align="center">';
+                                if ($ColumnName == $PrimaryKey) {
+                                    echo '<A ONCLICK="return deleterow(' . "'" . $ID . "'" . ');"<i class="fa fa-times"></i>' . $Row->$PrimaryKey . '</A>';
+                                } else {
+                                    echo '<INPUT NAME="' . $Me . '" ID="' . $Me . '" VALUE="' . $Row->$ColumnName . '" CLASS="textinput" onchange="mychangeevent(' . "'" . $Me . "'" . ', true);"';
+                                    echo ' PLACEHOLDER="' . $ColumnName . "." . $Row->$PrimaryKey . '"';
+                                    switch ($ColumnData["type"]) {
+                                        case "string":
+                                            break;
+                                        case "text":
+                                            break;
+                                        case "boolean":
+                                            $Type = "checkbox";
+                                            echo ' VALUE="True"';
+                                            if ($Row->$ColumnName) {
+                                                echo ' CHECKED';
+                                            }
+                                        case "integer":
+                                            echo ' role="number"';
+                                            break;
+                                        case "decimal":
+                                            echo ' role="number"';
+                                            break;
+
+                                        default:
+                                            debug($ColumnData);
+                                            die();
+                                    }
+                                    echo 'TYPE="' . $Type . '">';
+                                }
+                                echo '</TD>';
+                            }
+                        }
+                        echo '</TR>';
+                    }
+
+                    if(!$HTMLMode){
+                        echo '<TR>';
+                        foreach ($Columns as $ColumnName => $ColumnData) {
+                            echo '<TD style="padding: 0;" align="center" class="nowrap">';
+                            $ID = "Data[new]";
+                            if ($ColumnName == $PrimaryKey) {
+                                echo '<A onclick="return save();"><i class="fa fa-floppy-o"></i>New</A>';
+                            } else {
+                                $Me = $ID . '[' . $ColumnName . ']';
+                                $Type = "text";
+                                echo '<INPUT NAME="' . $Me . '" ID="' . $Me . '" " CLASS="textinput" onchange="mychangeevent(' . "'" . $Me . "'" . ', true);"';
+                                echo ' PLACEHOLDER="' . $ColumnName . '.new"';
                                 switch ($ColumnData["type"]) {
-                                    case "string":
-                                        break;
-                                    case "text":
-                                        break;
                                     case "boolean":
                                         $Type = "checkbox";
                                         echo ' VALUE="True"';
-                                        if ($Row->$ColumnName) {
-                                            echo ' CHECKED';
-                                        }
+                                        break;
                                     case "integer":
                                         echo ' role="number"';
                                         break;
-
-                                    default:
-                                        debug($ColumnData);
-                                        die();
+                                    case "decimal":
+                                        echo ' role="number"';
+                                        break;
                                 }
                                 echo 'TYPE="' . $Type . '">';
                             }
                             echo '</TD>';
                         }
-                        echo '</TR>';
-                    }
-
-                    echo '<TR>';
-                    foreach ($Columns as $ColumnName => $ColumnData) {
-                        echo '<TD style="padding: 0;" align="center" class="nowrap">';
-                        $ID = "Data[new]";
-                        if ($ColumnName == $PrimaryKey) {
-                            echo '<A onclick="return save();"><i class="fa fa-floppy-o"></i>New</A>';
-                        } else {
-                            $Me = $ID . '[' . $ColumnName . ']';
-                            $Type = "text";
-                            echo '<INPUT NAME="' . $Me . '" ID="' . $Me . '" " CLASS="textinput" onchange="mychangeevent(' . "'" . $Me . "'" . ', true);"';
-                            echo ' PLACEHOLDER="' . $ColumnName . '.new"';
-                            switch ($ColumnData["type"]) {
-                                case "boolean":
-                                    $Type = "checkbox";
-                                    echo ' VALUE="True"';
-                                    break;
-                                case "integer":
-                                    echo ' role="number"';
-                                    break;
-                            }
-                            echo 'TYPE="' . $Type . '">';
-                        }
-                        echo '</TD>';
                     }
                     echo '</TR>';
                 } else {

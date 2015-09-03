@@ -10,7 +10,7 @@ use Cake\Datasource\ConnectionManager;
 class ExcelController extends AppController {
     public $paginate = [
         'limit' => 25,
-        'order' => ['id' => 'DESC'],
+        'order' => ['id' => 'ASC'],
     ];
 
     public function index(){

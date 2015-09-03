@@ -435,23 +435,7 @@ class ProfilesController extends AppController{
     }
 
     public function clear_cache() {
-        Cache::clear();
-        clearCache();
-        $files = array();
-        $files = array_merge($files, glob(CACHE . '*')); // remove cached css
-        $files = array_merge($files, glob(CACHE . 'css' . DS . '*')); // remove cached css
-        $files = array_merge($files, glob(CACHE . 'js' . DS . '*'));  // remove cached js
-        $files = array_merge($files, glob(CACHE . 'models' . DS . '*'));  // remove cached models
-        $files = array_merge($files, glob(CACHE . 'persistent' . DS . '*'));  // remove cached persistent
-
-        foreach ($files as $f) {
-            if (is_file($f)) {unlink($f);}
-        }
-
-        if(function_exists('apc_clear_cache')) {
-            apc_clear_cache();
-            apc_clear_cache('user');
-        }
+        $this->Manager->clear_cache();
     }
 
     function enabledisableproduct($ID, $Value){

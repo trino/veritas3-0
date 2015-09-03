@@ -116,6 +116,9 @@ function radiovalue(Name){
 function isVisible (element) {
     return element.clientWidth !== 0 && element.clientHeight !== 0 && element.style.opacity !== 0 && element.style.visibility !== 'hidden';
 }
+function elementtype(element){
+    return element.tagName.toLowerCase();
+}
 
 function getinputvalue(element){
     if(typeof element !== 'object'){
@@ -124,6 +127,8 @@ function getinputvalue(element){
     var value = element.value;
     if (element.hasAttribute("type")) {
         tagtype = element.getAttribute("type").toLowerCase().trim();
+    } else {
+        tagtype = elementtype(element);
     }
     switch (tagtype){
         case "checkbox":
@@ -131,6 +136,9 @@ function getinputvalue(element){
             break;
         case "radio":
             value = radiovalue(name);
+            break;
+        case "select":
+            value = element.options[element.selectedIndex].value;
             break;
     }
     return value;

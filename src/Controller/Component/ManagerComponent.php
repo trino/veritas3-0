@@ -3,6 +3,7 @@ namespace App\Controller\Component;
 
 use Cake\Controller\Component;
 use Cake\ORM\TableRegistry;
+use Cake\Cache\Cache;
 use Cake\Datasource\ConnectionManager;
 
 class ManagerComponent extends Component {
@@ -861,10 +862,36 @@ class ManagerComponent extends Component {
         }
     }
 
-    function create_column($Table, $Column, $Type, $Length="", $Default ="", $AutoIncrement=false, $Null = false){
-        $Type=strtoupper($Type);
-        $query="ALTER TABLE " . $Table . " ADD " . $Column . " " . $Type;
-        if($Type=="VARCHAR" || $Type == "CHAR"){$query.="(" . $Length . ")";}
+    function change_column_comment($Table, $Column, $Comment){
+        if(!$Comment){$Comment = "clear";}
+        $this->create_column($Table, $Column, "", "", "", false, "", $Comment, $Column);
+    }
+    function create_column($Table, $Column, $Type, $Length="", $Default ="", $AutoIncrement=false, $Null = false, $Comment = "", $OldColumn = ""){
+        $Column= str_replace(" ", "_", $Column);
+        $Type=strtoupper($Type);//types can be varchar with a length, INT
+        //ALTER TABLE `test` CHANGE `commodity` `commodity` VARCHAR(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL COMMENT 'test';
+        //ALTER TABLE test CHANGE commodity commodity string(255) NOT NULL COMMENT 'test comment'
+        if($OldColumn){
+            $Columns = $this->getColumnNames($Table, "", false);
+            if (!isset($Columns[$OldColumn])){ return false;}
+            $Columns = $Columns[$OldColumn];
+            if(!$Type)          {$Type = $Columns["type"];}
+            if(!$Column)        {$Column = $OldColumn;}
+            if($Length == "")   {
+                $Length = $Columns["length"];
+                if(isset($Columns["precision"])){$Length .= "," . $Columns["precision"];}
+            } else if($Length=="clear") {
+                $Length == "";
+            }
+            if($Null == "")     {$Null = $Columns["null"];}         else if($Null=="clear")     {$Null == false;}
+            if($Default == "")  {$Null = $Columns["default"];}      else if($Default=="clear")  {$Default == false;}
+            $AutoIncrement =    isset($Columns["autoIncrement"]) || $AutoIncrement;//can not be set to false once it has been true
+            if($Type == "string" && $Length){$Type = "VARCHAR";}
+            $query = "ALTER TABLE " . $Table . " CHANGE " . $OldColumn . " " . $Column . " " . $Type;
+        } else {
+            $query = "ALTER TABLE " . $Table . " ADD " . $Column . " " . $Type;
+        }
+        if($Length){$query.="(" . $Length .")";}
         if(!$Null){$query.=" NOT NULL";}
         if($AutoIncrement){$query.=" AUTO_INCREMENT";}
         if($Default){
@@ -875,13 +902,14 @@ class ManagerComponent extends Component {
                 $query.= "'" . $Default . "'";
             }
         }
-        $conn = ConnectionManager::get('default');
-        $conn->query($query);
-        return $query;
+        if($Comment){$query.= " COMMENT '" . $Comment . "'";}
+        return $this->query($query);
     }
 
-    function query($Query){
+    function query($Query, $CleanCache = false){
         ConnectionManager::get('default')->query($Query);
+        if($CleanCache){$this->clear_cache();}
+        return $Query;
     }
 
     function new_table($Table){
@@ -889,10 +917,38 @@ class ManagerComponent extends Component {
         return true;
     }
     function delete_column($Table, $Column){
-        $this->query("ALTER TABLE " . $Table . " DROP COLUMN " . $Column . ";");
+        $this->query("ALTER TABLE " . $Table . " DROP COLUMN " . $Column . ";", true);
     }
     function delete_table($Table){
-        $this->query("TRUNCATE TABLE " . $Table);
+        $this->query("TRUNCATE TABLE " . $Table, true);
+    }
+    public function clear_cache() {
+        Cache::clear();
+        $files = array();
+        $files = array_merge($files, glob(CACHE . '*')); // remove cached css
+        $files = array_merge($files, glob(CACHE . 'css' . DS . '*')); // remove cached css
+        $files = array_merge($files, glob(CACHE . 'js' . DS . '*'));  // remove cached js
+        $files = array_merge($files, glob(CACHE . 'models' . DS . '*'));  // remove cached models
+        $files = array_merge($files, glob(CACHE . 'persistent' . DS . '*'));  // remove cached persistent
+
+        foreach ($files as $f) {
+            $this->delete_file($f);
+        }
+
+        if(function_exists('apc_clear_cache')) {
+            apc_clear_cache();
+            apc_clear_cache('user');
+        }
+    }
+    function delete_file($Filename){
+        if (is_file($Filename)) {
+            try {
+                unlink($Filename);
+                return true;
+            } catch (Exception $e) {
+                return false;
+            }
+        }
     }
 }
 ?>
