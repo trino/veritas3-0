@@ -7,8 +7,6 @@ use Cake\Controller\Controller;
 use Cake\ORM\TableRegistry;
 use Cake\Network\Email\Email;
 use Cake\Controller\Component\CookieComponent;
-use Cake\Datasource\ConnectionManager;
-
 
 include_once('subpages/api.php');
 
@@ -429,30 +427,11 @@ class ProfilesController extends AppController{
     }
 
     function createcolumn($Table, $Column, $Type, $Length="", $Default ="", $AutoIncrement=false, $Null = false){
-        //$Table = TableRegistry::get($Table);
-        //$Table->addColumn($Column, array("type" => $Type, "length" => $Length, "null", "default" => $Default));
-        $Type=strtoupper($Type);
-        $query="ALTER TABLE " . $Table . " ADD " . $Column . " " . $Type;
-        if($Type=="VARCHAR" || $Type == "CHAR"){$query.="(" . $Length . ")";}
-        if(!$Null){$query.=" NOT NULL";}
-        if($AutoIncrement){$query.=" AUTO_INCREMENT";}
-        if($Default){
-            $query.=" DEFAULT";
-            if (is_numeric($Default)){
-                $query.=$Default;
-            }else{
-                $query.= "'" . $Default . "'";
-            }
-        }
-        $conn = ConnectionManager::get('default');
-        $conn->query($query);
-        echo $query;
-        //$this->clear_cache();
+        echo $this->Manager->create_column($Table, $Column, $Type, $Length, $Default, $AutoIncrement, $Null);
     }
 
     function deletecolumn($Table, $Column){
-        $conn = ConnectionManager::get('default');
-        $conn->query("ALTER TABLE " . $Table . " DROP COLUMN " . $Column . ";");
+       $this->Manager->delete_column($Table, $Column);
     }
 
     public function clear_cache() {
@@ -2648,8 +2627,7 @@ class ProfilesController extends AppController{
                     return false;
                     break;
             }
-            $conn = ConnectionManager::get('default');
-            $conn->query("TRUNCATE TABLE " . $Table);
+            $this->Manager->delete_table($Table);
             echo "<BR>Deleted table: " . $Table;
         }
     }

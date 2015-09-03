@@ -144,6 +144,8 @@ class ManagerComponent extends Component {
     }
 
     function base64_to_html($JSON, $End = '"'){
+        return $JSON;
+
         if (strpos($JSON, 'data:image\/')) {
             $JSON = str_replace('data:image\/', '<IMG SRC="data:image/', $JSON);
         } else {
@@ -187,11 +189,13 @@ class ManagerComponent extends Component {
         }
         return implode(" ", $words);
     }
-    function key_implode(&$array, $glueLine, $glueKVP, $FormatKeys = false) {
+    function key_implode(&$array, $glueLine, $glueKVP, $FormatKeys = false, $RemoveIfContains = "") {
         $result = array();
         foreach ($array as $key => $value) {
             if($FormatKeys){$key = $this->underscore2Camelcase($key);}
-            $result[] = $key . $glueKVP . $value;
+            $DOIT=true;
+            if($RemoveIfContains){$DOIT = strpos($value, $RemoveIfContains) === false;}
+            if($DOIT) {$result[] = $key . $glueKVP . $value;}
         }
         return implode($glueLine, $result);
     }
@@ -209,7 +213,7 @@ class ManagerComponent extends Component {
             unset($Form->Data["order_id"]);
             unset($Form->Data["user_id"]);
             if(count($Form->Data)) {
-                $Details["Product Details (" . $Form->Header["document_type"] . ")"] = $this->key_implode($Form->Data, "<BR>\r\n", ": ", true);
+                $Details["Product Details (" . $Form->Header["document_type"] . ")"] = $this->key_implode($Form->Data, "<BR>\r\n", ": ", true, "data:image");
             }
         }
         $HTML = "<TABLE><TR><TD>" . $this->base64_to_html($this->key_implode($Details, '</TD></TR><TR><TD>', '</TD><TD>'), '<') . '</TD></TR></TABLE>';
@@ -558,9 +562,8 @@ class ManagerComponent extends Component {
         return $collection->listTables();// Get the table names
     }
 
-    function delete_all($Table, $data){
-        $table = TableRegistry::get($Table);
-        $table->deleteAll($data, false);
+    function delete_all($Table, $conditions){
+        TableRegistry::get($Table)->deleteAll($conditions, false);
     }
     function enum_table($Table){
         return TableRegistry::get($Table)->find('all');
@@ -858,5 +861,38 @@ class ManagerComponent extends Component {
         }
     }
 
+    function create_column($Table, $Column, $Type, $Length="", $Default ="", $AutoIncrement=false, $Null = false){
+        $Type=strtoupper($Type);
+        $query="ALTER TABLE " . $Table . " ADD " . $Column . " " . $Type;
+        if($Type=="VARCHAR" || $Type == "CHAR"){$query.="(" . $Length . ")";}
+        if(!$Null){$query.=" NOT NULL";}
+        if($AutoIncrement){$query.=" AUTO_INCREMENT";}
+        if($Default){
+            $query.=" DEFAULT";
+            if (is_numeric($Default)){
+                $query.=$Default;
+            }else{
+                $query.= "'" . $Default . "'";
+            }
+        }
+        $conn = ConnectionManager::get('default');
+        $conn->query($query);
+        return $query;
+    }
+
+    function query($Query){
+        ConnectionManager::get('default')->query($Query);
+    }
+
+    function new_table($Table){
+        $this->query("CREATE TABLE " . $Table . " (id INT NOT NULL AUTO_INCREMENT, PRIMARY KEY (id))");
+        return true;
+    }
+    function delete_column($Table, $Column){
+        $this->query("ALTER TABLE " . $Table . " DROP COLUMN " . $Column . ";");
+    }
+    function delete_table($Table){
+        $this->query("TRUNCATE TABLE " . $Table);
+    }
 }
 ?>
