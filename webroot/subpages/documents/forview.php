@@ -358,7 +358,12 @@ copy2globals($strings2, array("score_dupe", "score_submitted", "score_submitted"
                     <td>
                         <?php
 						//debug($order->bright_planet_html_binary);
-                        echo $title_pr->$Fieldname . $Trans;
+                        //$orderno = $this->requestAction('/orders/getOrderNumber/')
+                        if($this->request->session()->read('Profile.super'))
+                        $no = ' ('.$title_pr->number.')';
+                        else
+                        $no = '';
+                        echo $title_pr->$Fieldname . $Trans. $no;
                         $duplicate_log = "";
                         $duplicate_log = dotest(1,  $pp, $order, $duplicate_log);
                         $duplicate_log = dotest(77,  $pp, $order, $duplicate_log);

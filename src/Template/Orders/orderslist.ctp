@@ -196,7 +196,7 @@
                                     echo '<TR><TD COLSPAN="10" ALIGN="CENTER">' . $strings["orders_noresults"] . '</TD></TR>';
                                 }
 
-                                foreach ($orders as $order):
+                                foreach ($orders as $order){
                                     if ($row_color_class == "even") {
                                         $row_color_class = "odd";
                                     } else {
@@ -334,7 +334,7 @@
 
                                                     }
 
-                                                //}
+                                                }
                                             ?>
 
                                             <?php if ($sidebar->orders_requalify == '1' && $order->draft == '0') {
@@ -386,7 +386,7 @@
                                         </td>
 
                                     </tr>
-                                <?php endforeach; ?>
+                                <?php }; ?>
                             </tbody>
                         </table>
 
