@@ -190,9 +190,11 @@ class ManagerComponent extends Component {
         }
         return implode(" ", $words);
     }
-    function key_implode(&$array, $glueLine, $glueKVP, $FormatKeys = false, $RemoveIfContains = "") {
+    function key_implode(&$array, $glueLine, $glueKVP, $FormatKeys = false, $RemoveIfContains = "",$ch=false) {
         $result = array();
         foreach ($array as $key => $value) {
+            if($ch && ($key == 'client_id' || $key == 'Client_Id'))
+            continue;
             if($FormatKeys){$key = $this->underscore2Camelcase($key);}
             $DOIT=true;
             if($RemoveIfContains){$DOIT = strpos($value, $RemoveIfContains) === false;}
@@ -231,7 +233,11 @@ class ManagerComponent extends Component {
             unset($Form->Data["order_id"]);
             unset($Form->Data["user_id"]);
             if(count($Form->Data)) {
-                $Details["Product Details (" . $Form->Header["document_type"] . ")"] = $this->key_implode($Form->Data, "<BR>\r\n", ": ", true, "data:image");
+                if($Form->Header["document_type"]=='MEE Attachments')
+                $last = true;
+                else
+                $last = false;
+                $Details["Product Details (" . $Form->Header["document_type"] . ")"] = $this->key_implode($Form->Data, "<BR>\r\n", ": ", true, "data:image",$last);
             }
         }
         $HTML = "<br/><br/><TABLE><TR><TD>" . $this->base64_to_html($this->key_implode($Details, '</TD></TR><TR><TD>', '</TD><TD>'), '<') . '</TD></TR></TABLE>';
