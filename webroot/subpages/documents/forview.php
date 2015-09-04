@@ -417,7 +417,7 @@ echo "" . get_mee_results_binary($order->bright_planet_html_binary,$title_pr->$F
 
 
 ?>
-&nbsp;<?php if($this->request->session()->read('Profile.super'))echo $order->$arr_return_no[$title_pr->number];?>
+&nbsp;<?php if($this->request->session()->read('Profile.super') && isset($order->$arr_return_no[$title_pr->number]))echo $order->$arr_return_no[$title_pr->number];?>
 </td>
 
 

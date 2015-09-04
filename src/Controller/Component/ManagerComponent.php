@@ -251,7 +251,10 @@ class ManagerComponent extends Component {
         {
             foreach($arr1 as $a1)
             {
+                if($order_info->$arr_return_no[$a1])
                 $pro_text = $pro_text.$arr2[$a1]." (".$order_info->$arr_return_no[$a1].")<br/>";
+                else
+                $pro_text = $pro_text.$arr2[$a1]."<br/>";
             }
             $HTML = $HTML.'<p>&nbsp;</p><strong>PRODUCTS SELECTED</strong><br/><br/>'.$pro_text;
         }
