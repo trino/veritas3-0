@@ -364,6 +364,15 @@ copy2globals($strings2, array("score_dupe", "score_submitted", "score_submitted"
                         else
                         $no = '';
                         echo $title_pr->$Fieldname . $Trans. $no;
+                        
+                        $arr_return_no['1'] = 'ins_1';
+                        $arr_return_no['14'] = 'ins_14';
+                        $arr_return_no['72'] = 'ins_72';
+                        $arr_return_no['77'] = 'ins_77';
+                        $arr_return_no['78'] = 'ins_78';
+                        $arr_return_no['1603'] = 'ebs_1603';
+                        $arr_return_no['1627'] = 'ebs_1627';
+                        $arr_return_no['1650'] = 'ebs_1650';
                         $duplicate_log = "";
                         $duplicate_log = dotest(1,  $pp, $order, $duplicate_log);
                         $duplicate_log = dotest(77,  $pp, $order, $duplicate_log);
@@ -383,7 +392,7 @@ copy2globals($strings2, array("score_dupe", "score_submitted", "score_submitted"
 if ($duplicate_log == "Duplicate Order") 
 {
 ?>
-<span class="label label-danger"><?= $strings2["score_dupe"]; ?>  </span>
+<span class="label label-danger"><?= $strings2["score_dupe"]; ?>  </span> <?php echo $arr_return_no[$title_pr->number]?>
 <?
 } 
 elseif (return_link($pp, $order->id) == false) 
@@ -408,6 +417,7 @@ echo "" . get_mee_results_binary($order->bright_planet_html_binary,$title_pr->$F
 
 
 ?>
+&nbsp;<?php if($this->request->session()->read('Profile.super'))echo $order->$arr_return_no[$title_pr->number];?>
 </td>
 
 

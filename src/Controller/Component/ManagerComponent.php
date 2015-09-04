@@ -234,13 +234,24 @@ class ManagerComponent extends Component {
                 $Details["Product Details (" . $Form->Header["document_type"] . ")"] = $this->key_implode($Form->Data, "<BR>\r\n", ": ", true, "data:image");
             }
         }
-        $HTML = "<TABLE><TR><TD>" . $this->base64_to_html($this->key_implode($Details, '</TD></TR><TR><TD>', '</TD><TD>'), '<') . '</TD></TR></TABLE>';
+        $HTML = "<br/><br/><TABLE><TR><TD>" . $this->base64_to_html($this->key_implode($Details, '</TD></TR><TR><TD>', '</TD><TD>'), '<') . '</TD></TR></TABLE>';
         $pro_text = '';
+        
+        
+        
+        $arr_return_no['1'] = 'ins_1';
+        $arr_return_no['14'] = 'ins_14';
+        $arr_return_no['72'] = 'ins_72';
+        $arr_return_no['77'] = 'ins_77';
+        $arr_return_no['78'] = 'ins_78';
+        $arr_return_no['1603'] = 'ebs_1603';
+        $arr_return_no['1627'] = 'ebs_1627';
+        $arr_return_no['1650'] = 'ebs_1650';
         if(isset($arr1) && $arr1 && isset($arr2) && $arr2)
         {
             foreach($arr1 as $a1)
             {
-                $pro_text = $pro_text.$arr2[$a1]."<br/>";
+                $pro_text = $pro_text.$arr2[$a1]." (".$order_info->$arr_return_no[$a1].")<br/>";
             }
             $HTML = $HTML.'<p>&nbsp;</p><strong>PRODUCTS SELECTED</strong><br/><br/>'.$pro_text;
         }
