@@ -757,12 +757,6 @@
         }
 
         public function webservice($order_type = null, $forms = null, $driverid = null, $orderid = null) {
-            
-           /* $myfile = fopen(APP."../webroot/Order_".date('Y_m_d_h_i_s').".txt", "w") or die("Unable to open file!");
-                
-                fwrite($myfile, 'abcd');
-                fclose($myfile);*/
-            
             $all_attachments = TableRegistry::get('mee_attachments');
             $mee_query = $all_attachments->find()->where(['order_id'=>$orderid]);
             $orderid=$this->filternonnumeric($orderid);//there is an error message being passed in $orderid!!!

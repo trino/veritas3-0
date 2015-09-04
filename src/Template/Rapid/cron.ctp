@@ -6,31 +6,30 @@
     }
 ?>
 
+<script>
+    $(function () {
 
         <?php  if(isset($profiles) && $profiles> 0){
 
             foreach($arrs as $arr){
-                
-            $forms = $arr['forms'];
-            $driver = $arr['driver'];
-            echo $orders = $arr['order_id'];
-            
-            $driv = explode(',',$driver);
-            $ord = explode(',',$orders);
-            for($k=0;$k<count($driv);$k++)
-            {
-                //echo LOGIN.'orders/webservice/REQ/'.$forms.'/'.$driv[$k].'/'.$ord[$k];
-                $ch = file_get_contents(LOGIN.'orders/webservice/REQ/'.$forms.'/'.$driv[$k].'/'.$ord[$k]);
-               /*$ch = curl_init(LOGIN.'orders/webservice/REQ/'.$forms.'/'.$driv[$k].'/'.$ord[$k]);
-               curl_exec($ch) or die('here');
-               unset($ch);*/
-               //var_dump($ch);
-               
-               
-               
+            ?>
+            var forms = '<?php echo $arr['forms'];?>';
+            var driver = '<?php echo $arr['driver'];?>';
+            //var clients = '<?php echo $arr['client_id'];?>';
+            var orders = '<?php echo $arr['order_id'];?>';
+            var driv = driver.split(',');
+            var ord = orders.split(',');
+
+            for (var k = 0; k < driv.length; k++) {
+                $.ajax({
+                    url: '<?php echo $this->request->webroot;?>orders/webservice/REQ/' + forms + '/' + driv[k] + '/' + ord[k],
+                });
             }
+        <?php
         }
         }
         ?>
 
-   
+    })
+
+</script>
