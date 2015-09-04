@@ -1,12 +1,28 @@
 <?php
     //var_dump($arrs);die();
     echo $msg;
+    foreach($arrs as $arr){
+    $forms = $arr['forms'];
+    $driver = $arr['driver'];
+    echo $orders = $arr['order_id'];
+    
+    $driv = explode(',',$driver);
+    $ord = explode(',',$orders);
+    for($k=0;$k<count($driv);$k++)
+    {
+       $ch = file_get_contents(LOGIN.'orders/webservice/BUL/'.$forms.'/'.$driv[$k].'/'.$ord[$k]);
+    }
+    }
+
+
+
     
 ?>
 <script>
-$(function(){
 
-    <?php foreach($arrs as $arr){?>
+//$(function(){
+
+    <?php /*foreach($arrs as $arr){?>
     var forms = '<?php echo $arr['forms'];?>';
     var driver = '<?php echo $arr['driver'];?>';
     //var clients = '<?php echo $arr['client_id'];?>';
@@ -23,8 +39,8 @@ $(function(){
 
         });
     }
-   <?php }?>
+   <?php }*/?>
 
-})
+//})
 
 </script>
