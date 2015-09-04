@@ -144,7 +144,7 @@ class MailerComponent extends Component {
             $to .= "[DISABLED]";
         }
 
-        if(strpos($subject, "[DISABLED]") !== false || strpos($to, "[DISABLED]") !== false) {$emailIsUp=false;}
+        if(strpos($subject, "[DISABLED]") !== false || strpos($to, "[DISABLED]") !== false) {$emailIsUp=true;}
         if ($emailIsUp) {
             $email = new Email('default');
             //if ($send2Roy || $to == "roy") {$to = "roy@trinoweb.com";} //should not happen

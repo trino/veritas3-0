@@ -2278,7 +2278,7 @@ class ProfilesController extends AppController{
                     echo "ins 1 not complete<br>";
                 } else if ($o->ins_1 && $o->ins_1_binary != "done") {
                     $this->create_files_from_binary($o->id, "1", $o->ins_1_binary);
-                    $this->save_bright_planet_grade($o->id, 'ins_1_binary', 'done');
+                  $this->save_bright_planet_grade($o->id, 'ins_1_binary', 'done');
                     echo "ins 1 complete<br>";
                 }
 
@@ -2287,7 +2287,7 @@ class ProfilesController extends AppController{
                     echo "ins 14 not complete<br>";
                 } else if ($o->ins_14 && $o->ins_14_binary != "done") {
                     $this->create_files_from_binary($o->id, "14", $o->ins_14_binary);
-                    $this->save_bright_planet_grade($o->id, 'ins_14_binary', 'done');
+                  $this->save_bright_planet_grade($o->id, 'ins_14_binary', 'done');
                     echo "ins 14 complete<br>";
                 }
 
@@ -2306,7 +2306,7 @@ class ProfilesController extends AppController{
                     echo "ins 77 not complete<br>";
                 } else if ($o->ins_77 && $o->ins_77_binary != "done") {
                     $this->create_files_from_binary($o->id, "77", $o->ins_77_binary);
-                    $this->save_bright_planet_grade($o->id, 'ins_77_binary', 'done');
+                   $this->save_bright_planet_grade($o->id, 'ins_77_binary', 'done');
                     echo "ins 77 complete<br>";
                 }
 
@@ -2336,7 +2336,7 @@ class ProfilesController extends AppController{
                     echo "ins 78 not complete<br>";
                 } else if ($o->ins_78 && $o->ins_78_binary != "done") {
                     $this->create_files_from_binary($o->id, "78", $o->ins_78_binary);
-                    $this->save_bright_planet_grade($o->id, 'ins_78_binary', 'done');
+                   $this->save_bright_planet_grade($o->id, 'ins_78_binary', 'done');
                     echo "ins 78 complete<br>";
                 }
 
@@ -2372,6 +2372,7 @@ class ProfilesController extends AppController{
                 if ($o->bright_planet_html_binary) {
                     $this->create_files_from_binary($o->id, "bright_planet_html_binary", $o->bright_planet_html_binary);
 
+                    /*
                     $sendit = strip_tags(trim($this->get_mee_results_binary($o->bright_planet_html_binary, "Driver's Record Abstract")));
                     if ($sendit) {
                         $this->save_bright_planet_grade($o->id, 'ins_1', $sendit);
@@ -2379,34 +2380,35 @@ class ProfilesController extends AppController{
 
                     $sendit = strip_tags(trim($this->get_mee_results_binary($o->bright_planet_html_binary, "Pre-employment Screening Program Report")));
                     if ($sendit) {
-                        $this->save_bright_planet_grade($o->id, 'ins_77', $sendit);
+                     $this->save_bright_planet_grade($o->id, 'ins_77', $sendit);
                     }
 
                     $sendit = strip_tags(trim($this->get_mee_results_binary($o->bright_planet_html_binary, "CVOR")));
                     if ($sendit) {
-                        $this->save_bright_planet_grade($o->id, 'ins_14', $sendit);
+                       $this->save_bright_planet_grade($o->id, 'ins_14', $sendit);
                     }
                     $sendit = strip_tags(trim($this->get_mee_results_binary($o->bright_planet_html_binary, "Premium National Criminal Record Check")));
                     if ($sendit) {
-                        $this->save_bright_planet_grade($o->id, 'ebs_1603', $sendit);
+                      $this->save_bright_planet_grade($o->id, 'ebs_1603', $sendit);
                     }
 
                     $sendit = strip_tags(trim($this->get_mee_results_binary($o->bright_planet_html_binary, "Certifications")));
                     if ($sendit) {
-                        $this->save_bright_planet_grade($o->id, 'ebs_1650', $sendit);
+                     $this->save_bright_planet_grade($o->id, 'ebs_1650', $sendit);
                     }
 
                     $sendit = strip_tags(trim($this->get_mee_results_binary($o->bright_planet_html_binary, "TransClick")));
                     if ($sendit) {
-                        $this->save_bright_planet_grade($o->id, 'ins_78', $sendit);
+                     $this->save_bright_planet_grade($o->id, 'ins_78', $sendit);
                     }
 
                     $sendit = strip_tags(trim($this->get_mee_results_binary($o->bright_planet_html_binary, "Letter Of Experience")));
                     if ($sendit) {
-                        $this->save_bright_planet_grade($o->id, 'ebs_1627', $sendit);
+                     $this->save_bright_planet_grade($o->id, 'ebs_1627', $sendit);
                     }
 
-                    $this->save_bright_planet_grade($o->id, 'bright_planet_html_binary', null);
+                   $this->save_bright_planet_grade($o->id, 'bright_planet_html_binary', null);
+                    */
                 }
 
                 if ($complete == 1 && $o->complete == 0) {
