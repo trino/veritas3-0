@@ -200,7 +200,24 @@ class ManagerComponent extends Component {
         }
         return implode($glueLine, $result);
     }
-    function order_to_email($OrderID){
+    function order_to_email($OrderID,$order_info = false,$product= false){
+        /*Rob's Code*/
+        
+        if($order_info)
+        {
+            $selected = $order_info->forms;
+            $arr1 = explode(',',$selected);
+        }
+        
+        if($product)
+        {
+            foreach($product as $pro)
+            {
+                $arr2[$pro->number] = $pro->title;
+            }
+        }
+        /*Rob's Code ends*/
+        
         $Order = $this->load_order($OrderID, true, true);
         $Details = array();
         $Details["Created by"] =  $Order->Header["user_id"]["Profile"]["fname"] . " " . $Order->Header["user_id"]["Profile"]["mname"] . " " . $Order->Header["user_id"]["Profile"]["lname"];
@@ -218,6 +235,16 @@ class ManagerComponent extends Component {
             }
         }
         $HTML = "<TABLE><TR><TD>" . $this->base64_to_html($this->key_implode($Details, '</TD></TR><TR><TD>', '</TD><TD>'), '<') . '</TD></TR></TABLE>';
+        $pro_text = '';
+        if(isset($arr1) && $arr1 && isset($arr2) && $arr2)
+        {
+            foreach($arr1 as $a1)
+            {
+                $pro_text = $pro_text.$arr2[$a1]."<br/>";
+            }
+            $HTML = $HTML.'<p>&nbsp;</p><strong>PRODUCTS SELECTED</strong><br/><br/>'.$pro_text;
+        }
+        
         //$JSON = $this->json_to_html(json_encode($Order, JSON_PRETTY_PRINT));
         return $HTML;// . $JSON;
     }
