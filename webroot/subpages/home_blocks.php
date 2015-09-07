@@ -66,13 +66,13 @@
     					<div class="dashboard-stat <?php if(isset($getColor->color)) echo $getColor->color; else echo $class[$i]; ?>">
                             <div class="whiteCorner"></div>
     
-                            <div class="visual">
-    							<i class="fa fa-copy"></i>
-    						</div>
+                            <div class="visual" style="float:right;" >
+                                <i class="fa fa-copy"></i>
+                            </div>
     						<div class="details">
     							<div class="number">
     							</div>
-    							<div class="desc">
+    							<div class="desc" style="float:left;">
     								 <?php
 									 	$title = ucfirst($d->$fieldname . $Trans);
                                         $titles[strtolower(trim($title))] = 1;//what purpose does this have?
