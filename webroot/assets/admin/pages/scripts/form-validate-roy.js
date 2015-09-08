@@ -216,6 +216,7 @@ function alertfail(Reason){
          text = replaceAll("%value%", Reason["Value"], text);
          text = replaceAll("%type%", reasons[Reason["Reason"]], text);
          alert(text);
+         //alert(Reason["Element"]);
          //alert("Name: " + Reason["Element"] + "\r\n (" + Reason["Value"] + ") is not valid (" + Reason['Reason'] + ")");
      }
     return false;
@@ -239,6 +240,8 @@ function scrollto(Reason, element){
     //element.scrollIntoView();
     alertfail(Reason);
     $('html,body').animate({ scrollTop: $(element).offset().top}, 'slow');
+    
+    //alert($(element).attr('name'));
     //if(Reason["Type"] == "checkbox"){element = findLableForControl(element);}
     oldcolor=element.style.borderColor;
     element.style.borderColor = "red";
