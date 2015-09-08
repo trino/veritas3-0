@@ -359,7 +359,7 @@
                                 </ul>
 
 
-                                <div class="tab-content" style="padding: 0;">
+                                <div class="tab-content" style="padding: 10px;">
                                     <!-- PERSONAL INFO TAB -->
 
 
