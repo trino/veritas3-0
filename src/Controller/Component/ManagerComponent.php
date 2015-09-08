@@ -208,6 +208,7 @@ class ManagerComponent extends Component {
         if($order_info)
         {
             $selected = $order_info->forms;
+            $link = LOGIN.'profiles/view/'.$order_info->uploaded_for.'?getprofilescore=1';
             $arr1 = explode(',',$selected);
         }
         
@@ -258,13 +259,16 @@ class ManagerComponent extends Component {
             foreach($arr1 as $a1)
             {
                 if($order_info->$arr_return_no[$a1])
-                $pro_text = $pro_text.$arr2[$a1]." (".$order_info->$arr_return_no[$a1].")<br/>";
+                $pro_text = $pro_text.$arr2[$a1]." (".$a1.' - '.$order_info->$arr_return_no[$a1].")<br/>";
                 else
                 $pro_text = $pro_text.$arr2[$a1]."<br/>";
             }
             $HTML = $HTML.'<p>&nbsp;</p><strong>PRODUCTS SELECTED</strong><br/><br/>'.$pro_text;
         }
-        
+        if(isset($link))
+        {
+            $HTML = $HTML.'<p>&nbsp;</p>CLICK <a href='.$link.'>HERE</a> TO VIEW THE SCORECARD';;
+        }
         //$JSON = $this->json_to_html(json_encode($Order, JSON_PRETTY_PRINT));
         return $HTML;// . $JSON;
     }

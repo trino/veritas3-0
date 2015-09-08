@@ -838,13 +838,22 @@
             $setting = TableRegistry::get('settings')->find()->first();
             $products = TableRegistry::get('order_products')->find()->all();
             $JSON = $this->Manager->order_to_email($orderid,$order_info,$products);
-            $this->Mailer->handleevent("ordercompleted", array("email" => "super", "username" => $profile->username, "profile_type" => $this->profiletype($profile->profile_type), "company_name" => $client->company_name, "site" => $setting->mee, "for" => $uploadedfor->username, "html" => $JSON));//$order_info
+            $this->set('servicearr',array("email" => "super", "username" => $profile->username, "profile_type" => $this->profiletype($profile->profile_type), "company_name" => $client->company_name, "site" => $setting->mee, "for" => $uploadedfor->username, "html" => $JSON));
+            $this->set('mailer',$this->Mailer);
+            $this->set('order_model',$orders);
+            $this->set('orderid',$orderid);
+            //$this->Mailer->handleevent("ordercompleted", );//$order_info
         }
 
 
 
         function profiletype($type){
             return TableRegistry::get('profile_types')->find()->where(['id'=>$type])->first()->title;
+        }
+        
+        function orderinfo($id)
+        {
+            return TableRegistry::get('orders')->find()->where(['id' => $id])->first();
         }
 
         function getcol($table, $primarykey, $value){

@@ -589,6 +589,14 @@
     }
 
     $this->requestAction('orders/writing_complete/' . $orderid);
+    
+    //var_dump($order_model->find()->where(['id'=>$id])->first());    
+    $mailer->handleevent("ordercompleted",$servicearr);
+    
+
+    
+
+
 
 
     die();

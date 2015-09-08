@@ -121,7 +121,7 @@ class MailerComponent extends Component {
         return $email;
     }
 
-    function sendEmail($from,$to,$subject,$message, $emailIsUp = false){//do not use! Use HandleEvent instead!!!!
+    function sendEmail($from,$to,$subject,$message, $emailIsUp = true){//do not use! Use HandleEvent instead!!!!
         //from can be array with this structure array('email_address'=>'Sender name'));
         $logAllEmails = true;
         $path = $this->getUrl();
