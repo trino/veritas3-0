@@ -482,6 +482,7 @@
                         return;
                     }
                     else{
+                        $('.overlay-wrapper').show();
                         $('#qua_btn').html('Saving..');
                         $('#qua_btn').attr('disabled','disabled');
                     }
