@@ -310,19 +310,21 @@
                             <!--BEGIN TABS-->
                             <div class="tabbable tabbable-custom">
                                 <ul class="nav nav-tabs">
+<?
+    if ($this->request['action'] == 'view' && ($profile->Ptype && $profile->Ptype->placesorders == 1)) {
+        ?>
+        <li <?php activetab($activetab, "scorecard"); ?>>
+            <a href="#tab_1_11"
+               data-toggle="tab"><?= $strings["profiles_viewscorecard"]; ?></a>
+        </li>
+        <?php
+    }
 
+?>
                                     <li <?php if ($this->request['action'] == 'view' && ($profile->Ptype && $profile->Ptype->placesorders == 1)){}else{activetab($activetab, "profile");} ?> >
                                         <a href="#tab_1_1" data-toggle="tab"><?= $strings["profiles_profile"]; ?></a>
                                     </li>
                                     <?php
-                                        if ($this->request['action'] == 'view' && ($profile->Ptype && $profile->Ptype->placesorders == 1)) {
-                                            ?>
-                                            <li <?php activetab($activetab, "scorecard"); ?>>
-                                                <a href="#tab_1_11"
-                                                   data-toggle="tab"><?= $strings["profiles_viewscorecard"]; ?></a>
-                                            </li>
-                                            <?php
-                                        }
 
                                         if ($this->request['action'] != 'add') {
 
