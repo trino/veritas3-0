@@ -120,14 +120,22 @@ if (isset($quiz)){
     </div>
 </div>
 
-    <div class="col-md-2">
+
+<div class="col-md-2">
+    <div class="form-group">
+        <label class="control-label">Pass:</label>
+        <input type="number" min="10" max="100" name="pass" size="3" value="<?php if (isset($quiz)) { echo $quiz->pass; } else { echo 80;} ?>">
+    </div>
+</div>
+
+<div class="col-md-2">
     <div class="form-group">
         <button type="submit" class="btn blue"><i class="fa fa-check"></i> Save Changes</button>
     </div>
-    </div>
+</div>
 
     <?php if (isset($_GET["quizid"])){ ?>
-    <div class="col-md-10" align="right">
+    <div class="col-md-8" align="right">
         <div class="form-group">
             <A href="<?= $this->request->webroot ?>training/users?quizid=<?= $_GET["quizid"] ?>" class="btn btn-info">Results</A>
             <A href="<?= $this->request->webroot ?>training/enroll?quizid=<?= $_GET["quizid"] ?>" class="btn btn-warning">Enroll</A>

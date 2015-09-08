@@ -2,6 +2,161 @@
     function getID($ID){
         return substr($ID, 5, strpos($ID, "]") - 5);
     }
+    function fixreferences($Manager, $Table, $IsLetter, $StartingCellColumn, $StartingCellRow, $OffsetColumn = 0, $OffsetRow = 0){
+        echo "Fix: " . $Table . " starting at " . $StartingCellColumn . "(" . $IsLetter . ")," . $StartingCellRow . " Offset: " . $OffsetColumn . ',' . $OffsetRow;
+    }
+
+    function getreferences($Manager, $Table, $Reference, $Me ="", $Letters = "", $PrimaryKey = "", $FilterBrackets=true, $RefsOnly = false){
+        if(!ismultireference($Manager, $Reference)){
+            if ($RefsOnly){return array($Reference);}
+            return array(getreference($Manager, $Table, $Reference, $Letters, $PrimaryKey, $FilterBrackets, false));
+        }
+        $Table = gettablereference($Reference,$Table);
+        if(!$PrimaryKey){$PrimaryKey = $Manager->get_primary_key($Table);}
+        if(!$Letters){
+            $Columns = $Manager->getColumnNames($Table, "", false);
+            $Letters = get_column_letters($PrimaryKey, $Columns);
+        }
+        $Reference1=ismultireference($Manager, $Reference,1, $Me);
+        $Reference2=ismultireference($Manager, $Reference,2, $Me);
+
+        $Column1 = $Manager->validate_data($Reference1, "alphabetic");
+        $Row1 = $Manager->validate_data($Reference1, "number");
+        $Column2 = $Manager->validate_data($Reference2, "alphabetic");
+        $Row2 = $Manager->validate_data($Reference2, "number");
+        $Column1 = letterToIndex($Column1);
+        $Column2 = letterToIndex($Column2);
+        if ($Column1 > $Column2){
+            $Values = $Column1;
+            $Column1 = $Column2;
+            $Column2 = $Values;
+        }
+        if($Row1 > $Row2){
+            $Values = $Row1;
+            $Row1 = $Row2;
+            $Row2 = $Values;
+        }
+
+        $Values = array();
+        for($RowID = $Row1; $RowID <= $Row2; $RowID++) {
+            for ($ColumnID = $Column1; $ColumnID <= $Column2; $ColumnID++) {
+                $Column = getcolumnindex($Letters, $ColumnID, false);
+                $Reference = $Column . $RowID;
+                if ($Reference != $Me) {
+                    if ($RefsOnly) {
+                        $Values[] = $Reference;
+                    } else {
+                        $Reference = getreference($Manager, $Table, $Reference, $Letters, $PrimaryKey, $FilterBrackets, false);
+                        if($Reference){$Values[] = $Reference;}
+                    }
+                }
+            }
+        }
+        return $Values;
+    }
+
+    function sum($Data){
+        $Total = 0;
+        foreach($Data as $Value){
+            $Total += $Value;
+        }
+        return $Total;
+    }
+    function average($Data){
+        return sum($Data) / count($Data);
+    }
+
+    //debug(average(getreferences($Manager, "test", "A1:A10", "A2")));
+
+    function getcolumnindex($Letters, $Index, $RetName = false){
+        $Index=$Index+1;
+        $FirstLetter= floor ($Index/26);
+        $SecondLetter = $Index % 26;
+        $Index = generateletters(array($FirstLetter,$SecondLetter), ord("A"));
+        if ($RetName && isset($Letters[$Index])){
+            return $Letters[$Index];
+        }
+        return $Index;
+    }
+
+    function letterToIndex($Letter){
+        $Number =0;
+        $Int = 0;
+        $Start = ord("A");
+        for($Temp = strlen($Letter)-1; $Temp>=0; $Temp--){
+            $Value = substr($Letter, $Temp, 1);
+            $Value = ord($Value) - $Start ;
+            if($Int){
+                $Number += ($Value+1) * $Int;
+                $Int=$Int*26;
+            }else {
+                $Number = $Value;
+                $Int = 26;
+            }
+        }
+        return $Number;
+    }
+
+    function gettablereference($Reference, $Table){
+        $ExclamationMark = strpos($Reference, "!");
+        if ($ExclamationMark) {return substr($Reference, 0, $ExclamationMark);}
+        return $Table;
+    }
+
+    function getreference($Manager, $Table, $Reference, $Letters = "", $PrimaryKey = "", $FilterBrackets=true, $ReturnIfError=true){
+        $Reference = str_replace("$", "", $Reference);
+        $ExclamationMark = strpos($Reference, "!");
+        if ($ExclamationMark){//reference to another table
+            $Table2 = substr($Reference, 0, $ExclamationMark);
+            $Reference = substr($Reference, $ExclamationMark + 1, strlen($Reference) - $ExclamationMark - 1);
+            if($Table2 != $Table) {
+                $Table = $Table2;
+                $Letters = "";
+                $PrimaryKey = "";
+            }
+        }
+        $Column = $Manager->validate_data($Reference, "alphabetic");
+        $Row = $Manager->validate_data($Reference, "number");
+
+        if(!$PrimaryKey){$PrimaryKey = $Manager->get_primary_key($Table);}
+        if(!$Letters){
+            $Columns = $Manager->getColumnNames($Table, "", false);
+            $Letters = get_column_letters($PrimaryKey, $Columns);
+        }
+
+        if (!isset($Letters[$Column])){return '[ERROR: Column ' . $Column . ' not found in ' . $Table . ']';}
+        $Column = $Letters[$Column];
+
+        $Data = $Manager->get_entry($Table, $Row, $PrimaryKey);
+        if($Data){
+            $Data = $Data->$Column;
+            if($FilterBrackets){$Data = getTag($Data, false);}
+            return $Data;
+        }
+        if($ReturnIfError) {return '[ERROR:' . $Table . "!" . $Reference . " not found]";}
+    }
+
+    function isareference($Manager, $Value){
+        if(strtoupper($Value) == "ME"){return true;}
+        $ExclamationMark = strpos($Value, "!");
+        if ($ExclamationMark) {$Value = substr($Value, $ExclamationMark + 1, strlen($Value) - $ExclamationMark - 1);}
+        $Column = $Manager->validate_data($Value, "alphabetic");
+        $Row = $Manager->validate_data($Value, "number");
+        if($Column && $Row && strlen($Column) < 3) {return strpos($Value, $Row) > strpos($Value, $Column);}
+    }
+
+    function ismultireference($Manager, $Value, $Ret=0, $Me = ""){
+        $SemiColon = strpos($Value, ":");
+        $Reference1 = strtoupper(substr($Value, 0, $SemiColon));
+        $Reference2 = strtoupper(substr($Value, $SemiColon + 1, strlen($Value) - $SemiColon - 1));
+        if($Ret == 1 && $Reference1 == "ME"){return $Me;}
+        if($Ret == 2 && $Reference2 == "ME"){return $Me;}
+        if($Ret == 1){return $Reference1;}
+        if($Ret == 2){return $Reference2;}
+        return(isareference($Manager, $Reference1) && isareference($Manager, $Reference2));
+    }
+
+    //getreferences($Manager, 'test', "A1:B2");
 
     if (isset($_GET["action"])){
         switch($_GET["action"]){
@@ -17,6 +172,7 @@
 
         switch($_POST["action"]){
             case "delete":
+                fixreferences($Manager, $_POST["table"], true, "A", 1, 0, -1);
                 $Manager->delete_all($_POST["table"], array($_POST["key"] => $ID));
                 echo "Deleted from " . $_POST["table"] . " where " . $_POST["key"] . " = " . $ID;
                 break;
@@ -48,10 +204,16 @@
             case "newcolumn":
                 if($_POST["type"] == "DECIMAL" && $_POST["length"] == 0){$_POST["length"] = "10,10";}
                 if($_POST["type"] == "VARCHAR" && $_POST["length"] == 0){$_POST["type"] = "TEXT";}
-                $Query = $Manager->create_column($_POST["table"], $_POST["name"], $_POST["type"],  $_POST["length"]);
+                $Query = $Manager->create_column($_POST["table"], $_POST["name"], $_POST["type"],  $_POST["length"], "", false, false, "", "",  $_POST["position"]);
+                if ($_POST["position"]== "FIRST"){
+                    fixreferences($Manager, $_POST["table"], true, "A", 1, 1);
+                } elseif($_POST["position"]) {
+                    fixreferences($Manager, $_POST["table"],  false, $_POST["position"], 1, 1);
+                }
                 echo $_POST["name"] . " created in " . $_POST["table"] . ' (' . $Query . ")";
                 break;
             case "deletecolumn":
+                fixreferences($_POST["table"],  getletter($_POST["table"], $_POST["name"], '', '') . "1", -1);
                 $Manager->delete_column($_POST["table"], $_POST["name"]);
                 echo $_POST["name"] . " deleted from " . $_POST["table"];
                 break;
@@ -108,6 +270,41 @@
         }
         return $RET;
     }
+    function get_column_letters($PrimaryKey, $Columns){
+        $FirstLetter = 0;
+        $SecondLetter = 1;
+        $Letters = array();
+        foreach ($Columns as $ColumnName => $ColumnData){
+            //if($ColumnName != $PrimaryKey){
+                $Letter = generateletters(array($FirstLetter,$SecondLetter), ord("A"));
+                $Letters[$Letter] = $ColumnName;
+                $Columns[$ColumnName]["letter"] = $Letter;
+                $SecondLetter++;
+                if($SecondLetter>26){
+                    $SecondLetter=1;
+                    $FirstLetter++;
+                }
+            //}
+        }
+        return $Letters;
+    }
+    function generateletters($Letters, $Start = 0){
+        $Tempstr = "";
+        //if(!is_array($Letters)){$Letters = str_split($Letters);}
+        foreach($Letters as $Letter){
+            if($Letter>0){
+                $Letter=$Letter+$Start-1;
+                $Tempstr .= chr($Letter);
+            }
+        }
+        return $Tempstr;
+    }
+    function getletter($Letters, $ColumnName, $Start = '[', $Finish = '] '){
+        $Key = array_search($ColumnName, $Letters);
+        if($Key){
+            return $Start . $Key . $Finish;
+        }
+    }
 
     $Columns="";
     $Table="";
@@ -119,6 +316,7 @@
         $GLOBALS["Table"] = $Table;
         $PrimaryKey = $Manager->get_primary_key($Table);
         $Columns = $Manager->getColumnNames($Table, "", false);
+        $Letters = get_column_letters($PrimaryKey, $Columns);
         $Conditions = "";
         if (isset($_GET["search"])){
             if (strpos($_GET["search"], "%") !== false){//is a pattern
@@ -173,7 +371,7 @@
                         foreach($Columns as $ColumnName => $ColumnData){
                             echo '<OPTION value="' . $ColumnName . '"';
                             if(isset($_GET["column"]) && $_GET["column"] == $ColumnName){echo ' SELECTED';}
-                            echo '>' . ucfirst2($ColumnName, true) . '</OPTION>';
+                            echo '>' . getletter($Letters, $ColumnName) . ucfirst2($ColumnName, true) . '</OPTION>';
                         }
                         ?>
                     </SELECT>
@@ -190,10 +388,20 @@
                         <OPTION value="INT">Number</OPTION>
                         <OPTION value="DECIMAL">Decimal</OPTION>
                         <OPTION value="TINYINT">Boolean</OPTION>
-                        <OPTION value="VARCHAR">Text</OPTION>
+                        <OPTION value="VARCHAR" SELECTED>Text</OPTION>
                     </SELECT>
                     <LABEL>Length:</LABEL>
-                    <INPUT TYPE="text" name="length" value="0" maxlength="4" size="4" id="newcol_length">
+                    <INPUT TYPE="text" name="length" value="255" maxlength="4" size="4" id="newcol_length" title="I recommend a VARCHAR with a length of at least 255, to allow for equations">
+                    <LABEL>Position:</LABEL>
+                    <SELECT name="position" id="newcol_pos" style="height:24px;">
+                        <OPTION value="FIRST">At the beginning</OPTION>
+                        <?php
+                            foreach($Columns as $ColumnName => $ColumnData){
+                                echo '<OPTION VALUE="' . $ColumnName . '">After: ' . getletter($Letters, $ColumnName) . ucfirst2($ColumnName, true) . '</OPTION>';
+                            }
+                        ?>
+                        <OPTION SELECTED value="">At the end</OPTION>
+                    </SELECT>
                     <input type="button" value="New Column" onclick="newcol();">
                 </FORM>
             </TD>
@@ -345,7 +553,7 @@
             url: window.location,
             type: "post",
             dataType: "HTML",
-            data: "action=newcolumn&table=<?= $Table;?>&name=" + Name + "&type=" + getinputvalue("newcol_type") + "&length=" + getinputvalue("newcol_length"),
+            data: "action=newcolumn&table=<?= $Table;?>&name=" + Name + "&type=" + getinputvalue("newcol_type") + "&length=" + getinputvalue("newcol_length") + "&position=" + getinputvalue("newcol_pos"),
             success: function (msg) {
                 columns.push(Name);
                 alert(msg);
@@ -361,6 +569,11 @@
     <table class="table table-hover  table-striped table-bordered table-hover dataTable no-footer">
         <THEAD><TR>
         <?php
+            function checknumeric($Value){
+                if (is_numeric($Value)){return true;}
+                echo '[ERROR:isNaN]';
+            }
+
             if(isset($_GET["table"])) {
                 if($PrimaryKey){
                     foreach ($Columns as $ColumnName => $ColumnData) {
@@ -368,6 +581,9 @@
                             echo '<TH class="nowrap">';
                             if ($ColumnName == $PrimaryKey) {
                                 echo '<i class="fa fa-key"></i>';
+                            }
+                            if(!$HTMLMode){
+                                $ColumnName = getletter($Letters, $ColumnName) . $ColumnName;
                             }
                             echo $this->Paginator->sort($ColumnName) . ' <A ONCLICK="return deletecolumn(' . "'" . $ColumnName . "'" . ');"><i class="fa fa-times"></i></A></TH>';
                         }
@@ -395,9 +611,13 @@
                                         $Value = getTag($Value, false);
                                     }
 
+                                    $Start = "";
+                                    $Finish = "";
                                     if(is_array($Keys)) {
                                         foreach ($Keys as $Key => $Data) {
-                                            switch (strtolower(trim($Key))) {
+                                            $Key = strtolower(trim($Key));
+                                            $Data = trim($Data);
+                                            switch ($Key) {
                                                 case "colspan":
                                                     echo ' COLSPAN="' . $Data . '"';
                                                     $NullCols = $Data - 1;
@@ -411,10 +631,37 @@
                                                 case "bgcolor";
                                                     echo ' BGCOLOR="' . $Data . '"';
                                                     break;
-                                                case "formatpercent";
-                                                    if (is_numeric($Value)) {
-                                                        $Value = number_format($Value * 100, 2) . '%';
+                                                case "format";
+                                                    switch (strtolower($Data)){
+                                                        case "percent":
+                                                            if (checknumeric($Value)) {$Value = number_format($Value * 100, 2) . '%';}
+                                                            break;
+                                                        case "number":
+                                                            if (checknumeric($Value)) {$Value = number_format($Value, 2);}
+                                                            break;
                                                     }
+                                                    break;
+
+                                                //Inside TD tags
+                                                case "bold":
+                                                    $Start .= '<B>';
+                                                    $Finish = '</B>' . $Finish;
+                                                    break;
+                                                case "italic":
+                                                    $Start .= '<I>';
+                                                    $Finish = '</I>' . $Finish;
+                                                    break;
+                                                case "underline":
+                                                    $Start .= '<U>';
+                                                    $Finish = '</U>' . $Finish;
+                                                    break;
+                                                case "fontcolor":
+                                                    $Start .= '<FONT COLOR="' . $Data . '">';
+                                                    $Finish = '</FONT>' . $Finish;
+                                                    break;
+                                                case "fontsize":
+                                                    $Start .= '<FONT SIZE="' . $Data . '">';
+                                                    $Finish = '</FONT>' . $Finish;
                                                     break;
                                             }
                                         }
@@ -423,7 +670,7 @@
                                         $Value = substr($Value, 1, strlen($Value)-1);
                                         $Value = evaluate($Table, $Value);
                                     }
-                                    echo '>' . $Value . '</TD>';
+                                    echo '>' . $Start . $Value . $Finish . '</TD>';
                                 }
                             } else {
                                 $Me = $ID . '[' . $ColumnName . ']';
@@ -526,6 +773,7 @@ class ParensParser {//https://gist.github.com/Xeoncross/4710324
     protected $string = null;
     protected $position = null;
     protected $buffer_start = null;
+
     public function parse($string) {
         if (!$string) {return array();}
         if ($string[0] == '(') {$string = substr($string, 1, -1);}

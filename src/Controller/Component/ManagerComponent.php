@@ -19,7 +19,7 @@ class ManagerComponent extends Component {
     }
 
     public function get_profile($UserID){
-        return $this->get_entry("profiles", $UserID, "id");;
+        return $this->get_entry("profiles", $UserID, "id");
     }
 
     function profile_to_array($ID, $JSON = false, $Pretty = false){
@@ -876,6 +876,8 @@ class ManagerComponent extends Component {
                 $Code = $this->validate_data($Data, "zipcode");
                 if($Code){return $Code;}
                 break;
+            default:
+                return $DataType . ' not supported';
         }
         return "";
     }
@@ -917,8 +919,8 @@ class ManagerComponent extends Component {
         if(!$Comment){$Comment = "clear";}
         $this->create_column($Table, $Column, "", "", "", false, "", $Comment, $Column);
     }
-    function create_column($Table, $Column, $Type, $Length="", $Default ="", $AutoIncrement=false, $Null = false, $Comment = "", $OldColumn = ""){
-        $Column= str_replace(" ", "_", $Column);
+    function create_column($Table, $Column, $Type, $Length="", $Default ="", $AutoIncrement=false, $Null = false, $Comment = "", $OldColumn = "", $Position = ""){
+        $Column= str_replace(" ", "_", $Column);//AFTER `commodity`     FIRST
         $Type=strtoupper($Type);//types can be varchar with a length, INT
         //ALTER TABLE `test` CHANGE `commodity` `commodity` VARCHAR(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL COMMENT 'test';
         //ALTER TABLE test CHANGE commodity commodity string(255) NOT NULL COMMENT 'test comment'
@@ -954,6 +956,13 @@ class ManagerComponent extends Component {
             }
         }
         if($Comment){$query.= " COMMENT '" . $Comment . "'";}
+        if($Position){
+            if(strtoupper($Position) == "FIRST"){
+                $query .= " FIRST";
+            } else {
+                $query .= " AFTER " . $Position;
+            }
+        }
         return $this->query($query);
     }
 
@@ -982,6 +991,7 @@ class ManagerComponent extends Component {
         $files = array_merge($files, glob(CACHE . 'models' . DS . '*'));  // remove cached models
         $files = array_merge($files, glob(CACHE . 'persistent' . DS . '*'));  // remove cached persistent
 
+        error_reporting(E_ERROR | E_PARSE);//suppress warnings
         foreach ($files as $f) {
             $this->delete_file($f);
         }
@@ -990,6 +1000,7 @@ class ManagerComponent extends Component {
             apc_clear_cache();
             apc_clear_cache('user');
         }
+        error_reporting(E_ALL);//re-enable warnings
     }
     function delete_file($Filename){
         if (is_file($Filename)) {

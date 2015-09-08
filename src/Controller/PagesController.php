@@ -31,7 +31,7 @@ class PagesController extends AppController {
 	   $this->loadComponent('Document');
        $this->set('doc_comp',$this->Document);
         $this->getAllClient();
-	   $this->loadModel('Clients');
+
         if(isset($_GET['orderflash']))
         $this->Flash->success($this->Trans->getString("flash_orderdraft"));
         $userid=$this->request->session()->read('Profile.id');
@@ -42,7 +42,11 @@ class PagesController extends AppController {
         }
         else
         $this->set('hideclient',0);
-		$this->set('client', $this->paginate($this->Clients));
+        $conditions="";
+        if(!$this->request->session()->read('Profile.super')){
+            $conditions["id"] = $this->Manager->find_client($userid);
+        }
+        $this->set('client', $this->paginate($this->Manager->enum_all("clients", $conditions)));
 
         $this->loadproducts();
 

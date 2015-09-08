@@ -98,7 +98,6 @@
 
         public function index() {
             if (isset($_GET['flash'])) {
-                $setting = $this->Settings->get_permission($this->request->session()->read('Profile.id'));
                 $this->Flash->success($this->Trans->getString("flash_selectclient"));
             }
             $setting = $this->Settings->get_permission($this->request->session()->read('Profile.id'));
@@ -106,14 +105,14 @@
                 $this->Flash->error($this->Trans->getString("flash_permissions") . ' (020)');
                 return $this->redirect("/");
             }
-            if (isset($_GET['draft'])) {
-                $draft = 1;
-            } else {
-                $draft = 0;
-            }
+            if (isset($_GET['draft'])) {$draft = 1;} else {$draft = 0;}
             $querys = TableRegistry::get('Clients');
-            $query = $querys->find()->where(['drafts' => $draft]);
-            $query = $querys->find();
+            $conditions['drafts'] = $draft;
+            if(!$this->request->session()->read('Profile.super')){
+                $conditions['id'] = $this->Manager->find_client();
+            }
+            $query = $querys->find()->where($conditions);
+
             $this->set('client', $this->appendattachments($this->paginate($query)));
         }
 
