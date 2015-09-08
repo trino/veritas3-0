@@ -106,7 +106,7 @@
         }
 
         public function settings(){
-            if(!$this->session()->read('Profile.super'))
+            if(!$this->request->session()->read('Profile.super'))
             {
                 $this->Flash->error('You dont have persmission to view this page');
                 $this->redirect('pages/index');
