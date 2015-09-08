@@ -1,4 +1,5 @@
-<link href="<?php echo $this->request->webroot; ?>assets/admin/pages/css/profile.css" rel="stylesheet" type="text/css"/> <!--REQUIRED-->
+<link href="<?php echo $this->request->webroot; ?>assets/admin/pages/css/profile.css" rel="stylesheet"
+      type="text/css"/> <!--REQUIRED-->
 <style>
     @media print {
         .page-header {
@@ -36,7 +37,7 @@
     if (isset($disabled)) {
         $is_disabled = 'disabled="disabled"';
     }// style="border: 0px solid;"';}
-    $hidepermissions=true;
+    $hidepermissions = true;
     $userID = $this->request->session()->read('Profile.id');
     if (isset($profile)) {
         $p = $profile;
@@ -44,16 +45,20 @@
     }
     $settings = $this->requestAction('settings/get_settings');
 
-    if($this->request->session()->read('Profile.super')){
+    if ($this->request->session()->read('Profile.super')) {
         $sidebar = $this->requestAction("settings/all_settings/0/sidebar");
-    }else{
-        $sidebar = $this->requestAction("settings/all_settings/".$userID."/sidebar");
+    } else {
+        $sidebar = $this->requestAction("settings/all_settings/" . $userID . "/sidebar");
     }
 
     include_once('subpages/api.php');
     $language = $this->request->session()->read('Profile.language');
     $strings = CacheTranslations($language, array("profiles_%", "forms_%", "clients_addeditimage", "clients_enablerequalify", "theme_%", "month_long%"), $settings);
-    if($language == "Debug") { $Trans = " [Trans]";} else { $Trans = ""; }
+    if ($language == "Debug") {
+        $Trans = " [Trans]";
+    } else {
+        $Trans = "";
+    }
 
     $param = $this->request->params['action'];
     $param2 = $strings["profiles_" . $param];
@@ -85,47 +90,51 @@
         </li>
     </ul>
 
-<?php
-    if (isset($disabled)) {
-        echo '<a href="javascript:window.print();" class="floatright btn btn-info">' . $strings["dashboard_print"] . '</a>';
-    }
-    if (isset($profile) && $sidebar->profile_delete == '1') {
-        if ($this->request->session()->read('Profile.super') == '1' || ($this->request->session()->read('Profile.profile_type') == '2' && ($profile->profile_type == '5'))) {
-            if ($this->request->session()->read('Profile.id') != $profile->id) {
+    <?php
+        if (isset($disabled)) {
+            echo '<a href="javascript:window.print();" class="floatright btn btn-info">' . $strings["dashboard_print"] . '</a>';
+        }
+        if (isset($profile) && $sidebar->profile_delete == '1') {
+            if ($this->request->session()->read('Profile.super') == '1' || ($this->request->session()->read('Profile.profile_type') == '2' && ($profile->profile_type == '5'))) {
+                if ($this->request->session()->read('Profile.id') != $profile->id) {
+                    ?>
+                        <a href="<?= $this->request->webroot; ?>profiles/delete/<?= $profile->id; ?><?php echo (isset($_GET['draft'])) ? "?draft" : ""; ?>"
+                           onclick="return confirm('<?= ProcessVariables($language, $strings["dashboard_confirmdelete"], array("name" => ucfirst(h($profile->username))), true);?>');"
+                           class="floatright btn btn-danger btnspc"><?= $strings["dashboard_delete"]; ?></a>
+                        </span>
+                    <?php
+                }
+            }
+        }
+        if (isset($profile)) {
+            $checker = $this->requestAction('settings/check_edit_permission/' . $this->request->session()->read('Profile.id') . '/' . $profile->id);
+            if ($sidebar->profile_edit == '1' && $param == 'view') {
+                echo $this->Html->link(__($strings["dashboard_edit"]), ['action' => 'edit', $profile->id], ['class' => 'floatright btn btn-primary btnspc']);
+            } else if ($param == 'edit') {
+                echo $this->Html->link(__($strings["dashboard_view"]), ['action' => 'view', $profile->id], ['class' => 'floatright btn btn-info btnspc']);
+            }
+            if ($this->request->session()->read('Profile.super') && $this->request->session()->read('Profile.id') != $profile->id) {
+                echo '<a href="' . $this->request->webroot . 'profiles/possess/' . $profile->id;
+                echo '" onclick="return confirm(' . "'Are you sure you want to possess " . formatname($profile) . "?'";
+                echo ');" class="floatright btn btnspc btn-danger">Possess</a>';
+            }
+        }
+        if ($sidebar->profile_edit == '1' && $param == 'view') {
+            $checker = $this->requestAction('settings/check_edit_permission/' . $this->request->session()->read('Profile.id') . '/' . $profile->id);
+            if ($checker == 1) {
                 ?>
-                    <a href="<?= $this->request->webroot; ?>profiles/delete/<?= $profile->id; ?><?php echo (isset($_GET['draft'])) ? "?draft" : ""; ?>"
-                       onclick="return confirm('<?= ProcessVariables($language, $strings["dashboard_confirmdelete"], array("name" => ucfirst(h($profile->username))), true);?>');"
-                       class="floatright btn btn-danger btnspc"><?= $strings["dashboard_delete"]; ?></a>
-                    </span>
+                <a href="<?php
+                    if ($profile->profile_type == '5') {
+                        $tag = "submitted_for_id";
+                    } else {
+                        $tag = "submitted_by_id";
+                    }
+                    echo $this->request->webroot . 'documents/index?type=&' . $tag . '=' . $profile->id;
+                ?>" class=" floatright btn default btnspc"><?= $strings["profiles_mydocuments"]; ?></a>
                 <?php
             }
         }
-    }
-    if (isset($profile)) {
-        $checker = $this->requestAction('settings/check_edit_permission/' . $this->request->session()->read('Profile.id') . '/' . $profile->id);
-        if ($sidebar->profile_edit == '1' && $param == 'view') {
-            echo $this->Html->link(__($strings["dashboard_edit"]), ['action' => 'edit', $profile->id], ['class' => 'floatright btn btn-primary btnspc']);
-        } else if ($param == 'edit') {
-            echo $this->Html->link(__($strings["dashboard_view"]), ['action' => 'view', $profile->id], ['class' => 'floatright btn btn-info btnspc']);
-        }
-        if($this->request->session()->read('Profile.super') && $this->request->session()->read('Profile.id') != $profile->id) {
-            echo '<a href="' . $this->request->webroot . 'profiles/possess/' . $profile->id;
-            echo '" onclick="return confirm(' . "'Are you sure you want to possess " . formatname($profile) . "?'";
-            echo ');" class="floatright btn btnspc btn-danger">Possess</a>';
-        }
-    }
-    if ($sidebar->profile_edit == '1' && $param == 'view') {
-        $checker = $this->requestAction('settings/check_edit_permission/' . $this->request->session()->read('Profile.id') . '/' . $profile->id);
-        if ($checker == 1) {
-            ?>
-            <a href="<?php
-                if ($profile->profile_type == '5') {$tag = "submitted_for_id";} else {$tag = "submitted_by_id";}
-                echo $this->request->webroot . 'documents/index?type=&' . $tag . '=' . $profile->id;
-            ?>" class=" floatright btn default btnspc"><?= $strings["profiles_mydocuments"]; ?></a>
-        <?php
-        }
-    }
-?>
+    ?>
 </div>
 
 
@@ -144,17 +153,18 @@
                             <img class="img-responsive" id="clientpic"
                                  alt="" style="height: auto;"
                                  src="<?php
-                                    if (isset($profile)) {
-                                        echo profileimage($this->request->webroot, $profile);
-                                    } else {
-                                        echo profileimage($this->request->webroot);
-                                    }
+                                     if (isset($profile)) {
+                                         echo profileimage($this->request->webroot, $profile);
+                                     } else {
+                                         echo profileimage($this->request->webroot);
+                                     }
                                  ?>"
                                 />
-                            <?php if (isset($id) && !(isset($disabled))&& $this->request->params['action']=='edit') { ?>
+                            <?php if (isset($id) && !(isset($disabled)) && $this->request->params['action'] == 'edit') { ?>
                                 <center>
                                     <div class="form-group">
-                                        <label class="sr-only" for="exampleInputEmail22"><?= $strings["clients_addeditimage"]; ?></label>
+                                        <label class="sr-only"
+                                               for="exampleInputEmail22"><?= $strings["clients_addeditimage"]; ?></label>
 
                                         <div class="input-icon">
                                             <br/>
@@ -186,33 +196,33 @@
                                 </div>
                             <?php }
                                 if (isset($p)) {
-                                    
+
                                     if ($profile->Ptype && $profile->Ptype->placesorders == 1) {//driver, owner driver, owner operator, sales, employee
-                                    
+
                                         echo '<label class="uniform-inline" style="margin-bottom:10px;">
-                                                <input type="checkbox" name="stat" value="1" id="' . $profile->id . '" class="checkhiredriver"'.$is_disabled;
+                                                <input type="checkbox" name="stat" value="1" id="' . $profile->id . '" class="checkhiredriver"' . $is_disabled;
                                         if ($p->is_hired == '1') {
                                             echo " checked";
                                         }
                                         echo '/> ' . $strings["profiles_washired"] . ' <span class="hired_msg"></span></label>';
 
                                         echo '<br><label class="uniform-inline" style="clear:both;margin-bottom: 20px;">
-                                        <input type="checkbox" name="" value="1" id="' . $profile->id . '" class="checkrequalify"'.$is_disabled;
-                                         if ($p->requalify == '1') {
+                                        <input type="checkbox" name="" value="1" id="' . $profile->id . '" class="checkrequalify"' . $is_disabled;
+                                        if ($p->requalify == '1') {
                                             echo " checked";
                                         }
                                         echo '> ' . $strings["clients_enablerequalify"] . '<span class="req_msg"></span></label>';
 
                                         if ($sidebar->orders_create == 1) {
-                                            
+
                                             $title = getFieldname("Name", $language);
                                             foreach ($products as $product) {
-                                                 $alias = $product->Sidebar_Alias;
-                                                if ($alias && $alias !="bulk") {
+                                                $alias = $product->Sidebar_Alias;
+                                                if ($alias && $alias != "bulk") {
                                                     $showit = false;
                                                     if ($product->profile_types) {
                                                         $profile_types = explode(",", $product->profile_types);
-                                                        $showit = in_array($profile->profile_type, $profile_types );
+                                                        $showit = in_array($profile->profile_type, $profile_types);
                                                     }
                                                     if ($sidebar->$alias == 1 && $product->Visible == 1 && $showit) {
                                                         echo '<br><a href="' . $this->request->webroot . 'orders/productSelection?driver=' . $profile->id;
@@ -224,7 +234,7 @@
                                             }
                                         }
 
-                                        if($clients && isset($client) && $profile->email){
+                                        if ($clients && isset($client) && $profile->email) {
                                             if (stristr("gordon food service", $client->company_name) || stristr("gfs", $client->company_name)) {
                                                 echo '<P><P><a id="removethis" href="';
                                                 echo '" onclick="return sendemails();" class="blue-stripe btn floatleft grey-cascade" style="margin-top:2px;width:75%; display:none;">' . $strings["profiles_sendforms"];
@@ -298,16 +308,17 @@
                             <div class="tabbable tabbable-custom">
                                 <ul class="nav nav-tabs">
 
-                                    <li  <?php activetab($activetab, "profile"); ?> >
+                                    <li <?php activetab($activetab, "profile"); ?> >
                                         <a href="#tab_1_1" data-toggle="tab"><?= $strings["profiles_profile"]; ?></a>
                                     </li>
                                     <?php
                                         if ($this->request['action'] == 'view' && ($profile->Ptype && $profile->Ptype->placesorders == 1)) {
                                             ?>
                                             <li <?php activetab($activetab, "scorecard"); ?>>
-                                                <a href="#tab_1_11" data-toggle="tab"><?= $strings["profiles_viewscorecard"];?></a>
+                                                <a href="#tab_1_11"
+                                                   data-toggle="tab"><?= $strings["profiles_viewscorecard"]; ?></a>
                                             </li>
-                                        <?php
+                                            <?php
                                         }
 
                                         if ($this->request['action'] != 'add') {
@@ -315,30 +326,33 @@
                                             if ($this->request->params['action'] != 'add' && ($profile->profile_type == '5')) {
                                                 ?>
                                                 <li<?php activetab($activetab, "notes"); ?>>
-                                                    <a href="#tab_1_9" data-toggle="tab"><?= $strings["profiles_notes"]; ?></a>
+                                                    <a href="#tab_1_9"
+                                                       data-toggle="tab"><?= $strings["profiles_notes"]; ?></a>
                                                 </li>
 
 
                                             <?php }
                                             $checker = $this->requestAction('/settings/check_edit_permission/' . $this->request->session()->read('Profile.id') . '/' . $profile->id . "/" . $profile->created_by);
-                                            if ($this->request->session()->read('Profile.super') == '1'){//} || ($sidebar->profile_create == '1' && $sidebar->profile_edit == '1')) {
+                                            if ($this->request->session()->read('Profile.super') == '1') {//} || ($sidebar->profile_create == '1' && $sidebar->profile_edit == '1')) {
                                                 ?>
                                                 <li <?php activetab($activetab, "permissions"); ?>>
-                                                    <a href="#tab_1_7" data-toggle="tab"><?= $strings["profiles_permissions"]; ?></a>
+                                                    <a href="#tab_1_7"
+                                                       data-toggle="tab"><?= $strings["profiles_permissions"]; ?></a>
                                                 </li>
 
                                             <?php } ?>
 
                                             <?php
-                                             $gfs = $this->requestAction('/settings/check_client/'.$id."/2");
-                                             if($gfs){
-                                            ?>
-                                            <li  <?php activetab($activetab, "feedback"); ?> >
-                                                <a href="#tab_1_8" data-toggle="tab"><?= $strings["profiles_feedback"]; ?></a>
-                                            </li>
+                                            $gfs = $this->requestAction('/settings/check_client/' . $id . "/2");
+                                            if ($gfs) {
+                                                ?>
+                                                <li <?php activetab($activetab, "feedback"); ?> >
+                                                    <a href="#tab_1_8"
+                                                       data-toggle="tab"><?= $strings["profiles_feedback"]; ?></a>
+                                                </li>
 
 
-                                        <?php
+                                                <?php
                                             }
                                         }
                                     ?>
@@ -383,20 +397,21 @@
                                             </div>
                                         <?php }
 
-                                    if ($this->request->session()->read('Profile.super')){
-                                    ?>
-                                    <div class="tab-pane <?php activetab($activetab, "permissions", false); ?>"
-                                         id="tab_1_7">
-                                        <?php if (!isset($BypassLogin)) $BypassLogin = false;
-                                            if (!$BypassLogin) {
-                                                include('subpages/profile/block.php');
-                                            }//permissions?>
-                                    </div>
-                                    <?php } ?>
+                                        if ($this->request->session()->read('Profile.super')) {
+                                            ?>
+                                            <div class="tab-pane <?php activetab($activetab, "permissions", false); ?>"
+                                                 id="tab_1_7">
+                                                <?php if (!isset($BypassLogin)) $BypassLogin = false;
+                                                    if (!$BypassLogin) {
+                                                        include('subpages/profile/block.php');
+                                                    }//permissions
+                                                ?>
+                                            </div>
+                                        <?php } ?>
                                     <div class="tab-pane <?php activetab($activetab, "feedback", false); ?>"
                                          id="tab_1_8">
-                                        <?       include('subpages/profile/feedback.php');
-                                     ?>
+                                        <? include('subpages/profile/feedback.php');
+                                        ?>
                                     </div>
 
                                 </div>
@@ -470,10 +485,10 @@
 
             <?php if(isset($profile) && ($profile->admin == 0 && $profile->super == 0)){; ?>
             $('.addclientz').each(function () {
-                if($(this).val() != client_id){
-                    $(this).prop( "disabled", addclient ==1 );
+                if ($(this).val() != client_id) {
+                    $(this).prop("disabled", addclient == 1);
                     var parent = $(this).parent().parent();
-                    if(addclient ==1){
+                    if (addclient == 1) {
                         parent.addClass("disabled");
                     } else {
                         parent.removeClass("disabled");
@@ -552,17 +567,17 @@
             var msgs = '';
             var today = new Date();
             var dd = today.getDate();
-            var mm = today.getMonth()+1; //January is 0!
+            var mm = today.getMonth() + 1; //January is 0!
             var Y = today.getFullYear();
-            
-            if(dd<10) {
-                dd='0'+dd
-            } 
-            
-            if(mm<10) {
-                mm='0'+mm
-            } 
-            var tday = Y+'-'+mm+'-'+dd;
+
+            if (dd < 10) {
+                dd = '0' + dd
+            }
+
+            if (mm < 10) {
+                mm = '0' + mm
+            }
+            var tday = Y + '-' + mm + '-' + dd;
             if ($(this).is(":checked")) {
                 var hired = 1;
                 var hired_date = tday;
@@ -581,15 +596,15 @@
             $.ajax({
                 url: "<?php echo $this->request->webroot;?>orders/savedriver/" + oid,
                 type: 'post',
-                data: 'is_hired=' + hired+'&hired_date='+hired_date,
+                data: 'is_hired=' + hired + '&hired_date=' + hired_date,
                 success: function () {
                     $('.hired_msg').html(msg);
                 }
             })
         });
-        
-        $('.checkrequalify').click(function(){
-             var oid = $(this).attr('id');
+
+        $('.checkrequalify').click(function () {
+            var oid = $(this).attr('id');
             var msgs = '';
             if ($(this).is(":checked")) {
                 var hired = 1;
@@ -609,19 +624,29 @@
                 }
             })
         })
-        <?php echo $this->request->webroot;?>clients/assignProfile/' + $(this).val() + '/
-        <?php if(isset($id) && $id)echo $id;else echo '0'?>/yes';
-         }
-         else {
-         msg = '<span class="msg" style="color:red">Removed</span>';
-         var url = '
-        <?php echo $this->request->webroot;?>clients/assignProfile/' + $(this).val() + '/
-        <?php if(isset($id) && $id)echo $id;else echo '0'?>/no';
-         }
+        <?php echo $this->request->webroot;?>clients / assignProfile / ' + $(this).val() + ' /
+        <?php if(isset($id) && $id)echo $id;else echo '0'?> / yes
+        ';
+    }
+    else
+    {
+        msg = '<span class="msg" style="color:red">Removed</span>';
+        var url = '
+        <?php echo $this->request->webroot;?>clients / assignProfile / ' + $(this).val() + ' /
+        <?php if(isset($id) && $id)echo $id;else echo '0'?> / no
+        ';
+    }
 
-         $.ajax({url: url,success:function(){$('.'+nameId).html(msg);}});
-         }); */
+    $.ajax({
+        url: url, success: function () {
+            $('.' + nameId).html(msg);
+        }
     });
+    })
+    ;
+    */
+    })
+    ;
 </script>
 <script>
     <?php
@@ -670,9 +695,9 @@
 </script>
 <SCRIPT>
     function removeelement(id) {
-        return (elem=document.getElementById(id)).parentNode.removeChild(elem);
+        return (elem = document.getElementById(id)).parentNode.removeChild(elem);
     }
-    function setinnerHTML(id, HTML){
+    function setinnerHTML(id, HTML) {
         document.getElementById(id).innerHTML = HTML;
     }
     // $this->request->webroot . 'clients/quickcontact?Type=emailout&user_id=' . $profile->id
@@ -686,7 +711,7 @@
                 setinnerHTML("removethis", res + ' <i class="fa fa-check"></i>');
                 //removeelement("removethis");//remove the button so it only can be clicked once
             },
-            failure: function (res){
+            failure: function (res) {
                 alert("Error: " + res);
             }
         });
