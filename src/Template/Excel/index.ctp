@@ -2,9 +2,6 @@
     function getID($ID){
         return substr($ID, 5, strpos($ID, "]") - 5);
     }
-    function fixreferences($Manager, $Table, $IsLetter, $StartingCellColumn, $StartingCellRow, $OffsetColumn = 0, $OffsetRow = 0){
-        echo "Fix: " . $Table . " starting at " . $StartingCellColumn . "(" . $IsLetter . ")," . $StartingCellRow . " Offset: " . $OffsetColumn . ',' . $OffsetRow;
-    }
 
     function getreferences($Manager, $Table, $Reference, $Me ="", $Letters = "", $PrimaryKey = "", $FilterBrackets=true, $RefsOnly = false){
         if(!ismultireference($Manager, $Reference)){
@@ -65,8 +62,6 @@
     function average($Data){
         return sum($Data) / count($Data);
     }
-
-    //debug(average(getreferences($Manager, "test", "A1:A10", "A2")));
 
     function getcolumnindex($Letters, $Index, $RetName = false){
         $Index=$Index+1;
@@ -143,6 +138,7 @@
         $Column = $Manager->validate_data($Value, "alphabetic");
         $Row = $Manager->validate_data($Value, "number");
         if($Column && $Row && strlen($Column) < 3) {return strpos($Value, $Row) > strpos($Value, $Column);}
+        return false;
     }
 
     function ismultireference($Manager, $Value, $Ret=0, $Me = ""){
@@ -154,9 +150,8 @@
         if($Ret == 1){return $Reference1;}
         if($Ret == 2){return $Reference2;}
         return(isareference($Manager, $Reference1) && isareference($Manager, $Reference2));
+        return false;
     }
-
-    //getreferences($Manager, 'test', "A1:B2");
 
     if (isset($_GET["action"])){
         switch($_GET["action"]){
@@ -325,7 +320,8 @@
                 $Conditions[$_GET["column"]] = $_GET["search"];
             }
         }
-        $Data = $Manager->paginate($Manager->enum_all($Table,$Conditions));
+        $Data = $Manager->enum_all($Table,$Conditions);
+        if($HTMLMode){$Data = $Manager->paginate($Data);}
         ?>
         <div class="form-actions" style="height:75px;">
             <div class="row">
@@ -347,66 +343,69 @@
                         </ul>
                     </div>
                 </DIV>
-
-                <div class="col-md-6" align="right">
-                    <div id="sample_2_paginate" class="dataTables_paginate paging_simple_numbers" style="margin-top:-10px;">
-                        <ul class="pagination sorting">
-                            <?= $this->Paginator->prev('< ' . __($strings["dashboard_previous"])); ?>
-                            <?= $this->Paginator->numbers(); ?>
-                            <?= $this->Paginator->next(__($strings["dashboard_next"]) . ' >'); ?>
-                        </ul>
+                <?php if(!$HTMLMode){?>
+                    <div class="col-md-6" align="right">
+                        <div id="sample_2_paginate" class="dataTables_paginate paging_simple_numbers" style="margin-top:-10px;">
+                            <ul class="pagination sorting">
+                                <?= $this->Paginator->prev('< ' . __($strings["dashboard_previous"])); ?>
+                                <?= $this->Paginator->numbers(); ?>
+                                <?= $this->Paginator->next(__($strings["dashboard_next"]) . ' >'); ?>
+                            </ul>
+                        </div>
                     </div>
-                </div>
+                <?php } ?>
             </div>
         </div>
 
-        <table class="table table-hover  table-striped table-bordered table-hover dataTable no-footer">
-            <TR><TD>
-                <FORM method="get" action="<?= $this->request->webroot; ?>excel">
-                    <LABEL>Search: </LABEL>
-                    <INPUT TYPE="hidden" name="table" value="<?= $Table; ?>">
-                    <INPUT TYPE="text" name="search" placeholder="Search" value="<?php if(isset($_GET["search"])){echo $_GET["search"];} ?>">
-                    <SELECT NAME="column" style="height:24px;">
-                        <?php
-                        foreach($Columns as $ColumnName => $ColumnData){
-                            echo '<OPTION value="' . $ColumnName . '"';
-                            if(isset($_GET["column"]) && $_GET["column"] == $ColumnName){echo ' SELECTED';}
-                            echo '>' . getletter($Letters, $ColumnName) . ucfirst2($ColumnName, true) . '</OPTION>';
-                        }
-                        ?>
-                    </SELECT>
-                    <input type="submit" value="Search">
-                </FORM>
-            </TD>
-            <TD>
-                <FORM method="post" action="<?= $this->request->webroot; ?>excel">
-                    <LABEL>New Column: </LABEL>
-                    <INPUT TYPE="hidden" name="action" value="newcolumn">
-                    <INPUT TYPE="hidden" name="table" value="<?= $Table; ?>">
-                    <INPUT TYPE="text" name="name" placeholder="Name" id="newcol_name">
-                    <SELECT name="type" id="newcol_type" style="height:24px;">
-                        <OPTION value="INT">Number</OPTION>
-                        <OPTION value="DECIMAL">Decimal</OPTION>
-                        <OPTION value="TINYINT">Boolean</OPTION>
-                        <OPTION value="VARCHAR" SELECTED>Text</OPTION>
-                    </SELECT>
-                    <LABEL>Length:</LABEL>
-                    <INPUT TYPE="text" name="length" value="255" maxlength="4" size="4" id="newcol_length" title="I recommend a VARCHAR with a length of at least 255, to allow for equations">
-                    <LABEL>Position:</LABEL>
-                    <SELECT name="position" id="newcol_pos" style="height:24px;">
-                        <OPTION value="FIRST">At the beginning</OPTION>
-                        <?php
+        <?php if(!$HTMLMode){?>
+            <table class="table table-hover  table-striped table-bordered table-hover dataTable no-footer">
+                <TR ID="action_search"><TD>
+                    <FORM method="get" action="<?= $this->request->webroot; ?>excel">
+                        <LABEL>Search: </LABEL>
+                        <INPUT TYPE="hidden" name="table" value="<?= $Table; ?>">
+                        <INPUT TYPE="text" name="search" placeholder="Search" value="<?php if(isset($_GET["search"])){echo $_GET["search"];} ?>">
+                        <SELECT NAME="column" style="height:24px;">
+                            <?php
                             foreach($Columns as $ColumnName => $ColumnData){
-                                echo '<OPTION VALUE="' . $ColumnName . '">After: ' . getletter($Letters, $ColumnName) . ucfirst2($ColumnName, true) . '</OPTION>';
+                                echo '<OPTION value="' . $ColumnName . '"';
+                                if(isset($_GET["column"]) && $_GET["column"] == $ColumnName){echo ' SELECTED';}
+                                echo '>' . getletter($Letters, $ColumnName) . ucfirst2($ColumnName, true) . '</OPTION>';
                             }
-                        ?>
-                        <OPTION SELECTED value="">At the end</OPTION>
-                    </SELECT>
-                    <input type="button" value="New Column" onclick="newcol();">
-                </FORM>
-            </TD>
-        </TR>
-    </TABLE>
+                            ?>
+                        </SELECT>
+                        <input type="submit" value="Search">
+                    </FORM>
+                </TD></TR>
+                <TR ID="action_newcol"><TD>
+                    <FORM method="post" action="<?= $this->request->webroot; ?>excel">
+                        <LABEL>New Column: </LABEL>
+                        <INPUT TYPE="hidden" name="action" value="newcolumn">
+                        <INPUT TYPE="hidden" name="table" value="<?= $Table; ?>">
+                        <INPUT TYPE="text" name="name" placeholder="Name" id="newcol_name">
+                        <SELECT name="type" id="newcol_type" style="height:24px;">
+                            <OPTION value="INT">Number</OPTION>
+                            <OPTION value="DECIMAL">Decimal</OPTION>
+                            <OPTION value="TINYINT">Boolean</OPTION>
+                            <OPTION value="VARCHAR" SELECTED>Text</OPTION>
+                        </SELECT>
+                        <LABEL>Length:</LABEL>
+                        <INPUT TYPE="text" name="length" value="255" maxlength="4" size="4" id="newcol_length" title="I recommend a VARCHAR with a length of at least 255, to allow for equations">
+                        <LABEL>Position:</LABEL>
+                        <SELECT name="position" id="newcol_pos" style="height:24px;">
+                            <OPTION value="FIRST">At the beginning</OPTION>
+                            <?php
+                                foreach($Columns as $ColumnName => $ColumnData){
+                                    echo '<OPTION VALUE="' . $ColumnName . '">After: ' . getletter($Letters, $ColumnName) . ucfirst2($ColumnName, true) . '</OPTION>';
+                                }
+                            ?>
+                            <OPTION SELECTED value="">At the end</OPTION>
+                        </SELECT>
+                        <input type="button" value="New Column" onclick="newcol();">
+                    </FORM>
+                </TD>
+            </TR>
+        </TABLE>
+    <?php } ?>
 
     <?php } else {
         $Tables = $Manager->enum_tables();
@@ -570,7 +569,7 @@
         <THEAD><TR>
         <?php
             function checknumeric($Value){
-                if (is_numeric($Value)){return true;}
+                if (!$Value || is_numeric($Value)){return true;}
                 echo '[ERROR:isNaN]';
             }
 
@@ -613,10 +612,19 @@
 
                                     $Start = "";
                                     $Finish = "";
+
+                                    if ($Value && substr($Value,0,1) == "="){
+                                        echo ' TITLE="' . $Value . '"';
+                                        $Value = substr($Value, 1, strlen($Value)-1);
+                                        $Reference = array_search($ColumnName, $Letters) . $Row->$PrimaryKey;
+                                        $Value = evaluate($Manager, $Table, $Value, $Reference, $Letters, $PrimaryKey);
+                                    }
+
                                     if(is_array($Keys)) {
                                         foreach ($Keys as $Key => $Data) {
                                             $Key = strtolower(trim($Key));
                                             $Data = trim($Data);
+
                                             switch ($Key) {
                                                 case "colspan":
                                                     echo ' COLSPAN="' . $Data . '"';
@@ -625,14 +633,23 @@
                                                 case "align":
                                                     echo ' ALIGN="' . $Data . '"';
                                                     break;
-                                                case "caps";
-                                                    $Value = strtoupper($Value);
-                                                    break;
                                                 case "bgcolor";
                                                     echo ' BGCOLOR="' . $Data . '"';
                                                     break;
+                                                case "validate";
+                                                    if($Value) {
+                                                        $Value = $Manager->validate_data($Value, $Data);
+                                                        if(!$Data){$Value = '[ERROR: Not a valid ' . $Data . ']';}
+                                                    }
+                                                    break;
                                                 case "format";
                                                     switch (strtolower($Data)){
+                                                        case "uppercase":
+                                                            $Value = strtoupper($Value);
+                                                            break;
+                                                        case "lowercase":
+                                                            $Value = strtolower($Value);
+                                                            break;
                                                         case "percent":
                                                             if (checknumeric($Value)) {$Value = number_format($Value * 100, 2) . '%';}
                                                             break;
@@ -666,10 +683,7 @@
                                             }
                                         }
                                     }
-                                    if ($Value && substr($Value,0,1) == "="){
-                                        $Value = substr($Value, 1, strlen($Value)-1);
-                                        $Value = evaluate($Table, $Value);
-                                    }
+
                                     echo '>' . $Start . $Value . $Finish . '</TD>';
                                 }
                             } else {
@@ -756,13 +770,45 @@
     </table>
 </DIV>
 <?php
-    function evaluate($Table, $Equation) {
+    function evaluate($Manager, $Table, $Equation, $Me, $Letters, $PrimaryKey) {
+        $p = new ParensParser();
+        $Equation = $p->parse($Equation);
+        $Equation = evaluatereferences($p, $Manager, $Table, $Equation, $Me, $Letters, $PrimaryKey);
+        $Equation = $p->condense($Equation);
+        $Equation = eval('return ' . $Equation . ';');
+        return $Equation;
+    }
 
-        debug($Equation);
+    function evaluatereferences($p, $Manager, $Table, $Equation, $Me, $Letters, $PrimaryKey){
+        if(is_array($Equation)){
+            foreach($Equation as $Key => $Cell){
+                $Equation[$Key] = evaluatereferences($p, $Manager, $Table, $Cell, $Me, $Letters, $PrimaryKey);
+            }
+        } else {
+            $Equation = $p->splitequation($Equation);
+            foreach($Equation as $Key => $Cell) {
+                if (isareference($Manager, $Cell)) {
+                    $Equation[$Key] = getreference($Manager, $Table, $Cell, $Me, $Letters, $PrimaryKey);
+                } else if (ismultireference($Manager, $Cell)) {
+                    $Data = getreferences($Manager, $Table, $Cell, $Me, $Letters, $PrimaryKey);
+                    $Equation[$Key] = '[' . implode(",", $Data) . ']';
+                }
+            }
+            $Equation = implode(" ", $Equation);
+        }
+        return $Equation;
+    }
+
+    function fixreferences($Manager, $Table, $IsLetter, $StartingCellColumn, $StartingCellRow, $OffsetColumn = 0, $OffsetRow = 0){
+        echo "Fix: " . $Table . " starting at " . $StartingCellColumn . "(" . $IsLetter . ")," . $StartingCellRow . " Offset: " . $OffsetColumn . ',' . $OffsetRow;
+        //$Columns, $Letters, 
+/*
         $p = new ParensParser();
         $Equation = $p->parse($Equation);
 
-        debug($Equation);
+        $Equation = $p->condense($Equation);
+        return $Equation;
+*/
     }
 
 
@@ -781,22 +827,29 @@ class ParensParser {//https://gist.github.com/Xeoncross/4710324
         $this->stack = array();
         $this->string = $string;
         $this->length = strlen($this->string);
+        $haspushed = false;
         for ($this->position=0; $this->position < $this->length; $this->position++) {
             switch ($this->string[$this->position]) {
                 case '(':
                     $this->push();
                     array_push($this->stack, $this->current);
                     $this->current = array();
+                    $haspushed = $this->position;
                     break;
                 case ')':
                     $this->push();
                     $t = $this->current;
                     $this->current = array_pop($this->stack);
                     $this->current[] = $t;
+                    $haspushed = $this->position;
                     break;
                 default:
                     if ($this->buffer_start === null) {$this->buffer_start = $this->position;}
             }
+        }
+        if($haspushed){
+            $buffer = substr($string, $haspushed+1, strlen($string)-$haspushed-1);
+            $this->current[] = trim($buffer);
         }
         return $this->current;
     }
@@ -804,9 +857,53 @@ class ParensParser {//https://gist.github.com/Xeoncross/4710324
         if ($this->buffer_start !== null) {
             $buffer = substr($this->string, $this->buffer_start, $this->position - $this->buffer_start);
             $this->buffer_start = null;
-            $this->current[] = $buffer;
+            $this->current[] = trim($buffer);
         }
     }
+
+    public function condense($array, $IsFirst = true){
+        if(is_array($array)){
+            foreach($array as $key => $cell){
+                $array[$key] = $this->condense($cell, False);
+            }
+            if($IsFirst){return implode("", $array);}
+            return "(" . implode("", $array) . ")";
+        }
+        return $array;
+    }
+
+    public function splitequation($string) {
+        $expr = '/[^\d.]|[\d.]++/';
+        preg_match_all( $expr, $string, $return );
+        $return = $return[0];
+        foreach($return as $Key => $Value){
+            if(!trim($Value)){unset($return[$Key]);}
+        }
+        $return = $this->joinLetters($return);
+        return $return;
+    }
+
+    protected function joinLetters($array){
+        $return = array();//a-z,A-Z,!,:,0-9   \w
+        $Current = "";
+        $IsLetter = false;
+        foreach($array as $Value){
+            $Cletter = $this->isLetter($Value);
+            if ($Current && $IsLetter != $Cletter){
+                array_push($return, $Current);
+                $Current="";
+            }
+            $Current.=$Value;
+            $IsLetter=$Cletter;
+        }
+        if($Current) {array_push($return, $Current);}
+        return $return;
+    }
+
+    protected function isLetter($Text){
+        return preg_replace("/[^a-zA-Z0-9:!]/", "", $Text) == true;
+    }
+
 }
 
 ?>

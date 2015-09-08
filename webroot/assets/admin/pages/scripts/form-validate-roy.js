@@ -20,7 +20,7 @@ function validate_data(Data, DataType){
                 return Data.length == 5 || Data.length == 9;
                 break;
             case "postalcode":
-                Data = Data.replace(/ /g, '').toUpperCase();
+                Data = Data.replace(/ /g, '').toUpperCase(); //Postal codes do not include the letters D, F, I, O, Q or U, and the first position also does not make use of the letters W or Z.
                 var regex = new RegExp(/^[ABCEGHJKLMNPRSTVXY]\d[ABCEGHJKLMNPRSTVWXYZ]?\d[ABCEGHJKLMNPRSTVWXYZ]\d$/i);
                 return regex.test(Data);
                 break;
