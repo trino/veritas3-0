@@ -3437,7 +3437,7 @@ $strings2 = CacheTranslations($language, array("drivereval_%", "tasks_date", "fi
                                                                             else
                                                                             {
                                                                                 ?>                                      
-                                                                                <input type="radio" id="recommended_for_hire_1" required name="recommended_for_hire" value="1"/>
+                                                                                <input type="radio" id="recommended_for_hire_1" name="recommended_for_hire" value="1"/>
                                                                                 <?php
                                                                             }
                                                                              ?> 
@@ -3464,7 +3464,7 @@ $strings2 = CacheTranslations($language, array("drivereval_%", "tasks_date", "fi
                                                                             else
                                                                             {
                                                                                 ?>                                      
-                                                                                <input type="radio" id="recommended_for_hire_2" required name="recommended_for_hire" value="0"/>
+                                                                                <input type="radio" id="recommended_for_hire_2" checked="" name="recommended_for_hire" value="0"/>
                                                                                 <?php
                                                                             }
                                                                              ?>
@@ -3500,7 +3500,7 @@ $strings2 = CacheTranslations($language, array("drivereval_%", "tasks_date", "fi
                                                                             else
                                                                             {
                                                                                 ?>                                      
-                                                                                <input type="radio" id="recommended_full_trainee_1" required name="recommended_full_trainee" value="1"/>
+                                                                                <input type="radio" id="recommended_full_trainee_1" name="recommended_full_trainee" value="1"/>
                                                                                 <?php
                                                                             }
                                                                              ?>
@@ -3525,7 +3525,7 @@ $strings2 = CacheTranslations($language, array("drivereval_%", "tasks_date", "fi
                                                                             else
                                                                             {
                                                                                 ?>                                      
-                                                                                <input type="radio" id="recommended_full_trainee_0" required name="recommended_full_trainee" value="0"/>
+                                                                                <input type="radio" id="recommended_full_trainee_0" checked name="recommended_full_trainee" value="0"/>
                                                                                 <?php
                                                                             }
                                                                              ?>
@@ -3561,7 +3561,7 @@ $strings2 = CacheTranslations($language, array("drivereval_%", "tasks_date", "fi
                                                                             else
                                                                             {
                                                                                 ?>                                      
-                                                                                <input type="radio" id="recommended_fire_hire_trainee_1" required name="recommended_fire_hire_trainee" value="1"/>
+                                                                                <input type="radio" id="recommended_fire_hire_trainee_1" name="recommended_fire_hire_trainee" value="1"/>
                                                                                 <?php
                                                                             }
                                                                              ?>
@@ -3586,7 +3586,7 @@ $strings2 = CacheTranslations($language, array("drivereval_%", "tasks_date", "fi
                                                                             else
                                                                             {
                                                                                 ?>                                      
-                                                                                <input type="radio" id="recommended_fire_hire_trainee_0" required name="recommended_fire_hire_trainee" value="0"/>
+                                                                                <input type="radio" id="recommended_fire_hire_trainee_0" checked name="recommended_fire_hire_trainee" value="0"/>
                                                                                 <?php
                                                                             }
                                                                              ?>
