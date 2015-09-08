@@ -194,11 +194,13 @@ $hereby = "<p><br/>I hereby consent to the search of the following:</p>
             $hereby = $hereby."<br/><br/><p>
                             <strong>Signature of Driver</strong><br />";
                 if(isset($detail['consent']) && $detail['consent']->criminal_signature_applicant2){
+                 //   echo $initials.$this->request->webroot.'canvas/'.$detail['consent']->criminal_signature_applicant2;
                     $hereby = $hereby."<img src=\"".$initials.$this->request->webroot.'canvas/'.$detail['consent']->criminal_signature_applicant2."\" style=\"max-width: 100%;\" />";
                     }
                 $hereby = $hereby."<p>
                             <strong>Signature of Company Witness</strong><br />";
                 if(isset($detail['consent']) && $detail['consent']->signature_company_witness2){
+                  //  echo $initials.$this->request->webroot.'canvas/'.$detail['consent']->signature_company_witness2;
                     $hereby = $hereby."<img src=\"".$initials.$this->request->webroot.'canvas/'.$detail['consent']->signature_company_witness2."\" style=\"max-width: 100%;\" /><br/>";
                       }      
                 
@@ -341,7 +343,7 @@ $hereby = "<p><br/>I hereby consent to the search of the following:</p>
                                             $ext = end($ext_arr);
                                             $ext = strtolower($ext);
                                             if (!in_array($ext, $doc_ext) && !in_array($ext,$vid_ext) && file_exists(APP."../webroot/attachments/".$a->attachment)) {
-                    
+                   // echo $initials.$this->request->webroot."attachments/".$a->attachment;
                         $attach = $attach."<p><img src=\"".$initials.$this->request->webroot."attachments/".$a->attachment."\" /><br /></p>";
                         }
                         
@@ -351,6 +353,7 @@ $hereby = "<p><br/>I hereby consent to the search of the following:</p>
                 $attach = $attach."<br/><br/><p>
                             <strong>Signature of Driver</strong><br />";
                 if(isset($detail['consent']) && $detail['consent']->criminal_signature_applicant){
+                 //   echo $initials.$this->request->webroot.'canvas/'.$detail['consent']->criminal_signature_applicant;
                     $attach = $attach."<img src=\"".$initials.$this->request->webroot.'canvas/'.$detail['consent']->criminal_signature_applicant."\" style=\"max-width: 100%;\" />";
                     }
                 $attach = $attach."<p>

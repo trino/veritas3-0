@@ -34,7 +34,7 @@ class DocumentComponent extends Component{
                 $txtfile = $txtfile.'Title: '.$arr['title']."\n";}
                 $arr['uploaded_for'] = $_POST['uploaded_for'];
                 $txtfile = $txtfile.'Uploaded for: User Id# '.$arr['uploaded_for']."\n";
-                $txtfile = $txtfile.'Uploaded By: User Id# '.$this->request->session()->read('Profile.id')."\n";
+                $txtfile = $txtfile.'Uploaded By: User Id# '.$controller->request->session()->read('Profile.id')."\n";
                 $sig = explode('/',$_POST['recruiter_signature']);
                 if(isset($_GET['order_type'])){
                 $arr['order_type'] = $_GET['order_type'];
