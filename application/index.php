@@ -4,7 +4,7 @@
         content: " *";
         color: #e32;
     }
-
+ 
     .content{
         width: 70% !important;
     }

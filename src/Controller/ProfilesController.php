@@ -106,6 +106,11 @@
         }
 
         public function settings(){
+            if(!$this->session()->read('Profile.super'))
+            {
+                $this->Flash->error('You dont have persmission to view this page');
+                $this->redirect('pages/index');
+            }
             $this->set("hascache", TableRegistry::get('stringscache')->find()->all()->first());
             if(isset($_GET["DeleteDoc"])){
                 $this->DeleteSubdocument($_GET["DeleteDoc"]);
@@ -3184,7 +3189,7 @@
             $mon = array('Jan'=>'01','Feb'=>'02','Mar'=>'03','Apr'=>'04','May'=>'05','Jun'=>'06','Jul'=>'07','Aug'=>'08','Sep'=>'09','Oct'=>'10','Nov'=>'11','Dec'=>'12');
 
             while($arrs = fgetcsv($file)) {
-                //var_dump($arrs);die();
+                var_dump($arrs);die();
                 foreach($arrs as $k=>$arr){
                     if($k==0) {
                         continue;

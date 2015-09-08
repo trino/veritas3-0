@@ -32,7 +32,7 @@ class MailerComponent extends Component {
         }
     }
 
-    function handleevent($eventname, $variables){
+    function handleevent($eventname, $variables,$directemail=''){
         $this->savevariables($eventname, $variables);
         //return false;//not operational
         $Email = $this->getString("email_" . $eventname . "_subject");
@@ -44,6 +44,8 @@ class MailerComponent extends Component {
         $variables["created"] = date("l F j, Y - H:i:s");
         $variables["login"] = '<a href="' . LOGIN . '">Click here to login</a>';
         $variables["variables"] = print_r($variables, true);
+        if($directemail)
+        $variables["email"] = $directemail;
         if($Email) {
             $Subject =  $Email->$language;//$Email->English;
             $Message = $this->getString("email_" . $eventname . "_message")->$language;//$Email->French;
@@ -58,7 +60,9 @@ class MailerComponent extends Component {
             $Message = str_replace("\r\n", "<BR>", $Message);
             if(!$Message) {$Message = $eventname . " variables: " .$variables["variables"];}//DEBUG
             if(isset($variables["debug"])){$Message.= "<BR>" . $variables["debug"];}
-            if (!isset($variables["email"]) ) {$variables["email"] = $this->getfirstsuper();}
+            if (!isset($variables["email"])) {$variables["email"] = $this->getfirstsuper();}
+            
+            //$this->sendEmail("", $direct_arr["email"], $Subject, $Message);
             if (is_array($variables["email"])){
                 foreach($variables["email"] as $email){
                     $this->sendEmail("", $email, $Subject, $Message);
@@ -70,6 +74,7 @@ class MailerComponent extends Component {
             $Subject = $eventname;
             $Message = "email_" . $eventname . " does not have _subject/_message set in [strings]";
             $this->sendEmail("",$variables["email"], $Subject, $Message . " Variables: " . print_r($variables, true));
+            //$this->sendEmail("",$directemail, $Subject, $Message . " Variables: " . print_r($variables, true));
         }
         //"clientcreated":// "email", "company_name", "profile_type", "username", "created", "path"
         //"orderplaced" type=("physical", "footprint", "surveillance"):// "email", "company_name", "username", "created", "path"

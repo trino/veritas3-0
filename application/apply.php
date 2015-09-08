@@ -419,7 +419,7 @@
                                     echo '&#10006;';
                                 }
                             } else {
-                                echo '<input type="radio" class="form-control" name="workedbefore" id="yesCheck" value="1"';
+                                echo '<input type="radio" class="form-control required" name="workedbefore" id="yesCheck" required value="1"';
                                 if(isset($application_for_employment_gfs) && $application_for_employment_gfs->workedbefore=='1') {echo "checked='checked'";}
                                 echo '/>';
                             }
@@ -434,7 +434,7 @@
                                     echo '&#10006;';
                                 }
                             } else {
-                                echo '<input type="radio" class="form-control" name="workedbefore" id="noCheck" value="0" checked';
+                                echo '<input type="radio" class="form-control required" name="workedbefore" id="noCheck" value="0" required checked';
                                 if(isset($application_for_employment_gfs) && $application_for_employment_gfs->workedbefore=='0') {echo "checked='checked'";}
                                 echo '/>';
                             }
@@ -480,7 +480,7 @@
                                     echo '&#10006;';
                                 }
                             } else {
-                                echo '<input type="radio" class="form-control" name="age" value="1"/>';
+                                echo '<input type="radio" class="form-control required" name="age" required value="1"/>';
                             }
                         ?>
                         Yes
@@ -494,7 +494,7 @@
                                     echo '&#10006;';
                                 }
                             } else {
-                                echo '<input type="radio" class="form-control" name="age" value="0" checked/>';
+                                echo '<input type="radio" class="form-control required" name="age" value="0" required checked/>';
                             }
                         ?>
                          No
@@ -514,7 +514,7 @@
                                 echo '&#10006;';
                             } 
                         } else {
-                            echo '<input type="radio" class="form-control" name="legal" value="1" ';
+                            echo '<input required type="radio" class="form-control required" name="legal" value="1" ';
                             if(isset($application_for_employment_gfs) && $application_for_employment_gfs->legal=='1')echo "checked='checked'";
                             echo '/>';
                         }
@@ -530,7 +530,7 @@
                                 echo '&#10006;';
                             } 
                         } else {
-                            echo '<input type="radio" checked class="form-control" name="legal" value="0" ';
+                            echo '<input type="radio" required checked class="form-control required" name="legal" value="0" ';
                             if(isset($application_for_employment_gfs) && $application_for_employment_gfs->legal=='0')echo "checked='checked'";
                             echo '/>';
                         }
@@ -704,14 +704,8 @@
                             } 
                         } else {
                             echo '<input type="radio" class="form-control" name="legal1" id="fullTime" value="0" ';
-                            if(isset($application_for_employment_gfs) && $application_for_employment_gfs->legal1=='0'){echo "checked='checked'";
-                            echo '/>';}
-                            else
-                            if(!isset($application_for_employment_gfs))
-                            {
-                                echo "checked='checked'";
+                            if(isset($application_for_employment_gfs) && $application_for_employment_gfs->legal1=='0')echo "checked='checked'";
                             echo '/>';
-                            }
                         }
                          ?>
                          Full Time ?

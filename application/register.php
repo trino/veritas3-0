@@ -76,6 +76,9 @@
             if (isset($_GET["username"])) {
                 echo '<div class="alert alert-info display-hide col-md-12" style="display: block;">
                         <button class="close" data-close="alert"></button>
+
+                        <!--A HREF="' . $webroot . "profiles/view/" . $_GET["userid"] . '">
+                        User "' . $_GET["username"] . '" has been created.</A-->
                         Thank you for registering. We\'ll be in contact with you shortly.
                         </div>';
             }
@@ -103,6 +106,8 @@
                         echo '</select>';
                     }
                 ?>
+                <!--input type="hidden" value="5" name="profile_type"-->
+                <!--input type="hidden" value="3" name="driver"-->
                 <input type="hidden" value="<?php if (isset($_GET["client"])) {
                     echo $_GET["client"];
                 } ?>" name="client_ids">
@@ -181,6 +186,19 @@
 
 
         <div class="clearfix"></div>
+        <!--div class="form-group">     JUST BASE IT OFF THE TITLE!
+                <label class="control-label visible-ie8 visible-ie9">Gender</label>
+                <div class="input-icon">
+                    <i class="fa fa-child"></i>
+                    <SELECT CLASS="form-control placeholder-no-fix" placeholder="Gender" name="gender" required="required" />
+                        <?php
+            printoption("Select Gender", "");
+            printoption("Male", $gender, "Male");
+            printoption("Female", $gender, "Female");
+        ?>
+                    </SELECT>
+                </div>
+            </div-->
 
         <div class="form-group col-md-4 col-sm-4">
             <label class="control-label visible-ie8 visible-ie9">Place of Birth</label>
@@ -199,6 +217,40 @@
                 <i class="fa fa-calendar"></i>
                 <INPUT TYPE="Text" NAME="dob" size=10 MAXLENGTH="10" placeholder="Date of Birth"
                        CLASS="datepicker form-control placeholder-no-fix">
+
+                <!--SELECT CLASS="form-control placeholder-no-fix" placeholder="Title" name="dobY" required="required" />
+                        <?php
+                    $now = date("Y");
+                    for ($temp = $now; $temp > 1899; $temp -= 1) {
+                        printoption($temp, $currentyear, $temp);
+                    }
+                ?>
+                    </SELECT>
+
+                    <i class="fa fa-calendar"></i>
+                    <SELECT CLASS="form-control placeholder-no-fix" placeholder="Title" name="dobM" required="required" />
+                        <?php
+                    $monthnames = array("Jan", "Feb", "Mar", "Apr", "May", "June", "July", "Aug", "Sept", "Oct", "Nov", "Dec");
+                    for ($temp = 1; $temp < 13; $temp += 1) {
+                        if ($temp < 10) {
+                            $temp = "0" . $temp;
+                        }
+                        printoption($monthnames[$temp - 1], "", $temp);
+                    }
+                ?>
+                    </SELECT>
+
+                    <i class="fa fa-calendar"></i>
+                    <SELECT CLASS="form-control placeholder-no-fix" placeholder="Title" name="dobD" required="required" />
+                        <?php
+                    for ($temp = 1; $temp < 32; $temp++) {
+                        if ($temp < 10) {
+                            $temp = "0" . $temp;
+                        }
+                        printoption($temp, $currentday, $temp);
+                    }
+                ?>
+                    </SELECT-->
             </div>
         </div>
         <div class="clearfix"></div>

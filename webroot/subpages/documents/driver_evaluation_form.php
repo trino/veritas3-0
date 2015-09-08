@@ -15,7 +15,7 @@ $strings2 = CacheTranslations($language, array("drivereval_%", "tasks_date", "fi
 													* </span>
 													</label>
 													<div class="col-md-6">
-														<input type="text" class="form-control" name="driver_name"/>
+														<input type="text" class="form-control required" name="driver_name"/>
 														
 													</div>
 												</div>
@@ -24,7 +24,7 @@ $strings2 = CacheTranslations($language, array("drivereval_%", "tasks_date", "fi
 													* </span>
 													</label>
 													<div class="col-md-6">
-														<input type="text" placeholder="" class="form-control" name="d_l"/>
+														<input type="text" placeholder="" class="form-control required" name="d_l"/>
 														
 													</div>
 												</div>
@@ -33,7 +33,7 @@ $strings2 = CacheTranslations($language, array("drivereval_%", "tasks_date", "fi
 													* </span>
 													</label>
 													<div class="col-md-6">
-														<input type="text" placeholder="" class="form-control date-picker" name="issued_date"/>
+														<input type="text" placeholder="" class="form-control date-picker required" name="issued_date"/>
 														
 													</div>
 												</div>
@@ -52,7 +52,7 @@ $strings2 = CacheTranslations($language, array("drivereval_%", "tasks_date", "fi
                                                                     echo '&#9744;';
                                                                 } 
                                                             } else {
-                                                                echo '<input type="checkbox" id="transmission_manual_shift_1" name="transmission_manual_shift" value="1"/>';
+                                                                echo '<input type="checkbox" id="transmission_manual_shift_1" name="transmission_manual_shift" class="checkbox1" value="1"/>';
                                                             }
                                                          ?>
                                                             <?= $strings2["drivereval_manualshif"]; ?> </label></div><div class="checkbox-list col-md-3 nopad">
@@ -65,7 +65,7 @@ $strings2 = CacheTranslations($language, array("drivereval_%", "tasks_date", "fi
                                                                     echo '&#9744;';
                                                                 } 
                                                             } else {
-                                                                echo '<input type="checkbox" id="transmission_auto_shift_2" name="transmission_auto_shift" value="2"/>';
+                                                                echo '<input class="checkbox1" type="checkbox" id="transmission_auto_shift_2" name="transmission_auto_shift" value="2"/>';
                                                             }
                                                          ?>
                                                             <?= $strings2["drivereval_autoshifta"]; ?> </label>
@@ -86,7 +86,7 @@ $strings2 = CacheTranslations($language, array("drivereval_%", "tasks_date", "fi
                                                             }
                                                         ?>
 
-														<input type="text" placeholder="" class="form-control" name="name_evaluator" value="<?= $value; ?>" <?php if(strlen($value)>1) { echo " disabled"; }?> />
+														<input type="text" placeholder="" class="form-control required" name="name_evaluator" value="<?= $value; ?>" <?php if(strlen($value)>1) { echo " disabled"; }?> />
 													</div>
 												</div>
                                                 
@@ -116,7 +116,7 @@ $strings2 = CacheTranslations($language, array("drivereval_%", "tasks_date", "fi
                                                             else
                                                             {
                                                                 ?>                                      
-                                                                <input type="checkbox" name="pre_hire" value="1"/> 
+                                                                <input class="checkbox2" type="checkbox" name="pre_hire" value="1"/> 
                                                                 <?php
                                                             }
                                                          ?>
@@ -141,7 +141,7 @@ $strings2 = CacheTranslations($language, array("drivereval_%", "tasks_date", "fi
                                                             else
                                                             {
                                                                 ?>                                      
-                                                                <input type="checkbox" name="post_accident" value="2"/> 
+                                                                <input class="checkbox2" type="checkbox" name="post_accident" value="2"/> 
                                                                 <?php
                                                             }
                                                          ?>
@@ -168,7 +168,7 @@ $strings2 = CacheTranslations($language, array("drivereval_%", "tasks_date", "fi
                                                             else
                                                             {
                                                                 ?>                                      
-                                                                <input type="checkbox" name="post_injury" value="1"/> 
+                                                                <input class="checkbox2" type="checkbox" name="post_injury" value="1"/> 
                                                                 <?php
                                                             }
                                                          ?>
@@ -193,7 +193,7 @@ $strings2 = CacheTranslations($language, array("drivereval_%", "tasks_date", "fi
                                                             else
                                                             {
                                                                 ?>                                      
-                                                                <input type="checkbox" name="post_training" value="2"/> 
+                                                                <input class="checkbox2" type="checkbox" name="post_training" value="2"/> 
                                                                 <?php
                                                             }
                                                          ?>
@@ -220,7 +220,7 @@ $strings2 = CacheTranslations($language, array("drivereval_%", "tasks_date", "fi
                                                             else
                                                             {
                                                                 ?>                                      
-                                                                <input type="checkbox" name="annual" value="1"/> 
+                                                                <input class="checkbox2" type="checkbox" name="annual" value="1"/> 
                                                                 <?php
                                                             }
                                                          ?>
@@ -245,7 +245,7 @@ $strings2 = CacheTranslations($language, array("drivereval_%", "tasks_date", "fi
                                                             else
                                                             {
                                                                 ?>                                      
-                                                                <input type="checkbox" name="skill_verification" value="2"/> 
+                                                                <input class="checkbox2" type="checkbox" name="skill_verification" value="2"/> 
                                                                 <?php
                                                             }
                                                          ?>
@@ -3393,13 +3393,13 @@ $strings2 = CacheTranslations($language, array("drivereval_%", "tasks_date", "fi
 
 													<div class="col-md-4">
                                                         <label class="control-label"><?= $strings2["drivereval_autoshifta"]; ?><span class="required"> * </span> </label>
-														<input type="text" class="form-control" name="auto_shift"/>
+														<input type="text" class="form-control required" name="auto_shift"/>
 														
 													</div>
 
 													<div class="col-md-4">
                                                         <label class="control-label"><?= $strings2["drivereval_manualshif"]; ?><span class="required"> * </span></label>
-														<input type="text" class="form-control" name="manual"/>
+														<input type="text" class="form-control required" name="manual"/>
 														
 													</div>
 												</div>
@@ -3602,7 +3602,7 @@ $strings2 = CacheTranslations($language, array("drivereval_%", "tasks_date", "fi
 													* </span>
 													</label>
 													<div class="col-md-6">
-														<textarea  placeholder="" class="form-control" name="comments" style="height:140px"></textarea>
+														<textarea  placeholder="" class="form-control required" name="comments" style="height:140px"></textarea>
 														
 													</div>
 												</div>

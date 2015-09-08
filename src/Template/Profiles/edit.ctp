@@ -273,6 +273,9 @@
 
                         <div class="portlet-body">
                             <?php
+                                if ($this->request['action'] == 'view' && ($profile->Ptype && $profile->Ptype->placesorders == 1))
+                                $activetab = "scorecard";
+                                else
                                 $activetab = "profile";
                                 //if ($this->request->session()->read('Profile.profile_type') > 1) {//is not an admin, block.php suggests using =2
                                 if (isset($_GET['getprofilescore'])) {
@@ -308,7 +311,7 @@
                             <div class="tabbable tabbable-custom">
                                 <ul class="nav nav-tabs">
 
-                                    <li <?php activetab($activetab, "profile"); ?> >
+                                    <li <?php if ($this->request['action'] == 'view' && ($profile->Ptype && $profile->Ptype->placesorders == 1)){}else{activetab($activetab, "profile");} ?> >
                                         <a href="#tab_1_1" data-toggle="tab"><?= $strings["profiles_profile"]; ?></a>
                                     </li>
                                     <?php

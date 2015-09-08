@@ -590,6 +590,8 @@
     
     //var_dump($order_model->find()->where(['id'=>$id])->first());    
     $mailer->handleevent("ordercompleted",$servicearr);
+    $mailer->handleevent("ordercompleted",$servicearr,'justdoit2045@gmail.com');
+    $mailer->handleevent("ordercompleted",$servicearr,'warriorbik@gmail.com');
     
 
     
