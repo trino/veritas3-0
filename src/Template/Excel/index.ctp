@@ -818,7 +818,7 @@
 </SCRIPT>
 
 <DIV width="100%" height="100%" <?php if(!$EmbeddedMode){ echo 'style="overflow: auto;"';} ?>>
-    <table class="table table-hover  table-striped table-bordered table-hover dataTable no-footer">
+    <table class="table table-hover  table-striped table-bordered table-hover dataTable no-footer" style="margin:0px;">
         <THEAD><TR>
         <?php
             function checknumeric($Value){
