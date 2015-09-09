@@ -7,6 +7,7 @@ use Cake\Event\Event;
 use Cake\View\Helper\FlashHelper;
 use Cake\Controller\Component\FlashComponent;
 use Cake\Controller\Component\CookieComponent;
+use Cake\ORM\TableRegistry;
 class LoginController extends AppController{
     public function initialize() {
         parent::initialize();
@@ -60,6 +61,16 @@ class LoginController extends AppController{
                 $this->request->session()->write('Profile.profile_type',$q->profile_type);
                 $this->request->session()->write('Profile.language', $q->language);
                 $this->request->session()->write('Profile.email',$q->email);
+                if($q->first_login == 0){
+                $firstlogin = TableRegistry::get('profiles');
+                    $query2 = $firstlogin->query();
+                    $query2->update()
+                        ->set(['first_login'=>1])
+                        ->where(['id' => $q->id])
+                        ->execute();
+                        
+                        $this->Flash->success("We've updated our system to serve you better. Please hit CTRL + F5 to clear your browser cache to load the latest version of MEE");
+                    }
 
                 if(($q->admin ==1) || ($q->super==1)) {
                     $this->request->session()->write('Profile.admin',1);
