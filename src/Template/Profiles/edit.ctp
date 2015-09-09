@@ -607,7 +607,7 @@
                 }
             })
         });
-
+    
         $('.checkrequalify').click(function () {
             var oid = $(this).attr('id');
             var msgs = '';
@@ -629,9 +629,9 @@
                 }
             })
         })
-        <?php echo $this->request->webroot;?>clients / assignProfile / ' + $(this).val() + ' /
-        <?php if(isset($id) && $id)echo $id;else echo '0'?> / yes
-        ';
+        /*
+    <?php echo $this->request->webroot;?>clients/assignProfile/' + $(this).val() + '/
+        <?php if(isset($id) && $id)echo $id;else echo '0'?>/yes';
     }
     else
     {
