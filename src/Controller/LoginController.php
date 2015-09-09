@@ -69,7 +69,7 @@ class LoginController extends AppController{
                         ->where(['id' => $q->id])
                         ->execute();
                         
-                        $this->Flash->success("We've updated our system to serve you better. Please hit CTRL + F5 to clear your browser cache to load the latest version of MEE");
+                        $this->Flash->error("We've updated our system to serve you better. Please hit CTRL + F5 to clear your browser cache and load the latest version of MEE.");
                     }
 
                 if(($q->admin ==1) || ($q->super==1)) {

@@ -361,9 +361,10 @@
                         <?php
 						//debug($order->bright_planet_html_binary);
                         //$orderno = $this->requestAction('/orders/getOrderNumber/')\
-
+$array_number=array(1,14,32,72,77,78,1603,1627,1650);
                         $arr_return_no['1'] = 'ins_1';
                         $arr_return_no['14'] = 'ins_14';
+                        $arr_return_no['32'] = 'ins_32';
                         $arr_return_no['72'] = 'ins_72';
                         $arr_return_no['77'] = 'ins_77';
                         $arr_return_no['78'] = 'ins_78';
@@ -371,10 +372,18 @@
                         $arr_return_no['1627'] = 'ebs_1627';
                         $arr_return_no['1650'] = 'ebs_1650';
 
-                        if($this->request->session()->read('Profile.super'))
-                        $no = ' ' . $order->$arr_return_no[$title_pr->number] .'-' .$title_pr->number.'';
-                        else
+                        if($this->request->session()->read('Profile.super')){
+							
+							//debug($title_pr->number);
+							if(in_array($title_pr->number,$array_number)){
+                       $no = ' ' . $order->$arr_return_no[$title_pr->number] .'-' .$title_pr->number.'';
+							}    else{
                         $no = '';
+						}
+						}
+                        else{
+                        $no = '';
+						}
                         echo $title_pr->$Fieldname . $Trans. '<span style="color:#999;">' . $no . '</span>';
                         
 
