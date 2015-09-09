@@ -383,29 +383,7 @@ var FormWizard = function () {
                     }
 
                     if($('.tabber.active').attr('id') == 'tab3'){
-                        var checkbox1 = 0;
-                        $('.checkbox1').each(function(){
-                            if($(this).is(':checked'))
-                           checkbox1 = 1;
-                        });
-                        var checkbox2 = 0;
-                        $('.checkbox2').each(function(){
-                            if($(this).is(':checked'))
-                           checkbox2 = 1;
-                        });
-                       // alert(checkbox1);
-                        if(checkbox1 == 0)
-                        {
-                            alert('Please check at least one');
-                            $('html,body').animate({scrollTop: $('.checkbox1').offset().top},'slow');
-                            return false;
-                        }
-                        if(checkbox2 == 0)
-                        {
-                            alert('Please check at least one');
-                            $('html,body').animate({scrollTop: $('.checkbox2').offset().top},'slow');
-                            return false;
-                        }
+                        
                         
                         //Challenger Driver Application
                         if(!$('#confirm_check').is(':checked') && $('.button-next').attr('id')!='nextview') {

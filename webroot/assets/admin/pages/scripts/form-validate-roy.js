@@ -195,34 +195,7 @@ function checktags(TabID, tagtype){//use tagtype = "single" to get a single elem
                 scrollto(RET, element);
                 return RET;
             }
-            else{
-            if($('.tabber.active').attr('id') == 'tab4'){
             
-                var checkbox1 = 0;
-                        $('.checkbox1').each(function(){
-                            if($(this).is(':checked'))
-                           checkbox1 = 1;
-                        });
-                        //alert(checkbox1);
-                        var checkbox2 = 0;
-                        $('.checkbox2').each(function(){
-                            if($(this).is(':checked'))
-                           checkbox2 = 1;
-                        });
-                        //alert(checkbox1);
-                        if(checkbox1 == 0)
-                        {
-                            alert('Please check at least one');
-                            $('html,body').animate({scrollTop: $('.checkbox1').offset().top},'slow');
-                            return false;
-                        }
-                        if(checkbox2 == 0)
-                        {
-                            alert('Please check at least one');
-                            $('html,body').animate({scrollTop: $('.checkbox2').offset().top},'slow');
-                            return false;
-                        }
-            }}
         }
     }
     return RET;
