@@ -123,6 +123,7 @@ function elementtype(element){
 function getinputvalue(element){
     if(typeof element !== 'object'){
         element = document.getElementById(element);
+        if(!element){return false;}
     }
     var value = element.value;
     if (element.hasAttribute("type")) {
@@ -131,6 +132,9 @@ function getinputvalue(element){
         tagtype = elementtype(element);
     }
     switch (tagtype){
+        case "td":
+            value = element.getAttribute("value");
+            break;
         case "checkbox":
             if (!element.checked){value = "";}
             break;

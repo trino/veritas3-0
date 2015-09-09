@@ -153,17 +153,147 @@
         return false;
     }
 
+    function editform($Manager, $Table, $Column, $ID=0){
+        if($ID){
+            $PrimaryKey = $Manager->get_primary_key($Table);
+            $Entry = $Manager->get_entry($Table, $ID, $PrimaryKey);
+            $Value = $Entry->$Column;
+            $Tag = getTag($Value, True);
+            $Value = getTag($Value, False);
+        } else {//is a column header
+            $Entry = $Manager->getColumnNames($Table, "", false);
+            $Tag = $Entry[$Column]["comment"];
+            $Value="";
+        }
+        echo '<FORM METHOD="GET" ACTION="' . $Manager->webroot() . '">';
+        echo '<INPUT TYPE="HIDDEN" NAME="action" VALUE="saveedit">';
+        if($ID){echo '<INPUT TYPE="text" ID="text" NAME="value" VALUE="' . $Value . '">';}
+        echo '<INPUT TYPE="text" ID="tag" NAME="tag" VALUE="' . $Tag . '" DISABLED>';
+
+        ?>
+            <SCRIPT>
+            var Values = new Array();
+            var SelectedKey = "";
+
+            function tagclick(){
+                SelectedKey = getinputvalue("tags");
+                clearselect("values");
+                visible("values", false);
+                visible("removetag", true);
+                switch(SelectedKey){
+                    case "format":
+                        visible("values", true);
+                        addoption("values", "percent", "");
+                        addoption("values", "uppercase", "");
+                        addoption("values", "lowercase", "");
+                        addoption("values", "number", "");
+                        break;
+                }
+            }
+            function valueclick(){
+                var SelectedValue = getinputvalue("values");
+                Values[SelectedKey] = SelectedValue;
+                generatevalues();
+            }
+            function removeatag(){
+                var element = document.getElementById("tags").selectedIndex;
+                removeoption("tags", -1);
+                Values = removearray(Values,SelectedKey);
+                generatevalues();
+            }
+
+            function removearray(array, index){
+                var newarray = new Array();
+                for (var key in array) {
+                    var value = array[key];
+                    if (key != index){
+                        newarray[key] = value;
+                    }
+                }
+                return newarray;
+            }
+
+            function generatevalues(){
+                var tempstr = new Array();
+                for (var key in Values) {
+                    var value = Values[key];
+                    tempstr.push(key + "=" + value);
+                }
+                tempstr = "[" + tempstr.join(",") + "]";
+                alert(tempstr);
+                setvalue("tag", tempstr);
+            }
+            function setvalue(ID, Value){
+                document.getElementById(ID).value = Value;
+            }
+            function addoption(ID, Value, Text){
+                var element = document.getElementById(ID);
+                var option = document.createElement("option");
+                if(Text) {option.text = Text;} else {option.text = Value;}
+                option.value = Value;
+                element.add(option);
+            }
+            function clearselect(ID){
+                var element = document.getElementById(ID);
+                var i;
+                for(i=element.options.length-1;i>=0;i--) {
+                    element.remove(i);
+                }
+            }
+            function removeoption(ID, Index){
+                var element = document.getElementById(ID);
+                if(Index==-1){Index = element.selectedIndex;}
+                element.remove(Index);
+            }
+            function visible(ID, Status){
+                var element = document.getElementById(ID);
+                if(Status){
+                    element.setAttribute("style", "display: block;");
+                } else {
+                    element.setAttribute("style", "display: none;");
+                }
+            }
+        <?php
+        if($Tag){
+            $Tag = assocsplit(substr($Tag,1, strlen($Tag)-2), ",","=");
+            foreach($Tag as $Key => $ValuePair){
+                echo "\r\nValues['" . $Key . "'] = '" . $ValuePair . "';";
+            }
+        }
+        echo '</SCRIPT>';
+
+        echo '<P><SELECT ID="tags" SIZE=10 onclick="tagclick();">';
+        if($Tag){
+            foreach($Tag as $Key => $ValuePair){
+                echo "<OPTION>" . $Key . "</OPTION>";
+            }
+        }
+        echo '</SELECT>';
+        echo '<P><INPUT TYPE="button" value="Remove Tag" onclick="removeatag();" id="removetag" style="display: none">';
+        echo '<INPUT TYPE="text" ID="text" style="display: none">';
+        echo '<SELECT ID="values" size=10 style="display: none" onclick="valueclick();"></SELECT>';
+
+        echo '<P><INPUT TYPE="SUBMIT" VALUE="Save">';
+    }
+
     if (isset($_GET["action"])){
         switch($_GET["action"]){
             case "clearcache":
                 $Manager->clear_cache();
                 break;
+            case "edit":
+                if (strpos($_GET["id"], "Data") !== false) {
+                    $ID = explode("][", substr($_GET["id"], 5, strlen($_GET["id"]) - 6));//0=ID, 1=Column
+                    editform($Manager, $_GET["table"], $ID[1], $ID[0]);
+                } else {
+                    editform($Manager, $_GET["table"], $_GET["id"]);
+                }
+                return;
+                break;
         }
     }
     if (isset($_POST["action"])){
-        if(isset($_POST["id"])){
-            $ID = getID($_POST["id"]);
-        }
+        if(isset($_POST["id"])){$ID = getID($_POST["id"]);}
 
         switch($_POST["action"]){
             case "delete":
@@ -561,6 +691,40 @@
         })
     }
 
+    var downID = "";
+    function handleevent(ID, eventtype, eventname){
+        var element = document.getElementById(ID);
+        var value = getinputvalue(ID);
+        switch(eventtype){
+            case 0://oncontextmenu
+                window.location = window.location + "&action=edit&id=" + ID;
+                return false;
+                break;
+            case 1://onclick
+
+                break;
+            case 2://ondblclick
+                var newvalue = prompt("What would you like the new value of " + ID + " to be?", value);
+                if(newvalue && value != newvalue) {
+                    element.setAttribute("value", newvalue);
+                    mychangeevent(ID, true);
+                    save();
+                }
+                break;
+            case 3://onmousedown
+                downID = ID;
+                break;
+            case 4://onmousemove
+
+                break;
+            case 5://mouseup
+                if (downID != ID) {
+                    alert("Select: " + downID + " to " + ID);
+                }
+                break;
+        }
+    }
+
     <?php loadreasons("edit", $strings); ?>
 </SCRIPT>
 
@@ -575,9 +739,12 @@
 
             if(isset($_GET["table"])) {
                 if($PrimaryKey){
+                    $events = array("oncontextmenu", "onclick", "ondblclick", "onmousedown", "onmousemove", "onmouseup");
                     foreach ($Columns as $ColumnName => $ColumnData) {
                         if(!($HTMLMode && $ColumnName == $PrimaryKey)) {
-                            echo '<TH class="nowrap">';
+                            $Me = $ColumnName;
+                            $Value = '="return handleevent(' . "'" . $Me . "', ";
+                            echo "\r\n" . '<TH class="nowrap" ' . $events[0] . $Value . "0,'');" . '">';//handleevent(ID, eventtype, eventname
                             if ($ColumnName == $PrimaryKey) {
                                 echo '<i class="fa fa-key"></i>';
                             }
@@ -590,18 +757,23 @@
                     echo '</TR></THEAD><TBODY>';
                     foreach ($Data as $Row) {
                         $ID = "Data[" . $Row->$PrimaryKey . "]";
-                        echo '<TR ID="' . $ID . '">';
+                        echo "\r\n" . '<TR ID="' . $ID . '">';
                         $First = true;
                         $NullCols=0;
                         foreach ($Columns as $ColumnName => $ColumnData) {
+                            $Me = $ID . '[' . $ColumnName . ']';
                             if($HTMLMode) {
                                 if($NullCols || $ColumnName == $PrimaryKey){
                                     if($NullCols) {$NullCols = $NullCols-1;}
                                 } else {
+                                    $Value = '="return handleevent(' . "'" . $Me . "', ";
+                                    echo '<TD ID="' . $Me . '" ';
+                                    foreach($events as $index => $event){
+                                        echo $event . $Value . $index . ",'" . $event . "'" . ');" ';
+                                    }
                                     $Value = $Row->$ColumnName;
                                     $ColKeys = getTag($ColumnData["comment"],true);
                                     $Keys = getTag($Value, true);
-                                    echo '<TD';
                                     if($ColKeys){
                                         if($Keys){$Keys .= "," . $ColKeys;} else {$Keys = $ColKeys;}
                                     }
@@ -613,6 +785,7 @@
                                     $Start = "";
                                     $Finish = "";
 
+                                    echo ' VALUE="' . $Value . '"';
                                     if ($Value && substr($Value,0,1) == "="){
                                         echo ' TITLE="' . $Value . '"';
                                         $Value = substr($Value, 1, strlen($Value)-1);
@@ -687,7 +860,6 @@
                                     echo '>' . $Start . $Value . $Finish . '</TD>';
                                 }
                             } else {
-                                $Me = $ID . '[' . $ColumnName . ']';
                                 $Type = "text";
                                 echo '<TD style="padding: 0;" align="center">';
                                 if ($ColumnName == $PrimaryKey) {
@@ -801,7 +973,7 @@
 
     function fixreferences($Manager, $Table, $IsLetter, $StartingCellColumn, $StartingCellRow, $OffsetColumn = 0, $OffsetRow = 0){
         echo "Fix: " . $Table . " starting at " . $StartingCellColumn . "(" . $IsLetter . ")," . $StartingCellRow . " Offset: " . $OffsetColumn . ',' . $OffsetRow;
-        //$Columns, $Letters, 
+        //$Columns, $Letters,
 /*
         $p = new ParensParser();
         $Equation = $p->parse($Equation);
@@ -901,6 +1073,7 @@ class ParensParser {//https://gist.github.com/Xeoncross/4710324
     }
 
     protected function isLetter($Text){
+        if ($Text == '$') { return true;}
         return preg_replace("/[^a-zA-Z0-9:!]/", "", $Text) == true;
     }
 
