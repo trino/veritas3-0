@@ -14,5 +14,11 @@ class ExcelController extends AppController {
     ];
 
     public function index(){
+        if (isset($_GET["embedded"])){
+            $this->layout = 'ajax';
+        }
+    }
+
+    public function test(){
     }
 }

@@ -973,13 +973,15 @@ class ManagerComponent extends Component {
         }
         if($Comment){$query.= " COMMENT '" . $Comment . "'";}
         if($Position){
-            if(strtoupper($Position) == "FIRST"){
+            if(strtoupper(trim($Position)) == "FIRST"){
                 $query .= " FIRST";
             } else {
                 $query .= " AFTER " . $Position;
             }
         }
-        return $this->query($query);
+        $Value =  $this->query($query);
+        if($OldColumn){$this->clear_cache();}
+        return $Value;
     }
 
     function query($Query, $CleanCache = false){
@@ -1007,7 +1009,6 @@ class ManagerComponent extends Component {
         $files = array_merge($files, glob(CACHE . 'models' . DS . '*'));  // remove cached models
         $files = array_merge($files, glob(CACHE . 'persistent' . DS . '*'));  // remove cached persistent
 
-        error_reporting(E_ERROR | E_PARSE);//suppress warnings
         foreach ($files as $f) {
             $this->delete_file($f);
         }
@@ -1016,16 +1017,10 @@ class ManagerComponent extends Component {
             apc_clear_cache();
             apc_clear_cache('user');
         }
-        error_reporting(E_ALL);//re-enable warnings
     }
     function delete_file($Filename){
         if (is_file($Filename)) {
-            try {
-                unlink($Filename);
-                return true;
-            } catch (Exception $e) {
-                return false;
-            }
+            @unlink($Filename);
         }
     }
 }

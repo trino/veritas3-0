@@ -1,4 +1,13 @@
 <?php
+    $Controller = strtolower($this->request->params['controller']);
+    $GLOBALS["Controller"] = $Controller;
+    if(isset($_GET["embedded"])){$EmbeddedMode=true;}
+    if(isset($EmbeddedMode)){
+        if(!isset($_GET["table"])){$_GET["table"]=$Table;}
+    } else {
+        $EmbeddedMode=false;
+    }
+
     function getID($ID){
         return substr($ID, 5, strpos($ID, "]") - 5);
     }
@@ -154,52 +163,68 @@
     }
 
     function editform($Manager, $Table, $Column, $ID=0){
+        echo '<FORM METHOD="GET" ACTION="' . $Manager->webroot() . $GLOBALS["Controller"] . '">';
+        echo '<INPUT TYPE="HIDDEN" NAME="action" VALUE="saveedit">';
+        echo '<INPUT TYPE="HIDDEN" NAME="table" VALUE="' . $Table . '">';
+        echo '<INPUT TYPE="HIDDEN" NAME="htmlmode" VALUE="html">';
+        echo '<INPUT TYPE="HIDDEN" NAME="column" VALUE="' . $Column . '">';
+        $ColumnNames = $Manager->getColumnNames($Table, "", false);
         if($ID){
             $PrimaryKey = $Manager->get_primary_key($Table);
             $Entry = $Manager->get_entry($Table, $ID, $PrimaryKey);
             $Value = $Entry->$Column;
             $Tag = getTag($Value, True);
+            if (strpos($Tag, "[") === false){$Tag = "[" . $Tag . "]";}
             $Value = getTag($Value, False);
+            echo '<INPUT TYPE="HIDDEN" NAME="id" VALUE="' . $ID . '">';
+            echo '<P><LABEL>Value:</LABEL><INPUT TYPE="text" ID="text" NAME="text" VALUE="' . $Value . '" style="width: 100%;" placeholder="Text"></P>';
         } else {//is a column header
-            $Entry = $Manager->getColumnNames($Table, "", false);
-            $Tag = $Entry[$Column]["comment"];
-            $Value="";
+            $Tag = $ColumnNames[$Column]["comment"];
         }
-        echo '<FORM METHOD="GET" ACTION="' . $Manager->webroot() . '">';
-        echo '<INPUT TYPE="HIDDEN" NAME="action" VALUE="saveedit">';
-        if($ID){echo '<INPUT TYPE="text" ID="text" NAME="value" VALUE="' . $Value . '">';}
-        echo '<INPUT TYPE="text" ID="tag" NAME="tag" VALUE="' . $Tag . '" DISABLED>';
-
+        echo '<P><LABEL>Tags:</LABEL><INPUT TYPE="text" ID="tag" NAME="tag" VALUE="' . $Tag . '" readonly style="width: 100%;" placeholder="Tags"></P>';
         ?>
             <SCRIPT>
             var Values = new Array();
             var SelectedKey = "";
-
             function tagclick(){
                 SelectedKey = getinputvalue("tags");
+                SelectedValue = Values[SelectedKey];
+                if (typeof(SelectedValue) == "undefined"){SelectedValue="";}
                 clearselect("values");
                 visible("values", false);
+                visible("color", false);
                 visible("removetag", true);
                 switch(SelectedKey){
                     case "format":
-                        visible("values", true);
-                        addoption("values", "percent", "");
-                        addoption("values", "uppercase", "");
-                        addoption("values", "lowercase", "");
-                        addoption("values", "number", "");
+                        addoptions("values", ["percent", "uppercase", "lowercase", "number"]);
+                        break;
+                    case "bgcolor": case "fontcolor":
+                        visible("color", true);
+                        setvalue("color", SelectedValue);
+                        break;
+                    case "align":
+                        addoptions("values", ["left", "center", "right"]);
+                        break;
+                    case "fontsize":
+                        addoptions("values", [1, 2, 3, 4, 5, 6, 7]);
                         break;
                 }
             }
+
             function valueclick(){
                 var SelectedValue = getinputvalue("values");
                 Values[SelectedKey] = SelectedValue;
                 generatevalues();
             }
+
             function removeatag(){
                 var element = document.getElementById("tags").selectedIndex;
                 removeoption("tags", -1);
                 Values = removearray(Values,SelectedKey);
                 generatevalues();
+
+                visible("values", false);
+                visible("removetag", false);
             }
 
             function removearray(array, index){
@@ -217,14 +242,24 @@
                 var tempstr = new Array();
                 for (var key in Values) {
                     var value = Values[key];
-                    tempstr.push(key + "=" + value);
+                    if(value){
+                        tempstr.push(key + "=" + value);
+                    } else {
+                        tempstr.push(key);
+                    }
                 }
                 tempstr = "[" + tempstr.join(",") + "]";
-                alert(tempstr);
                 setvalue("tag", tempstr);
             }
             function setvalue(ID, Value){
                 document.getElementById(ID).value = Value;
+            }
+
+            function addoptions(ID, Values){
+                visible("values", true);
+                 for(i=0;i<Values.length;i++) {
+                     addoption(ID, Values[i]);
+                }
             }
             function addoption(ID, Value, Text){
                 var element = document.getElementById(ID);
@@ -242,8 +277,22 @@
             }
             function removeoption(ID, Index){
                 var element = document.getElementById(ID);
+                addoption("options", SelectedKey);
                 if(Index==-1){Index = element.selectedIndex;}
                 element.remove(Index);
+            }
+            function optionclick(){
+                var element = document.getElementById("options");
+                var Value = getinputvalue("options");
+                Values[Value] = "";
+                addoption("tags", Value);
+                element.remove(element.selectedIndex);
+                generatevalues();
+            }
+            function updatecolor(color){
+                color = "#" + color;
+                Values[SelectedKey] = color;
+                generatevalues();
             }
             function visible(ID, Status){
                 var element = document.getElementById(ID);
@@ -262,18 +311,28 @@
         }
         echo '</SCRIPT>';
 
-        echo '<P><SELECT ID="tags" SIZE=10 onclick="tagclick();">';
+        echo '<P><LABEL>Used tags: </LABEL><BR><SELECT ID="tags" SIZE=10 onclick="tagclick();" style="width: 200px;">';
         if($Tag){
             foreach($Tag as $Key => $ValuePair){
                 echo "<OPTION>" . $Key . "</OPTION>";
             }
         }
-        echo '</SELECT>';
-        echo '<P><INPUT TYPE="button" value="Remove Tag" onclick="removeatag();" id="removetag" style="display: none">';
-        echo '<INPUT TYPE="text" ID="text" style="display: none">';
-        echo '<SELECT ID="values" size=10 style="display: none" onclick="valueclick();"></SELECT>';
+        echo '</SELECT></P>';
+        echo '<P><INPUT TYPE="button" value="Remove Tag" onclick="removeatag();" id="removetag" style="display: none"></P>';
 
-        echo '<P><INPUT TYPE="SUBMIT" VALUE="Save">';
+        //input types
+        echo '<P><script type="text/javascript" src="assets/global/plugins/jscolor/jscolor.js"></script><input class="color {onImmediateChange:' . "'updatecolor(this);'" . '}" ID="color" style="display: none"></P>';
+        echo '<P><INPUT TYPE="text" ID="text" style="display: none"></P>';
+        echo '<P><SELECT ID="values" size=10 style="display: none" onclick="valueclick();"></SELECT></P>';
+        echo '<P><LABEL>Available tags: </LABEL><BR><SELECT ID="options" size=10 onclick="optionclick();" style="width: 200px;">';
+        $options = array("bold", "italic", "underline", "format", "bgcolor", "align", "fontcolor", "fontsize");
+        if($ID){$options[] = "colspan";}
+        foreach($options as $Key){
+            if($Tag){$DoIt = !isset($Tag[$Key]);} else {$DoIt = true;}
+            if($DoIt){echo '<OPTION>' . $Key . '</OPTION>';}
+        }
+        echo '</SELECT></P>';
+        echo '<P><INPUT TYPE="SUBMIT" VALUE="Save"> <INPUT TYPE="button" VALUE="Cancel" onclick="window.history.back();"><FORM>';
     }
 
     if (isset($_GET["action"])){
@@ -289,6 +348,16 @@
                     editform($Manager, $_GET["table"], $_GET["id"]);
                 }
                 return;
+                break;
+            case "saveedit":
+                if(isset($_GET["id"])){
+                    $PrimaryKey = $Manager->get_primary_key($_GET["table"]);
+                    $Value = $_GET["text"];
+                    if(strlen($_GET["tag"]>2)){$Value = $_GET["tag"] . $Value;}
+                    $Manager->edit_database($_GET["table"], $PrimaryKey, $_GET["id"], array($_GET["column"] => $Value));
+                } else {
+                    $Manager->change_column_comment($_GET["table"], $_GET["column"], $_GET["tag"]);
+                }
                 break;
         }
     }
@@ -436,7 +505,7 @@
     $PrimaryKey="";
     $Tables="";
     if(isset($_GET["table"])){
-        $HTMLMode=isset($_GET["mode"]) && $_GET["mode"] == "html";
+        $HTMLMode=(isset($_GET["mode"]) && $_GET["mode"] == "html") || $EmbeddedMode || isset($_GET["htmlmode"]);
         $Table = $_GET["table"];
         $GLOBALS["Table"] = $Table;
         $PrimaryKey = $Manager->get_primary_key($Table);
@@ -452,45 +521,45 @@
         }
         $Data = $Manager->enum_all($Table,$Conditions);
         if($HTMLMode){$Data = $Manager->paginate($Data);}
-        ?>
-        <div class="form-actions" style="height:75px;">
-            <div class="row">
-                <div class="col-md-6" align="left">
-                    <div id="sample_2_paginate" class="dataTables_paginate paging_simple_numbers" style="margin-top:-10px;">
-                        <ul class="pagination sorting">
-                            <LI><A HREF="<?= $this->request->webroot; ?>excel">Back</A></LI>
-                            <?php if(!$HTMLMode){ ?>
-                                <LI><A ONCLICK="return save();">Save</A></LI>
-                                <LI><A HREF="?table=<?= $Table; ?>&action=clearcache">Clear Cache</A></LI>
-                            <?php } ?>
-                            <LI><A HREF="?table=<?= $Table;?>&mode=<?php
-                                if($HTMLMode){
-                                    echo 'sql">SQL';
-                                } else {
-                                    echo 'html">HTML';
-                                }
-                                ?></A></LI>
-                        </ul>
-                    </div>
-                </DIV>
-                <?php if(!$HTMLMode){?>
-                    <div class="col-md-6" align="right">
+        if(!$EmbeddedMode){ ?>
+            <div class="form-actions" style="height:75px;">
+                <div class="row">
+                    <div class="col-md-6" align="left">
                         <div id="sample_2_paginate" class="dataTables_paginate paging_simple_numbers" style="margin-top:-10px;">
                             <ul class="pagination sorting">
-                                <?= $this->Paginator->prev('< ' . __($strings["dashboard_previous"])); ?>
-                                <?= $this->Paginator->numbers(); ?>
-                                <?= $this->Paginator->next(__($strings["dashboard_next"]) . ' >'); ?>
+                                <LI><A HREF="<?= $this->request->webroot . $Controller; ?>">Back</A></LI>
+                                <?php if(!$HTMLMode){ ?>
+                                    <LI><A ONCLICK="return save(true);">Save</A></LI>
+                                    <LI><A HREF="?table=<?= $Table; ?>&action=clearcache">Clear Cache</A></LI>
+                                <?php } ?>
+                                <LI><A HREF="?table=<?= $Table;?>&mode=<?php
+                                    if($HTMLMode){
+                                        echo 'sql">SQL';
+                                    } else {
+                                        echo 'html">HTML';
+                                    }
+                                    ?></A></LI>
                             </ul>
                         </div>
-                    </div>
-                <?php } ?>
+                    </DIV>
+                    <?php if(!$HTMLMode){?>
+                        <div class="col-md-6" align="right">
+                            <div id="sample_2_paginate" class="dataTables_paginate paging_simple_numbers" style="margin-top:-10px;">
+                                <ul class="pagination sorting">
+                                    <?= $this->Paginator->prev('< ' . __($strings["dashboard_previous"])); ?>
+                                    <?= $this->Paginator->numbers(); ?>
+                                    <?= $this->Paginator->next(__($strings["dashboard_next"]) . ' >'); ?>
+                                </ul>
+                            </div>
+                        </div>
+                    <?php } ?>
+                </div>
             </div>
-        </div>
-
-        <?php if(!$HTMLMode){?>
+        <?php }
+        if(!$HTMLMode){?>
             <table class="table table-hover  table-striped table-bordered table-hover dataTable no-footer">
                 <TR ID="action_search"><TD>
-                    <FORM method="get" action="<?= $this->request->webroot; ?>excel">
+                    <FORM method="get" action="<?= $this->request->webroot . $Controller; ?>">
                         <LABEL>Search: </LABEL>
                         <INPUT TYPE="hidden" name="table" value="<?= $Table; ?>">
                         <INPUT TYPE="text" name="search" placeholder="Search" value="<?php if(isset($_GET["search"])){echo $_GET["search"];} ?>">
@@ -507,7 +576,7 @@
                     </FORM>
                 </TD></TR>
                 <TR ID="action_newcol"><TD>
-                    <FORM method="post" action="<?= $this->request->webroot; ?>excel">
+                    <FORM method="post" action="<?= $this->request->webroot . $Controller; ?>">
                         <LABEL>New Column: </LABEL>
                         <INPUT TYPE="hidden" name="action" value="newcolumn">
                         <INPUT TYPE="hidden" name="table" value="<?= $Table; ?>">
@@ -546,6 +615,9 @@
     }
 </STYLE>
 <SCRIPT>
+    var MyURL = '<?= $Manager->webroot() . $Controller; ?>';
+    var Embedded = '<?= $EmbeddedMode; ?>';
+
     window.onbeforeunload = function (e) {
         if (changed.length > 0) {
             var message = "Are you sure you want to quit without saving?", e = e || window.event;
@@ -576,7 +648,7 @@
         return (elem=document.getElementById(id)).parentNode.removeChild(elem);
     }
 
-    function save(){
+    function save(DoAlert){
         var ID, Text = "";
         for (index = 0; index < changed.length; ++index) {
             ID = changed[index];
@@ -584,13 +656,13 @@
             Text = Text + ID + "=" + encodeURIComponent(getinputvalue(ID));
         }
         $.ajax({
-            url: window.location,
+            url: MyURL,
             type: "post",
             dataType: "HTML",
             data: "action=save&key=<?= $PrimaryKey; ?>&table=<?= $Table; ?>&" + Text,
             success: function (msg) {
-                alert(msg);
-                reload();
+                if(DoAlert){alert(msg);}
+                reload("");
             }
         })
         changed = new Array();
@@ -600,7 +672,7 @@
     function deleterow(ID){
         if (confirm("Are you sure you want to delete '" + ID + "'?")){
             $.ajax({
-                url: window.location,
+                url: MyURL,
                 type: "post",
                 dataType: "HTML",
                 data: "action=delete&table=<?= $Table; ?>&key=<?= $PrimaryKey; ?>&id=" + ID,
@@ -613,20 +685,35 @@
         return false;
     }
 
-    function reload(){
-        window.open(window.location,"_self");
+    function reload(URL){
+        if(URL){ URL = "&" + URL; }
+        if(Embedded){
+            var element = document.getElementById(Embedded);
+            element.innerHTML = '<TABLE WIDTH="100%;" HEIGHT="100%"><tr><td valign="middle" align="center"><IMG SRC="<?= $this->request->webroot;?>webroot/assets/global/img/loading-spinner-blue.gif"></TD></TR></TABLE>';
+             $.ajax({
+                url: MyURL,
+                type: "get",
+                dataType: "HTML",
+                data: "table=<?= $Table; ?>&embedded" + URL,
+                success: function (msg) {
+                    element.innerHTML = msg;
+                }
+            })
+        } else {
+            window.open(MyURL + URL,"_self");
+        }
     }
 
     function deletecolumn(Name){
         if (confirm("Are you sure you want to delete '" + Name + "'?")){
             $.ajax({
-                url: window.location,
+                url: MyURL,
                 type: "post",
                 dataType: "HTML",
                 data: "action=deletecolumn&table=<?= $Table; ?>&name=" + Name,
                 success: function (msg) {
                     alert(msg);
-                    reload();
+                    reload("");
                 }
             })
         }
@@ -636,7 +723,7 @@
     function deletetable(Name){
         if (confirm("Are you sure you want to delete '" + Name + "'?")){
             $.ajax({
-                url: window.location,
+                url: MyURL,
                 type: "post",
                 dataType: "HTML",
                 data: "action=deletetable&table=" + Name,
@@ -657,14 +744,14 @@
                 return false;
             }
             $.ajax({
-                url: window.location,
+                url: MyURL,
                 type: "post",
                 dataType: "HTML",
                 data: "action=newtable&table=" + Name,
                 success: function (msg) {
                     tables.push(Name);
                     alert(msg);
-                    window.open(window.location + "?table=" + Name ,"_self");
+                    window.open(MyURL + "?table=" + Name ,"_self");
                 }
             })
         }
@@ -679,14 +766,14 @@
         }
 
         $.ajax({
-            url: window.location,
+            url: MyURL,
             type: "post",
             dataType: "HTML",
             data: "action=newcolumn&table=<?= $Table;?>&name=" + Name + "&type=" + getinputvalue("newcol_type") + "&length=" + getinputvalue("newcol_length") + "&position=" + getinputvalue("newcol_pos"),
             success: function (msg) {
                 columns.push(Name);
                 alert(msg);
-                reload();
+                reload("");
             }
         })
     }
@@ -697,7 +784,7 @@
         var value = getinputvalue(ID);
         switch(eventtype){
             case 0://oncontextmenu
-                window.location = window.location + "&action=edit&id=" + ID;
+                reload("action=edit&id=" + ID);
                 return false;
                 break;
             case 1://onclick
@@ -708,7 +795,7 @@
                 if(newvalue && value != newvalue) {
                     element.setAttribute("value", newvalue);
                     mychangeevent(ID, true);
-                    save();
+                    save(false);
                 }
                 break;
             case 3://onmousedown
@@ -728,7 +815,7 @@
     <?php loadreasons("edit", $strings); ?>
 </SCRIPT>
 
-<DIV width="100%" height="100%" style="overflow: auto;">
+<DIV width="100%" height="100%" <?php if(!$EmbeddedMode){ echo 'style="overflow: auto;"';} ?>>
     <table class="table table-hover  table-striped table-bordered table-hover dataTable no-footer">
         <THEAD><TR>
         <?php
@@ -760,11 +847,14 @@
                         echo "\r\n" . '<TR ID="' . $ID . '">';
                         $First = true;
                         $NullCols=0;
+                        $ColIndex=0;
+                        $HasPassedPkey =false;
                         foreach ($Columns as $ColumnName => $ColumnData) {
                             $Me = $ID . '[' . $ColumnName . ']';
                             if($HTMLMode) {
                                 if($NullCols || $ColumnName == $PrimaryKey){
                                     if($NullCols) {$NullCols = $NullCols-1;}
+                                    if($ColumnName == $PrimaryKey){$HasPassedPkey= true;}
                                 } else {
                                     $Value = '="return handleevent(' . "'" . $Me . "', ";
                                     echo '<TD ID="' . $Me . '" ';
@@ -775,7 +865,7 @@
                                     $ColKeys = getTag($ColumnData["comment"],true);
                                     $Keys = getTag($Value, true);
                                     if($ColKeys){
-                                        if($Keys){$Keys .= "," . $ColKeys;} else {$Keys = $ColKeys;}
+                                        if($Keys){$Keys = $ColKeys . "," . $Keys;} else {$Keys = $ColKeys;}
                                     }
                                     if($Keys){
                                         $Keys = assocsplit($Keys, ",", "=");
@@ -800,6 +890,10 @@
 
                                             switch ($Key) {
                                                 case "colspan":
+                                                    if (strtolower($Data) == "all"){
+                                                        $Data = count($Columns) - $ColIndex;
+                                                        if(!$HasPassedPkey){$Data = $Data-1;}
+                                                    }
                                                     echo ' COLSPAN="' . $Data . '"';
                                                     $NullCols = $Data - 1;
                                                     break;
@@ -893,6 +987,7 @@
                                 }
                                 echo '</TD>';
                             }
+                            $ColIndex++;
                         }
                         echo '</TR>';
                     }
@@ -903,7 +998,7 @@
                             echo '<TD style="padding: 0;" align="center" class="nowrap">';
                             $ID = "Data[new]";
                             if ($ColumnName == $PrimaryKey) {
-                                echo '<A onclick="return save();"><i class="fa fa-floppy-o"></i>New</A>';
+                                echo '<A onclick="return save(true);"><i class="fa fa-floppy-o"></i>New</A>';
                             } else {
                                 $Me = $ID . '[' . $ColumnName . ']';
                                 $Type = "text";
@@ -1079,4 +1174,8 @@ class ParensParser {//https://gist.github.com/Xeoncross/4710324
 
 }
 
+
+    if($EmbeddedMode){
+        return;
+    }
 ?>
