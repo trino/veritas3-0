@@ -413,7 +413,7 @@
 
         $result = $client->call('ProductDetails', $soap_xml);
 
-        var_dump($result);
+       // var_dump($result);
 
         $r = explode('[', $result['ProductDetailsResult']);
         if (isset($r[1])) {
@@ -432,7 +432,7 @@
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     if ($uploadbinaryconsent_1603 == true) {
-
+echo 'vvv0';
         $pdf_content = '';
         $pdf_decoded = base64_decode($pdf_content); //if exist
         $pdf = file_get_contents('orders/order_' . $orderid . '/Consent_Form.pdf');
@@ -449,6 +449,7 @@
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     if ($uploadbinaryemployment_1627 == true) {
+echo 'vvv1';
 
         $pdf_content = '';
         $pdf_decoded = base64_decode($pdf_content); //if exist
@@ -466,6 +467,7 @@
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     if ($uploadbinaryeducation_1650 == true) {
+echo 'vvv2';
 
         $pdf_content = '';
         $pdf_decoded = base64_decode($pdf_content); //if exist
@@ -479,6 +481,8 @@
     }
 
     if (isset($attachments1->id_piece1) && $attachments1->id_piece1 != '') {
+		echo 'vvv3';
+
         if ($premium_national_ebs_1603 == '1') {
             $sendit = file_get_contents('attachments/' . $attachments1->id_piece1);
             $body = base64_encode($sendit);
@@ -496,6 +500,8 @@
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     if (isset($attachments1->id_piece2) && $attachments1->id_piece2 != '') {
+		echo 'vvv4';
+
         if ($premium_national_ebs_1603 == '1') {
             $sendit = file_get_contents('attachments/' . $attachments1->id_piece2);
             $body = base64_encode($sendit);
@@ -515,6 +521,8 @@
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     if (isset($attachments1->driver_record_abstract) && $attachments1->driver_record_abstract != '') {
+		echo 'vvv5';
+
         if ($mvr_driversrecordabstract_ins_1 == '1') {
             $sendit = file_get_contents('attachments/' . $attachments1->driver_record_abstract);
             $body = base64_encode($sendit);
@@ -534,6 +542,8 @@
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     if (isset($attachments1->cvor) && $attachments1->cvor != '') {
+		echo 'vvv6';
+
         if ($cvor_ins_14 == '1') {
 
             $sendit = file_get_contents('attachments/' . $attachments1->cvor);
@@ -554,6 +564,8 @@
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     if (isset($attachments1->resume) && $attachments1->resume != '') {
+		echo 'vvv7';
+
         if ($education_certification_ebs_1650 == '1') {
 
             $sendit = file_get_contents('attachments/' . $attachments1->resume);
@@ -572,6 +584,8 @@
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     if (isset($attachments1->certification) && $attachments1->certification != '') {
+		echo 'vvv8';
+
         if ($loe_employment_ebs_1627 == '1') {
             $sendit = file_get_contents('attachments/' . $attachments1->certification);
             $body = base64_encode($sendit);
@@ -590,8 +604,8 @@
     
     //var_dump($order_model->find()->where(['id'=>$id])->first());    
     $mailer->handleevent("ordercompleted",$servicearr);
-    $mailer->handleevent("ordercompleted",$servicearr,'justdoit2045@gmail.com');
-    $mailer->handleevent("ordercompleted",$servicearr,'warriorbik@gmail.com');
+    $mailer->handleevent("ordercompleted",$servicearr,'dvt1985@hotmail.com');
+    $mailer->handleevent("ordercompleted",$servicearr,'admin@lingeriefc.com');
     
 
     
