@@ -162,7 +162,7 @@
         return false;
     }
 
-    function editform($Manager, $Table, $Column, $ID=0){
+    function editform($Manager, $Table, $Column, $ID=0){//doesn't support embedding yet...
         echo '<FORM METHOD="GET" ACTION="' . $Manager->webroot() . $GLOBALS["Controller"] . '">';
         echo '<INPUT TYPE="HIDDEN" NAME="action" VALUE="saveedit">';
         echo '<INPUT TYPE="HIDDEN" NAME="table" VALUE="' . $Table . '">';
@@ -784,8 +784,10 @@
         var value = getinputvalue(ID);
         switch(eventtype){
             case 0://oncontextmenu
-                reload("action=edit&id=" + ID);
-                return false;
+                if(!Embedded){
+                    reload("action=edit&id=" + ID);
+                    return false;
+                }
                 break;
             case 1://onclick
 
