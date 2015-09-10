@@ -637,17 +637,39 @@ class ManagerComponent extends Component {
         return TableRegistry::get($Table)->find('all');
     }
     function enum_all($Table, $conditions = ""){
+        if($conditions && !is_array($conditions)){$conditions = array($conditions);}
         if (is_array($conditions)) {
             return TableRegistry::get($Table)->find('all')->where($conditions);
         }
         return $this->enum_table($Table);
     }
 
-    function iterator_to_array($entries, $PrimaryKey, $Key){
+    function iterator_to_array($entries, $PrimaryKey="", $Key="", $GetProperties=false, $Reverse = false){
         $data = array();
-        foreach($entries as $profiletype){
-            $data[$profiletype->$PrimaryKey] = $profiletype->$Key;
+        foreach($entries as $item){
+            if($Key) {
+                //if (is_object($item)){
+                    $data[$item->$PrimaryKey] = $item->$Key;
+                //} else if (is_array($item)){
+                //    $data[$item->$PrimaryKey] = $item[$Key];
+                //}
+            } else {
+                if($GetProperties){
+                    $value = $this->getProtectedValue($item, "_properties");
+                } else {
+                    $value = $item;
+                }
+                if($PrimaryKey){
+                    $ID = $value[$PrimaryKey];
+                    unset($value[$PrimaryKey]);
+                    $data[$ID] = $value;
+                } else {
+                    $data[] = $value;
+                }
+            }
         }
+        if($PrimaryKey){$PrimaryKey=true;}
+        if($Reverse){return array_reverse($data, $PrimaryKey);}
         return $data;
     }
 
@@ -985,9 +1007,83 @@ class ManagerComponent extends Component {
     }
 
     function query($Query, $CleanCache = false){
-        ConnectionManager::get('default')->query($Query);
+        $Query = ConnectionManager::get('default')->query($Query);
         if($CleanCache){$this->clear_cache();}
         return $Query;
+    }
+
+    function insert_rows($Table, $Quantity, $AtID, $PrimaryKey=""){
+        if(!$PrimaryKey){$PrimaryKey = $this->get_primary_key($Table);}
+        $Data = $this->enum_all($Table);
+        $Count = $Data->count();
+        if($Count < $Quantity ){
+            $this->insert_empty_rows($Table, $Quantity-$Count);
+            foreach($Data as $Row){
+                $this->copy_row($Table, $Row->$PrimaryKey, $PrimaryKey, true, $Row);
+            }
+        } else {
+            $Cells = $this->iterator_to_array($Data, false, false, true, true);
+            $NewCells = array_reverse($this->insert_empty_rows($Table, $Quantity));
+            foreach($NewCells as $Index => $ID){
+                $Cell = $Cells[$Index];
+                $CellID = $Cell[$PrimaryKey];
+                if($CellID >= $AtID) {
+                    unset($Cell[$PrimaryKey]);
+                    $this->copy_row($Table, $CellID, $PrimaryKey, true, $Cell, $ID);
+                }
+            }
+        }
+    }
+
+    function copy_row($Table, $ID, $PrimaryKey="", $BlankOriginal = false, $Data=false, $Into=false){
+        if(!$PrimaryKey){$PrimaryKey = $this->get_primary_key($Table);}
+        if(!$Data) {$Data = $this->get_entry($Table, $ID, $PrimaryKey);}
+        if(isset($Data->$PrimaryKey)) {unset($Data->$PrimaryKey);}
+        if (is_object($Data)) {
+            $Columns = $this->getProtectedValue($Data, "_properties");
+        } else if (is_array($Data)){
+            $Columns = $Data;
+        }
+        if($Into){
+            $this->update_database($Table, $PrimaryKey, $Into, $Columns);
+        } else {
+            $this->new_entry($Table, $PrimaryKey, $Columns);
+        }
+        if($BlankOriginal){
+            foreach($Columns as $ColumnName => $ColumnData){
+                $Columns[$ColumnName] = "";
+            }
+            $this->update_database($Table, $PrimaryKey, $ID, $Columns);
+        }
+    }
+
+    function get_last_entry($Table, $PrimaryKey=""){
+        if(!$PrimaryKey){$PrimaryKey = $this->get_primary_key($Table);}
+        return TableRegistry::get($Table)->find('all')->order([$PrimaryKey => "DESC"])->first()->$PrimaryKey;
+    }
+
+    function insert_empty_rows($Table, $Quantity=1, $PrimaryKey=""){
+        if(!$PrimaryKey){$PrimaryKey = $this->get_primary_key($Table);}
+        $StartsAt = $this->get_last_entry($Table,$PrimaryKey);
+        $AnyColumn = $this->getColumnNames($Table);
+        foreach($AnyColumn as $ColumnName){
+            if($ColumnName != $PrimaryKey){
+                $AnyColumn=$ColumnName;
+                break;
+            }
+        }//INSERT INTO table_name (column1,column2,column3,...) VALUES (value1,value2,value3,...);
+        $Values = array("");
+        $Query = "INSERT INTO " . $Table . " (" . $AnyColumn . ") VALUES ";
+        for($Temp = 0; $Temp < $Quantity; $Temp++) {
+            //$Table->query()->insert(array($AnyColumn))->values($Values)->execute();
+            $Values[] = '("")';
+        }
+        $Query = str_replace(" , ", " ", $Query . implode(", ", $Values) . ';');
+        $this->query($Query);
+
+        $Entries = $this->enum_all($Table, $PrimaryKey . ">" . $StartsAt);
+        $Entries = $this->iterator_to_array($Entries,$PrimaryKey, false, true);
+        return array_keys($Entries);
     }
 
     function new_table($Table){

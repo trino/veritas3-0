@@ -1,4 +1,11 @@
 <?php
+    /*
+        To do list:
+        - fix references
+        - clipboard actions
+        - export/import
+    */
+
     $Controller = strtolower($this->request->params['controller']);
     $GLOBALS["Controller"] = $Controller;
     if(isset($_GET["embedded"])){$EmbeddedMode=true;}
@@ -12,23 +19,64 @@
         return substr($ID, 5, strpos($ID, "]") - 5);
     }
 
-    function getreferences($Manager, $Table, $Reference, $Me ="", $Letters = "", $PrimaryKey = "", $FilterBrackets=true, $RefsOnly = false){
-        if(!ismultireference($Manager, $Reference)){
-            if ($RefsOnly){return array($Reference);}
-            return array(getreference($Manager, $Table, $Reference, $Letters, $PrimaryKey, $FilterBrackets, false));
+    function splitreference($Manager, $Table, $Reference, $PrimaryKey="", $Columns="", $IncludeDollarSigns = false, $Join = true){
+        $Data = explode(":", $Reference);
+        $Data2 = array();
+        foreach($Data as $Value){
+            $Column = strtoupper($Manager->validate_data($Value, "alphabetic"));
+            if($IncludeDollarSigns && $Column && strpos($Value, "$" . $Column) !== false){ $Column = "$" . $Column;}
+            $Row = $Manager->validate_data($Value, "number");
+            if($IncludeDollarSigns && $Row && strpos($Value, "$" . $Row) !== false){ $Row = "$" . $Row;}
+            if(!$Column || !$Row){
+                if ($Column) {
+                    if(!$PrimaryKey){$PrimaryKey = $Manager->get_primary_key($Table);}
+                    $Count = $Manager->get_last_entry($Table, $PrimaryKey);
+                    $Data2[] = array($Column, 1);
+                    $Data2[] = array($Column, $Count);
+                } else if($Row) {
+                    if(!$Columns) {$Columns = $Manager->getColumnNames($Table);}
+                    $ColumnLetter = toaletter(count($Columns)-1);
+                    $Data2[] = array("A", $Row);
+                    if(count($Columns)) {
+                        $Data2[] = array($ColumnLetter, $Row);
+                    }
+                }
+            } else {
+                $Data2[] = array($Column, $Row);
+            }
         }
+        if($Join){
+            foreach($Data2 as $Key => $Value){
+                $Data2[$Key] = implode("", $Value);
+            }
+            if(count($Data2)==1){return $Data2[0];}
+            $Data2 = $Data2[0] . ":" . $Data2[count($Data2)-1];//only needs first and last
+            //$Data2 = implode(":", $Data2);
+        }
+        return $Data2;
+    }
+
+    function getreferences($Manager, $Table, $Reference, $Me ="", $Letters = "", $PrimaryKey = "", $FilterBrackets=true, $RefsOnly = false, $ToString = false){
         $Table = gettablereference($Reference,$Table);
         if(!$PrimaryKey){$PrimaryKey = $Manager->get_primary_key($Table);}
+        $Columns = $Manager->getColumnNames($Table, "", false);
         if(!$Letters){
-            $Columns = $Manager->getColumnNames($Table, "", false);
             $Letters = get_column_letters($PrimaryKey, $Columns);
         }
+        $Reference = splitreference($Manager, $Table, $Reference, $PrimaryKey, $Columns, false, true);
+        if(!ismultireference($Manager, $Reference)){
+            if ($RefsOnly){return array($Reference);}
+            $Data = getreference($Manager, $Table, $Reference, $Letters, $PrimaryKey, $FilterBrackets, false);
+            if($ToString){return $Data;}
+            return array($Data);
+        }
+
         $Reference1=ismultireference($Manager, $Reference,1, $Me);
         $Reference2=ismultireference($Manager, $Reference,2, $Me);
 
-        $Column1 = $Manager->validate_data($Reference1, "alphabetic");
+        $Column1 = strtoupper($Manager->validate_data($Reference1, "alphabetic"));
         $Row1 = $Manager->validate_data($Reference1, "number");
-        $Column2 = $Manager->validate_data($Reference2, "alphabetic");
+        $Column2 = strtoupper($Manager->validate_data($Reference2, "alphabetic"));
         $Row2 = $Manager->validate_data($Reference2, "number");
         $Column1 = letterToIndex($Column1);
         $Column2 = letterToIndex($Column2);
@@ -58,6 +106,7 @@
                 }
             }
         }
+        if($ToString){return json_encode($Values);}
         return $Values;
     }
 
@@ -72,11 +121,15 @@
         return sum($Data) / count($Data);
     }
 
-    function getcolumnindex($Letters, $Index, $RetName = false){
+    function toaletter($Index){
         $Index=$Index+1;
         $FirstLetter= floor ($Index/26);
         $SecondLetter = $Index % 26;
-        $Index = generateletters(array($FirstLetter,$SecondLetter), ord("A"));
+        return generateletters(array($FirstLetter,$SecondLetter), ord("A"));
+    }
+    function getcolumnindex($Letters, $Index, $RetName = false){
+        //$Index=$Index+1;$FirstLetter= floor ($Index/26);$SecondLetter = $Index % 26;
+        $Index = toaletter($Index);// generateletters(array($FirstLetter,$SecondLetter), ord("A"));
         if ($RetName && isset($Letters[$Index])){
             return $Letters[$Index];
         }
@@ -119,7 +172,7 @@
                 $PrimaryKey = "";
             }
         }
-        $Column = $Manager->validate_data($Reference, "alphabetic");
+        $Column = strtoupper($Manager->validate_data($Reference, "alphabetic"));
         $Row = $Manager->validate_data($Reference, "number");
 
         if(!$PrimaryKey){$PrimaryKey = $Manager->get_primary_key($Table);}
@@ -140,14 +193,35 @@
         if($ReturnIfError) {return '[ERROR:' . $Table . "!" . $Reference . " not found]";}
     }
 
-    function isareference($Manager, $Value){
+    function isareference($Manager, $Value, $AllowMissingType = false){
         if(strtoupper($Value) == "ME"){return true;}
+        $Value=str_replace("$", "", $Value);
         $ExclamationMark = strpos($Value, "!");
         if ($ExclamationMark) {$Value = substr($Value, $ExclamationMark + 1, strlen($Value) - $ExclamationMark - 1);}
-        $Column = $Manager->validate_data($Value, "alphabetic");
+        $Column = strtoupper($Manager->validate_data($Value, "alphabetic"));
         $Row = $Manager->validate_data($Value, "number");
-        if($Column && $Row && strlen($Column) < 3) {return strpos($Value, $Row) > strpos($Value, $Column);}
+        if(strlen($Column) < 3) {
+            if ($AllowMissingType && ($Column || $Row)){return true;}
+            if ($Column && $Row) {return strpos($Value, $Row) > strpos($Value, $Column);}
+        }
         return false;
+    }
+
+    function writevisible(){
+        ?>
+            function visible(ID, Status){
+                var element = document.getElementById(ID);
+                if(Status){
+                    element.setAttribute("style", "");
+                } else {
+                    element.setAttribute("style", "display: none;");
+                }
+            }
+
+            function setvalue(ID, Value){
+                document.getElementById(ID).value = Value;
+            }
+        <?php
     }
 
     function ismultireference($Manager, $Value, $Ret=0, $Me = ""){
@@ -158,7 +232,7 @@
         if($Ret == 2 && $Reference2 == "ME"){return $Me;}
         if($Ret == 1){return $Reference1;}
         if($Ret == 2){return $Reference2;}
-        return(isareference($Manager, $Reference1) && isareference($Manager, $Reference2));
+        return(isareference($Manager, $Reference1, true) && isareference($Manager, $Reference2, true));
         return false;
     }
 
@@ -182,8 +256,9 @@
             $Tag = $ColumnNames[$Column]["comment"];
         }
         echo '<P><LABEL>Tags:</LABEL><INPUT TYPE="text" ID="tag" NAME="tag" VALUE="' . $Tag . '" readonly style="width: 100%;" placeholder="Tags"></P>';
+        echo '<SCRIPT>';
+        writevisible();
         ?>
-            <SCRIPT>
             var Values = new Array();
             var SelectedKey = "";
             function tagclick(){
@@ -242,17 +317,16 @@
                 var tempstr = new Array();
                 for (var key in Values) {
                     var value = Values[key];
-                    if(value){
-                        tempstr.push(key + "=" + value);
-                    } else {
-                        tempstr.push(key);
+                    if(key){
+                        if(value){
+                            tempstr.push(key + "=" + value);
+                        } else {
+                            tempstr.push(key);
+                        }
                     }
                 }
                 tempstr = "[" + tempstr.join(",") + "]";
                 setvalue("tag", tempstr);
-            }
-            function setvalue(ID, Value){
-                document.getElementById(ID).value = Value;
             }
 
             function addoptions(ID, Values){
@@ -294,14 +368,7 @@
                 Values[SelectedKey] = color;
                 generatevalues();
             }
-            function visible(ID, Status){
-                var element = document.getElementById(ID);
-                if(Status){
-                    element.setAttribute("style", "display: block;");
-                } else {
-                    element.setAttribute("style", "display: none;");
-                }
-            }
+
         <?php
         if($Tag){
             $Tag = assocsplit(substr($Tag,1, strlen($Tag)-2), ",","=");
@@ -314,7 +381,9 @@
         echo '<P><LABEL>Used tags: </LABEL><BR><SELECT ID="tags" SIZE=10 onclick="tagclick();" style="width: 200px;">';
         if($Tag){
             foreach($Tag as $Key => $ValuePair){
-                echo "<OPTION>" . $Key . "</OPTION>";
+                if($Key){
+                    echo "<OPTION>" . $Key . "</OPTION>";
+                }
             }
         }
         echo '</SELECT></P>';
@@ -410,6 +479,13 @@
                 fixreferences($_POST["table"],  getletter($_POST["table"], $_POST["name"], '', '') . "1", -1);
                 $Manager->delete_column($_POST["table"], $_POST["name"]);
                 echo $_POST["name"] . " deleted from " . $_POST["table"];
+                break;
+            case "insertrows":
+                echo $Manager->insert_rows($_POST["table"], $_POST["number"], $_POST["where"]);
+                break;
+            case "copyreference":
+                //($Manager, $Table, $Reference, $Me ="", $Letters = "", $PrimaryKey = "", $FilterBrackets=true, $RefsOnly = false, $ToString = false)
+                echo getreferences($Manager, $_POST["table"], $_POST["range"], "", "", "", true, false, true);
                 break;
             default:
                 debug($_POST);
@@ -520,9 +596,10 @@
             }
         }
         $Data = $Manager->enum_all($Table,$Conditions);
-        if($HTMLMode){$Data = $Manager->paginate($Data);}
+        $Count = $Data->count();
+        if(!$HTMLMode){$Data = $Manager->paginate($Data);}
         if(!$EmbeddedMode){ ?>
-            <div class="form-actions" style="height:75px;">
+            <div class="form-actions">
                 <div class="row">
                     <div class="col-md-6" align="left">
                         <div id="sample_2_paginate" class="dataTables_paginate paging_simple_numbers" style="margin-top:-10px;">
@@ -557,40 +634,58 @@
             </div>
         <?php }
         if(!$HTMLMode){?>
-            <table class="table table-hover  table-striped table-bordered table-hover dataTable no-footer">
-                <TR ID="action_search"><TD>
-                    <FORM method="get" action="<?= $this->request->webroot . $Controller; ?>">
-                        <LABEL>Search: </LABEL>
-                        <INPUT TYPE="hidden" name="table" value="<?= $Table; ?>">
-                        <INPUT TYPE="text" name="search" placeholder="Search" value="<?php if(isset($_GET["search"])){echo $_GET["search"];} ?>">
-                        <SELECT NAME="column" style="height:24px;">
-                            <?php
-                            foreach($Columns as $ColumnName => $ColumnData){
-                                echo '<OPTION value="' . $ColumnName . '"';
-                                if(isset($_GET["column"]) && $_GET["column"] == $ColumnName){echo ' SELECTED';}
-                                echo '>' . getletter($Letters, $ColumnName) . ucfirst2($ColumnName, true) . '</OPTION>';
+            <SCRIPT>
+                var lastsection;
+                function showsection(Name){
+                    if(Name != lastsection){
+                        visible(Name,true);
+                        if(lastsection){visible(lastsection, false);}
+                        lastsection = Name;
+                    }
+                }
+            </SCRIPT>
+            <table class="table table-hover table-striped table-bordered table-hover dataTable no-footer">
+                <TR>
+                    <TD>
+                        <?php
+                            $Buttons = array("action_search" => "Search", "action_newcol" => "New Column", "action_insert" => "Insert Rows", "action_copy" => "Copy");
+                            foreach($Buttons as $Event => $Value){
+                                echo '<INPUT TYPE="button" onclick="showsection(' . "'" . $Event . "'" . ')" value="' . $Value . '"> ';
                             }
-                            ?>
-                        </SELECT>
-                        <input type="submit" value="Search">
-                    </FORM>
-                </TD></TR>
-                <TR ID="action_newcol"><TD>
-                    <FORM method="post" action="<?= $this->request->webroot . $Controller; ?>">
-                        <LABEL>New Column: </LABEL>
-                        <INPUT TYPE="hidden" name="action" value="newcolumn">
-                        <INPUT TYPE="hidden" name="table" value="<?= $Table; ?>">
+                        ?>
+                    </TD>
+                </TR>
+                <TR ID="action_search" style="display: none">
+                    <TD>
+                        <FORM method="get" action="<?= $this->request->webroot . $Controller; ?>">
+                            <INPUT TYPE="hidden" name="table" value="<?= $Table; ?>">
+                            <INPUT TYPE="text" name="search" placeholder="Search" value="<?php if(isset($_GET["search"])){echo $_GET["search"];} ?>">
+                            <SELECT NAME="column" style="height:24px;">
+                                <?php
+                                foreach($Columns as $ColumnName => $ColumnData){
+                                    echo '<OPTION value="' . $ColumnName . '"';
+                                    if(isset($_GET["column"]) && $_GET["column"] == $ColumnName){echo ' SELECTED';}
+                                    echo '>' . getletter($Letters, $ColumnName) . ucfirst2($ColumnName, true) . '</OPTION>';
+                                }
+                                ?>
+                            </SELECT>
+                            <input type="submit" value="Search">
+                        </FORM>
+                    </TD>
+                </TR>
+                <TR ID="action_newcol" style="display: none">
+                    <TD>
                         <INPUT TYPE="text" name="name" placeholder="Name" id="newcol_name">
-                        <SELECT name="type" id="newcol_type" style="height:24px;">
+                        <SELECT id="newcol_type" style="height:24px;">
                             <OPTION value="INT">Number</OPTION>
                             <OPTION value="DECIMAL">Decimal</OPTION>
                             <OPTION value="TINYINT">Boolean</OPTION>
                             <OPTION value="VARCHAR" SELECTED>Text</OPTION>
                         </SELECT>
                         <LABEL>Length:</LABEL>
-                        <INPUT TYPE="text" name="length" value="255" maxlength="4" size="4" id="newcol_length" title="I recommend a VARCHAR with a length of at least 255, to allow for equations">
+                        <INPUT TYPE="text" value="255" maxlength="4" size="4" id="newcol_length" title="I recommend a VARCHAR with a length of at least 255, to allow for equations">
                         <LABEL>Position:</LABEL>
-                        <SELECT name="position" id="newcol_pos" style="height:24px;">
+                        <SELECT id="newcol_pos" style="height:24px;">
                             <OPTION value="FIRST">At the beginning</OPTION>
                             <?php
                                 foreach($Columns as $ColumnName => $ColumnData){
@@ -600,9 +695,24 @@
                             <OPTION SELECTED value="">At the end</OPTION>
                         </SELECT>
                         <input type="button" value="New Column" onclick="newcol();">
-                    </FORM>
-                </TD>
-            </TR>
+                    </TD>
+                </TR>
+                <TR ID="action_insert" style="display: none">
+                    <TD>
+                        <LABEL>Rows:</LABEL>
+                        <INPUT TYPE="number" value="1" min="1" max="1000"  id="insert_num">
+                        <LABEL>Before:</LABEL>
+                        <INPUT TYPE="number" value="1" min="1" max="<?= $Count; ?>"  id="insert_where">
+                        <INPUT TYPE="button" value="Insert Rows" onclick="insertrows();">
+                    </TD>
+                </TR>
+                <TR ID="action_copy" style="display: none" width="100%">
+                    <TD class="nowrap" width="100%">
+                        <INPUT TYPE="text" placeholder="Range, Row # or Column letter" id="copy_range">
+                        <INPUT TYPE="button" value="Copy" onclick="copyreference();">
+                        <INPUT TYPE="text" id="copy_paste" style="width:50%;">
+                    </TD>
+                </TR>
         </TABLE>
     <?php } ?>
 
@@ -615,6 +725,7 @@
     }
 </STYLE>
 <SCRIPT>
+    <?php writevisible(); ?>
     var MyURL = '<?= $Manager->webroot() . $Controller; ?>';
     var Embedded = '<?= $EmbeddedMode; ?>';
 
@@ -685,10 +796,19 @@
         return false;
     }
 
+    function getchildtag(element, tagname){
+        var Header = element.getElementsByTagName(tagname);
+        if(Header){
+            return '<' + tagname + '>' + Header[0].innerHTML.trim() + '</' + tagname + '>';
+        }
+        return "";
+    }
     function reload(URL){
         if(URL){ URL = "&" + URL; }
         if(Embedded){
             var element = document.getElementById(Embedded);
+            var Header = getchildtag(element, 'header');
+            var Footer = getchildtag(element, 'footer');
             element.innerHTML = '<TABLE WIDTH="100%;" HEIGHT="100%"><tr><td valign="middle" align="center"><IMG SRC="<?= $this->request->webroot;?>webroot/assets/global/img/loading-spinner-blue.gif"></TD></TR></TABLE>';
              $.ajax({
                 url: MyURL,
@@ -696,11 +816,11 @@
                 dataType: "HTML",
                 data: "table=<?= $Table; ?>&embedded" + URL,
                 success: function (msg) {
-                    element.innerHTML = msg;
+                    element.innerHTML = Header + msg + Footer;
                 }
             })
         } else {
-            window.open(MyURL + URL,"_self");
+            window.open(MyURL + "?table=<?= $Table; ?>" + URL,"_self");
         }
     }
 
@@ -758,6 +878,19 @@
         return false;
     }
 
+    function insertrows(){
+         $.ajax({
+            url: MyURL,
+            type: "post",
+            dataType: "HTML",
+            data: "action=insertrows&table=<?= $Table;?>&number=" + getinputvalue("insert_num") + "&where=" + getinputvalue("insert_where"),
+            success: function (msg) {
+                if(msg){alert(msg);}
+                reload("");
+            }
+        })
+    }
+
     function newcol(){
         var Name = getinputvalue("newcol_name");
         if (columns.indexOf(Name) > -1){
@@ -776,6 +909,23 @@
                 reload("");
             }
         })
+    }
+
+    function copyreference(){
+        var Range = getinputvalue("copy_range");
+        if(Range) {
+            $.ajax({
+                url: MyURL,
+                type: "post",
+                dataType: "HTML",
+                data: "action=copyreference&table=<?= $Table;?>&range=" + Range,
+                success: function (msg) {
+                    setvalue("copy_paste", msg);
+                }
+            })
+        } else {
+            setvalue("copy_paste", "");
+        }
     }
 
     var downID = "";
@@ -809,6 +959,7 @@
             case 5://mouseup
                 if (downID != ID) {
                     alert("Select: " + downID + " to " + ID);
+                    //setvalue("clip_range", downID + ":" + ID);
                 }
                 break;
         }
@@ -840,7 +991,11 @@
                             if(!$HTMLMode){
                                 $ColumnName = getletter($Letters, $ColumnName) . $ColumnName;
                             }
-                            echo $this->Paginator->sort($ColumnName) . ' <A ONCLICK="return deletecolumn(' . "'" . $ColumnName . "'" . ');"><i class="fa fa-times"></i></A></TH>';
+                            if($EmbeddedMode){
+                                echo ucfirst2($ColumnName, true) . '</TH>';
+                            } else {
+                                echo $this->Paginator->sort($ColumnName) . ' <A ONCLICK="return deletecolumn(' . "'" . $ColumnName . "'" . ');"><i class="fa fa-times"></i></A></TH>';
+                            }
                         }
                     }
                     echo '</TR></THEAD><TBODY>';
@@ -962,7 +1117,7 @@
                                     echo '<A ONCLICK="return deleterow(' . "'" . $ID . "'" . ');"<i class="fa fa-times"></i>' . $Row->$PrimaryKey . '</A>';
                                 } else {
                                     echo '<INPUT NAME="' . $Me . '" ID="' . $Me . '" VALUE="' . $Row->$ColumnName . '" CLASS="textinput" onchange="mychangeevent(' . "'" . $Me . "'" . ', true);"';
-                                    echo ' PLACEHOLDER="' . $ColumnName . "." . $Row->$PrimaryKey . '"';
+                                    echo ' PLACEHOLDER="' . $ColumnName . "." . $Row->$PrimaryKey . '" STYLE="width:100%;" ';
                                     switch ($ColumnData["type"]) {
                                         case "string":
                                             break;
@@ -1005,7 +1160,7 @@
                                 $Me = $ID . '[' . $ColumnName . ']';
                                 $Type = "text";
                                 echo '<INPUT NAME="' . $Me . '" ID="' . $Me . '" " CLASS="textinput" onchange="mychangeevent(' . "'" . $Me . "'" . ', true);"';
-                                echo ' PLACEHOLDER="' . $ColumnName . '.new"';
+                                echo ' PLACEHOLDER="' . $ColumnName . '.new" STYLE="width:100%;" ';
                                 switch ($ColumnData["type"]) {
                                     case "boolean":
                                         $Type = "checkbox";
