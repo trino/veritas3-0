@@ -57,7 +57,7 @@
         return $Data2;
     }
 
-    function getreferences($Manager, $Table, $Reference, $Me ="", $Letters = "", $PrimaryKey = "", $FilterBrackets=true, $RefsOnly = false, $ToString = false){
+    function getreferences($Manager, $Table, $Reference, $Me ="", $Letters = "", $PrimaryKey = "", $FilterBrackets=true, $RefsOnly = false, $ToString = false, $Blank=false){
         $Table = gettablereference($Reference,$Table);
         if(!$PrimaryKey){$PrimaryKey = $Manager->get_primary_key($Table);}
         $Columns = $Manager->getColumnNames($Table, "", false);
@@ -67,7 +67,7 @@
         $Reference = splitreference($Manager, $Table, $Reference, $PrimaryKey, $Columns, false, true, $Me);
         if(!ismultireference($Manager, $Reference)){
             if ($RefsOnly){return array($Reference);}
-            $Data = getreference($Manager, $Table, $Reference, $Letters, $PrimaryKey, $FilterBrackets, false);
+            $Data = getreference($Manager, $Table, $Reference, $Letters, $PrimaryKey, $FilterBrackets, false, true, $Blank);
             if($ToString){return $Data;}
             return array($Data);
         }
@@ -101,8 +101,8 @@
                     if ($RefsOnly) {
                         $Values[] = $Reference;
                     } else {
-                        $Reference = getreference($Manager, $Table, $Reference, $Letters, $PrimaryKey, $FilterBrackets, false);
-                        if($Reference){$Values[] = $Reference;}
+                        $Data = getreference($Manager, $Table, $Reference, $Letters, $PrimaryKey, $FilterBrackets, false, true, $Blank);
+                        if($Data){$Values[$Reference] = $Data;}
                     }
                 }
             }
@@ -111,15 +111,20 @@
         return $Values;
     }
 
-    function sum($Data){
+    function sum($Data = false){
         $Total = 0;
-        foreach($Data as $Value){
-            $Total += $Value;
+        if(is_array($Data)) {
+            foreach ($Data as $Value) {
+                $Total += $Value;
+            }
         }
         return $Total;
     }
-    function average($Data){
-        return sum($Data) / count($Data);
+    function average($Data = false){
+        if(is_array($Data)) {
+            return sum($Data) / count($Data);
+        }
+        return 0;
     }
 
     function toaletter($Index){
@@ -161,7 +166,7 @@
         return $Table;
     }
 
-    function getreference($Manager, $Table, $Reference, $Letters = "", $PrimaryKey = "", $FilterBrackets=true, $ReturnIfError=true){
+    function getreference($Manager, $Table, $Reference, $Letters = "", $PrimaryKey = "", $FilterBrackets=true, $ReturnIfError=true, $Blank=false){
         $Reference = str_replace("$", "", $Reference);
         $ExclamationMark = strpos($Reference, "!");
         if ($ExclamationMark){//reference to another table
@@ -186,6 +191,7 @@
         $Column = $Letters[$Column];
 
         $Data = $Manager->get_entry($Table, $Row, $PrimaryKey);
+        if(!$Data && $Blank){return $Blank;}
         if($Data){
             $Data = $Data->$Column;
             if($FilterBrackets){$Data = getTag($Data, false);}
@@ -1265,12 +1271,15 @@
     </table>
 </DIV>
 <?php
-    function evaluate($Manager, $Table, $Equation, $Me, $Letters, $PrimaryKey) {
-        $p = new ParensParser();
+    function evaluate($Manager, $Table, $Equation, $Me, $Letters, $PrimaryKey, $p="") {
+        if(!$p) {$p = new ParensParser();}
+        if (substr($Equation,0,1) == "=") {$Equation = substr($Equation, 1, strlen($Equation) - 1);}
+        $DidRecurse=false;
         $Equation = $p->parse($Equation);
-        $Equation = evaluatereferences($p, $Manager, $Table, $Equation, $Me, $Letters, $PrimaryKey);
+        $Equation = evaluatereferences($p, $Manager, $Table, $Equation, $Me, $Letters, $PrimaryKey, $DidRecurse);
         $Equation = $p->condense($Equation);
-        $Equation = eval('return ' . $Equation . ';');
+        $Equation = 'return ' . $Equation . ';';
+        $Equation = eval($Equation);
         return $Equation;
     }
 
@@ -1283,11 +1292,21 @@
             $Equation = $p->splitequation($Equation);
             foreach($Equation as $Key => $Cell) {
                 if (isareference($Manager, $Cell)) {
-                    $Equation[$Key] = getreference($Manager, $Table, $Cell, $Me, $Letters, $PrimaryKey);
+                    $Cell = getreference($Manager, $Table, $Cell, $Me, $Letters, $PrimaryKey);
+                    if ($Cell && substr($Cell,0,1) == "=") {
+                        $Cell = substr($Cell, 1, strlen($Cell)-1);
+                        $Cell = evaluate($Manager, $Table, $Cell, $Key, $Letters, $PrimaryKey, $p);
+                    }
                 } else if (ismultireference($Manager, $Cell)) {
                     $Data = getreferences($Manager, $Table, $Cell, $Me, $Letters, $PrimaryKey);
-                    $Equation[$Key] = '[' . implode(",", $Data) . ']';
+                    foreach($Data as $DataKey => $DataValue){
+                        if ($DataValue && substr($DataValue,0,1) == "=") {
+                            $Data[$DataKey] = evaluate($Manager, $Table, $DataValue, $DataKey, $Letters, $PrimaryKey, $p);
+                        }
+                    }
+                    $Cell = '[' . implode(",", $Data) . ']';
                 }
+                $Equation[$Key]=$Cell;
             }
             $Equation = implode(" ", $Equation);
         }
@@ -1362,8 +1381,9 @@ class ParensParser {//https://gist.github.com/Xeoncross/4710324
                 $array[$key] = $this->condense($cell, False);
             }
             if($IsFirst){return implode("", $array);}
-            return "(" . implode("", $array) . ")";
+            $array = "(" . implode("", $array) . ")";
         }
+        $array = str_replace("([])", "()", $array);
         return $array;
     }
 
