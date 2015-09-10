@@ -358,14 +358,36 @@
                 addoption("options", SelectedKey);
                 if(Index==-1){Index = element.selectedIndex;}
                 element.remove(Index);
+                if (selectlastitem("tags")){
+                    tagclick();
+                }
             }
             function optionclick(){
                 var element = document.getElementById("options");
                 var Value = getinputvalue("options");
                 Values[Value] = "";
                 addoption("tags", Value);
+                selectitem("tags", Value);
+                tagclick();
                 element.remove(element.selectedIndex);
                 generatevalues();
+            }
+
+            function selectlastitem(ID){
+                var element = document.getElementById(ID);
+                if(element.options.length >0){
+                    element.selectedIndex = element.options.length-1;
+                    return true;
+                }
+            }
+            function selectitem(ID, value){
+                var element = document.getElementById(ID);
+                for(var i=0; i < element.options.length; i++){
+                    if(element.options[i].value === value) {
+                        element.selectedIndex = i;
+                        break;
+                    }
+                }
             }
             function updatecolor(color){
                 color = "#" + color;
@@ -617,7 +639,7 @@
                             <ul class="pagination sorting">
                                 <LI><A HREF="<?= $this->request->webroot . $Controller; ?>">Back</A></LI>
                                 <?php if(!$HTMLMode){ ?>
-                                    <LI><A ONCLICK="return save(true);">Save</A></LI>
+                                    <LI><A ONCLICK="return save(false);">Save</A></LI>
                                     <LI><A HREF="?table=<?= $Table; ?>&action=clearcache">Clear Cache</A></LI>
                                 <?php } ?>
                                 <LI><A HREF="?table=<?= $Table;?>&mode=<?php

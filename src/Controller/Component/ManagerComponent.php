@@ -1004,7 +1004,7 @@ class ManagerComponent extends Component {
             }
         }
         $Value =  $this->query($query);
-        if($OldColumn){$this->clear_cache();}
+        $this->clear_cache();
         return $Value;
     }
 
