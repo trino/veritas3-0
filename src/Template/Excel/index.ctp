@@ -19,10 +19,11 @@
         return substr($ID, 5, strpos($ID, "]") - 5);
     }
 
-    function splitreference($Manager, $Table, $Reference, $PrimaryKey="", $Columns="", $IncludeDollarSigns = false, $Join = true){
+    function splitreference($Manager, $Table, $Reference, $PrimaryKey="", $Columns="", $IncludeDollarSigns = false, $Join = true, $Me = ""){
         $Data = explode(":", $Reference);
         $Data2 = array();
         foreach($Data as $Value){
+            if(strtoupper($Value)=="ME"){$Value = $Me;}
             $Column = strtoupper($Manager->validate_data($Value, "alphabetic"));
             if($IncludeDollarSigns && $Column && strpos($Value, "$" . $Column) !== false){ $Column = "$" . $Column;}
             $Row = $Manager->validate_data($Value, "number");
@@ -63,7 +64,7 @@
         if(!$Letters){
             $Letters = get_column_letters($PrimaryKey, $Columns);
         }
-        $Reference = splitreference($Manager, $Table, $Reference, $PrimaryKey, $Columns, false, true);
+        $Reference = splitreference($Manager, $Table, $Reference, $PrimaryKey, $Columns, false, true, $Me);
         if(!ismultireference($Manager, $Reference)){
             if ($RefsOnly){return array($Reference);}
             $Data = getreference($Manager, $Table, $Reference, $Letters, $PrimaryKey, $FilterBrackets, false);
@@ -422,7 +423,7 @@
                 if(isset($_GET["id"])){
                     $PrimaryKey = $Manager->get_primary_key($_GET["table"]);
                     $Value = $_GET["text"];
-                    if(strlen($_GET["tag"]>2)){$Value = $_GET["tag"] . $Value;}
+                    if(strlen($_GET["tag"])>2){$Value = $_GET["tag"] . $Value;}
                     $Manager->edit_database($_GET["table"], $PrimaryKey, $_GET["id"], array($_GET["column"] => $Value));
                 } else {
                     $Manager->change_column_comment($_GET["table"], $_GET["column"], $_GET["tag"]);
@@ -580,6 +581,11 @@
     $Table="";
     $PrimaryKey="";
     $Tables="";
+
+    if (!$EmbeddedMode && $Manager->webroot(true) == "intact2"){
+        echo '<div class="page-content"><div class="container"><div class="row"><div class="col-md-12"><div class="portlet light">';
+    }
+
     if(isset($_GET["table"])){
         $HTMLMode=(isset($_GET["mode"]) && $_GET["mode"] == "html") || $EmbeddedMode || isset($_GET["htmlmode"]);
         $Table = $_GET["table"];
@@ -820,7 +826,7 @@
                 }
             })
         } else {
-            window.open(MyURL + "?table=<?= $Table; ?>" + URL,"_self");
+            window.open(MyURL + "?table=<?php echo $Table; if($HTMLMode) {echo "&mode=html";} ?>" + URL,"_self");
         }
     }
 
@@ -1334,5 +1340,7 @@ class ParensParser {//https://gist.github.com/Xeoncross/4710324
 
     if($EmbeddedMode){
         return;
+    } else if ($Manager->webroot(true) == "intact2"){
+        echo '</DIV></DIV></DIV></DIV></DIV>';
     }
 ?>

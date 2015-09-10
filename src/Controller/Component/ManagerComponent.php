@@ -350,8 +350,10 @@ class ManagerComponent extends Component {
         return $Order;
     }
 
-    function webroot(){
-        return $this->Controller->request->webroot;
+    function webroot($removeslashes = false){
+        $webroot = $this->Controller->request->webroot;
+        if($removeslashes){$webroot = str_replace('/', '', $webroot);}
+        return $webroot;
     }
 
     function json_to_order($Data, $ReturnAll=false){
