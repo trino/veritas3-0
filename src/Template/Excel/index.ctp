@@ -272,7 +272,7 @@
                 visible("removetag", true);
                 switch(SelectedKey){
                     case "format":
-                        addoptions("values", ["percent", "uppercase", "lowercase", "number"]);
+                        addoptions("values", ["percent", "uppercase", "lowercase", "number", "currency"]);
                         break;
                     case "bgcolor": case "fontcolor":
                         visible("color", true);
@@ -283,6 +283,9 @@
                         break;
                     case "fontsize":
                         addoptions("values", [1, 2, 3, 4, 5, 6, 7]);
+                        break;
+                    case "colspan":
+                        addoptions("values", [2,3,4,5,6,7,8,9,10,"All"]);
                         break;
                 }
             }
@@ -850,7 +853,13 @@
                 }
             })
         } else {
-            window.open(MyURL + "?table=<?php echo $Table; if($HTMLMode) {echo "&mode=html";} ?>" + URL,"_self");
+            window.open(MyURL + "?table=<?php
+                echo $Table;
+                if($HTMLMode) {echo "&mode=html";}
+                if (isset($_GET["page"])){
+                    echo "&page=" . $_GET["page"] . "&sort=" . $_GET["sort"] . "&direction=" . $_GET["direction"];
+                }
+                ?>" + URL,"_self");
         }
     }
 
@@ -1008,6 +1017,11 @@
                 echo '[ERROR:isNaN]';
             }
 
+            function asDollars($value = 0) {
+                $tempstr = '$' . number_format($value, 2);
+                return str_replace(".", ".<SUP>", $tempstr) . "</SUP>";
+            }
+
             if(isset($_GET["table"])) {
                 if($PrimaryKey){
                     $events = array("oncontextmenu", "onclick", "ondblclick", "onmousedown", "onmousemove", "onmouseup");
@@ -1111,6 +1125,9 @@
                                                             break;
                                                         case "number":
                                                             if (checknumeric($Value)) {$Value = number_format($Value, 2);}
+                                                            break;
+                                                        case "currency":
+                                                            if (checknumeric($Value)) {$Value = asDollars($Value);}
                                                             break;
                                                     }
                                                     break;
