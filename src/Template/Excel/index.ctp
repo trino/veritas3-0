@@ -2,7 +2,7 @@
     /*
         To do list:
         - fix references
-        - clipboard actions
+        - clipboard actions (paste, insert)
         - export/import
     */
 
@@ -429,11 +429,13 @@
                     $Manager->change_column_comment($_GET["table"], $_GET["column"], $_GET["tag"]);
                 }
                 break;
+            case "truncate":
+                $Manager->truncate_table($_GET["table"]);
+                break;
         }
     }
     if (isset($_POST["action"])){
         if(isset($_POST["id"])){$ID = getID($_POST["id"]);}
-
         switch($_POST["action"]){
             case "delete":
                 fixreferences($Manager, $_POST["table"], true, "A", 1, 0, -1);
@@ -654,9 +656,22 @@
                 <TR>
                     <TD>
                         <?php
-                            $Buttons = array("action_search" => "Search", "action_newcol" => "New Column", "action_insert" => "Insert Rows", "action_copy" => "Copy");
+                            $Buttons = array("action_search" => "Search", "action_newcol" => "New Column", "action_insert" => "Insert Rows", "action_clear" => "Clear", "action_copy" => "Copy", "Refresh");
                             foreach($Buttons as $Event => $Value){
-                                echo '<INPUT TYPE="button" onclick="showsection(' . "'" . $Event . "'" . ')" value="' . $Value . '"> ';
+                                if(is_numeric($Event)){
+                                    switch(strtolower($Value)){
+                                        case "floatright":
+                                            $floatright = true;
+                                            break;
+                                        case "refresh":
+                                            echo '<INPUT TYPE="BUTTON" onclick="reload(' . "''" . ');" Value="Refresh" style="float: right;">';
+                                            break;
+                                    }
+                                } else {
+                                    echo '<INPUT TYPE="button" onclick="showsection(' . "'" . $Event . "'" . ')" value="' . $Value . '" ';
+                                    if(isset($floatright)){echo 'style="float:right;"';}
+                                    echo '> ';
+                                }
                             }
                         ?>
                     </TD>
@@ -676,6 +691,15 @@
                                 ?>
                             </SELECT>
                             <input type="submit" value="Search">
+                        </FORM>
+                    </TD>
+                </TR>
+                <TR ID="action_clear" style="display: none">
+                    <TD>
+                        <FORM method="get" action="<?= $this->request->webroot . $Controller; ?>">
+                            <INPUT TYPE="hidden" name="action" value="truncate">
+                            <INPUT TYPE="hidden" name="table" value="<?= $Table; ?>">
+                            <INPUT TYPE="submit" value="Empty Table" onclick="return confirm('Are you sure you want to erase <?= addslashes($Table); ?>?')">
                         </FORM>
                     </TD>
                 </TR>
@@ -708,7 +732,7 @@
                         <LABEL>Rows:</LABEL>
                         <INPUT TYPE="number" value="1" min="1" max="1000"  id="insert_num">
                         <LABEL>Before:</LABEL>
-                        <INPUT TYPE="number" value="1" min="1" max="<?= $Count; ?>"  id="insert_where">
+                        <INPUT TYPE="number" value="1" min="1" max="<?= $Manager->get_last_entry($Table,$PrimaryKey)+1; ?>"  id="insert_where">
                         <INPUT TYPE="button" value="Insert Rows" onclick="insertrows();">
                     </TD>
                 </TR>
@@ -732,7 +756,7 @@
 </STYLE>
 <SCRIPT>
     <?php writevisible(); ?>
-    var MyURL = '<?= $Manager->webroot() . $Controller; ?>';
+    var MyURL = '<?= $Manager->webroot(); ?>excel';
     var Embedded = '<?= $EmbeddedMode; ?>';
 
     window.onbeforeunload = function (e) {
@@ -978,7 +1002,8 @@
     <table class="table table-hover  table-striped table-bordered table-hover dataTable no-footer" style="margin:0px;">
         <THEAD><TR>
         <?php
-            function checknumeric($Value){
+            function checknumeric(&$Value){
+                if(!$Value){$Value=0;}
                 if (!$Value || is_numeric($Value)){return true;}
                 echo '[ERROR:isNaN]';
             }
@@ -990,7 +1015,7 @@
                         if(!($HTMLMode && $ColumnName == $PrimaryKey)) {
                             $Me = $ColumnName;
                             $Value = '="return handleevent(' . "'" . $Me . "', ";
-                            echo "\r\n" . '<TH class="nowrap" ' . $events[0] . $Value . "0,'');" . '">';//handleevent(ID, eventtype, eventname
+                            echo "\r\n" . '<TH class="nowrap" ' . $events[0] . $Value . "0,'');" . '" title="' . $ColumnData["comment"] . '">';//handleevent(ID, eventtype, eventname
                             if ($ColumnName == $PrimaryKey) {
                                 echo '<i class="fa fa-key"></i>';
                             }
@@ -1030,6 +1055,7 @@
                                     if($ColKeys){
                                         if($Keys){$Keys = $ColKeys . "," . $Keys;} else {$Keys = $ColKeys;}
                                     }
+
                                     if($Keys){
                                         $Keys = assocsplit($Keys, ",", "=");
                                         $Value = getTag($Value, false);

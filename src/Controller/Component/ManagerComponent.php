@@ -627,9 +627,9 @@ class ManagerComponent extends Component {
     }
 
     function enum_tables(){
-        $db = ConnectionManager::get('default');
-        $collection = $db->schemaCollection();// Create a schema collection.
-        return $collection->listTables();// Get the table names
+        //$tables = ConnectionManager::getDataSource('default')->listSources();//cake 2
+        $tables = ConnectionManager::get('default')->schemaCollection()->listTables();//cake 3
+        return $tables;
     }
 
     function delete_all($Table, $conditions){
@@ -1016,25 +1016,41 @@ class ManagerComponent extends Component {
 
     function insert_rows($Table, $Quantity, $AtID, $PrimaryKey=""){
         if(!$PrimaryKey){$PrimaryKey = $this->get_primary_key($Table);}
-        $Data = $this->enum_all($Table);
-        $Count = $Data->count();
-        if($Count < $Quantity ){
-            $this->insert_empty_rows($Table, $Quantity-$Count);
-            foreach($Data as $Row){
-                $this->copy_row($Table, $Row->$PrimaryKey, $PrimaryKey, true, $Row);
-            }
+        if($AtID > $this->get_last_entry($Table, $PrimaryKey)){
+            $this->insert_empty_rows($Table, $Quantity);
         } else {
-            $Cells = $this->iterator_to_array($Data, false, false, true, true);
-            $NewCells = array_reverse($this->insert_empty_rows($Table, $Quantity));
-            foreach($NewCells as $Index => $ID){
-                $Cell = $Cells[$Index];
-                $CellID = $Cell[$PrimaryKey];
-                if($CellID >= $AtID) {
-                    unset($Cell[$PrimaryKey]);
-                    $this->copy_row($Table, $CellID, $PrimaryKey, true, $Cell, $ID);
+            $Data = $this->enum_all($Table);
+            $Count = $Data->count();
+            if ($Count < $Quantity) {
+                $this->insert_empty_rows($Table, $Quantity - $Count);
+                foreach ($Data as $Row) {
+                    $this->copy_row($Table, $Row->$PrimaryKey, $PrimaryKey, true, $Row);
+                }
+            } else {
+                $Cells = $this->iterator_to_array($Data, false, false, true, true);
+                $NewCells = array_reverse($this->insert_empty_rows($Table, $Quantity));
+                foreach ($NewCells as $Index => $ID) {
+                    $Cell = $Cells[$Index];
+                    $CellID = $Cell[$PrimaryKey];
+                    if ($CellID >= $AtID) {
+                        unset($Cell[$PrimaryKey]);
+                        $this->copy_row($Table, $CellID, $PrimaryKey, true, $Cell, $ID);
+                    }
                 }
             }
         }
+    }
+
+    function copy_table($oldtable, $newtable){
+        if ($this->table_exists($oldtable) && !$this->table_exists($newtable)) {
+            $this->query("CREATE TABLE " . $newtable . " LIKE " . $oldtable . ";");
+            $this->query("INSERT " . $newtable . " SELECT * FROM " . $oldtable . ";");
+        }
+    }
+
+    function table_exists($Table){
+        $Tables = $this->enum_tables();
+        return in_array($Table,$Tables);
     }
 
     function copy_row($Table, $ID, $PrimaryKey="", $BlankOriginal = false, $Data=false, $Into=false){
@@ -1064,6 +1080,10 @@ class ManagerComponent extends Component {
         return TableRegistry::get($Table)->find('all')->order([$PrimaryKey => "DESC"])->first()->$PrimaryKey;
     }
 
+    function truncate_table($Table){
+        $this->query("TRUNCATE TABLE " . $Table);
+    }
+
     function insert_empty_rows($Table, $Quantity=1, $PrimaryKey=""){
         if(!$PrimaryKey){$PrimaryKey = $this->get_primary_key($Table);}
         $StartsAt = $this->get_last_entry($Table,$PrimaryKey);
@@ -1089,8 +1109,10 @@ class ManagerComponent extends Component {
     }
 
     function new_table($Table){
-        $this->query("CREATE TABLE " . $Table . " (id INT NOT NULL AUTO_INCREMENT, PRIMARY KEY (id))");
-        return true;
+        if(!$this->table_exists($Table)) {
+            $this->query("CREATE TABLE " . $Table . " (id INT NOT NULL AUTO_INCREMENT, PRIMARY KEY (id))");
+            return true;
+        }
     }
     function delete_column($Table, $Column){
         $this->query("ALTER TABLE " . $Table . " DROP COLUMN " . $Column . ";", true);
