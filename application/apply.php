@@ -225,7 +225,7 @@
                         <input class="form-control required" name="fname" placeholder="First" required value="<?php if(isset($application_for_employment_gfs))echo $application_for_employment_gfs->fname;?>" />
                     </div>
                     <div class="col-md-3">
-                        <input class="form-control required" name="mname" placeholder="Middle" value="<?php if(isset($application_for_employment_gfs))echo $application_for_employment_gfs->mname;?>" />
+                        <input class="form-control" name="mname" placeholder="Middle" value="<?php if(isset($application_for_employment_gfs))echo $application_for_employment_gfs->mname;?>" />
                     </div>
                     <div class="col-md-3">
                         <input class="form-control required" name="lname" placeholder="Last" required value="<?php if(isset($application_for_employment_gfs))echo $application_for_employment_gfs->lname;?>" />
