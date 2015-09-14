@@ -161,7 +161,7 @@ if(isset($detail['consent']) && $detail['consent'])
                     
                 }
 
-$attach = "<br/><br/><strong>Attachments</strong>
+$attach = "<br/><br/><strong></strong>
                 <br/>
                 ";
 //$initials = $this->requestAction('/pages/getBase');

@@ -142,7 +142,7 @@ $pdf->Ln(6);
 }
 }
 if(count($att)>0){
-$attach = "<br/><br/><strong>Attachments</strong>
+$attach = "<br/><br/><strong></strong>
                 <br/>
                 ";
 //$initials = $this->requestAction('/pages/getBase');
