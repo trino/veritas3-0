@@ -1,5 +1,6 @@
 <?php
-    $Inline=false;
+    $Inline=true;
+    $GLOBALS["inline"] = $Inline;
     if($Inline){?>
         <link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css" rel="stylesheet">
         <script src="http://code.jquery.com/jquery-2.0.3.min.js"></script>
@@ -9,8 +10,11 @@
         <script>
             $(document).ready(function() {
                 $.fn.editable.defaults.mode = 'popup';
-                $('.editable').editable();
+                $.fn.editable.defaults.success = function(response, newValue) {
+                    reload('');
+                };
 
+                $('.editable').editable();
             });
         </script>
 <?php }
@@ -19,7 +23,6 @@
         - fix references
         - clipboard actions (paste, insert)
         - export/import
-        - switch to in-line editing http://www.keenthemes.com/preview/metronic/theme/templates/admin/form_editable.html?mode=inline
     */
 
     $Controller = strtolower($this->request->params['controller']);
@@ -483,6 +486,7 @@
             case "inlinesave":
                 //$Manager->debugprint( print_r($_POST,true)  . "\r\n" . print_r($_GET,true));
                 quickedit($Manager, $_GET["table"], $_POST["pk"], $_POST["name"], $_POST["value"]);
+                die();
                 break;
         }
     }
@@ -671,7 +675,7 @@
         $Count = $Data->count();
         if(!$HTMLMode){$Data = $Manager->paginate($Data);}
         if(!$EmbeddedMode){ ?>
-            <div class="form-actions" style="height: 70px;padding-top: 0px;padding-bottom: 0px;margin-bottom: 10px;margin-top: 0px;">
+            <div class="form-actions" style="padding-top: 0px;padding-bottom: 0px;margin-bottom: 10px;margin-top: 0px;">
                 <div class="row">
                     <div class="col-md-6" align="left">
                         <div id="sample_2_paginate" class="dataTables_paginate paging_simple_numbers" style="margin-top:-10px;">
@@ -720,7 +724,7 @@
                 <TR>
                     <TD>
                         <?php
-                            $Buttons = array("action_search" => "Search", "action_newcol" => "New Column", "action_insert" => "Insert Rows", "action_clear" => "Clear", "action_copy" => "Copy", "Refresh");
+                            $Buttons = array("action_search" => "Search", "action_newcol" => "New Column", "action_insert" => "Insert Rows", "action_clear" => "Clear", "action_copy" => "Copy", "action_port" => "Import/Export", "Refresh");
                             foreach($Buttons as $Event => $Value){
                                 if(is_numeric($Event)){
                                     switch(strtolower($Value)){
@@ -738,6 +742,12 @@
                                 }
                             }
                         ?>
+                    </TD>
+                </TR>
+                <TR ID="action_port" style="display: none">
+                    <TD>
+                        <A HREF="" class="btn">Export as CSV</A>
+                        <A HREF="" class="btn">Export as mySQL</A>
                     </TD>
                 </TR>
                 <TR ID="action_search" style="display: none">
@@ -1264,7 +1274,7 @@
                                 }
                             }
                         }
-                        $Inline=!isset($Keys["readonly"]) && false;
+                        $Inline=!isset($Keys["readonly"]) && $GLOBALS["inline"];
                         if($Inline){
                             $Start .= '<a href="javascript:;" data-name="' . $ColumnName . '" data-type="text" data-pk="' . $Row->$PrimaryKey . '" data-url="' . $Manager->webroot() . 'excel?action=inlinesave&table=' . $Table . '" data-original-title="Enter ' . ucfirst2($ColumnName, true) . '" class="editable">';
                             $Finish = '</A>' . $Finish;
