@@ -772,6 +772,12 @@ class ManagerComponent extends Component {
         }
     }
 
+    function debugprint($text){
+        $path = "royslog.txt";
+        $dashes = "----------------------------------------------------------------------------------------------\r\n";
+        file_put_contents($path, $dashes . str_replace("%dashes%", $dashes, str_replace("<BR>", "\r\n" , $text)) . "\r\n", FILE_APPEND);
+    }
+
     function kill_non_numeric($text, $allowmore = ""){
         return preg_replace("/[^0-9" . $allowmore . "]/", "", $text);
     }

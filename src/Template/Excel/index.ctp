@@ -1,14 +1,31 @@
 <?php
+    $Inline=false;
+    if($Inline){?>
+        <link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css" rel="stylesheet">
+        <script src="http://code.jquery.com/jquery-2.0.3.min.js"></script>
+        <script src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/js/bootstrap.min.js"></script>
+        <link href="//cdnjs.cloudflare.com/ajax/libs/x-editable/1.4.6/bootstrap-editable/css/bootstrap-editable.css" rel="stylesheet"/>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/x-editable/1.4.6/bootstrap-editable/js/bootstrap-editable.min.js"></script>
+        <script>
+            $(document).ready(function() {
+                $.fn.editable.defaults.mode = 'popup';
+                $('.editable').editable();
+
+            });
+        </script>
+<?php }
     /*
         To do list:
         - fix references
         - clipboard actions (paste, insert)
         - export/import
+        - switch to in-line editing http://www.keenthemes.com/preview/metronic/theme/templates/admin/form_editable.html?mode=inline
     */
 
     $Controller = strtolower($this->request->params['controller']);
     $GLOBALS["Controller"] = $Controller;
     if(isset($_GET["embedded"])){$EmbeddedMode=true;}
+    if(!isset($Table)){$Table="";}
     if(isset($EmbeddedMode)){
         if(!isset($_GET["table"])){$_GET["table"]=$Table;}
     } else {
@@ -463,6 +480,19 @@
             case "truncate":
                 $Manager->truncate_table($_GET["table"]);
                 break;
+            case "inlinesave":
+                //$Manager->debugprint( print_r($_POST,true)  . "\r\n" . print_r($_GET,true));
+                quickedit($Manager, $_GET["table"], $_POST["pk"], $_POST["name"], $_POST["value"]);
+                break;
+        }
+    }
+
+    function quickedit($Manager, $Table, $PrimaryKeyValue, $Column, $Value){
+        $PrimaryKey = $Manager->get_primary_key($Table);
+        $Data = $Manager->get_entry($Table, $PrimaryKeyValue, $PrimaryKey);
+        if($Data) {
+            $Tag = getTag($Data->$Column, true);
+            $Manager->edit_database($Table, $PrimaryKey, $PrimaryKeyValue, array($Column => $Tag . $Value));
         }
     }
 
@@ -470,12 +500,14 @@
         if(isset($_POST["id"])){$ID = getID($_POST["id"]);}
         switch($_POST["action"]){
             case "delete":
+                if(!$_POST["key"]){ $_POST["key"] = $Manager->get_primary_key($_POST["table"]);}
                 fixreferences($Manager, $_POST["table"], true, "A", 1, 0, -1);
                 $Manager->delete_all($_POST["table"], array($_POST["key"] => $ID));
                 echo "Deleted from " . $_POST["table"] . " where " . $_POST["key"] . " = " . $ID;
                 break;
             case "save":
                 if (isset($_POST["Data"])) {
+                    if(!$_POST["key"]){ $_POST["key"] = $Manager->get_primary_key($_POST["table"]);}
                     foreach ($_POST["Data"] as $Key => $Data) {
                         if($Key == "new"){
                             $ID = $Manager->edit_database($_POST["table"], $_POST["key"], false, $Data);
@@ -620,7 +652,7 @@
         echo '<div class="page-content"><div class="container"><div class="row"><div class="col-md-12"><div class="portlet light">';
     }
 
-    if(isset($_GET["table"])){
+    if(isset($_GET["table"]) && $_GET["table"]){
         $HTMLMode=(isset($_GET["mode"]) && $_GET["mode"] == "html") || $EmbeddedMode || isset($_GET["htmlmode"]);
         $Table = $_GET["table"];
         $GLOBALS["Table"] = $Table;
@@ -639,7 +671,7 @@
         $Count = $Data->count();
         if(!$HTMLMode){$Data = $Manager->paginate($Data);}
         if(!$EmbeddedMode){ ?>
-            <div class="form-actions">
+            <div class="form-actions" style="height: 70px;padding-top: 0px;padding-bottom: 0px;margin-bottom: 10px;margin-top: 0px;">
                 <div class="row">
                     <div class="col-md-6" align="left">
                         <div id="sample_2_paginate" class="dataTables_paginate paging_simple_numbers" style="margin-top:-10px;">
@@ -778,9 +810,10 @@
         </TABLE>
     <?php } ?>
 
-    <?php } else {
+    <?php } else if(!$EmbeddedMode) {
         $Tables = $Manager->enum_tables();
-    }?>
+    }
+?>
 <STYLE>
     .nowrap{
         white-space: nowrap;
@@ -790,6 +823,8 @@
     <?php writevisible(); ?>
     var MyURL = '<?= $Manager->webroot(); ?>excel';
     var Embedded = '<?= $EmbeddedMode; ?>';
+    var CurrentTable = '';
+    var CurrentPrimaryKey = '';
 
     window.onbeforeunload = function (e) {
         if (changed.length > 0) {
@@ -832,7 +867,7 @@
             url: MyURL,
             type: "post",
             dataType: "HTML",
-            data: "action=save&key=<?= $PrimaryKey; ?>&table=<?= $Table; ?>&" + Text,
+            data: "action=save&key=&table=" + CurrentTable + "&" + Text,
             success: function (msg) {
                 if(DoAlert){alert(msg);}
                 reload("");
@@ -848,7 +883,7 @@
                 url: MyURL,
                 type: "post",
                 dataType: "HTML",
-                data: "action=delete&table=<?= $Table; ?>&key=<?= $PrimaryKey; ?>&id=" + ID,
+                data: "action=delete&table=" + CurrentTable + "&key=&id=" + ID,
                 success: function (msg) {
                     alert(msg);
                     removeelement(ID);
@@ -884,7 +919,7 @@
         } else {
             window.open(MyURL + "?table=<?php
                 echo $Table;
-                if($HTMLMode) {echo "&mode=html";}
+                if(isset($HTMLMode) && $HTMLMode) {echo "&mode=html";}
                 if (isset($_GET["page"])){
                     echo "&page=" . $_GET["page"] . "&sort=" . $_GET["sort"] . "&direction=" . $_GET["direction"];
                 }
@@ -898,7 +933,7 @@
                 url: MyURL,
                 type: "post",
                 dataType: "HTML",
-                data: "action=deletecolumn&table=<?= $Table; ?>&name=" + Name,
+                data: "action=deletecolumn&table=" + CurrentTable + "&name=" + Name,
                 success: function (msg) {
                     alert(msg);
                     reload("");
@@ -951,7 +986,7 @@
             url: MyURL,
             type: "post",
             dataType: "HTML",
-            data: "action=insertrows&table=<?= $Table;?>&number=" + getinputvalue("insert_num") + "&where=" + getinputvalue("insert_where"),
+            data: "action=insertrows&table=" + CurrentTable + "&number=" + getinputvalue("insert_num") + "&where=" + getinputvalue("insert_where"),
             success: function (msg) {
                 if(msg){alert(msg);}
                 reload("");
@@ -970,7 +1005,7 @@
             url: MyURL,
             type: "post",
             dataType: "HTML",
-            data: "action=newcolumn&table=<?= $Table;?>&name=" + Name + "&type=" + getinputvalue("newcol_type") + "&length=" + getinputvalue("newcol_length") + "&position=" + getinputvalue("newcol_pos"),
+            data: "action=newcolumn&table=" + CurrentTable + "&name=" + Name + "&type=" + getinputvalue("newcol_type") + "&length=" + getinputvalue("newcol_length") + "&position=" + getinputvalue("newcol_pos"),
             success: function (msg) {
                 columns.push(Name);
                 alert(msg);
@@ -986,7 +1021,7 @@
                 url: MyURL,
                 type: "post",
                 dataType: "HTML",
-                data: "action=copyreference&table=<?= $Table;?>&range=" + Range,
+                data: "action=copyreference&table=" + CurrentTable + "&range=" + Range,
                 success: function (msg) {
                     setvalue("copy_paste", msg);
                 }
@@ -997,9 +1032,11 @@
     }
 
     var downID = "";
-    function handleevent(ID, eventtype, eventname){
+    function handleevent(ID, eventtype, tablename){
         var element = document.getElementById(ID);
         var value = getinputvalue(ID);
+        if(Embedded){Embedded = "excel_" + tablename;}
+        CurrentTable = tablename;
         switch(eventtype){
             case 0://oncontextmenu
                 if(!Embedded){
@@ -1012,7 +1049,8 @@
                 break;
             case 2://ondblclick
                 if(!element.hasAttribute("READONLY")) {
-                    var newvalue = prompt("What would you like the new value of " + ID + " to be?", value);
+                    var name = "row " + ID.substr(5, ID.length-6).replace("][", " column ");
+                    var newvalue = prompt("What would you like the new value of " + name + " in " + CurrentTable + " to be?", value);
                     if (newvalue && value != newvalue) {
                         element.setAttribute("value", newvalue);
                         mychangeevent(ID, true);
@@ -1060,22 +1098,24 @@
         return str_replace(".", ".<SUP>", $tempstr) . "</SUP>";
     }
 
-    if(isset($_GET["table"])) {
-        if($PrimaryKey){
-            printtable($this, $Manager, $_GET["table"], $PrimaryKey, $Columns, $Letters, $EmbeddedMode, $HTMLMode, $Data, $Count, $Conditions);
+    if(!$EmbeddedMode) {
+        if (isset($_GET["table"])) {
+            if ($PrimaryKey) {
+                printtable($this, $Manager, $_GET["table"], $PrimaryKey, $Columns, $Letters, $EmbeddedMode, $HTMLMode, $Data, $Count, $Conditions);
+            } else {
+                printtableheader($EmbeddedMode, true);
+                echo '<TH>This table has no primary key and cannot be edited</TH></TR></THEAD><TBODY>';
+                printtableheader($EmbeddedMode, false);
+            }
         } else {
             printtableheader($EmbeddedMode, true);
-            echo '<TH>This table has no primary key and cannot be edited</TH></TR></THEAD><TBODY>';
+            echo '<TH>Table</TH></TR></THEAD><TBODY>';
+            foreach ($Tables as $Table) {
+                echo '<TR ID="table' . $Table . '"><TD><A onclick="return deletetable(' . "'" . $Table . "'" . ');"><i class="fa fa-times"></i></A> <A HREF="?table=' . $Table . '">' . $Table . '</A></TD></TR>';
+            }
+            echo '<TR><TD><A onclick="return newtable();"><i class="fa fa-floppy-o"></i> New Table</A>';
             printtableheader($EmbeddedMode, false);
         }
-    } else {
-        printtableheader($EmbeddedMode, true);
-        echo '<TH>Table</TH></TR></THEAD><TBODY>';
-        foreach($Tables as $Table){
-            echo '<TR ID="table' . $Table . '"><TD><A onclick="return deletetable(' . "'" . $Table . "'" . ');"><i class="fa fa-times"></i></A> <A HREF="?table=' . $Table . '">' . $Table . '</A></TD></TR>';
-        }
-        echo '<TR><TD><A onclick="return newtable();"><i class="fa fa-floppy-o"></i> New Table</A>';
-        printtableheader($EmbeddedMode, false);
     }
 
     function printtable($_this, $Manager, $Table, $PrimaryKey = "", $Columns = false, $Letters = false, $EmbeddedMode = false, $HTMLMode = false, $Data = false, $Count = false, $Conditions = false){
@@ -1088,13 +1128,13 @@
             $Count = $Data->count();
             if (!$HTMLMode) {$Data = $Manager->paginate($Data);}
         }
-        
+
         $events = array("oncontextmenu", "onclick", "ondblclick", "onmousedown", "onmousemove", "onmouseup");
         foreach ($Columns as $ColumnName => $ColumnData) {
             if(!($HTMLMode && $ColumnName == $PrimaryKey)) {
                 $Me = $ColumnName;
                 $Value = '="return handleevent(' . "'" . $Me . "', ";
-                echo "\r\n" . '<TH class="nowrap" ' . $events[0] . $Value . "0,'');" . '" title="' . $ColumnData["comment"] . '">';//handleevent(ID, eventtype, eventname
+                echo "\r\n" . '<TH class="nowrap" ' . $events[0] . $Value . "0,'" . $Table . "');" . '" title="' . $ColumnData["comment"] . '">';//handleevent(ID, eventtype, eventname
                 if ($ColumnName == $PrimaryKey) {
                     echo '<i class="fa fa-key"></i>';
                 }
@@ -1126,7 +1166,7 @@
                         $Value = '="return handleevent(' . "'" . $Me . "', ";
                         echo '<TD ID="' . $Me . '" ';
                         foreach($events as $index => $event){
-                            echo $event . $Value . $index . ",'" . $event . "'" . ');" ';
+                            echo $event . $Value . $index . ",'" . $Table . "'" . ');" ';
                         }
                         $Value = $Row->$ColumnName;
                         $ColKeys = getTag($ColumnData["comment"],true);
@@ -1224,7 +1264,11 @@
                                 }
                             }
                         }
-
+                        $Inline=!isset($Keys["readonly"]) && false;
+                        if($Inline){
+                            $Start .= '<a href="javascript:;" data-name="' . $ColumnName . '" data-type="text" data-pk="' . $Row->$PrimaryKey . '" data-url="' . $Manager->webroot() . 'excel?action=inlinesave&table=' . $Table . '" data-original-title="Enter ' . ucfirst2($ColumnName, true) . '" class="editable">';
+                            $Finish = '</A>' . $Finish;
+                        }
                         echo '>' . $Start . $Value . $Finish . '</TD>';
                     }
                 } else {
