@@ -426,7 +426,7 @@
         echo '<P><INPUT TYPE="text" ID="text" style="display: none"></P>';
         echo '<P><SELECT ID="values" size=10 style="display: none" onclick="valueclick();"></SELECT></P>';
         echo '<P><LABEL>Available tags: </LABEL><BR><SELECT ID="options" size=10 onclick="optionclick();" style="width: 200px;">';
-        $options = array("bold", "italic", "underline", "format", "bgcolor", "align", "fontcolor", "fontsize");
+        $options = array("bold", "italic", "underline", "format", "bgcolor", "align", "fontcolor", "fontsize", "readonly");
         if($ID){$options[] = "colspan";}
         foreach($options as $Key){
             if($Tag){$DoIt = !isset($Tag[$Key]);} else {$DoIt = true;}
@@ -1010,11 +1010,13 @@
 
                 break;
             case 2://ondblclick
-                var newvalue = prompt("What would you like the new value of " + ID + " to be?", value);
-                if(newvalue && value != newvalue) {
-                    element.setAttribute("value", newvalue);
-                    mychangeevent(ID, true);
-                    save(false);
+                if(!element.hasAttribute("READONLY")) {
+                    var newvalue = prompt("What would you like the new value of " + ID + " to be?", value);
+                    if (newvalue && value != newvalue) {
+                        element.setAttribute("value", newvalue);
+                        mychangeevent(ID, true);
+                        save(false);
+                    }
                 }
                 break;
             case 3://onmousedown
@@ -1120,6 +1122,9 @@
                                             $Data = trim($Data);
 
                                             switch ($Key) {
+                                                case "readonly":
+                                                    echo "READONLY";
+                                                    break;
                                                 case "colspan":
                                                     if (strtolower($Data) == "all"){
                                                         $Data = count($Columns) - $ColIndex;
