@@ -465,6 +465,7 @@
                 break;
         }
     }
+
     if (isset($_POST["action"])){
         if(isset($_POST["id"])){$ID = getID($_POST["id"]);}
         switch($_POST["action"]){
@@ -1037,245 +1038,267 @@
     <?php loadreasons("edit", $strings); ?>
 </SCRIPT>
 
-<DIV width="100%" height="100%" <?php if(!$EmbeddedMode){ echo 'style="overflow: auto;"';} ?>>
-    <table class="table table-hover  table-striped table-bordered table-hover dataTable no-footer" style="margin:0px;">
-        <THEAD><TR>
-        <?php
-            function checknumeric(&$Value){
-                if(!$Value){$Value=0;}
-                if (!$Value || is_numeric($Value)){return true;}
-                echo '[ERROR:isNaN]';
-            }
-
-            function asDollars($value = 0) {
-                $tempstr = '$' . number_format($value, 2);
-                return str_replace(".", ".<SUP>", $tempstr) . "</SUP>";
-            }
-
-            if(isset($_GET["table"])) {
-                if($PrimaryKey){
-                    $events = array("oncontextmenu", "onclick", "ondblclick", "onmousedown", "onmousemove", "onmouseup");
-                    foreach ($Columns as $ColumnName => $ColumnData) {
-                        if(!($HTMLMode && $ColumnName == $PrimaryKey)) {
-                            $Me = $ColumnName;
-                            $Value = '="return handleevent(' . "'" . $Me . "', ";
-                            echo "\r\n" . '<TH class="nowrap" ' . $events[0] . $Value . "0,'');" . '" title="' . $ColumnData["comment"] . '">';//handleevent(ID, eventtype, eventname
-                            if ($ColumnName == $PrimaryKey) {
-                                echo '<i class="fa fa-key"></i>';
-                            }
-                            if(!$HTMLMode){
-                                $ColumnName = getletter($Letters, $ColumnName) . $ColumnName;
-                            }
-                            if($EmbeddedMode){
-                                echo ucfirst2($ColumnName, true) . '</TH>';
-                            } else {
-                                echo $this->Paginator->sort($ColumnName) . ' <A ONCLICK="return deletecolumn(' . "'" . $ColumnName . "'" . ');"><i class="fa fa-times"></i></A></TH>';
-                            }
-                        }
-                    }
-                    echo '</TR></THEAD><TBODY>';
-                    foreach ($Data as $Row) {
-                        $ID = "Data[" . $Row->$PrimaryKey . "]";
-                        echo "\r\n" . '<TR ID="' . $ID . '">';
-                        $First = true;
-                        $NullCols=0;
-                        $ColIndex=0;
-                        $HasPassedPkey =false;
-                        foreach ($Columns as $ColumnName => $ColumnData) {
-                            $Me = $ID . '[' . $ColumnName . ']';
-                            if($HTMLMode) {
-                                if($NullCols || $ColumnName == $PrimaryKey){
-                                    if($NullCols) {$NullCols = $NullCols-1;}
-                                    if($ColumnName == $PrimaryKey){$HasPassedPkey= true;}
-                                } else {
-                                    $Value = '="return handleevent(' . "'" . $Me . "', ";
-                                    echo '<TD ID="' . $Me . '" ';
-                                    foreach($events as $index => $event){
-                                        echo $event . $Value . $index . ",'" . $event . "'" . ');" ';
-                                    }
-                                    $Value = $Row->$ColumnName;
-                                    $ColKeys = getTag($ColumnData["comment"],true);
-                                    $Keys = getTag($Value, true);
-                                    if($ColKeys){
-                                        if($Keys){$Keys = $ColKeys . "," . $Keys;} else {$Keys = $ColKeys;}
-                                    }
-
-                                    if($Keys){
-                                        $Keys = assocsplit($Keys, ",", "=");
-                                        $Value = getTag($Value, false);
-                                    }
-
-                                    $Start = "";
-                                    $Finish = "";
-
-                                    echo ' VALUE="' . $Value . '"';
-                                    if ($Value && substr($Value,0,1) == "="){
-                                        echo ' TITLE="' . $Value . '"';
-                                        $Value = substr($Value, 1, strlen($Value)-1);
-                                        $Reference = array_search($ColumnName, $Letters) . $Row->$PrimaryKey;
-                                        $Value = evaluate($Manager, $Table, $Value, $Reference, $Letters, $PrimaryKey);
-                                    }
-
-                                    if(is_array($Keys)) {
-                                        foreach ($Keys as $Key => $Data) {
-                                            $Key = strtolower(trim($Key));
-                                            $Data = trim($Data);
-
-                                            switch ($Key) {
-                                                case "readonly":
-                                                    echo "READONLY";
-                                                    break;
-                                                case "colspan":
-                                                    if (strtolower($Data) == "all"){
-                                                        $Data = count($Columns) - $ColIndex;
-                                                        if(!$HasPassedPkey){$Data = $Data-1;}
-                                                    }
-                                                    echo ' COLSPAN="' . $Data . '"';
-                                                    $NullCols = $Data - 1;
-                                                    break;
-                                                case "align":
-                                                    echo ' ALIGN="' . $Data . '"';
-                                                    break;
-                                                case "bgcolor";
-                                                    echo ' BGCOLOR="' . $Data . '"';
-                                                    break;
-                                                case "validate";
-                                                    if($Value) {
-                                                        $Value = $Manager->validate_data($Value, $Data);
-                                                        if(!$Data){$Value = '[ERROR: Not a valid ' . $Data . ']';}
-                                                    }
-                                                    break;
-                                                case "format";
-                                                    switch (strtolower($Data)){
-                                                        case "uppercase":
-                                                            $Value = strtoupper($Value);
-                                                            break;
-                                                        case "lowercase":
-                                                            $Value = strtolower($Value);
-                                                            break;
-                                                        case "percent":
-                                                            if (checknumeric($Value)) {$Value = number_format($Value * 100, 2) . '%';}
-                                                            break;
-                                                        case "number":
-                                                            if (checknumeric($Value)) {$Value = number_format($Value, 2);}
-                                                            break;
-                                                        case "currency":
-                                                            if (checknumeric($Value)) {$Value = asDollars($Value);}
-                                                            break;
-                                                    }
-                                                    break;
-
-                                                //Inside TD tags
-                                                case "bold":
-                                                    $Start .= '<B>';
-                                                    $Finish = '</B>' . $Finish;
-                                                    break;
-                                                case "italic":
-                                                    $Start .= '<I>';
-                                                    $Finish = '</I>' . $Finish;
-                                                    break;
-                                                case "underline":
-                                                    $Start .= '<U>';
-                                                    $Finish = '</U>' . $Finish;
-                                                    break;
-                                                case "fontcolor":
-                                                    $Start .= '<FONT COLOR="' . $Data . '">';
-                                                    $Finish = '</FONT>' . $Finish;
-                                                    break;
-                                                case "fontsize":
-                                                    $Start .= '<FONT SIZE="' . $Data . '">';
-                                                    $Finish = '</FONT>' . $Finish;
-                                                    break;
-                                            }
-                                        }
-                                    }
-
-                                    echo '>' . $Start . $Value . $Finish . '</TD>';
-                                }
-                            } else {
-                                $Type = "text";
-                                echo '<TD style="padding: 0;" align="center">';
-                                if ($ColumnName == $PrimaryKey) {
-                                    echo '<A ONCLICK="return deleterow(' . "'" . $ID . "'" . ');"<i class="fa fa-times"></i>' . $Row->$PrimaryKey . '</A>';
-                                } else {
-                                    echo '<INPUT NAME="' . $Me . '" ID="' . $Me . '" VALUE="' . $Row->$ColumnName . '" CLASS="textinput" onchange="mychangeevent(' . "'" . $Me . "'" . ', true);"';
-                                    echo ' PLACEHOLDER="' . $ColumnName . "." . $Row->$PrimaryKey . '" STYLE="width:100%;" ';
-                                    switch ($ColumnData["type"]) {
-                                        case "string":
-                                            break;
-                                        case "text":
-                                            break;
-                                        case "boolean":
-                                            $Type = "checkbox";
-                                            echo ' VALUE="True"';
-                                            if ($Row->$ColumnName) {
-                                                echo ' CHECKED';
-                                            }
-                                        case "integer":
-                                            echo ' role="number"';
-                                            break;
-                                        case "decimal":
-                                            echo ' role="number"';
-                                            break;
-
-                                        default:
-                                            debug($ColumnData);
-                                            die();
-                                    }
-                                    echo 'TYPE="' . $Type . '">';
-                                }
-                                echo '</TD>';
-                            }
-                            $ColIndex++;
-                        }
-                        echo '</TR>';
-                    }
-
-                    if(!$HTMLMode){
-                        echo '<TR>';
-                        foreach ($Columns as $ColumnName => $ColumnData) {
-                            echo '<TD style="padding: 0;" align="center" class="nowrap">';
-                            $ID = "Data[new]";
-                            if ($ColumnName == $PrimaryKey) {
-                                echo '<A onclick="return save(true);"><i class="fa fa-floppy-o"></i>New</A>';
-                            } else {
-                                $Me = $ID . '[' . $ColumnName . ']';
-                                $Type = "text";
-                                echo '<INPUT NAME="' . $Me . '" ID="' . $Me . '" " CLASS="textinput" onchange="mychangeevent(' . "'" . $Me . "'" . ', true);"';
-                                echo ' PLACEHOLDER="' . $ColumnName . '.new" STYLE="width:100%;" ';
-                                switch ($ColumnData["type"]) {
-                                    case "boolean":
-                                        $Type = "checkbox";
-                                        echo ' VALUE="True"';
-                                        break;
-                                    case "integer":
-                                        echo ' role="number"';
-                                        break;
-                                    case "decimal":
-                                        echo ' role="number"';
-                                        break;
-                                }
-                                echo 'TYPE="' . $Type . '">';
-                            }
-                            echo '</TD>';
-                        }
-                    }
-                    echo '</TR>';
-                } else {
-                    echo '<TH>This table has no primary key and cannot be edited</TH></TR></THEAD><TBODY>';
-                }
-            } else {
-                echo '<TH>Table</TH></TR></THEAD><TBODY>';
-                foreach($Tables as $Table){
-                    echo '<TR ID="table' . $Table . '"><TD><A onclick="return deletetable(' . "'" . $Table . "'" . ');"><i class="fa fa-times"></i></A> <A HREF="?table=' . $Table . '">' . $Table . '</A></TD></TR>';
-                }
-                echo '<TR><TD><A onclick="return newtable();"><i class="fa fa-floppy-o"></i> New Table</A>';
-            }
-        ?>
-        </TBODY>
-    </table>
-</DIV>
 <?php
+    function printtableheader($EmbeddedMode, $Top){
+        if($Top){
+            echo '<DIV width="100%" height="100%" ';
+            if(!$EmbeddedMode){ echo 'style="overflow: auto;"';}
+            echo '><table class="table table-hover  table-striped table-bordered table-hover dataTable no-footer" style="margin:0px;"><THEAD><TR>';
+        }  else {
+            echo '</TBODY></table></DIV>';
+        }
+    }
+
+    function checknumeric(&$Value){
+        if(!$Value){$Value=0;}
+        if (!$Value || is_numeric($Value)){return true;}
+        echo '[ERROR:isNaN]';
+    }
+
+    function asDollars($value = 0) {
+        $tempstr = '$' . number_format($value, 2);
+        return str_replace(".", ".<SUP>", $tempstr) . "</SUP>";
+    }
+
+    if(isset($_GET["table"])) {
+        if($PrimaryKey){
+            printtable($this, $Manager, $_GET["table"], $PrimaryKey, $Columns, $Letters, $EmbeddedMode, $HTMLMode, $Data, $Count, $Conditions);
+        } else {
+            printtableheader($EmbeddedMode, true);
+            echo '<TH>This table has no primary key and cannot be edited</TH></TR></THEAD><TBODY>';
+            printtableheader($EmbeddedMode, false);
+        }
+    } else {
+        printtableheader($EmbeddedMode, true);
+        echo '<TH>Table</TH></TR></THEAD><TBODY>';
+        foreach($Tables as $Table){
+            echo '<TR ID="table' . $Table . '"><TD><A onclick="return deletetable(' . "'" . $Table . "'" . ');"><i class="fa fa-times"></i></A> <A HREF="?table=' . $Table . '">' . $Table . '</A></TD></TR>';
+        }
+        echo '<TR><TD><A onclick="return newtable();"><i class="fa fa-floppy-o"></i> New Table</A>';
+        printtableheader($EmbeddedMode, false);
+    }
+
+    function printtable($_this, $Manager, $Table, $PrimaryKey = "", $Columns = false, $Letters = false, $EmbeddedMode = false, $HTMLMode = false, $Data = false, $Count = false, $Conditions = false){
+        printtableheader($EmbeddedMode, true);
+        if(!$PrimaryKey) {$PrimaryKey = $Manager->get_primary_key($Table);}
+        if(!$Columns) {$Columns = $Manager->getColumnNames($Table, "", false);}
+        if(!$Letters) {$Letters = get_column_letters($PrimaryKey, $Columns);}
+        if(!$Data) {
+            $Data = $Manager->enum_all($Table, $Conditions);
+            $Count = $Data->count();
+            if (!$HTMLMode) {$Data = $Manager->paginate($Data);}
+        }
+        
+        $events = array("oncontextmenu", "onclick", "ondblclick", "onmousedown", "onmousemove", "onmouseup");
+        foreach ($Columns as $ColumnName => $ColumnData) {
+            if(!($HTMLMode && $ColumnName == $PrimaryKey)) {
+                $Me = $ColumnName;
+                $Value = '="return handleevent(' . "'" . $Me . "', ";
+                echo "\r\n" . '<TH class="nowrap" ' . $events[0] . $Value . "0,'');" . '" title="' . $ColumnData["comment"] . '">';//handleevent(ID, eventtype, eventname
+                if ($ColumnName == $PrimaryKey) {
+                    echo '<i class="fa fa-key"></i>';
+                }
+                if(!$HTMLMode){
+                    $ColumnName = getletter($Letters, $ColumnName) . $ColumnName;
+                }
+                if($EmbeddedMode){
+                    echo ucfirst2($ColumnName, true) . '</TH>';
+                } else {
+                    echo $_this->Paginator->sort($ColumnName) . ' <A ONCLICK="return deletecolumn(' . "'" . $ColumnName . "'" . ');"><i class="fa fa-times"></i></A></TH>';
+                }
+            }
+        }
+        echo '</TR></THEAD><TBODY>';
+        foreach ($Data as $Row) {
+            $ID = "Data[" . $Row->$PrimaryKey . "]";
+            echo "\r\n" . '<TR ID="' . $ID . '">';
+            $First = true;
+            $NullCols=0;
+            $ColIndex=0;
+            $HasPassedPkey =false;
+            foreach ($Columns as $ColumnName => $ColumnData) {
+                $Me = $ID . '[' . $ColumnName . ']';
+                if($HTMLMode) {
+                    if($NullCols || $ColumnName == $PrimaryKey){
+                        if($NullCols) {$NullCols = $NullCols-1;}
+                        if($ColumnName == $PrimaryKey){$HasPassedPkey= true;}
+                    } else {
+                        $Value = '="return handleevent(' . "'" . $Me . "', ";
+                        echo '<TD ID="' . $Me . '" ';
+                        foreach($events as $index => $event){
+                            echo $event . $Value . $index . ",'" . $event . "'" . ');" ';
+                        }
+                        $Value = $Row->$ColumnName;
+                        $ColKeys = getTag($ColumnData["comment"],true);
+                        $Keys = getTag($Value, true);
+                        if($ColKeys){
+                            if($Keys){$Keys = $ColKeys . "," . $Keys;} else {$Keys = $ColKeys;}
+                        }
+
+                        if($Keys){
+                            $Keys = assocsplit($Keys, ",", "=");
+                            $Value = getTag($Value, false);
+                        }
+
+                        $Start = "";
+                        $Finish = "";
+
+                        echo ' VALUE="' . $Value . '"';
+                        if ($Value && substr($Value,0,1) == "="){
+                            echo ' TITLE="' . $Value . '"';
+                            $Value = substr($Value, 1, strlen($Value)-1);
+                            $Reference = array_search($ColumnName, $Letters) . $Row->$PrimaryKey;
+                            $Value = evaluate($Manager, $Table, $Value, $Reference, $Letters, $PrimaryKey);
+                        }
+
+                        if(is_array($Keys)) {
+                            foreach ($Keys as $Key => $Data) {
+                                $Key = strtolower(trim($Key));
+                                $Data = trim($Data);
+
+                                switch ($Key) {
+                                    case "readonly":
+                                        echo "READONLY";
+                                        break;
+                                    case "colspan":
+                                        if (strtolower($Data) == "all"){
+                                            $Data = count($Columns) - $ColIndex;
+                                            if(!$HasPassedPkey){$Data = $Data-1;}
+                                        }
+                                        echo ' COLSPAN="' . $Data . '"';
+                                        $NullCols = $Data - 1;
+                                        break;
+                                    case "align":
+                                        echo ' ALIGN="' . $Data . '"';
+                                        break;
+                                    case "bgcolor";
+                                        echo ' BGCOLOR="' . $Data . '"';
+                                        break;
+                                    case "validate";
+                                        if($Value) {
+                                            $Value = $Manager->validate_data($Value, $Data);
+                                            if(!$Data){$Value = '[ERROR: Not a valid ' . $Data . ']';}
+                                        }
+                                        break;
+                                    case "format";
+                                        switch (strtolower($Data)){
+                                            case "uppercase":
+                                                $Value = strtoupper($Value);
+                                                break;
+                                            case "lowercase":
+                                                $Value = strtolower($Value);
+                                                break;
+                                            case "percent":
+                                                if (checknumeric($Value)) {$Value = number_format($Value * 100, 2) . '%';}
+                                                break;
+                                            case "number":
+                                                if (checknumeric($Value)) {$Value = number_format($Value, 2);}
+                                                break;
+                                            case "currency":
+                                                if (checknumeric($Value)) {$Value = asDollars($Value);}
+                                                break;
+                                        }
+                                        break;
+
+                                    //Inside TD tags
+                                    case "bold":
+                                        $Start .= '<B>';
+                                        $Finish = '</B>' . $Finish;
+                                        break;
+                                    case "italic":
+                                        $Start .= '<I>';
+                                        $Finish = '</I>' . $Finish;
+                                        break;
+                                    case "underline":
+                                        $Start .= '<U>';
+                                        $Finish = '</U>' . $Finish;
+                                        break;
+                                    case "fontcolor":
+                                        $Start .= '<FONT COLOR="' . $Data . '">';
+                                        $Finish = '</FONT>' . $Finish;
+                                        break;
+                                    case "fontsize":
+                                        $Start .= '<FONT SIZE="' . $Data . '">';
+                                        $Finish = '</FONT>' . $Finish;
+                                        break;
+                                }
+                            }
+                        }
+
+                        echo '>' . $Start . $Value . $Finish . '</TD>';
+                    }
+                } else {
+                    $Type = "text";
+                    echo '<TD style="padding: 0;" align="center">';
+                    if ($ColumnName == $PrimaryKey) {
+                        echo '<A ONCLICK="return deleterow(' . "'" . $ID . "'" . ');"<i class="fa fa-times"></i>' . $Row->$PrimaryKey . '</A>';
+                    } else {
+                        echo '<INPUT NAME="' . $Me . '" ID="' . $Me . '" VALUE="' . $Row->$ColumnName . '" CLASS="textinput" onchange="mychangeevent(' . "'" . $Me . "'" . ', true);"';
+                        echo ' PLACEHOLDER="' . $ColumnName . "." . $Row->$PrimaryKey . '" STYLE="width:100%;" ';
+                        switch ($ColumnData["type"]) {
+                            case "string":
+                                break;
+                            case "text":
+                                break;
+                            case "boolean":
+                                $Type = "checkbox";
+                                echo ' VALUE="True"';
+                                if ($Row->$ColumnName) {
+                                    echo ' CHECKED';
+                                }
+                            case "integer":
+                                echo ' role="number"';
+                                break;
+                            case "decimal":
+                                echo ' role="number"';
+                                break;
+
+                            default:
+                                debug($ColumnData);
+                                die();
+                        }
+                        echo 'TYPE="' . $Type . '">';
+                    }
+                    echo '</TD>';
+                }
+                $ColIndex++;
+            }
+            echo '</TR>';
+        }
+
+        if(!$HTMLMode){
+            echo '<TR>';
+            foreach ($Columns as $ColumnName => $ColumnData) {
+                echo '<TD style="padding: 0;" align="center" class="nowrap">';
+                $ID = "Data[new]";
+                if ($ColumnName == $PrimaryKey) {
+                    echo '<A onclick="return save(true);"><i class="fa fa-floppy-o"></i>New</A>';
+                } else {
+                    $Me = $ID . '[' . $ColumnName . ']';
+                    $Type = "text";
+                    echo '<INPUT NAME="' . $Me . '" ID="' . $Me . '" " CLASS="textinput" onchange="mychangeevent(' . "'" . $Me . "'" . ', true);"';
+                    echo ' PLACEHOLDER="' . $ColumnName . '.new" STYLE="width:100%;" ';
+                    switch ($ColumnData["type"]) {
+                        case "boolean":
+                            $Type = "checkbox";
+                            echo ' VALUE="True"';
+                            break;
+                        case "integer":
+                            echo ' role="number"';
+                            break;
+                        case "decimal":
+                            echo ' role="number"';
+                            break;
+                    }
+                    echo 'TYPE="' . $Type . '">';
+                }
+                echo '</TD>';
+            }
+        }
+        echo '</TR>';
+        printtableheader($EmbeddedMode, false);
+    }
+
     function evaluate($Manager, $Table, $Equation, $Me, $Letters, $PrimaryKey, $p="") {
         if(!$p) {$p = new ParensParser();}
         if (substr($Equation,0,1) == "=") {$Equation = substr($Equation, 1, strlen($Equation) - 1);}
