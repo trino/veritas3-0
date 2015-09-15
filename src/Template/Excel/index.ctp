@@ -1203,7 +1203,7 @@
     if(!$EmbeddedMode) {
         if (isset($_GET["table"])) {
             if ($PrimaryKey) {
-                printtable($this, $Manager, $_GET["table"], $PrimaryKey, $Columns, $Letters, $EmbeddedMode, $HTMLMode, $Data, $Count, $Conditions);
+                printtable($this, $Manager, $_GET["table"], $PrimaryKey, $Columns, $Letters, $EmbeddedMode, $HTMLMode, $Data, $Count, $Conditions, true);
             } else {
                 printtableheader($EmbeddedMode, true, $_GET["table"]);
                 echo '<TH>This table has no primary key and cannot be edited</TH></TR></THEAD><TBODY>';
