@@ -1026,7 +1026,7 @@ class ManagerComponent extends Component {
 
     function insert_rows($Table, $Quantity, $AtID, $PrimaryKey=""){
         if(!$PrimaryKey){$PrimaryKey = $this->get_primary_key($Table);}
-        if($AtID > $this->get_last_entry($Table, $PrimaryKey)){
+        if($AtID == 0 || $AtID > $this->get_last_entry($Table, $PrimaryKey)){
             $this->insert_empty_rows($Table, $Quantity);
         } else {
             $Data = $this->enum_all($Table);
@@ -1114,8 +1114,10 @@ class ManagerComponent extends Component {
         $this->query($Query);
 
         $Entries = $this->enum_all($Table, $PrimaryKey . ">" . $StartsAt);
-        $Entries = $this->iterator_to_array($Entries,$PrimaryKey, false, true);
-        return array_keys($Entries);
+        $Data = array();
+        foreach($Entries as $Entry){
+            $Data[] = $Entry->$PrimaryKey;
+        }
     }
 
     function new_table($Table){

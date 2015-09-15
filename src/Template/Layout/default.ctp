@@ -1,8 +1,7 @@
 <!DOCTYPE html>
-<?php $settings = $this->requestAction('settings/get_settings');
-
+<?php
+    $settings = $this->requestAction('settings/get_settings');
     use Cake\ORM\TableRegistry;
-
     $debug = $this->request->session()->read('debug');
     include_once('subpages/api.php');
     $language = $this->request->session()->read('Profile.language');
@@ -237,8 +236,7 @@
                 content: none !important;
             }
         <?php
-        for($i=1;$i<13;$i++)
-        {
+        for($i=1;$i<13;$i++) {
             ?>
             .col-md-<?php echo $i;?> {
                 width: <?php echo ($i/12)*100;?>% !important;
@@ -254,7 +252,7 @@
     </style>
 
 </head>
-<body class="<?php echo $settings->body; ?>">
+<body class="<?= $settings->body; ?>">
 <!-- BEGIN HEADER -->
 <div class="page-header navbar navbar-fixed-top">
     <!-- BEGIN HEADER INNER -->
@@ -395,8 +393,7 @@
                 if (!function_exists('get_title')) {
                     $content = TableRegistry::get("contents")->find('all');
 
-                    function get_title($content, $slug, $language = "English")
-                    {
+                    function get_title($content, $slug, $language = "English") {
                         $l = FindIterator($content, "slug", $slug);
 
                         $title = "title";

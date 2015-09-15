@@ -40,7 +40,11 @@
     if(isset($_GET["embedded"])){$EmbeddedMode=true;}
     if(!isset($Table)){$Table="";}
     if(isset($EmbeddedMode)){
-        if(!isset($_GET["table"])){$_GET["table"]=$Table;}
+        if(!isset($_GET["table"])){
+            $_GET["table"] = $Table;
+        }
+        if(!$Table){$Table = $_GET["table"];}
+        if($Table) {printtable($this, $Manager, $Table, "", false, false, true, true, false, false, false, true);}
     } else {
         $EmbeddedMode=false;
     }
@@ -244,7 +248,22 @@
         return false;
     }
 
-    function writevisible(){
+
+    function ismultireference($Manager, $Value, $Ret=0, $Me = ""){
+        $SemiColon = strpos($Value, ":");
+        $Reference1 = strtoupper(substr($Value, 0, $SemiColon));
+        $Reference2 = strtoupper(substr($Value, $SemiColon + 1, strlen($Value) - $SemiColon - 1));
+        if($Ret == 1 && $Reference1 == "ME"){return $Me;}
+        if($Ret == 2 && $Reference2 == "ME"){return $Me;}
+        if($Ret == 1){return $Reference1;}
+        if($Ret == 2){return $Reference2;}
+        return(isareference($Manager, $Reference1, true) && isareference($Manager, $Reference2, true));
+        return false;
+    }
+
+    function commonjavascriptfunctions(){
+        if (isset($GLOBALS["commonjavascriptfunctions"])){return false;}
+        $GLOBALS["commonjavascriptfunctions"] = true;
         ?>
             function visible(ID, Status){
                 var element = document.getElementById(ID);
@@ -258,19 +277,64 @@
             function setvalue(ID, Value){
                 document.getElementById(ID).value = Value;
             }
-        <?php
-    }
 
-    function ismultireference($Manager, $Value, $Ret=0, $Me = ""){
-        $SemiColon = strpos($Value, ":");
-        $Reference1 = strtoupper(substr($Value, 0, $SemiColon));
-        $Reference2 = strtoupper(substr($Value, $SemiColon + 1, strlen($Value) - $SemiColon - 1));
-        if($Ret == 1 && $Reference1 == "ME"){return $Me;}
-        if($Ret == 2 && $Reference2 == "ME"){return $Me;}
-        if($Ret == 1){return $Reference1;}
-        if($Ret == 2){return $Reference2;}
-        return(isareference($Manager, $Reference1, true) && isareference($Manager, $Reference2, true));
-        return false;
+            function clearselect(ID){
+                var element = document.getElementById(ID);
+                var i;
+                for(i=element.options.length-1;i>=0;i--) {
+                element.remove(i);
+                }
+            }
+
+            function setinnerhtml(ID, Value){
+                var element = document.getElementById(ID);
+                element.innerHTML = Value;
+            }
+
+        	function removearray(array, index){
+                var newarray = new Array();
+                for (var key in array) {
+                    var value = array[key];
+                    if (key != index){
+                        newarray[key] = value;
+                    }
+                }
+                return newarray;
+            }
+
+ 	        function addoptions(ID, Values){
+                 visible(ID, true);
+                 for(i=0;i<Values.length;i++) {
+                     addoption(ID, Values[i]);
+                }
+            }
+
+            function addoption(ID, Value, Text){
+                var element = document.getElementById(ID);
+                var option = document.createElement("option");
+                if(Text) {option.text = Text;} else {option.text = Value;}
+                option.value = Value;
+                element.add(option);
+            }
+
+            function selectlastitem(ID){
+                var element = document.getElementById(ID);
+                if(element.options.length >0){
+                    element.selectedIndex = element.options.length-1;
+                    return true;
+                }
+            }
+
+            function selectitem(ID, value){
+                var element = document.getElementById(ID);
+                for(var i=0; i < element.options.length; i++){
+                    if(element.options[i].value === value) {
+                        element.selectedIndex = i;
+                        break;
+                    }
+                }
+            }
+            <?php
     }
 
     function editform($Manager, $Table, $Column, $ID=0){//doesn't support embedding yet...
@@ -294,7 +358,7 @@
         }
         echo '<P><LABEL>Tags:</LABEL><INPUT TYPE="text" ID="tag" NAME="tag" VALUE="' . $Tag . '" readonly style="width: 100%;" placeholder="Tags"></P>';
         echo '<SCRIPT>';
-        writevisible();
+        commonjavascriptfunctions();
         ?>
             var Values = new Array();
             var SelectedKey = "";
@@ -342,16 +406,6 @@
                 visible("removetag", false);
             }
 
-            function removearray(array, index){
-                var newarray = new Array();
-                for (var key in array) {
-                    var value = array[key];
-                    if (key != index){
-                        newarray[key] = value;
-                    }
-                }
-                return newarray;
-            }
 
             function generatevalues(){
                 var tempstr = new Array();
@@ -369,26 +423,7 @@
                 setvalue("tag", tempstr);
             }
 
-            function addoptions(ID, Values){
-                visible("values", true);
-                 for(i=0;i<Values.length;i++) {
-                     addoption(ID, Values[i]);
-                }
-            }
-            function addoption(ID, Value, Text){
-                var element = document.getElementById(ID);
-                var option = document.createElement("option");
-                if(Text) {option.text = Text;} else {option.text = Value;}
-                option.value = Value;
-                element.add(option);
-            }
-            function clearselect(ID){
-                var element = document.getElementById(ID);
-                var i;
-                for(i=element.options.length-1;i>=0;i--) {
-                    element.remove(i);
-                }
-            }
+
             function removeoption(ID, Index){
                 var element = document.getElementById(ID);
                 addoption("options", SelectedKey);
@@ -409,22 +444,7 @@
                 generatevalues();
             }
 
-            function selectlastitem(ID){
-                var element = document.getElementById(ID);
-                if(element.options.length >0){
-                    element.selectedIndex = element.options.length-1;
-                    return true;
-                }
-            }
-            function selectitem(ID, value){
-                var element = document.getElementById(ID);
-                for(var i=0; i < element.options.length; i++){
-                    if(element.options[i].value === value) {
-                        element.selectedIndex = i;
-                        break;
-                    }
-                }
-            }
+
             function updatecolor(color){
                 color = "#" + color;
                 Values[SelectedKey] = color;
@@ -562,6 +582,7 @@
                 echo $_POST["name"] . " deleted from " . $_POST["table"];
                 break;
             case "insertrows":
+                if($_POST["where"] == 0){$_POST["where"] = $Manager->get_last_entry($_POST["table"])+1;}
                 echo $Manager->insert_rows($_POST["table"], $_POST["number"], $_POST["where"]);
                 break;
             case "copyreference":
@@ -718,6 +739,49 @@
                     <?php } ?>
                 </div>
             </div>
+
+            <div id="dialog-form" bgcolor="white">
+                <form>
+                    <label for="prompt" id="prompt_title">Name</label>
+                    <SELECT name="prompt" id="prompt_select" class="text ui-widget-content ui-corner-all" />
+                    <OPTION>TEST</OPTION>
+                    </SELECT>
+                </form>
+            </div>
+            <SCRIPT>
+                <?php commonjavascriptfunctions(); ?>
+
+                var CurrentRow, CurrentCol;
+                $(function() {
+                    $("#dialog-form").dialog({
+                        autoOpen: false,
+                        modal: true,
+                        buttons: {
+                            "Ok": function() {
+                                var value = $("#prompt_select").val();
+
+                                var element = document.getElementById(downID);
+                                element.setAttribute("value", value);
+                                mychangeevent(downID, true);
+                                save(false);
+
+                                $(this).dialog("close");
+                            },
+                            "Cancel": function() {
+                                $(this).dialog("close");
+                            }
+                        }
+                    });
+                });
+
+                function listprompt(Title, Choices){
+                    $("#dialog-form").dialog("open");
+                    setinnerhtml("prompt_title", Title);
+                    clearselect("prompt_select");
+                    addoptions("prompt_select", Choices);
+                }
+            </SCRIPT>
+
         <?php }
         if(!$HTMLMode){?>
             <SCRIPT>
@@ -817,7 +881,7 @@
                         <INPUT TYPE="number" value="1" min="1" max="1000"  id="insert_num">
                         <LABEL>Before:</LABEL>
                         <INPUT TYPE="number" value="1" min="1" max="<?= $Manager->get_last_entry($Table,$PrimaryKey)+1; ?>"  id="insert_where">
-                        <INPUT TYPE="button" value="Insert Rows" onclick="insertrows();">
+                        <INPUT TYPE="button" value="Insert Rows" onclick="insertrows(-1, -1);">
                     </TD>
                 </TR>
                 <TR ID="action_copy" style="display: none" width="100%">
@@ -840,7 +904,7 @@
     }
 </STYLE>
 <SCRIPT>
-    <?php writevisible(); ?>
+    <?php commonjavascriptfunctions(); ?>
     var MyURL = '<?= $Manager->webroot(); ?>excel';
     var Embedded = '<?= $EmbeddedMode; ?>';
     var CurrentTable = '';
@@ -915,7 +979,7 @@
 
     function getchildtag(element, tagname){
         var Header = element.getElementsByTagName(tagname);
-        if(Header){
+        if(Header.length > 0){
             return '<' + tagname + '>' + Header[0].innerHTML.trim() + '</' + tagname + '>';
         }
         return "";
@@ -931,7 +995,7 @@
                 url: MyURL,
                 type: "get",
                 dataType: "HTML",
-                data: "table=<?= $Table; ?>&embedded" + URL,
+                data: "table=" + CurrentTable + "&embedded" + URL,
                 success: function (msg) {
                     element.innerHTML = Header + msg + Footer;
                 }
@@ -1001,12 +1065,14 @@
         return false;
     }
 
-    function insertrows(){
+    function insertrows(Quantity, Where){
+         if(Quantity < 1){Quantity = getinputvalue("insert_num");}
+         if(Where == -1){Where = getinputvalue("insert_where");}
          $.ajax({
             url: MyURL,
             type: "post",
             dataType: "HTML",
-            data: "action=insertrows&table=" + CurrentTable + "&number=" + getinputvalue("insert_num") + "&where=" + getinputvalue("insert_where"),
+            data: "action=insertrows&table=" + CurrentTable + "&number=" + Quantity + "&where=" + Where,
             success: function (msg) {
                 if(msg){alert(msg);}
                 reload("");
@@ -1051,12 +1117,24 @@
         }
     }
 
+    function loadtable(Table){
+        if(Embedded){Embedded = "excel_" + Table;}
+        CurrentTable = Table;
+    }
+
     var downID = "";
     function handleevent(ID, eventtype, tablename){
         var element = document.getElementById(ID);
         var value = getinputvalue(ID);
-        if(Embedded){Embedded = "excel_" + tablename;}
-        CurrentTable = tablename;
+
+        var name = ID.substr(5, ID.length-6).replace("][", ",").split(",");
+        CurrentRow = name[0];
+        CurrentCol="";
+        if (name.length>1) {
+            CurrentCol = name[1];
+        }
+
+        loadtable(tablename);
         switch(eventtype){
             case 0://oncontextmenu
                 if(!Embedded){
@@ -1065,12 +1143,15 @@
                 }
                 break;
             case 1://onclick
-
+                if(element.hasAttribute("choices")) {
+                    downID=ID;
+                    listprompt("What would you like the new value of row " + CurrentRow + " column " + CurrentCol + " in " + CurrentTable + " to be?", element.getAttribute("choices").split("|"));
+                }
                 break;
             case 2://ondblclick
                 if(!element.hasAttribute("READONLY")) {
                     var name = "row " + ID.substr(5, ID.length-6).replace("][", " column ");
-                    var newvalue = prompt("What would you like the new value of " + name + " in " + CurrentTable + " to be?", value);
+                    var newvalue = prompt("What would you like the new value of row " + CurrentRow + " column " + CurrentCol + " in " + CurrentTable + " to be?", value);
                     if (newvalue && value != newvalue) {
                         element.setAttribute("value", newvalue);
                         mychangeevent(ID, true);
@@ -1097,8 +1178,9 @@
 </SCRIPT>
 
 <?php
-    function printtableheader($EmbeddedMode, $Top){
+    function printtableheader($EmbeddedMode, $Top, $Table = false){
         if($Top){
+            echo '<SCRIPT>loadtable("' . $Table . '");</SCRIPT>';
             echo '<DIV width="100%" height="100%" ';
             if(!$EmbeddedMode){ echo 'style="overflow: auto;"';}
             echo '><table class="table table-hover  table-striped table-bordered table-hover dataTable no-footer" style="margin:0px;"><THEAD><TR>';
@@ -1123,12 +1205,12 @@
             if ($PrimaryKey) {
                 printtable($this, $Manager, $_GET["table"], $PrimaryKey, $Columns, $Letters, $EmbeddedMode, $HTMLMode, $Data, $Count, $Conditions);
             } else {
-                printtableheader($EmbeddedMode, true);
+                printtableheader($EmbeddedMode, true, $_GET["table"]);
                 echo '<TH>This table has no primary key and cannot be edited</TH></TR></THEAD><TBODY>';
                 printtableheader($EmbeddedMode, false);
             }
         } else {
-            printtableheader($EmbeddedMode, true);
+            printtableheader($EmbeddedMode, true, $Table);
             echo '<TH>Table</TH></TR></THEAD><TBODY>';
             foreach ($Tables as $Table) {
                 echo '<TR ID="table' . $Table . '"><TD><A onclick="return deletetable(' . "'" . $Table . "'" . ');"><i class="fa fa-times"></i></A> <A HREF="?table=' . $Table . '">' . $Table . '</A></TD></TR>';
@@ -1138,8 +1220,8 @@
         }
     }
 
-    function printtable($_this, $Manager, $Table, $PrimaryKey = "", $Columns = false, $Letters = false, $EmbeddedMode = false, $HTMLMode = false, $Data = false, $Count = false, $Conditions = false){
-        printtableheader($EmbeddedMode, true);
+    function printtable($_this, $Manager, $Table, $PrimaryKey = "", $Columns = false, $Letters = false, $EmbeddedMode = false, $HTMLMode = false, $Data = false, $Count = false, $Conditions = false, $AllowNew = false){
+        printtableheader($EmbeddedMode, true, $Table);
         if(!$PrimaryKey) {$PrimaryKey = $Manager->get_primary_key($Table);}
         if(!$Columns) {$Columns = $Manager->getColumnNames($Table, "", false);}
         if(!$Letters) {$Letters = get_column_letters($PrimaryKey, $Columns);}
@@ -1217,6 +1299,9 @@
                                 $Data = trim($Data);
 
                                 switch ($Key) {
+                                    case "choices":
+                                        echo 'choices="' . $Data . '"';
+                                        break;
                                     case "readonly":
                                         echo "READONLY";
                                         break;
@@ -1330,7 +1415,11 @@
             echo '</TR>';
         }
 
-        if(!$HTMLMode){
+        if($HTMLMode) {
+            if ($AllowNew){
+                echo '<TR><TD COLSPAN="' . count($Columns) . '"><A ONCLICK="return insertrows(1,0);">Make new row</A></TD></TR>';
+            }
+        } else {
             echo '<TR>';
             foreach ($Columns as $ColumnName => $ColumnData) {
                 echo '<TD style="padding: 0;" align="center" class="nowrap">';
