@@ -29,42 +29,42 @@
         <div class="form-group row">
             <label class="control-label required col-md-3"><?= $strings["forms_address"]; ?>:</label>
             <div class="col-md-3">
-                <input type="text" class="form-control required" required name="address[]"/>
+                <input type="text" class="form-control" name="address[]"/>
             </div>
 
             <label class="control-label required col-md-3"><?= $strings["forms_city"]; ?>:</label>
             <div class="col-md-3">
-                <input type="text" class="form-control required" required name="city[]"/>
+                <input type="text" class="form-control" name="city[]"/>
             </div>
         </div>
 
         <div class="form-group row">
             <label class="control-label required col-md-3"><?= $strings["forms_provincestate"]; ?>:</label>
             <div class="col-md-3">
-                <input type="text" class="form-control required" required name="state_province[]"/>
+                <input type="text" class="form-control" name="state_province[]"/>
             </div>
 
             <label class="control-label required col-md-3"><?= $strings["forms_country"]; ?>:</label>
             <div class="col-md-3">
-                <input type="text" class="form-control required" required name="country[]"/>
+                <input type="text" class="form-control" name="country[]"/>
             </div>
         </div>
         <div class="form-group row">
             <label class="control-label required col-md-3"><?= $strings2["verifs_supername"]; ?>:</label>
             <div class="col-md-3">
-                <input type="text" class="form-control required" required name="supervisor_name[]"/>
+                <input type="text" class="form-control" name="supervisor_name[]"/>
             </div>
 
             <label class="control-label col-md-3 required"><?= $strings["forms_phone"]; ?>:</label>
             <div class="col-md-3">
-                <input type="text" class="form-control required" required name="supervisor_phone[]"/>
+                <input type="text" class="form-control" name="supervisor_phone[]"/>
             </div>
         </div>
 
         <div class="form-group row">
             <label class="control-label col-md-3 required"><?= $strings2["verifs_superemail"]; ?>:</label>
             <div class="col-md-3">
-                <input type="text" class="form-control email1 required" required name="supervisor_email[]"/>
+                <input type="text" class="form-control email1" name="supervisor_email[]"/>
             </div>
 
             <label class="control-label col-md-3"><?= $strings2["verifs_secondarye"]; ?>:</label>

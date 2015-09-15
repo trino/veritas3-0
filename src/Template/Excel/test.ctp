@@ -17,14 +17,13 @@
 </DIV>
 
 
-    <!-- bootstrap -->
-    <link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css" rel="stylesheet">
-    <script src="http://code.jquery.com/jquery-2.0.3.min.js"></script>
-    <script src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/js/bootstrap.min.js"></script>
+<link href="https://vitalets.github.io/x-editable/assets/jquery-ui-1.10.1.custom/css/redmond/jquery-ui-1.10.1.custom.css" rel="stylesheet">
+<script src="https://vitalets.github.io/x-editable/assets/jquery-ui-1.10.1.custom/js/jquery-ui-1.10.1.custom.min.js"></script>
 
-    <!-- x-editable (bootstrap version) -->
-    <link href="//cdnjs.cloudflare.com/ajax/libs/x-editable/1.4.6/bootstrap-editable/css/bootstrap-editable.css" rel="stylesheet"/>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/x-editable/1.4.6/bootstrap-editable/js/bootstrap-editable.min.js"></script>
+<!-- x-editable (jquery) -->
+<link href="https://vitalets.github.io/x-editable/assets/x-editable/jqueryui-editable/css/jqueryui-editable.css" rel="stylesheet">
+<script src="https://vitalets.github.io/x-editable/assets/x-editable/jqueryui-editable/js/jqueryui-editable.js"></script>
+
 
     <!-- main.js -->
     <script>

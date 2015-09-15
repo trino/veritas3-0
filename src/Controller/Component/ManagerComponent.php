@@ -836,6 +836,10 @@ class ManagerComponent extends Component {
     function AppName(){
         return  $_SERVER["SERVER_NAME"];
     }
+    function ScriptName(){
+        return "Veritas 3-0";
+    }
+
 
     function isJson($string) {
         if($string && !is_array($string)){
