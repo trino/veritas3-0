@@ -413,10 +413,15 @@ if ($duplicate_log == "Duplicate Order")
 } 
 elseif (return_link($pp, $order->id) == false) 
 {
+	if( $no ==" 4408-32"){
+		?>
+<span class="label label-warning">No results found </span>
+<? 
+	}else{
 ?>
 <span class="label label-info"><?= $strings2["documents_pending"]; ?> </span>
 <? 
-} 
+} }
 else{
 
 ?>
