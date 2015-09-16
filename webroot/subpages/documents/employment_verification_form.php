@@ -189,7 +189,7 @@ $strings2 = CacheTranslations($language, array("verifs_%", "tasks_date", "file_a
                                                 } else {
                                                     echo '&#9744;';
                                                 } 
-                                            } else {
+                                            } else {?>
                                                 <input type="checkbox" <?php if($emp->equipment_reefer == 1){?>checked="checked"<?php }?> name="equipment_reefer[]" value="1"/> 
                                                 <?php
                                             }
