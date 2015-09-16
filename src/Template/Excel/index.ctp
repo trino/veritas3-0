@@ -31,13 +31,14 @@
 
     $Controller = strtolower($this->request->params['controller']);
     $GLOBALS["Controller"] = $Controller;
-    if(isset($_GET["embedded"])){$EmbeddedMode=true;}
+    if(isset($_GET["embedded"])){$EmbeddedMode=true;$HTMLMode=true;}
     if(!isset($Table)){$Table="";}
     if(isset($EmbeddedMode)){
         if(!isset($_GET["table"])){
             $_GET["table"] = $Table;
         }
         if(!$Table){$Table = $_GET["table"];}
+        $HTMLMode=true;
         if($Table) {printtable($this, $Manager, $Table, "", false, false, true, true, false, false, false, true);}
     } else {
         $EmbeddedMode=false;
@@ -1028,7 +1029,7 @@
             url: MyURL,
             type: "post",
             dataType: "HTML",
-            data: "action=save&key=&htmlmode=<?= $HTMLMode; ?>&table=" + CurrentTable + "&" + Text,
+            data: "action=save&key=&htmlmode=<?= $HTMLMode || $EmbeddedMode; ?>&table=" + CurrentTable + "&" + Text,
             success: function (msg) {
                 if(DoAlert){alert(msg);}
                 reload("");
