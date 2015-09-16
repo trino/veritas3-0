@@ -1,5 +1,5 @@
 <?php
-    $Inline=$Manager->ScriptName() == "Veritas 3-0";
+    $Inline= false;//$Manager->ScriptName() == "Veritas 3-0";
     $GLOBALS["inline"] = $Inline;
     if($Inline) {
         //won't work in intact
@@ -10,12 +10,6 @@
             <script src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/js/bootstrap.min.js"></script>
             <link href="//cdnjs.cloudflare.com/ajax/libs/x-editable/1.4.6/bootstrap-editable/css/bootstrap-editable.css" rel="stylesheet"/>
             <script src="//cdnjs.cloudflare.com/ajax/libs/x-editable/1.4.6/bootstrap-editable/js/bootstrap-editable.min.js"></script>
-
-            <!--link href="https://vitalets.github.io/x-editable/assets/jquery-ui-1.10.1.custom/css/redmond/jquery-ui-1.10.1.custom.css" rel="stylesheet">
-            <script src="https://vitalets.github.io/x-editable/assets/jquery-ui-1.10.1.custom/js/jquery-ui-1.10.1.custom.min.js"></script>
-            <link href="https://vitalets.github.io/x-editable/assets/x-editable/jqueryui-editable/css/jqueryui-editable.css" rel="stylesheet">
-            <script-- src="https://vitalets.github.io/x-editable/assets/x-editable/jqueryui-editable/js/jqueryui-editable.js"></script-->
-
             <script>
                 $(document).ready(function () {
                     $.fn.editable.defaults.mode = 'popup';
@@ -274,6 +268,10 @@
                 }
             }
 
+            function deleteattribute(ID, Class){
+                document.getElementById(ID).removeAttribute(Class);
+            }
+
             function setvalue(ID, Value){
                 document.getElementById(ID).value = Value;
             }
@@ -334,6 +332,81 @@
                     }
                 }
             }
+
+            var CurrentRow, CurrentCol, Mode;
+            var opt = {
+            autoOpen: false,
+            modal: true,
+                buttons: {
+                    "Ok": function() {
+                        var value = getinputvalue(Mode);
+                        var element = document.getElementById(downID);
+                        var msg = "";
+                        if(element.hasAttribute("role")){
+                            var Role = element.getAttribute("role");
+                            var RET = validate_data(value, Role);
+                            if(RET){
+                                if (Role == "number"){
+                                    if(element.hasAttribute("min")){
+                                        if(value < element.getAttribute("min")){msg = value + " needs to be a minimum of " + element.getAttribute("min");}
+                                    }
+                                    if(element.hasAttribute("max")){
+                                        if(value > element.getAttribute("max")){msg = value + " needs to be a maximum of " + element.getAttribute("max");}
+                                    }
+                                }
+                            } else {
+                                msg = value + " is not a valid " + Role;
+                            }
+                            if(msg){
+                                alert(msg);
+                                return false;
+                            }
+                        }
+                        $(this).dialog("close");
+                        element.setAttribute("value", value);
+                        mychangeevent(downID, true);
+                        save(false);
+                    },
+                    "Cancel": function() {
+                        $(this).dialog("close");
+                    }
+                }
+            };
+
+            $(function() {
+                $("#dialog-form").dialog(opt);
+            });
+
+            function showprompt(Title){
+                $("#dialog-form").dialog(opt);
+                visible("prompt_select", false);
+                visible("prompt_text", false);
+                visible("dialog-form", true);
+                deleteattribute("prompt_text", "role");
+                setinnerhtml("prompt_title", Title);
+                clearselect("prompt_select");
+                $("#dialog-form").dialog("open");
+            }
+
+            function listprompt(Title, Choices){
+                showprompt(Title);
+                Mode="prompt_select";
+                addoptions("prompt_select", Choices);
+            }
+
+            function setattribute(ID, Class, Value){
+                var element = document.getElementById(ID);
+                element.setAttribute(Class, Value);
+            }
+
+            function textprompt(Title, Default){
+                showprompt(Title);
+                Mode="prompt_text";
+                setattribute(Mode, "type", "text");
+                visible(Mode, true);
+                setvalue(Mode, Default);
+                return Mode;
+            }
             <?php
     }
 
@@ -369,10 +442,14 @@
                 clearselect("values");
                 visible("values", false);
                 visible("color", false);
+                visible("textvalue", false);
                 visible("removetag", true);
                 switch(SelectedKey){
                     case "format":
                         addoptions("values", ["percent", "uppercase", "lowercase", "number", "currency"]);
+                        break;
+                    case "validate":
+                        addoptions("values", ["number", "alphabetic", "alphanumeric", "number", "email", "postalzip", "zipcode", "postalcode", "phone", "sin"]);
                         break;
                     case "bgcolor": case "fontcolor":
                         visible("color", true);
@@ -387,11 +464,14 @@
                     case "colspan":
                         addoptions("values", [2,3,4,5,6,7,8,9,10,"All"]);
                         break;
+                    case "min": case "max":
+                        visible("textvalue", true);
+                        break;
                 }
             }
 
-            function valueclick(){
-                var SelectedValue = getinputvalue("values");
+            function valueclick(Input){
+                var SelectedValue = getinputvalue(Input);
                 Values[SelectedKey] = SelectedValue;
                 generatevalues();
             }
@@ -423,7 +503,6 @@
                 setvalue("tag", tempstr);
             }
 
-
             function removeoption(ID, Index){
                 var element = document.getElementById(ID);
                 addoption("options", SelectedKey);
@@ -433,6 +512,7 @@
                     tagclick();
                 }
             }
+
             function optionclick(){
                 var element = document.getElementById("options");
                 var Value = getinputvalue("options");
@@ -473,10 +553,10 @@
 
         //input types
         echo '<P><script type="text/javascript" src="assets/global/plugins/jscolor/jscolor.js"></script><input class="color {onImmediateChange:' . "'updatecolor(this);'" . '}" ID="color" style="display: none"></P>';
-        echo '<P><INPUT TYPE="text" ID="text" style="display: none"></P>';
-        echo '<P><SELECT ID="values" size=10 style="display: none" onclick="valueclick();"></SELECT></P>';
+        echo '<P><INPUT TYPE="text" ID="textvalue" style="display: none" onchange="valueclick(' . "'textvalue'" . ');"></P>';
+        echo '<P><SELECT ID="values" size=10 style="display: none" onclick="valueclick(' . "'values'" . ');"></SELECT></P>';
         echo '<P><LABEL>Available tags: </LABEL><BR><SELECT ID="options" size=10 onclick="optionclick();" style="width: 200px;">';
-        $options = array("bold", "italic", "underline", "format", "bgcolor", "align", "fontcolor", "fontsize", "readonly");
+        $options = array("bold", "italic", "underline", "format", "bgcolor", "align", "fontcolor", "fontsize", "readonly", "min", "max", "validate");
         if($ID){$options[] = "colspan";}
         foreach($options as $Key){
             if($Tag){$DoIt = !isset($Tag[$Key]);} else {$DoIt = true;}
@@ -547,6 +627,17 @@
                             $ID = $Manager->edit_database($_POST["table"], $_POST["key"], false, $Data);
                             //echo 'Added: ' . $_POST["key"] . " = " . $ID[$_POST["key"]];
                         } else {
+                            if($_POST["htmlmode"]){
+                                $Entry = $Manager->get_entry($_POST["table"], $Key, $_POST["key"]);
+                                if($Entry){
+                                    foreach($Data as $DataKey => $DataValue){
+                                        $Text = "[" . getTag($Entry->$DataKey, true) . "]";
+                                        if (strlen($Text)>2){
+                                            $Data[$DataKey] = $Text . $DataValue;
+                                        }
+                                    }
+                                }
+                            }
                             $Manager->update_database($_POST["table"], $_POST["key"], $Key, $Data);
                         }
                     }
@@ -604,6 +695,22 @@
 
     function javascriptarray($Array){
         return '["' . implode('", "', $Array) . '"];';//var cars = ["Saab", "Volvo", "BMW"];
+    }
+
+    function printdialog(){
+        if (isset($GLOBALS["dialogform"])) {return false;}
+        $GLOBALS["dialogform"]=true;
+        ?>
+            <div id="dialog-form" style="display: none">
+                <form>
+                    <label for="prompt" id="prompt_title">Name</label>
+                    <SELECT name="prompt" id="prompt_select" class="text ui-widget-content ui-corner-all" />
+                        <OPTION>TEST</OPTION>
+                    </SELECT>
+                    <INPUT TYPE="text" id="prompt_text" class="text ui-widget-content ui-corner-all" />
+                </form>
+            </div>
+        <?php
     }
 
     function ucfirst2($Text, $DoUnderscore = false){
@@ -740,49 +847,13 @@
                 </div>
             </div>
 
-            <div id="dialog-form" bgcolor="white">
-                <form>
-                    <label for="prompt" id="prompt_title">Name</label>
-                    <SELECT name="prompt" id="prompt_select" class="text ui-widget-content ui-corner-all" />
-                    <OPTION>TEST</OPTION>
-                    </SELECT>
-                </form>
-            </div>
-            <SCRIPT>
-                <?php commonjavascriptfunctions(); ?>
+                <?php
+                printdialog();
+                echo '<SCRIPT>';
+                commonjavascriptfunctions();
+                echo '</SCRIPT>';
+        }
 
-                var CurrentRow, CurrentCol;
-                $(function() {
-                    $("#dialog-form").dialog({
-                        autoOpen: false,
-                        modal: true,
-                        buttons: {
-                            "Ok": function() {
-                                var value = $("#prompt_select").val();
-
-                                var element = document.getElementById(downID);
-                                element.setAttribute("value", value);
-                                mychangeevent(downID, true);
-                                save(false);
-
-                                $(this).dialog("close");
-                            },
-                            "Cancel": function() {
-                                $(this).dialog("close");
-                            }
-                        }
-                    });
-                });
-
-                function listprompt(Title, Choices){
-                    $("#dialog-form").dialog("open");
-                    setinnerhtml("prompt_title", Title);
-                    clearselect("prompt_select");
-                    addoptions("prompt_select", Choices);
-                }
-            </SCRIPT>
-
-        <?php }
         if(!$HTMLMode){?>
             <SCRIPT>
                 var lastsection;
@@ -894,7 +965,11 @@
         </TABLE>
     <?php } ?>
 
-    <?php } else if(!$EmbeddedMode) {
+
+
+    <?php printdialog();
+
+    } else if(!$EmbeddedMode) {
         $Tables = $Manager->enum_tables();
     }
 ?>
@@ -922,6 +997,7 @@
     var tables = <?php if (is_array($Tables)) { echo javascriptarray($Tables);} else { echo "false;"; } ?>
     var changed = new Array();
     var changedNew = false;
+
     function mychangeevent(ID, DoPush){
         var RET = checktags(ID, "single");
         if(DoPush) {
@@ -934,6 +1010,7 @@
                 changed.splice(Index, 1);
             }
         }
+        return RET;
     }
 
     function removeelement(id) {
@@ -951,7 +1028,7 @@
             url: MyURL,
             type: "post",
             dataType: "HTML",
-            data: "action=save&key=&table=" + CurrentTable + "&" + Text,
+            data: "action=save&key=&htmlmode=<?= $HTMLMode; ?>&table=" + CurrentTable + "&" + Text,
             success: function (msg) {
                 if(DoAlert){alert(msg);}
                 reload("");
@@ -1143,21 +1220,34 @@
                 }
                 break;
             case 1://onclick
-                if(element.hasAttribute("choices")) {
-                    downID=ID;
-                    listprompt("What would you like the new value of row " + CurrentRow + " column " + CurrentCol + " in " + CurrentTable + " to be?", element.getAttribute("choices").split("|"));
+                if(!element.hasAttribute("READONLY")) {
+                    var Title = "What would you like the new value of row " + CurrentRow + " column " + CurrentCol + " in " + CurrentTable + " to be?";
+                    if (element.hasAttribute("choices")) {
+                        downID = ID;
+                        listprompt(Title, element.getAttribute("choices").split("|"));
+                    } else {
+                        textprompt(Title, value);
+                        var Textbox = document.getElementById("prompt_text")
+                        if (element.hasAttribute("role")){
+                            var role = element.getAttribute("role");
+                            Textbox.setAttribute("role", role)
+                            if(role == "number"){
+                                setattribute(Mode, "type", "number");
+                            }
+                        }
+                        /*
+                        var newvalue = prompt(Title, value);
+                        if (newvalue && value != newvalue) {
+                            element.setAttribute("value", newvalue);
+                            mychangeevent(ID, true);
+                            save(false);
+                        }
+                        */
+                    }
                 }
                 break;
             case 2://ondblclick
-                if(!element.hasAttribute("READONLY")) {
-                    var name = "row " + ID.substr(5, ID.length-6).replace("][", " column ");
-                    var newvalue = prompt("What would you like the new value of row " + CurrentRow + " column " + CurrentCol + " in " + CurrentTable + " to be?", value);
-                    if (newvalue && value != newvalue) {
-                        element.setAttribute("value", newvalue);
-                        mychangeevent(ID, true);
-                        save(false);
-                    }
-                }
+
                 break;
             case 3://onmousedown
                 downID = ID;
@@ -1180,6 +1270,7 @@
 <?php
     function printtableheader($EmbeddedMode, $Top, $Table = false){
         if($Top){
+            printdialog();
             echo '<SCRIPT>loadtable("' . $Table . '");</SCRIPT>';
             echo '<DIV width="100%" height="100%" ';
             if(!$EmbeddedMode){ echo 'style="overflow: auto;"';}
@@ -1320,9 +1411,12 @@
                                         echo ' BGCOLOR="' . $Data . '"';
                                         break;
                                     case "validate";
-                                        if($Value) {
-                                            $Value = $Manager->validate_data($Value, $Data);
-                                            if(!$Data){$Value = '[ERROR: Not a valid ' . $Data . ']';}
+                                        if($Data) {
+                                            if ($Value) {
+                                                $Test = $Manager->validate_data($Value, $Data);
+                                                if (!$Test) {$Value = '[ERROR: Not a valid ' . $Data . ']';}
+                                            }
+                                            echo ' role="' . $Data . '"';
                                         }
                                         break;
                                     case "format";
@@ -1366,6 +1460,9 @@
                                         $Start .= '<FONT SIZE="' . $Data . '">';
                                         $Finish = '</FONT>' . $Finish;
                                         break;
+
+                                    default:
+                                        echo ' ' . $Key . '="' . $Data . '"';
                                 }
                             }
                         }
