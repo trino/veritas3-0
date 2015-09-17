@@ -261,7 +261,7 @@
         $GLOBALS["commonjavascriptfunctions"] = true;
         ?>
             function visible(ID, Status){
-                var element = document.getElementById(ID);
+                var element = selectelement(ID);
                 if(Status){
                     element.setAttribute("style", "");
                 } else {
@@ -270,15 +270,15 @@
             }
 
             function deleteattribute(ID, Class){
-                document.getElementById(ID).removeAttribute(Class);
+                selectelement(ID).removeAttribute(Class);
             }
 
             function setvalue(ID, Value){
-                document.getElementById(ID).value = Value;
+                selectelement(ID).value = Value;
             }
 
             function clearselect(ID){
-                var element = document.getElementById(ID);
+                var element = selectelement(ID);
                 var i;
                 for(i=element.options.length-1;i>=0;i--) {
                 element.remove(i);
@@ -286,7 +286,7 @@
             }
 
             function setinnerhtml(ID, Value){
-                var element = document.getElementById(ID);
+                var element = selectelement(ID);
                 element.innerHTML = Value;
             }
 
@@ -309,7 +309,7 @@
             }
 
             function addoption(ID, Value, Text){
-                var element = document.getElementById(ID);
+                var element = selectelement(ID);
                 var option = document.createElement("option");
                 if(Text) {option.text = Text;} else {option.text = Value;}
                 option.value = Value;
@@ -317,7 +317,7 @@
             }
 
             function selectlastitem(ID){
-                var element = document.getElementById(ID);
+                var element = selectelement(ID);
                 if(element.options.length >0){
                     element.selectedIndex = element.options.length-1;
                     return true;
@@ -325,7 +325,7 @@
             }
 
             function selectitem(ID, value){
-                var element = document.getElementById(ID);
+                var element = selectelement(ID);
                 for(var i=0; i < element.options.length; i++){
                     if(element.options[i].value === value) {
                         element.selectedIndex = i;
@@ -341,7 +341,7 @@
                 buttons: {
                     "Ok": function() {
                         var value = getinputvalue(Mode);
-                        var element = document.getElementById(downID);
+                        var element = selectelement(downID);
                         var msg = "";
                         if(element.hasAttribute("role")){
                             var Role = element.getAttribute("role");
@@ -378,35 +378,63 @@
                 $("#dialog-form").dialog(opt);
             });
 
-            function showprompt(Title){
+            function focus(ID){
+                selectelement(ID).focus();
+            }
+            function selectall(ID){
+                focus(ID);
+                selectelement(ID).select();
+            }
+
+
+            function showprompt(Title, Message){
                 $("#dialog-form").dialog(opt);
                 visible("prompt_select", false);
                 visible("prompt_text", false);
                 visible("dialog-form", true);
                 deleteattribute("prompt_text", "role");
-                setinnerhtml("prompt_title", Title);
+                setinnerhtml(".ui-dialog-title", Title);
+                setinnerhtml("prompt_title", Message);
                 clearselect("prompt_select");
                 $("#dialog-form").dialog("open");
+                setattribute("dialog-form", "style", "background-color: white;");
+                //setstyle("ui-dialog", "background-color", "white");
             }
 
             function listprompt(Title, Choices){
-                showprompt(Title);
+                showprompt("Set Value", Title);
                 Mode="prompt_select";
                 addoptions("prompt_select", Choices);
             }
 
+            function setstyle(ID, Style, Value){
+                selectelement(ID).style[Style] = Value;
+            }
+
+            function selectelement(Element){
+                var firstletter = Element.substring(0, 1);
+                var Name = Element.substring(1, Element.length);
+                switch(firstletter){
+                    case ".":
+                        return document.getElementsByClassName(Name)[0];
+                        break;
+                    default://ID
+                        return document.getElementById(Element);
+                }
+            }
+
             function setattribute(ID, Class, Value){
-                var element = document.getElementById(ID);
+                var element = selectelement(ID);
                 element.setAttribute(Class, Value);
             }
 
             function textprompt(Title, Default){
-                showprompt(Title);
+                showprompt("Set Value", Title);
                 Mode="prompt_text";
                 setattribute(Mode, "type", "text");
                 visible(Mode, true);
                 setvalue(Mode, Default);
-                return Mode;
+                selectall(Mode);
             }
             <?php
     }
@@ -702,7 +730,7 @@
         if (isset($GLOBALS["dialogform"])) {return false;}
         $GLOBALS["dialogform"]=true;
         ?>
-            <div id="dialog-form" style="display: none">
+            <div id="dialog-form" style="display: none;">
                 <form>
                     <label for="prompt" id="prompt_title">Name</label>
                     <SELECT name="prompt" id="prompt_select" class="text ui-widget-content ui-corner-all" />
