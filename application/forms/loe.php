@@ -62,7 +62,7 @@
         </div>
 
         <div class="form-group row">
-            <label class="control-label col-md-3 required"><?= $strings2["verifs_superemail"]; ?>:</label>
+            <label class="control-label col-md-3"><?= $strings2["verifs_superemail"]; ?>:</label>
             <div class="col-md-3">
                 <input type="text" class="form-control email1" name="supervisor_email[]"/>
             </div>
