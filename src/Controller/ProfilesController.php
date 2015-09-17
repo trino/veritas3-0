@@ -2271,7 +2271,7 @@
             $orders = TableRegistry::get('orders');
             $order = $orders
                 ->find()
-                ->where(['orders.draft' => 0])->order('orders.id DESC')->limit(50);
+                ->where(['orders.draft' => 0])->order('orders.id DESC')->limit(150);
 
             foreach ($order as $o) {
 
