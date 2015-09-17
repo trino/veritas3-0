@@ -1456,6 +1456,10 @@
                 }else {
                     $arr['order_id'] = $doc->id;
                 }
+                
+                if (!is_dir(APP.'../webroot/orders/order_'.$doc->id)) {
+                               mkdir(APP . '../webroot/orders/order_' . $doc->id, 0777);
+                           }
                 unset($doc);
             }
 
