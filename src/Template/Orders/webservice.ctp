@@ -608,7 +608,6 @@
     }
     $this->requestAction('orders/writing_complete/' . $orderid);
 
-    $servicearr["path"] = LOGIN . 'profiles/view/' . $order_info->uploaded_for;
     $mailer->handleevent("ordercompleted",$servicearr);
   //  $mailer->handleevent("ordercompleted",$servicearr,'hsidhu@isbc.ca ');
   //  $mailer->handleevent("ordercompleted",$servicearr,'pclement@isbc.ca');

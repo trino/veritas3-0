@@ -838,7 +838,7 @@
             $setting = TableRegistry::get('settings')->find()->first();
             $products = TableRegistry::get('order_products')->find()->all();
             $JSON = $this->Manager->order_to_email($orderid,$order_info,$products);
-            $this->set('servicearr',array("email" => "super", "username" => $profile->username, "profile_type" => $this->profiletype($profile->profile_type), "company_name" => $client->company_name, "site" => $setting->mee, "for" => $uploadedfor->username, "html" => $JSON));
+            $this->set('servicearr',array("email" => "super", "username" => $profile->username, "profile_type" => $this->profiletype($profile->profile_type), "company_name" => $client->company_name, "site" => $setting->mee, "for" => $uploadedfor->username, "html" => $JSON, 'path' => LOGIN . 'profiles/view/' . $order_info->uploaded_for));
             $this->set('mailer',$this->Mailer);
             $this->set('order_model',$orders);
             $this->set('orderid',$orderid);
