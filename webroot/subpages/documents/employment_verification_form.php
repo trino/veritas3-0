@@ -486,33 +486,33 @@ $strings2 = CacheTranslations($language, array("verifs_%", "tasks_date", "file_a
            
            ?>
           <div class="form-group row no-print">
-            <div id="more_employ_doc" data-emp="<?php if(count($sub3['att']))echo count($sub3['att']);else echo '1';?>">
-            <?php
-                                                        if(count($sub3['att']))//THIS SHOULD BE USING FILELIST.PHP!!!!!{
-                                                            $at=0;
-                                                            foreach($sub3['att'] as $pa) {
-                                                                if($pa->attachment){
-                                                                $at++;
-                                                                ?>
-                                                                <div class="del_append_employ"><label class="control-label col-md-3"><?= $strings2["file_attachfile"]; ?>: </label><div class="col-md-6 pad_bot"><input type="hidden" class="emp<?php echo $at;?>" name="attach_doc[]" value="<?php echo $pa->attachment;?>" /><a href="#" id="emp<?php echo $at;?>" class="btn btn-primary"><?= $strings["forms_browse"]; ?></a> <?php if($at>1){?><a  href="javascript:void(0);" class="btn btn-danger" id="delete_employ_doc" onclick="$(this).parent().remove();"><?= $strings["dashboard_delete"]; ?></a><?php }?>
-                                                                <span class="uploaded"><?php echo $pa->attachment;?>  <?php if($pa->attachment){$ext_arr = explode('.',$pa->attachment);$ext = end($ext_arr);$ext = strtolower($ext);if(in_array($ext,$img_ext)){?><img src="<?php echo $this->request->webroot;?>attachments/<?php echo $pa->attachment;?>" style="max-width:120px;" /><?php }elseif(in_array($ext,$doc_ext)){?><a class="dl" href="<?php echo $this->request->webroot;?>attachments/<?php echo $pa->attachment;?>"><?= $strings["file_download"]; ?></a><?php }else{?><br />
-                                                             <video width="320" height="240" controls>
-                                                              <source src="<?php echo $this->request->webroot;?>attachments/<?php echo $pa->attachment;?>" type="video/mp4">
-                                                              <source src="<?php echo $this->request->webroot;?>attachments/<?php echo str_replace('.mp4','.ogg',$pa->attachment);?>" type="video/ogg">
-                                                                 <?= $strings["forms_novideo"]; ?>
-                                                            </video> 
-                                                            <?php } }?></span>
-                                                                </div></div><div class="clearfix"></div>
-                                                                <script>
-                                                                $(function(){
-                                                                    fileUpload('emp<?php echo $at;?>');
-                                                                });
-                                                                </script>
-                                                                <?php
-                                                            }}
-                                                        }
-                                                        ?>
-            </div>
+                <div id="more_employ_doc" data-emp="<?php if(count($sub3['att']))echo count($sub3['att']);else echo '1';?>">
+                <?php
+                        if(count($sub3['att'])){//THIS SHOULD BE USING FILELIST.PHP!!!!!{
+                            $at=0;
+                            foreach($sub3['att'] as $pa) {
+                                if($pa->attachment){
+                                $at++;
+                                ?>
+                                <div class="del_append_employ"><label class="control-label col-md-3"><?= $strings2["file_attachfile"]; ?>: </label><div class="col-md-6 pad_bot"><input type="hidden" class="emp<?php echo $at;?>" name="attach_doc[]" value="<?php echo $pa->attachment;?>" /><a href="#" id="emp<?php echo $at;?>" class="btn btn-primary"><?= $strings["forms_browse"]; ?></a> <?php if($at>1){?><a  href="javascript:void(0);" class="btn btn-danger" id="delete_employ_doc" onclick="$(this).parent().remove();"><?= $strings["dashboard_delete"]; ?></a><?php }?>
+                                <span class="uploaded"><?php echo $pa->attachment;?>  <?php if($pa->attachment){$ext_arr = explode('.',$pa->attachment);$ext = end($ext_arr);$ext = strtolower($ext);if(in_array($ext,$img_ext)){?><img src="<?php echo $this->request->webroot;?>attachments/<?php echo $pa->attachment;?>" style="max-width:120px;" /><?php }elseif(in_array($ext,$doc_ext)){?><a class="dl" href="<?php echo $this->request->webroot;?>attachments/<?php echo $pa->attachment;?>"><?= $strings["file_download"]; ?></a><?php }else{?><br />
+                             <video width="320" height="240" controls>
+                              <source src="<?php echo $this->request->webroot;?>attachments/<?php echo $pa->attachment;?>" type="video/mp4">
+                              <source src="<?php echo $this->request->webroot;?>attachments/<?php echo str_replace('.mp4','.ogg',$pa->attachment);?>" type="video/ogg">
+                                 <?= $strings["forms_novideo"]; ?>
+                            </video>
+                            <?php } }?></span>
+                                </div></div><div class="clearfix"></div>
+                                <script>
+                                $(function(){
+                                    fileUpload('emp<?php echo $at;?>');
+                                });
+                                </script>
+                                <?php
+                            }}
+                        }
+                    ?>
+                </div>
           </div>
           
           <div class="form-group row no-print">
@@ -529,54 +529,53 @@ $strings2 = CacheTranslations($language, array("verifs_%", "tasks_date", "file_a
 </form>
 <script>
     <?php loadstringsJS(array_merge($strings, $strings2)); ?>
-$(function(){
-    <?php
-        if(!isset($sub3['att']))
-        $sub3['att'] = array();
-        if(($this->request->params['action']=='addorder' || $this->request->params['action']=='add') && !count($sub3['att']))
-        {
-            ?>
-            fileUpload('emp1');
-            <?php
-        }
+    $(function(){
+        <?php
+            if(!isset($sub3['att'])){
+                $sub3['att'] = array();
+            }
+            if(($this->request->params['action']=='addorder' || $this->request->params['action']=='add') && !count($sub3['att'])) {
+                echo "fileUpload('emp1');";
+            }
         ?>
-   // 
-  $("#add_more").click(function(){
-    $.ajax({
-       url:"<?php echo $this->request->webroot;?>subpages/documents/past_employer.php?language=" + language,
-       success:function(res){
-        $("#more_div").append(res);
-        var c = $('#count_past_emp').val();
-        var counter = parseInt(c)+1;
-        $('#count_past_emp').attr('value',counter);
-        $('.date-picker').datepicker({
-                rtl: Metronic.isRTL(),
-                orientation: "left",
-                autoclose: true,
-                format: 'yyyy-mm-dd'
+
+      $("#add_more").click(function(){
+            $.ajax({
+                   url:"<?php echo $this->request->webroot;?>subpages/documents/past_employer.php?language=" + language,
+                   success:function(res){
+                    $("#more_div").append(res);
+                    var c = $('#count_past_emp').val();
+                    var counter = parseInt(c)+1;
+                    $('#count_past_emp').attr('value',counter);
+                    $('.date-picker').datepicker({
+                            rtl: Metronic.isRTL(),
+                            orientation: "left",
+                            autoclose: true,
+                            format: 'yyyy-mm-dd'
+                        });
+                   }
             });
-       }
-    });
-  });
-  $("#delete").live("click",function(){
-    $(this).parent().parent().remove(); 
-    var c = $('#count_past_emp').val();
-    var counter = parseInt(c)-1;
-        $('#count_past_emp').attr('value',counter);
-  }); 
-  
-  
-  $('#add_more_employ_doc').click(function(){
-    var count = $('#more_employ_doc').data('emp');
-    $('#more_employ_doc').data('emp',parseInt(count)+1);
-        $('#more_employ_doc').append('<div class="del_append_employ"><label class="control-label col-md-3"></label><div class="col-md-6 pad_bot"><input type="hidden" name="attach_doc[]" class="emp'+$('#more_employ_doc').data('emp')+'" /><a href="javascript:void(0);" id="emp'+$('#more_employ_doc').data('emp')+'" class="btn btn-primary"><?= addslashes($strings["forms_browse"]); ?></a> <a  href="javascript:void(0);" class="btn btn-danger" id="delete_employ_doc"><?= $strings["dashboard_delete"]; ?></a> <span class="uploaded"></span></div></div><div class="clearfix"></div>');
-        fileUpload('emp'+$('#more_employ_doc').data('emp'));
-       }); 
-       
-       $('#delete_employ_doc').live('click',function(){
-        var count = $('#more_employ_doc').data('emp');
-    $('#more_employ_doc').data('emp',parseInt(count)-1);
+      });
+      $("#delete").live("click",function(){
+            $(this).parent().parent().remove();
+            var c = $('#count_past_emp').val();
+            var counter = parseInt(c)-1;
+            $('#count_past_emp').attr('value',counter);
+      });
+
+
+      $('#add_more_employ_doc').click(function(){
+            var count = $('#more_employ_doc').data('emp');
+            $('#more_employ_doc').data('emp',parseInt(count)+1);
+            $('#more_employ_doc').append('<div class="del_append_employ"><label class="control-label col-md-3"></label><div class="col-md-6 pad_bot"><input type="hidden" name="attach_doc[]" class="emp'+$('#more_employ_doc').data('emp')+'" /><a href="javascript:void(0);" id="emp'+$('#more_employ_doc').data('emp')+'" class="btn btn-primary"><?= addslashes($strings["forms_browse"]); ?></a> <a  href="javascript:void(0);" class="btn btn-danger" id="delete_employ_doc"><?= $strings["dashboard_delete"]; ?></a> <span class="uploaded"></span></div></div><div class="clearfix"></div>');
+            fileUpload('emp'+$('#more_employ_doc').data('emp'));
+      });
+
+      $('#delete_employ_doc').live('click',function(){
+            var count = $('#more_employ_doc').data('emp');
+            $('#more_employ_doc').data('emp',parseInt(count)-1);
             $(this).closest('.del_append_employ').remove();
-       });
+      });
  }); 
-</script></div></div></div></div>
+</script>
+</div></div></div></div>
