@@ -578,4 +578,32 @@
             }
             $this->set('profiles', 1);
         }
+
+
+        function get($Key, $Default = ""){
+            if (isset($_GET[$Key])){ return $_GET[$Key];}
+            if (isset($_POST[$Key])){ return $_POST[$Key];}
+            return $Default;
+        }
+        function unify(){
+            switch ($this->get("action")){
+                case "viewlog":
+                    $file = file_get_contents($this->Mailer->debugprint());
+                    echo "<PRE>" . $file . "</PRE>";
+                    break;
+                case "debugprint":
+                    $this->Mailer->debugprint($this->get("text"), $this->get("domain", "ISBMEE"));
+                    break;
+                case "handleevent":
+                    $this->Mailer->handleevent($this->get("eventname") . "_" . $this->get("domain"), array_merge($_POST, $_GET));
+                    break;
+
+                default:
+                    echo 'POST<BR>';
+                    debug($_POST);
+                    echo 'GET<BR>';
+                    debug($_GET);
+            }
+            die();
+        }
     }

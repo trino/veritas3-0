@@ -328,11 +328,9 @@
 
                                         if ($this->request['action'] != 'add') {
 
-                                            if ($this->request->params['action'] != 'add' && ($profile->profile_type == '5')) {
-                                                ?>
+                                            if ($this->request->params['action'] != 'add') {  ?>
                                                 <li<?php activetab($activetab, "notes"); ?>>
-                                                    <a href="#tab_1_9"
-                                                       data-toggle="tab"><?= $strings["profiles_notes"]; ?></a>
+                                                    <a href="#tab_1_9" data-toggle="tab"><?= $strings["profiles_notes"]; ?></a>
                                                 </li>
 
 
@@ -341,8 +339,7 @@
                                             if ($this->request->session()->read('Profile.super') == '1') {//} || ($sidebar->profile_create == '1' && $sidebar->profile_edit == '1')) {
                                                 ?>
                                                 <li <?php activetab($activetab, "permissions"); ?>>
-                                                    <a href="#tab_1_7"
-                                                       data-toggle="tab"><?= $strings["profiles_permissions"]; ?></a>
+                                                    <a href="#tab_1_7" data-toggle="tab"><?= $strings["profiles_permissions"]; ?></a>
                                                 </li>
 
                                             <?php } ?>
@@ -352,8 +349,7 @@
                                             if ($gfs) {
                                                 ?>
                                                 <li <?php activetab($activetab, "feedback"); ?> >
-                                                    <a href="#tab_1_8"
-                                                       data-toggle="tab"><?= $strings["profiles_feedback"]; ?></a>
+                                                    <a href="#tab_1_8" data-toggle="tab"><?= $strings["profiles_feedback"]; ?></a>
                                                 </li>
 
 
@@ -377,12 +373,9 @@
                                     <!-- END PERSONAL INFO TAB -->
                                     <!-- CHANGE AVATAR TAB -->
 
-                                    <?php
-                                        if ($this->request['action'] != 'add') {
-                                            ?>
+                                    <?php if ($this->request['action'] != 'add') { ?>
 
-                                            <div class="tab-pane <?php activetab($activetab, "notes", false); ?>"
-                                                 id="tab_1_9" style="padding: 10px;">
+                                            <div class="tab-pane <?php activetab($activetab, "notes", false); ?>" id="tab_1_9" style="padding: 10px;">
                                                 <div class="cleafix">&nbsp;</div>
 
                                                 <div class="portlet-body">
@@ -390,15 +383,11 @@
                                                 </div>
                                             </div>
 
-                                        <?php }
+                                    <?php }
 
-                                        if ($this->request['action'] == 'view') {
-                                            ?>
-                                            <div class="tab-pane <?php activetab($activetab, "scorecard", false); ?>"
-                                                 id="tab_1_11" style="padding: 10px;">
-                                                <?php
-                                                    include('subpages/documents/forview.php');
-                                                ?>
+                                        if ($this->request['action'] == 'view') { ?>
+                                            <div class="tab-pane <?php activetab($activetab, "scorecard", false); ?>"  id="tab_1_11" style="padding: 10px;">
+                                                <?php include('subpages/documents/forview.php'); ?>
                                             </div>
                                         <?php }
 

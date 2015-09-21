@@ -38,14 +38,15 @@ class MailerComponent extends Component {
         $Email = $this->getString("email_" . $eventname . "_subject");
         $language = "English";
 
+        if(!isset($variables["HomeURL"])){$variables["HomeURL"] = LOGIN;}
+
         if(!isset($variables["site"])) { $variables["site"] = $this->get_settings()->mee; }
         $variables["event"] = $eventname;
-        $variables["webroot"] = LOGIN;
+        $variables["webroot"] = $variables["HomeURL"];
         $variables["created"] = date("l F j, Y - H:i:s");
-        $variables["login"] = '<a href="' . LOGIN . '">Click here to login</a>';
+        $variables["login"] = '<a href="' . $variables["HomeURL"] . '">Click here to login</a>';
         $variables["variables"] = print_r($variables, true);
-        if($directemail)
-        $variables["email"] = $directemail;
+        if($directemail) {$variables["email"] = $directemail;}
         if($Email) {
             $Subject =  $Email->$language;//$Email->English;
             $Message = $this->getString("email_" . $eventname . "_message")->$language;//$Email->French;
@@ -172,11 +173,14 @@ class MailerComponent extends Component {
         }
     }
 
-    function debugprint($text){
+    function debugprint($text = "", $Domain = "ISBMEE"){
         $path = "royslog.txt";
         if($_SERVER['SERVER_NAME'] =="isbmeereports.com"){$path = "/home/isbmeereports/public_html/webroot/" . $path;}
-        $dashes = "----------------------------------------------------------------------------------------------\r\n";
-        file_put_contents($path, $dashes . str_replace("%dashes%", $dashes, str_replace("<BR>", "\r\n" , $text)) . "\r\n", FILE_APPEND);
+        if($text) {
+            $dashes = "----------------------------------------------------------------------------------------------\r\n";
+            file_put_contents($path, $dashes . "Website: " . $Domain . "\r\n" . $dashes . str_replace("%dashes%", $dashes, str_replace("<BR>", "\r\n", $text)) . "\r\n", FILE_APPEND);
+        }
+        return $path;
     }
 }
 ?>

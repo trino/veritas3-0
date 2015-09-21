@@ -1,5 +1,7 @@
 <?php
     $include = realpath(getcwd() . "\..\api.php");
+    $required = "required";
+    if(isset($_GET["notrequired"])){$required="";}
 
     include_once($include);
     $language = $_GET["language"];
@@ -26,45 +28,45 @@
    </div>
                 
    <div class="form-group left15 col-md-12">
-        <label class="control-label col-md-3 required"><translate>forms_companyname</translate>:</label>
+        <label class="control-label col-md-3 <?= $required; ?>"><translate>forms_companyname</translate>:</label>
         <div class="col-md-9">
-            <input type="text" class="form-control required" required name="company_name[]"/>
+            <input type="text" class="form-control <?= $required; ?>" <?= $required; ?> name="company_name[]"/>
         </div>
    </div>
 
    <div class="form-group left15 col-md-12">
-        <label class="control-label col-md-3 required"><translate>forms_address</translate>:</label>
+        <label class="control-label col-md-3 <?= $required; ?>"><translate>forms_address</translate>:</label>
         <div class="col-md-3">
-            <input type="text" class="form-control required" required name="address[]" />
+            <input type="text" class="form-control <?= $required; ?>" <?= $required; ?> name="address[]" />
         </div>
 
-        <label class="control-label col-md-3 required"><translate>forms_city</translate>:</label>
+        <label class="control-label col-md-3 <?= $required; ?>"><translate>forms_city</translate>:</label>
         <div class="col-md-3">
-            <input type="text" class="form-control required" required name="city[]" />
-        </div>
-   </div>
-
-   <div class="form-group left15 col-md-12">
-        <label class="control-label col-md-3 required"><translate>forms_provincestate</translate>:</label>
-        <div class="col-md-3">
-            <input type="text" class="form-control required" required name="state_province[]" />
-        </div>
-
-        <label class="control-label col-md-3 required"><translate>forms_country</translate>:</label>
-        <div class="col-md-3">
-            <input type="text" class="form-control required" required name="country[]" />
+            <input type="text" class="form-control <?= $required; ?>" <?= $required; ?> name="city[]" />
         </div>
    </div>
 
    <div class="form-group left15 col-md-12">
-        <label class="control-label col-md-3 required"><translate>verifs_supername</translate>:</label>
+        <label class="control-label col-md-3 <?= $required; ?>"><translate>forms_provincestate</translate>:</label>
         <div class="col-md-3">
-           <input type="text" class="form-control required" required name="supervisor_name[]"/>
+            <input type="text" class="form-control <?= $required; ?>" <?= $required; ?> name="state_province[]" />
         </div>
 
-       <label class="control-label col-md-3 required"><translate>forms_phone</translate>:</label>
+        <label class="control-label col-md-3 <?= $required; ?>"><translate>forms_country</translate>:</label>
+        <div class="col-md-3">
+            <input type="text" class="form-control <?= $required; ?>" <?= $required; ?> name="country[]" />
+        </div>
+   </div>
+
+   <div class="form-group left15 col-md-12">
+        <label class="control-label col-md-3 <?= $required; ?>"><translate>verifs_supername</translate>:</label>
+        <div class="col-md-3">
+           <input type="text" class="form-control <?= $required; ?>" <?= $required; ?> name="supervisor_name[]"/>
+        </div>
+
+       <label class="control-label col-md-3 <?= $required; ?>"><translate>forms_phone</translate>:</label>
        <div class="col-md-3">
-            <input type="text" role="phone" class="form-control required" required name="supervisor_phone[]"/>
+            <input type="text" role="phone" class="form-control <?= $required; ?>" <?= $required; ?> name="supervisor_phone[]"/>
        </div>
    </div>
 
@@ -81,14 +83,14 @@
    </div>
 
    <div class="form-group left15 col-md-12">
-        <label class="control-label col-md-3 required"><translate>verifs_employment</translate>:</label>
+        <label class="control-label col-md-3 <?= $required; ?>"><translate>verifs_employment</translate>:</label>
         <div class="col-md-3">
-            <input type="text" class="form-control date-picker datepicker required" required name="employment_start_date[]"/>
+            <input type="text" class="form-control date-picker datepicker <?= $required; ?>" <?= $required; ?> name="employment_start_date[]"/>
         </div>
 
-        <label class="control-label col-md-3 required"><translate>verifs_employment2</translate>:</label>
+        <label class="control-label col-md-3 <?= $required; ?>"><translate>verifs_employment2</translate>:</label>
         <div class="col-md-3">
-            <input type="text" class="form-control date-picker datepicker required" required name="employment_end_date[]"/>
+            <input type="text" class="form-control date-picker datepicker <?= $required; ?>" <?= $required; ?> name="employment_end_date[]"/>
         </div>
    </div>
 

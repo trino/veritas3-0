@@ -162,11 +162,14 @@
 
 <script>
     var references = 1;
-    var requiredreferences = 2;
+    var requiredreferences = 3;
 
     function add_more() {//$("#add_more").click(function () {
-        $.ajax({
-            url: "<?= $webroot;?>subpages/documents/past_employer.php?language=" + language + "&references=" + references,
+        var URL = "<?= $webroot;?>subpages/documents/past_employer.php?language=" + language + "&references=" + references;
+        if(references>1){URL = URL + "&notrequired";}
+        return $.ajax({
+            url: URL,
+            async: false,
             success: function (res) {
                 references = references + 1;
                 $("#more_div").append( res);
