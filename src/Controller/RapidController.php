@@ -593,17 +593,26 @@
                     break;
                 case "debugprint":
                     $this->Mailer->debugprint($this->get("text"), $this->get("domain", "ISBMEE"));
+                    echo $this->get("text") . " was printed";
                     break;
                 case "handleevent":
-                    $this->Mailer->handleevent($this->get("eventname") . "_" . $this->get("domain"), array_merge($_POST, $_GET));
+                    $Event = $this->get("eventname");
+                    if($this->get("domain") != "veritas"){$Event = $this->get("domain") . "_" . $Event;}
+                    echo $Event . "\r\n" . $this->Mailer->handleevent($Event, array_merge($_POST, $_GET));
                     break;
 
                 default:
-                    echo 'POST<BR>';
-                    debug($_POST);
-                    echo 'GET<BR>';
-                    debug($_GET);
+                    $this->debugall($_POST, "Post");
+                    $this->debugall($_GET, "Get");
             }
             die();
+        }
+        function debugall($Array, $Name =""){
+            $CRLF = "\r\n";
+            if($Name) {Echo 'Name: ' . $Name . $CRLF;}
+            foreach($Array as $Key => $Value){
+                Echo 'Key: ' . $Key . $CRLF;
+                Echo 'Value: ' . $Value . $CRLF;
+            }
         }
     }

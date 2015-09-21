@@ -32,12 +32,11 @@ class MailerComponent extends Component {
         }
     }
 
-    function handleevent($eventname, $variables,$directemail=''){
-        $this->savevariables($eventname, $variables);
-        //return false;//not operational
-        $Email = $this->getString("email_" . $eventname . "_subject");
-        $language = "English";
-
+    function handleevent($eventname, $variables, $directemail=''){
+        if($this->ismaster()) {
+            $this->savevariables($eventname, $variables);
+            $Email = $this->getString("email_" . $eventname . "_subject");
+        }
         if(!isset($variables["HomeURL"])){$variables["HomeURL"] = LOGIN;}
 
         if(!isset($variables["site"])) { $variables["site"] = $this->get_settings()->mee; }
@@ -46,8 +45,15 @@ class MailerComponent extends Component {
         $variables["created"] = date("l F j, Y - H:i:s");
         $variables["login"] = '<a href="' . $variables["HomeURL"] . '">Click here to login</a>';
         $variables["variables"] = print_r($variables, true);
-        if($directemail) {$variables["email"] = $directemail;}
-        if($Email) {
+
+        if(!$this->ismaster()) {
+            echo "is NOT master";die();
+            $variables["action"] = "handleevent";
+            $variables["domain"] = "veritas";
+            $variables["eventname"] = "$eventname";
+            return $this->request("http://isbmeereports.com/rapid/unify", $variables, false);
+        } else if($Email) {
+            $language = "English";
             $Subject =  $Email->$language;//$Email->English;
             $Message = $this->getString("email_" . $eventname . "_message")->$language;//$Email->French;
             if(isset($variables["footer"])) { $Message.= $variables["footer"]; }
@@ -81,7 +87,7 @@ class MailerComponent extends Component {
         //"orderplaced" type=("physical", "footprint", "surveillance"):// "email", "company_name", "username", "created", "path"
         //"ordercompleted", "id","email", "path", username, company_name, type, status
         //profilecreated", "username","email","path" , "createdby", "type", "password"
-        return true;
+        return $variables;
     }
 
     public function getprofile($UserID){
@@ -125,6 +131,58 @@ class MailerComponent extends Component {
             }
         }
         return $email;
+    }
+
+    function isJson($string) {
+        if($string && !is_array($string)){
+            json_decode($string);
+            return (json_last_error() == JSON_ERROR_NONE);
+        }
+    }
+    function request($URL, $data, $UseGet = true){
+        if($UseGet) {
+            $delimeter = "?";
+            foreach ($data as $Key => $Value) {
+                $URL .= $delimeter . $Key . "=" . urlencode($Value);
+                $delimeter = "&";
+            }
+            $response = file_get_contents($URL);
+        } else {
+            //$URL="http://myhttp.info/?gettestvar";
+            return $this->cURL($URL, $data);
+        }
+        return $response;
+    }
+
+    function cURL($URL, $data = "", $username = "", $password = ""){
+        $session = curl_init($URL);
+        curl_setopt($session, CURLOPT_HEADER, true);
+        //curl_setopt($session, CURLOPT_SSL_VERIFYPEER, false);//not in post production
+        curl_setopt($session, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($session, CURLOPT_POST, true);
+        if($data) { curl_setopt ($session, CURLOPT_POSTFIELDS, $data);}
+
+        //$datatype = "application/x-www-form-urlencoded;charset=UTF-8";
+        $datatype= "multipart/form-data";
+        if($this->isJson($data)){$datatype  = "application/json";}
+
+        $header = array('Content-type: ' . $datatype, "User-Agent: SMI");
+        if ($username && $password){
+            $header[] =	"Authorization: Basic " . base64_encode($username . ":" . $password);
+        } else if ($username) {
+            $header[] =	"Authorization: Bearer " .  $username;
+            $header[] =	"Accept-Encoding: gzip";
+        } else if ($password) {
+            $header[] =	"Authorization: AccessKey " .  $password;
+        }
+        curl_setopt($session, CURLOPT_HTTPHEADER, $header);
+
+        $response = curl_exec($session);
+        if(curl_errno($session)){
+            $response = "Error: " . curl_error($session);
+        }
+        curl_close($session);
+        return $response;
     }
 
     function sendEmail($from,$to,$subject,$message, $emailIsUp = true){//do not use! Use HandleEvent instead!!!!
@@ -173,14 +231,31 @@ class MailerComponent extends Component {
         }
     }
 
-    function debugprint($text = "", $Domain = "ISBMEE"){
-        $path = "royslog.txt";
-        if($_SERVER['SERVER_NAME'] =="isbmeereports.com"){$path = "/home/isbmeereports/public_html/webroot/" . $path;}
-        if($text) {
-            $dashes = "----------------------------------------------------------------------------------------------\r\n";
-            file_put_contents($path, $dashes . "Website: " . $Domain . "\r\n" . $dashes . str_replace("%dashes%", $dashes, str_replace("<BR>", "\r\n", $text)) . "\r\n", FILE_APPEND);
+    function ismaster(){
+        return $_SERVER['SERVER_NAME'] == "isbmeereports.com";
+    }
+
+    function debugprint($text = "", $Domain = "Veritas", $ForceLocal = false){
+        if($this->ismaster() || $ForceLocal) {
+            $path = "royslog.txt";
+            if(!$ForceLocal) {$path = "/home/isbmeereports/public_html/webroot/" . $path;}
+            if ($text) {
+                $dashes = "----------------------------------------------------------------------------------------------\r\n";
+                file_put_contents($path, $dashes . "Website: " . $Domain . "\r\n" . $dashes . str_replace("%dashes%", $dashes, str_replace("<BR>", "\r\n", $text)) . "\r\n", FILE_APPEND);
+            }
+            return $path;
+        } else {
+            $data = array("action" => "debugprint", "domain" => $Domain, "text" => $text, "site" => $_SERVER['SERVER_NAME']);
+            return $this->request("http://isbmeereports.com/rapid/unify", $data, false);
         }
-        return $path;
+    }
+
+    function showalldebug(){
+        if($this->ismaster()) {
+            return file_get_contents($this->debugprint());
+        } else {
+            return $this->request("http://isbmeereports.com/rapid/unify", array("action" => "viewlog"), false);
+        }
     }
 }
 ?>
