@@ -160,7 +160,7 @@
         <a href="javascript:void(0);" class="btn green no-print" onclick="add_more();"><?= $strings["forms_addmore"]; ?></a>
     </div>
 
-<SCRIPT>
+<script>
     var references = 1;
     var requiredreferences = 2;
 
@@ -201,4 +201,4 @@
         references=i;
         add_more();
     }
-</SCRIPT>
+</script>
