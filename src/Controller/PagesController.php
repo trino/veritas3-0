@@ -75,6 +75,7 @@ class PagesController extends AppController {
     }
     
     function edit($slug){
+        //var_dump($_POST); die();
         $languages = explode(",", $_POST["languages"]);
         foreach($languages as $language){
             if($language == "English"){ $language = "";}

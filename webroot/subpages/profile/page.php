@@ -18,6 +18,7 @@ function makepage($webroot, $tabIndex, $name, $cms, $active){
                                             <div class="portlet box">
                                                 <div class="portlet-body form">
 <form action="' . $webroot . 'pages/edit/' . $name . '" method="post" class="form-horizontal form-bordered" id="' . $name . '">
+    <input type="hidden" name="languages" value="English,French" />
     <div class="form-body">
         <div class="form-group last">
             <label class="col-md-2"></label>
@@ -42,18 +43,18 @@ function makepage($webroot, $tabIndex, $name, $cms, $active){
             <label class="control-label col-md-2">Description</label>
             <div class="col-md-5">
                                                                     <textarea class="ckeditor form-control"
-                                                                              name="editor1" rows="6" id="desc' . $name . '">' . $cms->desc . '</textarea>
+                                                                              name="desc" rows="6" id="desc' . $name . '">' . $cms->desc . '</textarea>
             </div>
             <div class="col-md-5">
                                                                     <textarea class="ckeditor form-control"
-                                                                              name="editor2" rows="6" id="descFrench' . $name . '">' . $cms->descFrench . '</textarea>
+                                                                              name="descFrench" rows="6" id="descFrench' . $name . '">' . $cms->descFrench . '</textarea>
             </div>
         </div>
     </div>
     <div class="form-actions" style="margin-left: -10px;margin-right: -10px;">
         <div class="row" align="right">
             <div class="col-md-offset-2 col-md-10">
-                <button type="submit"   class="btn blue" onclick="savepage(' . "'" . $name . "'" . ');">
+                <button type="submit"   class="btn blue"  >
                     Save Changes
                 </button>
                 <button type="button" class="btn default" style="margin-right: 8px;">Cancel
@@ -66,7 +67,7 @@ function makepage($webroot, $tabIndex, $name, $cms, $active){
 <!-- END FORM-->';
     return "";
 }
-
+//<button type="submit"   class="btn blue" onclick="savepage(' . "'" . $name . "'" . ');" >
 $pages = array(11 => "product_example", 6 => "help",  7 => "privacy_code", 8 => "version_log",  4 => "terms", 5 => "faq");
 
 echo '<ul class="nav nav-tabs nav-justified">';

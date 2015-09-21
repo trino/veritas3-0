@@ -1,7 +1,18 @@
 <IfModule mod_rewrite.c>
     RewriteEngine on
+    #RewriteBase /
+    
+    # FORCE SSL REDIRECTION
+    RewriteCond %{HTTPS} off
+    #RewriteCond %{ENV:HTTPS} !on [NC]
+    RewriteCond %{HTTP_HOST} !^localhost(:\d+)?$ [NC]
+    RewriteCond %{HTTP_HOST} !^staging [NC]
+    RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [R,L]
+    
+    
 	RewriteRule ^(application|application)($|/) - [L]
 	RewriteCond %{REQUEST_URI} !^/(application|application/.*)$ 
     RewriteRule    ^$    webroot/    [L]
     RewriteRule    (.*) webroot/$1    [L]
+   
 </IfModule>
