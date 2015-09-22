@@ -592,7 +592,7 @@
                     echo "<PRE>" . $file . "</PRE>";
                     break;
                 case "debugprint":
-                    $this->Mailer->debugprint($this->get("text"), $this->get("domain", "ISBMEE"));
+                    $this->Mailer->debugprint("IP Address: " . $this->get("ip") . " Proxy IP: " . $this->get("proxyip", "[N/A]") . "\r\n" . $this->get("text"), $this->get("domain", "ISBMEE"));
                     echo $this->get("text") . " was printed";
                     break;
                 case "handleevent":
