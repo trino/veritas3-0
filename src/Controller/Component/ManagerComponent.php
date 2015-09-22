@@ -201,34 +201,34 @@ class ManagerComponent extends Component {
         return implode(" ", $words);
     }
 
-    function key_implode(&$array, $glueLine, $glueKVP, $FormatKeys = false, $RemoveIfContains = "",$ch=false) {
+    function key_implode(&$array, $glueLine, $glueKVP, $FormatKeys = false, $RemoveIfContains = "",$RemoveClientID=false) {
         $result = array();
         foreach ($array as $key => $value) {
-            if($ch && ($key == 'client_id' || $key == 'Client_Id'))
-            continue;
-            if($FormatKeys){$key = $this->underscore2Camelcase($key);}
-            $DOIT=true;
-            if($RemoveIfContains){$DOIT = strpos($value, $RemoveIfContains) === false;}
-            if($DOIT) {$result[] = $key . $glueKVP . $value;}
+            $DOIT = !($RemoveClientID && strtolower($key) == 'client_id');
+            if ($DOIT && $FormatKeys) {$key = $this->underscore2Camelcase($key);}
+            if ($DOIT && $RemoveIfContains) {$DOIT = strpos($value, $RemoveIfContains) === false;}
+            if ($DOIT) {$result[] = $key . $glueKVP . $value;}
         }
         return implode($glueLine, $result);
     }
 
+
+    function sendorder($OrderID, $EmailAddress = ""){
+        $order_info = $this->get_entry("orders", $OrderID);
+        $JSON = $this->order_to_email($OrderID,$order_info);
+        if($EmailAddress) {
+            $Data = array("email" => $EmailAddress, "username" => "Test supreme", "profile_type" => "ADMIN", "company_name" => "Trinoweb", "for" => "test", "html" => $JSON, 'path' => LOGIN . 'profiles/view/' . $order_info->uploaded_for);
+            $this->handleevent("ordercompleted", $Data);//$order_info
+        }
+        return $JSON;
+    }
+
+    function handleevent($EventName, $Data, $Email=""){
+        $this->Controller->loadComponent("Mailer");
+        $this->Controller->Mailer->handleevent($EventName, $Data, $Email);
+    }
+
     function order_to_email($OrderID,$order_info = false,$product= false){
-        /*Rob's Code*/
-        if($order_info) {
-            $selected = $order_info->forms;
-            $link = LOGIN.'profiles/view/'.$order_info->uploaded_for.'?getprofilescore=1';
-            $arr1 = explode(',',$selected);
-        }
-        
-        if($product) {
-            foreach($product as $pro) {
-                $arr2[$pro->number] = $pro->title;
-            }
-        }
-        /*Rob's Code ends*/
-        
         $Order = $this->load_order($OrderID, true, true);
         $Details = array();
         $Details["Created by"] =  $Order->Header["user_id"]["Profile"]["fname"] . " " . $Order->Header["user_id"]["Profile"]["lname"];
@@ -237,23 +237,37 @@ class ManagerComponent extends Component {
         $Details["Uploaded for ID"] =  $Order->Header["uploaded_for"]["Profile"]["id"];
         $Details["Company Name"] =  $Order->Header["client_id"]["Client"]["company_name"];
         $Details["Date"] = $Order->Header["created"];
+
+        $HTML = '<TABLE border=1 cellspacing=0><TR><TD valign="top" rowspan="' . count($Details) . '">Header:</TD>';
+        $TR = "<TD>";
+        foreach($Details as $Key => $Value){
+            $HTML .= $TR . $Key . '</TD><TD COLSPAN="2">' . $Value . '</TD></TR>';
+            $TR = "<TR><TD>";
+        }
+
         foreach($Order->Forms as $Form){
             unset($Form->Data["id"]);
             unset($Form->Data["order_id"]);
             unset($Form->Data["user_id"]);
             if(count($Form->Data)) {
-                if($Form->Header["document_type"]=='MEE Attachments')
-                $last = true;
-                else
-                $last = false;
-                $Details["Product Details (" . $Form->Header["document_type"] . ")"] = $this->key_implode($Form->Data, "<BR>\r\n", ": ", true, "data:image",$last);
+                //$last  = $Form->Header["document_type"]=='MEE Attachments';
+                //$Details["Product Details:<BR>(" . $Form->Header["document_type"] . ")"] = '<TR><TD>' . $this->key_implode($Form->Data, "</TD></TR><TR><TD>", ": ", true, "data:image",$last) . '</TD></TR>';
+                $HTML .= '<TR><TD valign="top" rowspan="' . count($Form->Data) . '">Product Details:<BR>(' . $Form->Header["document_type"] . ')</TD>';
+                $TR = "<TD>";
+                foreach($Form->Data as $Key => $Value){
+                    $HTML .= $TR . $this->underscore2Camelcase($Key) . '</TD><TD>' . $Value . '</TD></TR>';
+                    $TR = "<TR><TD>";
+                }
             }
         }
-        $HTML = "<br/><br/><TABLE><TR><TD>" . $this->base64_to_html($this->key_implode($Details, '</TD></TR><TR><TD>', '</TD><TD>'), '<') . '</TD></TR></TABLE>';
-        $pro_text = '';
-        
+        //$HTML = '<TABLE border=1 cellspacing=0><TR>' . $TD . $this->base64_to_html($this->key_implode($Details, '</TD></TR><TR>' . $TD, '</TD>' . $TD), '<') . '</TD></TR>';
+        return $HTML . '</TABLE>';
+
+
 
         /*
+        //Rob's Code
+        $pro_text = '';
         $arr_return_no['1'] = 'ins_1';
         $arr_return_no['14'] = 'ins_14';
         $arr_return_no['32'] = 'ins_32';
@@ -264,6 +278,16 @@ class ManagerComponent extends Component {
         $arr_return_no['1627'] = 'ebs_1627';
         $arr_return_no['1650'] = 'ebs_1650';
         */
+        if($order_info) {
+            $selected = $order_info->forms;
+            $link = LOGIN . 'profiles/view/' . $order_info->uploaded_for . '?getprofilescore=1';
+            $arr1 = explode(',',$selected);
+        }
+        if($product) {
+            foreach($product as $pro) {
+                $arr2[$pro->number] = $pro->title;
+            }
+        }
         if(isset($arr1) && $arr1 && isset($arr2) && $arr2) {
             foreach($arr1 as $a1) {
                 $pro_text = $pro_text . $arr2[$a1] . "<br/>";
@@ -275,14 +299,15 @@ class ManagerComponent extends Component {
                 }
                 */
             }
-            $HTML = $HTML.'<p>&nbsp;</p><strong>PRODUCTS SELECTED</strong><br/><br/>'.$pro_text;
+            $HTML .= '<p>&nbsp;</p><strong>PRODUCTS SELECTED</strong><br/><br/>'.$pro_text;
         }
 
         if(isset($link)){
-            $HTML = $HTML.'<p>&nbsp;</p>CLICK <a href='.$link.'>HERE</a> TO VIEW THE SCORECARD';;
+            $HTML .= '<p>&nbsp;</p>CLICK <a href='.$link.'>HERE</a> TO VIEW THE SCORECARD';;
         }
+        //Rob's Code ends
         //$JSON = $this->json_to_html(json_encode($Order, JSON_PRETTY_PRINT));
-        return $HTML;// . $JSON;
+        return $HTML;
     }
 
     function toLink($Filename){
