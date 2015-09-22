@@ -682,7 +682,10 @@
 
 
 
-        public function writing_complete($orderid) {
+        public function writing_complete($orderid = false) {
+            if(!$orderid){
+                $orderid = $this->Manager->enum_table("orders", "id", "DESC")->first()->id;//just get the latest order
+            }
             $query2 = TableRegistry::get('orders');
             $arr['complete_writing'] = 1;
             $query2 = $query2->query();

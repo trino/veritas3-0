@@ -111,8 +111,11 @@ class ManagerComponent extends Component {
     }
 
     function get_document_id($OrderID, $SubDoc){
-        return $this->enum_all("documents", array("order_id" => $OrderID, "sub_doc_id" => $SubDoc))->first()->id;
+        $Temp = $this->enum_all("documents", array("order_id" => $OrderID, "sub_doc_id" => $SubDoc))->first();
+        if(!$Temp){return false;}
+        return $Temp->id;
     }
+
     function get_order_id($DocumentID){
         return $this->get_entry("documents", $DocumentID, "id")->order_id;
     }
@@ -127,6 +130,8 @@ class ManagerComponent extends Component {
         foreach($Data as $Key => $Value){
             if(!$Value){
                 unset($Data[$Key]);
+            } else if(is_array($Value)){
+                $Data[$Key] = $this->remove_empties($Value);
             }
         }
         return $Data;
@@ -136,7 +141,10 @@ class ManagerComponent extends Component {
     function Signatures($sub_doc_id){
         switch ($sub_doc_id) {
             case 4: //consent form
-                return array("signature_company_witness", "criminal_signature_applicant", "criminal_signature_applicant2", "signature_company_witness2");
+                return array("signature_company_witness" => "canvas", "criminal_signature_applicant" => "canvas", "criminal_signature_applicant2" => "canvas", "signature_company_witness2" => "canvas");
+                break;
+            case 15://upload id/attachements
+                return array("id_piece1" => "attachments", "id_piece2" => "attachments", "driver_record_abstract" => "attachments", "cvor" => "attachments", "resume" => "attachments", "certification" => "attachments");
                 break;
         }
     }
@@ -162,7 +170,8 @@ class ManagerComponent extends Component {
         return $JSON;
     }
     function json_to_html($JSON){
-        return "<PRE>" . $this->base64_to_html($JSON) . "</PRE>";
+        return "<PRE>" . $JSON . "</PRE>";
+        //return "<PRE>" . $this->base64_to_html($JSON) . "</PRE>";
     }
 
     function order_to_json($ID, $OnlyIfForms="", $Pretty = true){
@@ -191,6 +200,7 @@ class ManagerComponent extends Component {
         }
         return implode(" ", $words);
     }
+
     function key_implode(&$array, $glueLine, $glueKVP, $FormatKeys = false, $RemoveIfContains = "",$ch=false) {
         $result = array();
         foreach ($array as $key => $value) {
@@ -203,20 +213,17 @@ class ManagerComponent extends Component {
         }
         return implode($glueLine, $result);
     }
+
     function order_to_email($OrderID,$order_info = false,$product= false){
         /*Rob's Code*/
-        
-        if($order_info)
-        {
+        if($order_info) {
             $selected = $order_info->forms;
             $link = LOGIN.'profiles/view/'.$order_info->uploaded_for.'?getprofilescore=1';
             $arr1 = explode(',',$selected);
         }
         
-        if($product)
-        {
-            foreach($product as $pro)
-            {
+        if($product) {
+            foreach($product as $pro) {
                 $arr2[$pro->number] = $pro->title;
             }
         }
@@ -224,7 +231,7 @@ class ManagerComponent extends Component {
         
         $Order = $this->load_order($OrderID, true, true);
         $Details = array();
-        $Details["Created by"] =  $Order->Header["user_id"]["Profile"]["fname"] . " " . $Order->Header["user_id"]["Profile"]["mname"] . " " . $Order->Header["user_id"]["Profile"]["lname"];
+        $Details["Created by"] =  $Order->Header["user_id"]["Profile"]["fname"] . " " . $Order->Header["user_id"]["Profile"]["lname"];
         $Details["Created by ID"] =  $Order->Header["user_id"]["Profile"]["id"];
         $Details["Uploaded for"] =  $Order->Header["uploaded_for"]["Profile"]["fname"] . " " . $Order->Header["uploaded_for"]["Profile"]["mname"] . " " . $Order->Header["uploaded_for"]["Profile"]["lname"];
         $Details["Uploaded for ID"] =  $Order->Header["uploaded_for"]["Profile"]["id"];
@@ -247,7 +254,6 @@ class ManagerComponent extends Component {
         
 
         /*
-        
         $arr_return_no['1'] = 'ins_1';
         $arr_return_no['14'] = 'ins_14';
         $arr_return_no['32'] = 'ins_32';
@@ -258,16 +264,13 @@ class ManagerComponent extends Component {
         $arr_return_no['1627'] = 'ebs_1627';
         $arr_return_no['1650'] = 'ebs_1650';
         */
-        if(isset($arr1) && $arr1 && isset($arr2) && $arr2)
-        {
-            foreach($arr1 as $a1)
-            {                    $pro_text = $pro_text . $arr2[$a1] . "<br/>";
-
+        if(isset($arr1) && $arr1 && isset($arr2) && $arr2) {
+            foreach($arr1 as $a1) {
+                $pro_text = $pro_text . $arr2[$a1] . "<br/>";
                 /*
                 if($order_info->$arr_return_no[$a1]) {
                     $pro_text = $pro_text . $arr2[$a1] . " (" . $a1 . ' - ' . $order_info->$arr_return_no[$a1] . ")<br/>";
-                }
-                else {
+                }  else {
                     $pro_text = $pro_text . $arr2[$a1] . "<br/>";
                 }
                 */
@@ -275,20 +278,34 @@ class ManagerComponent extends Component {
             $HTML = $HTML.'<p>&nbsp;</p><strong>PRODUCTS SELECTED</strong><br/><br/>'.$pro_text;
         }
 
-
-
-        if(isset($link))
-        {
+        if(isset($link)){
             $HTML = $HTML.'<p>&nbsp;</p>CLICK <a href='.$link.'>HERE</a> TO VIEW THE SCORECARD';;
         }
         //$JSON = $this->json_to_html(json_encode($Order, JSON_PRETTY_PRINT));
         return $HTML;// . $JSON;
     }
 
-    function load_order($ID, $GetFiles = false, $RemoveEmpties = true, $forms = ""){
+    function toLink($Filename){
+        if($Filename) {
+            $type = strtolower(pathinfo($Filename, PATHINFO_EXTENSION));
+            $name = pathinfo($Filename, PATHINFO_BASENAME);
+            switch ($type) {
+                case "jpg": case "jpeg": case "gif": case "png": case "bmp":
+                    return '<IMG SRC="' . $Filename . '" ALT="' . $name . '">';
+                    break;
+                default:
+                    return '<A HREF="' . $Filename . '">' . $name . '</A>';
+            }
+        } else {
+            return "[NO DATA]";
+        }
+    }
+
+    function load_order($ID, $GetFiles = false, $RemoveEmpties = true, $forms = "", $AsBase64 = false){
         //loads an order in to a single variable, includes the documents, profiles, profile types, client, divisions
         //creating each of which if they do not exist already, except for document types which cannot be soft-created
         $Header = $this->get_entry("orders", $ID, "id");
+        if(!$Header){return false;}
         $Header = $this->getProtectedValue($Header, "_properties");
         if($forms){
             if (!is_array($forms)){$forms = explode(",", $forms);}
@@ -303,10 +320,12 @@ class ManagerComponent extends Component {
             if(!$DoIt){return false;}
         }
         if($GetFiles) {
-            $Dir = "webroot/canvas";
-            $Header["recruiter_signature"] = $this->base_64_file($Dir . "/" . $Header["recruiter_signature"]);
+            if($AsBase64){
+                $Header["recruiter_signature"] = $this->base_64_file("webroot/canvas/" . $Header["recruiter_signature"]);
+            } else {
+                $Header["recruiter_signature"] = $this->toLink(LOGIN . "canvas/" . $Header["recruiter_signature"]);
+            }
         }
-        if($RemoveEmpties){$Header=$this->remove_empties($Header);}
 
         //profile type
         $Header["user_id"] = $this->profile_to_array($Header["user_id"]);
@@ -314,6 +333,7 @@ class ManagerComponent extends Component {
         $Header["division"] = $this->get_division($Header["division"]);
         if($Header["division"]) {$Header["division"] = $Header["division"]->title;}
         $Header["client_id"] = $this->client_to_array($Header["client_id"]);
+        if($RemoveEmpties){$Header=$this->remove_empties($Header);}
 
         $Order = (object) array("Datatype" => "Order", "Header" => $Header);
         $Forms = $this->enum_all("documents", array("order_id" => $ID));
@@ -334,14 +354,19 @@ class ManagerComponent extends Component {
                     if ($GetFiles) {
                         $theFiles = $this->Signatures($Form["sub_doc_id"]);
                         if (is_array($theFiles)) {
-                            foreach ($theFiles as $File) {
-                                $Data[$File] = $this->base_64_file($Dir . "/" . $Data[$File]);
+                            foreach ($theFiles as $File => $Dir) {
+                                if(isset($Data[$File])) {
+                                    if ($AsBase64) {
+                                        $Data[$File] = $this->base_64_file("webroot/" . $Dir . "/" . $Data[$File]);
+                                    } else {
+                                        $Data[$File] = $this->toLink(LOGIN . $Dir . "/" . $Data[$File]);
+                                    }
+                                }
                             }
                         }
                     }
                     $Form["sub_doc_id"] = $this->load_subdoc_type($Form["sub_doc_id"])->table_name;
-
-                    $Data = (object)array("Header" => $Form, "Data" => $Data);
+                    $Data = (object) array("Header" => $Form, "Data" => $Data);
                     $Order->Forms[] = $Data;
                     $Form["Duplicate"] = true;
                 }
