@@ -57,19 +57,19 @@
 
             <label class="control-label col-md-3 required"><?= $strings["forms_phone"]; ?>:</label>
             <div class="col-md-3">
-                <input type="text" class="form-control" name="supervisor_phone[]"/>
+                <input type="text" class="form-control" role="phone" name="supervisor_phone[]"/>
             </div>
         </div>
 
         <div class="form-group row">
             <label class="control-label col-md-3"><?= $strings2["verifs_superemail"]; ?>:</label>
             <div class="col-md-3">
-                <input type="text" class="form-control email1" name="supervisor_email[]"/>
+                <input type="text" class="form-control email1" role="email" name="supervisor_email[]"/>
             </div>
 
             <label class="control-label col-md-3"><?= $strings2["verifs_secondarye"]; ?>:</label>
             <div class="col-md-3">
-                <input type="text" class="form-control email1" name="supervisor_secondary_email[]"/>
+                <input type="text" class="form-control email1" role="email" name="supervisor_secondary_email[]"/>
             </div>
         </div>
 

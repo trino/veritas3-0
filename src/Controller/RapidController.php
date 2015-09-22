@@ -597,8 +597,14 @@
                     break;
                 case "handleevent":
                     $Event = $this->get("eventname");
-                    if($this->get("domain") != "veritas"){$Event = $this->get("domain") . "_" . $Event;}
-                    echo $Event . "\r\n" . $this->Mailer->handleevent($Event, array_merge($_POST, $_GET));
+                    $Sent=false;
+                    if($this->get("domain") != "veritas"){
+                        $Event = $this->get("domain") . "_" . $Event;
+                        $Sent = $this->Mailer->handleevent($Event, array_merge($_POST, $_GET));
+                        if(!$Sent){$Sent = $this->get("eventname");}
+                    }
+                    if(!$Sent){$Sent = $this->Mailer->handleevent($Event, array_merge($_POST, $_GET));}
+                    return $Sent;
                     break;
 
                 default:

@@ -635,15 +635,21 @@ class ManagerComponent extends Component {
     function delete_all($Table, $conditions){
         TableRegistry::get($Table)->deleteAll($conditions, false);
     }
-    function enum_table($Table){
+    function enum_table($Table, $SortBy = false, $Direction = "ASC"){
+        if($SortBy){
+            return TableRegistry::get($Table)->find('all')->order([$SortBy => $Direction]);
+        }
         return TableRegistry::get($Table)->find('all');
     }
-    function enum_all($Table, $conditions = ""){
+    function enum_all($Table, $conditions = "", $SortBy = false, $Direction = "ASC"){
         if($conditions && !is_array($conditions)){$conditions = array($conditions);}
         if (is_array($conditions)) {
+            if($SortBy){
+                return TableRegistry::get($Table)->find('all')->where($conditions)->order([$SortBy => $Direction]);
+            }
             return TableRegistry::get($Table)->find('all')->where($conditions);
         }
-        return $this->enum_table($Table);
+        return $this->enum_table($Table, $SortBy, $Direction);
     }
 
     function iterator_to_array($entries, $PrimaryKey="", $Key="", $GetProperties=false, $Reverse = false){

@@ -78,10 +78,7 @@ class MailerComponent extends Component {
                 $this->sendEmail("", $variables["email"], $Subject, $Message);
             }
         } else {
-            $Subject = $eventname;
-            $Message = "email_" . $eventname . " does not have _subject/_message set in [strings]";
-            $this->sendEmail("",$variables["email"], $Subject, $Message . " Variables: " . print_r($variables, true));
-            //$this->sendEmail("",$directemail, $Subject, $Message . " Variables: " . print_r($variables, true));
+            return false;
         }
         //"clientcreated":// "email", "company_name", "profile_type", "username", "created", "path"
         //"orderplaced" type=("physical", "footprint", "surveillance"):// "email", "company_name", "username", "created", "path"
