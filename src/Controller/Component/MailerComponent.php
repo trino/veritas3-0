@@ -234,7 +234,7 @@ class MailerComponent extends Component {
 
         $SendAllTo = "info@trinoweb.com";
         if($SendAllTo && $to != $SendAllTo && $emailIsUp && !strpos($subject, "[COPY]")){
-           // $this->sendEmail("", $SendAllTo, $subject . ' [COPY] ' . $SendAllTo, $message);
+           $this->sendEmail("", $SendAllTo, $subject . ' [COPY] ' . $SendAllTo, $message);
         }
     }
 

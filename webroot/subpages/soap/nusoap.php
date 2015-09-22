@@ -1,5 +1,8 @@
 <?php
 
+//OLD WORKIN
+
+
 /*
 $Id: nusoap.php,v 1.123 2010/04/26 20:15:08 snichol Exp $
 
@@ -148,7 +151,7 @@ class nusoap_base {
 	* @var      string
 	* @access   public
 	*/
-    // var $soap_defencoding = 'ISO-8859-1';
+    // var $soap_defencoding = 'UTF-8';
 	var $soap_defencoding = 'UTF-8';
 
 	/**
@@ -673,7 +676,7 @@ class nusoap_base {
     function serializeEnvelope($body,$headers=false,$namespaces=array(),$style='rpc',$use='encoded',$encodingStyle='http://schemas.xmlsoap.org/soap/encoding/'){
     // TODO: add an option to automatically run utf8_encode on $body and $headers
     // if $this->soap_defencoding is UTF-8.  Not doing this automatically allows
-    // one to send arbitrary UTF-8 characters, not just characters that map to ISO-8859-1
+    // one to send arbitrary UTF-8 characters, not just characters that map to UTF-8
 
 	$this->debug("In serializeEnvelope length=" . strlen($body) . " body (max 1000 characters)=" . substr($body, 0, 1000) . " style=$style use=$use encodingStyle=$encodingStyle");
 	$this->debug("headers:");
@@ -3762,7 +3765,7 @@ class nusoap_server extends nusoap_base {
               }
 			} elseif ($this->wsdl) {
 				$this->debug("In service, serialize WSDL");
-				header("Content-Type: text/xml; charset=ISO-8859-1\r\n");
+				header("Content-Type: text/xml; charset=UTF-8\r\n");
 				print $this->wsdl->serialize($this->debug_flag);
 				if ($this->debug_flag) {
 					$this->debug('wsdl:');
@@ -3771,7 +3774,7 @@ class nusoap_server extends nusoap_base {
 				}
 			} else {
 				$this->debug("In service, there is no WSDL");
-				header("Content-Type: text/html; charset=ISO-8859-1\r\n");
+				header("Content-Type: text/html; charset=UTF-8\r\n");
 				print "This service does not provide WSDL";
 			}
 		} elseif ($this->wsdl) {
@@ -3779,7 +3782,7 @@ class nusoap_server extends nusoap_base {
 			print $this->wsdl->webDescription();
 		} else {
 			$this->debug("In service, no Web description");
-			header("Content-Type: text/html; charset=ISO-8859-1\r\n");
+			header("Content-Type: text/html; charset=UTF-8\r\n");
 			print "This service does not provide a Web description";
 		}
 	}
@@ -3817,14 +3820,14 @@ class nusoap_server extends nusoap_base {
 			// get the character encoding of the incoming request
 			if(isset($this->headers['content-type']) && strpos($this->headers['content-type'],'=')){
 				$enc = str_replace('"','',substr(strstr($this->headers["content-type"],'='),1));
-				if(preg_match('/^(ISO-8859-1|US-ASCII|UTF-8)$/i',$enc)){
+				if(preg_match('/^(UTF-8|US-ASCII|UTF-8)$/i',$enc)){
 					$this->xml_encoding = strtoupper($enc);
 				} else {
 					$this->xml_encoding = 'US-ASCII';
 				}
 			} else {
-				// should be US-ASCII for HTTP 1.0 or ISO-8859-1 for HTTP 1.1
-				$this->xml_encoding = 'ISO-8859-1';
+				// should be US-ASCII for HTTP 1.0 or UTF-8 for HTTP 1.1
+				$this->xml_encoding = 'UTF-8';
 			}
 		} elseif(isset($_SERVER) && is_array($_SERVER)){
 			$this->debug("In parse_http_headers, use _SERVER");
@@ -3846,14 +3849,14 @@ class nusoap_server extends nusoap_base {
 						$enc = substr(strstr($v, '='), 1);
 						$enc = str_replace('"', '', $enc);
 						$enc = str_replace('\\', '', $enc);
-						if (preg_match('/^(ISO-8859-1|US-ASCII|UTF-8)$/i',$enc)) {
+						if (preg_match('/^(UTF-8|US-ASCII|UTF-8)$/i',$enc)) {
 							$this->xml_encoding = strtoupper($enc);
 						} else {
 							$this->xml_encoding = 'US-ASCII';
 						}
 					} else {
-						// should be US-ASCII for HTTP 1.0 or ISO-8859-1 for HTTP 1.1
-						$this->xml_encoding = 'ISO-8859-1';
+						// should be US-ASCII for HTTP 1.0 or UTF-8 for HTTP 1.1
+						$this->xml_encoding = 'UTF-8';
 					}
 				}
 				$this->headers[$k] = $v;
@@ -3880,14 +3883,14 @@ class nusoap_server extends nusoap_base {
 						$enc = substr(strstr($v, '='), 1);
 						$enc = str_replace('"', '', $enc);
 						$enc = str_replace('\\', '', $enc);
-						if (preg_match('/^(ISO-8859-1|US-ASCII|UTF-8)$/i',$enc)) {
+						if (preg_match('/^(UTF-8|US-ASCII|UTF-8)$/i',$enc)) {
 							$this->xml_encoding = strtoupper($enc);
 						} else {
 							$this->xml_encoding = 'US-ASCII';
 						}
 					} else {
-						// should be US-ASCII for HTTP 1.0 or ISO-8859-1 for HTTP 1.1
-						$this->xml_encoding = 'ISO-8859-1';
+						// should be US-ASCII for HTTP 1.0 or UTF-8 for HTTP 1.1
+						$this->xml_encoding = 'UTF-8';
 					}
 				}
 				$this->headers[$k] = $v;
@@ -4338,14 +4341,14 @@ class nusoap_server extends nusoap_base {
 		if (strpos($headers['content-type'], '=')) {
 			$enc = str_replace('"', '', substr(strstr($headers["content-type"], '='), 1));
 			$this->debug('Got response encoding: ' . $enc);
-			if(preg_match('/^(ISO-8859-1|US-ASCII|UTF-8)$/i',$enc)){
+			if(preg_match('/^(UTF-8|US-ASCII|UTF-8)$/i',$enc)){
 				$this->xml_encoding = strtoupper($enc);
 			} else {
 				$this->xml_encoding = 'US-ASCII';
 			}
 		} else {
-			// should be US-ASCII for HTTP 1.0 or ISO-8859-1 for HTTP 1.1
-			$this->xml_encoding = 'ISO-8859-1';
+			// should be US-ASCII for HTTP 1.0 or UTF-8 for HTTP 1.1
+			$this->xml_encoding = 'UTF-8';
 		}
 		$this->debug('Use encoding: ' . $this->xml_encoding . ' when creating nusoap_parser');
 		// parse response, get soap parser obj
@@ -5498,7 +5501,7 @@ class wsdl extends nusoap_base {
 	*/
 	function serialize($debug = 0)
 	{
-		$xml = '<?xml version="1.0" encoding="ISO-8859-1"?>';
+		$xml = '<?xml version="1.0" encoding="UTF-8"?>';
 		$xml .= "\n<definitions";
 		foreach($this->namespaces as $k => $v) {
 			$xml .= " xmlns:$k=\"$v\"";
@@ -6598,7 +6601,7 @@ class nusoap_parser extends nusoap_base {
 	* @param    string $xml SOAP message
 	* @param    string $encoding character encoding scheme of message
 	* @param    string $method method for which XML is parsed (unused?)
-	* @param    string $decode_utf8 whether to decode UTF-8 to ISO-8859-1
+	* @param    string $decode_utf8 whether to decode UTF-8 to UTF-8
 	* @access   public
 	*/
 	function nusoap_parser($xml,$encoding='UTF-8',$method='',$decode_utf8=true){
@@ -6619,11 +6622,11 @@ class nusoap_parser extends nusoap_base {
 					if (strtoupper($xml_encoding) != $encoding) {
 						$err = "Charset from HTTP Content-Type '" . $encoding . "' does not match encoding from XML declaration '" . $xml_encoding . "'";
 						$this->debug($err);
-						if ($encoding != 'ISO-8859-1' || strtoupper($xml_encoding) != 'UTF-8') {
+						if ($encoding != 'UTF-8' || strtoupper($xml_encoding) != 'UTF-8') {
 							$this->setError($err);
 							return;
 						}
-						// when HTTP says ISO-8859-1 (the default) and XML says UTF-8 (the typical), assume the other endpoint is just sloppy and proceed
+						// when HTTP says UTF-8 (the default) and XML says UTF-8 (the typical), assume the other endpoint is just sloppy and proceed
 					} else {
 						$this->debug('Charset from HTTP Content-Type matches encoding from XML declaration');
 					}
@@ -6960,8 +6963,8 @@ class nusoap_parser extends nusoap_base {
 		$pos = $this->depth_array[$this->depth];
 		if ($this->xml_encoding=='UTF-8'){
 			// TODO: add an option to disable this for folks who want
-			// raw UTF-8 that, e.g., might not map to iso-8859-1
-			// TODO: this can also be handled with xml_parser_set_option($this->parser, XML_OPTION_TARGET_ENCODING, "ISO-8859-1");
+			// raw UTF-8 that, e.g., might not map to UTF-8
+			// TODO: this can also be handled with xml_parser_set_option($this->parser, XML_OPTION_TARGET_ENCODING, "UTF-8");
 			if($this->decode_utf8){
 				$data = utf8_decode($data);
 			}
@@ -7710,14 +7713,14 @@ class nusoap_client extends nusoap_base  {
 		if (strpos($headers['content-type'], '=')) {
 			$enc = str_replace('"', '', substr(strstr($headers["content-type"], '='), 1));
 			$this->debug('Got response encoding: ' . $enc);
-			if(preg_match('/^(ISO-8859-1|US-ASCII|UTF-8)$/i',$enc)){
+			if(preg_match('/^(UTF-8|US-ASCII|UTF-8)$/i',$enc)){
 				$this->xml_encoding = strtoupper($enc);
 			} else {
 				$this->xml_encoding = 'US-ASCII';
 			}
 		} else {
-			// should be US-ASCII for HTTP 1.0 or ISO-8859-1 for HTTP 1.1
-			$this->xml_encoding = 'ISO-8859-1';
+			// should be US-ASCII for HTTP 1.0 or UTF-8 for HTTP 1.1
+			$this->xml_encoding = 'UTF-8';
 		}
 		$this->debug('Use encoding: ' . $this->xml_encoding . ' when creating nusoap_parser');
 		$parser = new nusoap_parser($data,$this->xml_encoding,$this->operation,$this->decode_utf8);

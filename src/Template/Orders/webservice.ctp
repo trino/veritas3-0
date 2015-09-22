@@ -123,6 +123,7 @@
         $result = $client->call('StartOrder', $soap_xml);
         $myArray = explode(',', $result['StartOrderResult']);
 
+		var_dump( $result);
         $ins_id = substr($myArray[0], 4);
         $ebs_id = substr($myArray[1], 4);
 
