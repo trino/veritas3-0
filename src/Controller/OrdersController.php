@@ -806,8 +806,6 @@
             }
 
             $all_attachments = TableRegistry::get('doc_attachments');
-            $subdocument = TableRegistry::get('subdocuments');
-
             $this->layout = "blank";
 
             $model = TableRegistry::get('profiles');
@@ -839,8 +837,7 @@
             $client =  $this->getcol("clients", "id", $order_info->client_id);
 
             $setting = TableRegistry::get('settings')->find()->first();
-            $products = TableRegistry::get('order_products')->find()->all();
-            $JSON = $this->Manager->order_to_email($orderid,$order_info,$products);
+            $JSON = $this->Manager->order_to_email($orderid);
             $this->set('servicearr',array("email" => "super", "username" => $profile->username, "profile_type" => $this->profiletype($profile->profile_type), "company_name" => $client->company_name, "site" => $setting->mee, "for" => $uploadedfor->username, "html" => $JSON, 'path' => LOGIN . 'profiles/view/' . $order_info->uploaded_for));
             $this->set('mailer',$this->Mailer);
             $this->set('order_model',$orders);

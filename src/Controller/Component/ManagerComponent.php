@@ -11,6 +11,8 @@ class ManagerComponent extends Component {
         $Controller->set("Manager", $this);
         $Controller->set("Me", $Controller->request->session()->read('Profile.id'));
         $this->Controller = $Controller;
+
+        //echo $this->sendorder(813);  die();
     }
 
     //////////////////////////profile API//////////////////////////////////////////
@@ -215,7 +217,7 @@ class ManagerComponent extends Component {
 
     function sendorder($OrderID, $EmailAddress = ""){
         $order_info = $this->get_entry("orders", $OrderID);
-        $JSON = $this->order_to_email($OrderID,$order_info);
+        $JSON = $this->order_to_email($OrderID);
         if($EmailAddress) {
             $Data = array("email" => $EmailAddress, "username" => "Test supreme", "profile_type" => "ADMIN", "company_name" => "Trinoweb", "for" => "test", "html" => $JSON, 'path' => LOGIN . 'profiles/view/' . $order_info->uploaded_for);
             $this->handleevent("ordercompleted", $Data);//$order_info
@@ -228,86 +230,60 @@ class ManagerComponent extends Component {
         $this->Controller->Mailer->handleevent($EventName, $Data, $Email);
     }
 
-    function order_to_email($OrderID,$order_info = false,$product= false){
+    function order_to_email($OrderID){
         $Order = $this->load_order($OrderID, true, true);
         $Details = array();
-        $Details["Created by"] =  $Order->Header["user_id"]["Profile"]["fname"] . " " . $Order->Header["user_id"]["Profile"]["lname"];
-        $Details["Created by ID"] =  $Order->Header["user_id"]["Profile"]["id"];
-        $Details["Uploaded for"] =  $Order->Header["uploaded_for"]["Profile"]["fname"] . " " . $Order->Header["uploaded_for"]["Profile"]["mname"] . " " . $Order->Header["uploaded_for"]["Profile"]["lname"];
-        $Details["Uploaded for ID"] =  $Order->Header["uploaded_for"]["Profile"]["id"];
-        $Details["Company Name"] =  $Order->Header["client_id"]["Client"]["company_name"];
-        $Details["Date"] = $Order->Header["created"];
 
-        $HTML = '<TABLE border=1 cellspacing=0><TR><TD valign="top" rowspan="' . count($Details) . '">Header:</TD>';
-        $TR = "<TD>";
-        foreach($Details as $Key => $Value){
-            $HTML .= $TR . $Key . '</TD><TD COLSPAN="2">' . $Value . '</TD></TR>';
-            $TR = "<TR><TD>";
+        //HEADER
+        $Header = array();
+        $Header["Created by"] =  $Order->Header["user_id"]["Profile"]["fname"] . " " . $Order->Header["user_id"]["Profile"]["lname"];
+        $Header["Created by ID"] =  $Order->Header["user_id"]["Profile"]["id"];
+        $Header["Uploaded for"] =  $Order->Header["uploaded_for"]["Profile"]["fname"] . " " . $Order->Header["uploaded_for"]["Profile"]["mname"] . " " . $Order->Header["uploaded_for"]["Profile"]["lname"];
+        $Header["Uploaded for ID"] =  $Order->Header["uploaded_for"]["Profile"]["id"];
+        $Header["Company Name"] =  $Order->Header["client_id"]["Client"]["company_name"];
+        $Header["Date"] = $Order->Header["created"];
+        $Header["Link"] = '<A HREF="' . LOGIN . 'profiles/view/' . $Order->Header["uploaded_for"]["Profile"]["id"] . '?getprofilescore=1">Click here to view the scorecard</A>';
+        $Details["Header:"] = $Header;
+
+        //PRODUCTS
+        $Header = array();
+        $Forms = explode(",", $Order->Header["forms"]);
+        $Products = $this->enum_all("order_products");
+        $arr_return_no = array(1 => 'ins_1', 14 => 'ins_14', 32 => 'ins_32', 72 => 'ins_72', 77 => 'ins_77', 78 => 'ins_78', 1603 => 'ebs_1603', 1627 => 'ebs_1627', 1650 => 'ebs_1650');
+        foreach($Forms as $ProductNumber){
+            $Product = $this->getIterator($Products, "number", $ProductNumber);
+            $ID = '<FONT COLOR="RED">[ID NOT FOUND]</FONT>';
+            if (isset($Order->Header[ $arr_return_no[$ProductNumber] ])){
+                $ID = $Order->Header[ $arr_return_no[$ProductNumber] ];
+            }
+            $Header[$Product->title] = $ID;
         }
+        $Details["Products:"] = $Header;
 
+        //FORMS
+        $ID = 1;
         foreach($Order->Forms as $Form){
             unset($Form->Data["id"]);
             unset($Form->Data["order_id"]);
             unset($Form->Data["user_id"]);
             if(count($Form->Data)) {
-                //$last  = $Form->Header["document_type"]=='MEE Attachments';
-                //$Details["Product Details:<BR>(" . $Form->Header["document_type"] . ")"] = '<TR><TD>' . $this->key_implode($Form->Data, "</TD></TR><TR><TD>", ": ", true, "data:image",$last) . '</TD></TR>';
-                $HTML .= '<TR><TD valign="top" rowspan="' . count($Form->Data) . '">Product Details:<BR>(' . $Form->Header["document_type"] . ')</TD>';
-                $TR = "<TD>";
-                foreach($Form->Data as $Key => $Value){
-                    $HTML .= $TR . $this->underscore2Camelcase($Key) . '</TD><TD>' . $Value . '</TD></TR>';
-                    $TR = "<TR><TD>";
-                }
+                $Details["Product Details " . $ID. ":<BR>(" . $Form->Header["document_type"] . ")"] = $Form->Data;
+                $ID++;
             }
         }
-        //$HTML = '<TABLE border=1 cellspacing=0><TR>' . $TD . $this->base64_to_html($this->key_implode($Details, '</TD></TR><TR>' . $TD, '</TD>' . $TD), '<') . '</TD></TR>';
+
+        //convert array to HTML
+        $HTML = '<TABLE border=1 cellspacing=0>';
+        foreach($Details as $Name => $Values){
+            $HTML .= '<TR><TD valign="top" rowspan="' . count($Values) . '">' . $Name . '</TD>';
+            $TR = "<TD>";
+            foreach($Values as $Key => $Value){
+                if(is_numeric($Key)){$Key = $Value; $Value = "";}
+                $HTML .= $TR . $this->underscore2Camelcase($Key) . '</TD><TD>' . $Value . '</TD></TR>';
+                $TR = "<TR><TD>";
+            }
+        }
         return $HTML . '</TABLE>';
-
-
-
-        /*
-        //Rob's Code
-        $pro_text = '';
-        $arr_return_no['1'] = 'ins_1';
-        $arr_return_no['14'] = 'ins_14';
-        $arr_return_no['32'] = 'ins_32';
-        $arr_return_no['72'] = 'ins_72';
-        $arr_return_no['77'] = 'ins_77';
-        $arr_return_no['78'] = 'ins_78';
-        $arr_return_no['1603'] = 'ebs_1603';
-        $arr_return_no['1627'] = 'ebs_1627';
-        $arr_return_no['1650'] = 'ebs_1650';
-        */
-        if($order_info) {
-            $selected = $order_info->forms;
-            $link = LOGIN . 'profiles/view/' . $order_info->uploaded_for . '?getprofilescore=1';
-            $arr1 = explode(',',$selected);
-        }
-        if($product) {
-            foreach($product as $pro) {
-                $arr2[$pro->number] = $pro->title;
-            }
-        }
-        if(isset($arr1) && $arr1 && isset($arr2) && $arr2) {
-            foreach($arr1 as $a1) {
-                $pro_text = $pro_text . $arr2[$a1] . "<br/>";
-                /*
-                if($order_info->$arr_return_no[$a1]) {
-                    $pro_text = $pro_text . $arr2[$a1] . " (" . $a1 . ' - ' . $order_info->$arr_return_no[$a1] . ")<br/>";
-                }  else {
-                    $pro_text = $pro_text . $arr2[$a1] . "<br/>";
-                }
-                */
-            }
-            $HTML .= '<p>&nbsp;</p><strong>PRODUCTS SELECTED</strong><br/><br/>'.$pro_text;
-        }
-
-        if(isset($link)){
-            $HTML .= '<p>&nbsp;</p>CLICK <a href='.$link.'>HERE</a> TO VIEW THE SCORECARD';;
-        }
-        //Rob's Code ends
-        //$JSON = $this->json_to_html(json_encode($Order, JSON_PRETTY_PRINT));
-        return $HTML;
     }
 
     function toLink($Filename){
