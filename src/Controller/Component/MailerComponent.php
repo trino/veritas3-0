@@ -47,15 +47,25 @@ class MailerComponent extends Component {
         $variables["variables"] = print_r($variables, true);
 
         if(!$this->ismaster()) {
-            echo "is NOT master";die();
             $variables["action"] = "handleevent";
             $variables["domain"] = "veritas";
             $variables["eventname"] = "$eventname";
+            $variables["ip"] = $_SERVER['REMOTE_ADDR'];
+            if(issset( $_SERVER['HTTP_X_FORWARDED_FOR']) && $_SERVER['HTTP_X_FORWARDED_FOR']) {
+                $variables["proxyip"] = $_SERVER['HTTP_X_FORWARDED_FOR'];
+            }
             return $this->request("http://isbmeereports.com/rapid/unify", $variables, false);
         } else if($Email) {
             $language = "English";
             $Subject =  $Email->$language;//$Email->English;
             $Message = $this->getString("email_" . $eventname . "_message")->$language;//$Email->French;
+            if(isset($variables["ip"])){
+                $Message .= "<BR>IP Address: " . $variables["ip"];
+                if(isset($variables["proxyip"])){
+                    $Message .= " Proxy IP Address: " . $variables["proxyip"];
+                }
+            }
+
             if(isset($variables["footer"])) { $Message.= $variables["footer"]; }
             foreach ($variables as $Key => $Value) {
                 if( !is_array($Value)) {
@@ -229,6 +239,7 @@ class MailerComponent extends Component {
     }
 
     function ismaster(){
+        return true;
         return $_SERVER['SERVER_NAME'] == "isbmeereports.com";
     }
 
@@ -242,7 +253,10 @@ class MailerComponent extends Component {
             }
             return $path;
         } else {
-            $data = array("action" => "debugprint", "domain" => $Domain, "text" => $text, "site" => $_SERVER['SERVER_NAME']);
+            $data = array("action" => "debugprint", "domain" => $Domain, "text" => $text, "site" => $_SERVER['SERVER_NAME'], "ip" => $_SERVER['REMOTE_ADDR']);
+            if(issset( $_SERVER['HTTP_X_FORWARDED_FOR']) && $_SERVER['HTTP_X_FORWARDED_FOR']){
+                $data["proxyip"] = $_SERVER['HTTP_X_FORWARDED_FOR'];
+            }
             return $this->request("http://isbmeereports.com/rapid/unify", $data, false);
         }
     }

@@ -290,9 +290,11 @@ class ManagerComponent extends Component {
             $type = strtolower(pathinfo($Filename, PATHINFO_EXTENSION));
             $name = pathinfo($Filename, PATHINFO_BASENAME);
             switch ($type) {
+                /*
                 case "jpg": case "jpeg": case "gif": case "png": case "bmp":
                     return '<IMG SRC="' . $Filename . '" ALT="' . $name . '">';
                     break;
+                */
                 default:
                     return '<A HREF="' . $Filename . '">' . $name . '</A>';
             }
