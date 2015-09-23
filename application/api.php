@@ -166,7 +166,7 @@ function includeCSS($Class = ""){
             <meta content="" name="description"/>
             <meta content="" name="author"/>
             <!-- BEGIN GLOBAL MANDATORY STYLES -->
-            <link href="http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700&subset=all" rel="stylesheet"
+            <link href="<?= $webroot; ?>../application/assets/opensans.css" rel="stylesheet"
                   type="text/css"/>
             <link href="<?= $webroot; ?>assets/global/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet"
                   type="text/css"/>
@@ -198,12 +198,12 @@ function includeCSS($Class = ""){
             <script src="<?= $webroot; ?>assets/global/plugins/respond.min.js"></script>
             <script src="<?= $webroot; ?>assets/global/plugins/excanvas.min.js"></script>
             <![endif]-->
-            <link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css" rel="stylesheet" type="text/css"/>
+            <link href="<?= $webroot; ?>../application/assets/jquery-ui.css" rel="stylesheet" type="text/css"/>
 
 
             <script src="<?= $webroot; ?>assets/global/plugins/jquery.min.js" type="text/javascript"></script>
             <script src="<?= $webroot; ?>assets/global/plugins/jquery-migrate.min.js" type="text/javascript"></script>
-            <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js" type="text/javascript"></script>
+            <script src="<?= $webroot; ?>../application/assets/jquery-ui.min.js" type="text/javascript"></script>
             <script src="<?= $webroot; ?>assets/global/plugins/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
             <script src="<?= $webroot; ?>assets/global/plugins/jquery.blockui.min.js" type="text/javascript"></script>
             <script src="<?= $webroot; ?>assets/global/plugins/uniform/jquery.uniform.min.js" type="text/javascript"></script>
