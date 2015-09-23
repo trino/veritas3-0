@@ -191,6 +191,7 @@ class ManagerComponent extends Component {
         if ($Order->order_type) {
             $EDITURL.= '?order_type=' . urlencode($Order->order_type);
             if ($Order->forms) { $EDITURL.= '&forms=' . $Order->forms; }
+            if ($Order->division) { $EDITURL.= '&division=' . $Order->division; }
         }
         return $EDITURL;
     }

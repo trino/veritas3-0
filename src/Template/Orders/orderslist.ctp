@@ -233,10 +233,7 @@
                                                     ?>">
 
                                                     <?php
-                                                    if($order->order_type != 'BUL' && $order->order_type != 'REQ')
-                                                    {
-                                                                                                            
-                                                        ?>
+                                                    if($order->order_type != 'BUL' && $order->order_type != 'REQ')  { ?>
                                                         
                                                     <a class="more" id="sub_doc_click1"
                                                        href="<?php
@@ -258,27 +255,18 @@
                                                            } else { ?>javascript:;<?php }
                                                        } ?>">
                                                        <?php
+                                                    } else  {
+                                                        echo '<span class="more">';
                                                     }
-                                                    else
-                                                    {
-                                                        ?>
-                                                        <span class="more">
-                                                        <?php
+                                                    if($order->order_type == 'REQ') {echo 'RE-QUALIFICATION';}
+                                                    echo '<i class="fa fa-copy"></i>';
+                                                    echo h(getField($ordertype, "Name", $language) . $Trans); //it won't let me put it in the desc
+                                                    if($order->order_type != 'BUL' && $order->order_type != 'REQ') {
+                                                        echo '</a>';
+                                                    }else{
+                                                        echo '</span>';
                                                     }
-                                                    ?>
-                                                        <?php if($order->order_type == 'REQ')echo 'RE-QUALIFICATION';?>
-                                                        <i class="fa fa-copy"></i>
-
-                                                        <?= h(getField($ordertype, "Name", $language) . $Trans); //it won't let me put it in the desc   ?>
-                                                    <?php
-                                                    if($order->order_type != 'BUL' && $order->order_type != 'REQ')
-                                                    {
-                                                        ?></a><?php }else{
-                                                            ?>
-                                                            </span>
-                                                            <?php
-                                                        }?>
-                                                    <?php echo "</div>";
+                                                    echo "</div>";
                                                 } else {
                                                     echo "Unknown";
                                                 }
