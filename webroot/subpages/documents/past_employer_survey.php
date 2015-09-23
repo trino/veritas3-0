@@ -7,22 +7,28 @@
         <div class="clearfix"></div>
         <hr/>
         <div class="col-md-12">
+        <div class="row"> 
             <div class="col-md-6"><img src="<?php echo $this->request->webroot;?>img/gfs.png" style="width: 120px;" /></div>
             <div class="clearfix"></div>
+        </div>
         </div>
         <div class="clearfix"></div>
         <p>&nbsp;</p>
         <div>
             <div class="col-md-6">
+            <div class="row"> 
                     <label class="control-label col-md-4">Applicant's Name: </label>  
                     <div class="col-md-8">              
                         <input class="form-control" name="applicant_name" value="<?php if(isset($past_employment_survey))echo $past_employment_survey->applicant_name;?>" />
                     </div>
             </div>
+            </div>
             <div class="col-md-6">
+            <div class="row"> 
                     <label class="control-label col-md-4">Date: </label>  
                     <div class="col-md-8">              
                         <input class="form-control" name="date" value="<?php if(isset($past_employment_survey))echo $past_employment_survey->date;?>" />
+                    </div>
                     </div>
             </div> 
         </div> 
@@ -30,6 +36,7 @@
         
         <div class="col-md-12">
             <p>&nbsp;</p>
+            <div class="row"> 
             <em class="col-md-12">In order to better understand your interests and needs you believe should be present
     
             in the company you work for, please answer the following questions about a previous 
@@ -42,12 +49,15 @@
             <p>&nbsp;</p>
         <div class="clearfix"></div>
         </div>
+        </div>
         
         <div class="col-md-12">
+        <div class="row"> 
             <label class="control-label col-md-4">Past Employer (Company): </label>  
             <div class="col-md-8">              
                 <input class="form-control" name="past_employer" value="<?php if(isset($past_employment_survey))echo $past_employment_survey->past_employer;?>" />
             </div>
+        </div>
         </div>
         <p>&nbsp;</p>
         <div class="col-md-12">

@@ -882,13 +882,13 @@
                     <label class="control-label col-md-6">Have you ever been injured while on the job?</label>  
                     <div class="col-md-6"> 
                         
-                        <label class="control-label col-md-12">Nature and degree?</label>  
-                        <div class="col-md-12">              
+                        <label class="control-label">Nature and degree?</label>  
+                        <div class="">              
                             <textarea name="nature_of_degree" class="form-control"><?php if(isset($basic_mee_platform))echo $basic_mee_platform->nature_of_degree;?></textarea>
                         </div>
                         <p>&nbsp;</p>
-                        <label class="control-label col-md-12">How much time was lost from illness in the past 3 years?</label>  
-                        <div class="col-md-12">              
+                        <label class="control-label">How much time was lost from illness in the past 3 years?</label>  
+                        <div class="">              
                             <textarea name="how_much_time_lost" class="form-control"><?php if(isset($basic_mee_platform))echo $basic_mee_platform->how_much_time_lost;?></textarea>
                         </div>
                     </div>

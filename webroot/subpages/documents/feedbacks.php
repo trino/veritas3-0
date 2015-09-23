@@ -23,6 +23,7 @@ if(isset($feeds)) {$feed = $feeds; }
             </div>
             <div class="clearfix"></div>
     </div>
+    
     <label class="control-label col-md-6">If you had a colleague who required our services, would you recommend ISB Canada? </label>
         <div class="col-md-6" align="center">
             <?php 

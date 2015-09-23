@@ -183,7 +183,7 @@ function makeyeardropdown($is_disabled, $Name, $Value, $Language, $Count = 5, $S
 <label class="col-md-3 control-label">
                                                     What were the primary objectives at the show/event?
                                                     </label>
-<div class="col-md-8">
+<div class="col-md-9 col-sm-9 col-xs-12">
 <textarea class="form-control" name="primary_objectives" id="primary_objectives" <?php echo $is_disabled;?> rows="3"><?php if(isset($audits))echo $audits->primary_objectives;?></textarea>
 </div>
                                                     
@@ -207,7 +207,7 @@ function makeyeardropdown($is_disabled, $Name, $Value, $Language, $Count = 5, $S
         <label class="col-md-3 control-label">
             Provide details.
         </label>
-<div class="col-md-8">
+<div class="col-md-9 col-sm-9 col-xs-12">
 <textarea class="form-control" name="objectives" id="primary_objectives" <?php echo $is_disabled;?> rows="3"><?php if(isset($audits))echo $audits->objectives;?></textarea>
 </div>
 </div>   
@@ -216,7 +216,7 @@ function makeyeardropdown($is_disabled, $Name, $Value, $Language, $Count = 5, $S
 <label class="col-md-3 control-label">
                                                     Please provide suggestions for improvement.
                                                     </label>
-<div class="col-md-8">
+<div class="col-md-9 col-sm-9 col-xs-12">
 <textarea class="form-control" name="improvement" id="primary_objectives" <?php echo $is_disabled;?> rows="3"><?php if(isset($audits))echo $audits->improvement;?></textarea>
 </div>
 </div> 
@@ -225,7 +225,7 @@ function makeyeardropdown($is_disabled, $Name, $Value, $Language, $Count = 5, $S
 <label class="col-md-3 control-label">
                                                     Was the lead-collecting process at the booth/event effective (e.g. badge scanner, business card collecting)?
                                                     </label>
-<div class="col-md-8">
+<div class="col-md-9 col-sm-9 col-xs-12">
 <textarea class="form-control" name="lead_effective" id="primary_objectives" <?php echo $is_disabled;?> rows="3"><?php if(isset($audits))echo $audits->lead_effective;?></textarea>
 </div>
 </div>
@@ -233,7 +233,7 @@ function makeyeardropdown($is_disabled, $Name, $Value, $Language, $Count = 5, $S
                                                  <div class="form-group">
 <label class="col-md-3 control-label">
 How many leads were generated?                                                    </label>
-<div class="col-md-8">
+<div class="col-md-9 col-sm-9 col-xs-12">
 <textarea class="form-control" name="leads" id="primary_objectives" <?php echo $is_disabled;?> rows="3"><?php if(isset($audits))echo $audits->leads;?></textarea>
 </div>
 </div> 
@@ -249,7 +249,7 @@ Rate the leads - how many do you feel are "quality"? Provide a grade rating of 1
     <div class="form-group">
         <label class="col-md-3 control-label">
             Provide details.                                                   </label>
-<div class="col-md-8">
+<div class="col-md-9 col-sm-9 col-xs-12">
 <textarea class="form-control" name="leads_rate" id="primary_objectives" <?php echo $is_disabled;?> rows="3"><?php if(isset($audits))echo $audits->leads_rate;?></textarea>
 </div>
 </div>
@@ -258,7 +258,7 @@ Rate the leads - how many do you feel are "quality"? Provide a grade rating of 1
                                                  <div class="form-group">
 <label class="col-md-3 control-label">
 Please provide suggestions for improvement of the lead collection and handling process.                                                   </label>
-<div class="col-md-8">
+<div class="col-md-9 col-sm-9 col-xs-12">
 <textarea class="form-control" name="handling" id="primary_objectives" <?php echo $is_disabled;?> rows="3"><?php if(isset($audits))echo $audits->handling;?></textarea>
 </div>
 </div>
@@ -277,7 +277,7 @@ Rate the type of attendees at the show/event. Provide a grade rating of 1 to 10 
         <label class="col-md-3 control-label">
             (e.g. decision makers, decision influencers, general staff)?
             Provide details.                                                   </label>
-<div class="col-md-8">
+<div class="col-md-9 col-sm-9 col-xs-12">
 <textarea class="form-control" name="attendees_rate" <?php echo $is_disabled;?> id="" rows="3"><?php if(isset($audits))echo $audits->attendees_rate;?></textarea>
 </div>
 </div> 
@@ -288,7 +288,7 @@ Rate the type of attendees at the show/event. Provide a grade rating of 1 to 10 
 <label class="col-md-3 control-label">
 Which of our services/products we provide was of most interest?
                     </label>
-<div class="col-md-8">
+<div class="col-md-9 col-sm-9 col-xs-12">
 <textarea class="form-control" name="interest" <?php echo $is_disabled;?> id="primary_objectives" rows="3"><?php if(isset($audits))echo $audits->interest;?></textarea>
 </div>
 </div>                                                   
@@ -297,7 +297,7 @@ Which of our services/products we provide was of most interest?
 <label class="col-md-3 control-label">
 How was the booth location on the trade show floor or the venue location if it was an event? Provide details.
                     </label>
-<div class="col-md-8">
+<div class="col-md-9 col-sm-9 col-xs-12">
 <textarea class="form-control" name="booth_location" <?php echo $is_disabled;?> id="primary_objectives" rows="3"><?php if(isset($audits))echo $audits->booth_location;?></textarea>
 </div>
 </div> 
@@ -316,7 +316,7 @@ How was the booth location on the trade show floor or the venue location if it w
         <label class="col-md-3 control-label">
             Provide details.
         </label>
-    <div class="col-md-8">
+    <div class="col-md-9 col-sm-9 col-xs-12">
 <textarea class="form-control" name="rating" <?php echo $is_disabled;?> id="primary_objectives" rows="3"><?php if(isset($audits))echo $audits->rating;?></textarea>
 </div>
 </div>
@@ -325,7 +325,7 @@ How was the booth location on the trade show floor or the venue location if it w
 <label class="col-md-3 control-label">
 Please provide suggestions for improvement of the booth's appearance, messaging, display, location, or the event’s format, layout, etc.
                     </label>
-<div class="col-md-8">
+<div class="col-md-9 col-sm-9 col-xs-12">
 <textarea class="form-control" name="suggestions" <?php echo $is_disabled;?> id="primary_objectives" rows="3"><?php if(isset($audits))echo $audits->suggestions;?></textarea>
 </div>
 </div> 
@@ -336,7 +336,7 @@ Please provide suggestions for improvement of the booth's appearance, messaging,
 <label class="col-md-3 control-label">
 How was the promotional giveaway received (if applicable)? Provide details.
                     </label>
-<div class="col-md-8">
+<div class="col-md-9 col-sm-9 col-xs-12">
 <textarea class="form-control" name="promotional" <?php echo $is_disabled;?> id="primary_objectives" rows="3"><?php if(isset($audits))echo $audits->promotional;?></textarea>
 </div>
 </div>                                            
@@ -347,7 +347,7 @@ How was the promotional giveaway received (if applicable)? Provide details.
 <label class="col-md-3 control-label">
 Approximately how many attendees did you engage in conversation?
                     </label>
-<div class="col-md-8">
+<div class="col-md-9 col-sm-9 col-xs-12">
 <textarea class="form-control" name="attendees" <?php echo $is_disabled;?> id="primary_objectives" rows="3"><?php if(isset($audits))echo $audits->attendees;?></textarea>
 </div>
 </div> 
@@ -356,7 +356,7 @@ Approximately how many attendees did you engage in conversation?
 <label class="col-md-3 control-label">
 Do you feel there was enough booth/event staff?
                     </label>
-<div class="col-md-8">
+<div class="col-md-9 col-sm-9 col-xs-12">
 <textarea class="form-control" name="booth_staff" <?php echo $is_disabled;?> id="primary_objectives" rows="3"><?php if(isset($audits))echo $audits->booth_staff;?></textarea>
 </div>
 </div> 

@@ -412,7 +412,7 @@
                         </div>
                         <div class="form-group row">
                             <label class="col-md-3 control-label"><?= $strings2["verifs_didtheempl"]; ?></label>
-                            <div class="col-md-6">
+                            <div class="col-md-9">
                                 <textarea class="form-control" name="performance_issue[]" ></textarea>
                             </div>
                         </div>
