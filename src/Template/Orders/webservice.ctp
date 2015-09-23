@@ -4,6 +4,7 @@
     $client = new nusoap_client($proxyhost, true, $proxyhost, $proxyport = null, $proxyusername = null, $proxypassword = null);
     $client->useHTTPPersistentConnection();
 
+    $DataIneed = array();
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     $user_id234 = $this->Session->read('Profile.isb_id');
@@ -55,6 +56,7 @@
                 break;
             case 14:
                 $cvor_ins_14 = true;
+
                 break;
             case 77:
                 $preemploymentscreening_ins_77 = true;
@@ -91,25 +93,22 @@
     echo '<br>32   social media search                     ' . $sms_ins_32;                                            // 32   social media search
     echo '<br>31   credit check                            ' . $creditcheck_ins_31;                                            // 31 creditcheck
 
-    if (isset($driverinfo->driver_license_no) && $driverinfo->driver_license_no != "") {
-    } else {
+    if (!(isset($driverinfo->driver_license_no) && $driverinfo->driver_license_no != "")) {
         $driverinfo->driver_license_no = "123ABC";
     }
 
-    if (isset($driverinfo->driver_province) && $driverinfo->driver_province != "") {
-    } else {
+    if (!(isset($driverinfo->driver_province) && $driverinfo->driver_province != "")) {
         $driverinfo->driver_province = "ON";
     }
 
-    if (isset($driverinfo->email) && $driverinfo->email != "") {
-    } else {
+    if (!(isset($driverinfo->email) && $driverinfo->email != "")) {
         $driverinfo->email = "test@" . getHost("isbmee.com");
     }
 
-	    if (isset($driverinfo->gender) && $driverinfo->gender != "") {
-    } else {
+    if (!(isset($driverinfo->gender) && $driverinfo->gender != "")) {
         $driverinfo->gender = "NA";
     }
+
     if ($startorder1 == true) {
         $body = '&lt;ProductData&gt;&lt;isb_FN&gt;' . $driverinfo->fname . '&lt;/isb_FN&gt;&lt;isb_LN&gt;' . $driverinfo->lname .
             '&lt;/isb_LN&gt;&lt;isb_Ref&gt;MEETEST-777&lt;/isb_Ref&gt;&lt;isb_DOL&gt;' . date("Y-m-d") . '&lt;/isb_DOL&gt;&lt;isb_Prov&gt;' . $driverinfo->driver_province . '&lt;/isb_Prov&gt;&lt;isb_UserID&gt;' . $user_id234 . '&lt;/isb_UserID&gt;&lt;/ProductData&gt;';
@@ -172,14 +171,14 @@
 
         echo '999ins_79';
         var_dump($result);
-
+        $DataIneed[79] = $pdi_79;
     }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    if ($sms_ins_32 == true) {
+    if ($sms_ins_32 == true) {//social media search
 
         $soap_xml = '<?xml version="1.0" encoding="utf-8"?>
 <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
@@ -200,9 +199,10 @@
 
         echo 'sms_ins_32';
         var_dump($result);
+        $DataIneed[32] = $pdi_32;
     }
 
-    if ($creditcheck_ins_31 == true) {
+    if ($creditcheck_ins_31 == true) {//credit check
 
         $soap_xml = '<?xml version="1.0" encoding="utf-8"?>
 <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
@@ -222,13 +222,14 @@
 
         echo 'creditcheck_ins_31';
         var_dump($result);
+        $DataIneed[31] = $pdi_31;
     }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    if ($mvr_driversrecordabstract_ins_1 == true) {
+    if ($mvr_driversrecordabstract_ins_1 == true) {//MVR Driver\'s Record Abstract
 
         $soap_xml = '<?xml version="1.0" encoding="utf-8"?>
 <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
@@ -246,13 +247,14 @@
 
         echo '999ins_1';
         var_dump($result);
+        $DataIneed[1] = $pdi_1;
     }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    if ($cvor_ins_14 == true) {
+    if ($cvor_ins_14 == true) {//CVOR
 
         $soap_xml = '<?xml version="1.0" encoding="utf-8"?>
 <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
@@ -272,13 +274,14 @@
 
         echo '999ins_14';
         var_dump($result);
+        $DataIneed[14] = $pdi_14;
     }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    if ($checkdl_ins_72 == true) {
+    if ($checkdl_ins_72 == true) {//checkDL
 
         $soap_xml = '<?xml version="1.0" encoding="utf-8"?>
 <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
@@ -296,13 +299,14 @@
         var_dump($result);
 
         $this->requestAction('orders/save_pdi/' . $orderid . '/' . $pdi_72 . '/ins_72');
+        $DataIneed[72] = $pdi_72;
     }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    if ($preemploymentscreening_ins_77 == true) {
+    if ($preemploymentscreening_ins_77 == true) {//Pre-employment Screening Program Report
 
         $soap_xml = '<?xml version="1.0" encoding="utf-8"?>
 <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
@@ -322,13 +326,14 @@
         echo '999ins_77';
 
         var_dump($result);
+        $DataIneed[77] = $pdi_77;
     }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    if ($transclick_ins_78 == true) {
+    if ($transclick_ins_78 == true) {//Transclick
 
         $soap_xml = '<?xml version="1.0" encoding="utf-8"?>
 <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
@@ -346,14 +351,14 @@
         $this->requestAction('orders/save_pdi/' . $orderid . '/' . $pdi_78 . '/ins_78');
         echo '999ins_78';
         var_dump($result);
-
+        $DataIneed[78] = $pdi_78;
     }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    if ($education_certification_ebs_1650 == true) {
+    if ($education_certification_ebs_1650 == true) {//Certification (Education)
 
         $soap_xml = '<?xml version="1.0" encoding="utf-8"?>
 <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
@@ -371,13 +376,14 @@
         $this->requestAction('orders/save_pdi/' . $orderid . '/' . $pdi_1650 . '/ebs_1650');
         echo '999ebs_1650';
         var_dump($result);
+        $DataIneed[1650] = $pdi_1650;
     }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    if ($loe_employment_ebs_1627 == true) {
+    if ($loe_employment_ebs_1627 == true) {//LOE (Employment)
 
         $soap_xml = '<?xml version="1.0" encoding="utf-8"?>
 <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
@@ -395,21 +401,19 @@
         $this->requestAction('orders/save_pdi/' . $orderid . '/' . $pdi_1627 . '/ebs_1627');
         echo '999ebs_1627';
         var_dump($result);
+        $DataIneed[1627] = $pdi_1627;
     }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    if ($premium_national_ebs_1603 == true) {
+    if ($premium_national_ebs_1603 == true) {// Premium check
 
 //  var_dump($driverinfo);
 
-        if (isset($driverinfo->mname) && $driverinfo->mname != "") {
-
-        } else {
+        if (!(isset($driverinfo->mname) && $driverinfo->mname != "")) {
             $driverinfo->mname = "NA";
-
         }
 
         $soap_xml = '<?xml version="1.0" encoding="utf-8"?>
@@ -429,7 +433,7 @@
 
         $this->requestAction('orders/save_pdi/' . $orderid . '/' . $pdi_1603 . '/ebs_1603');
         echo '999ebs_1603';
-
+        $DataIneed[1603] = $pdi_1603;
     }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -453,7 +457,7 @@
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    if ($uploadbinaryemployment_1627 == true) {
+    if ($uploadbinaryemployment_1627 == true) {//LOE (Employment)
         echo 'vvv1';
 
         $pdf_content = '';
@@ -465,13 +469,14 @@
         $result = $client->call('UploadBinaryFile', $soap_xml);
         echo "999uploadbinaryemployment_1627";
 //  var_dump($result);
+        $DataIneed[1627] = $pdi_1627;
     }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    if ($uploadbinaryeducation_1650 == true) {
+    if ($uploadbinaryeducation_1650 == true) {//Certification (Education)
         echo 'vvv2';
 
         $pdf_content = '';
@@ -483,9 +488,10 @@
         $result = $client->call('UploadBinaryFile', $soap_xml);
         echo "999uploadbinaryeducation_1650";
 //  var_dump($result);
+        $DataIneed[1650] = $pdi_1650;
     }
 
-    if (false){
+    if (false){//Premium check
 
         if (isset($attachments1->id_piece1) && $attachments1->id_piece1 != '') {
             echo 'vvv3';
@@ -498,7 +504,7 @@
 
                 $result = $client->call('UploadBinaryFile', $soap_xml);
 //   var_dump($result);
-
+                $DataIneed[1603] = $pdi_1603;
             }
         }
 
@@ -517,9 +523,7 @@
 
                 $result = $client->call('UploadBinaryFile', $soap_xml);
 //  var_dump($result);
-
-            } else {
-
+                $DataIneed[1603] = $pdi_1603;
             }
         }
 
@@ -538,9 +542,7 @@
 
                 $result = $client->call('UploadBinaryFile', $soap_xml);
 //  var_dump($result);
-
-            } else {
-
+                $DataIneed[1] = $pdi_1;
             }
         }
 
@@ -560,9 +562,7 @@
 
                 $result = $client->call('UploadBinaryFile', $soap_xml);
 //      var_dump($result);
-
-            } else {
-
+                $DataIneed[14] = $pdi_14;
             }
         }
 
@@ -582,7 +582,7 @@
 
                 $result = $client->call('UploadBinaryFile', $soap_xml);
 //  var_dump($result);
-            } else {
+                $DataIneed[1650] = $pdi_1650;
             }
         }
 
@@ -601,14 +601,15 @@
 
                 $result = $client->call('UploadBinaryFile', $soap_xml);
 //    var_dump($result);
-
-            } else {
+                $DataIneed[1627] = $pdi_1627;
             }
         }
 
     }
     $this->requestAction('orders/writing_complete/' . $orderid);
 
+    $JSON = $this->Manager->order_to_email($orderid, $DataIneed);
+    $servicearr["html"] = $JSON;
     $mailer->handleevent("ordercompleted",$servicearr);
   //  $mailer->handleevent("ordercompleted",$servicearr,'hsidhu@isbc.ca ');
   //  $mailer->handleevent("ordercompleted",$servicearr,'pclement@isbc.ca');

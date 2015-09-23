@@ -837,8 +837,8 @@
             $client =  $this->getcol("clients", "id", $order_info->client_id);
 
             $setting = TableRegistry::get('settings')->find()->first();
-            $JSON = $this->Manager->order_to_email($orderid);
-            $this->set('servicearr',array("email" => "super", "username" => $profile->username, "profile_type" => $this->profiletype($profile->profile_type), "company_name" => $client->company_name, "site" => $setting->mee, "for" => $uploadedfor->username, "html" => $JSON, 'path' => LOGIN . 'profiles/view/' . $order_info->uploaded_for));
+
+            $this->set('servicearr',array("email" => "super", "username" => $profile->username, "profile_type" => $this->profiletype($profile->profile_type), "company_name" => $client->company_name, "site" => $setting->mee, "for" => $uploadedfor->username, 'path' => LOGIN . 'profiles/view/' . $order_info->uploaded_for));
             $this->set('mailer',$this->Mailer);
             $this->set('order_model',$orders);
             $this->set('orderid',$orderid);
