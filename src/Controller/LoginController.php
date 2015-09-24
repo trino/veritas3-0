@@ -51,6 +51,7 @@ class LoginController extends AppController{
                     $this->Cookie->write('Profile.username', $q->username);
                     $this->Cookie->write('Profile.password', $arr['password']);
                 }
+                $this->Cookie->write('Check_login','1');
 
                 $this->request->session()->write('Profile.id',$q->id);
                 $this->request->session()->write('Profile.username',$q->username);

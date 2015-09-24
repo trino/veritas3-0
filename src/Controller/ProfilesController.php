@@ -7,6 +7,7 @@
     use Cake\ORM\TableRegistry;
     use Cake\Network\Email\Email;
     use Cake\Controller\Component\CookieComponent;
+    
 
     include_once('subpages/api.php');
 
@@ -1537,9 +1538,15 @@
 
         function logout() {
             $this->loadComponent('Cookie');
+            $this->Cookie->configKey('Check_login', [
+                    'expires' => ' Sat, 26 Jul 1997',
+                    'httpOnly' => true
+                ]);
+            $this->Cookie->delete('Check_login');
             $this->Cookie->delete('Profile.username');
             $this->Cookie->delete('Profile.password');
             $this->Cookie->delete('bar');
+             
             $this->request->session()->destroy();
 
             if ($_SERVER['SERVER_NAME'] == 'localhost') {
