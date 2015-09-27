@@ -74,7 +74,7 @@
     //  echo '<div class="col-xs-4">';
 ?>
     <div class="clearfix"></div>
-<div class="scrolldiv" style="margin-bottom: 15px; overflow-y: auto; width: auto; height: 250px;" ID="bulkform">
+<div class="scrolldiv" style="margin-bottom: 15px; overflow-y: auto; width: auto; height: auto;" ID="bulkform">
     <input type="text" id="searchProfile" onkeyup="searchProfile()" class="form-control" placeholder="<?= $strings["infoorder_searchprofiles"]; ?>"/>
     <table class="table table-striped table-bordered table-advance table-hover recruiters">
         <thead>
@@ -242,7 +242,7 @@
             }
             $size = "ignore";
 
-            echo '<div class="col-xs-3 control-label" align="right" style="margin-top: 6px;">' . $strings["settings_client"] . '</div><div class="col-xs-6">';
+            echo '<div class="col-xs-3 control-label" align="right" style="margin-top: 6px;">' . $strings["settings_client"] . '</div><div class="col-xs-8">';
 
             $dodiv = true;?>
 
@@ -316,7 +316,7 @@
     <?php
     echo '<div class="col-xs-3 control-label"  align="right" style="margin-top: 6px;">' . $strings["infoorder_driver"];
     if(isset($_GET["ordertype"]) && $_GET["ordertype"] == "BUL"){ echo '(s)';}
-    echo '</div><div class="col-xs-6" ID="driverform">';
+    echo '</div><div class="col-xs-8" ID="driverform">';
     if(isset($_GET["ordertype"]) && $_GET["ordertype"] == "BUL"){
         echo '<INPUT TYPE="HIDDEN" NAME="selecting_driver" id="selecting_driver" class="form-control input-' . $size . '" VALUE="">';
         echo '<textarea NAME="drivers" id="drivers" class="form-control input-' . $size . '" VALUE="" READONLY STYLE="resize:vertical;"></textarea>';

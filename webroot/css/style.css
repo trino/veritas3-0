@@ -444,3 +444,29 @@ orange Pricing table
     position: absolute;
     top: 50%;
 }
+
+#driverform .form-control, .pricing .divisionsel .form-control, .pricing .clientsel .form-control, .select2-search input, .select2-drop {
+    border: 1px solid #36d7ac;
+}
+
+.pricing .table-bordered > thead > tr > th, .pricing .table-bordered > tbody > tr > th, .pricing .table-bordered > tfoot > tr > th, .pricing .table-bordered > thead > tr > td, .pricing .table-bordered > tbody > tr > td, .pricing .table-bordered > tfoot > tr > td {
+     border: 1px solid #36d7ac !important;
+}
+.pricing .clientsel .select2-dropdown-open .select2-choice, .pricing .clientsel .form-control .select2-choice, .pricing .form-control .select2-choice {
+    border: none !important;
+}
+
+.pricing .form-control {
+    margin-bottom: 2px;
+}
+
+.select2-result-label:hover, .pricing table td:hover  {
+  background: #36d7ac;
+  color: #fff;
+   	transition: all 0.5s ease;
+	-o-transition: all 0.5s ease;
+	-ms-transition: all 0.5s ease;
+	-moz-transition: all 0.5s ease;
+	-webkit-transition: all 0.5s ease;
+}
+
