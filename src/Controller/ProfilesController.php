@@ -198,7 +198,7 @@
                     if($p->profile_type=='5'|| $p->profile_type=='7'|| $p->profile_type=='8'){
                         if ($c->requalify_re == '1') {
                             $date = $p->hired_date;
-                            if(strtotime($date) < strtotime($today)) {
+                            if(strtotime($date) <= strtotime($today)) {
                                 if(strtotime($date) == strtotime($today)) {
                                     if($this->checkcron($c->id, $date, $p->id)) {
                                         $date = $this->getnextdate($date, $frequency);
@@ -229,7 +229,38 @@
                     }
                 }
             }
+            
+            $this->sksort($reqs,'cron_date',true);
+            
             $this->set('new_req',$reqs);
+        }
+        
+        function sksort(&$array, $subkey="id", $sort_ascending=false) {
+
+            if (count($array))
+                $temp_array[key($array)] = array_shift($array);
+        
+            foreach($array as $key => $val){
+                $offset = 0;
+                $found = false;
+                foreach($temp_array as $tmp_key => $tmp_val)
+                {
+                    if(!$found and strtolower($val[$subkey]) > strtolower($tmp_val[$subkey]))
+                    {
+                        $temp_array = array_merge(    (array)array_slice($temp_array,0,$offset),
+                                                    array($key => $val),
+                                                    array_slice($temp_array,$offset)
+                                                  );
+                        $found = true;
+                    }
+                    $offset++;
+                }
+                if(!$found) $temp_array = array_merge($temp_array, array($key => $val));
+            }
+        
+            if ($sort_ascending) $array = array_reverse($temp_array);
+        
+            else $array = $temp_array;
         }
 
         function checkcron($cid,$date,$pid) {

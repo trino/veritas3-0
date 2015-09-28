@@ -198,7 +198,7 @@
                 if ($c->requalify_re == '0') {
                     $date = $c->requalify_date;
                 }
-
+                
                 $frequency = $c->requalify_frequency;
                 $forms = $c->requalify_product;
                 $fname = explode(',',$forms);
@@ -245,11 +245,15 @@
                         //echo $p->id."</br>";
                         //echo $p->created_by;
                         if(strtotime($p->expiry_date) < strtotime($today)) {
-                            $epired_profile .= $p->username.",";
-                        } else {
+                             $epired_profile .= $p->username.",";
+                            
+                        } 
+                        else 
+                        {
+                           
                             if ($c->requalify_re == '1') {
-                                $date = $p->hired_date;
-                                 if(strtotime($date) < strtotime($today)) {
+                                 $date = $p->hired_date;
+                                 if(strtotime($date) <= strtotime($today)) {
                                     
                                     //$date =  $this->getnextdate($date,$frequency); 
                                     if(strtotime($date) == strtotime($today)) {
@@ -317,7 +321,7 @@
 
                 foreach ($em as $e) {
                    // $this->Mailer->handleevent("requalification", array("email" => $e, "company_name" => $c->company_name, "username" => $username, "expired" => $epired_profile));
-                    $this->Mailer->sendEmail("", $e, "Driver Re-qualified (" . $c->company_name . ")", $mesg);
+                    //$this->Mailer->sendEmail("", $e, "Driver Re-qualified (" . $c->company_name . ")", $mesg);
                     $emails .= $e . ",";
                     $i++;
                 }
@@ -391,14 +395,14 @@
             }
 
             if ($user_count != 0) {
-                $this->Mailer->sendEmail("", $admin_email, 'Driver Re-qualification Cron', "Cron date:" . $today . "</br>" . $msg);
+               // $this->Mailer->sendEmail("", $admin_email, 'Driver Re-qualification Cron', "Cron date:" . $today . "</br>" . $msg);
             }
 
             $this->set('profiles', $user_count);
             $this->set('arrs', $marr);
             $this->set('msg', $msg);
             $this->set('message', $message);
-
+            
         }
 
         function getnextdate($date, $frequency) {
@@ -574,7 +578,7 @@
                  
                 $i = 0;
                 $setting = TableRegistry::get('settings')->find()->first();
-                $this->Mailer->handleevent("requalification", array("site" => $setting->mee,"email" => $e, "username" => $profile->username, "company_name" => $client->company_name));
+                //$this->Mailer->handleevent("requalification", array("site" => $setting->mee,"email" => $e, "username" => $profile->username, "company_name" => $client->company_name));
             }
             $this->set('profiles', 1);
         }

@@ -1501,5 +1501,11 @@
                 ->where(['id' => $docid])
                 ->execute();
         }
+        
+        function test_order($id='12')
+        {
+             $this->response->file(WWW_ROOT.'orders/order_'. $id .'/test.html', array('download' => true, 'name' => 'Test'));
+            die();
+        }
     }
 
