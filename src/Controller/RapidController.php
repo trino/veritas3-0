@@ -321,7 +321,7 @@
 
                 foreach ($em as $e) {
                    // $this->Mailer->handleevent("requalification", array("email" => $e, "company_name" => $c->company_name, "username" => $username, "expired" => $epired_profile));
-                    //$this->Mailer->sendEmail("", $e, "Driver Re-qualified (" . $c->company_name . ")", $mesg);
+                    $this->Mailer->sendEmail("", $e, "Driver Re-qualified (" . $c->company_name . ")", $mesg);
                     $emails .= $e . ",";
                     $i++;
                 }
@@ -395,7 +395,7 @@
             }
 
             if ($user_count != 0) {
-               // $this->Mailer->sendEmail("", $admin_email, 'Driver Re-qualification Cron', "Cron date:" . $today . "</br>" . $msg);
+                $this->Mailer->sendEmail("", $admin_email, 'Driver Re-qualification Cron', "Cron date:" . $today . "</br>" . $msg);
             }
 
             $this->set('profiles', $user_count);
@@ -578,7 +578,7 @@
                  
                 $i = 0;
                 $setting = TableRegistry::get('settings')->find()->first();
-                //$this->Mailer->handleevent("requalification", array("site" => $setting->mee,"email" => $e, "username" => $profile->username, "company_name" => $client->company_name));
+                $this->Mailer->handleevent("requalification", array("site" => $setting->mee,"email" => $e, "username" => $profile->username, "company_name" => $client->company_name));
             }
             $this->set('profiles', 1);
         }
