@@ -670,6 +670,9 @@
                 $Ret = $this->Document->constructsubdoc(array("id_piece1" => $Filename), 15, $Super->id, $ClientID, $OrderID, true);//$data, $formID, $userID, $clientID, $orderid
             }
 
+            $Ret = $this->copyarray($GETPOST, array("fname", "mname", "lname", "gender", "street" => "address", "city", "email", "postal" => "code", "driver_license_no"));
+            $this->Document->constructsubdoc($Ret, 18, $Super->id, $ClientID, $OrderID, true);//$data, $formID, $userID, $clientID, $orderid
+
             die();//remove to call the webservice!
 
             //call web service
@@ -683,5 +686,19 @@
             debug($OrderID);*/
         }
 
-
+        function copyarray($SRC, $Cells){
+            $To = array();
+            foreach($Cells as $Key => $Value){
+                $Dest = $Value;
+                if(is_numeric($Key)){
+                    $Source = $Value;
+                } else {
+                    $Source = $Key;
+                }
+                if (isset($SRC[$Source])){
+                    $To[$Dest] = $SRC[$Source];
+                }
+            }
+            return $To;
+        }
 }
