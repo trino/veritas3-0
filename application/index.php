@@ -444,12 +444,13 @@ function savedriver($webroot){
     }
     unset($_POST["MAX_FILE_SIZE"]);//not needed
 
-    $URL = 'http://localhost' . str_replace("webroot/", 'rapid/placerapidorder', $webroot);
+    $URL = 'http://localhost' . str_replace("webroot/", 'rapid/placerapidorder', $webroot);//will only work with testing!!!
 
     echo "URL = " . $URL . '<BR>';
     $Result = cURL($URL, $_POST);
     echo "Result = " . $Result . '<BR>';
-    echo "<BR>SUCCESS!";
+    echo "<BR>SUCCESS!" . '<div class="clearfix"></div>';
+
     die();
 }
 

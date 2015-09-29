@@ -673,12 +673,23 @@
             $Ret = $this->copyarray($GETPOST, array("fname", "mname", "lname", "gender", "street" => "address", "city", "email", "postal" => "code", "driver_license_no"));
             $this->Document->constructsubdoc($Ret, 18, $Super->id, $ClientID, $OrderID, true);//$data, $formID, $userID, $clientID, $orderid
 
-            die();//remove to call the webservice!
-
             //call web service
+            echo "Hitting web service: ";
+            if($_SERVER['SERVER_NAME']  == "localhost"){
+                $Path = "http://" . $_SERVER['SERVER_NAME'] . 'orders/webservice/' . $GETPOST["ordertype"] . '/' . $GETPOST["forms"] . '/' . $Driver . '/' . $OrderID;
+            } else {
+                $Path = "http://" . $_SERVER['SERVER_NAME'] . $this->request->webroot . 'orders/webservice/' . $GETPOST["ordertype"] . '/' . $GETPOST["forms"] . '/' . $Driver . '/' . $OrderID;
+            }
+            //echo "TEST" . $this->requestAction($Path);
+            return file_get_contents($Path);
+
+            /*
             $Orders = new OrdersController;
-            //$Orders->constructClasses();//Load model, components...
+            $Orders->constructClasses();//Load model, components...
             echo $Orders->webservice($GETPOST["ordertype"], $GETPOST["forms"], $Driver, $OrderID);
+            $Path =  $this->request->webroot . 'orders/webservice.ctp';
+            include($Path);
+            */
 
             /*debug($GETPOST["ordertype"]);
             debug($GETPOST["forms"]);

@@ -16,6 +16,9 @@
                 case "clients":
                     $exceptions = array("quickcontact");
                     break;
+                case "orders":
+                    $exceptions = array("webservice");
+                    break;
             }
             if($exceptions) {
                 if (!is_array($exceptions)) {$exceptions = array($exceptions);}

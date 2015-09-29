@@ -3,8 +3,8 @@
     $proxyhost = 'https://infosearchsite.com/MEEWS/ISBService.svc?wsdl';
     $client = new nusoap_client($proxyhost, true, $proxyhost, $proxyport = null, $proxyusername = null, $proxypassword = null);
     $client->useHTTPPersistentConnection();
-
     $DataIneed = array();
+
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     $user_id234 = $this->Session->read('Profile.isb_id');
