@@ -1234,5 +1234,15 @@ class ManagerComponent extends Component {
         debug($Data);
         die();
     }
+
+    function callsub($Controller, $Function, $Paramaters=""){
+        if(is_array($Paramaters)){$Paramaters = implode("/", $Paramaters);}
+        if($_SERVER['SERVER_NAME']  == "localhost"){
+            $Path = "http://" . $_SERVER['SERVER_NAME'] . $this->Controller->request->webroot . $Controller . '/' . $Function . '/' . $Paramaters;
+        } else {
+            $Path = "http://" . $_SERVER['SERVER_NAME'] . $Controller . '/' . $Function . '/' . $Paramaters;
+        }
+        return file_get_contents($Path);
+    }
 }
 ?>

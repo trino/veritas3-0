@@ -675,13 +675,7 @@
 
             //call web service
             echo "Hitting web service: ";
-            if($_SERVER['SERVER_NAME']  == "localhost"){
-                $Path = "http://" . $_SERVER['SERVER_NAME'] . 'orders/webservice/' . $GETPOST["ordertype"] . '/' . $GETPOST["forms"] . '/' . $Driver . '/' . $OrderID;
-            } else {
-                $Path = "http://" . $_SERVER['SERVER_NAME'] . $this->request->webroot . 'orders/webservice/' . $GETPOST["ordertype"] . '/' . $GETPOST["forms"] . '/' . $Driver . '/' . $OrderID;
-            }
-            //echo "TEST" . $this->requestAction($Path);
-            return file_get_contents($Path);
+            echo $this->Manager->callsub("orders", "webservice", array( $GETPOST["ordertype"],$GETPOST["forms"] , $Driver,$OrderID) );
 
             /*
             $Orders = new OrdersController;
@@ -695,6 +689,7 @@
             debug($GETPOST["forms"]);
             debug($Driver);
             debug($OrderID);*/
+            die();
         }
 
         function copyarray($SRC, $Cells){
