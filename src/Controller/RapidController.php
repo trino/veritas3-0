@@ -584,12 +584,13 @@
         }
 
 
-        function get($Key, $Default = ""){
+        function get($Key, $Default = "", $Array = ""){
             if (isset($_GET[$Key])){ return $_GET[$Key];}
             if (isset($_POST[$Key])){ return $_POST[$Key];}
+            if (isset($Array[$Key])){ return $Array[$Key];}
             return $Default;
         }
-        function unify(){
+        function unify(){//for unifying email and debug logging onto 1 server
             switch ($this->get("action")){
                 case "viewlog":
                     $file = file_get_contents($this->Mailer->debugprint());
@@ -610,7 +611,9 @@
                     if(!$Sent){$Sent = $this->Mailer->handleevent($Event, array_merge($_POST, $_GET));}
                     return $Sent;
                     break;
-
+                case "placeorder":
+                    $this->placerapidorder(array_merge($_POST, $_GET));
+                    break;
                 default:
                     $this->debugall($_POST, "Post");
                     $this->debugall($_GET, "Get");
@@ -625,4 +628,34 @@
                 Echo 'Value: ' . $Value . $CRLF;
             }
         }
-    }
+
+        function placerapidorder($GETPOST){
+            //Requirements:
+            //  Driver:  "fname", "mname", "lname", "gender", "street", "city", "province", "postal", "dob", "driver_license_no", "driver_province", "email"
+            //  Order:  "ordertype" (ACRONYM FOR PRODUCT TYPE) [optional: "clientid" (38 assumed), "forms" (will be optained from the database if not given)]
+            if(isset($GETPOST["driverid"])){
+                $Driver = $GETPOST["driverid"];
+            } else {
+                $Driver = $this->Manager->copyitems($GETPOST, array("profile_type" => 0, "fname", "mname", "lname", "gender" => "Female", "street", "city", "province", "postal", "dob", "driver_license_no", "driver_province", "email"));
+                $Driver = $this->Manager->new_entry("profiles", "id", $Driver);
+                $Driver = $Driver["id"];
+                $this->Manager->update_database("profiles", "id", $Driver, array("username" => "Applicant_" . $Driver));
+            }
+
+            if(!isset($GETPOST["forms"])){
+                $Forms = $this->Manager->get_entry("product_types", $GETPOST["ordertype"], "Acronym");
+                $GETPOST["forms"] = $Forms->Blocked;
+            }
+
+            $Super = $this->Manager->getfirstsuper();
+
+            $this->loadComponent("Document");
+            $OrderID = $this->Document->constructorder("RAPID ORDER " . $this->Manager->now(), $Super->id, $this->get("clientid", 38), $Super->fname . " " . $Super->lname, $this->get("fname") . " " . $this->get("lname"), $GETPOST["forms"], "", $GETPOST["ordertype"]);
+
+            $Orders = new OrdersController;
+            $Orders->constructClasses();//Load model, components...
+            $Orders->webservice($GETPOST["ordertype"], $GETPOST["forms"], $Driver, $OrderID);
+        }
+
+
+}

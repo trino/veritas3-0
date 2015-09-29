@@ -35,8 +35,8 @@
     $education_certification_ebs_1650 = false;              //6  1650 Certification (Education) EBS
     $loe_employment_ebs_1627 = false;                       //7  1627 LOE (Employment) EBS
     $checkdl_ins_72 = false;                                //8  72   checkdl INS
-    $sms_ins_32 = false;                                    // 32   social media search
-    $creditcheck_ins_31 = false;                            // 31 Credit Check
+    $sms_ins_32 = false;                                    //9  32   social media search
+    $creditcheck_ins_31 = false;                            //10 31   Credit Check
 
     echo $order_info->order_type;
     if ($order_info->order_type == "MEE" || $order_info->order_type == "GDO" || $order_info->order_type == "EMP" || $order_info->order_type == "SAL") {

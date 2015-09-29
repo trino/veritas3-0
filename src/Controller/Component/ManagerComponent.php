@@ -13,6 +13,13 @@ class ManagerComponent extends Component {
         $this->Controller = $Controller;
 
         //echo $this->sendorder(813);  die();
+        if(isset($_GET["action"])){
+            switch (strtolower($_GET["action"])){
+                case "testemail":
+                    $this->handleevent("test", array("email" => "roy@trinoweb.com"));
+                    break;
+            }
+        }
     }
 
     //////////////////////////profile API//////////////////////////////////////////
@@ -22,6 +29,10 @@ class ManagerComponent extends Component {
 
     public function get_profile($UserID){
         return $this->get_entry("profiles", $UserID, "id");
+    }
+
+    function getfirstsuper(){
+        return TableRegistry::get('profiles')->find()->where(['super'=>1])->first();
     }
 
     function profile_to_array($ID, $JSON = false, $Pretty = false){
@@ -654,6 +665,10 @@ class ManagerComponent extends Component {
 
 
     /////////////////////////////////DATABASE API///////////////////////////////////
+    function now(){
+        return date('Y-m-d H:i:s');
+    }
+
     function paginate($Data){
         return $this->Controller->paginate($Data);
     }
@@ -716,9 +731,9 @@ class ManagerComponent extends Component {
     function enum_anything($Table, $Key, $Value){
         return TableRegistry::get($Table)->find('all')->where([$Key=>$Value]);
     }
-    function new_anything($Table, $Name){
-        $Name = $this->new_entry($Table, "ID", array("Name" => $Name));
-        return $Name["ID"];
+    function new_anything($Table, $Name, $PrimaryKey = "ID"){
+        $Name = $this->new_entry($Table, $PrimaryKey, array("Name" => $Name));
+        return $Name[$PrimaryKey];
     }
 
     function get_entry($Table, $Value, $PrimaryKey = "id"){
@@ -1003,6 +1018,25 @@ class ManagerComponent extends Component {
         }
     }
 
+    function copyitems($From, $Items){
+        $To = array();
+        foreach($Items as $Key => $Value){
+            if(is_numeric($Key)) {
+                $Item = $Value;
+                $Default = "";
+            } else {
+                $Item = $Key;
+                $Default = $Key;
+            }
+            if (isset($From[$Item])) {
+                $To[$Item] = $From[$Item];
+            } else if($Default) {
+                $To[$Item] = $Default;
+            }
+        }
+        return $To;
+    }
+
     function change_column_comment($Table, $Column, $Comment){
         if(!$Comment){$Comment = "clear";}
         $this->create_column($Table, $Column, "", "", "", false, "", $Comment, $Column);
@@ -1192,6 +1226,11 @@ class ManagerComponent extends Component {
         if (is_file($Filename)) {
             @unlink($Filename);
         }
+    }
+
+    function test($Data= ""){
+        debug($Data);
+        die();
     }
 }
 ?>

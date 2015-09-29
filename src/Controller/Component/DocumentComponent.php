@@ -1847,6 +1847,7 @@ class DocumentComponent extends Component{
         return $ret;
     }
 
+
     function constructdocument($orderid, $document_type, $sub_doc_id, $user_id, $client_id, $draft = 0){
         //id, order_id, document_type, sub_doc_id, title, description, scale, reason, suggestion, user_id, client_id, uploaded_for, created, draft, file
         $offsethours = 0;
@@ -1957,4 +1958,27 @@ class DocumentComponent extends Component{
             return $value;
         }
     }
+
+    //returns the order ID
+    function constructorder($title, $user_id, $client_id, $conf_recruiter_name, $conf_driver_name, $forms, $otherdata = "", $order_type = "PSA"){
+        $controller = $this->_registry->getController();
+
+        $offsethours = date('Y-m-d H:i:s');
+        $data = array("created" => $offsethours, "socialdate1" => date('Y-m-d'), "socialdate2" => date('Y-m-d'), "physicaldate" => date('Y-m-d'));
+        $data["description"] = "Rapid order";
+        $data["title"] = $title;
+        $data["user_id"] = $user_id;
+        $data["client_id"] = $client_id;
+        $data["conf_recruiter_name"] = $conf_recruiter_name;
+        $data["conf_driver_name"] = $conf_driver_name;
+        $data["forms"] = $forms;
+        $data["order_type"] = $order_type;
+        if(is_array($otherdata)){
+            $data = array_merge($data, $otherdata);
+        }
+
+        $Order = $controller->Manager->new_entry("orders", "id", $data);
+        return $Order["id"];
+    }
+
 }
