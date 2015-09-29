@@ -102,6 +102,25 @@ function get($Key, $default = ""){
     return $default;
 }
 
+function Query($query){
+    global $con;
+    return $con->query($query);
+    //use while ($row = mysqli_fetch_array($result)) { to get results
+}
+
+function extension($Filename){
+    $type = strtolower(pathinfo($Filename, PATHINFO_EXTENSION));
+    if($type == "jpeg"){$type="jpg";}
+    return $type;
+}
+
+function base64encodefile($Filename, $Extension = ""){
+    if (file_exists($Filename)) {
+        if(!$Extension){$Extension= extension($Filename);}
+        return "data:image/" . extension($Filename) . ";base64," . base64_encode(file_get_contents($Filename));
+    }
+}
+
 function CacheTranslations($Language='English', $Text, $Variables = "", $Common = True){
     global $con;
     $wasdebug = false;
@@ -295,7 +314,7 @@ function addTrans($array, $Trans = ""){
     return $array;
 }
 
-function printoption($option, $selected, $value = ""){
+function printoption($option, $selected = "", $value = ""){
     $tempstr = "";
     if ($option == $selected) {$tempstr = " selected";}
     if (strlen($value) > 0) {$value = " value='" . $value . "'";}
@@ -337,5 +356,42 @@ function loadstringsJS($strings){
         }
     }
     <?php
+}
+
+function isJson($string) {
+    if($string && !is_array($string)){
+        json_decode($string);
+        return (json_last_error() == JSON_ERROR_NONE);
+    }
+}
+function cURL($URL, $data = "", $username = "", $password = ""){
+    $session = curl_init($URL);
+    curl_setopt($session, CURLOPT_HEADER, true);
+    //curl_setopt($session, CURLOPT_SSL_VERIFYPEER, false);//not in post production
+    curl_setopt($session, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($session, CURLOPT_POST, true);
+    if($data) { curl_setopt ($session, CURLOPT_POSTFIELDS, $data);}
+
+    //$datatype = "application/x-www-form-urlencoded;charset=UTF-8";
+    $datatype= "multipart/form-data";
+    if(isJson($data)){$datatype  = "application/json";}
+
+    $header = array('Content-type: ' . $datatype, "User-Agent: SMI");
+    if ($username && $password){
+        $header[] =	"Authorization: Basic " . base64_encode($username . ":" . $password);
+    } else if ($username) {
+        $header[] =	"Authorization: Bearer " .  $username;
+        $header[] =	"Accept-Encoding: gzip";
+    } else if ($password) {
+        $header[] =	"Authorization: AccessKey " .  $password;
+    }
+    curl_setopt($session, CURLOPT_HTTPHEADER, $header);
+
+    $response = curl_exec($session);
+    if(curl_errno($session)){
+        $response = "[Error: " . curl_error($session) . ']';
+    }
+    curl_close($session);
+    return $response;
 }
 ?>

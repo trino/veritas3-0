@@ -494,7 +494,9 @@ class ManagerComponent extends Component {
                     $Filename = $this->randomtext(10) . "_" . $this->randomtext(10) . "." . $Type;
                 }
             }
-            file_put_contents($Path . "/" . $Filename, $Data);
+
+            $Path = str_replace("//", "/", $Path . "/" . $Filename);
+            file_put_contents($Path, $Data);
             return $Filename;
         }
         return $Data;

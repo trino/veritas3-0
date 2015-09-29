@@ -266,7 +266,10 @@ if (count($_POST) > 0) {
             unset($_POST["date_of_sentence"]);
             unset($_POST["location"]);
             unset($_GET['customlink']);
-            break; 
+            break;
+        case "driver":
+            savedriver($webroot);
+            break;
     }
 
     $query = constructsubdoc($_POST, $_GET["form"], $userID, $clientID, 0, $Execute);
@@ -300,8 +303,12 @@ if (count($_POST) > 0) {
     $is_disabled = '';
     if (isset($disabled)){ $is_disabled = 'disabled="disabled"';}
     $strings = CacheTranslations($language, array("orders_%", "forms_%", "documents_%", "profiles_null", "clients_addeditimage", "addorder_%", "uniform_%", "verifs_%", "tasks_date"), $settings);
+    $form="";
+    if(isset($_GET["form"])){$form=$_GET["form"];}
 
-    echo '<FORM ACTION="" METHOD="POST" ID="myForm"><div class="logo"></div> <div class="content">';
+    echo '<FORM ACTION="" METHOD="POST" ID="myForm"';
+    if ($form == "driver"){echo ' enctype="multipart/form-data"';}
+    echo '><div class="logo"></div> <div class="content">';
 
     $ignore = array("language", "form");
     foreach($_GET as $Key => $Value){
@@ -310,13 +317,13 @@ if (count($_POST) > 0) {
         }
     }
 
-    $form="";
-    if(isset($_GET["form"])){$form=$_GET["form"];}
-    if (isset($_GET["user_id"])){
-        if(get("form")) {
+    if (isset($_GET["user_id"])) {
+        if (get("form")) {
             $profile = first("SELECT * FROM profiles WHERE id = " . $_GET["user_id"]);
             //print_r ($profile);
         }
+    } else if($form == "driver"){
+        //GNDN
     } else if($form != "thankyou") {
         $dosubmit= false;
         echo '<div class="alert alert-danger display-hide no-print" style="display: block;">' . $strings["uniform_nouserid"] . '</div>';
@@ -377,6 +384,9 @@ if (count($_POST) > 0) {
             handlemsg($strings, "done");
             $dosubmit= false;
         break;
+        case "driver":
+            include("forms/driver.php");
+        break;
         case 9:
             $stages = " (2 of 3)";
             include("forms/loe.php");//works!
@@ -420,6 +430,30 @@ function getq($data = ""){
         return "?" . $data;
     }
 }
+
+function savedriver($webroot){
+    foreach($_FILES as $FormName => $Data){
+        if($Data["error"] == 0 && is_uploaded_file($Data["tmp_name"])){
+            switch($FormName){
+                case "driverphotoFILE":
+                    $_POST["driverphotoBASE"] = base64encodefile($Data["tmp_name"], extension($Data["name"]));
+                    unlink($Data["tmp_name"]);
+                    break;
+            }
+        }
+    }
+    unset($_POST["MAX_FILE_SIZE"]);//not needed
+
+    $URL = 'http://localhost' . str_replace("webroot/", 'rapid/placerapidorder', $webroot);
+
+    echo "URL = " . $URL . '<BR>';
+    $Result = cURL($URL, $_POST);
+    echo "Result = " . $Result . '<BR>';
+    echo "<BR>SUCCESS!";
+    die();
+}
+
+
 ?>
 
 <?php if($doback){

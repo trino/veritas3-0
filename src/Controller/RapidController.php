@@ -614,6 +614,9 @@
                 case "placeorder":
                     $this->placerapidorder(array_merge($_POST, $_GET));
                     break;
+                case "test":
+                    echo "Unify: Success!";
+                    break;
                 default:
                     $this->debugall($_POST, "Post");
                     $this->debugall($_GET, "Get");
@@ -629,10 +632,13 @@
             }
         }
 
-        function placerapidorder($GETPOST){
+        function placerapidorder($GETPOST = ""){
+            if(!$GETPOST){$GETPOST = array_merge($_POST, $_GET);}
             //Requirements:
             //  Driver:  "fname", "mname", "lname", "gender", "street", "city", "province", "postal", "dob", "driver_license_no", "driver_province", "email"
             //  Order:  "ordertype" (ACRONYM FOR PRODUCT TYPE) [optional: "clientid" (38 assumed), "forms" (will be optained from the database if not given)]
+
+            //construct and/or get driver
             if(isset($GETPOST["driverid"])){
                 $Driver = $GETPOST["driverid"];
             } else {
@@ -642,19 +648,39 @@
                 $this->Manager->update_database("profiles", "id", $Driver, array("username" => "Applicant_" . $Driver));
             }
 
+            //get forms list
             if(!isset($GETPOST["forms"])){
                 $Forms = $this->Manager->get_entry("product_types", $GETPOST["ordertype"], "Acronym");
                 $GETPOST["forms"] = $Forms->Blocked;
             }
 
+            //get super user ID and name
             $Super = $this->Manager->getfirstsuper();
 
+            //construct order
             $this->loadComponent("Document");
-            $OrderID = $this->Document->constructorder("RAPID ORDER " . $this->Manager->now(), $Super->id, $this->get("clientid", 38), $Super->fname . " " . $Super->lname, $this->get("fname") . " " . $this->get("lname"), $GETPOST["forms"], "", $GETPOST["ordertype"]);
+            $ClientID = $this->get("clientid", 38);
+            $OrderID = $this->Document->constructorder("RAPID ORDER " . $this->Manager->now(), $Super->id, $ClientID, $Super->fname . " " . $Super->lname, $this->get("fname") . " " . $this->get("lname"), $GETPOST["forms"], "", $GETPOST["ordertype"]);
 
+            //attachments
+            if (isset($GETPOST["driverphotoBASE"])){
+                $Path = 'webroot/attachments';
+                $GETPOST["driverphotoBASE"] = str_replace("data:image/tmp;base64,", "data:image/png;base64,", $GETPOST["driverphotoBASE"] );
+                $Filename = $this->Manager->unbase_64_file($GETPOST["driverphotoBASE"], $Path);
+                $Ret = $this->Document->constructsubdoc(array("id_piece1" => $Filename), 15, $Super->id, $ClientID, $OrderID, true);//$data, $formID, $userID, $clientID, $orderid
+            }
+
+            die();//remove to call the webservice!
+
+            //call web service
             $Orders = new OrdersController;
-            $Orders->constructClasses();//Load model, components...
-            $Orders->webservice($GETPOST["ordertype"], $GETPOST["forms"], $Driver, $OrderID);
+            //$Orders->constructClasses();//Load model, components...
+            echo $Orders->webservice($GETPOST["ordertype"], $GETPOST["forms"], $Driver, $OrderID);
+
+            /*debug($GETPOST["ordertype"]);
+            debug($GETPOST["forms"]);
+            debug($Driver);
+            debug($OrderID);*/
         }
 
 

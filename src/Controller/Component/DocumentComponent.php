@@ -1862,16 +1862,18 @@ class DocumentComponent extends Component{
         return $this->insertdb("documents", $data)->id;
     }
 
-    function constructsubdoc($data, $formID, $userID, $clientID, $orderid=0){
+    function constructsubdoc($data, $formID, $userID, $clientID, $orderid=0, $retData = false){
         $subdocinfo = $this->findcol("subdocuments", "id", $formID);
         $table = $subdocinfo->table_name;
         $docTitle = $subdocinfo->title;
-        $docid = constructdocument($orderid, $docTitle, $formID, $userID, $clientID, 0);//22= doc id number, 81 = user id for SMI site, 1=client id for SMI
+        $docid = $this->constructdocument($orderid, $docTitle, $formID, $userID, $clientID, 0);//22= doc id number, 81 = user id for SMI site, 1=client id for SMI
         $data["document_id"] = $docid;
         $data["order_id"] = $orderid;
         $data["client_id"] = $clientID;
         $data["user_id"] = $userID;
-        $ret = "<BR>" . $this->insertdb($table, $data)->id;
+        $ID = $this->insertdb($table, $data)->id;
+        if($retData){return array("docid" => $docid , "subdocid" => $ID);}
+        $ret = "<BR>" . $ID;
         return $docid . $ret;
     }
 
