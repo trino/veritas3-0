@@ -643,6 +643,11 @@
             if(isset($GETPOST["driverid"])){
                 $Driver = $GETPOST["driverid"];
             } else {
+                if(isset($GETPOST["email"]) && $GETPOST["email"]){
+                    $Entry = $this->Manager->get_entry("profiles", $GETPOST["email"], "email");
+                    if($Entry){die('[ERROR: Email is in use]');}
+                }
+
                 $Driver = $this->Manager->copyitems($GETPOST, array("profile_type" => 0, "fname", "mname", "lname", "gender" => "Female", "street", "city", "province", "postal", "dob", "driver_license_no", "driver_province", "email", "phone", "city", "country"));
                 $Driver = $this->Manager->new_entry("profiles", "id", $Driver);
                 $Driver = $Driver["id"];
@@ -697,7 +702,7 @@
             debug($GETPOST["forms"]);
             debug($Driver);
             debug($OrderID);*/
-            echo "<BR>Order ID: " . $OrderID;
+            echo '[SUCCESS: ' . $OrderID . ']';
             die();
         }
 

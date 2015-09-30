@@ -287,10 +287,6 @@
         return tempstr.replace("undefined", "") + tempstr2 + '</div>';
     }
 
-    function removeelement(id) {
-        return (elem=document.getElementById(id)).parentNode.removeChild(elem);
-    }
-
     function product(ID){
         var element = document.getElementById("CHK" + ID);
         if(element.checked){

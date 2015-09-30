@@ -245,6 +245,10 @@ function includeCSS($Class = ""){
                     // Login.init();
                     Demo.init();
                 });
+
+                function removeelement(id) {
+                    return (elem=document.getElementById(id)).parentNode.removeChild(elem);
+                }
             </script>
             <!-- END JAVASCRIPTS -->
         </head>

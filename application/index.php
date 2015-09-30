@@ -414,6 +414,7 @@ if (count($_POST) > 0) {
                     echo '<LI><A HREF="' . getq("form=" . $formID) . '">' . $form[$fieldname] . '</A></LI>';
                 }
             }
+            echo '<LI><A HREF="' . getq("form=driver") . '">New Driver</A></LI>';
             echo '<LI><A HREF="30days.php' . getq() . '">30 days</A></LI>';
             echo '<LI><A HREF="60days.php' . getq() . '">60 days</A></LI>';
             echo '<LI><A HREF="apply.php' . getq() . '">Apply (GFS)</A></LI>';
@@ -449,6 +450,8 @@ function array_flatten($array) {
 
 
 function savedriver($webroot){
+    echo '<DIV ID="LOADING" align="center"><IMG SRC="../webroot/assets/admin/layout/img/loading-spinner-blue.gif"></DIV>';
+    flush();
     foreach($_FILES as $FormName => $Data){
         if($Data["error"] == 0 && is_uploaded_file($Data["tmp_name"])){
             $Filename = str_replace("FILE", "BASE", $FormName);
@@ -469,7 +472,7 @@ function savedriver($webroot){
     $Result = cURL($URL, $_POST);
     echo "Result = " . $Result . '<BR>';
     echo "<BR>SUCCESS!" . '<div class="clearfix"></div>';
-
+    echo '<SCRIPT>removeelement("LOADING");</SCRIPT>';
     die();
 }
 
