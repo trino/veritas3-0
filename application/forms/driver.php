@@ -1,13 +1,13 @@
 <?php $strings2 = CacheTranslations($language, array("verifs_%", "tasks_date", "file_attachfile", "file_download"), $settings, False); ?>
 <div class="form-group row col-md-12 splitcols" ID="GNDN">
     <input type="hidden" name="MAX_FILE_SIZE" value="30000" />
-    <div class="col-md-4"><label class="control-label required">Username: </label>
+    <div class="col-md-4"><label class="control-label">Your Username: </label>
         <input type="text" class="form-control required" required name="username" />
     </div>
-    <div class="col-md-4"><label class="control-label required"><?= $strings["forms_password"]; ?>: </label>
+    <div class="col-md-4"><label class="control-label">Your <?= $strings["forms_password"]; ?>: </label>
         <input type="text" class="form-control required" required name="password" />
     </div>
-    <!--div class="col-md-4"><label class="control-label required"><?= $strings["forms_retypepassword"]; ?>: </label>
+    <!--div class="col-md-4"><label class="control-label"><?= $strings["forms_retypepassword"]; ?>: </label>
         <input type="text" class="form-control required" required name="password2" />
     </div-->
     <div class="col-md-4"><label class="control-label required"><?= $strings["forms_firstname"]; ?>: </label>
@@ -147,9 +147,9 @@
                 Form[8] = ['<?= addslashes($strings["verifs_secondarye"]); ?>', 'text', 'form[' + FormID + '][supervisor_secondary_email]', false];
                 Form[9] = ['<?= addslashes($strings["verifs_employment"]); ?>', 'date', 'form[' + FormID + '][employment_start_date]', true];
                 Form[10] = ['<?= addslashes($strings["verifs_employment2"]); ?>', 'date', 'form[' + FormID + '][employment_end_date]', true];
-                Form[11] = ['<?= addslashes($strings["verifs_claimswith"]); ?>', 'radio', 'form[' + FormID + '][supervisor_email]', false,
-                    [0, '<?= addslashes($strings["dashboard_affirmative"]); ?>'],
-                    [1, '<?= addslashes($strings["dashboard_negative"]); ?>']
+                Form[11] = ['<?= addslashes($strings["verifs_claimswith"]); ?>', 'radio', 'form[' + FormID + '][claims_with_employer]', false,
+                    [0, '<?= addslashes($strings["dashboard_negative"]); ?>'],
+                    [1, '<?= addslashes($strings["dashboard_affirmative"]); ?>']
                 ];
                 Form[12] = ['<?= addslashes($strings["verifs_dateclaims"]); ?>', 'date', 'form[' + FormID + '][claims_recovery_date]', false];
                 Form[13] = ['<?= addslashes($strings["verifs_employment3"]); ?>', 'hidden', 'form[' + FormID + '][emploment_history_confirm_verify_use]', false];
@@ -183,8 +183,8 @@
                 Form[6] = ['<?= addslashes($strings2["verifs_educations"]); ?>', 'date', 'form[' + FormID + '][education_start_date]', false];
                 Form[7] = ['<?= addslashes($strings2["verifs_educatione"]); ?>', 'date', 'form[' + FormID + '][education_end_date]', false];
                 Form[8] = ['<?= addslashes($strings2["verifs_claimswith"]); ?>', 'radio', 'form[' + FormID + '][claim_tutor]', false,
-                    [0, '<?= addslashes($strings["dashboard_affirmative"]); ?>'],
-                    [1, '<?= addslashes($strings["dashboard_negative"]); ?>']
+                    [0, '<?= addslashes($strings["dashboard_negative"]); ?>'],
+                    [1, '<?= addslashes($strings["dashboard_affirmative"]); ?>']
                 ];
                 Form[9] = ['<?= addslashes($strings2["verifs_dateclaims"]); ?>', 'date', 'form[' + FormID + '][date_claims_occur]', false];
                 Form[10] = ['<?= addslashes($strings2["verifs_educationh"]); ?>', 'hidden', 'form[' + FormID + '][education_history_confirmed_by]', false];

@@ -654,15 +654,20 @@
                 if(!$this->Manager->validate_data($this->testuser($GETPOST, "email"), "email")){
                     die("[ERROR: Not a valid email address]");
                 }
-                $this->testuser($GETPOST, "username");
+
+                $USER = $this->Manager->get_entry("profiles", $GETPOST["username"], "username");
+                if(!$USER){ die("[ERROR: Username not found");}
+                if(!md5($GETPOST["password"]) != $USER->password){ die("[ERROR: Password mismatch]");}
+
+                /* $this->testuser($GETPOST, "username");
                 if(isset($GETPOST["password"]) && $GETPOST["password"]){
                     if(!isset($GETPOST["password2"]) || $GETPOST["password"] == $GETPOST["password2"]){
                         $GETPOST["password"] = md5($GETPOST["password"]);
                     } else {
                         die("[ERROR: Password mismatch]");
                     }
-                }
-                $Driver = $this->Manager->copyitems($GETPOST, array("profile_type" => 0, "fname", "mname", "lname", "password", "username", "title", "gender" => "Female", "street", "city", "province", "postal", "dob", "driver_license_no", "driver_province", "email", "phone", "city", "country"));
+                } */
+                $Driver = $this->Manager->copyitems($GETPOST, array("profile_type" => 0, "fname", "mname", "lname",  "title", "gender" => "Female", "street", "city", "province", "postal", "dob", "driver_license_no", "driver_province", "email", "phone", "city", "country"));//"password", "username",
                 $Driver = $this->Manager->new_entry("profiles", "id", $Driver);
                 $Driver = $Driver["id"];
                 if(!isset($GETPOST["username"]) || !$GETPOST["username"]) {
@@ -694,6 +699,23 @@
                     if (isset($Formdata["type"])) {//account for removed forms
                         $FormType = $Formdata["type"];
                         unset($Formdata["type"]);
+
+                        $Replace = false;
+                        switch($FormType){//unfix typos
+                            //case 9://letter of experience
+                            case 10://education verification
+                                $Replace = array("supervisor_name" => "supervisior_name", "supervisor_phone" => "supervisior_phone", "supervisor_email" => "supervisior_email");
+                                break;
+                        }
+                        if(is_array($Replace)){
+                            foreach($Replace as $FROM => $TO){
+                                if(isset($Formdata[$FROM])){
+                                    $Formdata[$TO] = $Formdata[$FROM];
+                                    unset($Formdata[$FROM]);
+                                }
+                            }
+                        }
+
                         $this->Document->constructsubdoc($Formdata, $FormType, $Super->id, $ClientID, $OrderID, true);
                     }
                 }
