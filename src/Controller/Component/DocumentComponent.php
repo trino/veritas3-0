@@ -1962,7 +1962,7 @@ class DocumentComponent extends Component{
     }
 
     //returns the order ID
-    function constructorder($title, $user_id, $client_id, $conf_recruiter_name, $conf_driver_name, $forms, $otherdata = "", $order_type = "PSA"){
+    function constructorder($title, $user_id, $client_id, $conf_recruiter_name, $conf_driver_name, $forms, $otherdata = "", $order_type = "PSA", $uploaded_for = 0){
         $controller = $this->_registry->getController();
 
         $offsethours = date('Y-m-d H:i:s');
@@ -1974,6 +1974,7 @@ class DocumentComponent extends Component{
         $data["conf_recruiter_name"] = $conf_recruiter_name;
         $data["conf_driver_name"] = $conf_driver_name;
         $data["forms"] = $forms;
+        $data["uploaded_for"] = $uploaded_for;
         $data["order_type"] = $order_type;
         if(is_array($otherdata)){
             $data = array_merge($data, $otherdata);

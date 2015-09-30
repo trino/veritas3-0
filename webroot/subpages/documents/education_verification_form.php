@@ -55,7 +55,7 @@
                             </div>
 
                             <div class="form-group row">
-                                <label class="control-label col-md-3">Supervisor's Name</label>
+                                <label class="control-label col-md-3">Professor's Name</label>
 
                                 <div class="col-md-3">
                                     <input type="text" class="form-control" name="supervisior_name[]"
@@ -71,7 +71,7 @@
 
 
                             <div class="form-group row">
-                                <label class="control-label col-md-3">Supervisor's Email</label>
+                                <label class="control-label col-md-3">Professor's Email</label>
 
                                 <div class="col-md-3">
                                     <input type="text" class="form-control email1" name="supervisior_email[]" role="email"
@@ -154,7 +154,7 @@
                                     Only):</label>
 
                                 <div class="col-md-9">
-                                    <input type="text" class="form-control" name="education_history_confirmed_by[]"
+                                        <input type="text" class="form-control" name="education_history_confirmed_by[]"
                                            value="<?php echo $emp->education_history_confirmed_by;?>"/>
                                 </div>
                             </div>
@@ -418,16 +418,14 @@
                         </div>
                         <div class="form-group row">
                             <label class="col-md-3 control-label"><?= $strings2["tasks_date"]; ?>: </label>
-
                             <div class="col-md-3">
                                 <input type="text" class="form-control date-picker" name="date_time[]"/>
                             </div>
-                            <label class="col-md-3 control-label" style="display: none;"><?= $strings["forms_signature"]; ?>:</label>
 
+                            <label class="col-md-3 control-label" style="display: none;"><?= $strings["forms_signature"]; ?>:</label>
                             <div class="col-md-3">
                                 <input type="text" class="form-control" style="display: none;" name="signature[]"/>
                             </div>
-
                         </div>
                         <div id="more_edu"></div>
                     <?php } ?>

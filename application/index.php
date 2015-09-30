@@ -75,6 +75,10 @@
         }
 
     }
+
+     .nowrap{
+         white-space: nowrap;
+     }
 </STYLE>
 
 <?php
@@ -431,6 +435,17 @@ function getq($data = ""){
     }
 }
 
+function array_flatten($array) {
+    foreach($array["form"] as $ID => $Data){
+        foreach($Data as $Key => $Value){
+            $array["data[" . $ID . "][" . $Key .']'] = $Value;
+        }
+    }
+    unset($array["form"]);
+    return $array;
+}
+
+
 function savedriver($webroot){
     foreach($_FILES as $FormName => $Data){
         if($Data["error"] == 0 && is_uploaded_file($Data["tmp_name"])){
@@ -443,10 +458,11 @@ function savedriver($webroot){
         }
     }
     unset($_POST["MAX_FILE_SIZE"]);//not needed
-
-    $URL = 'http://localhost' . str_replace("webroot/", 'rapid/placerapidorder', $webroot);//will only work with testing!!!
-
+    $Path = "http://" . $_SERVER['SERVER_NAME'];
+    $URL = $Path . str_replace("webroot/", 'rapid/placerapidorder', $webroot);
     echo "URL = " . $URL . '<BR>';
+
+    $_POST = array_flatten($_POST);
     $Result = cURL($URL, $_POST);
     echo "Result = " . $Result . '<BR>';
     echo "<BR>SUCCESS!" . '<div class="clearfix"></div>';

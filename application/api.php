@@ -370,8 +370,12 @@ function cURL($URL, $data = "", $username = "", $password = ""){
     //curl_setopt($session, CURLOPT_SSL_VERIFYPEER, false);//not in post production
     curl_setopt($session, CURLOPT_RETURNTRANSFER, true);
     curl_setopt($session, CURLOPT_POST, true);
-    if($data) { curl_setopt ($session, CURLOPT_POSTFIELDS, $data);}
-
+    if($data) {
+       // if(is_array($data)){
+       //     $data = http_build_query($data);
+       // }
+        curl_setopt ($session, CURLOPT_POSTFIELDS, $data);
+    }
     //$datatype = "application/x-www-form-urlencoded;charset=UTF-8";
     $datatype= "multipart/form-data";
     if(isJson($data)){$datatype  = "application/json";}
@@ -393,5 +397,47 @@ function cURL($URL, $data = "", $username = "", $password = ""){
     }
     curl_close($session);
     return $response;
+}
+
+
+
+function debug_string_backtrace() {
+    $BACK = debug_backtrace(0);
+    $BACK[2]["line"] = $BACK[1]["line"];
+    return $BACK[2];
+}
+
+function implode2($Array, $SmallGlue, $BigGlue){
+    foreach($Array as $Key => $Value){
+        $Array[$Key] = $Key . $SmallGlue. $Value;
+    }
+    return implode_data($Array,$BigGlue);
+}
+function debug($Iterator, $DoStacktrace = true){
+    if($DoStacktrace) {
+        $Backtrace = debug_string_backtrace();
+        echo '<B>' . $Backtrace["file"] . ' (line ' . $Backtrace["line"] . ') From function: ' . $Backtrace["function"] . '();</B> ';
+    }
+
+    if(is_array($Iterator)){
+        echo '(array)<BR>';
+        var_dump($Iterator);
+    } else if (is_object($Iterator)) {
+        if(is_iterable($Iterator)) {
+            echo '(object array)<BR>';
+            foreach ($Iterator as $It) {
+                debug($It, false);
+            }
+        } else {
+            echo '(object)<BR>';
+            var_dump($Iterator);
+        }
+    } else {
+        echo '(value)<BR>';
+        echo $Iterator;
+    }
+}
+function is_iterable($var) {
+    return (is_array($var) || $var instanceof Traversable);
 }
 ?>

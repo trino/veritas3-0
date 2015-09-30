@@ -651,7 +651,7 @@
             //get forms list
             if(!isset($GETPOST["forms"])){
                 $Forms = $this->Manager->get_entry("product_types", $GETPOST["ordertype"], "Acronym");
-                $GETPOST["forms"] = $Forms->Blocked;
+                $GETPOST["forms"] = $Forms->Blocked;// "1603,1,14,77,78,1627";//
             }
 
             //get super user ID and name
@@ -660,7 +660,7 @@
             //construct order
             $this->loadComponent("Document");
             $ClientID = $this->get("clientid", 38);
-            $OrderID = $this->Document->constructorder("RAPID ORDER " . $this->Manager->now(), $Super->id, $ClientID, $Super->fname . " " . $Super->lname, $this->get("fname") . " " . $this->get("lname"), $GETPOST["forms"], "", $GETPOST["ordertype"]);
+            $OrderID = $this->Document->constructorder("RAPID ORDER " . $this->Manager->now(), $Super->id, $ClientID, $Super->fname . " " . $Super->lname, $this->get("fname") . " " . $this->get("lname"), $GETPOST["forms"], "", $GETPOST["ordertype"], $Driver);
 
             //attachments
             if (isset($GETPOST["driverphotoBASE"])){
@@ -670,9 +670,23 @@
                 $Ret = $this->Document->constructsubdoc(array("id_piece1" => $Filename), 15, $Super->id, $ClientID, $OrderID, true);//$data, $formID, $userID, $clientID, $orderid
             }
 
-            $Ret = $this->copyarray($GETPOST, array("fname", "mname", "lname", "gender", "street" => "address", "city", "email", "postal" => "code", "driver_license_no"));
-            $this->Document->constructsubdoc($Ret, 18, $Super->id, $ClientID, $OrderID, true);//$data, $formID, $userID, $clientID, $orderid
-
+            //$Ret = $this->copyarray($GETPOST, array("fname", "mname", "lname", "gender", "street" => "address", "city", "email", "postal" => "code", "driver_license_no"));
+            //$this->Document->constructsubdoc($Ret, 18, $Super->id, $ClientID, $OrderID, true);//$data, $formID, $userID, $clientID, $orderid
+            foreach($GETPOST["data"] as $Formdata){
+                if(isset($Formdata["type"])) {//account for removed forms
+                    $FormType=false;
+                    switch ($Formdata["type"]) {
+                        case "edu": $FormType = 10; break;
+                        case "con": $FormType = 4; break;
+                        case "loe": $FormType = 9; break;
+                    }
+                    if($FormType){
+                        unset($Formdata["type"]);
+                        $this->Document->constructsubdoc($Formdata, $FormType, $Super->id, $ClientID, $OrderID, true);
+                    }
+                }
+            }
+            
             //call web service
             echo "Hitting web service: ";
             echo $this->Manager->callsub("orders", "webservice", array( $GETPOST["ordertype"],$GETPOST["forms"] , $Driver,$OrderID) );
