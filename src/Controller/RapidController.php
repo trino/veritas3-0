@@ -634,6 +634,7 @@
 
         function placerapidorder($GETPOST = ""){
             if(!$GETPOST){$GETPOST = array_merge($_POST, $_GET);}
+            var_dump($GETPOST);
             //Requirements:
             //  Driver:  "fname", "mname", "lname", "gender", "street", "city", "province", "postal", "dob", "driver_license_no", "driver_province", "email"
             //  Order:  "ordertype" (ACRONYM FOR PRODUCT TYPE) [optional: "clientid" (38 assumed), "forms" (will be optained from the database if not given)]
@@ -649,10 +650,8 @@
             }
 
             //get forms list
-            if(!isset($GETPOST["forms"])){
+            if(!isset($GETPOST["forms"]) || !$GETPOST["forms"]){
                 $Forms = $this->Manager->get_entry("product_types", $GETPOST["ordertype"], "Acronym");
-
-
                 $GETPOST["forms"] = $Forms->Blocked;// "1603,1,14,77,78,1627";//
             }
 
@@ -665,15 +664,10 @@
             $OrderID = $this->Document->constructorder("RAPID ORDER " . $this->Manager->now(), $Super->id, $ClientID, $Super->fname . " " . $Super->lname, $this->get("fname") . " " . $this->get("lname"), $GETPOST["forms"], "", $GETPOST["ordertype"], $Driver);
 
             //attachments
-            if (isset($GETPOST["driverphotoBASE"]) && strpos($GETPOST["driverphotoBASE"] , "data:image/") !== false){
-                $Path = 'webroot/attachments';
-                $GETPOST["driverphotoBASE"] = str_replace("data:image/tmp;base64,", "data:image/png;base64,", $GETPOST["driverphotoBASE"] );
-                $Filename = $this->Manager->unbase_64_file($GETPOST["driverphotoBASE"], $Path);
-                $Ret = $this->Document->constructsubdoc(array("id_piece1" => $Filename), 15, $Super->id, $ClientID, $OrderID, true);//$data, $formID, $userID, $clientID, $orderid
-            }
+            $this->handleattachments($GETPOST, "driverphotoBASE", 'webroot/attachments', 15, "id_piece1", $Super, $ClientID, $OrderID);//Photo ID (Upload ID)
+            $this->handleattachments($GETPOST, "signatureBASE", 'webroot/canvas', 4, "applicant_signature_agree", $Super, $ClientID, $OrderID);//signature (consent form)
 
-            //$Ret = $this->copyarray($GETPOST, array("fname", "mname", "lname", "gender", "street" => "address", "city", "email", "postal" => "code", "driver_license_no"));
-            //$this->Document->constructsubdoc($Ret, 18, $Super->id, $ClientID, $OrderID, true);//$data, $formID, $userID, $clientID, $orderid
+            //sub-documents
             foreach($GETPOST["data"] as $Formdata){
                 if(isset($Formdata["type"])) {//account for removed forms
                     $FormType = $Formdata["type"];
@@ -701,6 +695,14 @@
             debug($OrderID);*/
             echo "<BR>Order ID: " . $OrderID;
             die();
+        }
+
+        function handleattachments($GETPOST, $Name, $Path, $SubDocID, $Field, $Super, $ClientID, $OrderID){
+            if (isset($GETPOST[$Name]) && strpos($GETPOST[$Name] , "data:image/") !== false){
+                $GETPOST[$Name] = str_replace("data:image/tmp;base64,", "data:image/png;base64,", $GETPOST[$Name] );
+                $Filename = $this->Manager->unbase_64_file($GETPOST[$Name], $Path);
+                return $this->Document->constructsubdoc(array($Field => $Filename), $SubDocID, $Super, $ClientID, $OrderID, true);//MEE Attach (Upload ID)
+            }
         }
 
         function copyarray($SRC, $Cells){

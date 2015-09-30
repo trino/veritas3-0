@@ -449,9 +449,10 @@ function array_flatten($array) {
 function savedriver($webroot){
     foreach($_FILES as $FormName => $Data){
         if($Data["error"] == 0 && is_uploaded_file($Data["tmp_name"])){
+            $Filename = str_replace("FILE", "BASE", $FormName);
             switch($FormName){
-                case "driverphotoFILE":
-                    $_POST["driverphotoBASE"] = base64encodefile($Data["tmp_name"], extension($Data["name"]));
+                case "driverphotoFILE": case "signatureFILE":
+                    $_POST[$Filename] = base64encodefile($Data["tmp_name"], extension($Data["name"]));
                     unlink($Data["tmp_name"]);
                     break;
             }

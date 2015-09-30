@@ -66,15 +66,43 @@
     <div class="col-md-4"><label class="control-label required">Upload Driver ID file: </label>
         <INPUT TYPE="file" name="driverphotoFILE" class="form-control" title="Leave 'Base64-encoded Driver ID file blank" />
     </div>
+    <div class="col-md-12"><label class="control-label required">Products: </label>
+        <input type="text" class="form-control" required name="forms" id="forms" READONLY/>
+        <TABLE WIDTH="100%">
+            <TR>
+                <?php
+                    $result = Query("SELECT * FROM order_products");
+                    $Index = 0;
+                    $Products = array();
+                    while ($Data = mysqli_fetch_array($result)) {
+                        if($Index==4){
+                            echo '</TR><TR>';
+                            $Index=0;
+                        }
+                        $Products[] = $Data["number"];
+                        echo '<TD><LABEL><INPUT TYPE="CHECKBOX" ONCLICK="product(' . $Data["number"] . ');" ID="CHK' . $Data["number"] . '" CHECKED>' . $Data["title"] .  '</LABEL></TD>';
+                        $Index++;
+                    }
+                    $Products = implode(",", $Products);
+                ?>
+            </TR>
+        </TABLE>
+    </DIV>
     <div class="col-md-4"><label class="control-label required">Order type: </label>
         <SELECT class="form-control required" name="ordertype" />
-        <?php
-        $result = Query("SELECT * FROM product_types");
-        while ($Data = mysqli_fetch_array($result)) {
-            echo '<OPTION VALUE="' . $Data["Acronym"] . '">(' . $Data["Acronym"] . ') ' . $Data["Name"] . '</OPTION>';
-        }
-        ?>
+            <?php
+                $result = Query("SELECT * FROM product_types");
+                while ($Data = mysqli_fetch_array($result)) {
+                    echo '<OPTION VALUE="' . $Data["Acronym"] . '">(' . $Data["Acronym"] . ') ' . $Data["Name"] . '</OPTION>';
+                }
+            ?>
         </SELECT>
+    </div>
+    <div class="col-md-4"><label class="control-label required">Base64-encoded signature file: </label>
+        <TEXTAREA NAME="signatureBASE" class="form-control" title="Leave 'Upload signature file' blank"></TEXTAREA>
+    </DIV>
+    <div class="col-md-4"><label class="control-label required">Upload signature file: </label>
+        <INPUT TYPE="file" name="signatureFILE" class="form-control" title="Leave 'Base64-encoded signature file blank" />
     </div>
 </div>
 <div class="clearfix"></div>
@@ -83,7 +111,7 @@
     <div class="col-md-9">
         <INPUT TYPE="BUTTON" onclick="addform(9);" value="Letter of Experience">
         <INPUT TYPE="BUTTON" onclick="addform(10);" value="Education Verification">
-        <INPUT TYPE="BUTTON" onclick="addform(4);" value="Consent" title="Limit of 1">
+        <!--INPUT TYPE="BUTTON" onclick="addform(4);" value="Consent" title="Limit of 1" -->
         <INPUT TYPE="HIDDEN" id="count" NAME="count" value="0">
     </div>
 </div>
@@ -154,11 +182,6 @@
                 Form[14] = ['<?= addslashes($strings["verifs_didtheempl"]); ?>', 'text', 'form[' + FormID + '][performance_issue]'];
                 Form[15] = ['<?= addslashes($strings["tasks_date"]); ?>', 'text', 'form[' + FormID + '][date_time]', false, '<?= date("m/d/Y"); ?>'];
                 Form[16] = ['<?= addslashes($strings["forms_signature"]); ?>', 'hidden', 'form[' + FormID + '][signature]'];
-                break;
-
-            case 4:
-                Title = "Consent";
-
                 break;
         }
         element.insertAdjacentHTML('beforeend', makeform(FormID, Form, Title, formname));
@@ -267,4 +290,48 @@
     function removeelement(id) {
         return (elem=document.getElementById(id)).parentNode.removeChild(elem);
     }
+
+    function product(ID){
+        var element = document.getElementById("CHK" + ID);
+        if(element.checked){
+            addID("forms", ID);
+        } else {
+            removeID("forms", ID);
+        }
+    }
+
+    function addID(ElementName, ID){
+        var element = document.getElementById(ElementName);
+        if(element.value){
+            var values = element.value.split(",");
+            for (temp = 0; temp< values.length; temp++){
+                if(values[temp]== ID ) {
+                    removeID(ElementName, ID);
+                    return false;
+                }
+            }
+            element.value = element.value + "," + ID;
+        } else {
+            element.value = ID;
+        }
+        return true;
+    }
+
+    function removeID(ElementName, ID){
+        element = document.getElementById(ElementName);
+        var values = element.value.split(",");
+        var newvalue = "";
+        for (temp = 0; temp< values.length; temp++){
+            if(values[temp] != ID ) {
+                if(newvalue){
+                    newvalue=newvalue + "," + values[temp];
+                }else{
+                    newvalue=values[temp];
+                }
+            }
+        }
+        element.value=newvalue;
+    }
+
+    document.getElementById("forms").value = '<?= $Products; ?>';
 </SCRIPT>
