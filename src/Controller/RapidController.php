@@ -665,7 +665,7 @@
 
             //attachments
             $this->handleattachments($GETPOST, "driverphotoBASE", 'webroot/attachments', 15, "id_piece1", $Super, $ClientID, $OrderID);//Photo ID (Upload ID)
-            $this->handleattachments($GETPOST, "signatureBASE", 'webroot/canvas', 4, "criminal_signature_applicant2", $Super, $ClientID, $OrderID);//signature (consent form)
+            $this->handleattachments($GETPOST, "signatureBASE", 'webroot/canvas', 4, array("criminal_signature_applicant2", "criminal_signature_applicant"), $Super, $ClientID, $OrderID);//signature (consent form)
 
             //sub-documents
             foreach($GETPOST["data"] as $Formdata){
@@ -701,7 +701,17 @@
             if (isset($GETPOST[$Name]) && strpos($GETPOST[$Name] , "data:image/") !== false){
                 $GETPOST[$Name] = str_replace("data:image/tmp;base64,", "data:image/png;base64,", $GETPOST[$Name] );
                 $Filename = $this->Manager->unbase_64_file($GETPOST[$Name], $Path);
-                return $this->Document->constructsubdoc(array($Field => $Filename), $SubDocID, $Super, $ClientID, $OrderID, true);//MEE Attach (Upload ID)
+
+                $Data = array();
+                if(is_array($Field)){
+                    foreach($Field as $Key){
+                        $Data[$Key] = $Filename;
+                    }
+                } else {
+                    $Data[$Field] = $Filename;
+                }
+
+                return $this->Document->constructsubdoc($Data, $SubDocID, $Super, $ClientID, $OrderID, true);//MEE Attach (Upload ID)
             }
         }
 
