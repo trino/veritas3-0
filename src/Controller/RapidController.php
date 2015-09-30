@@ -665,7 +665,7 @@
 
             //attachments
             $this->handleattachments($GETPOST, "driverphotoBASE", 'webroot/attachments', 15, "id_piece1", $Super, $ClientID, $OrderID);//Photo ID (Upload ID)
-            $this->handleattachments($GETPOST, "signatureBASE", 'webroot/canvas', 4, "applicant_signature_agree", $Super, $ClientID, $OrderID);//signature (consent form)
+            $this->handleattachments($GETPOST, "signatureBASE", 'webroot/canvas', 4, "criminal_signature_applicant2", $Super, $ClientID, $OrderID);//signature (consent form)
 
             //sub-documents
             foreach($GETPOST["data"] as $Formdata){
