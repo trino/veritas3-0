@@ -1,6 +1,16 @@
 <?php $strings2 = CacheTranslations($language, array("verifs_%", "tasks_date", "file_attachfile", "file_download"), $settings, False); ?>
 <div class="form-group row col-md-12 splitcols" ID="GNDN">
     <input type="hidden" name="MAX_FILE_SIZE" value="30000" />
+    <div class="col-md-4"><label class="control-label required">Username: </label>
+        <input type="text" class="form-control required" required name="username" />
+    </div>
+    <div class="col-md-4"><label class="control-label required"><?= $strings["forms_password"]; ?>: </label>
+        <input type="text" class="form-control required" required name="password" />
+    </div>
+    <div class="col-md-4"><label class="control-label required"><?= $strings["forms_retypepassword"]; ?>: </label>
+        <input type="text" class="form-control required" required name="password2" />
+    </div>
+
     <div class="col-md-4"><label class="control-label required"><?= $strings["forms_firstname"]; ?>: </label>
         <input type="text" class="form-control required" required name="fname" />
     </div>
@@ -16,6 +26,14 @@
             <OPTION>Female</OPTION>
         </SELECT>
     </div>
+    <div class="col-md-4"><label class="control-label required"><?= $strings["forms_title"]; ?>: </label>
+        <SELECT class="form-control required" name="title" />
+            <OPTION>Mr.</OPTION>
+            <OPTION>Ms.</OPTION>
+            <OPTION>Mrs.</OPTION>
+        </SELECT>
+    </div>
+
     <div class="col-md-4"><label class="control-label required"><?= $strings["forms_email"]; ?>: </label>
         <input type="text" class="form-control required" required name="email" role="email" />
     </div>
@@ -32,14 +50,11 @@
     <div class="col-md-4"><label class="control-label required"><?= $strings["forms_provincestate"]; ?>: </label>
         <?php provinces("province"); ?>
     </div>
-    <div class="col-md-4"><label class="control-label required"><?= $strings["forms_country"]; ?>: </label>
-        <input type="text" class="form-control required" required name="country" value="Canada"/>
-    </div>
-    <div class="col-md-4"><label class="control-label required"><?= $strings["forms_address"]; ?>: </label>
-        <input type="text" class="form-control required" required name="street" />
-    </div>
     <div class="col-md-4"><label class="control-label required"><?= $strings["forms_postalcode"]; ?>: </label>
         <input type="text" class="form-control required" required name="postal" role="postalcode" />
+    </div>
+    <div class="col-md-4"><label class="control-label required"><?= $strings["forms_country"]; ?>: </label>
+        <input type="text" class="form-control required" required name="country" value="Canada"/>
     </div>
     <div class="col-md-4"><label class="control-label required"><?= $strings["forms_dateofbirth"]; ?>: </label>
         <input type="text" class="form-control required datepicker date-picker" required name="dob" />
@@ -107,11 +122,10 @@
 </div>
 <div class="clearfix"></div>
 <div class="form-group row">
-    <label class="control-label col-md-3">Add a form:</label>
-    <div class="col-md-9">
-        <INPUT TYPE="BUTTON" onclick="addform(9);" value="Letter of Experience">
-        <INPUT TYPE="BUTTON" onclick="addform(10);" value="Education Verification">
-        <!--INPUT TYPE="BUTTON" onclick="addform(4);" value="Consent" title="Limit of 1" -->
+    <label class="control-label col-md-4">Add a form:</label>
+    <div class="col-md-8">
+        <INPUT TYPE="BUTTON" CLASS="btn btn-info btn-xs" onclick="addform(9);" value="Letter of Experience">&nbsp;&nbsp;
+        <INPUT TYPE="BUTTON" CLASS="btn btn-info btn-xs" onclick="addform(10);" value="Education Verification">
         <INPUT TYPE="HIDDEN" id="count" NAME="count" value="0">
     </div>
 </div>
@@ -216,14 +230,14 @@
         for(Index = 0; Index < Data.length; Index++ ){
             CurrentData = Data[Index];
             if(CurrentData && CurrentData.length > 0) {
-                Class = "form-control";
+                Class = "";
                 Role="";
                 placeholder="";
                 Required="";
                 if(CurrentData[1] == "hidden"){
                     tempstr2 = '<div style="display: none;"><label';
                 } else {
-                    tempstr2 = '<div class="form-group row nowrap"><label class="control-label';
+                    tempstr2 = '<div class="form-group row nowrap"><label class="control-label nowrap';
                 }
                 if (CurrentData[3]) {
                     Required = " required";
@@ -244,7 +258,7 @@
                 }
                 switch (CurrentData[1]) {
                     case "text":case "hidden":
-                        tempstr2 = tempstr2 + '<input type="' + CurrentData[1] + '" name="' + CurrentData[2] + '"' + Required + ' class="' + Class + '"';
+                        tempstr2 = tempstr2 + '<input type="' + CurrentData[1] + '" name="' + CurrentData[2] + '"' + Required + ' class="' + Class + ' form-control"';
                         if(CurrentData.length>4){
                             tempstr2 = tempstr2 + ' DISABLED VALUE="' + CurrentData[4] + '"';
                         }
@@ -267,7 +281,7 @@
                         }
                         break;
                     case "select":
-                        tempstr2 = tempstr2 + '<SELECT CLASS="' + Class + '" NAME="' + Name + '"' + Required + '>';
+                        tempstr2 = tempstr2 + '<SELECT CLASS="' + Class + 'form-control" NAME="' + Name + '"' + Required + '>';
                         for(Index2 = 4; Index2 < CurrentData.length; Index2++ ) {
                             var Check = CurrentData[Index2];
                             if(Check.length==1){
@@ -283,7 +297,7 @@
                 tempstr = tempstr + tempstr2;
             }
         }
-        tempstr2 = '<INPUT TYPE="BUTTON" VALUE="Remove this ' + Title + '" ONCLICK="removeelement(' + "'GNDN" + ID + "'" + ');">';
+        tempstr2 = '<INPUT TYPE="BUTTON" CLASS="btn btn-danger btn-xs" VALUE="Remove this ' + Title + '" ONCLICK="removeelement(' + "'GNDN" + ID + "'" + ');">';
         return tempstr.replace("undefined", "") + tempstr2 + '</div>';
     }
 

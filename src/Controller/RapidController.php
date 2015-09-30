@@ -632,32 +632,47 @@
             }
         }
 
+        function testuser($GETPOST, $Key){
+            if(isset($GETPOST[$Key]) && $GETPOST[$Key]){
+                $Entry = $this->Manager->get_entry("profiles", $GETPOST[$Key], $Key);
+                if($Entry){die('[ERROR: ' . $Key . ' is in use]');}
+                return $GETPOST[$Key];
+            }
+        }
         function placerapidorder($GETPOST = ""){
             if(!$GETPOST){$GETPOST = array_merge($_POST, $_GET);}
-            var_dump($GETPOST);
+            //var_dump($GETPOST);
             //Requirements:
             //  Driver:  "fname", "mname", "lname", "gender", "street", "city", "province", "postal", "dob", "driver_license_no", "driver_province", "email"
             //  Order:  "ordertype" (ACRONYM FOR PRODUCT TYPE) [optional: "clientid" (38 assumed), "forms" (will be optained from the database if not given)]
 
             //construct and/or get driver
+            $ClientID = $this->get("clientid", 38);
             if(isset($GETPOST["driverid"])){
                 $Driver = $GETPOST["driverid"];
             } else {
-                if(isset($GETPOST["email"]) && $GETPOST["email"]){
-                    $Entry = $this->Manager->get_entry("profiles", $GETPOST["email"], "email");
-                    if($Entry){die('[ERROR: Email is in use]');}
+                if(!$this->Manager->validate_data($this->testuser($GETPOST, "email"), "email")){
+                    die("[ERROR: Not a valid email address]");
                 }
-
-                $Driver = $this->Manager->copyitems($GETPOST, array("profile_type" => 0, "fname", "mname", "lname", "gender" => "Female", "street", "city", "province", "postal", "dob", "driver_license_no", "driver_province", "email", "phone", "city", "country"));
+                $this->testuser($GETPOST, "username");
+                if(isset($GETPOST["password"]) && $GETPOST["password"]){
+                    if(!isset($GETPOST["password2"]) || $GETPOST["password"] == $GETPOST["password2"]){
+                        $GETPOST["password"] = md5($GETPOST["password"]);
+                    } else {
+                        die("[ERROR: Password mismatch]");
+                    }
+                }
+                $Driver = $this->Manager->copyitems($GETPOST, array("profile_type" => 0, "fname", "mname", "lname", "password", "username", "title", "gender" => "Female", "street", "city", "province", "postal", "dob", "driver_license_no", "driver_province", "email", "phone", "city", "country"));
                 $Driver = $this->Manager->new_entry("profiles", "id", $Driver);
                 $Driver = $Driver["id"];
                 $this->Manager->update_database("profiles", "id", $Driver, array("username" => "Applicant_" . $Driver));
+                $this->Manager->assign_profile_to_client($Driver, $ClientID);
             }
 
             //get forms list
             if(!isset($GETPOST["forms"]) || !$GETPOST["forms"]){
                 $Forms = $this->Manager->get_entry("product_types", $GETPOST["ordertype"], "Acronym");
-                $GETPOST["forms"] = $Forms->Blocked;// "1603,1,14,77,78,1627";//
+                $GETPOST["forms"] = $Forms->Blocked; //"1603,1,14,77,78,1650,1627,72,32,31,99,500,501";
             }
 
             //get super user ID and name
@@ -665,7 +680,6 @@
 
             //construct order
             $this->loadComponent("Document");
-            $ClientID = $this->get("clientid", 38);
             $OrderID = $this->Document->constructorder("RAPID ORDER " . $this->Manager->now(), $Super->id, $ClientID, $Super->fname . " " . $Super->lname, $this->get("fname") . " " . $this->get("lname"), $GETPOST["forms"], "", $GETPOST["ordertype"], $Driver);
 
             //attachments

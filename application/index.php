@@ -450,8 +450,8 @@ function array_flatten($array) {
 
 
 function savedriver($webroot){
-    echo '<DIV ID="LOADING" align="center"><IMG SRC="../webroot/assets/admin/layout/img/loading-spinner-blue.gif"></DIV>';
-    flush();
+    echo '<DIV ID="LOADING" align="center"><IMG SRC="../webroot/assets/admin/layout/img/loading-spinner-blue.gif">' .  str_pad(' ',1024). "\n</DIV>";
+    flush();//http://php.net/manual/en/function.flush.php
     foreach($_FILES as $FormName => $Data){
         if($Data["error"] == 0 && is_uploaded_file($Data["tmp_name"])){
             $Filename = str_replace("FILE", "BASE", $FormName);

@@ -576,6 +576,11 @@ class ManagerComponent extends Component {
         return $this->get_entry("clients", $ClientID, "id");
     }
 
+    function assign_profile_to_client($ProfileID, $ClientID){
+        $Client = $this->get_entry('clients', $ClientID, "id");
+        $Profiles = $this->appendstring($Client->profile_id, $ProfileID);
+        $this->Manager->update_database("clients", "id", $ClientID, array("profile_id" => $Profiles));
+    }
 
 
     ///////////////////////////////////////JSON API//////////////////////////////
