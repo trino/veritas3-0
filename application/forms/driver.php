@@ -7,10 +7,9 @@
     <div class="col-md-4"><label class="control-label required"><?= $strings["forms_password"]; ?>: </label>
         <input type="text" class="form-control required" required name="password" />
     </div>
-    <div class="col-md-4"><label class="control-label required"><?= $strings["forms_retypepassword"]; ?>: </label>
+    <!--div class="col-md-4"><label class="control-label required"><?= $strings["forms_retypepassword"]; ?>: </label>
         <input type="text" class="form-control required" required name="password2" />
-    </div>
-
+    </div-->
     <div class="col-md-4"><label class="control-label required"><?= $strings["forms_firstname"]; ?>: </label>
         <input type="text" class="form-control required" required name="fname" />
     </div>

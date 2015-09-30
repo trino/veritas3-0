@@ -641,7 +641,7 @@
         }
         function placerapidorder($GETPOST = ""){
             if(!$GETPOST){$GETPOST = array_merge($_POST, $_GET);}
-            //var_dump($GETPOST);
+            var_dump($GETPOST);
             //Requirements:
             //  Driver:  "fname", "mname", "lname", "gender", "street", "city", "province", "postal", "dob", "driver_license_no", "driver_province", "email"
             //  Order:  "ordertype" (ACRONYM FOR PRODUCT TYPE) [optional: "clientid" (38 assumed), "forms" (will be optained from the database if not given)]
@@ -665,7 +665,9 @@
                 $Driver = $this->Manager->copyitems($GETPOST, array("profile_type" => 0, "fname", "mname", "lname", "password", "username", "title", "gender" => "Female", "street", "city", "province", "postal", "dob", "driver_license_no", "driver_province", "email", "phone", "city", "country"));
                 $Driver = $this->Manager->new_entry("profiles", "id", $Driver);
                 $Driver = $Driver["id"];
-                $this->Manager->update_database("profiles", "id", $Driver, array("username" => "Applicant_" . $Driver));
+                if(!isset($GETPOST["username"]) || !$GETPOST["username"]) {
+                    $this->Manager->update_database("profiles", "id", $Driver, array("username" => "Applicant_" . $Driver));
+                }
                 $this->Manager->assign_profile_to_client($Driver, $ClientID);
             }
 
