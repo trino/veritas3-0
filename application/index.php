@@ -436,9 +436,11 @@ function getq($data = ""){
 }
 
 function array_flatten($array) {
-    foreach($array["form"] as $ID => $Data){
-        foreach($Data as $Key => $Value){
-            $array["data[" . $ID . "][" . $Key .']'] = $Value;
+    if(isset($array["form"])) {
+        foreach ($array["form"] as $ID => $Data) {
+            foreach ($Data as $Key => $Value) {
+                $array["data[" . $ID . "][" . $Key . ']'] = $Value;
+            }
         }
     }
     unset($array["form"]);

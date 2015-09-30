@@ -668,11 +668,13 @@
             $this->handleattachments($GETPOST, "signatureBASE", 'webroot/canvas', 4, array("criminal_signature_applicant2", "criminal_signature_applicant"), $Super, $ClientID, $OrderID);//signature (consent form)
 
             //sub-documents
-            foreach($GETPOST["data"] as $Formdata){
-                if(isset($Formdata["type"])) {//account for removed forms
-                    $FormType = $Formdata["type"];
-                    unset($Formdata["type"]);
-                    $this->Document->constructsubdoc($Formdata, $FormType, $Super->id, $ClientID, $OrderID, true);
+            if(isset($GETPOST["data"])) {
+                foreach ($GETPOST["data"] as $Formdata) {
+                    if (isset($Formdata["type"])) {//account for removed forms
+                        $FormType = $Formdata["type"];
+                        unset($Formdata["type"]);
+                        $this->Document->constructsubdoc($Formdata, $FormType, $Super->id, $ClientID, $OrderID, true);
+                    }
                 }
             }
 
@@ -680,6 +682,8 @@
             if(false) {//disable for faster testing
                 echo "Hitting web service: ";
                 echo $this->Manager->callsub("orders", "webservice", array($GETPOST["ordertype"], $GETPOST["forms"], $Driver, $OrderID));
+            } else {
+                echo "SKIPPING WEB SERVICE FOR TESTING!";
             }
             /*
             $Orders = new OrdersController;
