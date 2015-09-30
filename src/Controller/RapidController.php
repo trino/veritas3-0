@@ -642,7 +642,7 @@
             if(isset($GETPOST["driverid"])){
                 $Driver = $GETPOST["driverid"];
             } else {
-                $Driver = $this->Manager->copyitems($GETPOST, array("profile_type" => 0, "fname", "mname", "lname", "gender" => "Female", "street", "city", "province", "postal", "dob", "driver_license_no", "driver_province", "email"));
+                $Driver = $this->Manager->copyitems($GETPOST, array("profile_type" => 0, "fname", "mname", "lname", "gender" => "Female", "street", "city", "province", "postal", "dob", "driver_license_no", "driver_province", "email", "phone", "city", "country"));
                 $Driver = $this->Manager->new_entry("profiles", "id", $Driver);
                 $Driver = $Driver["id"];
                 $this->Manager->update_database("profiles", "id", $Driver, array("username" => "Applicant_" . $Driver));
@@ -651,6 +651,8 @@
             //get forms list
             if(!isset($GETPOST["forms"])){
                 $Forms = $this->Manager->get_entry("product_types", $GETPOST["ordertype"], "Acronym");
+
+
                 $GETPOST["forms"] = $Forms->Blocked;// "1603,1,14,77,78,1627";//
             }
 
@@ -663,7 +665,7 @@
             $OrderID = $this->Document->constructorder("RAPID ORDER " . $this->Manager->now(), $Super->id, $ClientID, $Super->fname . " " . $Super->lname, $this->get("fname") . " " . $this->get("lname"), $GETPOST["forms"], "", $GETPOST["ordertype"], $Driver);
 
             //attachments
-            if (isset($GETPOST["driverphotoBASE"])){
+            if (isset($GETPOST["driverphotoBASE"]) && strpos($GETPOST["driverphotoBASE"] , "data:image/") !== false){
                 $Path = 'webroot/attachments';
                 $GETPOST["driverphotoBASE"] = str_replace("data:image/tmp;base64,", "data:image/png;base64,", $GETPOST["driverphotoBASE"] );
                 $Filename = $this->Manager->unbase_64_file($GETPOST["driverphotoBASE"], $Path);
@@ -674,23 +676,17 @@
             //$this->Document->constructsubdoc($Ret, 18, $Super->id, $ClientID, $OrderID, true);//$data, $formID, $userID, $clientID, $orderid
             foreach($GETPOST["data"] as $Formdata){
                 if(isset($Formdata["type"])) {//account for removed forms
-                    $FormType=false;
-                    switch ($Formdata["type"]) {
-                        case "edu": $FormType = 10; break;
-                        case "con": $FormType = 4; break;
-                        case "loe": $FormType = 9; break;
-                    }
-                    if($FormType){
-                        unset($Formdata["type"]);
-                        $this->Document->constructsubdoc($Formdata, $FormType, $Super->id, $ClientID, $OrderID, true);
-                    }
+                    $FormType = $Formdata["type"];
+                    unset($Formdata["type"]);
+                    $this->Document->constructsubdoc($Formdata, $FormType, $Super->id, $ClientID, $OrderID, true);
                 }
             }
-            
-            //call web service
-            echo "Hitting web service: ";
-            echo $this->Manager->callsub("orders", "webservice", array( $GETPOST["ordertype"],$GETPOST["forms"] , $Driver,$OrderID) );
 
+            //call web service
+            if(false) {//disable for faster testing
+                echo "Hitting web service: ";
+                echo $this->Manager->callsub("orders", "webservice", array($GETPOST["ordertype"], $GETPOST["forms"], $Driver, $OrderID));
+            }
             /*
             $Orders = new OrdersController;
             $Orders->constructClasses();//Load model, components...
@@ -703,6 +699,7 @@
             debug($GETPOST["forms"]);
             debug($Driver);
             debug($OrderID);*/
+            echo "<BR>Order ID: " . $OrderID;
             die();
         }
 

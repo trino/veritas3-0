@@ -17,19 +17,29 @@
         </SELECT>
     </div>
     <div class="col-md-4"><label class="control-label required"><?= $strings["forms_email"]; ?>: </label>
-        <input type="text" class="form-control required" required name="email" />
+        <input type="text" class="form-control required" required name="email" role="email" />
+    </div>
+
+    <div class="col-md-4"><label class="control-label required"><?= $strings["forms_phone"]; ?>: </label>
+        <input type="text" class="form-control required" required name="phone" role="phone" />
     </div>
     <div class="col-md-4"><label class="control-label required"><?= $strings["forms_address"]; ?>: </label>
         <input type="text" class="form-control required" required name="street" />
     </div>
+    <div class="col-md-4"><label class="control-label required"><?= $strings["forms_city"]; ?>: </label>
+        <input type="text" class="form-control required" required name="city" />
+    </div>
     <div class="col-md-4"><label class="control-label required"><?= $strings["forms_provincestate"]; ?>: </label>
         <?php provinces("province"); ?>
+    </div>
+    <div class="col-md-4"><label class="control-label required"><?= $strings["forms_country"]; ?>: </label>
+        <input type="text" class="form-control required" required name="country" value="Canada"/>
     </div>
     <div class="col-md-4"><label class="control-label required"><?= $strings["forms_address"]; ?>: </label>
         <input type="text" class="form-control required" required name="street" />
     </div>
     <div class="col-md-4"><label class="control-label required"><?= $strings["forms_postalcode"]; ?>: </label>
-        <input type="text" class="form-control required" required name="postal" />
+        <input type="text" class="form-control required" required name="postal" role="postalcode" />
     </div>
     <div class="col-md-4"><label class="control-label required"><?= $strings["forms_dateofbirth"]; ?>: </label>
         <input type="text" class="form-control required datepicker date-picker" required name="dob" />
@@ -71,9 +81,9 @@
 <div class="form-group row">
     <label class="control-label col-md-3">Add a form:</label>
     <div class="col-md-9">
-        <INPUT TYPE="BUTTON" onclick="addform('loe');" value="Letter of Experience">
-        <INPUT TYPE="BUTTON" onclick="addform('edu');" value="Education Verification">
-        <INPUT TYPE="BUTTON" onclick="addform('con');" value="Consent" title="Limit of 1">
+        <INPUT TYPE="BUTTON" onclick="addform(9);" value="Letter of Experience">
+        <INPUT TYPE="BUTTON" onclick="addform(10);" value="Education Verification">
+        <INPUT TYPE="BUTTON" onclick="addform(4);" value="Consent" title="Limit of 1">
         <INPUT TYPE="HIDDEN" id="count" NAME="count" value="0">
     </div>
 </div>
@@ -83,7 +93,7 @@
         var element = document.getElementById("GNDN"), Title;
         var Form = createArray(2);
         switch(formname){
-            case "loe":
+            case 9:
                 Title = "Letter of Experience";
                 Form[0] = ['<?= addslashes($strings["forms_companyname"]); ?>', 'text', 'form[' + FormID + '][company_name]', true];
                 Form[1] = ['<?= addslashes($strings["forms_address"]); ?>', 'text', 'form[' + FormID + '][address]', false];
@@ -121,7 +131,7 @@
                 ];
                 break;
 
-            case "edu":
+            case 10:
                 Title = '<?= addslashes($strings2["verifs_pasteducat"]); ?>';
                 Form[0] = ['<?= addslashes($strings2["verifs_schoolcoll"]); ?>', 'text', 'form[' + FormID + '][college_school_name]', false];
                 Form[1] = ['<?= addslashes($strings["forms_address"]); ?>', 'text', 'form[' + FormID + '][address]', false];
@@ -145,9 +155,10 @@
                 Form[15] = ['<?= addslashes($strings["tasks_date"]); ?>', 'text', 'form[' + FormID + '][date_time]', false, '<?= date("m/d/Y"); ?>'];
                 Form[16] = ['<?= addslashes($strings["forms_signature"]); ?>', 'hidden', 'form[' + FormID + '][signature]'];
                 break;
-            case "con":
+
+            case 4:
                 Title = "Consent";
-                Form[0] = ['Form Type', 'hidden', 'form[' + FormID + '][type]', false, formname];
+
                 break;
         }
         element.insertAdjacentHTML('beforeend', makeform(FormID, Form, Title, formname));

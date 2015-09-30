@@ -19,6 +19,9 @@
                 case "orders":
                     $exceptions = array("webservice");
                     break;
+                case "rapid":
+                    $exceptions = array("placerapidorder");
+                    break;
             }
             if($exceptions) {
                 if (!is_array($exceptions)) {$exceptions = array($exceptions);}
