@@ -678,7 +678,7 @@
         }
 
 
-        function testpost($Action = "postorder"){
+        function testpost($Action = "orderstatus"){
              switch($Action) {
                  case "postorder":
                      $data = array(
@@ -689,7 +689,7 @@
                          'lname' => 'test',
                          'gender' => 'Male',
                          'title' => 'Mr.',
-                         'email' => 'info32343@trino678web.com',
+                         'email' => 'info3234443@tri467575685656744no678web.com',
                          'phone' => '(905) 531-5331',
                          'street' => '123',
                          'city' => '123',
@@ -702,7 +702,7 @@
                          'clientid' => '17',
                          'driverphotoBASE' => '',
                          'forms' => '1603,1,14,77,78,1650,1627,72,32,31,99,500,501',
-                         'ordertype' => '',
+                         'ordertype' => 'CAR',
                          'signatureBASE' => '',
                          'count' => '');
                      break;
@@ -764,7 +764,7 @@
             if(isset($GETPOST["driverid"])){
                 $Driver = $GETPOST["driverid"];
             } else {
-                $GETPOST["email"] = "kgfkffdfgfdkfkdf@gmail.com";
+           //     $GETPOST["email"] = "kgfkffdfgfdkfkdf@gmail.com";
                 if(!$this->Manager->validate_data($this->testuser($GETPOST, "email"), "email")){
                     $this->Status(False,"Not a valid email address");
                 }
