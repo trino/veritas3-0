@@ -159,9 +159,9 @@ form[0][address] = "test";
 form[1][type] = 10;
 form[1][address] = "test";
 
-cURL will return the HTTP header, as well as a JSON object with Status being either true or false
+cURL will return a JSON object with Status being either true or false
 If Status is false, the Reason variable will indicate why
-If Status is false, the OrderID variable will give the Order ID number that was made
+If Status is true, the OrderID variable will give the Order ID number that was made
 
 Order status API:
 [website URL]/rapid/placerapidorder?action=orderstatus&orderid=[OrderID]
