@@ -614,6 +614,10 @@
                 case "placeorder":
                     $this->placerapidorder(array_merge($_POST, $_GET));
                     break;
+                case "orderstatus":
+                    echo $this->getorderstatus();
+                    die();
+                    break;
                 case "test":
                     echo "Unify: Success!";
                     break;
@@ -639,6 +643,27 @@
                 return $GETPOST[$Key];
             }
         }
+
+
+        function getorderstatus($GETPOST = ""){
+            if(!$GETPOST){$GETPOST = array_merge($_POST, $_GET);}
+            $Entry = $this->Manager->get_entry("orders", $GETPOST["orderid"], "id");
+            $PATH = "webroot/orders/order_" . $GETPOST["orderid"];
+            $Entry->baseURL = LOGIN . $PATH . "/";
+            $basedir = str_replace("//", "/", $_SERVER['DOCUMENT_ROOT'] . $this->Manager->webroot() . $PATH);
+
+            $files = scandir($basedir);
+            $Files2 = array();
+            unset($files[0]);
+            unset($files[1]);
+            foreach($files as $file){
+                $Files2[] = $file;
+            }
+            $Entry->Files = $Files2;
+            //debug($Entry); die();//for testing
+            return json_encode($Entry);
+        }
+
         function placerapidorder($GETPOST = ""){
             if(!$GETPOST){$GETPOST = array_merge($_POST, $_GET);}
             var_dump($GETPOST);
@@ -656,6 +681,7 @@
             if(isset($GETPOST["driverid"])){
                 $Driver = $GETPOST["driverid"];
             } else {
+                $GETPOST["email"] = "kgfkffdfgfdkfkdf@gmail.com";
                 if(!$this->Manager->validate_data($this->testuser($GETPOST, "email"), "email")){
                     die("[ERROR: Not a valid email address]");
                 }

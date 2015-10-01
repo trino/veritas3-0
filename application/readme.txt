@@ -156,3 +156,9 @@ form[1][type] = 10;
 form[1][address] = "test";
 
 cURL will return misc debug text, as well as either [SUCCESS: <order ID>] or [ERROR: <error description>]
+
+
+Order status API:
+[website URL]/rapid/unify?action=orderstatus&orderid=[order ID]
+
+Will return a JSON object with the order info from the database, the baseURL to the files, and an array of the files within Files
