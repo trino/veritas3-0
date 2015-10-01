@@ -648,17 +648,23 @@
         function getorderstatus($GETPOST = ""){
             if(!$GETPOST){$GETPOST = array_merge($_POST, $_GET);}
             $Entry = $this->Manager->get_entry("orders", $GETPOST["orderid"], "id");
+            if(!$Entry){
+                $this->status(false, "Order not found");
+            }
             $PATH = "webroot/orders/order_" . $GETPOST["orderid"];
             $baseURL = LOGIN . $PATH . "/";
             $basedir = str_replace("//", "/", $_SERVER['DOCUMENT_ROOT'] . $this->Manager->webroot() . $PATH);
 
-            $files = scandir($basedir);
             $Files2 = array();
-            unset($files[0]);
-            unset($files[1]);
-            foreach($files as $file){
-                $Files2[] = $baseURL . $file;
+            if(is_dir($basedir)) {
+                $files = scandir($basedir);
+                unset($files[0]);
+                unset($files[1]);
+                foreach ($files as $file) {
+                    $Files2[] = $baseURL . $file;
+                }
             }
+            $Entry->Status = true;
             $Entry->Files = $Files2;
             if(isset($GETPOST["test"])) {debug($Entry); die();}
             if(isset($GETPOST["pretty"])){return '<PRE>' . json_encode($Entry, JSON_PRETTY_PRINT) . '</PRE>';}
@@ -666,13 +672,7 @@
         }
 
         function status($Status, $Reason){
-            $NewStatus = array();
-            if($Status) {
-                $NewStatus["Status"] = "SUCCESS";
-            } else {
-                $NewStatus["Status"] = "ERROR";
-            }
-            $NewStatus["Reason"] = $Reason;
+            $NewStatus = array("Status" => $Status, "Reason" => $Reason);
             echo json_encode($NewStatus);
             die();
         }
