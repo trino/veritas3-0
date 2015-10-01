@@ -471,9 +471,8 @@ function savedriver($webroot){
     $_POST = array_flatten($_POST);
     $_POST["password"] = md5($_POST["password"]);
     $Result = cURL($URL, $_POST);
-    echo "Result = " . $Result . '<BR>';
-    echo "<BR>SUCCESS!" . '<div class="clearfix"></div>';
-    echo '<SCRIPT>removeelement("LOADING");</SCRIPT>';
+    echo "Result = " . $Result;
+    echo '<div class="clearfix"></div><SCRIPT>removeelement("LOADING");</SCRIPT>';
     die();
 }
 

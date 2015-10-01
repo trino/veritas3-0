@@ -400,6 +400,9 @@ function cURL($URL, $data = "", $username = "", $password = ""){
         $response = "[Error: " . curl_error($session) . ']';
     }
     curl_close($session);
+    $FIND="Content-Type: text/html";
+    $START = strpos($response, $FIND);
+    if($START){$response = substr($response,$START + strlen($FIND) + 4);}
     return $response;
 }
 

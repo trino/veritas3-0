@@ -649,7 +649,7 @@
                 }
             }
             $Entry = $this->Manager->get_entry("profiles", $GETPOST, $Key);
-            if($Entry){die('[ERROR: ' . $Key . ' is in use]');}
+            if($Entry){$this->status(false,$Key . ' is in use');}
             return $GETPOST;
         }
 

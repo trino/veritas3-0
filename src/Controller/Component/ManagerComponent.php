@@ -1009,6 +1009,9 @@ class ManagerComponent extends Component {
                 }
                 return $Data;
                 break;
+            case "md5":
+                if($this->isValidMd5($Data)){return $Data;}
+                break;
 
             case "postalcode":
                 if ($this->validate_postal_code($Data)) {return $this->clean_postalcode($Data);}
@@ -1036,6 +1039,10 @@ class ManagerComponent extends Component {
                 return $DataType . ' not supported';
         }
         return "";
+    }
+
+    function isValidMd5($md5 ='') {
+        return preg_match('/^[a-f0-9]{32}$/', $md5);
     }
 
     function clean_postalcode($PostalCode){
