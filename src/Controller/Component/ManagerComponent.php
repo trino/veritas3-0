@@ -1047,7 +1047,7 @@ class ManagerComponent extends Component {
     }
 
     function validate_postal_code($PostalCode)  {//function by Roshan Bhattara(http://roshanbh.com.np)
-        return preg_match("/^([a-ceghj-npr-tv-z]){1}[0-9]{1}[a-ceghj-npr-tv-z]{1}[0-9]{1}[a-ceghj-npr-tv-z]{1}[0-9]{1}$/i", $PostalCode);
+        return preg_match("/^([a-ceghj-npr-tv-z]){1}[0-9]{1}[a-ceghj-npr-tv-z]{1}[0-9]{1}[a-ceghj-npr-tv-z]{1}[0-9]{1}$/i", str_replace(" ", "", $PostalCode));
     }
 
     function format_phone($phone) {
