@@ -155,11 +155,12 @@ form[0][address] = "test";
 form[1][type] = 10;
 form[1][address] = "test";
 
-cURL will return misc debug text, as well as either [SUCCESS: <order ID>] or [ERROR: <error description>]
-
+cURL will return the HTTP header and a JSON object
+It will have Status (true or false) and Reason (if Status is true, Reason will be the order ID)
 
 Order status API:
 [website URL]/rapid/placerapidorder?action=orderstatus&orderid=[order ID]
+You can use file_get_contents instead of cURL for this
 Add &test to see the data in CakePHP's debug format
 Add &pretty to see the JSON data in pretty format inside <PRE></PRE> tags
 
