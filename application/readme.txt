@@ -74,8 +74,8 @@ the $URL parameter needs to point to /rapid/placerapidorder
 the $data parameter needs to the POST data in a single dimensional array (use array_flatten to flatten it)
 
 POST data:
-  'username' 		    => string (Your, must be unique or it will fail)
-  'password' 		    => string (Your Password, unencrypted/unobfuscated)
+  'username' 		    => string (Your username)
+  'password' 		    => string (Your Password, md5'd)
 
   'fname' 		        => string (User's first name)
   'mname' 		        => string (User's middle name)

@@ -678,12 +678,10 @@
         }
 
 
-        function testpost($Action = "postorder"){
+        function testpost($Action = "postorder", $OrderID = 953){
              switch($Action) {
                  case "postorder":
                      $data = array(
-                         'username' => 'admin',
-                         'password' => 'admin',
                          'fname' => 'test',
                          'mname' => 'test',
                          'lname' => 'test',
@@ -702,23 +700,23 @@
                          'clientid' => '17',
                          'driverphotoBASE' => '',
                          'forms' => '1603,1,14,77,78,1650,1627,72,32,31,99,500,501',
-                         'ordertype' => '',
+                         'ordertype' => 'CAR',
                          'signatureBASE' => '',
                          'count' => '');
                      break;
                  case "orderstatus":
                      $data = array(
-                         "username" => "admin",
-                         "password" => "admin",
                          "action" => "orderstatus",
-                         "orderid" => 953);
+                         "orderid" => $OrderID);
                      break;
              }
-              echo $this->placerapidorder($data);
+            $data["username"] = "admin";
+            $data["password"] = md5("admin");
+            echo $this->placerapidorder($data);
         }
 
-        function status($Status, $Reason){
-            $NewStatus = array("Status" => $Status, "Reason" => $Reason);
+        function status($Status, $Reason, $Text = "Reason"){
+            $NewStatus = array("Status" => $Status, $Text => $Reason);
             echo json_encode($NewStatus);
             die();
         }
@@ -729,7 +727,7 @@
             if(!isset($GETPOST["username"])){$this->Status(False, "Username not specified");}
             $Super = $this->Manager->get_entry("profiles", $GETPOST["username"], "username");
             if(!$Super){$this->Status(False, "Username not found");}
-            if(md5($GETPOST["password"]) != $Super->password){ $this->Status(False,"Password mismatch");}
+            if($GETPOST["password"] != $Super->password){ $this->Status(False,"Password mismatch");}
 
             if(isset($GETPOST["action"])){
                 $this->unify($GETPOST);
@@ -755,7 +753,7 @@
                     if(!isset($GETPOST["password2"]) || $GETPOST["password"] == $GETPOST["password2"]){
                         $GETPOST["password"] = md5($GETPOST["password"]);
                     } else {
-                        die("[ERROR: Password mismatch]");
+                        Status(False, "Password mismatch");
                     }
                 } */
                 $Driver = $this->Manager->copyitems($GETPOST, array("profile_type" => 0, "fname", "mname", "lname",  "title", "gender" => "Female", "street", "city", "province", "postal", "dob", "driver_license_no", "driver_province", "email", "phone", "city", "country"));//"password", "username",
@@ -768,6 +766,7 @@
             }
 
             //get forms list
+            if(!$GETPOST["ordertype"]){$GETPOST["ordertype"]="CAR";}
             if(!isset($GETPOST["forms"]) || !$GETPOST["forms"]){
                 $Forms = $this->Manager->get_entry("product_types", $GETPOST["ordertype"], "Acronym");
                 $GETPOST["forms"] = $Forms->Blocked; //"1603,1,14,77,78,1650,1627,72,32,31,99,500,501";
@@ -828,7 +827,7 @@
             debug($GETPOST["forms"]);
             debug($Driver);
             debug($OrderID);*/
-            $this->Status(True,$OrderID);
+            $this->Status(True,$OrderID, "OrderID");
         }
 
         function handleattachments($GETPOST, $Name, $Path, $SubDocID, $Field, $Super, $ClientID, $OrderID){
