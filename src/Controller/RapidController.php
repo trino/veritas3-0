@@ -669,6 +669,37 @@
             return json_encode($Entry);
         }
 
+
+        function testpost(){
+
+         $data =   array(
+                'username' => 'admin',
+                'password' => 'admin',
+                'fname' => 'test',
+                'mname' => 'test',
+                'lname' => 'test',
+                'gender' => 'Male',
+                'title' => 'Mr.',
+                'email' => 'info33@trinoweb.com',
+                'phone' => '(905) 531-5331',
+                'street' => '123',
+                'city' => '123',
+                'province' => 'AB',
+                'postal' => 'L8E 3Z2',
+                'country' => 'Canada',
+                'dob' => '10/02/2015',
+                'driver_license_no' => '123',
+                'driver_province' => 'ON',
+                'clientid' => '17',
+                'driverphotoBASE' => '',
+                'forms' => '1603,1,14,77,78,1650,1627,72,32,31,99,500,501',
+                'ordertype' => '',
+                'signatureBASE' => '',
+                'count' => '');
+
+          echo $this->placerapidorder($data);
+        }
+
         function placerapidorder($GETPOST = ""){
             if(!$GETPOST){$GETPOST = array_merge($_POST, $_GET);}
             var_dump($GETPOST);
