@@ -679,13 +679,7 @@
         function placerapidorder($GETPOST = ""){
             if(!$GETPOST){$GETPOST = array_merge($_POST, $_GET);}
             if(isset($GETPOST["action"])){
-                switch($GETPOST["action"]){
-                    case "orderstatus":
-                        echo $this->getorderstatus($GETPOST);
-                        break;
-                    default:
-                        $this->Status(False, $GETPOST["action"] . " is not handled");
-                }
+                $this->unify();
                 die();
             }
 
