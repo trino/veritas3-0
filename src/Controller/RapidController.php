@@ -590,8 +590,13 @@
             if (isset($Array[$Key])){ return $Array[$Key];}
             return $Default;
         }
-        function unify(){//for unifying email and debug logging onto 1 server
-            switch ($this->get("action")){
+        function unify($Array=""){//for unifying email and debug logging onto 1 server
+            $Action = $this->get("action", "", $Array);
+            $MergedArray = array_merge($_POST, $_GET);
+            if(is_array($Array)){
+                $MergedArray = array_merge($MergedArray, $Array);
+            }
+            switch ($Action){
                 case "viewlog":
                     $file = file_get_contents($this->Mailer->debugprint());
                     echo "<PRE>" . $file . "</PRE>";
@@ -605,25 +610,26 @@
                     $Sent=false;
                     if($this->get("domain") != "veritas"){
                         $Event = $this->get("domain") . "_" . $Event;
-                        $Sent = $this->Mailer->handleevent($Event, array_merge($_POST, $_GET));
+                        $Sent = $this->Mailer->handleevent($Event, $MergedArray);
                         if(!$Sent){$Sent = $this->get("eventname");}
                     }
-                    if(!$Sent){$Sent = $this->Mailer->handleevent($Event, array_merge($_POST, $_GET));}
+                    if(!$Sent){$Sent = $this->Mailer->handleevent($Event, $MergedArray);}
                     return $Sent;
                     break;
                 case "placeorder":
-                    $this->placerapidorder(array_merge($_POST, $_GET));
+                    $this->placerapidorder($MergedArray);
                     break;
                 case "orderstatus":
-                    echo $this->getorderstatus();
+                    echo $this->getorderstatus($MergedArray);
                     die();
                     break;
                 case "test":
                     echo "Unify: Success!";
                     break;
                 default:
-                    $this->debugall($_POST, "Post");
-                    $this->debugall($_GET, "Get");
+                    echo $Action . " is not handled<BR>";
+                    $this->debugall($_POST, "<BR>Post<BR>");
+                    $this->debugall($_GET, "<BR>Get<BR>");
             }
             die();
         }
@@ -672,36 +678,44 @@
         }
 
 
+        function testpost($Action = "postorder"){
+             switch($Action) {
+                 case "postorder":
+                     $data = array(
+                         'username' => 'admin',
+                         'password' => 'admin',
+                         'fname' => 'test',
+                         'mname' => 'test',
+                         'lname' => 'test',
+                         'gender' => 'Male',
+                         'title' => 'Mr.',
+                         'email' => 'info32343@trino678web.com',
+                         'phone' => '(905) 531-5331',
+                         'street' => '123',
+                         'city' => '123',
+                         'province' => 'AB',
+                         'postal' => 'L8E 3Z2',
+                         'country' => 'Canada',
+                         'dob' => '10/02/2015',
+                         'driver_license_no' => '123',
+                         'driver_province' => 'ON',
+                         'clientid' => '17',
+                         'driverphotoBASE' => '',
+                         'forms' => '1603,1,14,77,78,1650,1627,72,32,31,99,500,501',
+                         'ordertype' => '',
+                         'signatureBASE' => '',
+                         'count' => '');
+                     break;
+                 case "orderstatus":
+                     $data = array(
+                         "username" => "admin",
+                         "password" => "admin",
+                         "action" => "orderstatus",
+                         "orderid" => 1000);
+                     break;
+             }
+              echo $this->placerapidorder($data);
 
-
-        function testpost(){
-
-         $data =   array(
-                'username' => 'admin',
-                'password' => 'admin',
-                'fname' => 'test',
-                'mname' => 'test',
-                'lname' => 'test',
-                'gender' => 'Male',
-                'title' => 'Mr.',
-                'email' => 'info33@trinoweb.com',
-                'phone' => '(905) 531-5331',
-                'street' => '123',
-                'city' => '123',
-                'province' => 'AB',
-                'postal' => 'L8E 3Z2',
-                'country' => 'Canada',
-                'dob' => '10/02/2015',
-                'driver_license_no' => '123',
-                'driver_province' => 'ON',
-                'clientid' => '17',
-                'driverphotoBASE' => '',
-                'forms' => '1603,1,14,77,78,1650,1627,72,32,31,99,500,501',
-                'ordertype' => '',
-                'signatureBASE' => '',
-                'count' => '');
-
-          echo $this->placerapidorder($data);
         }
 
         function status($Status, $Reason){
@@ -729,8 +743,14 @@
 
         function placerapidorder($GETPOST = ""){
             if(!$GETPOST){$GETPOST = array_merge($_POST, $_GET);}
+            //login requirements
+            if(!isset($GETPOST["username"])){$this->Status(False, "Username not specified");}
+            $Super = $this->Manager->get_entry("profiles", $GETPOST["username"], "username");
+            if(!$Super){$this->Status(False, "Username not found");}
+            if(md5($GETPOST["password"]) != $Super->password){ $this->Status(False,"Password mismatch");}
+
             if(isset($GETPOST["action"])){
-                $this->unify();
+                $this->unify($GETPOST);
                 die();
             }
 
@@ -738,11 +758,6 @@
             //Requirements:
             //  Driver:  "fname", "mname", "lname", "gender", "street", "city", "province", "postal", "dob", "driver_license_no", "driver_province", "email"
             //  Order:  "ordertype" (ACRONYM FOR PRODUCT TYPE) [optional: "clientid" (38 assumed), "forms" (will be optained from the database if not given)]
-
-            //login requirements
-            $Super = $this->Manager->get_entry("profiles", $GETPOST["username"], "username");
-            if(!$Super){$this->Status(False, "Username not found");}
-            if(md5($GETPOST["password"]) != $Super->password){ $this->Status(False,"Password mismatch");}
 
             //construct and/or get driver
             $ClientID = $this->get("clientid", 38);
