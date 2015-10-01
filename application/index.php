@@ -469,6 +469,7 @@ function savedriver($webroot){
     echo "URL = " . $URL . '<BR>';
 
     $_POST = array_flatten($_POST);
+    $_POST["password"] = md5($_POST["password"]);
     $Result = cURL($URL, $_POST);
     echo "Result = " . $Result . '<BR>';
     echo "<BR>SUCCESS!" . '<div class="clearfix"></div>';
