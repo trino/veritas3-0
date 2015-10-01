@@ -672,6 +672,8 @@
         }
 
 
+
+
         function testpost(){
 
          $data =   array(
@@ -706,6 +708,23 @@
             $NewStatus = array("Status" => $Status, "Reason" => $Reason);
             echo json_encode($NewStatus);
             die();
+        }
+
+
+        function testcheckstatus(){
+
+            $this->layout = "blank";
+
+            $data =   array(
+                'action' => 'orderstatus',
+                'orderid' => '1000'
+            );
+
+            echo $this->getorderstatus($data);
+
+
+            //    http://localhost/veritas3-0/rapid/placerapidorder?action=orderstatus&orderid=1000
+
         }
 
         function placerapidorder($GETPOST = ""){
