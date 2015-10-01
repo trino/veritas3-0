@@ -695,7 +695,7 @@
                          'street' => '123',
                          'city' => '123',
                          'province' => 'AB',
-                         'postal' => 'L8e3Z2',
+                         'postal' => 'L8L 6Z2',
                          'country' => 'Canada',
                          'dob' => '10/02/2015',
                          'driver_license_no' => '123',
@@ -786,7 +786,7 @@
                 $Driver = $GETPOST["driverid"];
                 $this->testuser($Driver, "id");
             } else {
-                $GETPOST["email"] = "kgfkffdfgfdkfkdf@gmail.com";
+                //$GETPOST["email"] = "kgfkffdfgfdkfkdf@gmail.com";
                 if(!$this->Manager->validate_data($this->testuser($GETPOST, "email"), "email")){
                     $this->Status(False,"Not a valid email address");
                 }
