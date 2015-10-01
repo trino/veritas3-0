@@ -656,8 +656,8 @@
                 }
 
                 $USER = $this->Manager->get_entry("profiles", $GETPOST["username"], "username");
-                if(!$USER){ die("[ERROR: Username not found");}
-                if(!md5($GETPOST["password"]) != $USER->password){ die("[ERROR: Password mismatch]");}
+                if(!$USER){ die("[ERROR: Username not found]");}
+                if(md5($GETPOST["password"]) != $USER->password){ die("[ERROR: Password mismatch]");}
 
                 /* $this->testuser($GETPOST, "username");
                 if(isset($GETPOST["password"]) && $GETPOST["password"]){
