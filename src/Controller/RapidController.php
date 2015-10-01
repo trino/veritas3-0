@@ -648,24 +648,26 @@
         function getorderstatus($GETPOST = ""){
             if(!$GETPOST){$GETPOST = array_merge($_POST, $_GET);}
             $Entry = $this->Manager->get_entry("orders", $GETPOST["orderid"], "id");
+            if(!$Entry){
+                $this->status(false, "Order not found");
+            }
             $PATH = "webroot/orders/order_" . $GETPOST["orderid"];
-            $Entry->baseURL = LOGIN . $PATH . "/";
+            $baseURL = LOGIN . $PATH . "/";
             $basedir = str_replace("//", "/", $_SERVER['DOCUMENT_ROOT'] . $this->Manager->webroot() . $PATH);
 
-            $files = scandir($basedir);
             $Files2 = array();
-            unset($files[0]);
-            unset($files[1]);
-            foreach($files as $file){
-                $Files2[] = $file;
+            if(is_dir($basedir)) {
+                $files = scandir($basedir);
+                unset($files[0]);
+                unset($files[1]);
+                foreach ($files as $file) {
+                    $Files2[] = $baseURL . $file;
+                }
             }
+            $Entry->Status = true;
             $Entry->Files = $Files2;
-            if(isset($GETPOST["test"])) {
-                debug($Entry); die();
-            }
-            if(isset($GETPOST["pretty"])){
-                return '<PRE>' . json_encode($Entry, JSON_PRETTY_PRINT) . '</PRE>';
-            }
+            if(isset($GETPOST["test"])) {debug($Entry); die();}
+            if(isset($GETPOST["pretty"])){return '<PRE>' . json_encode($Entry, JSON_PRETTY_PRINT) . '</PRE>';}
             return json_encode($Entry);
         }
 
@@ -700,17 +702,28 @@
           echo $this->placerapidorder($data);
         }
 
+        function status($Status, $Reason){
+            $NewStatus = array("Status" => $Status, "Reason" => $Reason);
+            echo json_encode($NewStatus);
+            die();
+        }
+
         function placerapidorder($GETPOST = ""){
             if(!$GETPOST){$GETPOST = array_merge($_POST, $_GET);}
-            var_dump($GETPOST);
+            if(isset($GETPOST["action"])){
+                $this->unify();
+                die();
+            }
+
+            //var_dump($GETPOST);
             //Requirements:
             //  Driver:  "fname", "mname", "lname", "gender", "street", "city", "province", "postal", "dob", "driver_license_no", "driver_province", "email"
             //  Order:  "ordertype" (ACRONYM FOR PRODUCT TYPE) [optional: "clientid" (38 assumed), "forms" (will be optained from the database if not given)]
 
             //login requirements
             $Super = $this->Manager->get_entry("profiles", $GETPOST["username"], "username");
-            if(!$Super){ die("[ERROR: Username not found]");}
-            if(md5($GETPOST["password"]) != $Super->password){ die("[ERROR: Password mismatch]");}
+            if(!$Super){$this->Status(False, "Username not found");}
+            if(md5($GETPOST["password"]) != $Super->password){ $this->Status(False,"Password mismatch");}
 
             //construct and/or get driver
             $ClientID = $this->get("clientid", 38);
@@ -719,7 +732,7 @@
             } else {
                 $GETPOST["email"] = "kgfkffdfgfdkfkdf@gmail.com";
                 if(!$this->Manager->validate_data($this->testuser($GETPOST, "email"), "email")){
-                    die("[ERROR: Not a valid email address]");
+                    $this->Status(False,"Not a valid email address");
                 }
                 /* $this->testuser($GETPOST, "username");
                 if(isset($GETPOST["password"]) && $GETPOST["password"]){
@@ -799,8 +812,7 @@
             debug($GETPOST["forms"]);
             debug($Driver);
             debug($OrderID);*/
-            echo '[SUCCESS: ' . $OrderID . ']';
-            die();
+            $this->Status(True,$OrderID);
         }
 
         function handleattachments($GETPOST, $Name, $Path, $SubDocID, $Field, $Super, $ClientID, $OrderID){

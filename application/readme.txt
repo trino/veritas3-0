@@ -159,6 +159,8 @@ cURL will return misc debug text, as well as either [SUCCESS: <order ID>] or [ER
 
 
 Order status API:
-[website URL]/rapid/unify?action=orderstatus&orderid=[order ID]
+[website URL]/rapid/placerapidorder?action=orderstatus&orderid=[order ID]
+Add &test to see the data in CakePHP's debug format
+Add &pretty to see the JSON data in pretty format inside <PRE></PRE> tags
 
 Will return a JSON object with the order info from the database, the baseURL to the files, and an array of the files within Files
