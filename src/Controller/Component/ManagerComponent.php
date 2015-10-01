@@ -5,6 +5,7 @@ use Cake\Controller\Component;
 use Cake\ORM\TableRegistry;
 use Cake\Cache\Cache;
 use Cake\Datasource\ConnectionManager;
+use DateTime;
 
 class ManagerComponent extends Component {
     function init($Controller){
@@ -937,8 +938,33 @@ class ManagerComponent extends Component {
         return $response;
     }
 
+    function is_a_date($Date, $Formats = "m/d/Y"){
+        if(!is_array($Formats)){$Formats = array($Formats);}
+        foreach ($Formats as $Format) {
+            $date = DateTime::createFromFormat($Format, $Date);
+            if($date == False){return false;}
+        }
+        return true;
+    }
 
     function validate_data($Data, $DataType){
+        if(is_array($Data) && is_array($DataType)){
+            foreach($DataType as $Key => $Type){
+                if(isset($Data[$Key]) && $Data[$Key] && !is_array($Data[$Key])){
+                    $Value = $this->validate_data($Data[$Key], $Type);
+                    //echo '<BR>Checking if ' . $Data[$Key] . " is a valid " . $Type . ' (' . $Value . ')';
+                    if($Value){
+                        $Data[$Key] = $Value;//cleaned value
+                    } else {
+                        return $Key . " (" . $Data[$Key] . ") is not a valid " . $Type;
+                    }
+                }
+            }
+            return $Data;
+        }
+        if (is_array($DataType)){
+            return in_array($Data, $DataType);
+        }
         switch(strtolower($DataType)) {
             case "number":
                 return preg_replace("/[^0-9,.]/", "", $Data);
@@ -962,6 +988,26 @@ class ManagerComponent extends Component {
                 break;
             case "email":
                 if (filter_var($Data, FILTER_VALIDATE_EMAIL)){return strtolower(trim($Data));}
+                break;
+            case "date":
+                if($this->is_a_date($Data)){return $Data;}
+                break;
+
+            case "province":
+                if (in_array(strtoupper($Data), ["AB", "BC", "MB", "NB", "NL", "NT", "NS", "NU", "ON", "PE", "QC", "SK", "YT"])){return strtoupper($Data);}
+                break;
+            case "bool":
+                if ($Data == 0 || $Data == 1){return $Data;}
+                break;
+            case "base64file":
+                if( strpos($Data, "data:image/") !== false && strpos($Data, ";base64,") !== false){return $Data;}
+                break;
+            case "csv":
+                $EXP = explode(",", $Data);
+                foreach($EXP as $Cell){
+                    if(!is_numeric($Cell)){return "";}
+                }
+                return $Data;
                 break;
 
             case "postalcode":

@@ -643,11 +643,14 @@
         }
 
         function testuser($GETPOST, $Key){
-            if(isset($GETPOST[$Key]) && $GETPOST[$Key]){
-                $Entry = $this->Manager->get_entry("profiles", $GETPOST[$Key], $Key);
-                if($Entry){die('[ERROR: ' . $Key . ' is in use]');}
-                return $GETPOST[$Key];
+            if (is_array($GETPOST)) {
+                if (isset($GETPOST[$Key]) && $GETPOST[$Key]) {
+                    $GETPOST = $GETPOST[$Key];
+                }
             }
+            $Entry = $this->Manager->get_entry("profiles", $GETPOST, $Key);
+            if($Entry){die('[ERROR: ' . $Key . ' is in use]');}
+            return $GETPOST;
         }
 
 
@@ -692,7 +695,7 @@
                          'street' => '123',
                          'city' => '123',
                          'province' => 'AB',
-                         'postal' => 'L8E 3Z2',
+                         'postal' => 'L8gZ2',
                          'country' => 'Canada',
                          'dob' => '10/02/2015',
                          'driver_license_no' => '123',
@@ -734,15 +737,54 @@
                 die();
             }
 
+            $Formdata = $this->Manager->validate_data($GETPOST, array("gender" => ["Male", "Female"], "title" => ["Mr.", "Mrs.", "Ms."], "email" => "email", "phone" => "phone", "postal" => "postalcode", "province" => "province", "driver_province" => "province", "clientid" => "number", "driverphotoBASE" => "base64file", "forms" => "csv", 'signatureBASE' => "base64file", "dob" => "date"));
+            if(!is_array($Formdata)){$this->status(False, $Formdata);}
+
             //var_dump($GETPOST);
             //Requirements:
             //  Driver:  "fname", "mname", "lname", "gender", "street", "city", "province", "postal", "dob", "driver_license_no", "driver_province", "email"
             //  Order:  "ordertype" (ACRONYM FOR PRODUCT TYPE) [optional: "clientid" (38 assumed), "forms" (will be optained from the database if not given)]
+            if(isset($GETPOST["data"])) {
+                foreach ($GETPOST["data"] as $Key => $Formdata) {
+                    if (isset($Formdata["type"])) {//account for removed forms
+                        $FormType = $Formdata["type"];
+                        $Replace = false;
+                        $Roles = false;
+                        switch($FormType){//unfix typos
+                            case 9://letter of experience
+                                $Roles = array("state_province" => "province", "supervisor_phone" => "phone", "supervisor_email" => "email", "supervisor_secondary_email" => "email", "employment_start_date" => "date", "employment_end_date" => "date", "claims_with_employer" => "bool", "claims_recovery_date" => "date", "signature_datetime" => "date", "equipment_vans" => "bool", "equipment_reefer" => "bool", "equipment_decks " => "bool", "equipment_super" => "bool", "equipment_straight_truck" => "bool", "equipment_others" => "bool", "driving_experince_local" => "bool", "driving_experince_canada" => "bool", "driving_experince_canada_rocky_mountains" => "bool", "driving_experince_usa" => "bool");
+                                break;
+                            case 10://education verification
+                                $Roles = array("supervisior_name" => "phone", "supervisor_email" => "email", "education_start_date" => "date", "education_end_date" => "date", "claim_tutor" => "bool", "date_claims_occur" => "date", "highest_grade_completed" => "number", "high_school" => "number", "college" => "number", "date_time" => "date");
+                                $Replace = array("supervisor_name" => "supervisior_name", "supervisor_phone" => "supervisior_phone", "supervisor_email" => "supervisior_email");
+                                break;
+                        }
+                        if(is_array($Replace)){
+                            foreach($Replace as $FROM => $TO){
+                                if(isset($Formdata[$FROM])){
+                                    $Formdata[$TO] = $Formdata[$FROM];
+                                    unset($Formdata[$FROM]);
+                                }
+                            }
+                        }
+                        if(is_array($Roles)){
+                            $Formdata = $this->Manager->validate_data($Formdata, $Roles);
+                            if(is_array($Formdata)){
+                                $GETPOST["data"][$Key] = $Formdata;
+                            } else {
+                                $this->status(False, 'Form[' . $FormType . '].' . $Formdata);
+                            }
+                        }
+                    }
+                }
+            }
 
             //construct and/or get driver
             $ClientID = $this->get("clientid", 38);
+            if(!$ClientID){$this->Status(False,"Not a valid client ID");}
             if(isset($GETPOST["driverid"])){
                 $Driver = $GETPOST["driverid"];
+                $this->testuser($Driver, "id");
             } else {
                 $GETPOST["email"] = "kgfkffdfgfdkfkdf@gmail.com";
                 if(!$this->Manager->validate_data($this->testuser($GETPOST, "email"), "email")){
@@ -786,23 +828,6 @@
                     if (isset($Formdata["type"])) {//account for removed forms
                         $FormType = $Formdata["type"];
                         unset($Formdata["type"]);
-
-                        $Replace = false;
-                        switch($FormType){//unfix typos
-                            //case 9://letter of experience
-                            case 10://education verification
-                                $Replace = array("supervisor_name" => "supervisior_name", "supervisor_phone" => "supervisior_phone", "supervisor_email" => "supervisior_email");
-                                break;
-                        }
-                        if(is_array($Replace)){
-                            foreach($Replace as $FROM => $TO){
-                                if(isset($Formdata[$FROM])){
-                                    $Formdata[$TO] = $Formdata[$FROM];
-                                    unset($Formdata[$FROM]);
-                                }
-                            }
-                        }
-
                         $this->Document->constructsubdoc($Formdata, $FormType, $Super->id, $ClientID, $OrderID, true);
                     }
                 }

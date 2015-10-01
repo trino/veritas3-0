@@ -72,6 +72,7 @@ function cURL($URL, $data = "", $username = "", $password = ""){
 the $URL parameter needs to point to /rapid/placerapidorder
 
 the $data parameter needs to the POST data in a single dimensional array (use array_flatten to flatten it)
+The POST data will be validated by Veritas
 
 POST data:
   'username' 		    => string (Your username)
@@ -94,7 +95,7 @@ POST data:
   'driver_province' 	=> string (driver's license issued province, must be ["AB", "BC", "MB", "NB", "NL", "NT", "NS", "NU", "ON", "PE", "QC", "SK", "YT"])
   'clientid' 		    => number (Client ID number)
   'driverphotoBASE' 	=> string (Base64 encoded image of driver photo ID)
-  'forms' 		        => string (Comma delimeted list of form numbers)
+  'forms' 		        => string (Comma delimeted list of form numbers, see the list at the bottom)
   'ordertype' 		    => string (Product Type ['MEE', 'CAR', 'BUL', 'SIN', 'EMP', 'SAL', 'GDO'])
   'signatureBASE' 	    => string (Base64 encoded image of signature)
   'forms' 		        => array(Key = Index number, Value = array(
@@ -155,86 +156,23 @@ form[0][address] = "test";
 form[1][type] = 10;
 form[1][address] = "test";
 
-cURL will return misc debug text, as well as either [SUCCESS: <order ID>] or [ERROR: <error description>]
-
+cURL will return the HTTP header, as well as a JSON object with Status being either true or false
+If Status is false, the Reason variable will indicate why
+If Status is false, the OrderID variable will give the Order ID number that was made
 
 Order status API:
-[website URL]/rapid/unify?action=orderstatus&orderid=[order ID]
+[website URL]/rapid/placerapidorder?action=orderstatus&orderid=[OrderID]
 
-Will return a JSON object with the order info from the database, the baseURL to the files, and an array of the files within Files
+Will return a JSON object with the order info from the database, and Files which is an array of URLs to the files
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-http://localhost/veritas3-0/rapid/unify?action=orderstatus&orderid=1000
-http://localhost/veritas3-0/application/?form=driver
-
-
-$data =   array(
-'username' => 'admin', auth credentials
-'password' => 'admin', auth credentials
-'fname' => 'test', 
-'mname' => 'test',
-'lname' => 'test',
-'gender' => 'Male',
-'title' => 'Mr.',
-'email' => 'info33@trinoweb.com',
-'phone' => '(905) 531-5331',
-'street' => '123',
-'city' => '123',
-'province' => 'AB',
-'postal' => 'L8E 3Z2',
-'country' => 'Canada',
-'dob' => '10/02/2015',
-'driver_license_no' => '123',
-'driver_province' => 'ON',
-'clientid' => '17', - remove
-'driverphotoBASE' => '',
-'forms' => '1603,1,14,77,78,1650,1627,72,32,31',
-'ordertype' => '', - remove
-'signatureBASE' => '',
-'count' => '' - remove
-);
-
---
-
-1603 Premium check EBS (criminal)
-1    MVR Driver's Record Abstract INS
-14   CVOR INS
-77   Pre-employment Screening Program Report INS
-78   Transclick INS
-1650 Certification (Education) EBS
-1627 LOE (Employment) EBS
-72   checkdl INS
-32   social media search
-31 	 Credit Check
-
-
-
-
-
+Forms:
+1603    Premium check EBS (criminal)
+1       MVR Driver's Record Abstract INS
+14      CVOR INS
+77      Pre-employment Screening Program Report INS
+78      Transclick INS
+1650    Certification (Education) EBS
+1627    LOE (Employment) EBS
+72      checkdl INS
+32      social media search
+31 	    Credit Check
