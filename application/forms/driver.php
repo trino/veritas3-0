@@ -1,11 +1,11 @@
 <?php $strings2 = CacheTranslations($language, array("verifs_%", "tasks_date", "file_attachfile", "file_download"), $settings, False); ?>
 <div class="form-group row col-md-12 splitcols" ID="GNDN">
-    <input type="hidden" name="MAX_FILE_SIZE" value="30000" />
+    <input type="hidden" name="MAX_FILE_SIZE" value="6553600" title="50 megabytes" />
     <div class="col-md-4"><label class="control-label">Your Username: </label>
         <input type="text" class="form-control required" required name="username" />
     </div>
     <div class="col-md-4"><label class="control-label">Your <?= $strings["forms_password"]; ?>: </label>
-        <input type="text" class="form-control required" required name="password" />
+        <input type="password" class="form-control required" required name="password" />
     </div>
     <!--div class="col-md-4"><label class="control-label"><?= $strings["forms_retypepassword"]; ?>: </label>
         <input type="text" class="form-control required" required name="password2" />
@@ -78,7 +78,7 @@
         <TEXTAREA NAME="driverphotoBASE" class="form-control" title="Leave 'Upload Driver ID file' blank"></TEXTAREA>
     </DIV>
     <div class="col-md-4"><label class="control-label required">Upload Driver ID file: </label>
-        <INPUT TYPE="file" name="driverphotoFILE" class="form-control" title="Leave 'Base64-encoded Driver ID file blank" />
+        <INPUT TYPE="file" name="driverphotoFILE" class="form-control" title="Will over-write 'Base64-encoded Driver ID file'" />
     </div>
     <div class="col-md-12"><label class="control-label required">Products: </label>
         <input type="text" class="form-control" required name="forms" id="forms" READONLY/>
@@ -116,7 +116,14 @@
         <TEXTAREA NAME="signatureBASE" class="form-control" title="Leave 'Upload signature file' blank"></TEXTAREA>
     </DIV>
     <div class="col-md-4"><label class="control-label required">Upload signature file: </label>
-        <INPUT TYPE="file" name="signatureFILE" class="form-control" title="Leave 'Base64-encoded signature file blank" />
+        <INPUT TYPE="file" name="signatureFILE" class="form-control" title="Will over-write 'Base64-encoded signature file'" />
+    </div>
+
+    <div class="col-md-4"><label class="control-label required">Base64-encoded Consent form file: </label>
+        <TEXTAREA NAME="consentBASE" class="form-control" title="Leave 'Upload Consent form file' blank"></TEXTAREA>
+    </DIV>
+    <div class="col-md-4"><label class="control-label required">Upload Consent form file: </label>
+        <INPUT TYPE="file" name="consentFILE" class="form-control" title="Will over-write  'Base64-encoded Consent form file'" />
     </div>
 </div>
 <div class="clearfix"></div>
@@ -125,7 +132,6 @@
     <div class="col-md-8">
         <INPUT TYPE="BUTTON" CLASS="btn btn-info btn-xs" onclick="addform(9);" value="Letter of Experience">&nbsp;&nbsp;
         <INPUT TYPE="BUTTON" CLASS="btn btn-info btn-xs" onclick="addform(10);" value="Education Verification">
-        <INPUT TYPE="HIDDEN" id="count" NAME="count" value="0">
     </div>
 </div>
 <SCRIPT LANGUAGE="JavaScript">
@@ -207,8 +213,6 @@
         });
 
         FormID++;
-        element = document.getElementById("count");
-        element.value = FormID;
     }
 
     function createArray(length) {

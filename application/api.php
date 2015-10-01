@@ -403,6 +403,7 @@ function cURL($URL, $data = "", $username = "", $password = ""){
     $FIND="Content-Type: text/html";
     $START = strpos($response, $FIND);
     if($START){$response = substr($response,$START + strlen($FIND) + 4);}
+    if(!$response){return "ERROR: Blank data could mean a missing this reference";}
     return $response;
 }
 

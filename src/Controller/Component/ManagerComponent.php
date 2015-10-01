@@ -952,7 +952,6 @@ class ManagerComponent extends Component {
             foreach($DataType as $Key => $Type){
                 if(isset($Data[$Key]) && $Data[$Key] && !is_array($Data[$Key])){
                     $Value = $this->validate_data($Data[$Key], $Type);
-                    //echo '<BR>Checking if ' . $Data[$Key] . " is a valid " . $Type . ' (' . $Value . ')';
                     if($Value){
                         $Data[$Key] = $Value;//cleaned value
                     } else {
@@ -961,8 +960,7 @@ class ManagerComponent extends Component {
                 }
             }
             return $Data;
-        }
-        if (is_array($DataType)){
+        } else if (is_array($DataType)){
             return in_array($Data, $DataType);
         }
         switch(strtolower($DataType)) {
@@ -991,6 +989,9 @@ class ManagerComponent extends Component {
                 break;
             case "date":
                 if($this->is_a_date($Data)){return $Data;}
+                break;
+            case "required":
+                return $Data;
                 break;
 
             case "province":

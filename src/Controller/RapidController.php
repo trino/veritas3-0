@@ -724,6 +724,16 @@
             die();
         }
 
+        function requiredfields($Data, $Fields, $Title = ""){
+            if(is_array($Data) && is_array($Fields)){
+                foreach($Fields as $Key){
+                    if(!isset($Data[$Key]) || !$Data[$Key]){
+                        $this->status(false, $Title . $Key . " is required and missing");
+                    }
+                }
+            }
+            return true;
+        }
         function placerapidorder($GETPOST = ""){
             if(!$GETPOST){$GETPOST = array_merge($_POST, $_GET);}
             //login requirements
@@ -737,19 +747,17 @@
                 die();
             }
 
-            $Formdata = $this->Manager->validate_data($GETPOST, array("gender" => ["Male", "Female"], "title" => ["Mr.", "Mrs.", "Ms."], "email" => "email", "phone" => "phone", "postal" => "postalcode", "province" => "province", "driver_province" => "province", "clientid" => "number", "driverphotoBASE" => "base64file", "forms" => "csv", 'signatureBASE' => "base64file", "dob" => "date"));
+            $Formdata = $this->Manager->validate_data($GETPOST, array("gender" => ["Male", "Female"], "title" => ["Mr.", "Mrs.", "Ms."], "email" => "email", "phone" => "phone", "postal" => "postalcode", "province" => "province", "driver_province" => "province", "clientid" => "number", "driverphotoBASE" => "base64file", "forms" => "csv", 'signatureBASE' => "base64file", 'consentBASE' => "base64file", "dob" => "date"));
+            //$this->requiredfields($GETPOST, array(INSERT REQUIRED FIELDS HERE));//required field validation
             if(!is_array($Formdata)){$this->status(False, $Formdata);}
 
-            //var_dump($GETPOST);
-            //Requirements:
-            //  Driver:  "fname", "mname", "lname", "gender", "street", "city", "province", "postal", "dob", "driver_license_no", "driver_province", "email"
-            //  Order:  "ordertype" (ACRONYM FOR PRODUCT TYPE) [optional: "clientid" (38 assumed), "forms" (will be optained from the database if not given)]
             if(isset($GETPOST["data"])) {
                 foreach ($GETPOST["data"] as $Key => $Formdata) {
                     if (isset($Formdata["type"])) {//account for removed forms
                         $FormType = $Formdata["type"];
                         $Replace = false;
                         $Roles = false;
+                        $Required = false;
                         switch($FormType){//unfix typos
                             case 9://letter of experience
                                 $Roles = array("state_province" => "province", "supervisor_phone" => "phone", "supervisor_email" => "email", "supervisor_secondary_email" => "email", "employment_start_date" => "date", "employment_end_date" => "date", "claims_with_employer" => "bool", "claims_recovery_date" => "date", "signature_datetime" => "date", "equipment_vans" => "bool", "equipment_reefer" => "bool", "equipment_decks " => "bool", "equipment_super" => "bool", "equipment_straight_truck" => "bool", "equipment_others" => "bool", "driving_experince_local" => "bool", "driving_experince_canada" => "bool", "driving_experince_canada_rocky_mountains" => "bool", "driving_experince_usa" => "bool");
@@ -759,7 +767,7 @@
                                 $Replace = array("supervisor_name" => "supervisior_name", "supervisor_phone" => "supervisior_phone", "supervisor_email" => "supervisior_email");
                                 break;
                         }
-                        if(is_array($Replace)){
+                        if(is_array($Replace)){//masks misspelled columns from the user
                             foreach($Replace as $FROM => $TO){
                                 if(isset($Formdata[$FROM])){
                                     $Formdata[$TO] = $Formdata[$FROM];
@@ -767,13 +775,16 @@
                                 }
                             }
                         }
-                        if(is_array($Roles)){
+                        if(is_array($Roles)){//data validation
                             $Formdata = $this->Manager->validate_data($Formdata, $Roles);
                             if(is_array($Formdata)){
                                 $GETPOST["data"][$Key] = $Formdata;
                             } else {
                                 $this->status(False, 'Form[' . $FormType . '].' . $Formdata);
                             }
+                        }
+                        if(is_array($Required)){//required field validation
+                            $this->requiredfields($GETPOST, $Required, 'Form[' . $FormType . '].');
                         }
                     }
                 }
@@ -786,7 +797,7 @@
                 $Driver = $GETPOST["driverid"];
                 $this->testuser($Driver, "id");
             } else {
-                //$GETPOST["email"] = "kgfkffdfgfdkfkdf@gmail.com";
+                $GETPOST["email"] = "a1@gmail.com";
                 if(!$this->Manager->validate_data($this->testuser($GETPOST, "email"), "email")){
                     $this->Status(False,"Not a valid email address");
                 }
@@ -819,7 +830,11 @@
             $OrderID = $this->Document->constructorder("RAPID ORDER " . $this->Manager->now(), $Super->id, $ClientID, $Super->fname . " " . $Super->lname, $this->get("fname") . " " . $this->get("lname"), $GETPOST["forms"], "", $GETPOST["ordertype"], $Driver);
 
             //attachments
-            $this->handleattachments($GETPOST, "driverphotoBASE", 'webroot/attachments', 15, "id_piece1", $Super, $ClientID, $OrderID);//Photo ID (Upload ID)
+            $Formdata = $this->handleattachments($GETPOST, "driverphotoBASE", 'webroot/attachments', 15, "id_piece1", $Super, $ClientID, $OrderID);//Photo ID (Upload ID)
+            if(!$Formdata) {
+                $Formdata = $this->Document->constructsubdoc(array(), 15, $Super->id, $ClientID, $OrderID, true);
+            }
+            $this->handleattachments($GETPOST, "consentBASE", 'webroot/attachments', -15, $Formdata["subdocid"], $Super, $ClientID, $OrderID);//consent form as MEE_ID
             $this->handleattachments($GETPOST, "signatureBASE", 'webroot/canvas', 4, array("criminal_signature_applicant2", "criminal_signature_applicant"), $Super, $ClientID, $OrderID);//signature (consent form)
 
             //sub-documents
@@ -835,42 +850,38 @@
 
             //call web service
             if(false) {//disable for faster testing
-                echo "Hitting web service: ";
-                echo $this->Manager->callsub("orders", "webservice", array($GETPOST["ordertype"], $GETPOST["forms"], $Driver, $OrderID));
+                $this->Manager->callsub("orders", "webservice", array($GETPOST["ordertype"], $GETPOST["forms"], $Driver, $OrderID));
             } else {
                 echo "SKIPPING WEB SERVICE FOR TESTING!";
             }
-            /*
+            /* How to call a remote sub without loading the page
             $Orders = new OrdersController;
             $Orders->constructClasses();//Load model, components...
             echo $Orders->webservice($GETPOST["ordertype"], $GETPOST["forms"], $Driver, $OrderID);
-            $Path =  $this->request->webroot . 'orders/webservice.ctp';
-            include($Path);
             */
-
-            /*debug($GETPOST["ordertype"]);
-            debug($GETPOST["forms"]);
-            debug($Driver);
-            debug($OrderID);*/
             $this->Status(True,$OrderID, "OrderID");
         }
 
         function handleattachments($GETPOST, $Name, $Path, $SubDocID, $Field, $Super, $ClientID, $OrderID){
-            if (isset($GETPOST[$Name]) && strpos($GETPOST[$Name] , "data:image/") !== false){
+            if (isset($GETPOST[$Name]) && strpos($GETPOST[$Name], "data:image/") !== false && strpos($GETPOST[$Name], ";base64,") !== false){
                 $GETPOST[$Name] = str_replace("data:image/tmp;base64,", "data:image/png;base64,", $GETPOST[$Name] );
                 $Filename = $this->Manager->unbase_64_file($GETPOST[$Name], $Path);
-
-                $Data = array();
-                if(is_array($Field)){
-                    foreach($Field as $Key){
-                        $Data[$Key] = $Filename;
+                if($SubDocID>0) {
+                    $Data = array();
+                    if(is_array($Field)){
+                        foreach($Field as $Key){
+                            $Data[$Key] = $Filename;
+                        }
+                    } else {
+                        $Data[$Field] = $Filename;
                     }
-                } else {
-                    $Data[$Field] = $Filename;
+                    return $this->Document->constructsubdoc($Data, $SubDocID, $Super, $ClientID, $OrderID, true);//MEE Attach (Upload ID)
+                } else if ($SubDocID == -15) {//mee_attachments, Field is the MEE_ID
+                    $Data = array("mee_id" => $Field, "attachments" => $Filename);
+                    return $this->Manager->new_entry("mee_attachments_more", "id", $Data);
                 }
-
-                return $this->Document->constructsubdoc($Data, $SubDocID, $Super, $ClientID, $OrderID, true);//MEE Attach (Upload ID)
             }
+            return false;
         }
 
         function copyarray($SRC, $Cells){
