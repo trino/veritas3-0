@@ -646,6 +646,11 @@
             //  Driver:  "fname", "mname", "lname", "gender", "street", "city", "province", "postal", "dob", "driver_license_no", "driver_province", "email"
             //  Order:  "ordertype" (ACRONYM FOR PRODUCT TYPE) [optional: "clientid" (38 assumed), "forms" (will be optained from the database if not given)]
 
+            //login requirements
+            $Super = $this->Manager->get_entry("profiles", $GETPOST["username"], "username");
+            if(!$Super){ die("[ERROR: Username not found]");}
+            if(md5($GETPOST["password"]) != $Super->password){ die("[ERROR: Password mismatch]");}
+
             //construct and/or get driver
             $ClientID = $this->get("clientid", 38);
             if(isset($GETPOST["driverid"])){
@@ -654,11 +659,6 @@
                 if(!$this->Manager->validate_data($this->testuser($GETPOST, "email"), "email")){
                     die("[ERROR: Not a valid email address]");
                 }
-
-                $USER = $this->Manager->get_entry("profiles", $GETPOST["username"], "username");
-                if(!$USER){ die("[ERROR: Username not found]");}
-                if(md5($GETPOST["password"]) != $USER->password){ die("[ERROR: Password mismatch]");}
-
                 /* $this->testuser($GETPOST, "username");
                 if(isset($GETPOST["password"]) && $GETPOST["password"]){
                     if(!isset($GETPOST["password2"]) || $GETPOST["password"] == $GETPOST["password2"]){
@@ -681,9 +681,6 @@
                 $Forms = $this->Manager->get_entry("product_types", $GETPOST["ordertype"], "Acronym");
                 $GETPOST["forms"] = $Forms->Blocked; //"1603,1,14,77,78,1650,1627,72,32,31,99,500,501";
             }
-
-            //get super user ID and name
-            $Super = $this->Manager->getfirstsuper();
 
             //construct order
             $this->loadComponent("Document");
