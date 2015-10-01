@@ -155,13 +155,86 @@ form[0][address] = "test";
 form[1][type] = 10;
 form[1][address] = "test";
 
-cURL will return the HTTP header and a JSON object
-It will have Status (true or false) and Reason (if Status is true, Reason will be the order ID)
+cURL will return misc debug text, as well as either [SUCCESS: <order ID>] or [ERROR: <error description>]
+
 
 Order status API:
-[website URL]/rapid/placerapidorder?action=orderstatus&orderid=[order ID]
-You can use file_get_contents instead of cURL for this
-Add &test to see the data in CakePHP's debug format
-Add &pretty to see the JSON data in pretty format inside <PRE></PRE> tags
+[website URL]/rapid/unify?action=orderstatus&orderid=[order ID]
 
 Will return a JSON object with the order info from the database, the baseURL to the files, and an array of the files within Files
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+http://localhost/veritas3-0/rapid/unify?action=orderstatus&orderid=1000
+http://localhost/veritas3-0/application/?form=driver
+
+
+$data =   array(
+'username' => 'admin', auth credentials
+'password' => 'admin', auth credentials
+'fname' => 'test', 
+'mname' => 'test',
+'lname' => 'test',
+'gender' => 'Male',
+'title' => 'Mr.',
+'email' => 'info33@trinoweb.com',
+'phone' => '(905) 531-5331',
+'street' => '123',
+'city' => '123',
+'province' => 'AB',
+'postal' => 'L8E 3Z2',
+'country' => 'Canada',
+'dob' => '10/02/2015',
+'driver_license_no' => '123',
+'driver_province' => 'ON',
+'clientid' => '17', - remove
+'driverphotoBASE' => '',
+'forms' => '1603,1,14,77,78,1650,1627,72,32,31',
+'ordertype' => '', - remove
+'signatureBASE' => '',
+'count' => '' - remove
+);
+
+--
+
+1603 Premium check EBS (criminal)
+1    MVR Driver's Record Abstract INS
+14   CVOR INS
+77   Pre-employment Screening Program Report INS
+78   Transclick INS
+1650 Certification (Education) EBS
+1627 LOE (Employment) EBS
+72   checkdl INS
+32   social media search
+31 	 Credit Check
+
+
+
+
+
