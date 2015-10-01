@@ -663,6 +663,9 @@
             if(isset($GETPOST["test"])) {
                 debug($Entry); die();
             }
+            if(isset($GETPOST["pretty"])){
+                return '<PRE>' . json_encode($Entry, JSON_PRETTY_PRINT) . '</PRE>';
+            }
             return json_encode($Entry);
         }
 
