@@ -660,7 +660,9 @@
                 $Files2[] = $file;
             }
             $Entry->Files = $Files2;
-            //debug($Entry); die();//for testing
+            if(isset($GETPOST["test"])) {
+                debug($Entry); die();
+            }
             return json_encode($Entry);
         }
 
