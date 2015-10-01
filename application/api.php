@@ -117,7 +117,7 @@ function extension($Filename){
 function base64encodefile($Filename, $Extension = ""){
     if (file_exists($Filename)) {
         if(!$Extension){$Extension= extension($Filename);}
-        return "data:image/" . extension($Filename) . ";base64," . base64_encode(file_get_contents($Filename));
+        return "data:image/" . $Extension . ";base64," . base64_encode(file_get_contents($Filename));
     }
 }
 

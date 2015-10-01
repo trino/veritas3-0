@@ -1,11 +1,29 @@
 You will need this PHP code to generate a POST request:
 
+//gets the extension of a file (not including the period)
+function extension($Filename){
+    $type = strtolower(pathinfo($Filename, PATHINFO_EXTENSION));
+    if($type == "jpeg"){$type="jpg";}
+    return $type;
+}
+
+//base64 encodes a file
+function base64encodefile($Filename, $Extension = ""){
+    if (file_exists($Filename)) {
+        if(!$Extension){$Extension= extension($Filename);}
+        return "data:image/" . $Extension . ";base64," . base64_encode(file_get_contents($Filename));
+    }
+}
+
+//returns if the string is a valid JSON string or not
 function isJson($string) {
     if($string && !is_array($string)){
         json_decode($string);
         return (json_last_error() == JSON_ERROR_NONE);
     }
 }
+
+//flattens a multi-dimensional POST made for this system
 function array_flatten($array) {
     if(isset($array["form"])) {
         foreach ($array["form"] as $ID => $Data) {
@@ -17,6 +35,8 @@ function array_flatten($array) {
     unset($array["form"]);
     return $array;
 }
+
+//makes a raw POST request
 function cURL($URL, $data = "", $username = "", $password = ""){
     $session = curl_init($URL);
     curl_setopt($session, CURLOPT_HEADER, true);
@@ -54,32 +74,32 @@ the $URL parameter needs to point to /rapid/placerapidorder
 the $data parameter needs to the POST data in a single dimensional array (use array_flatten to flatten it)
 
 POST data:
-  'username' 		=> string (Your, must be unique or it will fail)
-  'password' 		=> string (Your Password, unencrypted/unobfuscated)
+  'username' 		    => string (Your, must be unique or it will fail)
+  'password' 		    => string (Your Password, unencrypted/unobfuscated)
 
-  'fname' 		=> string (User's first name)
-  'mname' 		=> string (User's middle name)
-  'lname' 		=> string (User's last name)
-  'gender' 		=> string (User's gender ["Male" or "Female"])
-  'title' 		=> string (User's title ["Mr.", "Ms." or "Mrs."])
-  'email' 		=> string (User's email address, must be unique)
-  'phone' 		=> string (User's phone number)
-  'street' 		=> string (User's street)
-  'city' 		=> string (User's city)
-  'province' 		=> string (User's province, must be ["AB", "BC", "MB", "NB", "NL", "NT", "NS", "NU", "ON", "PE", "QC", "SK", "YT"])
-  'country' 		=> string (User's Coutnry, Usually Canada)
-  'postal' 		=> string (User's Postal Code)
-  'dob' 		=> string (User's date of birth in format of 'MM/DD/YYYY')
+  'fname' 		        => string (User's first name)
+  'mname' 		        => string (User's middle name)
+  'lname' 		        => string (User's last name)
+  'gender' 		        => string (User's gender ["Male" or "Female"])
+  'title' 		        => string (User's title ["Mr.", "Ms." or "Mrs."])
+  'email' 		        => string (User's email address, must be unique)
+  'phone' 		        => string (User's phone number)
+  'street' 		        => string (User's street)
+  'city' 		        => string (User's city)
+  'province' 		    => string (User's province, must be ["AB", "BC", "MB", "NB", "NL", "NT", "NS", "NU", "ON", "PE", "QC", "SK", "YT"])
+  'country' 		    => string (User's Coutnry, Usually Canada)
+  'postal' 		        => string (User's Postal Code)
+  'dob' 		        => string (User's date of birth in format of 'MM/DD/YYYY')
   'driver_license_no' 	=> string (driver's license #)
   'driver_province' 	=> string (driver's license issued province, must be ["AB", "BC", "MB", "NB", "NL", "NT", "NS", "NU", "ON", "PE", "QC", "SK", "YT"])
-  'clientid' 		=> number (Client ID number)
+  'clientid' 		    => number (Client ID number)
   'driverphotoBASE' 	=> string (Base64 encoded image of driver photo ID)
-  'forms' 		=> string (Comma delimeted list of form numbers)
-  'ordertype' 		=> string (Product Type ['MEE', 'CAR', 'BUL', 'SIN', 'EMP', 'SAL', 'GDO'])
-  'signatureBASE' 	=> string (Base64 encoded image of signature)
-  'forms' 		=> array(Key = Index number, Value = array(
-			'type' => number (9=letter of experience, 10=education verification)
-			Required fields for letter of experience:
+  'forms' 		        => string (Comma delimeted list of form numbers)
+  'ordertype' 		    => string (Product Type ['MEE', 'CAR', 'BUL', 'SIN', 'EMP', 'SAL', 'GDO'])
+  'signatureBASE' 	    => string (Base64 encoded image of signature)
+  'forms' 		        => array(Key = Index number, Value = array(
+            'type' => number (9=letter of experience, 10=education verification)
+            Required fields for letter of experience:
 				company_name => string
 				address => string
 				city => string
