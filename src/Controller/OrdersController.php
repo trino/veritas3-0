@@ -223,7 +223,7 @@
             }
 
             if(!$profiles->iscomplete){
-                $this->Flash->error("This user has not completed their forms, and cannot have orders placed for them");
+                $this->Flash->error($this->Trans->getString("flash_cantorder"));
             }
 
             if ($did) {

@@ -769,6 +769,10 @@
                 $this->set('id', $id);
                 $this->loadclients($profile->id);
 
+                if(!$profile->iscomplete){
+                    $this->Flash->error($this->Trans->getString("flash_cantorder"));
+                }
+
                 $order = TableRegistry::get('documents')->find()->where(['order_id' => 0, 'uploaded_for' => $id])->order('id DESC');
                 $this->set('documents', $order);
                 $order = TableRegistry::get('subdocuments')->find();
