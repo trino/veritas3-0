@@ -748,7 +748,8 @@
             }
 
             $Formdata = $this->Manager->validate_data($GETPOST, array("gender" => ["Male", "Female"], "title" => ["Mr.", "Mrs.", "Ms."], "email" => "email", "phone" => "phone", "postal" => "postalcode", "province" => "province", "driver_province" => "province", "clientid" => "number", "driverphotoBASE" => "base64file", "forms" => "csv", 'signatureBASE' => "base64file", 'consentBASE' => "base64file", "dob" => "date"));
-            //$this->requiredfields($GETPOST, array(INSERT REQUIRED FIELDS HERE));//required field validation
+            $Required = array("clientid", "forms", "ordertype", "email", "phone", "driver_province" );
+            $this->requiredfields($GETPOST, $Required);//required field validation
             if(!is_array($Formdata)){$this->status(False, $Formdata);}
 
             if(isset($GETPOST["data"])) {
@@ -761,10 +762,12 @@
                         switch($FormType){//unfix typos
                             case 9://letter of experience
                                 $Roles = array("state_province" => "province", "supervisor_phone" => "phone", "supervisor_email" => "email", "supervisor_secondary_email" => "email", "employment_start_date" => "date", "employment_end_date" => "date", "claims_with_employer" => "bool", "claims_recovery_date" => "date", "signature_datetime" => "date", "equipment_vans" => "bool", "equipment_reefer" => "bool", "equipment_decks " => "bool", "equipment_super" => "bool", "equipment_straight_truck" => "bool", "equipment_others" => "bool", "driving_experince_local" => "bool", "driving_experince_canada" => "bool", "driving_experince_canada_rocky_mountains" => "bool", "driving_experince_usa" => "bool");
+                                $Required = array("company_name", "address", "city");
                                 break;
                             case 10://education verification
                                 $Roles = array("supervisior_name" => "phone", "supervisor_email" => "email", "education_start_date" => "date", "education_end_date" => "date", "claim_tutor" => "bool", "date_claims_occur" => "date", "highest_grade_completed" => "number", "high_school" => "number", "college" => "number", "date_time" => "date");
                                 $Replace = array("supervisor_name" => "supervisior_name", "supervisor_phone" => "supervisior_phone", "supervisor_email" => "supervisior_email");
+                                //nothing is required
                                 break;
                         }
                         if(is_array($Replace)){//masks misspelled columns from the user
@@ -797,7 +800,7 @@
                 $Driver = $GETPOST["driverid"];
                 $this->testuser($Driver, "id");
             } else {
-                $GETPOST["email"] = "a1@gmail.com";
+                //$GETPOST["email"] = "a1@gmail.com";
                 if(!$this->Manager->validate_data($this->testuser($GETPOST, "email"), "email")){
                     $this->Status(False,"Not a valid email address");
                 }
