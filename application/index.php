@@ -288,6 +288,7 @@ if (count($_POST) > 0) {
                     $data["location"] = $locations[$ID];
                     insertdb($con, "consent_form_criminal", $data, "", $Execute);
                 }
+                Query("UPDATE profiles SET iscomplete = 1 WHERE id = " . $userID . ";");
                 break;
             case 9://letter of experience
                 $redir = '<script> window.location = "?form=4&msg=success&user_id=' . $_POST["user_id"] . '&client_id=' . $clientID . '"; </script>';

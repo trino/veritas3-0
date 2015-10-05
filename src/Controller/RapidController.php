@@ -452,6 +452,7 @@
                 $profile["driver_province"] = $_POST["driver_province"];
                 $profile["expiry_date"] = $_POST["expiry_date"];
                 $profile["sin"] = $_POST["sin"];
+                $profile["iscomplete"] = 0;
 
                 $modal = TableRegistry::get('profiles');
                 $p = $modal->newEntity($profile);

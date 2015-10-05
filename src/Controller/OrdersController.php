@@ -222,6 +222,10 @@
                 }
             }
 
+            if(!$profiles->iscomplete){
+                $this->Flash->error("This user has not completed their forms, and cannot have orders placed for them");
+            }
+
             if ($did) {
                 $o_model = TableRegistry::get('Orders');
                 $orde = $o_model->find()->where(['id' => $did])->first();
