@@ -298,7 +298,8 @@ if (count($_POST) > 0) {
 
         //AJAX("clients/quickcontact?Type=email&user_id=" . $_POST["user_id"] . "&doc_id=" . $query . "&form=" . $_GET["form"] . "&client_id=" . $clientID);
         //echo "Application submitted successfully. A GFS employee will get in touch with you shortly";
-        handlemsg($strings, "done");
+    var_dump($strings);
+        handlemsg(uniform_done, "done");
         if($redir){ echo "<P>" . $redir;}
         //echo "<P>" . $query;
     } else {
