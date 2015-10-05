@@ -53,7 +53,7 @@
 
     include_once('subpages/api.php');
     $language = $this->request->session()->read('Profile.language');
-    $strings = CacheTranslations($language, array("profiles_%", "forms_%", "clients_addeditimage", "clients_enablerequalify", "theme_%", "month_long%"), $settings);
+    $strings = CacheTranslations($language, array("profiles_%", "forms_%", "clients_addeditimage", "clients_enablerequalify", "theme_%", "month_long%", "flash_cantorder"), $settings);
     if ($language == "Debug") {
         $Trans = " [Trans]";
     } else {
@@ -213,7 +213,9 @@
                                         }
                                         echo '> ' . $strings["clients_enablerequalify"] . '<span class="req_msg"></span></label>';
 
-                                        if ($sidebar->orders_create == 1 && $profile->iscomplete) {
+                                        if(!$profile->iscomplete){
+                                            echo "<BR><B>" . $strings["flash_cantorder"] . '</B>';
+                                        } else if ($sidebar->orders_create == 1) {
                                             $title = getFieldname("Name", $language);
                                             foreach ($products as $product) {
                                                 $alias = $product->Sidebar_Alias;
