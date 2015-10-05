@@ -252,6 +252,7 @@ function handlemsg($strings = "", $bypass = false) {
 if (count($_POST) > 0) {
     $strings = CacheTranslations($language, array("uniform_%", "addorder_back"), $settings);
     includeCSS("login");
+    include_once ('api.php');
     //var_dump($_POST);
     //$_POST = converge($_POST); //do not do
     echo '<div class="logo"></div><div class="content">';
