@@ -361,8 +361,8 @@
 
     function autofill(Type){
         if(!Type){
-            addform(9);
-            addform(10);
+            //addform(9);
+            //addform(10);
             autofill("input");
             autofill("select");
         } else {

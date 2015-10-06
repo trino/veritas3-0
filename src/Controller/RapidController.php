@@ -761,8 +761,8 @@
                         $Roles = false;
                         $Required = false;
                         switch($FormType){//unfix typos
-                            case 9://letter of experience
-                                $Roles = array("state_province" => "province", "supervisor_phone" => "phone", "supervisor_email" => "email", "supervisor_secondary_email" => "email", "employment_start_date" => "date", "employment_end_date" => "date", "claims_with_employer" => "bool", "claims_recovery_date" => "date", "signature_datetime" => "date", "equipment_vans" => "bool", "equipment_reefer" => "bool", "equipment_decks " => "bool", "equipment_super" => "bool", "equipment_straight_truck" => "bool", "equipment_others" => "bool", "driving_experince_local" => "bool", "driving_experince_canada" => "bool", "driving_experince_canada_rocky_mountains" => "bool", "driving_experince_usa" => "bool");
+                            case 9://letter of experience //"state_province" => "province",
+                                $Roles = array("supervisor_phone" => "phone", "supervisor_email" => "email", "supervisor_secondary_email" => "email", "employment_start_date" => "date", "employment_end_date" => "date", "claims_with_employer" => "bool", "claims_recovery_date" => "date", "signature_datetime" => "date", "equipment_vans" => "bool", "equipment_reefer" => "bool", "equipment_decks " => "bool", "equipment_super" => "bool", "equipment_straight_truck" => "bool", "equipment_others" => "bool", "driving_experince_local" => "bool", "driving_experince_canada" => "bool", "driving_experince_canada_rocky_mountains" => "bool", "driving_experince_usa" => "bool");
                                 $Required = array("company_name", "address", "city");
                                 break;
                             case 10://education verification
