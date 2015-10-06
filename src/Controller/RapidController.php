@@ -942,7 +942,7 @@
             }
 
             //call web service
-            if(false) {//disable for faster testing
+            if(true) {//disable for faster testing
                 $this->Manager->callsub("orders", "webservice", array($GETPOST["ordertype"], $GETPOST["forms"], $Driver, $OrderID));
             } else {
                 echo "SKIPPING WEB SERVICE FOR TESTING!";
