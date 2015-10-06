@@ -120,6 +120,19 @@ function elementtype(element){
     return element.tagName.toLowerCase();
 }
 
+function setinputvalue(element,newvalue) {
+    if(typeof element !== 'object'){
+        element = document.getElementById(element);
+        if(!element){return false;}
+    }
+    tagtype = elementtype(element);
+    switch(tagtype){
+
+        default:
+            element.value = newvalue;
+    }
+}
+
 function getinputvalue(element){
     if(typeof element !== 'object'){
         element = document.getElementById(element);

@@ -100,13 +100,14 @@
         </TABLE>
     </DIV>
     <div class="col-md-4"><label class="control-label required">Order type: </label>
-        <SELECT class="form-control required" name="ordertype" disabled/>
+        <SELECT class="form-control required" name="ordertype"/>
             <?php
                 $result = Query("SELECT * FROM product_types");
                 while ($Data = mysqli_fetch_array($result)) {
-                    echo '<OPTION VALUE="' . $Data["Acronym"] . '"';
-                    if($Data["Acronym"] == "CAR"){ echo ' SELECTED';}
-                    echo '>(' . $Data["Acronym"] . ') ' . $Data["Name"] . '</OPTION>';
+                    if($Data["Acronym"] == "CAR") {
+                        echo '<OPTION VALUE="' . $Data["Acronym"] . '"';
+                        echo '>(' . $Data["Acronym"] . ') ' . $Data["Name"] . '</OPTION>';
+                    }
                 }
             ?>
         </SELECT>
@@ -138,7 +139,8 @@
     <label class="control-label col-md-4">Add a form:</label>
     <div class="col-md-8">
         <INPUT TYPE="BUTTON" CLASS="btn btn-info btn-xs" onclick="addform(9);" value="Letter of Experience">&nbsp;&nbsp;
-        <INPUT TYPE="BUTTON" CLASS="btn btn-info btn-xs" onclick="addform(10);" value="Education Verification">
+        <INPUT TYPE="BUTTON" CLASS="btn btn-info btn-xs" onclick="addform(10);" value="Education Verification">&nbsp;&nbsp;
+        <INPUT TYPE="BUTTON" CLASS="btn btn-warning btn-xs" onclick="autofill('');" value="Auto-fill forms">
     </div>
 </div>
 <SCRIPT LANGUAGE="JavaScript">
@@ -281,13 +283,17 @@
                         tempstr2 = tempstr2 + '/>';
                         break;
                     case "checkbox":case "radio":
+                        var Selected = CurrentData[1] == "radio";
                         for(Index2 = 4; Index2 < CurrentData.length; Index2++ ){
                             var Check = CurrentData[Index2];
                             var Name =  CurrentData[2];
                             if(Check.length>2){
                                 Name = Check[2];
                             }
-                            tempstr2 = tempstr2 + '<label><input type="' + CurrentData[1] + '" name="' + Name + '"' + Required + ' class="' + Class + '" value="' + Check[0] + '"/>&nbsp;&nbsp;' + Check[1] +  '</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
+                            tempstr2 = tempstr2 + '<label><input type="' + CurrentData[1] + '" name="' + Name + '"' + Required + ' class="' + Class + '" value="' + Check[0] + '"';
+                            if(Selected){tempstr2 = tempstr2 + ' CHECKED';}
+                            tempstr2 = tempstr2 + '/>&nbsp;&nbsp;' + Check[1] +  '</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
+                            Selected=false;
                         }
                         break;
                     case "select":
@@ -351,6 +357,127 @@
             }
         }
         element.value=newvalue;
+    }
+
+    function autofill(Type){
+        if(!Type){
+            addform(9);
+            addform(10);
+            autofill("input");
+            autofill("select");
+        } else {
+            var inputs, index, element, value, name, temp;
+            element = document.getElementById("myForm");
+            inputs = element.getElementsByTagName(Type);
+            for (index = 0; index < inputs.length; ++index) {
+                element = inputs[index];
+                name = element.getAttribute("name");
+                value = getinputvalue(element);
+                if(name && !value) {
+                    temp = name.indexOf("][");
+                    if(temp > -1){
+                        name = name.substr(temp+2);
+                        name = name.substr(0, name.length-1);
+                    }
+                    if (element.hasAttribute("type")) {
+                        Type = element.getAttribute("type");
+                    }
+                    if (element.hasAttribute("role")) {
+                        Type = element.getAttribute("role");
+                    }
+                    if(element.hasClass("datepicker")){
+                        Type = "date";
+                    }
+                    switch(Type){
+                        case "file":
+                            value="";
+                            break;
+                        case "text":
+                            switch(name){
+                                case "fname":
+                                    value = "Test";
+                                    break;
+                                case "mname":
+                                    value = "Ing";
+                                    break;
+                                case "lname":
+                                    value = "User";
+                                    break;
+                                case "street": case "address":
+                                    value = "123 fake st";
+                                    break;
+                                case "city":
+                                    value = "fakington";
+                                    break;
+                                case "driver_license_no":
+                                    value = "123-456-789";
+                                    break;
+                                case "company_name":
+                                    value = "TrinoWeb Solutions";
+                                    break;
+                                case "state_province":
+                                    value = "Ontario";
+                                    break;
+                                case "country":
+                                    value = "Canada";
+                                    break;
+                                case "supervisor_name":case "supervisior_name":
+                                    value = "Van Trinh";
+                                    break;
+                                case "supervisor_phone":case "supervisior_phone":
+                                    value = "9055555123";
+                                    break;
+                                case "supervisor_email":case "supervisior_email":
+                                    value = "test@testing.com";
+                                    break;
+                                case "us_dot":
+                                    value = "TEST";
+                                    break;
+                                case "college_school_name":
+                                    value = "Mohawk";
+                                    break;
+                            }
+                            break;
+                        case "phone":
+                            value="9055555123";
+                            break;
+                        case "postalcode":
+                            value = "L7P6V6";
+                            break;
+                        case "select":
+                            switch(name){
+                                case "province": case "driver_province":
+                                    value="ON";
+                                    break;
+                            }
+                            break;
+                        case "date":
+                            value = "10/04/2015";
+                            break;
+                        case "email":
+                            value = randomemail(10);
+                            break;
+                    }
+                    if (value){
+                        setinputvalue(element, value);
+                    } else {
+                        //alert(name + " (" + Type + ")");
+                    }
+                }
+            }
+        }
+    }
+
+    function randomemail(Length){
+        return makeid(Length) + "@" + makeid(Length) + "." + makeid(3);
+    }
+    function makeid(Length) {
+        var text = "";
+        var possible = "abcdefghijklmnopqrstuvwxyz0123456789";
+        for( var i=0; i < Length; i++ ) {
+            text += possible.charAt(Math.floor(Math.random() * possible.length));
+        }
+        return text;
     }
 
     document.getElementById("forms").value = '<?= $Products; ?>';

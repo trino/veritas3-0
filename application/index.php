@@ -480,7 +480,7 @@ function savedriver($webroot){
 
     $_POST = array_flatten($_POST);
     $Result = cURL($URL, $_POST);
-    echo "Result = " . $Result;
+    echo "Result = " . $Result . '<BR>Post = ' . print_r($_POST, true);
     echo '<div class="clearfix"></div><SCRIPT>removeelement("LOADING");</SCRIPT>';
     die();
 }
