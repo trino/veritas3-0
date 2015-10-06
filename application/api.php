@@ -19,6 +19,16 @@ function connectdb() {
     return $con;
 }
 
+function left($text, $length){
+    return substr($text,0,$length);
+}
+function right($text, $length){
+    return substr($text, -$length);
+}
+function mid($text, $start, $length){
+    return substr($text,$start, $length);
+}
+
 function initdatepicker($dateformat = 'yy-mm-dd'){
     ?>
     <SCRIPT>

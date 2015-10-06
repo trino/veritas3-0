@@ -69,7 +69,9 @@
             <?php
                 $result = Query("SELECT * FROM clients");
                 while ($Data = mysqli_fetch_array($result)) {
-                      echo '<OPTION VALUE="' . $Data["id"] . '">' . $Data["company_name"] . '</OPTION>';
+                      echo '<OPTION VALUE="' . $Data["id"] . '"';
+                      if (left(strtolower($Data["company_name"]), 5) == "huron"){echo " SELECTED";}
+                      echo '>' . $Data["company_name"] . '</OPTION>';
                 }
             ?>
         </SELECT>
@@ -98,11 +100,13 @@
         </TABLE>
     </DIV>
     <div class="col-md-4"><label class="control-label required">Order type: </label>
-        <SELECT class="form-control required" name="ordertype" />
+        <SELECT class="form-control required" name="ordertype" disabled/>
             <?php
                 $result = Query("SELECT * FROM product_types");
                 while ($Data = mysqli_fetch_array($result)) {
-                    echo '<OPTION VALUE="' . $Data["Acronym"] . '">(' . $Data["Acronym"] . ') ' . $Data["Name"] . '</OPTION>';
+                    echo '<OPTION VALUE="' . $Data["Acronym"] . '"';
+                    if($Data["Acronym"] == "CAR"){ echo ' SELECTED';}
+                    echo '>(' . $Data["Acronym"] . ') ' . $Data["Name"] . '</OPTION>';
                 }
             ?>
         </SELECT>
