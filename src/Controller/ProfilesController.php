@@ -257,10 +257,14 @@
                 }
                 if(!$found) $temp_array = array_merge($temp_array, array($key => $val));
             }
-        
-            if ($sort_ascending) $array = array_reverse($temp_array);
-        
-            else $array = $temp_array;
+
+            if(is_array($temp_array)) {
+                if ($sort_ascending) {
+                    $array = array_reverse($temp_array);
+                } else {
+                    $array = $temp_array;
+                }
+            }
         }
 
         function checkcron($cid,$date,$pid) {
