@@ -410,7 +410,7 @@
                                 case "city":
                                     value = "fakington";
                                     break;
-                                case "driver_license_no":case "sin":
+                                case "driver_license_no":
                                     value = "123-456-789";
                                     break;
                                 case "company_name":
@@ -457,6 +457,9 @@
                             break;
                         case "email":
                             value = randomemail(20);
+                            break;
+                        case "sin":
+                            value = "123-456-789";
                             break;
                     }
                     if (value){

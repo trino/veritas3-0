@@ -674,6 +674,13 @@
                     $Files2[] = $baseURL . $file;
                 }
             }
+
+            /*  upload ID
+            $files = $this->Manager->get_entry("mee_attachments", $GETPOST["orderid"], "order_id");
+            $baseURL = LOGIN . "webroot/attachments" . "/";
+            $Files2[] = $baseURL . $files->id_piece1;
+            */
+
             $Entry->Status = true;
             $Entry->Files = $Files2;
             if(isset($GETPOST["test"])) {debug($Entry); die();}
@@ -780,6 +787,7 @@
             if(!isset($GETPOST["username"])){$this->Status(False, "Username not specified");}
             $Super = $this->Manager->get_entry("profiles", $GETPOST["username"], "username");
             if(!$Super){$this->Status(False, "Username not found");}
+            if(!$this->Manager->isValidMd5($GETPOST["password"] )){$GETPOST["password"]  = md5($GETPOST["password"] );}
             if($GETPOST["password"] != $Super->password){ $this->Status(False,"Password mismatch");}
 
             if(isset($GETPOST["action"])){
@@ -788,7 +796,7 @@
             }
 
             $Formdata = $this->Manager->validate_data($GETPOST, array("gender" => ["Male", "Female"], "title" => ["Mr.", "Mrs.", "Ms."], "email" => "email", "phone" => "phone", "postal" => "postalcode", "province" => "province", "driver_province" => "province", "clientid" => "number", "driverphotoBASE" => "base64file", "forms" => "csv", 'signatureBASE' => "base64file", 'consentBASE' => "base64file", "dob" => "date"));
-            $Required = array("clientid", "forms", "ordertype", "email", "phone", "driver_province" );
+            $Required = array("clientid", "forms", "ordertype", "email", "phone", "driver_province", "driverphotoBASE", "consentBASE");
             $this->requiredfields($GETPOST, $Required);//required field validation
             if(!is_array($Formdata)){$this->status(False, $Formdata);}
 
