@@ -674,6 +674,13 @@
                     $Files2[] = $baseURL . $file;
                 }
             }
+
+            /*  upload ID
+            $files = $this->Manager->get_entry("mee_attachments", $GETPOST["orderid"], "order_id");
+            $baseURL = LOGIN . "webroot/attachments" . "/";
+            $Files2[] = $baseURL . $files->id_piece1;
+            */
+
             $Entry->Status = true;
             $Entry->Files = $Files2;
             if(isset($GETPOST["test"])) {debug($Entry); die();}
@@ -741,6 +748,7 @@
             if(!isset($GETPOST["username"])){$this->Status(False, "Username not specified");}
             $Super = $this->Manager->get_entry("profiles", $GETPOST["username"], "username");
             if(!$Super){$this->Status(False, "Username not found");}
+            if(!$this->Manager->isValidMd5($GETPOST["password"] )){$GETPOST["password"]  = md5($GETPOST["password"] );}
             if($GETPOST["password"] != $Super->password){ $this->Status(False,"Password mismatch");}
 
             if(isset($GETPOST["action"])){
