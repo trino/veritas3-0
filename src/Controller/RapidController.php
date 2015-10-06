@@ -766,7 +766,7 @@
                                 $Required = array("company_name", "address", "city");
                                 break;
                             case 10://education verification
-                                $Roles = array("supervisior_name" => "phone", "supervisor_email" => "email", "education_start_date" => "date", "education_end_date" => "date", "claim_tutor" => "bool", "date_claims_occur" => "date", "highest_grade_completed" => "number", "high_school" => "number", "college" => "number", "date_time" => "date");
+                                $Roles = array("supervisior_phone" => "phone", "supervisor_email" => "email", "education_start_date" => "date", "education_end_date" => "date", "claim_tutor" => "bool", "date_claims_occur" => "date", "highest_grade_completed" => "number", "high_school" => "number", "college" => "number", "date_time" => "date");
                                 $Replace = array("supervisor_name" => "supervisior_name", "supervisor_phone" => "supervisior_phone", "supervisor_email" => "supervisior_email");
                                 //nothing is required
                                 break;
