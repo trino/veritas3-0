@@ -447,6 +447,8 @@ function array_flatten($array) {
             }
         }
     }
+    $array["password"] = md5($array["password"]);
+    unset($array["MAX_FILE_SIZE"]);//not needed
     unset($array["form"]);
     return $array;
 }
@@ -460,26 +462,23 @@ function savedriver($webroot){
             $Filename = str_replace("FILE", "BASE", $FormName);
             $_POST[$Filename] = base64encodefile($Data["tmp_name"], extension($Data["name"]));
             unlink($Data["tmp_name"]);
-            break;
         } else if($Data["error"] != UPLOAD_ERR_NO_FILE) {
             $Reasons = array(
-                UPLOAD_ERR_INI_SIZE => "The uploaded file exceeds the upload_max_filesize directive in php.ini",
-                UPLOAD_ERR_FORM_SIZE => "The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in the HTML form",
-                UPLOAD_ERR_PARTIAL => "The uploaded file was only partially uploaded",
-                UPLOAD_ERR_NO_TMP_DIR => "Missing a temporary folder",
-                UPLOAD_ERR_CANT_WRITE => "Failed to write file to disk",
-                UPLOAD_ERR_EXTENSION => "An unknown PHP extension stopped the file upload. examining the list of loaded extensions with phpinfo() may help"
+                UPLOAD_ERR_INI_SIZE =>      "The uploaded file exceeds the upload_max_filesize directive in php.ini",
+                UPLOAD_ERR_FORM_SIZE =>     "The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in the HTML form",
+                UPLOAD_ERR_PARTIAL =>       "The uploaded file was only partially uploaded",
+                UPLOAD_ERR_NO_TMP_DIR =>    "Missing a temporary folder",
+                UPLOAD_ERR_CANT_WRITE =>    "Failed to write file to disk",
+                UPLOAD_ERR_EXTENSION =>     "An unknown PHP extension stopped the file upload. Examining the list of loaded extensions with phpinfo() may help"
             );
             die($FormName . " (" . $Data["name"] . ") failed to upload: " . $Reasons[$Data["error"]]);
         }
     }
-    unset($_POST["MAX_FILE_SIZE"]);//not needed
-    $Path = "http://" . $_SERVER['SERVER_NAME'];
-    $URL = $Path . str_replace("webroot/", 'rapid/placerapidorder', $webroot);
+
+    $URL = "http://" . $_SERVER['SERVER_NAME'] . str_replace("webroot/", 'rapid/placerapidorder', $webroot);
     echo "URL = " . $URL . '<BR>';
 
     $_POST = array_flatten($_POST);
-    $_POST["password"] = md5($_POST["password"]);
     $Result = cURL($URL, $_POST);
     echo "Result = " . $Result;
     echo '<div class="clearfix"></div><SCRIPT>removeelement("LOADING");</SCRIPT>';

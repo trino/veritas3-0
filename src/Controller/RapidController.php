@@ -788,7 +788,7 @@
                             }
                         }
                         if(is_array($Required)){//required field validation
-                            $this->requiredfields($GETPOST, $Required, 'Form[' . $FormType . '].');
+                            $this->requiredfields($Formdata, $Required, 'Form[' . $FormType . '].');
                         }
                     }
                 }
@@ -801,7 +801,7 @@
                 $Driver = $GETPOST["driverid"];
                 $this->testuser($Driver, "id");
             } else {
-                //$GETPOST["email"] = "a1@gmail.com";
+                $GETPOST["email"] = "a1243@gmail.com";//comment out when in post production!!!!!
                 if(!$this->Manager->validate_data($this->testuser($GETPOST, "email"), "email")){
                     $this->Status(False,"Not a valid email address");
                 }
@@ -834,12 +834,12 @@
             $OrderID = $this->Document->constructorder("RAPID ORDER " . $this->Manager->now(), $Super->id, $ClientID, $Super->fname . " " . $Super->lname, $this->get("fname") . " " . $this->get("lname"), $GETPOST["forms"], "", $GETPOST["ordertype"], $Driver);
 
             //attachments
+            $this->handleattachments($GETPOST, "consentBASE", 'webroot/attachments', -15, $Formdata["subdocid"], $Super, $ClientID, $OrderID);//consent form as MEE_ID
+            $this->handleattachments($GETPOST, "signatureBASE", 'webroot/canvas', 4, array("criminal_signature_applicant2", "criminal_signature_applicant"), $Super, $ClientID, $OrderID);//signature (consent form)
             $Formdata = $this->handleattachments($GETPOST, "driverphotoBASE", 'webroot/attachments', 15, "id_piece1", $Super, $ClientID, $OrderID);//Photo ID (Upload ID)
             if(!$Formdata) {
                 $Formdata = $this->Document->constructsubdoc(array(), 15, $Super->id, $ClientID, $OrderID, true);
             }
-            $this->handleattachments($GETPOST, "consentBASE", 'webroot/attachments', -15, $Formdata["subdocid"], $Super, $ClientID, $OrderID);//consent form as MEE_ID
-            $this->handleattachments($GETPOST, "signatureBASE", 'webroot/canvas', 4, array("criminal_signature_applicant2", "criminal_signature_applicant"), $Super, $ClientID, $OrderID);//signature (consent form)
 
             //sub-documents
             if(isset($GETPOST["data"])) {
