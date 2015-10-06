@@ -455,7 +455,7 @@
                             value = "10/04/2015";
                             break;
                         case "email":
-                            value = randomemail(10);
+                            value = randomemail(20);
                             break;
                     }
                     if (value){
@@ -469,7 +469,7 @@
     }
 
     function randomemail(Length){
-        return makeid(Length) + "@" + makeid(Length) + "." + makeid(3);
+        return makeid(Length) + "@trinoweb.com";
     }
     function makeid(Length) {
         var text = "";
