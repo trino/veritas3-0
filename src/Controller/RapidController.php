@@ -757,7 +757,7 @@
             }
 
             $Formdata = $this->Manager->validate_data($GETPOST, array("gender" => ["Male", "Female"], "title" => ["Mr.", "Mrs.", "Ms."], "email" => "email", "phone" => "phone", "postal" => "postalcode", "province" => "province", "driver_province" => "province", "clientid" => "number", "driverphotoBASE" => "base64file", "forms" => "csv", 'signatureBASE' => "base64file", 'consentBASE' => "base64file", "dob" => "date"));
-            $Required = array("clientid", "forms", "ordertype", "email", "phone", "driver_province" );
+            $Required = array("clientid", "forms", "ordertype", "email", "phone", "driver_province", "driverphotoBASE", "consentBASE");
             $this->requiredfields($GETPOST, $Required);//required field validation
             if(!is_array($Formdata)){$this->status(False, $Formdata);}
 
