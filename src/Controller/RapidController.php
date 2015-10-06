@@ -801,7 +801,7 @@
                 $Driver = $GETPOST["driverid"];
                 $this->testuser($Driver, "id");
             } else {
-                $GETPOST["email"] = "a1243@gmail.com";//comment out when in post production!!!!!
+           //     $GETPOST["email"] = "a1243@gmail.com";//comment out when in post production!!!!!
                 if(!$this->Manager->validate_data($this->testuser($GETPOST, "email"), "email")){
                     $this->Status(False,"Not a valid email address");
                 }
