@@ -410,7 +410,7 @@
                                 case "city":
                                     value = "fakington";
                                     break;
-                                case "driver_license_no":
+                                case "driver_license_no":case "sin":
                                     value = "123-456-789";
                                     break;
                                 case "company_name":
