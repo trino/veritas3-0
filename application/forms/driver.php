@@ -37,6 +37,10 @@
         <input type="text" class="form-control required" required name="email" role="email" />
     </div>
 
+    <div class="col-md-4"><label class="control-label required"><?= $strings["forms_sin"]; ?>: </label>
+        <input type="text" class="form-control required" required name="sin" role="sin" />
+    </div>
+
     <div class="col-md-4"><label class="control-label required"><?= $strings["forms_phone"]; ?>: </label>
         <input type="text" class="form-control required" required name="phone" role="phone" />
     </div>
@@ -225,14 +229,11 @@
     }
 
     function createArray(length) {
-        var arr = new Array(length || 0),
-            i = length;
-
+        var arr = new Array(length || 0), i = length;
         if (arguments.length > 1) {
             var args = Array.prototype.slice.call(arguments, 1);
             while(i--) arr[length-1 - i] = createArray.apply(this, args);
         }
-
         return arr;
     }
 
@@ -409,7 +410,7 @@
                                 case "city":
                                     value = "fakington";
                                     break;
-                                case "driver_license_no":
+                                case "driver_license_no":case "sin":
                                     value = "123-456-789";
                                     break;
                                 case "company_name":
