@@ -197,6 +197,8 @@
                                 }
 
                                 foreach ($orders as $order){
+                                    $isRapid = substr($order->title,0, 12) == "RAPID ORDER ";
+
                                     if ($row_color_class == "even") {
                                         $row_color_class = "odd";
                                     } else {
@@ -236,25 +238,31 @@
                                                     if($order->order_type != 'BUL' && $order->order_type != 'REQ')  { ?>
                                                         
                                                     <a class="more" id="sub_doc_click1"
-                                                       href="<?php
-                                                       if ($order->draft == "1" or isset($_GET["draft"])){
-                                                           echo $EDITURL;
-                                                       } else if ($sidebar->document_list == '1' && !isset($_GET["draft"])) {
-                                                           echo $this->request->webroot . 'orders/vieworder/' . $order->client_id . '/' . $order->id;
-                                                           if ($order->order_type) {
-                                                               echo '?order_type=' . urlencode($order->order_type);
-                                                               if ($order->forms) echo '&forms=' . $order->forms;
-                                                           }
-                                                       } else {
-                                                           if ($sidebar->document_list == '1') {
-                                                               echo $this->request->webroot . 'orders/addorder/' . $order->client_id . '/' . $order->id;
+                                                        <?php if($isRapid) {
+                                                           echo 'onclick="return false;';
+                                                        } else {
+                                                           echo 'href="';
+                                                           if ($order->draft == "1" or isset($_GET["draft"])) {
+                                                               echo $EDITURL;
+                                                           } else if ($sidebar->document_list == '1' && !isset($_GET["draft"])) {
+                                                               echo $this->request->webroot . 'orders/vieworder/' . $order->client_id . '/' . $order->id;
                                                                if ($order->order_type) {
                                                                    echo '?order_type=' . urlencode($order->order_type);
                                                                    if ($order->forms) echo '&forms=' . $order->forms;
                                                                }
-                                                           } else { ?>javascript:;<?php }
-                                                       } ?>">
-                                                       <?php
+                                                           } else {
+                                                               if ($sidebar->document_list == '1') {
+                                                                   echo $this->request->webroot . 'orders/addorder/' . $order->client_id . '/' . $order->id;
+                                                                   if ($order->order_type) {
+                                                                       echo '?order_type=' . urlencode($order->order_type);
+                                                                       if ($order->forms) echo '&forms=' . $order->forms;
+                                                                   }
+                                                               } else {
+                                                                   echo 'javascript:;';
+                                                               }
+                                                           }
+                                                        }
+                                                        echo '">';
                                                     } else  {
                                                         echo '<span class="more">';
                                                     }
@@ -297,7 +305,7 @@
                                         <td class="actions  util-btn-margin-bottom-5">
 
                                             <?php
-                                                if ($sidebar->orders_list == '1' && $order->draft != 1 && $order->order_type!='BUL' && $order->order_type!='REQ') {
+                                                if ($sidebar->orders_list == '1' && $order->draft != 1 && $order->order_type!='BUL' && $order->order_type!='REQ' && !$isRapid) {
                                                     ?>
                                                     <a class="<?= btnclass("VIEW") ?>"
                                                        href="<?php echo $this->request->webroot; ?>orders/vieworder/<?php echo $order->client_id; ?>/<?php echo $order->id;
