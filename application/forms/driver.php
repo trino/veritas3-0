@@ -208,8 +208,8 @@
                 Form[9] = ['<?= addslashes($strings2["verifs_dateclaims"]); ?>', 'date', 'form[' + FormID + '][date_claims_occur]', false];
                 Form[10] = ['<?= addslashes($strings2["verifs_educationh"]); ?>', 'hidden', 'form[' + FormID + '][education_history_confirmed_by]', false];
                 Form[11] = ['<?= addslashes($strings2["verifs_highestgra"]); ?>', 'select', 'form[' + FormID + '][highest_grade_completed]', false, [1],[2],[3],[4],[5],[6],[7],[8]];
-                Form[12] = ['<?= addslashes($strings2["verifs_highschool"] . '<small>' . $strings2["verifs_yearsatten"] . '</small>'); ?>', 'select', 'form[' + FormID + '][high_school]', false, [1],[2],[3],[4]];
-                Form[13] = ['<?= addslashes($strings2["verifs_college"] . '<small>' . $strings2["verifs_yearsatten"] . '</small>'); ?>', 'select', 'form[' + FormID + '][college]', false, [1],[2],[3],[4]];
+                Form[12] = ['<?= addslashes($strings2["verifs_highschool"] . ' <small>' . $strings2["verifs_yearsatten"] . '</small>'); ?>', 'select', 'form[' + FormID + '][high_school]', false, [1],[2],[3],[4]];
+                Form[13] = ['<?= addslashes($strings2["verifs_college"] . ' <small>' . $strings2["verifs_yearsatten"] . '</small>'); ?>', 'select', 'form[' + FormID + '][college]', false, [1],[2],[3],[4]];
                 Form[14] = ['<?= addslashes($strings["verifs_lastschool"]); ?>', 'text', 'form[' + FormID + '][last_school_attended]'];
                 Form[14] = ['<?= addslashes($strings["verifs_didtheempl"]); ?>', 'text', 'form[' + FormID + '][performance_issue]'];
                 Form[15] = ['<?= addslashes($strings["tasks_date"]); ?>', 'text', 'form[' + FormID + '][date_time]', false, '<?= date("m/d/Y"); ?>'];
@@ -257,7 +257,7 @@
                     Class = Class + Required;
                     tempstr2 = tempstr2 + Required;
                 }
-                tempstr2 = tempstr2 + ' col-md-3">' + CurrentData[0] + ':</label><div class="col-md-9">';
+                tempstr2 = tempstr2 + ' col-md-3" TITLE="' + CurrentData[0]  + '">' + CurrentData[0] + ':</label><div class="col-md-9">';
                 switch (CurrentData[1]) {
                     case "date":
                         Class = Class + " datepicker";
