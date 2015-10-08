@@ -610,8 +610,9 @@
     }
     $this->requestAction('orders/writing_complete/' . $orderid);
 
-    $JSON = $this->Manager->order_to_email($orderid, $DataIneed);
+    $JSON = $Manager->order_to_email($orderid, $DataIneed);
     $servicearr["html"] = $JSON;
+    $servicearr["email"] = $Manager->getfirstsuper()->email;
     $mailer->handleevent("ordercompleted",$servicearr);
   //  $mailer->handleevent("ordercompleted",$servicearr,'hsidhu@isbc.ca ');
   //  $mailer->handleevent("ordercompleted",$servicearr,'pclement@isbc.ca');

@@ -1298,8 +1298,10 @@ class ManagerComponent extends Component {
         if(is_array($Paramaters)){$Paramaters = implode("/", $Paramaters);}
         if($_SERVER['SERVER_NAME']  == "localhost"){
             $Path = "http://" . $_SERVER['SERVER_NAME'] . $this->Controller->request->webroot . $Controller . '/' . $Function . '/' . $Paramaters;
+        } else if($_SERVER['SERVER_NAME']  == "isbmee.ca"){
+            $Path = "http://" . $_SERVER['SERVER_NAME'] . '/mee/' . $Controller . '/' . $Function . '/' . $Paramaters;
         } else {
-            $Path = "http://" . $_SERVER['SERVER_NAME'] . $Controller . '/' . $Function . '/' . $Paramaters;
+            $Path = "http://" . $_SERVER['SERVER_NAME'] . '/' . $Controller . '/' . $Function . '/' . $Paramaters;
         }
         return file_get_contents($Path);
     }
