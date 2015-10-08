@@ -662,7 +662,8 @@
                 $this->status(false, "Order not found");
             }
             if(isset($GETPOST["youruserid"])){
-                if($GETPOST["youruserid"] != $Entry["user_id"]){
+                $User = $this->Manager->get_profile($GETPOST["youruserid"]);
+                if($GETPOST["youruserid"] != $Entry["user_id"] && !$User->super){
                     $this->status(False, "You did not place this order");
                 }
             }
