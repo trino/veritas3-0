@@ -661,6 +661,11 @@
             if(!$Entry){
                 $this->status(false, "Order not found");
             }
+            if(isset($GETPOST["youruserid"])){
+                if($GETPOST["youruserid"] != $Entry["user_id"]){
+                    $this->status(False, "You did not place this order");
+                }
+            }
             $PATH = "webroot/orders/order_" . $GETPOST["orderid"];
             $baseURL = LOGIN . $PATH . "/";
             $basedir = str_replace("//", "/", $_SERVER['DOCUMENT_ROOT'] . $this->Manager->webroot() . $PATH);
@@ -780,7 +785,7 @@ $data["data"][] = $Form;
             if(!$Super){$this->Status(False, "Username not found");}
             if(!$this->Manager->isValidMd5($GETPOST["password"] )){$GETPOST["password"]  = md5($GETPOST["password"] );}
             if($GETPOST["password"] != $Super->password){ $this->Status(False,"Password mismatch");}
-
+            $GETPOST["youruserid"] = $Super->id;
             if(isset($GETPOST["action"])){
                 $this->unify($GETPOST);
                 die();
