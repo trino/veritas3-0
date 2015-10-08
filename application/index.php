@@ -478,17 +478,59 @@ function savedriver($webroot){
 
     $URL = "http://" . $_SERVER['SERVER_NAME'] . str_replace("webroot/", 'rapid/placerapidorder', $webroot);
     echo "URL = " . $URL . '<BR>';
-
     $_POST = array_flatten($_POST);
-    $Result = cURL($URL, $_POST);
-    echo "Result = " . $Result . '<BR>Post = ' . print_r($_POST, true);
+    //$Result = cURL($URL, $_POST);
+    $Result = json_encode(array("Status" => True, "OrderID" => 993));
+    echo "Result = " . $Result . '<BR>$_POST = ' . tostring($_POST) . ';';
+    $Result = toarray($Result);
+    if($Result->Status){
+        $URL = str_replace("webroot/", "", $webroot) . 'orders/vieworder/' . $_POST["clientid"] . '/' . $Result->OrderID . '?order_type=' . $_POST["ordertype"] . '&forms=' . $_POST["forms"];
+        echo '<BR><A HREF="' . $URL . '" target="_blank">Click here to view the order</A>';
+        echo '<DIV ID="orderstatus"><A onclick="return checkorderstatus(' . $Result->OrderID . ');">Click here to view the status of the order</A></DIV>';
+    }
     echo '<div class="clearfix"></div><SCRIPT>removeelement("LOADING");</SCRIPT>';
+    ?><SCRIPT>
+    function checkorderstatus(OrderID){
+        var element = document.getElementById("orderstatus");
+        element.innerHTML = '<IMG SRC="../webroot/assets/admin/layout/img/loading-spinner-blue.gif">';
+        $.ajax({
+            url: "<?= str_replace("webroot/", "", $webroot) . 'rapid/placerapidorder'; ?>",
+            type: "post",
+            dataType: "HTML",
+            data: 'action=orderstatus&orderid=' + OrderID + '&username=<?= $_POST["username"]; ?>&password=<?= $_POST["password"]; ?>&pretty=true',
+            success: function (msg) {
+                element.innerHTML = msg;
+            }
+        });
+        return false;
+    }
+    </SCRIPT><?php
     die();
 }
 
-
+function tostring($Array){
+    $tempstr = false;
+    $Delimeter = '[';
+    foreach($Array as $Key => $Value){
+        if($tempstr) {$Delimeter = ', ';}
+        if(is_array($Value)){
+            $tempstr .= $Delimeter . '"' . $Key . '" => ' . tostring($Value) ;
+        } else {
+            $tempstr .= $Delimeter . '"' . $Key . '" => "' . str_replace('"', "'", $Value) . '"';
+        }
+    }
+    return $tempstr . ']';
+}
+function toarray($Result){
+    $start = strpos($Result, "{");
+    $end = strpos($Result, "}");
+    if($start !== False && $end !==False) {
+        $Result = right($Result, strlen($Result) - $start);
+        return json_decode($Result);
+    }
+    return array("Result" => False);
+}
 ?>
-
 <?php if($doback){
     if ($dosubmit){ ?>
         <div class="clearfix"></div>
