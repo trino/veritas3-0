@@ -409,7 +409,7 @@ if (count($_POST) > 0) {
         default:
             if(file_exists("forms/" . $Form . '.php')){
                 include("forms/" . $Form . ".php");
-            } else {
+            } else if ($_SERVER['SERVER_NAME']  == "localhost") {
                 $doback = false;
                 echo $strings["uniform_pleaseselect"] . ":<UL>";
                 $forms = array(4, 9, 24);
