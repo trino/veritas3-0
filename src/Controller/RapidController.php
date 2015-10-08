@@ -666,7 +666,7 @@
             $basedir = str_replace("//", "/", $_SERVER['DOCUMENT_ROOT'] . $this->Manager->webroot() . $PATH);
 
             $Files2 = array();
-            if(is_dir($basedir)) {
+            if(is_dir($basedir) && file_exists($basedir)) {
                 $files = scandir($basedir);
                 unset($files[0]);
                 unset($files[1]);

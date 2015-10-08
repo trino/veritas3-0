@@ -429,7 +429,7 @@ function implode2($Array, $SmallGlue, $BigGlue){
     foreach($Array as $Key => $Value){
         $Array[$Key] = $Key . $SmallGlue. $Value;
     }
-    return implode_data($Array,$BigGlue);
+    return implode($Array,$BigGlue);
 }
 function debug($Iterator, $DoStacktrace = true){
     if($DoStacktrace) {

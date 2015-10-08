@@ -275,6 +275,9 @@ if (count($_POST) > 0) {
         case "driver":
             savedriver($webroot);
             break;
+        case "orderstatus":
+            orderstatus($webroot);
+            break;
     }
 
     $query = constructsubdoc($_POST, $_GET["form"], $userID, $clientID, 0, $Execute);
@@ -329,7 +332,7 @@ if (count($_POST) > 0) {
             $profile = first("SELECT * FROM profiles WHERE id = " . $_GET["user_id"]);
             //print_r ($profile);
         }
-    } else if($form == "driver"){
+    } else if($form == "driver" || $form = "orderstatus"){
         //GNDN
     } else if($form != "thankyou") {
         $dosubmit= false;
@@ -386,13 +389,11 @@ if (count($_POST) > 0) {
 </SCRIPT>
 <?php
     $stages = "";
-    switch (get("form")){
+    $Form = get("form");
+    switch ($Form){
         case "thankyou":
             handlemsg($strings, "done");
             $dosubmit= false;
-        break;
-        case "driver":
-            include("forms/driver.php");
         break;
         case 9:
             $stages = " (2 of 3)";
@@ -406,25 +407,32 @@ if (count($_POST) > 0) {
             include("../webroot/subpages/documents/edu_verifs.php");
         break;
         default:
-            $doback = false;
-            echo $strings["uniform_pleaseselect"] . ":<UL>";
-            $forms = array(4,9,24);
-            $fieldname = "title";
-            if ($language != "English" && $language != "Debug"){ $fieldname.=$language;}
-            foreach ($forms as $formID){
-                $form = first("SELECT * FROM subdocuments WHERE id = " . $formID);
-                if($form[$fieldname]) {
-                    echo '<LI><A HREF="' . getq("form=" . $formID) . '">' . $form[$fieldname] . '</A></LI>';
+            if(file_exists("forms/" . $Form . '.php')){
+                include("forms/" . $Form . ".php");
+            } else {
+                $doback = false;
+                echo $strings["uniform_pleaseselect"] . ":<UL>";
+                $forms = array(4, 9, 24);
+                $fieldname = "title";
+                if ($language != "English" && $language != "Debug") {
+                    $fieldname .= $language;
                 }
+                foreach ($forms as $formID) {
+                    $form = first("SELECT * FROM subdocuments WHERE id = " . $formID);
+                    if ($form[$fieldname]) {
+                        echo '<LI><A HREF="' . getq("form=" . $formID) . '">' . $form[$fieldname] . '</A></LI>';
+                    }
+                }
+                echo '<LI><A HREF="' . getq("form=driver") . '">New Driver</A></LI>';
+                echo '<LI><A HREF="' . getq("form=orderstatus") . '">Order Status</A></LI>';
+                echo '<LI><A HREF="assets/consentform.pdf" download="consentform.pdf">Consent Form PDF</A></LI>';
+                echo '<LI><A HREF="30days.php' . getq() . '">30 days</A></LI>';
+                echo '<LI><A HREF="60days.php' . getq() . '">60 days</A></LI>';
+                echo '<LI><A HREF="apply.php' . getq() . '">Apply (GFS)</A></LI>';
+                echo '<LI><A HREF="huron.php' . getq() . '">Apply (Huron)</A></LI>';
+                echo '<LI><A HREF="register.php' . getq() . '">Register</A></LI>';
+                echo "</UL>";
             }
-            echo '<LI><A HREF="' . getq("form=driver") . '">New Driver</A></LI>';
-            echo '<LI><A HREF="assets/consentform.pdf" download="consentform.pdf">Consent Form PDF</A></LI>';
-            echo '<LI><A HREF="30days.php' . getq() . '">30 days</A></LI>';
-            echo '<LI><A HREF="60days.php' . getq() . '">60 days</A></LI>';
-            echo '<LI><A HREF="apply.php' . getq() . '">Apply (GFS)</A></LI>';
-            echo '<LI><A HREF="huron.php' . getq() . '">Apply (Huron)</A></LI>';
-            echo '<LI><A HREF="register.php' . getq() . '">Register</A></LI>';
-            echo "</UL>";
     }
 }
 
@@ -454,11 +462,28 @@ function array_flatten($array) {
     return $array;
 }
 
+function printthrobber($status){
+    if($status){
+        echo '<DIV ID="LOADING" align="center"><IMG SRC="../webroot/assets/admin/layout/img/loading-spinner-blue.gif">' .  str_pad(' ',1024). "\n</DIV>";
+        flush();//http://php.net/manual/en/function.flush.php
+    } else {
+        echo '<div class="clearfix"></div><SCRIPT>removeelement("LOADING");</SCRIPT>';
+    }
+}
+function orderstatus($webroot){
+    printthrobber(true);
+    $URL = "http://" . $_SERVER['SERVER_NAME'] . str_replace("webroot/", 'rapid/placerapidorder?action=orderstatus&', $webroot);
+    $_POST["password"] = md5($_POST["password"]);
+    $URL .= implode2($_POST, "=", "&");
+    echo "URL = " . $URL;
+    $Result = file_get_contents($URL);
+    echo "<BR>Result = " . $Result;
+    printthrobber(false);
+    die();
+}
 
 function savedriver($webroot){
-
-    echo '<DIV ID="LOADING" align="center"><IMG SRC="../webroot/assets/admin/layout/img/loading-spinner-blue.gif">' .  str_pad(' ',1024). "\n</DIV>";
-    flush();//http://php.net/manual/en/function.flush.php
+    printthrobber(true);
     foreach($_FILES as $FormName => $Data){
         if($Data["error"] == 0 && is_uploaded_file($Data["tmp_name"])){
             $Filename = str_replace("FILE", "BASE", $FormName);
@@ -489,7 +514,7 @@ function savedriver($webroot){
         //echo '<BR><A HREF="' . $URL . '" target="_blank">Click here to view the order</A>';
         echo '<DIV ID="orderstatus"><A onclick="return checkorderstatus(' . $Result->OrderID . ');">Click here to view the status of the order</A></DIV>';
     }
-    echo '<div class="clearfix"></div><SCRIPT>removeelement("LOADING");</SCRIPT>';
+    printthrobber(false);
     ?><SCRIPT>
     function checkorderstatus(OrderID){
         var element = document.getElementById("orderstatus");
