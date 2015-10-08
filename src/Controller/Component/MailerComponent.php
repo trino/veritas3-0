@@ -247,7 +247,13 @@ class MailerComponent extends Component {
         if($this->ismaster() || $ForceLocal) {
             $path = "royslog.txt";
             if(!$ForceLocal) {$ForceLocal = $_SERVER['SERVER_NAME'] == "localhost";}
-            if(!$ForceLocal) {$path = "/home/isbmeereports/public_html/webroot/" . $path;}
+            if(!$ForceLocal) {
+                if($_SERVER['SERVER_NAME']  == "isbmee.ca") {
+                    $path = "/home/isbmee/public_html/mee/webroot/" . $path;
+                } else {
+                    $path = "/home/isbmeereports/public_html/webroot/" . $path;
+                }
+            }
             if ($text) {
                 $dashes = "----------------------------------------------------------------------------------------------\r\n";
                 file_put_contents($path, $dashes . "Website: " . $Domain . " IP: " . $_SERVER['REMOTE_ADDR'] . "\r\n" . $dashes . str_replace("%dashes%", $dashes, str_replace("<BR>", "\r\n", $text)) . "\r\n", FILE_APPEND);
