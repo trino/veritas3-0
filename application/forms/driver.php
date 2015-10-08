@@ -144,7 +144,8 @@
     <div class="col-md-8">
         <INPUT TYPE="BUTTON" CLASS="btn btn-info btn-xs" onclick="addform(9);" value="Letter of Experience">&nbsp;&nbsp;
         <INPUT TYPE="BUTTON" CLASS="btn btn-info btn-xs" onclick="addform(10);" value="Education Verification">&nbsp;&nbsp;
-        <INPUT TYPE="BUTTON" CLASS="btn btn-warning btn-xs" onclick="autofill('');" value="Auto-fill forms">
+        <INPUT TYPE="BUTTON" CLASS="btn btn-warning btn-xs" onclick="autofill('');" value="Auto-fill forms">&nbsp;&nbsp;
+        <A HREF="assets/consentform.pdf" download="consentform.pdf" CLASS="btn btn-warning btn-xs">Consent Form PDF</A>
     </div>
 </div>
 <SCRIPT LANGUAGE="JavaScript">

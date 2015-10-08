@@ -486,7 +486,7 @@ function savedriver($webroot){
     $Result = toarray($Result);
     if($Result->Status){
         $URL = str_replace("webroot/", "", $webroot) . 'orders/vieworder/' . $_POST["clientid"] . '/' . $Result->OrderID . '?order_type=' . $_POST["ordertype"] . '&forms=' . $_POST["forms"];
-        echo '<BR><A HREF="' . $URL . '" target="_blank">Click here to view the order</A>';
+        //echo '<BR><A HREF="' . $URL . '" target="_blank">Click here to view the order</A>';
         echo '<DIV ID="orderstatus"><A onclick="return checkorderstatus(' . $Result->OrderID . ');">Click here to view the status of the order</A></DIV>';
     }
     echo '<div class="clearfix"></div><SCRIPT>removeelement("LOADING");</SCRIPT>';
