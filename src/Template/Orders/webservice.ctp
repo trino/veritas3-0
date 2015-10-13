@@ -1,6 +1,6 @@
 <?php
     include_once('subpages/api.php');
-    $proxyhost = 'https://infosearchsite.com/MEEWS/ISBService.svc?wsdl';
+    $proxyhost = 'https://infosearchsite.ca/MEEWS/ISBService.svc?wsdl';
     $client = new nusoap_client($proxyhost, true, $proxyhost, $proxyport = null, $proxyusername = null, $proxypassword = null);
     $client->useHTTPPersistentConnection();
     $DataIneed = array();

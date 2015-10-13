@@ -758,6 +758,7 @@ $data["data"][] = $Form;
              }
             $data["username"] = "admin";
             $data["password"] = md5("admin");
+
             echo $this->placerapidorder($data);
         }
 
@@ -901,6 +902,41 @@ $data["data"][] = $Form;
                     }
                 }
             }
+
+
+
+
+            // create FODLER MESSAGE UP????? TEST
+
+
+
+
+$new_url = APP.'webroot/orders/order_'.$OrderID;
+$new_url = str_replace('src/','', $new_url);
+
+$new_url = str_replace("src\\","", $new_url);
+$new_url = str_replace("/","\\", $new_url);
+//echo $new_url ; die();
+if (!is_dir( $new_url)) {
+mkdir($new_url, 0777);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
             //call web service
             if(true) {//disable for faster testing
