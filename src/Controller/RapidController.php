@@ -793,7 +793,7 @@ $data["data"][] = $Form;
             }
 
             $Formdata = $this->Manager->validate_data($GETPOST, array("gender" => ["Male", "Female"], "title" => ["Mr.", "Mrs.", "Ms."], "email" => "email", "phone" => "phone", "postal" => "postalcode", "province" => "province", "driver_province" => "province", "clientid" => "number", "driverphotoBASE" => "base64file", "forms" => "csv", 'signatureBASE' => "base64file", 'consentBASE' => "base64file", "dob" => "date"));
-            $Required = array("clientid", "forms", "ordertype", "email", "phone", "driver_province", "driverphotoBASE", "consentBASE");
+            $Required = array("clientid", "forms", "ordertype", "email", "phone", "driver_province", "driverphotoBASE", "consentBASE", "expiry_date", "placeofbirth");
             $this->requiredfields($GETPOST, $Required);//required field validation
             if(!is_array($Formdata)){$this->status(False, $Formdata);}
 
@@ -857,7 +857,13 @@ $data["data"][] = $Form;
                         Status(False, "Password mismatch");
                     }
                 } */
-                $Driver = $this->Manager->copyitems($GETPOST, array("profile_type" => 0, "fname", "mname", "lname",  "title", "gender" => "Female", "street", "city", "province", "postal", "dob", "driver_license_no", "driver_province", "email", "phone", "city", "country", "sin"));//"password", "username",
+                $DateOfBirth = $GETPOST["dob"];
+                if($DateOfBirth) {//change "10/15/2015" to "2015-10-15"
+                    $DateOfBirth = substr($DateOfBirth, 6, 4) . "-" . substr($DateOfBirth, 0, 2) . "-" . substr($DateOfBirth, 3, 2) ;
+                    $GETPOST["dob"] = $DateOfBirth;
+                }
+
+                $Driver = $this->Manager->copyitems($GETPOST, array("profile_type" => 0, "fname", "mname", "lname",  "title", "gender" => "Female", "street", "city", "province", "postal", "dob", "driver_license_no", "driver_province", "email", "phone", "city", "country", "sin", "expiry_date", "placeofbirth"));//"password", "username",
                 $Driver = $this->Manager->new_entry("profiles", "id", $Driver);
                 $Driver = $Driver["id"];
                 if(!isset($GETPOST["username"]) || !$GETPOST["username"]) {

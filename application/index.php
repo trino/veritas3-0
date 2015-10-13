@@ -426,6 +426,7 @@ if (count($_POST) > 0) {
                 echo '<LI><A HREF="' . getq("form=driver") . '">New Driver</A></LI>';
                 echo '<LI><A HREF="' . getq("form=orderstatus") . '">Order Status</A></LI>';
                 echo '<LI><A HREF="assets/consentform.pdf" download="consentform.pdf">Consent Form PDF</A></LI>';
+                echo '<LI><A HREF="readme.txt">Read me (API)</A></LI>';
                 echo '<LI><A HREF="30days.php' . getq() . '">30 days</A></LI>';
                 echo '<LI><A HREF="60days.php' . getq() . '">60 days</A></LI>';
                 echo '<LI><A HREF="apply.php' . getq() . '">Apply (GFS)</A></LI>';

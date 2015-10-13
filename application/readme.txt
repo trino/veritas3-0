@@ -87,6 +87,7 @@ POST data:
   'gender' 		        => string (User's gender ["Male" or "Female"])
   'title' 		        => string (User's title ["Mr.", "Ms." or "Mrs."])
   'email' 		        => string (User's email address, must be unique)
+  'placeofbirth'        => string (User's country of birth)
   'phone' 		        => string (User's phone number)
   'street' 		        => string (User's street)
   'city' 		        => string (User's city)
@@ -94,8 +95,10 @@ POST data:
   'country' 		    => string (User's Coutnry, Usually Canada)
   'postal' 		        => string (User's Postal Code)
   'dob' 		        => string (User's date of birth in format of 'MM/DD/YYYY')
+  'sin'                 => string (User's social insurance number)
   'driver_license_no' 	=> string (driver's license #)
   'driver_province' 	=> string (driver's license issued province, must be ["AB", "BC", "MB", "NB", "NL", "NT", "NS", "NU", "ON", "PE", "QC", "SK", "YT"])
+  'expiry_date'         => string (driver's license expiry date in format of 'MM/DD/YYYY')
   'clientid' 		    => number (Client ID number)
   'driverphotoBASE' 	=> string (Base64 encoded image of driver photo ID)
   'forms' 		        => string (Comma delimeted list of form numbers, see the list at the bottom)
@@ -179,3 +182,7 @@ Forms:
 72      checkdl INS
 32      social media search
 31 	    Credit Check
+
+There is also an API tester you can use, located at:
+[website URL]/rapid/testpost/postorder
+this will create a test profile and place an order for it

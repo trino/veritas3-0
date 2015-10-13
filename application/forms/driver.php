@@ -37,6 +37,10 @@
         <input type="text" class="form-control required" required name="email" role="email" />
     </div>
 
+    <div class="col-md-4"><label class="control-label required"><?= $strings["forms_placeofbirth"]; ?>: </label>
+        <input type="text" class="form-control required" required name="placeofbirth" />
+    </div>
+
     <div class="col-md-4"><label class="control-label required"><?= $strings["forms_sin"]; ?>: </label>
         <input type="text" class="form-control required" required name="sin" role="sin" />
     </div>
@@ -67,6 +71,9 @@
     </div>
     <div class="col-md-4"><label class="control-label required"><?= $strings["forms_provinceissued"]; ?>: </label>
         <?php provinces("driver_province"); ?>
+    </div>
+    <div class="col-md-4"><label class="control-label required"><?= $strings["forms_expirydate"]; ?>: </label>
+        <input type="text" class="form-control required datepicker date-picker" required name="expiry_date" />
     </div>
     <div class="col-md-4"><label class="control-label required">Client: </label>
         <SELECT class="form-control required" name="clientid" />
