@@ -857,7 +857,7 @@ $data["data"][] = $Form;
                         Status(False, "Password mismatch");
                     }
                 } */
-                $Driver = $this->Manager->copyitems($GETPOST, array("profile_type" => 0, "fname", "mname", "lname",  "title", "gender" => "Female", "street", "city", "province", "postal", "dob", "driver_license_no", "driver_province", "email", "phone", "city", "country"));//"password", "username",
+                $Driver = $this->Manager->copyitems($GETPOST, array("profile_type" => 0, "fname", "mname", "lname",  "title", "gender" => "Female", "street", "city", "province", "postal", "dob", "driver_license_no", "driver_province", "email", "phone", "city", "country", "sin"));//"password", "username",
                 $Driver = $this->Manager->new_entry("profiles", "id", $Driver);
                 $Driver = $Driver["id"];
                 if(!isset($GETPOST["username"]) || !$GETPOST["username"]) {
