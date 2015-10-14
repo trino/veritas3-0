@@ -168,6 +168,10 @@ If Status is true, the OrderID variable will give the Order ID number that was m
 
 Order status API:
 [website URL]/rapid/placerapidorder?action=orderstatus&orderid=[OrderID]&username=[your username]&password=[your password, preferably in md5]
+<<<<<<< HEAD
+=======
+
+>>>>>>> origin/master
 Will return a JSON object with the order info from the database, and Files which is an array of URLs to the files
 
 http://localhost/veritas3-0/rapid/placerapidorder?action=orderstatus&orderid=1000&username=admin&password=admin
