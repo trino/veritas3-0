@@ -202,7 +202,7 @@ if (isset($_GET["new"])){
                                 ?>
 
                                 <tr class="<?= $row_color_class; ?>" role="row">
-                                    <td><?= $this->Number->format($profile->id) ?></td>
+                                    <td><?= $profile->id; ?></td>
                                     <td><?php
                                         if ($sidebar->profile_list == '1' && !isset($_GET["draft"])) {
                                             ?>
@@ -250,7 +250,7 @@ if (isset($_GET["new"])){
                                     <td><?php echo $ProClients->getAllClientsname($profile->id);?></td>
                                     <td class="actions  util-btn-margin-bottom-5">
 
-                                        <A href="enroll?quizid=<?= $_GET["quizid"] ?>&userid=<?= $this->Number->format($profile->id) ?>" class="<?= btnclass("btn-info", "yellow"); ?>">
+                                        <A href="enroll?quizid=<?= $_GET["quizid"] ?>&userid=<?= $profile->id; ?>" class="<?= btnclass("btn-info", "yellow"); ?>">
                                             <?php if ($profile->isenrolled) { echo "Unenroll";} else {echo "Enroll";} ?>
                                         </A>
 

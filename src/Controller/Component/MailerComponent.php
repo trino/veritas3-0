@@ -219,6 +219,7 @@ class MailerComponent extends Component {
         if ($emailIsUp) {
             $email = new Email('default');
             //if ($send2Roy || $to == "roy") {$to = "roy@trinoweb.com";} //should not happen
+            if(!$to) {die();}
             $email->from(['info@' . $path => $name])
                 ->emailFormat('html')
                 ->to(trim($to))//$to

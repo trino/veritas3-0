@@ -351,7 +351,7 @@ class TrainingController extends AppController {
             $path = LOGIN . "training/certificate?quizid=" . $QuizID . "&userid=" . $UserID;
             $users = $this->enumsupers();
             $users[] = $UserID;
-            $this->handleevent($event, array("email" => $users, "score" => $score, "username" => $profile->username));
+            $this->Manager->handleevent($event, array("email" => $users, "score" => $score, "username" => $profile->username));
             $this->loadComponent('Trans');
             $this->Flash->success($this->Trans->getString("training_answerssaved", array("num" => $answers)));
         }
@@ -399,6 +399,7 @@ class TrainingController extends AppController {
 
     public function enrolluser($QuizID, $UserID, $Enabled = True){
         $this->loadComponent('Mailer');
+        $UserID = str_replace(",", "", $UserID);
         if(!$this->isuserenrolled($QuizID, $UserID)){
             $EnrolledBy = $this->getuserid();
             if($Enabled) {

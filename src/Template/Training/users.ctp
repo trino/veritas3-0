@@ -92,7 +92,6 @@ Users
                         if($isASAP){
                             echo $user->sitename . '</TD><TD>' . $user->asapdivision . '</TD><TD>';
                         }
-                        debug($user);
                         return true;
                     }
 
