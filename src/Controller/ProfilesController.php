@@ -1837,6 +1837,7 @@
                     $this->request->session()->write('Profile.language', $q->language);
                     $this->request->session()->write('Profile.email', $q->email);
                     $this->request->session()->write('Profile.super', $q->super);
+                    $this->request->session()->write('Profile.admin', $q->admin);
                 }
             }
             $this->redirect('/');

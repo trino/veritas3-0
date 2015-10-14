@@ -5,10 +5,11 @@
 <SCRIPT>
     function emailthecreds(){
         var doit = true;
+        var element = document.getElementById("emailcreds");
         if (!document.getElementById("username_field").value){doit = false;}
         if (!document.getElementById("email").value){doit = false;}
         if (!document.getElementById("password").value){doit = false;}
-        if (!document.getElementById("retype_password").value){doit = false;}
+        if (document.getElementById("password").value != document.getElementById("retype_password").value){doit = false;}
 
         $("#emailcreds").prop("disabled", !doit );
         var parent = $("#emailcreds").parent().parent();
@@ -17,6 +18,7 @@
             $("#emailcreds").prop("checked", false);
             $("#emailcreds").parent().removeClass("checked");
         } else {
+            element.removeAttribute("disabled");
             parent.removeClass("disabled");
         }
     }
@@ -358,7 +360,7 @@ loadreasons($param, $strings, true);
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label class="control-label"><?= $strings["forms_credssent"]; ?>: </label><BR>
-                                        <input type="text" name="emailcreds" class="form-control" id="emailcreds" value="<?= $p->emailsent; ?>" disabled>
+                                        <input type="text" class="form-control" value="<?= $p->emailsent; ?>" disabled>
                                     </DIV>
                                 </DIV>
                             <?php }
@@ -400,9 +402,17 @@ loadreasons($param, $strings, true);
                                     </div>
                                 </div>
                                 <?php
-                                if ($param == "add") {
+                                $canedit = $this->request->session()->read('Profile.super') or $this->request->session()->read('Profile.admin');
+                                if ($param == "add" || ($canedit && $param == "edit")) {
                                     ?>
-                                    <div class="col-md-4 admin_rec" style="display: none" oldstyle="<?php echo (isset($p->profile_type) && ($p->profile_type=='1' || $p->profile_type=='2'))?'display:block':'display:none';?>" >
+                                    <div class="col-md-4 admin_rec" style="<?php
+                                        $Check = isset($p->profile_type) && ($p->profile_type=='1' || $p->profile_type=='2');
+                                        if ($canedit){
+                                            echo 'display:block';
+                                        } else {
+                                            echo 'display:none';
+                                        }
+                                    ?>" >
                                         <div class="form-group">
                                             <label class="control-label"><?= $strings["forms_emailcreds"]; ?>: </label><BR>
                                             <input type="checkbox" name="emailcreds" disabled id="emailcreds">
