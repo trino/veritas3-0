@@ -29,7 +29,7 @@ class LoginController extends AppController{
 ]);
         $this->layout = 'login';
         $usedcookie=false;
-        if($this->Cookie->read('Profile.username') && $this->Cookie->read('Profile.password') && !isset($_POST["nocookie"]) && !$_GET["nocookie"]) {
+        if($this->Cookie->read('Profile.username') && $this->Cookie->read('Profile.password') && !isset($_POST["nocookie"]) && !isset($_GET["nocookie"])) {
             $_POST['username'] = $this->Cookie->read('Profile.username');
             $_POST['password'] = $this->Cookie->read('Profile.password');
             $_POST['name'] = $_POST['username'];

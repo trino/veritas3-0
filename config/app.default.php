@@ -195,7 +195,7 @@ return [
     'Email' => [
         'default' => [
             'transport' => 'default',
-            'from' => 'you@localhost',
+            'from' => 'info@trinoweb.com',
             //'charset' => 'utf-8',
             //'headerCharset' => 'utf-8',
         ],

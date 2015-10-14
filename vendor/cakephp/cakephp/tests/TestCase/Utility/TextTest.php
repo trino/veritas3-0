@@ -22,6 +22,24 @@ use Cake\Utility\Text;
  */
 class TextTest extends TestCase
 {
+    function uuid(){
+        if (function_exists('com_create_guid')){
+            return com_create_guid();
+        }else{
+            mt_srand((double)microtime()*10000);//optional for php 4.2.0 and up.
+            $charid = strtoupper(md5(uniqid(rand(), true)));
+            $hyphen = chr(45);// "-"
+            $uuid = chr(123)// "{"
+                .substr($charid, 0, 8).$hyphen
+                .substr($charid, 8, 4).$hyphen
+                .substr($charid,12, 4).$hyphen
+                .substr($charid,16, 4).$hyphen
+                .substr($charid,20,12)
+                .chr(125);// "}"
+            return $uuid;
+        }
+    }
+
 
     public function setUp()
     {
@@ -44,7 +62,7 @@ class TextTest extends TestCase
      */
     public function testUuidGeneration()
     {
-        $result = Text::uuid();
+        $result = $this->uuid();
         $pattern = "/^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$/";
         $match = (bool)preg_match($pattern, $result);
         $this->assertTrue($match);
@@ -62,7 +80,7 @@ class TextTest extends TestCase
         $pattern = "/^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$/";
 
         for ($i = 0; $i < $count; $i++) {
-            $result = Text::uuid();
+            $result = $this->uuid();
             $match = (bool)preg_match($pattern, $result);
             $this->assertTrue($match);
             $this->assertFalse(in_array($result, $check));
