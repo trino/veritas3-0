@@ -167,9 +167,12 @@ If Status is false, the Reason variable will indicate why
 If Status is true, the OrderID variable will give the Order ID number that was made
 
 Order status API:
-[website URL]/rapid/placerapidorder?action=orderstatus&orderid=[OrderID]
-
+[website URL]/rapid/placerapidorder?action=orderstatus&orderid=[OrderID]&username=[your username]&password=[your password, preferably in md5]
 Will return a JSON object with the order info from the database, and Files which is an array of URLs to the files
+
+http://localhost/veritas3-0/rapid/placerapidorder?action=orderstatus&orderid=1000&username=admin&password=admin
+
+
 
 Forms:
 1603    Premium check EBS (criminal)
