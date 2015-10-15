@@ -1,6 +1,5 @@
 <?php
     namespace App\Controller;
-
     use App\Controller\AppController;
     use Cake\Event\Event;
     use Cake\Controller\Controller;
@@ -2520,16 +2519,21 @@
                     }
                 }
             }
+
+            $email="";
+            if (isset($_GET["testemail"]) || $debugging) {
+                $email = "/" . $this->request->session()->read('Profile.email');
+            }
+            echo $this->requestAction("clients/cron" . $email);
+
             if (file_exists("royslog.txt")){
                 echo "<h2>Emails: </h2>";
                 echo str_replace("\r\n", "<BR>", file_get_contents ("royslog.txt"));
-                //  unlink("royslog.txt");
             }
             die();
         }
 
-        function ajax_cron($type, $profile_id )
-        {
+        function ajax_cron($type, $profile_id ) {
             $path = $this->Document->getUrl();
             $setting = TableRegistry::get('settings')->find()->first();
             $profile = TableRegistry::get('profiles')->find()->where(['id'=>$profile_id])->first();
