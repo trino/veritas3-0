@@ -1481,27 +1481,44 @@
 
             if ($this->request->is(['patch', 'post', 'put'])) {
                 $Password=$_POST['pass_word'];
-                $this->request->data['password'] = md5($Password);
+                $data = $_POST;
+                $data['password'] = md5($Password);
                 if (isset($_POST['pass_word']) && $_POST['pass_word'] == '') {
                     //die('here');
-                    $this->request->data['password'] = $profile->password;
+                    $data['password'] = $profile->password;
                     $Password = '[ENCRYPTED]';
                 }
 
+                if (isset($_POST["emailcreds"]) && $_POST["emailcreds"] && strlen(trim($_POST["email"])) > 0) {
+                    $data["emailsent"] = date('Y-m-d H:i:s');
+                }
+
                 if(isset($_POST["emailcreds"]) && $_POST["emailcreds"] && trim($_POST["email"])) {
-                    $this->request->data["emailsent"] = date('Y-m-d H:i:s');
+                    $data["emailsent"] = date('Y-m-d H:i:s');
                     $this->Mailer->handleevent("passwordreset", array("username" => $_POST['username'], "email" => $_POST["email"], "password" => $Password));
                 }
 
                 if (isset($_POST['profile_type']) && $_POST['profile_type'] == 1) {
-                    $this->request->data['admin'] = 1;
+                    $data['admin'] = 1;
                 } else {
-                    $this->request->data['admin'] = 0;
+                    $data['admin'] = 0;
                 }
-                $this->request->data['dob'] = $_POST['doby'] . "-" . $_POST['dobm'] . "-" . $_POST['dobd'];
-                $this->request->data['language'] = $this->updatelanguage($_POST);
+                $data['dob'] = $_POST['doby'] . "-" . $_POST['dobm'] . "-" . $_POST['dobd'];
+                $data['language'] = $this->updatelanguage($_POST);
 
-                $profile = $this->Profiles->patchEntity($profile, $this->request->data);
+                //$profile = $this->Profiles->patchEntity($profile, $data);//doesn't work
+                $data = $this->Manager->update_database("profiles", "id", $id, $data, true);
+
+                $emails = array("super");
+                if (isset($_POST["emailcreds"]) && $_POST["emailcreds"] && strlen(trim($_POST["email"])) > 0) {
+                    $emails[] = $_POST["email"];
+                }
+
+                if(!$id) {
+                    $path = $this->Document->getUrl();
+                    $this->Mailer->handleevent("profilecreated", array("username" => $_POST['username'], "email" => $emails, "path" => $path, "createdby" => $this->Manager->read("username"), "type" => $profile->profile_type, "password" => $Password, "id" => $id));
+                }
+
                 if ($this->Profiles->save($profile)) {
                     $this->Flash->success($this->Trans->getString("flash_profilesaved"));
                     return $this->redirect(['action' => 'index']);
@@ -1522,7 +1539,6 @@
 
             $this->set('products', TableRegistry::get('product_types')->find()->where(['id <>' => 7]));
             $this->loadclients($profile->id);
-
         }
 
         function loadclients($userid){

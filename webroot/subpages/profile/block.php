@@ -5,7 +5,7 @@
     $uid = ($this->request['action'] == 'add') ? "0" : $this->request['pass'][0];
     $sidebar = $this->requestAction("settings/all_settings/" . $uid . "/sidebar");
     $block = $this->requestAction("settings/all_settings/" . $uid . "/blocks");
-    $isadmin = $profile->admin == 1 || $profile->super == 1;
+    $isadmin = $Manager->read("admin") == 1 || $Manager->read("super") == 1;
     if (!isset($is_disabled1)) {$is_disabled1 = "";}//something is wrong with this variable
 
     $activetab = "config";

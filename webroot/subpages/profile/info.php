@@ -242,11 +242,11 @@ loadreasons($param, $strings, true);
                             }else {
                                 $user_client = 0;
                             }
-                            // if ($settings->client_option == 0) { 
-                                
-                            if($client_id || $user_client){    
+                            // if ($settings->client_option == 0) {
+
+                            if($client_id || $user_client){
                                 ?>
-                            
+
                             <div class="col-md-6" id="driver_div"
                                  style="display:<?php if ((isset($p) && $p->profile_type == 5) || ($this->request->session()->read('Profile.profile_type') == 2 && (isset($p) && $p->id != ($this->request->session()->read('Profile.id'))))) echo 'block'; else echo "none" ?>;">
                                 <div class="form-group">
@@ -333,8 +333,8 @@ loadreasons($param, $strings, true);
                             <?php //}
                             }
                             //echo $p->profile_type;
-                            
-                            
+
+
                                 ?>
                                    <div class="col-md-6 hideusername admin_rec email_rec" style="<?= $ShouldShow; ?>">
                                     <div class="form-group">
@@ -352,7 +352,7 @@ loadreasons($param, $strings, true);
                                   style="display: none;"><?= $strings["forms_usernamerequired"]; ?></span>
                                     </div>
                                 </div>
-                     
+
 
                             <div class="col-md-6">
                                 <div class="form-group">
@@ -485,7 +485,7 @@ loadreasons($param, $strings, true);
                                         value="<?php echo $p->mname; ?>" <?php } ?>/>
                                 </div>
                             </div>
-                            
+
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label class="control-label"><?= $strings["forms_lastname"]; ?>: </label>
@@ -670,7 +670,7 @@ loadreasons($param, $strings, true);
                                     </div>
                                 </div>
 
-                                
+
                                 <div class="driver_license" style="<?php if(isset($p) &&($p->profile_type == 0 || $p->profile_type=='5'||$p->profile_type=='7'||$p->profile_type=='8'||$p->profile_type=='12'))echo "display:block" ;else echo "display:none";?>">
                                 <div class="col-md-12">
                                     <div class="form-group">
@@ -716,7 +716,7 @@ loadreasons($param, $strings, true);
                                     </div>
                                 </div>
                                 </div>
-                                <?php 
+                                <?php
                                 } else { ?>
                                     <input type="hidden" name="doby" value="0000"/>
                                     <input type="hidden" name="dobm" value="00"/>
@@ -731,8 +731,8 @@ loadreasons($param, $strings, true);
                                 }
                                 ?>
                                 <div class="form-group col-md-8 col-sm-8">
-                                   
-               
+
+
                                 <!--label class="control-label col-md-6"> <?= $strings["forms_hearaboutus"]; ?></label-->
                                     <div class="">
                                         <select name="hear" class="form-control">
@@ -744,7 +744,7 @@ loadreasons($param, $strings, true);
                                             <option value="Indeed"  <?php if(isset($p)&& $p->hear=='Indeed')echo 'selected';?>>Indeed.ca</option>
                                             <option value="Newspaper"  <?php if(isset($p)&& $p->hear=='Newspaper')echo 'selected';?>><?= $strings["forms_newspaper"]; ?></option>
                                             <option value="Others"  <?php if(isset($p)&& $p->hear=='Others')echo 'selected';?>><?= $strings["forms_other"]; ?></option>
-                                            
+
                                         </select>
                                     </div>
                                 </div>
@@ -885,7 +885,7 @@ loadreasons($param, $strings, true);
             if(element != null) {
                 if (!element.checked) {element.value = "";}
             }
-      
+
 
             $.ajax({
                 url: '<?php echo $this->request->webroot;?>profiles/check_user/<?php echo $uid;?>',
@@ -924,16 +924,16 @@ loadreasons($param, $strings, true);
 
                                         return false;
                                     } else {
-                                        
+
                                         $(this).attr('disabled', 'disabled');
                                         $('#hiddensub').click();
-                                        
+
                                     }
                                 }
                             });
                         } else {
                             $('#hiddensub').click();
-                            
+
                         }
                     }
                 }
@@ -1025,7 +1025,7 @@ loadreasons($param, $strings, true);
                         $('#savepro').text("<?= addslashes($strings["forms_savechanges"]); ?>");
                         $('.flash').show();
                         $('.flash').fadeOut(3500);)
-                        //window.location.href = '<?php echo $this->request->webroot;?>profiles/edit/' + res;
+                        window.location.href = '<?php echo $this->request->webroot;?>profiles/edit/' + res;
                     }
                 }
 
@@ -1053,7 +1053,7 @@ loadreasons($param, $strings, true);
         $('.member_type').change(function () {
 
 
-                        
+
                                     if ($(this).val() == '5' || $(this).val() == '7' || $(this).val() == '8'|| $(this).val() == '9'|| $(this).val() == '12') {
                                                 if($(this).val() == '5' || $(this).val() == '7' || $(this).val() == '9' || $(this).val() == '12') {
                                                     $('.hideusername').hide();
@@ -1062,7 +1062,7 @@ loadreasons($param, $strings, true);
                                                     $(this).prop('required', "required");
                                                     //alert($(this).attr('name'));
                                                 });
-                                        
+
                                                 if($(this).val() == '5' || $(this).val() == '7' || $(this).val() == '8' || $(this).val() == '9' || $(this).val() == '12'){
                                                     $('.driver_license').show();
                                                     if($(this).val() == '5' || $(this).val() == '7' || $(this).val() == '8'){
@@ -1105,7 +1105,7 @@ loadreasons($param, $strings, true);
                                                 $('#password').removeProp('required');
                                                 $('#retype_password').removeProp('required');
                                                 $('.req_rec').removeProp('required');
-                                        
+
                                         if($(this).val() == '5' || $(this).val() == '7' || $(this).val() == '8'){
                                             $('.email').attr('required','required');
                                         } else {
@@ -1154,7 +1154,7 @@ loadreasons($param, $strings, true);
                                                 }
                                             ?>
                                         }
-                        
+
                                         var profile_type = $(this).val();
                                         if (profile_type == '1' || profile_type == '2') {
                                             $('#isb_id').show();
@@ -1169,18 +1169,18 @@ loadreasons($param, $strings, true);
                                         if($('.passwords').attr('style') == 'display: none;'|| $('.passwords').attr('style') == 'display:none;') {
                                             $('#retype_password').removeAttr('required');
                                             $('#password').removeAttr('required');
-                                        } 
+                                        }
                                         if($('.hideusername').attr('style') == 'display:none;' || $('.hideusername').attr('style') == 'display: none;') {
                                             $('.hideusername input').each(function(){
                                                 $(this).removeAttr('required');
                                             });
-                                        } 
-                                        
+                                        }
+
                         $('#retype_password').removeAttr('required');
                         <?php if($canedit){ echo "$('.email_rec').show();"; } ?>
 
                                     });
-                        
+
                                     var mem_type = $('.member_type').val();
                                     if (!isNaN(parseFloat(mem_type)) && isFinite(mem_type)) {
                                         if (mem_type == '5' || mem_type == '7' || mem_type == '8' || mem_type == '9' || mem_type == '12') {
@@ -1192,8 +1192,8 @@ loadreasons($param, $strings, true);
                                                 //  $(this).hide();
                                             });
                                             if(mem_type == '5' || mem_type == '7' || mem_type == '8' || mem_type=='9' || mem_type=='12'){
-                                               
-                                                
+
+
                                                 if($(this).val() == '5' || $(this).val() == '7' || $(this).val() == '8'){
                                                     $('#driver_div').show();
                                                     //$('#driver_div select').attr('required','required');
@@ -1213,9 +1213,9 @@ loadreasons($param, $strings, true);
                                                        $('.driver_license input').each(function(){
                                                         if($(this).attr('name')=='driver_license_no')
                                                          //$(this).attr('required','required');
-                                                        }); 
-                                                         
-                                                    } 
+                                                        });
+
+                                                    }
                                                     }
                                             } else {
                                                 $('#driver_div select').removeAttr('required');
@@ -1248,18 +1248,18 @@ loadreasons($param, $strings, true);
                                                        $('.driver_license input').each(function(){
                                                         if($(this).attr('name')=='driver_license_no')
                                                          //$(this).attr('required','required');
-                                                        });  
+                                                        });
                                                         $('.driver_license select').each(function(){
                                                         if($(this).attr('name')=='driver_province')
                                                          $(this).attr('required','required');
-                                                         
-                                                         
+
+
                                                         });
-                                                    } 
+                                                    }
                                             }
-                        
-                                        } 
-                                        
+
+                                        }
+
                                         else {
                                             $('.nav-tabs li:not(.active)').each(function () {
                                                 $(this).show();
@@ -1283,8 +1283,8 @@ loadreasons($param, $strings, true);
                                                 <?php
                                             }
                                              ?>
-                                        
-                        
+
+
                                         if (mem_type == '1' || mem_type == '2') {
                                             $('#isb_id').show();
                                             $('.req_driver').removeProp('required');
@@ -1306,7 +1306,7 @@ loadreasons($param, $strings, true);
                                     }
                                     $('#retype_password').removeAttr('required');
         });
-        
+
 
 
 

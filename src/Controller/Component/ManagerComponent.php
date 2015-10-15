@@ -754,7 +754,8 @@ class ManagerComponent extends Component {
     }
 
     //only use when you know the primary key value exists
-    function update_database($Table, $PrimaryKey, $Value, $Data){
+    function update_database($Table, $PrimaryKey, $Value, $Data, $CheckColumns = false){
+        if($CheckColumns){$Data = $this->matchcolumns($Table, $Data);}
         TableRegistry::get($Table)->query()->update()->set($Data)->where([$PrimaryKey => $Value])->execute();
         $Data[$PrimaryKey] = $Value;
         return $Data;
@@ -1326,6 +1327,16 @@ class ManagerComponent extends Component {
             $Path = "http://" . $_SERVER['SERVER_NAME'] . '/' . $Controller . '/' . $Function . '/' . $Paramaters;
         }
         return file_get_contents($Path);
+    }
+
+    function matchcolumns($Table, $Data){
+        $Table = $this->getColumnNames($Table);
+        foreach($Data as $key => $value){
+            if(!in_array($key,$Table)){
+                unset($Data[$key]);
+            }
+        }
+        return $Data;
     }
 }
 ?>
