@@ -37,34 +37,33 @@ class TrainingController extends AppController {
 
     public function edit(){
         $this->set('canedit', $this->canedit());
-
-        if (isset($_GET["action"])){
-            if($this->canedit()) {
+        if($this->canedit()) {
+            if (isset($_GET["action"])) {
                 switch ($_GET["action"]) {
                     case "delete":
                         $this->deletequestion($_GET["quizid"], $_GET["QuestionID"]);
                         break;
                     case "save":
                         $lastid = $this->savequiz($_POST);
-                        if($lastid){$this->redirect('/training/edit?quizid=' . $lastid); }
+                        if ($lastid) {$this->redirect('/training/edit?quizid=' . $lastid);}
                         break;
                 }
-            } else {
-                $this->Flash->error($this->nopermissions());
             }
-        }
 
-        if (isset($_GET["quizid"]) && $this->canedit()) {
-            //$table = TableRegistry::get('training_list');
-            $quiz = $this->getQuizHeader($_GET["quizid"]);// $table->find()->where(['ID'=>$_GET["quizid"]])->first();
-            $this->set('quiz',$quiz );
-            $this->quiz();
+            if (isset($_GET["quizid"])) {
+                $quiz = $this->getQuizHeader($_GET["quizid"]);// $table->find()->where(['ID'=>$_GET["quizid"]])->first();
+                $this->set('quiz', $quiz);
+                $this->quiz();
+            }
+        } else {
+            $this->Flash->error($this->nopermissions());
+            $this->redirect('/training');
         }
     }
 
     public function users(){
         if ($this->canedit()){
-            if (isset($_GET["quizid"])) {
+            if (isset($_GET["quizid"]) && $this->quizexists($_GET["quizid"])) {
                 $this->set("pass", $this->getQuizHeader($_GET["quizid"])->pass);
                 if (isset($_GET['userid'])){
                     $action="unenroll";
@@ -88,6 +87,7 @@ class TrainingController extends AppController {
             }
         } else{
             $this->Flash->error($this->nopermissions());
+            {$this->redirect('/training'); }
         }
         $this->set('canedit', $this->canedit());
     }
@@ -186,6 +186,12 @@ class TrainingController extends AppController {
     }
     public function countobject($object){
         return iterator_count($object);
+    }
+
+    public function quizexists($QuizID){
+        $table = TableRegistry::get('training_list');
+        $quiz =  $table->find()->where(['ID'=>$QuizID])->first();
+        if($quiz){return true;}
     }
 
     public function getQuizHeader($QuizID){
@@ -351,7 +357,7 @@ class TrainingController extends AppController {
             $path = LOGIN . "training/certificate?quizid=" . $QuizID . "&userid=" . $UserID;
             $users = $this->enumsupers();
             $users[] = $UserID;
-            $this->Manager->handleevent($event, array("email" => $users, "score" => $score, "username" => $profile->username));
+            $this->Manager->handleevent($event, array("email" => $users, "score" => $score, "username" => $profile->username, "path" => $path));
             $this->loadComponent('Trans');
             $this->Flash->success($this->Trans->getString("training_answerssaved", array("num" => $answers)));
         }
@@ -458,15 +464,17 @@ class TrainingController extends AppController {
     function evaluateuser($QuizID, $UserID){
         $useranswers = $this->enumanswers($QuizID, $UserID);
         if (!is_object($useranswers)){ return ""; }
-        $questions = $this->getQuiz($QuizID);
-        $pass = $this->getQuizHeader($QuizID)->pass;
-        $results = array("pass" => $pass, "incorrect" => 0, "missing" => 0, "correct" => 0, "total" => 0, "datetaken" => $this->getdatetaken($useranswers));
-        foreach ($questions as $question) {
-            $result = $this->preprocess($this->usersanswer($useranswers, $question->QuestionID), $question->Answer);
-            $results[$result] += 1;
-            $results["total"] += 1;
+        if($this->quizexists($QuizID)) {
+            $questions = $this->getQuiz($QuizID);
+            $pass = $this->getQuizHeader($QuizID)->pass;
+            $results = array("pass" => $pass, "incorrect" => 0, "missing" => 0, "correct" => 0, "total" => 0, "datetaken" => $this->getdatetaken($useranswers));
+            foreach ($questions as $question) {
+                $result = $this->preprocess($this->usersanswer($useranswers, $question->QuestionID), $question->Answer);
+                $results[$result] += 1;
+                $results["total"] += 1;
+            }
+            return $results;
         }
-        return $results;
     }
 
     function preprocess($usersanswer, $correctanswer){

@@ -78,6 +78,8 @@ if (isset($quiz)){
         }?>
     </div>
 
+<?php if($canedit){ ?>
+
 <form action="<?= $this->request->webroot; ?>training/edit?action=save<?= $QuizID ?>" method="post">
 
 <div class="col-md-6">
@@ -248,7 +250,9 @@ if (isset($quiz)){
     </div>
     </div>
     </div>
-<?php }}
+<?php }}} else {
+    echo "You do not have permission to edit courses";
+}
 if (isset($_GET["export"])){
     function a($text){
         return addslashes($text);
