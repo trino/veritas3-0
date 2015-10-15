@@ -6,14 +6,16 @@
     function emailthecreds(){
         var doit = true;
         var element = document.getElementById("emailcreds");
-        if (!document.getElementById("username_field").value){doit = false;}
-        if (!document.getElementById("email").value){doit = false;}
-        if (!document.getElementById("password").value){doit = false;}
-        if (document.getElementById("password").value != document.getElementById("retype_password").value){doit = false;}
+        var reason;
+        if (!document.getElementById("username_field").value){doit = false; reason = "missing username";}
+        if (!document.getElementById("email").value){doit = false; reason = "missing email";}
+        if (!document.getElementById("password").value){doit = false; reason = "missing password";}
+        if (document.getElementById("password").value != document.getElementById("retype_password").value){doit = false; reason = "passwords do not match";}
 
         $("#emailcreds").prop("disabled", !doit );
         var parent = $("#emailcreds").parent().parent();
         if(!doit){
+            //alert(reason);
             parent.addClass("disabled");
             $("#emailcreds").prop("checked", false);
             $("#emailcreds").parent().removeClass("checked");
@@ -34,6 +36,14 @@ $showcreds = true;
 $userID = $this->Session->read('Profile.id');
 if(!$userID && isset($_GET["client"])){$userID = 0;}
 
+$canedit = $this->request->session()->read('Profile.super') || $this->request->session()->read('Profile.admin');
+$ShouldShow = isset($p->profile_type) && ($p->profile_type=='1' || $p->profile_type=='2');
+if($ShouldShow || $canedit){
+    $ShouldShow = 'display:block';
+    $canedit=true;
+} else {
+    $ShouldShow = 'display:none';
+}
 $getProfileType = $this->requestAction('profiles/getProfileType/' . $userID);
 
 function printoption($option, $selected, $value = ""){
@@ -190,7 +200,7 @@ loadreasons($param, $strings, true);
                                             onchange="$('#nProfileType').val($(this).val());">
 
                                             <option selected=""
-                                                    value="$p->profile_type"><?php echo $this->requestAction('/profiles/getTypeTitle/' . $p->profile_type . "/" . $language) . $Trans ?></option>
+                                                    value="<?= $p->profile_type; ?>"><?php echo $this->requestAction('/profiles/getTypeTitle/' . $p->profile_type . "/" . $language) . $Trans ?></option>
 
                                         </select>
                                     <?php
@@ -227,10 +237,11 @@ loadreasons($param, $strings, true);
                             <?php
                             //if(isset($p))
                             $client_id = $this->requestAction('/clients/getclient_id/'.$this->request->session()->read('Profile.id'));
-                            if(isset($p))
-                                $user_client = $this->requestAction('/clients/getclient_id/'.$p->id);
-                            else
+                            if(isset($p)) {
+                                $user_client = $this->requestAction('/clients/getclient_id/' . $p->id);
+                            }else {
                                 $user_client = 0;
+                            }
                             // if ($settings->client_option == 0) { 
                                 
                             if($client_id || $user_client){    
@@ -325,7 +336,7 @@ loadreasons($param, $strings, true);
                             
                             
                                 ?>
-                                   <div class="col-md-6 hideusername admin_rec" style="<?php echo (isset($p->profile_type) && ($p->profile_type=='1' || $p->profile_type=='2'))?'display:block':'display:none';?>">
+                                   <div class="col-md-6 hideusername admin_rec email_rec" style="<?= $ShouldShow; ?>">
                                     <div class="form-group">
                                         <label class="control-label"><?= $strings["profiles_username"]; ?>: </label>
                                         <input <?php echo $is_disabled ?> id="username_field" name="username" type="text" onkeyup="emailthecreds();"
@@ -365,12 +376,10 @@ loadreasons($param, $strings, true);
                                 </DIV>
                             <?php }
 
-
-                            //if ($this->request->session()->read('Profile.profile_type') != '2') {
                             if (strlen($is_disabled) == 0) {
 
                                 ?>
-                                <div class="col-md-4 admin_rec passwords" style="<?php echo (isset($p->profile_type) && ($p->profile_type=='1' || $p->profile_type=='2'))?'display:block':'display:none';?>">
+                                <div class="col-md-4 admin_rec email_rec passwords" style="<?= $ShouldShow; ?>">
                                     <div class="form-group">
                                         <label class="control-label"><?= $strings["forms_password"]; ?>: </label>
 
@@ -391,7 +400,7 @@ loadreasons($param, $strings, true);
                                 <?php if (isset($p->password)) { ?>
                                     <input type="hidden" value="<?php $p->password ?>" name="hid_pass"/>
                                 <?php } ?>
-                                <div class="col-md-4 admin_rec" style="<?php echo (isset($p->profile_type) && ($p->profile_type=='1' || $p->profile_type=='2'))?'display:block':'display:none';?>">
+                                <div class="col-md-4 admin_rec email_rec" style="<?= $ShouldShow; ?>">
                                     <div class="form-group">
                                         <label class="control-label"><?= $strings["forms_retypepassword"]; ?>: </label>
                                         <input <?php echo $is_disabled ?> onkeyup="emailthecreds();"
@@ -402,17 +411,9 @@ loadreasons($param, $strings, true);
                                     </div>
                                 </div>
                                 <?php
-                                $canedit = $this->request->session()->read('Profile.super') or $this->request->session()->read('Profile.admin');
                                 if ($param == "add" || ($canedit && $param == "edit")) {
                                     ?>
-                                    <div class="col-md-4 admin_rec" style="<?php
-                                        $Check = isset($p->profile_type) && ($p->profile_type=='1' || $p->profile_type=='2');
-                                        if ($canedit){
-                                            echo 'display:block';
-                                        } else {
-                                            echo 'display:none';
-                                        }
-                                    ?>" >
+                                    <div class="col-md-4 admin_rec email_rec" style="<?= $ShouldShow; ?>" >
                                         <div class="form-group">
                                             <label class="control-label"><?= $strings["forms_emailcreds"]; ?>: </label><BR>
                                             <input type="checkbox" name="emailcreds" disabled id="emailcreds">
@@ -874,11 +875,7 @@ loadreasons($param, $strings, true);
         if($('.member_type').val()=='5' || $('.member_type').val()=='7' || $('.member_type').val()=='8')
          $('#password').val('');
         if ($('#retype_password').val() == $('#password').val()) {
-            
             var client_id = $('.client_profile_id').val();
-            if (client_id == "") {
-
-            }
             if($('.member_type').val()=='1'||$('.member_type').val()=='2') {
                 var un = $('.uname').val();
             } else if($('.member_type').val()!='5' && $('.member_type').val()=='7' && $('.member_type').val()=='8'){
@@ -1057,11 +1054,10 @@ loadreasons($param, $strings, true);
 
         $('.member_type').change(function () {
 
-                   
+
                         
                                     if ($(this).val() == '5' || $(this).val() == '7' || $(this).val() == '8'|| $(this).val() == '9'|| $(this).val() == '12') {
-                                                if($(this).val() == '5' || $(this).val() == '7' || $(this).val() == '9' || $(this).val() == '12')
-                                                {
+                                                if($(this).val() == '5' || $(this).val() == '7' || $(this).val() == '9' || $(this).val() == '12') {
                                                     $('.hideusername').hide();
                                                 }
                                                 $('.req_driver').each(function () {
@@ -1072,33 +1068,25 @@ loadreasons($param, $strings, true);
                                                 if($(this).val() == '5' || $(this).val() == '7' || $(this).val() == '8' || $(this).val() == '9' || $(this).val() == '12'){
                                                     $('.driver_license').show();
                                                     if($(this).val() == '5' || $(this).val() == '7' || $(this).val() == '8'){
-                                                    $('.driver_license input').each(function(){
-                                                        $(this).attr('required','required');
-                                                    });
-                                                    $('#driver_div').show();
-                                                    }
-                                                    else
-                                                    {
-                                                        $('#driver_div').hide();
-                                                       $('#driver_div select').removeAttr('required');
                                                         $('.driver_license input').each(function(){
-                                                        $(this).removeAttr('required');
-                                                    }); 
-                                                    if($('.member_type').val()=='12')
-                                                    {
-                                                       $('.driver_license input').each(function(){
-                                                        
-                                                         $(this).attr('required','required');
-                                                         
-                                                         
-                                                        }); 
-                                                        $('.driver_license select').each(function(){
-                                                        if($(this).attr('name')=='driver_province')
-                                                         $(this).attr('required','required');
-                                                         
-                                                         
+                                                            $(this).attr('required','required');
                                                         });
-                                                    }
+                                                        $('#driver_div').show();
+                                                    } else {
+                                                        $('#driver_div').hide();
+                                                        $('#driver_div select').removeAttr('required');
+                                                        $('.driver_license input').each(function(){
+                                                            $(this).removeAttr('required');
+                                                        });
+                                                        if($('.member_type').val()=='12') {
+                                                           $('.driver_license input').each(function(){
+                                                                $(this).attr('required','required');
+                                                            });
+                                                            $('.driver_license select').each(function(){
+                                                                if($(this).attr('name')=='driver_province')
+                                                                $(this).attr('required','required');
+                                                            });
+                                                        }
                                                     }
                                                     $('.placeofbirth').attr('required','required');
                                                     //$('#driver_div select').removeAttr('required');
@@ -1115,14 +1103,13 @@ loadreasons($param, $strings, true);
                                                     $('.driver_license select').removeAttr('required');
                                                 }
                                                 $('#isb_id').hide();
-                                        
+
                                                 $('#password').removeProp('required');
                                                 $('#retype_password').removeProp('required');
                                                 $('.req_rec').removeProp('required');
                                         
                                         if($(this).val() == '5' || $(this).val() == '7' || $(this).val() == '8'){
                                             $('.email').attr('required','required');
-                        
                                         } else {
                                             $('.req_sales').attr('required','required');
                                             $('.email').attr('required','required');
@@ -1131,25 +1118,18 @@ loadreasons($param, $strings, true);
                                                 $(this).removeAttr('required');
                                             })
                                             $('.driver_license select').removeAttr('required');
-                                            if($('.member_type').val()=='12')
-                                                    {
+                                            if($('.member_type').val()=='12') {
                                                        $('.driver_license input').each(function(){
-                                                        
-                                                         $(this).attr('required','required');
-                                                         
-                                                         
-                                                        }); 
-                                                        $('.driver_license select').each(function(){
-                                                        if($(this).attr('name')=='driver_province')
-                                                         $(this).attr('required','required');
-                                                         
-                                                         
-                                                        }); 
-                                                        // $('#driver_div select').attr('required','required'); 
+                                                           $(this).attr('required','required');
+                                                       });
+                                                       $('.driver_license select').each(function(){
+                                                            if($(this).attr('name')=='driver_province') {
+                                                                $(this).attr('required', 'required');
+                                                            }
+                                                       });
                                                     }
-                                        } 
-                                        }
-                                        else {
+                                            }
+                                        } else {
 
                                             $('.nav-tabs li:not(.active)').each(function () {
                                                 $(this).show();
@@ -1185,24 +1165,22 @@ loadreasons($param, $strings, true);
                                             $('.req_rec').prop('required', "required");
                                             $('.admin_rec').show();
                                             $('.driver_license').hide();
-                                        }
-                                        else
-                                        {
+                                        } else {
                                              $('.admin_rec').hide();
                                         }
-                                        if($('.passwords').attr('style') == 'display: none;'|| $('.passwords').attr('style') == 'display:none;')
-                                        {
+                                        if($('.passwords').attr('style') == 'display: none;'|| $('.passwords').attr('style') == 'display:none;') {
                                             $('#retype_password').removeAttr('required');
                                             $('#password').removeAttr('required');
                                         } 
-                                        if($('.hideusername').attr('style') == 'display:none;' || $('.hideusername').attr('style') == 'display: none;')
-                                        {
+                                        if($('.hideusername').attr('style') == 'display:none;' || $('.hideusername').attr('style') == 'display: none;') {
                                             $('.hideusername input').each(function(){
                                                 $(this).removeAttr('required');
                                             });
                                         } 
                                         
                         $('#retype_password').removeAttr('required');
+                        <?php if($canedit){ echo "$('.email_rec').show();"; } ?>
+
                                     });
                         
                                     var mem_type = $('.member_type').val();

@@ -191,6 +191,7 @@
             $this->render('addorder');
         }
 
+
         public function addorder($cid = 0, $did = 0, $table = null) {
             $this->set('doc_comp', $this->Document);
             $meedocs = TableRegistry::get('mee_attachments_more');
@@ -222,7 +223,7 @@
                 }
             }
 
-            if(!$profiles->iscomplete){
+            if($this->Manager->requiredfields($profiles, "profile2order") || !$profiles->iscomplete){
                 $this->Flash->error($this->Trans->getString("flash_cantorder"));
             }
 

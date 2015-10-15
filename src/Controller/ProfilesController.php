@@ -773,7 +773,7 @@
                 $this->set('id', $id);
                 $this->loadclients($profile->id);
 
-                if(!$profile->iscomplete){
+                if($this->Manager->requiredfields($profile, "profile2order") || !$profile->iscomplete){
                     $this->Flash->error($this->Trans->getString("flash_cantorder"));
                 }
 

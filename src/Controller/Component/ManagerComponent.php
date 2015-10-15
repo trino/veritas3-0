@@ -1058,6 +1058,24 @@ class ManagerComponent extends Component {
         return preg_match("/^([a-ceghj-npr-tv-z]){1}[0-9]{1}[a-ceghj-npr-tv-z]{1}[0-9]{1}[a-ceghj-npr-tv-z]{1}[0-9]{1}$/i", str_replace(" ", "", $PostalCode));
     }
 
+    function requiredfields($Data, $Fields = ""){
+        if(!is_array($Fields)){
+            switch($Fields) {
+                case "profile2order":
+                    $Fields = array("username", "password", "email", "phone", "expiry_date", "placeofbirth");
+                    break;
+            }
+        }
+        if(is_array($Fields)){
+            foreach($Fields as $Key){
+                if(!isset($Data->$Key) || !$Data->$Key){
+                    return $Key;
+                }
+            }
+        }
+        return false;
+    }
+
     function format_phone($phone) {
         $phone = $this->validate_data($phone, "number");
         if(!isset($phone{3})) { return ''; }// note: making sure we have something

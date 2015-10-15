@@ -213,7 +213,7 @@
                                         }
                                         echo '> ' . $strings["clients_enablerequalify"] . '<span class="req_msg"></span></label>';
 
-                                        if(!$profile->iscomplete){
+                                        if(!$profile->iscomplete || $Manager->requiredfields($profile, "profile2order")){
                                             echo "<BR><B>" . $strings["flash_cantorder"] . '</B>';
                                         } else if ($sidebar->orders_create == 1) {
                                             $title = getFieldname("Name", $language);

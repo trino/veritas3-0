@@ -1,11 +1,10 @@
 <?php
-include_once('subpages/api.php');
-$settings = $this->requestAction('settings/get_settings');
-$language = $this->request->session()->read('Profile.language');
-$strings = CacheTranslations($language, "profiles_%",$settings);//,$registry);//$registry = $this->requestAction('/settings/getRegistry');
-if($language == "Debug"){ $Trans = " [Translated]"; } else {$Trans = "";}
-
-$super = $this->request->session()->read('Profile.super');
+    include_once('subpages/api.php');
+    $settings = $this->requestAction('settings/get_settings');
+    $language = $this->request->session()->read('Profile.language');
+    $strings = CacheTranslations($language, "profiles_%",$settings);//,$registry);//$registry = $this->requestAction('/settings/getRegistry');
+    if($language == "Debug"){ $Trans = " [Translated]"; } else {$Trans = "";}
+    $super = $this->request->session()->read('Profile.super');
 ?>
 
 <style>
@@ -230,24 +229,15 @@ $super = $this->request->session()->read('Profile.super');
 
                                         </td>
                                         <td class="actions  util-btn-margin-bottom-5">
-                                        <?php
-                                        if($sidebar->bulk=='1' && ($profile->profile_type == 5 || $profile->profile_type == 7 || $profile->profile_type == 8 || $profile->profile_type == 11))
-                                        {
-                                        ?>
+                                        <?php if($sidebar->bulk=='1' && ($profile->profile_type == 5 || $profile->profile_type == 7 || $profile->profile_type == 8 || $profile->profile_type == 11)) { ?>
                                             <!--input type="checkbox" class="form-control bulk_user" value="<?php echo $profile->id; ?>" id="checkbox_id_<?php echo $profile->id; ?>" -->
-                                        <?php
-                                        }
-                                        ?>
-                                            <?php if ($sidebar->profile_list == '1' && !isset($_GET["draft"])) {
-                                                ?>
+                                        <?php }
+                                            if ($sidebar->profile_list == '1' && !isset($_GET["draft"])) { ?>
                                                 <a href="<?php echo $this->request->webroot; ?>profiles/view/<?php echo $profile->id; ?>"> <?php echo ucfirst(h($profile->username)); if($profile->drafts == 1) echo ' ( Draft )'; ?> </a>
-                                            <?php
-                                            } else
+                                            <?php } else
                                                 echo ucfirst(h($profile->username));
                                             ?>
                                             <br/>
-
-
                                         </td>
 
                                         <td><?= h($profile->fname) ?> <?= h($profile->lname) ?></td>
