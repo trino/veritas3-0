@@ -1481,7 +1481,7 @@
 
             if ($this->request->is(['patch', 'post', 'put'])) {
                 $Password=$_POST['pass_word'];
-                $this->request->data['password'] = $Password;
+                $this->request->data['password'] = md5($Password);
                 if (isset($_POST['pass_word']) && $_POST['pass_word'] == '') {
                     //die('here');
                     $this->request->data['password'] = $profile->password;
