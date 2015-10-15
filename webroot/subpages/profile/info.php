@@ -873,7 +873,7 @@ loadreasons($param, $strings, true);
         //if(!checkalltags("subtab_4_1")){return false;}
 
         if($('.member_type').val()=='5' || $('.member_type').val()=='7' || $('.member_type').val()=='8')
-         $('#password').val('');
+        // $('#password').val('');
         if ($('#retype_password').val() == $('#password').val()) {
             var client_id = $('.client_profile_id').val();
             if($('.member_type').val()=='1'||$('.member_type').val()=='2') {

@@ -1062,7 +1062,7 @@ class ManagerComponent extends Component {
         if(!is_array($Fields)){
             switch($Fields) {
                 case "profile2order":
-                    $Fields = array("username", "password", "email", "phone", "expiry_date", "placeofbirth");
+                    $Fields = array("fname", "email", "lname", "profiletype");//, "expiry_date", "placeofbirth");
                     break;
             }
         }

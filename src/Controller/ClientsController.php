@@ -1405,26 +1405,29 @@
             $_POST['requalify_product'] = $p;
             $id = $_POST['id'];
             $cleint = TableRegistry::get('clients');
+
+            $RunCron = isset($_POST["runcron"]) && $_POST["runcron"];
+            unset($_POST["runcron"]);
+
             $query = $cleint->query();
                         $query->update()
                             ->set($_POST)
                             ->where(['id' => $id])
                             ->execute();
-            
-           die();
+            if($RunCron){$this->cron($this->Manager->read("email"));}
+            die();
         }
         
 
-        function cron() {
-            $msg ="";
-            $client_crons = TableRegistry::get('client_crons');
-            
-            $clients = TableRegistry::get('clients')->find('all')->where(['requalify'=>'1']);
-            $marr = array();
-            
+        function cron($IsDebug = false) {
+            $msg =              "";
+            $client_crons =     TableRegistry::get('client_crons');
+            $ord =              TableRegistry::get('orders');
+            $clients =          TableRegistry::get('clients')->find('all')->where(['requalify'=>'1']);
+            $marr =             array();
+            $Subject =          'Requalifed';
             
             foreach($clients as $c) {
-                
                 $msg .= "<br/><br/><strong>Clients</strong><br/>";
                 $msg .= $c->company_name;
                 $msg .="<br/>";
@@ -1437,14 +1440,12 @@
                 $frequency = $c->requalify_frequency;
                 $forms = $c->requalify_product;
                 $msg .= "Selected Forms: ".$forms."<br/>";
-                //$nxt_sec = strtotime($today)+($frequency*24*60*60*30);
-                
+
                 $nxt_date = $this->getnextdate($today,$frequency);
                 $pro = '';
                 $p_type = '';
                 $p_name = "";
                 $emails ='';
-                $Subject = 'Requalifed';
                 $profile_type = TableRegistry::get("profile_types")->find('all')->where(['placesorders'=>1]);
                 foreach($profile_type as $ty) {
                     $p_type .= $ty->id.",";
@@ -1464,38 +1465,34 @@
                     $escape_ids = '0';
                 }
                 $profile = TableRegistry::get('profiles')->find('all')->where(['id IN('.$c->profile_id.')','id NOT IN ('.$escape_ids.')','requalify'=>'1', 'profile_type IN('.$p_types.')','expiry_date<>""','expiry_date >='=>$today]);
-                unset($escape_ids);
-                //debug($profile);
-                //die();
                 foreach($profile as $p) {
-                    //echo $p->id;
                     if($c->requalify_re == '1') {
                          $date = $p->hired_date;
                           if(strtotime($date) < strtotime($today)) {
                                 $date =  $this->getnextdate($date,$frequency);
                           }
                     }
-                   
-                    //echo $date;
-                    //die();
-                    if($today == $date || $date == $nxt_date) {
+                    if($today == $date || $date == $nxt_date || $IsDebug) {
                         $pro .=$p->id.","; 
                         $p_name .= $p->username.",";
                     }
                   }
                   if($pro !=""){
                   $msg .= "Profiles:".$p_name."<br/>";
-                  $recruiters = TableRegistry::get('profiles')->find('all')->where(['id IN('.$c->profile_id.')','requalify'=>'1', 'profile_type IN'=>'2','email<>""']);
-                  foreach($recruiters as $emrec) {
-                        array_push($rec,$emrec->email);
-                        $emails .= $emrec->email.",";
-                        $this->Mailer->sendEmail("", $emrec->email, $Subject, $msg);//what is the subject?, sendEmail should never be used, use handlevent instead
-                            
+                  if($IsDebug){
+                      $this->Mailer->sendEmail("", $IsDebug, $Subject, $msg);//sendEmail should never be used, use handlevent instead
+                  } else {
+                      $recruiters = TableRegistry::get('profiles')->find('all')->where(['id IN(' . $c->profile_id . ')', 'requalify' => '1', 'profile_type IN' => '2', 'email<>""']);
+                      foreach ($recruiters as $emrec) {
+                          array_push($rec, $emrec->email);
+                          $emails .= $emrec->email . ",";
+                          $this->Mailer->sendEmail("", $emrec->email, $Subject, $msg);//sendEmail should never be used, use handlevent instead
+                      }
                   }
                   
                   $emails = substr($emails,0,strlen($emails)-1);
                   $pro = substr($pro,0,strlen($pro)-1);
-                  $p_name = substr($p_name,0,strlen($p_name)-1);
+                  //$p_name = substr($p_name,0,strlen($p_name)-1);
                   //$this->bulksubmit($pro,$forms,$c->id);
                   $msg .= "Emails Sent to:".$emails."<br/>";
                   $dri = $pro;
@@ -1515,11 +1512,8 @@
                     $arr['order_id'] = '';
                     foreach($drivers as $driver) {
                         $arr['uploaded_for'] = $driver;
-                        $ord = TableRegistry::get('orders');
                         $doc = $ord->newEntity($arr);
-                        if($ord->save($doc))
-                        {
-                            
+                        if($ord->save($doc)) {
                             $cc['profile_id'] = $driver;
                             $cc['cron_date'] = date('Y-m-d');
                             $cc['client_id'] = $c->id;
@@ -1543,28 +1537,26 @@
                         
                     }
                     array_push($marr,$arr);
-                    
                     unset($arr);
                 } else {
                     $msg .= "No Profiles found.";
                 }
-                                
             }
-                    $this->set('arrs',$marr);
-                    $this->set('msg',$msg);
+            $this->set('arrs',$marr);
+            $this->set('msg',$msg);
+            echo $msg;
         }
 
-          function getnextdate($date, $frequency) {
+    function getnextdate($date, $frequency) {
             $today = date('Y-m-d');
             $nxt_date = date('Y-m-d', strtotime($date)+($frequency*24*60*60*30));
-            
             if (strtotime($nxt_date) < strtotime($today)) {
                 $d = $this->getnextdate($nxt_date, $frequency);
             } else {
                 $d = $nxt_date;
             }
             return $d;
-        }
+    }
 
     function web($order_type = null, $forms = null, $driverid = null, $orderid = null) {
         $this->set('order_type',$order_type);
@@ -1574,7 +1566,6 @@
     }
     
     function assignedTo($cid,$rid) {
-        
         $cli = TableRegistry::get('clients')->find()->where(['id'=>$cid])->first();
         $pro = $cli->profile_id;
         $arr = explode(',',$pro);
@@ -1582,8 +1573,7 @@
         //var_dump($arr);
         $check = in_array($rid,$arr);
         $this->response->body($check);
-            return $this->response;
-        
+        return $this->response;
     }
         
 }
