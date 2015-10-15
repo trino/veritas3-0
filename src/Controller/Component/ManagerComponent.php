@@ -91,7 +91,10 @@ class ManagerComponent extends Component {
         if(!$UserID){return 0;}
         $clients = TableRegistry::get("clients")->find()->select('id')->where(['profile_id LIKE "'.$UserID.',%" OR profile_id LIKE "%,'.$UserID.',%" OR profile_id LIKE "%,'.$UserID.'" OR profile_id ="'.$UserID.'"']);
         if (iterator_count($clients) == 1 || $LimitToOne) {
-            return $clients->first()->id;
+            $clients = $clients->first();
+            if($clients) {
+                return $clients->id;
+            }
         } else if (iterator_count($clients) > 1) {
             $Data = array();
             foreach($clients as $client){
@@ -99,6 +102,7 @@ class ManagerComponent extends Component {
             }
             return $Data;
         }
+        return 0;
     }
 
 
