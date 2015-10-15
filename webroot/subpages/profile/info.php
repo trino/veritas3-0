@@ -503,7 +503,7 @@ loadreasons($param, $strings, true);
                                     <label class="control-label"><?= $strings["forms_phone"]; ?>: </label>
                                     <input <?php echo $is_disabled ?> name="phone" type="text"
                                                                       placeholder="i.e. 905-500-5555" role='phone'
-                                                                      class="form-control req_driver" <?php if (isset($p->phone)) { ?>
+                                                                      class="form-control" <?php if (isset($p->phone)) { ?>
                                         value="<?php echo $p->phone; ?>" <?php } ?>/>
                                 </div>
                             </div>
