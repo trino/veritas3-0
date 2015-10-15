@@ -1,10 +1,10 @@
 <?php $strings2 = CacheTranslations($language, array("verifs_%", "tasks_date", "file_attachfile", "file_download"), $settings, False); ?>
 <div class="form-group row col-md-12 splitcols" ID="GNDN">
     <input type="hidden" name="MAX_FILE_SIZE" value="6553600" title="50 megabytes" />
-    <div class="col-md-4"><label class="control-label">Your Username: </label>
+    <div class="col-md-4"><label class="control-label required">Your Username: </label>
         <input type="text" class="form-control required" required name="username" />
     </div>
-    <div class="col-md-4"><label class="control-label">Your <?= $strings["forms_password"]; ?>: </label>
+    <div class="col-md-4"><label class="control-label required">Your <?= $strings["forms_password"]; ?>: </label>
         <input type="password" class="form-control required" required name="password" />
     </div>
     <!--div class="col-md-4"><label class="control-label"><?= $strings["forms_retypepassword"]; ?>: </label>
@@ -14,7 +14,7 @@
         <input type="text" class="form-control required" required name="fname" />
     </div>
     <div class="col-md-4"><label class="control-label required"><?= $strings["forms_middlename"]; ?>: </label>
-        <input type="text" class="form-control required" required name="mname" />
+        <input type="text" class="form-control" name="mname" />
     </div>
     <div class="col-md-4"><label class="control-label required"><?= $strings["forms_lastname"]; ?>: </label>
         <input type="text" class="form-control required" required name="lname" />
@@ -37,43 +37,43 @@
         <input type="text" class="form-control required" required name="email" role="email" />
     </div>
 
-    <div class="col-md-4"><label class="control-label required"><?= $strings["forms_placeofbirth"]; ?>: </label>
-        <input type="text" class="form-control required" required name="placeofbirth" />
+    <div class="col-md-4"><label class="control-label"><?= $strings["forms_placeofbirth"]; ?>: </label>
+        <input type="text" class="form-control" name="placeofbirth" />
     </div>
 
-    <div class="col-md-4"><label class="control-label required"><?= $strings["forms_sin"]; ?>: </label>
-        <input type="text" class="form-control required" required name="sin" role="sin" />
+    <div class="col-md-4"><label class="control-label"><?= $strings["forms_sin"]; ?>: </label>
+        <input type="text" class="form-control" name="sin" role="sin" />
     </div>
 
-    <div class="col-md-4"><label class="control-label required"><?= $strings["forms_phone"]; ?>: </label>
-        <input type="text" class="form-control required" required name="phone" role="phone" />
+    <div class="col-md-4"><label class="control-label"><?= $strings["forms_phone"]; ?>: </label>
+        <input type="text" class="form-control" name="phone" role="phone" />
     </div>
-    <div class="col-md-4"><label class="control-label required"><?= $strings["forms_address"]; ?>: </label>
-        <input type="text" class="form-control required" required name="street" />
+    <div class="col-md-4"><label class="control-label"><?= $strings["forms_address"]; ?>: </label>
+        <input type="text" class="form-control" name="street" />
     </div>
-    <div class="col-md-4"><label class="control-label required"><?= $strings["forms_city"]; ?>: </label>
-        <input type="text" class="form-control required" required name="city" />
+    <div class="col-md-4"><label class="control-label"><?= $strings["forms_city"]; ?>: </label>
+        <input type="text" class="form-control" name="city" />
     </div>
-    <div class="col-md-4"><label class="control-label required"><?= $strings["forms_provincestate"]; ?>: </label>
+    <div class="col-md-4"><label class="control-label"><?= $strings["forms_provincestate"]; ?>: </label>
         <?php provinces("province"); ?>
     </div>
-    <div class="col-md-4"><label class="control-label required"><?= $strings["forms_postalcode"]; ?>: </label>
-        <input type="text" class="form-control required" required name="postal" role="postalcode" />
+    <div class="col-md-4"><label class="control-label"><?= $strings["forms_postalcode"]; ?>: </label>
+        <input type="text" class="form-control" name="postal" role="postalcode" />
     </div>
-    <div class="col-md-4"><label class="control-label required"><?= $strings["forms_country"]; ?>: </label>
-        <input type="text" class="form-control required" required name="country" value="Canada"/>
+    <div class="col-md-4"><label class="control-label"><?= $strings["forms_country"]; ?>: </label>
+        <input type="text" class="form-control" name="country" value="Canada"/>
     </div>
-    <div class="col-md-4"><label class="control-label required"><?= $strings["forms_dateofbirth"]; ?>: </label>
-        <input type="text" class="form-control required datepicker date-picker" required name="dob" />
+    <div class="col-md-4"><label class="control-label"><?= $strings["forms_dateofbirth"]; ?>: </label>
+        <input type="text" class="form-control datepicker date-picker" name="dob" />
     </div>
-    <div class="col-md-4"><label class="control-label required"><?= $strings["forms_driverslicense"]; ?>: </label>
-        <input type="text" class="form-control required" required name="driver_license_no" />
+    <div class="col-md-4"><label class="control-label"><?= $strings["forms_driverslicense"]; ?>: </label>
+        <input type="text" class="form-control" name="driver_license_no" />
     </div>
-    <div class="col-md-4"><label class="control-label required"><?= $strings["forms_provinceissued"]; ?>: </label>
+    <div class="col-md-4"><label class="control-label"><?= $strings["forms_provinceissued"]; ?>: </label>
         <?php provinces("driver_province"); ?>
     </div>
-    <div class="col-md-4"><label class="control-label required"><?= $strings["forms_expirydate"]; ?>: </label>
-        <input type="text" class="form-control required datepicker date-picker" required name="expiry_date" />
+    <div class="col-md-4"><label class="control-label"><?= $strings["forms_expirydate"]; ?>: </label>
+        <input type="text" class="form-control datepicker date-picker" name="expiry_date" />
     </div>
     <div class="col-md-4"><label class="control-label required">Client: </label>
         <SELECT class="form-control required" name="clientid" />

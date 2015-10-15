@@ -358,8 +358,8 @@ loadreasons($param, $strings, true);
                                 <div class="form-group">
                                     <label class="control-label"><?= $strings["forms_email"]; ?>: </label>
                                     <input <?php echo $is_disabled ?> name="email" type="email" onkeyup="emailthecreds();" id="email"
-                                                                      role="email"
-                                                                      class="form-control un email req_driver req_rec req_sales" <?php if (isset($p->email)) { ?> value="<?php echo $p->email; ?>" <?php } ?><?php if (isset($p->profile_type) && ($p->profile_type == '9' || $p->profile_type=='12')) { ?> required="required" <?php } ?>/>
+                                                                      role="email" required
+                                                                      class="form-control un email req_rec req_sales" req_driver <?php if (isset($p->email)) { ?> value="<?php echo $p->email; ?>" <?php } ?><?php if (isset($p->profile_type) && ($p->profile_type == '9' || $p->profile_type=='12')) { ?> required="required" <?php } ?>/>
                             <span class="error passerror flashEmail"
                                   style="display: none;"><?= $strings["dashboard_emailexists"]; ?></span>
                                 </div>
@@ -469,7 +469,7 @@ loadreasons($param, $strings, true);
                                     <label class="control-label"><?= $strings["forms_firstname"]; ?>: </label>
                                     <input <?php echo $is_disabled ?> name="fname" type="text"
                                                                       placeholder=""
-                                                                      class="form-control req_driver" <?php if (isset($p->fname)) { ?>
+                                                                      class="form-control" req_driver required <?php if (isset($p->fname)) { ?>
                                         value="<?php echo $p->fname; ?>" <?php } ?>/>
                                 </div>
                             </div>
@@ -491,7 +491,7 @@ loadreasons($param, $strings, true);
                                     <label class="control-label"><?= $strings["forms_lastname"]; ?>: </label>
                                     <input <?php echo $is_disabled ?> name="lname" type="text"
                                                                       placeholder=""
-                                                                      class="form-control req_driver" <?php if (isset($p->lname)) { ?>
+                                                                      class="form-control" req_driver required <?php if (isset($p->lname)) { ?>
                                         value="<?php echo $p->lname; ?>" <?php } ?>/>
                                 </div>
                             </div>
@@ -514,7 +514,7 @@ loadreasons($param, $strings, true);
 
                                     <label class="control-label"><?= $strings["forms_gender"]; ?>: </label>
                                     <SELECT <?php echo $is_disabled ?> name="gender"
-                                                                       class="form-control req_driver"><?php
+                                                                       class="form-control" req_driver><?php
                                         $gender = "";
                                         if (isset($p->gender)) {
                                             $gender = $p->gender;
@@ -535,7 +535,7 @@ loadreasons($param, $strings, true);
 
                                     <label class="control-label"><?= $strings["forms_placeofbirth"]; ?>: </label>
                                     <input <?php echo $is_disabled ?> name="placeofbirth" type="text" placeholder=""
-                                                                      class="form-control req_driver placeofbirth" <?php if (isset($p->placeofbirth)) { ?>
+                                                                      class="form-control placeofbirth" <?php if (isset($p->placeofbirth)) { ?>
                                         value="<?php echo $p->placeofbirth; ?>" <?php } ?>/>
                                 </div>
                             </div>
@@ -583,7 +583,7 @@ loadreasons($param, $strings, true);
                                             echo '</select></div><div class="col-md-4">';
 
 
-                                            echo '<select class="form-control req_driver " name="dobd" ' . $is_disabled . '>';
+                                            echo '<select class="form-control req_driver" name="dobd" ' . $is_disabled . '>';
                                             for ($temp = 1; $temp < 32; $temp++) {
                                                 if ($temp < 10) {
                                                     $temp = "0" . $temp;
@@ -608,7 +608,7 @@ loadreasons($param, $strings, true);
                                     <div class="form-group">
                                         <input <?php echo $is_disabled ?> name="street" type="text"
                                                                           placeholder="<?= $strings["forms_address"]; ?>"
-                                                                          class="form-control req_driver" <?php if (isset($p->street)) { ?>
+                                                                          class="form-control" req_driver <?php if (isset($p->street)) { ?>
                                             value="<?php echo $p->street; ?>" <?php } ?>/>
                                     </div>
                                 </div>
@@ -617,7 +617,7 @@ loadreasons($param, $strings, true);
                                     <div class="form-group">
                                         <input <?php echo $is_disabled ?> name="city" type="text"
                                                                           placeholder="<?= $strings["forms_city"]; ?>"
-                                                                          class="form-control req_driver" <?php if (isset($p->city)) { ?>
+                                                                          class="form-control" req_driver <?php if (isset($p->city)) { ?>
                                             value="<?php echo $p->city; ?>" <?php } ?>/>
                                     </div>
                                 </div>
@@ -654,7 +654,7 @@ loadreasons($param, $strings, true);
                                     <div class="form-group">
                                         <input <?php echo $is_disabled ?>  type="text"
                                                                            placeholder="<?= $strings["forms_postalcode"]; ?> (M5V2X2)"
-                                                                           class="form-control req_driver"
+                                                                           class="form-control" req_driver
                                                                            name="postal" role='postalcode'  <?php if (isset($p->postal)) { ?>
                                             value="<?php echo $p->postal; ?>" <?php } ?>/>
                                     </div>
@@ -664,7 +664,7 @@ loadreasons($param, $strings, true);
                                     <div class="form-group">
                                         <input <?php echo $is_disabled ?>  type="text"
                                                                            placeholder="<?= $strings["forms_country"]; ?>" value="Canada"
-                                                                           class="form-control req_driver"
+                                                                           class="form-control" req_driver
                                                                            name="country" <?php if (isset($p->country)) { ?>
                                             value="<?php echo $p->country; ?>" <?php } ?>/>
                                     </div>
@@ -682,7 +682,7 @@ loadreasons($param, $strings, true);
                                     <div class="form-group">
                                         <label class="control-label"><?= $strings["forms_driverslicense"]; ?> #: </label>
                                         <input <?php echo $is_disabled ?> name="driver_license_no" type="text"
-                                                                          class="form-control req_driver" <?php if (isset($p->driver_license_no)) { ?>
+                                                                          class="form-control" req_driver <?php if (isset($p->driver_license_no)) { ?>
                                             value="<?php echo $p->driver_license_no; ?>" <?php } ?> />
                                     </div>
                                 </div>
@@ -1020,11 +1020,12 @@ loadreasons($param, $strings, true);
                 type: 'post',
                 success: function (res) {
                     res = res.replace(' ', '');
+                    alert(res);
                     if (res != 0 && !isNaN(res)) {
                         $('#savepro').text("<?= addslashes($strings["forms_savechanges"]); ?>");
                         $('.flash').show();
-                        $('.flash').fadeOut(3500);
-                        window.location.href = '<?php echo $this->request->webroot;?>profiles/edit/' + res;
+                        $('.flash').fadeOut(3500);)
+                        //window.location.href = '<?php echo $this->request->webroot;?>profiles/edit/' + res;
                     }
                 }
 
@@ -1085,13 +1086,13 @@ loadreasons($param, $strings, true);
                                                             });
                                                         }
                                                     }
-                                                    $('.placeofbirth').attr('required','required');
+                                                    //$('.placeofbirth').attr('required','required');
                                                     //$('#driver_div select').removeAttr('required');
                                                 } else{
                                                     $('.driver_license').hide();
                                                     $('#driver_div').hide();
                                                     $('#driver_div select').removeAttr('required');
-                                                    $('.placeofbirth').removeAttr('required');
+                                                    //$('.placeofbirth').removeAttr('required');
                                                     $('.req_sales').attr('required','required');
                                                     $('.member_type').removeAttr('required');
                                                     $('.driver_license input').each(function(){
@@ -1211,7 +1212,7 @@ loadreasons($param, $strings, true);
                                                     {
                                                        $('.driver_license input').each(function(){
                                                         if($(this).attr('name')=='driver_license_no')
-                                                         $(this).attr('required','required');
+                                                         //$(this).attr('required','required');
                                                         }); 
                                                          
                                                     } 
@@ -1246,7 +1247,7 @@ loadreasons($param, $strings, true);
                                                     {
                                                        $('.driver_license input').each(function(){
                                                         if($(this).attr('name')=='driver_license_no')
-                                                         $(this).attr('required','required');
+                                                         //$(this).attr('required','required');
                                                         });  
                                                         $('.driver_license select').each(function(){
                                                         if($(this).attr('name')=='driver_province')

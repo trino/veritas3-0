@@ -1241,8 +1241,10 @@
                 if ($this->request->is(['patch', 'post', 'put'])) {
                     if (isset($_POST['pass_word']) && $_POST['pass_word'] == '') {
                         $this->request->data['password'] = $profile->password;
+                        $Password = "[ENCRYPTED]";
                     } else {
                         if (isset($_POST['pass_word'])) {
+                            $Password = $_POST['pass_word'];
                             $this->request->data['password'] = md5($_POST['pass_word']);
                         }
                     }
@@ -1259,6 +1261,7 @@
                             unset($this->request->data['username']);
                         }
                     }
+
                     //var_dump($this->request->data); die();//echo $_POST['admin'];die();
                     $profile = $this->Profiles->patchEntity($profile, $this->request->data);
                     if ($this->Profiles->save($profile)) {
@@ -1477,11 +1480,19 @@
             ]);
 
             if ($this->request->is(['patch', 'post', 'put'])) {
-                $this->request->data['password'] = $_POST['pass_word'];
+                $Password=$_POST['pass_word'];
+                $this->request->data['password'] = $Password;
                 if (isset($_POST['pass_word']) && $_POST['pass_word'] == '') {
                     //die('here');
                     $this->request->data['password'] = $profile->password;
+                    $Password = '[ENCRYPTED]';
                 }
+
+                if(isset($_POST["emailcreds"]) && $_POST["emailcreds"] && trim($_POST["email"])) {
+                    $this->request->data["emailsent"] = date('Y-m-d H:i:s');
+                    $this->Mailer->handleevent("passwordreset", array("username" => $_POST['username'], "email" => $_POST["email"], "password" => $Password));
+                }
+
                 if (isset($_POST['profile_type']) && $_POST['profile_type'] == 1) {
                     $this->request->data['admin'] = 1;
                 } else {

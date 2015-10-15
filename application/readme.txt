@@ -75,83 +75,83 @@ function cURL($URL, $data = "", $username = "", $password = ""){
 the $URL parameter needs to point to /rapid/placerapidorder
 
 the $data parameter needs to the POST data in a single dimensional array (use array_flatten to flatten it)
-The POST data will be validated by Veritas
+The POST data will be validated by the system:
 
-POST data:
+POST data: (* denotes required fields)
   'username' 		    => string (Your username)
   'password' 		    => string (Your Password, md5'd)
 
-  'fname' 		        => string (User's first name)
-  'mname' 		        => string (User's middle name)
-  'lname' 		        => string (User's last name)
-  'gender' 		        => string (User's gender ["Male" or "Female"])
-  'title' 		        => string (User's title ["Mr.", "Ms." or "Mrs."])
-  'email' 		        => string (User's email address, must be unique)
-  'placeofbirth'        => string (User's country of birth)
-  'phone' 		        => string (User's phone number)
-  'street' 		        => string (User's street)
-  'city' 		        => string (User's city)
-  'province' 		    => string (User's province, must be ["AB", "BC", "MB", "NB", "NL", "NT", "NS", "NU", "ON", "PE", "QC", "SK", "YT"])
-  'country' 		    => string (User's Coutnry, Usually Canada)
-  'postal' 		        => string (User's Postal Code)
-  'dob' 		        => string (User's date of birth in format of 'MM/DD/YYYY')
-  'sin'                 => string (User's social insurance number)
-  'driver_license_no' 	=> string (driver's license #)
-  'driver_province' 	=> string (driver's license issued province, must be ["AB", "BC", "MB", "NB", "NL", "NT", "NS", "NU", "ON", "PE", "QC", "SK", "YT"])
-  'expiry_date'         => string (driver's license expiry date in format of 'MM/DD/YYYY')
-  'clientid' 		    => number (Client ID number)
-  'driverphotoBASE' 	=> string (Base64 encoded image of driver photo ID)
-  'forms' 		        => string (Comma delimeted list of form numbers, see the list at the bottom)
-  'ordertype' 		    => string (Product Type ['MEE', 'CAR', 'BUL', 'SIN', 'EMP', 'SAL', 'GDO'])
-  'signatureBASE' 	    => string (Base64 encoded image of signature)
-  'forms' 		        => array(Key = Index number, Value = array(
+  'fname' 		        => string* (User's first name)
+  'mname' 		        => string  (User's middle name)
+  'lname' 		        => string* (User's last name)
+  'gender' 		        => string  (User's gender ["Male" or "Female"])
+  'title' 		        => string  (User's title ["Mr.", "Ms." or "Mrs."])
+  'email' 		        => string* (User's email address, must be unique)
+  'placeofbirth'        => string  (User's country of birth)
+  'phone' 		        => string  (User's phone number)
+  'street' 		        => string  (User's street)
+  'city' 		        => string  (User's city)
+  'province' 		    => string  (User's province, must be ["AB", "BC", "MB", "NB", "NL", "NT", "NS", "NU", "ON", "PE", "QC", "SK", "YT"])
+  'country' 		    => string  (User's Coutnry, Usually Canada)
+  'postal' 		        => string  (User's Postal Code)
+  'dob' 		        => string  (User's date of birth in format of 'MM/DD/YYYY')
+  'sin'                 => string  (User's social insurance number)
+  'driver_license_no' 	=> string  (driver's license #)
+  'driver_province' 	=> string* (driver's license issued province, must be ["AB", "BC", "MB", "NB", "NL", "NT", "NS", "NU", "ON", "PE", "QC", "SK", "YT"])
+  'expiry_date'         => string  (driver's license expiry date in format of 'MM/DD/YYYY')
+  'clientid' 		    => number* (Client ID number)
+  'driverphotoBASE' 	=> string* (Base64 encoded image of driver photo ID)
+  'forms' 		        => string* (Comma delimeted list of form numbers, see the list at the bottom)
+  'ordertype' 		    => string* (Product Type ['MEE', 'CAR', 'BUL', 'SIN', 'EMP', 'SAL', 'GDO'])
+  'signatureBASE' 	    => string* (Base64 encoded image of signature)
+  'forms' 		        => array*  (Key = Index number, Value = array(
             'type' => number (9=letter of experience, 10=education verification)
-            Required fields for letter of experience:
-				company_name => string
-				address => string
-				city => string
-				state_province => string
-				country => string
-				supervisor_name => string
-				supervisor_phone => string
-				supervisor_email => string
-				supervisor_secondary_email => string
-				employment_start_date => string (date in format of 'MM/DD/YYYY')
-				employment_end_date => string (date in format of 'MM/DD/YYYY')
-				claims_with_employer => number (0=no, 1=yes)
-				claims_recovery_date => string (date in format of 'MM/DD/YYYY')
-				emploment_history_confirm_verify_use => string
-				us_dot => string
-				signature => hidden/blank
-				signature_datetime => string (today's date in format of 'MM/DD/YYYY')
-				equipment_vans => number (0=no, 1=yes)
-				equipment_reefer => number (0=no, 1=yes)
-				equipment_decks => number (0=no, 1=yes)
-				equipment_super => number (0=no, 1=yes)
-				equipment_straight_truck => number (0=no, 1=yes)
-				equipment_others => number (0=no, 1=yes)
-				driving_experince_local => number (0=no, 1=yes)
-				driving_experince_canada => number (0=no, 1=yes)
-				driving_experince_canada_rocky_mountains => number (0=no, 1=yes)
-				driving_experince_usa => number (0=no, 1=yes)
-			Required fields for education verification:
-				college_school_name
-				address
-				supervisor_name => string
-				supervisor_phone => string
-				supervisor_email => string
-				education_start_date => string (date in format of 'MM/DD/YYYY')
-				education_end_date => string (date in format of 'MM/DD/YYYY')
-				claim_tutor => number (0=no, 1=yes)
-				date_claims_occur => string
-				education_history_confirmed_by => string
-				highest_grade_completed => number (1-8)
-				high_school => number (1-4)
-				college => number (1-4)
-				last_school_attended => string
-				performance_issue => string
-				date_time => string (today's date in format of 'MM/DD/YYYY')
-				signature => hidden/blank
+            Fields for letter of experience:
+				company_name                                => string*
+				address                                     => string*
+				city                                        => string*
+				state_province                              => string
+				country                                     => string
+				supervisor_name                             => string
+				supervisor_phone                            => string
+				supervisor_email                            => string
+				supervisor_secondary_email                  => string
+				employment_start_date                       => string (date in format of 'MM/DD/YYYY')
+				employment_end_date                         => string (date in format of 'MM/DD/YYYY')
+				claims_with_employer                        => number (0=no, 1=yes)
+				claims_recovery_date                        => string (date in format of 'MM/DD/YYYY')
+				emploment_history_confirm_verify_use        => string
+				us_dot                                      => string
+				signature                                   => hidden/blank
+				signature_datetime                          => string (today's date in format of 'MM/DD/YYYY')
+				equipment_vans                              => number (0=no, 1=yes)
+				equipment_reefer                            => number (0=no, 1=yes)
+				equipment_decks                             => number (0=no, 1=yes)
+				equipment_super                             => number (0=no, 1=yes)
+				equipment_straight_truck                    => number (0=no, 1=yes)
+				equipment_others                            => number (0=no, 1=yes)
+				driving_experince_local                     => number (0=no, 1=yes)
+				driving_experince_canada                    => number (0=no, 1=yes)
+				driving_experince_canada_rocky_mountains    => number (0=no, 1=yes)
+				driving_experince_usa                       => number (0=no, 1=yes)
+			Fields for education verification:
+				college_school_name                         => string
+				address                                     => string
+				supervisor_name                             => string
+				supervisor_phone                            => string
+				supervisor_email                            => string
+				education_start_date                        => string (date in format of 'MM/DD/YYYY')
+				education_end_date                          => string (date in format of 'MM/DD/YYYY')
+				claim_tutor                                 => number (0=no, 1=yes)
+				date_claims_occur                           => string
+				education_history_confirmed_by              => string
+				highest_grade_completed                     => number (1-8)
+				high_school                                 => number (1-4)
+				college                                     => number (1-4)
+				last_school_attended                        => string
+				performance_issue                           => string
+				date_time                                   => string (today's date in format of 'MM/DD/YYYY')
+				signature                                   => hidden/blank
 
   ));// so the forms value is an array, which each cell containing a form, which is an array of all the form's fields
 
@@ -168,10 +168,6 @@ If Status is true, the OrderID variable will give the Order ID number that was m
 
 Order status API:
 [website URL]/rapid/placerapidorder?action=orderstatus&orderid=[OrderID]&username=[your username]&password=[your password, preferably in md5]
-<<<<<<< HEAD
-=======
-
->>>>>>> origin/master
 Will return a JSON object with the order info from the database, and Files which is an array of URLs to the files
 
 http://localhost/veritas3-0/rapid/placerapidorder?action=orderstatus&orderid=1000&username=admin&password=admin
