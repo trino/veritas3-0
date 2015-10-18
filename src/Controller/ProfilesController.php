@@ -840,20 +840,14 @@
             $profiles = TableRegistry::get('Profiles');
 
             $_POST['created'] = date('Y-m-d');
-            //var_dump($profile);die();
-            if (isset($_POST['pass_word']) && $_POST['pass_word'] == '') {
-                unset($_POST['pass_word']);
-            } else {
-                if (isset($_POST['password'])) {
-                    $_POST['password'] = $_POST['pass_word'];
-                }
-            }
+            if (isset($_POST['password'])) { $_POST['password'] = md5($_POST['password']);}
+
             if ($this->request->is('post')) {
                 if (isset($_POST['profile_type']) && $_POST['profile_type'] == 1) {
                     $_POST['admin'] = 1;
                 }
-
-
+                $_POST['password'] = md5($_POST['pass_word']);
+                unset($_POST['pass_word']);
 
                 $_POST['dob'] = $_POST['doby'] . "-" . $_POST['dobm'] . "-" . $_POST['dobd'];
                 //debug($_POST);die();
@@ -1065,6 +1059,7 @@
             $delimeter = "_";
 
             $this->updatelanguage($_POST);
+
             //$this->Flash->success("Add: " . $add);
             if ($add == '0') {
                 $profile_type = $this->request->session()->read('Profile.profile_type');
@@ -1085,8 +1080,9 @@
                         $_POST['admin'] = 1;
                     }
                     $_POST['dob'] = $_POST['doby'] . "-" . $_POST['dobm'] . "-" . $_POST['dobd'];
-                    if($_POST['expiry_date']!= '')
+                    if($_POST['expiry_date']!= '') {
                         $_POST['expiry_date'] = date('Y-m-d', strtotime($_POST['expiry_date']));
+                    }
                     $profile = $profiles->newEntity($_POST);
                     if ($profiles->save($profile)) {
                         $this->checkusername($profile,$_POST);
@@ -1198,10 +1194,11 @@
                                 $u = $uq->profile_type;
                                 $type_query = TableRegistry::get('profile_types');
                                 $type_q = $type_query->find()->where(['id' => $u])->first();
-                                if ($type_q)
+                                if ($type_q) {
                                     $ut = $type_q->title;
-                                else
+                                }else {
                                     $ut = '';
+                                }
                             } else
                                 $ut = '';
                             if ($_POST['profile_type']) {
