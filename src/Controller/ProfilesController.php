@@ -819,7 +819,7 @@
             return $UserID;
         }
 
-        public function add() {
+        public function add() {//called when creating an account
             $this->getsidebar("Sidebar");
 
             $this->set('uid', '0');
@@ -1423,7 +1423,7 @@
             $this->set("languages", $acceptablelanguages);
         }
 
-        public function edit($id = null) {
+        public function edit($id = null) {//called when editing an existing account
             $this->set('doc_comp', $this->Document);
             $check_pro_id = $this->Settings->check_pro_id($id);
             if ($check_pro_id == 1) {

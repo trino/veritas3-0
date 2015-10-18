@@ -31,8 +31,7 @@
 <?php
     $question = 0;
     $QuizID = $_GET["quizid"];
-    function clean($data, $datatype = 0)
-    {
+    function clean($data, $datatype = 0) {
         if (is_object($data)) {
             switch ($datatype) {
                 case 0:
@@ -62,8 +61,7 @@
         return $data;
     }
 
-    function question($section)
-    {
+    function question($section) {
         global $question;
         switch ($section) {
             case "0":
@@ -80,8 +78,7 @@
         }
     }
 
-    function answers($QuizID, $QuestionID, $text, $answers, $Index = 0, $usersanswer, $correctanswer)
-    {
+    function answers($QuizID, $QuestionID, $text, $answers, $Index = 0, $usersanswer, $correctanswer) {
         $disabled = "";
         $selected = -1;
         $iscorrect = false;
@@ -121,8 +118,7 @@
         return $iscorrect;
     }
 
-    function questionheader($QuizID, $QuestionID, $markedOutOf, $Index = 0, $usersanswer)
-    {
+    function questionheader($QuizID, $QuestionID, $markedOutOf, $Index = 0, $usersanswer, $picture, $webroot) {
         $flagged = "";
         $answered = "Not yet answered";
         if (is_object($usersanswer)) {
@@ -134,10 +130,12 @@
         }
         $QuestionID = $QuizID . ':' . $Index;
         echo '<div class="state">' . $answered . '</div><div class="grade">Marked out of ' . $markedOutOf . '</div>';
+        if($picture){
+            echo '<IMG SRC="' . $webroot . 'assets/global/' . $picture . '" style="max-width: 270px;">';
+        }
     }
 
-    function preprocess($usersanswer, $correctanswer)
-    {
+    function preprocess($usersanswer, $correctanswer) {
         $correct = "missing";
         if (is_object($usersanswer)) {
             $correct = "incorrect";
@@ -150,8 +148,7 @@
         return $correct;
     }
 
-    function FullQuestion($QuizID, $text, $answers, $index = 0, $markedOutOf = "1.00", $usersanswer, $correctanswer)
-    {
+    function FullQuestion($QuizID, $text, $answers, $index = 0, $markedOutOf = "1.00", $usersanswer, $correctanswer, $picture, $webroot) {
         global $question;
         $question += 1;
         $correct = "incorrect";
@@ -161,7 +158,7 @@
             }
         }
         question(0);
-        questionheader($QuizID, $question, $markedOutOf, $index, $usersanswer);
+        questionheader($QuizID, $question, $markedOutOf, $index, $usersanswer, $picture, $webroot);
         question(1);
         if (answers($QuizID, $question, $text, $answers, $index, $usersanswer, $correctanswer)) {
             $correct = "correct";
@@ -176,8 +173,7 @@
         }
     }
 
-    function PrintResults($results, $user)
-    {
+    function PrintResults($results, $user) {
         if ($results['total'] > 0) {//http://localhost/veritas3/img/profile/172647_974786.jpg
             //debug($user); <label class="control-label">Profile Type : </label>
             echo '<div class="row"><div class="col-md-12"><div class="portlet box yellow"><div class="portlet-title">';
@@ -196,11 +192,8 @@
             }
             echo '</font></div>';
             if ($score >= 80) {
-
                 //     echo $this->request->webroot;
                 //   echo $this->request->webroot; die();
-
-
           //      $link232 = $this->request->webroot . 'training/certificate?quizid=' . $_GET['quizid'] . '&userid=' . $user->id;
                 $link232 = 'certificate?quizid=' . $_GET['quizid'] . '&userid=' . $user->id;
 
@@ -230,7 +223,7 @@
     foreach ($questions as $question) {
         $question = clean($question, 1);
         $answer = usersanswer($useranswers, $question->QuestionID);
-        $result = FullQuestion($QuizID, $question->Question, array($question->Choice0, $question->Choice1, $question->Choice2, $question->Choice3, $question->Choice4, $question->Choice5), $question->QuestionID, "1.00", $answer, $question->Answer);
+        $result = FullQuestion($QuizID, $question->Question, array($question->Choice0, $question->Choice1, $question->Choice2, $question->Choice3, $question->Choice4, $question->Choice5), $question->QuestionID, "1.00", $answer, $question->Answer, $question->Picture, $this->request->webroot);
         //$results[$result] += 1;
         //$results["total"] += 1;
     }

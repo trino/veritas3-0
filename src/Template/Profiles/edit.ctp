@@ -296,9 +296,9 @@
                                     $activetab = $_GET['activetab'];
                                 }
 
-                                function activetab($activetab, $name, $needsclass = True)
-                                {
+                                function activetab(&$activetab, $name, $needsclass = True) {
                                     if ($activetab == $name || $activetab == "") {
+                                        if(!$activetab){$activetab = $name;}
                                         if ($needsclass) {
                                             echo " class='active'";
                                         } else {
@@ -313,7 +313,11 @@
                             <!--BEGIN TABS-->
                             <div class="tabbable tabbable-custom">
                                 <ul class="nav nav-tabs">
-<?
+<?php
+    if ($this->request->session()->read('Profile.super') != '1' && $activetab == "permissions") {
+        $activetab = "";
+    }
+
     if ($this->request['action'] == 'view' && ($profile->Ptype && $profile->Ptype->placesorders == 1)) {
         ?>
         <li <?php activetab($activetab, "scorecard"); ?>>
@@ -322,7 +326,6 @@
         </li>
         <?php
     }
-
 ?>
                                     <li <?php if ($this->request['action'] == 'view' && ($profile->Ptype && $profile->Ptype->placesorders == 1)){}else{activetab($activetab, "profile");} ?> >
                                         <a href="#tab_1_1" data-toggle="tab"><?= $strings["profiles_profile"]; ?></a>
