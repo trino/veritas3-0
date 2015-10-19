@@ -6,7 +6,7 @@
     $sidebar =$this->requestAction("settings/all_settings/".$this->Session->read('Profile.id')."/sidebar");
     include_once('subpages/api.php');
     $language = $this->request->session()->read('Profile.language');
-    $strings = CacheTranslations($language, $this->request->params['controller'] . "_%",$settings);
+    $strings = CacheTranslations($language, array($this->request->params['controller'] . "_%", "month_long%"),$settings);
 
     function pluralize($Quantity, $Word, $Append = "s"){
         if($Quantity == 1){ return $Word;}
@@ -14,11 +14,19 @@
     }
 
     function productname($products, $number, $language){
-        $product = getIterator($products, "number", $number);
-        $title = getFieldname("title", $language);
-        $title = $product->$title;
-        if ($language == "Debug"){ $title.= " [Trans]";}
-        return $title . " #" . $number;
+        if(strpos($number, ",") !== false){$number = explode(",", $number);}
+        if(is_array($number)){
+            foreach($number as $Key => $Num){
+                $products[$Key] = productname($products, $Num, $language);
+            }
+            return implode(", ", $products);
+        } else {
+            $product = getIterator($products, "number", $number);
+            $title = getFieldname("title", $language);
+            $title = $product->$title;
+            if ($language == "Debug") {$title .= " [Trans]";}
+            return $title . " #" . $number;
+        }
     }
     function printproducts($Client, $r, $products, $numbers, $language){
         $hasprinted=false;
@@ -92,9 +100,9 @@
                                     <tr class="sorting">
                                         <th><?= $this->Paginator->sort('id', "ID"); ?></th>
                                         <th><?= $this->Paginator->sort('company_name', "Name"); ?></th>
-                                        <th><?= $this->Paginator->sort('requalify', "On"); ?></th>
+                                        <th title="Is requalify enabled"><?= $this->Paginator->sort('requalify', "On"); ?></th>
                                         <th><?= $this->Paginator->sort('requalify_frequency', "Frequency"); ?></th>
-                                        <th>When</th>
+                                        <th>From when</th>
                                         <th>Products</th>
                                         <TH title="Number of profiles with requalify enabled / total number of profiles in this client">Profiles</TH>
                                     </tr>
@@ -104,6 +112,7 @@
                                         $Frequencies = array(1,3,6,12);
                                         foreach($Clients as $Client){
                                             $Users = $Manager->enum_all("profiles", array('id IN('.$Client->profile_id.')', "requalify" => 1));
+                                            $Profiles[$Client->id] = $Users;
                                             echo '<TR>' . $CRLF;
                                             echo '<TD>' . $Client->id . '</TD>' . $CRLF;
                                             echo '<TD><A HREF="' . $this->request->webroot . 'profiles/index?&filter_by_client=' . $Client->id . '" TARGET="_blank">' . $Client->company_name . '</A></TD>' . $CRLF;
@@ -164,3 +173,126 @@
         }
     }
 </SCRIPT>
+<?php
+    include('subpages/profile/requalify.php');
+
+    $Year = date("Y", strtotime($Today));
+    $Month = date("m", strtotime($Today));
+    $Duration = explode(" ", $Duration);
+    $Duration[0] = str_replace("+", "", $Duration[0]);
+    $Months = $Duration[0];
+    switch($Duration[1]){
+        case "years":
+            $Months = $Months * 12;
+            break;
+    }
+?>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="portlet box yellow">
+            <div class="portlet-title">
+                <div class="caption">
+                    <i class="fa fa-calendar"></i>
+                    The next <?= $Months; ?> months
+                </div>
+            </div>
+            <div class="portlet-body form">
+                <div class="form-actions top chat-form" style="margin-bottom:0;" align="right">
+                    <div class="btn-set pull-left">
+
+                    </div>
+                    <div class="btn-set pull-right">
+                    </div>
+                </div>
+
+                <div class="clearfix"></div>
+
+                <div class="form-body">
+                    <div class="table-scrollable" align="center">
+
+<?php
+echo '<TABLE border="1"><TR>';
+for($Temp = 0; $Temp < $Months; $Temp++){
+    echo '<TD valign="top">';
+    makemonthtable($strings, $Year, $Month, $new_req, $Clients, $Profiles, $products, $language);
+    echo '</TD>';
+
+    if(($Temp % 6) == 5) echo "</TR><tr>";
+
+    $Month++;
+    if($Month==13){
+        $Month=1;
+        $Year++;
+    }
+}
+echo '</TR></TABLE>';
+
+function makemonthtable($strings, $Year, $Month, $Events, $Clients, $Profiles, $products, $language){
+    if($Month<10){$Month="0" . $Month;}
+    ?>
+        <table width="200" border="0" cellpadding="2" cellspacing="2">
+            <THEAD>
+            <tr align="center">
+                <td colspan="7"><?php echo $strings['month_long' . $Month].' '.$Year; ?></td>
+            </tr>
+            <tr>
+                <TD align="right"><STRONG>S</STRONG></TD>
+                <TD align="right"><STRONG>M</STRONG></TD>
+                <TD align="right"><STRONG>T</STRONG></TD>
+                <TD align="right"><STRONG>W</STRONG></TD>
+                <TD align="right"><STRONG>T</STRONG></TD>
+                <TD align="right"><STRONG>F</STRONG></TD>
+                <TD align="right"><STRONG>S</STRONG></TD>
+            </tr>
+            </THEAD>
+            <TBODY>
+            <TR>
+            <?php
+                $timestamp = mktime(0,0,0,$Month,1,$Year);
+                $maxday = date("t",$timestamp);
+                $thismonth = getdate ($timestamp);
+                $startday = $thismonth['wday'];
+                $today = date('Y-m-d');
+                for ($i=0; $i<($maxday+$startday); $i++) {
+                    $Style = "";
+                    $Day = $i - $startday + 1;
+                    if(($i % 7) == 0 ) echo "<tr>";
+                    $Title=array();
+                    if($i < $startday) {
+                        echo "<td></td>";
+                    } else {
+                        $Date = $Year . '-' . $Month . '-';
+                        if($Day<10){
+                            $Date .= "0" . $Day;
+                        } else {
+                            $Date .= $Day;
+                        }
+
+                        echo "<td align='right' border='1' valign='middle' height='20px' style='";
+                        if($today == $Date) {
+                            echo 'border:1px solid #000;';
+                            $Title[] = "Today";
+                        }
+                        foreach($Events as $CRON){
+                            if(in_array($Date, $CRON["dates"])){
+                                $CRON["client"] = getIterator($Clients, "id", $CRON["client_id"]);
+                                $CRON["client"] = $CRON["client"]->company_name;
+                                $Profile = getIterator($Profiles[$CRON["client_id"]], "id", $CRON["profile_id"]);
+                                $CRON["profile"] = formatname($Profile);
+                                $Style = "background-color: silver;";
+                                $Title[] = $CRON["profile"] . " " . $CRON["client"] . " (" . productname($products, $CRON["forms"], $language) . ')';
+                            }
+                        }
+                        echo $Style . "' " . 'TITLE="' . implode("\r\n", $Title) . '">'. $Day . "</td>";
+                    }
+                    if(($i % 7) == 6 ) echo "</tr>";
+                }
+            echo '</TR></TBODY></TABLE>';
+}
+?>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
