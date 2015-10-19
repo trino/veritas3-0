@@ -1023,8 +1023,9 @@ class ManagerComponent extends Component {
                 if ($this->validate_postal_code($Data)) {return $this->clean_postalcode($Data);}
                 break;
             case "phone":
-                $Data = $this->validate_data($Data, "number");
-                if (strlen($Data) == 7 || strlen($Data) == 10 || strlen($Data) == 11){return $this->format_phone($Data);}
+                $Data = preg_replace('/[^\d+]/', '', $Data);
+                if (strlen($Data) > 6 && strlen($Data) < 12){return $this->format_phone($Data);}
+                return $Data;
                 break;
             case "sin":
                 $Data = $this->validate_data($Data, "number");
@@ -1089,6 +1090,12 @@ class ManagerComponent extends Component {
         switch($length) {
             case 7:
                 return preg_replace("/([0-9]{3})([0-9]{4})/", "$1-$2", $phone);
+                break;
+            case 8://europe
+                return preg_replace('/([0-9]{3})([0-9]{2})([0-9]{3})/', '$1 - $2 $3', $phone);
+                break;
+            case 9://europe
+                return preg_replace('/([0-9]{3})([0-9]{2})([0-9]{2})([0-9]{2})/', '$1 - $2 $3 $4', $phone);
                 break;
             case 10:
                 return preg_replace("/([0-9]{3})([0-9]{3})([0-9]{4})/", "($1) $2-$3", $phone);
