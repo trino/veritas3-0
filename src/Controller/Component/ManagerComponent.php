@@ -21,6 +21,9 @@ class ManagerComponent extends Component {
                     break;
             }
         }
+
+        $Controller->loadComponent("Settings");
+        $Controller->Settings->verifylogin($Controller,$Controller->name);
     }
 
     //////////////////////////profile API//////////////////////////////////////////

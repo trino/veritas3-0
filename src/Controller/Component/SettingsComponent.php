@@ -11,8 +11,12 @@
             // $this->loadComponent('Settings');
             // $this->Settings->verifylogin($this, "feedbacks");
             $exceptions = "";
+            $controller= strtolower($controller);
             //valid controllers: clients, documents, feedbacks, formbuilder, jobs, logos, messages, orders, pages, pdfs, quickcontacts, schedules, settings, training, users
             switch($controller){
+                case "profiles":
+                    $exceptions = array("forgetpassword");
+                    break;
                 case "clients":
                     $exceptions = array("quickcontact");
                     break;
@@ -23,6 +27,10 @@
                     $exceptions = array("placerapidorder");
                     break;
             }
+            if (in_array($controller, array("login", "logos", "img", "assets"))){
+                return false;//doesn't ever need logging in
+            }
+
             if($exceptions) {
                 if (!is_array($exceptions)) {$exceptions = array($exceptions);}
                 foreach ($exceptions as $exception) {
@@ -35,6 +43,9 @@
             if (!$profileID) {
                 $url = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
                 $_this->redirect('/login?url=' . urlencode($url));
+                header('Location: ' . $_this->request->webroot . 'login?url=' . urlencode($url));
+                exit();
+                return true;
             }
         }
 
