@@ -26,7 +26,7 @@ function validate_data(Data, DataType){
                 break;
             case "phone":
                 var phoneRe = /^[2-9]\d{2}[2-9]\d{2}\d{4}$/;
-                var regex = /^\+(?:[0-9] ?){6,14}[0-9]$/;
+                var regex = /[^\d+]/;
                 var Data2 = clean_data(Data, "number");
                 return (Data2.match(phoneRe) !== null || Data.match(regex) !== null);
                 break;
@@ -76,6 +76,8 @@ function clean_data(Data, DataType){
                 var Data2 = clean_data(Data, "number");
                 if(Data2.length == 10) {
                     Data = Data2.replace(/(\d{3})(\d{3})(\d{4})/, "($1) $2-$3");
+                } else {
+                    Data = Data.replace(/[^0-9+]/g, "");
                 }
                 break;
             case "sin":

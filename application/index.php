@@ -278,6 +278,11 @@ if (count($_POST) > 0) {
         case "orderstatus":
             orderstatus($webroot);
             break;
+        case "test":
+            echo "POST DATA: ";
+            print_r($_POST);
+            die();
+            break;
     }
 
     $query = constructsubdoc($_POST, $_GET["form"], $userID, $clientID, 0, $Execute);
@@ -417,14 +422,22 @@ if (count($_POST) > 0) {
                 if ($language != "English" && $language != "Debug") {
                     $fieldname .= $language;
                 }
+
+                $Files = scandir("forms");
+                removefromarray($Files, array(".", "..", "consent.php", "driver.php", "loe.php"));
                 foreach ($forms as $formID) {
                     $form = first("SELECT * FROM subdocuments WHERE id = " . $formID);
                     if ($form[$fieldname]) {
                         echo '<LI><A HREF="' . getq("form=" . $formID) . '">' . $form[$fieldname] . '</A></LI>';
                     }
                 }
-                echo '<LI><A HREF="' . getq("form=driver") . '">New Driver</A></LI>';
-                echo '<LI><A HREF="' . getq("form=orderstatus") . '">Order Status</A></LI>';
+                foreach($Files as $Filename){
+                    $Filename = left($Filename, strlen($Filename) - 4);//chop off .php
+                    echo '<LI><A HREF="' . getq("form=" . $Filename) . '">' . $Filename . '</A></LI>';
+                }
+                //echo '<LI><A HREF="' . getq("form=driver") . '">New Driver</A></LI>';
+                //echo '<LI><A HREF="' . getq("form=orderstatus") . '">Order Status</A></LI>';
+                //echo '<LI><A HREF="' . getq("form=test") . '">Test</A></LI>';
                 echo '<LI><A HREF="assets/consentform.pdf" download="consentform.pdf">Consent Form PDF</A></LI>';
                 echo '<LI><A HREF="readme.txt">Read me (API)</A></LI>';
                 echo '<LI><A HREF="30days.php' . getq() . '">30 days</A></LI>';
@@ -434,6 +447,17 @@ if (count($_POST) > 0) {
                 echo '<LI><A HREF="register.php' . getq() . '">Register</A></LI>';
                 echo "</UL>";
             }
+    }
+}
+
+function removefromarray(&$array, $value){
+    if(is_array($value)){
+        foreach($value as $val){
+            removefromarray($array, $val);
+        }
+    } else {
+        $Index = array_search($value, $array);
+        if ($Index > -1) {unset($array[$Index]);}
     }
 }
 
