@@ -28,8 +28,9 @@
                     break;
             }
 
+
             $Files = scandir(getcwd());
-            if (in_array($controller, $Files) || in_array($controller, array("login"))){
+            if (in_array($controller, $Files) || in_array($controller, array("login", "logos", "layout", "error", "element"))){
                 return false;//doesn't ever need logging in
             }
 
@@ -46,6 +47,7 @@
                 $url = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
                 $_this->redirect('/login?url=' . urlencode($url));
                 header('Location: ' . $_this->request->webroot . 'login?url=' . urlencode($url));
+
                 exit();
                 return true;
             }
