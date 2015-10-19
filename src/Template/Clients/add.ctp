@@ -132,8 +132,7 @@
                                     </li>
 
                                     <li>
-                                        <a href="#tab_1_3"
-                                           data-toggle="tab"><?php echo (!isset($_GET['view'])) ? $strings["clients_assigntoprofile"] : $strings["clients_assignedto"]; ?></a>
+                                        <a href="#tab_1_3" data-toggle="tab"><?php echo (!isset($_GET['view'])) ? $strings["clients_assigntoprofile"] : $strings["clients_assignedto"]; ?></a>
                                     </li>
 
 

@@ -1,7 +1,7 @@
 <?php if($this->request->session()->read('debug')) {
     echo "<span style ='color:red;'>subpages/clients/requalify.php #INC ABFFF</span><BR>";
 }
-echo $strings["clients_requalifynotice"] . "TEST";
+echo $strings["clients_requalifynotice"];
 ?>
 <form action="" method="post" class="requalify_form">
 <input type="hidden" name="id" value="<?php echo $client->id; ?>" />
@@ -66,13 +66,13 @@ echo $strings["clients_requalifynotice"] . "TEST";
 
     <?php
         if($Manager->read("admin")){
-            echo '<TR><TD>Run CRON now</TD><TD><LABEL><INPUT NAME="runcron" VALUE="TRUE" TYPE="checkbox">Yes</LABEL></TD></TR>';
+            echo '<TR><TD>Run CRON when you click Save Changes <i class="m-icon-swapright m-icon-black"></TD><TD><LABEL><INPUT NAME="runcron" VALUE="TRUE" TYPE="checkbox">Yes</LABEL></TD></TR>';
         }
     ?>
 
 </table>
  <div class="form-actions">
-    <button  type="button" class="btn btn-primary requalify_submit" >
+    <button type="button" class="btn btn-primary requalify_submit" >
         <?= $strings["forms_savechanges"];?> <i class="m-icon-swapright m-icon-white"></i>
     </button>
  </div>

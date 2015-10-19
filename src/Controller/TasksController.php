@@ -21,6 +21,11 @@ class TasksController extends AppController {
 
 	}
 
+    public function cron(){
+        if($_POST){
+            $this->Flash->success("Data has been saved");
+        }
+    }
 
     function timezone(){
         $offset = date("Z")/3600 ;

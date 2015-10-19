@@ -8,7 +8,6 @@
     $document_url = $this->requestAction("settings/getclienturl/" . $profileID . "/document");
     if($debug && $language == "Debug"){ $Trans = " [Translated]"; } else {$Trans = "";}
     $ordertype = "MEE";
-//comment
     if (isset($_GET["ordertype"])) {
         $ordertype = strtoupper($_GET["ordertype"]);
     }
@@ -308,7 +307,14 @@
                                     <i class="icon-plus"></i>
                                     <?= $strings["index_addtasks"]; ?></a>
                             </li>
-                        <?php } ?>
+                        <?php }
+                        if ($this->request->session()->read('Profile.super')){ ?>
+                            <li <?php echo ($this->request['controller'] == 'Tasks' && $this->request['action'] == 'cron') ? 'class="active"' : ''; ?>>
+                                <a href="<?php echo $this->request->webroot; ?>tasks/cron">
+                                    <i class="fa fa-clock-o"></i>
+                                    CRON</a>
+                            </li>
+                        <?php }?>
                     </ul>
                 </li>
             <?php }
