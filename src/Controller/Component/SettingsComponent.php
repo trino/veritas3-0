@@ -27,7 +27,9 @@
                     $exceptions = array("placerapidorder");
                     break;
             }
-            if (in_array($controller, array("login", "logos", "img", "assets"))){
+
+            $Files = scandir(getcwd());
+            if (in_array($controller, $Files) || in_array($controller, array("login"))){
                 return false;//doesn't ever need logging in
             }
 

@@ -13,7 +13,7 @@ class PdfsController extends AppController {
     public function intialize() {
         parent::intialize();
         $this->loadComponent('Settings');
-        $this->Settings->verifylogin($this, "pdfs");
+        //$this->Settings->verifylogin($this, "pdfs");
     }
     
     function getConsent($oid)

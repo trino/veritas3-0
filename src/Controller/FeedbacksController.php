@@ -14,7 +14,7 @@ class FeedbacksController extends AppController{
         parent::intialize();
         $this->loadComponent('Settings');
         $this->loadComponent('Trans');
-        $this->Settings->verifylogin($this, "feedbacks");
+        //$this->Settings->verifylogin($this, "feedbacks");
     }
     
     public function index() {

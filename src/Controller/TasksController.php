@@ -14,7 +14,7 @@ class TasksController extends AppController {
         parent::initialize();
         $this->loadComponent('Trans');
          $this->loadComponent('Settings');
-         $this->Settings->verifylogin($this, "schedules");
+         //$this->Settings->verifylogin($this, "schedules");
     }
     
 	public function index() {

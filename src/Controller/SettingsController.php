@@ -8,7 +8,7 @@ class SettingsController extends AppController {
     public function intialize(){
         parent::intialize();
         $this->loadComponent('Settings');
-        $this->Settings->verifylogin($this, "settings");
+        //$this->Settings->verifylogin($this, "settings");
     }
 
 	public function index() {

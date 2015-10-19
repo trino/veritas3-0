@@ -22,7 +22,7 @@
             $this->loadComponent('Mailer');
             $this->loadComponent('Trans');
 
-            $this->Settings->verifylogin($this, "clients");
+            //$this->Settings->verifylogin($this, "clients");
         }
 
         function getclient_id($id) {

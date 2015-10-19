@@ -37,7 +37,7 @@
             $this->loadComponent('Document');
             $this->loadComponent('Mailer');
             $this->loadComponent('Trans');
-            $this->Settings->verifylogin($this, "orders");
+            //$this->Settings->verifylogin($this, "orders");
         }
 
         public function vieworder($cid = null, $did = null, $table = null) {

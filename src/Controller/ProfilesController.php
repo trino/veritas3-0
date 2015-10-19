@@ -23,7 +23,7 @@
             $this->loadComponent('Mailer');
             $this->loadComponent('Document');
             $this->loadComponent('Trans');
-            $this->Settings->verifylogin($this, "profiles");
+            //$this->Settings->verifylogin($this, "profiles");
         }
 
         function upload_img($id){

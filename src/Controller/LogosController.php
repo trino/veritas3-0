@@ -5,11 +5,11 @@ use App\Controller\AppController;
 
 class LogosController extends AppController {
  
- public function intialize() {
+    public function intialize() {
         parent::intialize();
         $this->loadComponent('Settings');
         $this->loadComponent('Trans');
-        $this->Settings->verifylogin($this, "logos");
+        //$this->Settings->verifylogin($this, "logos");
     }
 	public function index() {
 		$lg = $this->paginate($this->Logos->find()->where(['secondary'=>'0']));
