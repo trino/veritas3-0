@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 15, 2015 at 03:32 PM
+-- Generation Time: Oct 20, 2015 at 09:25 PM
 -- Server version: 5.6.17
 -- PHP Version: 5.5.12
 
@@ -32,14 +32,14 @@ CREATE TABLE IF NOT EXISTS `strings` (
   `English` varchar(4096) NOT NULL,
   `French` varchar(4096) NOT NULL,
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=761 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=764 ;
 
 --
 -- Dumping data for table `strings`
 --
 
 INSERT INTO `strings` (`ID`, `Name`, `English`, `French`) VALUES
-(1, 'Date', '1441227566', '<-- This is used by the system to auto-update'),
+(1, 'Date', '1444915937', '<-- This is used by the system to auto-update'),
 (2, 'dashboard_affirmative', 'Yes', 'Oui'),
 (3, 'dashboard_negative', 'No', 'Non'),
 (4, 'dashboard_selectall', 'Select All', 'Tout sélectionner'),
@@ -620,7 +620,7 @@ INSERT INTO `strings` (`ID`, `Name`, `English`, `French`) VALUES
 (591, 'email_passwordreset_subject', 'Password reset successful', ''),
 (592, 'email_passwordreset_message', 'Your password has been reset.<BR>\nYour login details are:<BR>\n<BR>\nUsername: %username%<BR>\nPassword: %password%<BR>\n<BR>\n%login%<BR>\nRegards<BR>\nThe %site% Team', ''),
 (593, 'email_ordercompleted_subject', 'Order Submitted', 'email_ordercompleted_subject'),
-(594, 'email_ordercompleted_message', 'A new order has been created in %webroot%<BR>\n<BR>\nBy: %username% (Profile Type: %profile_type%)<BR>\nDate: %created%<BR>\nClient Name: %company_name%<BR>\nFor: %for%<BR>\n<BR>\n%html%<BR>\n<BR>\nRegards,<BR>\nThe %site% Team\n\n%html%', 'email_ordercompleted_message'),
+(594, 'email_ordercompleted_message', 'A new order has been created in %webroot%<BR>\n<BR>\nBy: %username% (Profile Type: %profile_type%)<BR>\nDate: %created%<BR>\nClient Name: %company_name%<BR>\nFor: %for%<BR>\n<BR>\n%html%<BR>\n<BR>\nRegards,<BR>\nThe %site% Team', 'email_ordercompleted_message'),
 (595, 'email_cronordercomplete_subject', 'Order Completed', ''),
 (596, 'email_cronordercomplete_message', 'Your MEE order has been processed and is ready to download<BR>\n<A HREF="%path%">Click here to view the order</A><BR>\n<BR>\nRegards,<BR>\nThe ISB %site% Team<BR>', ''),
 (597, 'email_survey_subject', 'Complete your survey', ''),
@@ -759,7 +759,7 @@ INSERT INTO `strings` (`ID`, `Name`, `English`, `French`) VALUES
 (740, 'email_newdriver_postorder_subject', 'Application for New Driver', 'email_newdriver_postorder_subject'),
 (741, 'email_newdriver_postorder_message', 'Date: %created%<BR>\n<BR>\n<BR>\nDear %customer_name%<BR>\n<BR>\n<BR>\nThank you for choosing %broker_name%, we appreciate your business. <BR>\n<BR>\n<BR>\nYour MEE request for %driver_name% has been successfully submitted.<BR>\n<BR>\n<BR>\nYour confirmation number for this MEE request is %order_id%<BR>\n<BR>\n<BR>\nWe are processing your request and will notify you of the driver’s eligibility shortly.<BR>\n<BR>\n<BR>\nRespectfully, <BR>\n<BR>\n<BR>\n%broker_name%<BR>\n%broker_email%', 'email_newdriver_postorder_message'),
 (742, 'forms_number', 'Number', 'Nombre'),
-(743, 'email_passwordreset_variables', 'email, username, password, site', ''),
+(743, 'email_passwordreset_variables', 'username, email, password', ''),
 (744, 'email_smi_profilecreated_subject', 'AFIMAC #SMI - Profile Created', 'email_smi_profilecreated_subject'),
 (745, 'email_smi_profilecreated_message', 'An account has been created for you in the AFIMAC #SMI system. You are now able to login, navigate and place orders.<BR>\n<BR>\nYour login credentials are as follows:<BR>\n<BR>\nCreated By: %createdby%<BR>\nOn: %created%<BR>\nProfile Type: %type%<BR>\nUsername: %username%<BR>\nPassword: %password%<BR>\n<BR>\n%login%<BR>\n<BR>\nRegards,<BR>\nAFIMAC #SMI', 'email_smi_profilecreated_message'),
 (746, 'email_smi_clientcreated_subject', 'AFIMAC #SMI - Client Created', 'email_smi_clientcreated_subject'),
@@ -776,7 +776,10 @@ INSERT INTO `strings` (`ID`, `Name`, `English`, `French`) VALUES
 (757, 'email_smi_cron_message', 'Hello, <BR>\n<BR>\nA reminder that you have following task outstanding on your calendar in AFIMAC #SMI:<BR>\n<BR>\nTitle: %title%<BR>\nDescription: %description%<BR>\nDue By: %dueby%<BR>\n<BR>\n<A HREF="%path%">Please click here to view the task.</A><BR>\n<BR>\nRegards,<BR>\nAFIMAC #SMI', 'email_smi_cron_message'),
 (758, 'email_smi_userorder_subject', 'AFIMAC #SMI - %type% Ordered', 'email_smi_userorder_subject'),
 (759, 'email_smi_userorder_message', 'Thank you for submitting an order for %type%.<BR>\n<BR>\nOrder number %id% has been received and is being reviewed. An AFIMAC agent will contact you within 24 hours.<BR>\n<BR>\n<A HREF="%path%">Click here to view the order</A><BR>\n<BR>If you have any immediate questions, please call 1-800-313-9170 and ask for Investigations.<BR>\n<BR>\nThank you,<BR>\nAFIMAC #SMI', 'email_smi_userorder_message'),
-(760, 'flash_cantorder', 'This user has not completed their forms or is missing data, and cannot have orders placed for them', '');
+(760, 'flash_cantorder', 'This user has not completed their forms or is missing data, and cannot have orders placed for them', ''),
+(761, 'email_cronordercomplete_variables', 'site, path, email', ''),
+(762, 'email_survey_variables', 'site, username, email, monthsFrench, months, days, id, path', ''),
+(763, 'email_training_passed_variables', 'email, score, username, path', '');
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
