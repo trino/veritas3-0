@@ -225,7 +225,7 @@ class TrainingController extends AppController {
         $table = TableRegistry::get('training_list');
         $post=$_POST;
 
-        $data = array('Name' => $post["Name"], 'Description' =>  $post["Description"], 'Attachments' => $post['Attachments'], 'image' => $post['image'], 'pass' => $post['pass']);
+        $data = array('Name' => $post["Name"], 'Description' =>  $post["Description"], 'Attachments' => $post['Attachments'], 'image' => $post['image'], 'pass' => $post['pass'], "hascert" => $post['hascert']);
 
         if (isset($post["ID"])){
             $ID = str_replace('"', "", $post["ID"]);
@@ -465,14 +465,16 @@ class TrainingController extends AppController {
         $useranswers = $this->enumanswers($QuizID, $UserID);
         if (!is_object($useranswers)){ return ""; }
         if($this->quizexists($QuizID)) {
+            $Quiz = $this->getQuizHeader($QuizID);
             $questions = $this->getQuiz($QuizID);
-            $pass = $this->getQuizHeader($QuizID)->pass;
+            $pass = $Quiz->pass;
             $results = array("pass" => $pass, "incorrect" => 0, "missing" => 0, "correct" => 0, "total" => 0, "datetaken" => $this->getdatetaken($useranswers));
             foreach ($questions as $question) {
                 $result = $this->preprocess($this->usersanswer($useranswers, $question->QuestionID), $question->Answer);
                 $results[$result] += 1;
                 $results["total"] += 1;
             }
+            $results["hascert"] = $Quiz->hascert;
             return $results;
         }
     }

@@ -155,9 +155,9 @@
                                         PrintResult("Grade", "<font color='red'>Fail</A>");
                                     }
                                     echo '</font>';
-                                    if ($score >= 80) {
-                                        $link232 = 'training/certificate?quizid=' . $_GET['quizid'] . '&userid=' . $user->id;
-                                        echo '<CENTER><a class=" btn btn-danger" href="' . $link232 . '">Click here to view the certificate</A></CENTER>';
+                                    if ($score >= 80 && $results["hascert"]) {
+                                        $Path = 'training/certificate?quizid=' . $_GET['quizid'] . '&userid=' . $user->id;
+                                        echo '<CENTER><a class=" btn btn-danger" href="' . $Path . '">Click here to view the certificate</A></CENTER>';
                                     }
                                     //echo '</div></div>';
                                     echo "</div>";
