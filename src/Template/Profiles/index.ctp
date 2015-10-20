@@ -2,7 +2,7 @@
     include_once('subpages/api.php');
     $settings = $this->requestAction('settings/get_settings');
     $language = $this->request->session()->read('Profile.language');
-    $strings = CacheTranslations($language, "profiles_%",$settings);//,$registry);//$registry = $this->requestAction('/settings/getRegistry');
+    $strings = CacheTranslations($language, array("profiles_%", "documents_submitted%"),$settings);//,$registry);//$registry = $this->requestAction('/settings/getRegistry');
     if($language == "Debug"){ $Trans = " [Translated]"; } else {$Trans = "";}
     $super = $this->request->session()->read('Profile.super');
 ?>
@@ -205,6 +205,8 @@
                                     echo '<TR><TD COLSPAN="8" ALIGN="CENTER">' . $strings["profiles_nonefound"] . '</TD></TR>';
                                 }
 
+                                $URLStart = '<a href="' . $this->request->webroot;
+                                $URLEnd = '" class="' . btnclass("btn-info", "blue-soft") . '">';//$strings["profiles_viewdocuments"]
                                 foreach ($profiles as $profile):
                                     if ($row_color_class == "even") {
                                         $row_color_class = "odd";
@@ -277,13 +279,9 @@
 
 
                                                 if ($sidebar->document_list == 1/* && $doc != 0 && $cn != 0*/) {
-                                                    echo '<a href="';
-                                                    if($profile->profile_type == '5' || $profile->profile_type == '7' || $profile->profile_type == '8' || $profile->profile_type == '11') {
-                                                        echo $this->request->webroot . 'documents/index?type=&submitted_for_id=' . $profile->id;
-                                                    } else {
-                                                        echo $this->request->webroot . 'documents/index?type=&submitted_by_id=' . $profile->id;
-                                                    }
-                                                    echo '" class="' . btnclass("btn-info", "blue-soft") . '">' . $strings["profiles_viewdocuments"] . '</a>';
+                                                    $SubBy = $URLStart . 'documents/index?type=&submitted_by_id=' . $profile->id . $URLEnd . $strings["documents_submittedby"] . '</A>';
+                                                    $SubFor = $URLStart . 'documents/index?type=&submitted_for_id=' . $profile->id . $URLEnd . $strings["documents_submittedfor"] . '</A>';
+                                                    echo $SubBy . $SubFor;
                                                 }
 
                                                 if ($sidebar->orders_list == '1' && $profile->profile_type > 0) {

@@ -24,8 +24,7 @@
                     $exceptions = array("webservice");
                     break;
                 case "rapid":
-                    $exceptions = array("placerapidorder");
-                    break;
+                   return false;
             }
 
 

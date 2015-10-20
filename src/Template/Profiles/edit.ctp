@@ -53,7 +53,7 @@
 
     include_once('subpages/api.php');
     $language = $this->request->session()->read('Profile.language');
-    $strings = CacheTranslations($language, array("profiles_%", "forms_%", "clients_addeditimage", "clients_enablerequalify", "theme_%", "month_long%", "flash_cantorder"), $settings);
+    $strings = CacheTranslations($language, array("profiles_%", "forms_%", "file_missingdata", "clients_addeditimage", "clients_enablerequalify", "theme_%", "month_long%", "flash_cantorder"), $settings);
     if ($language == "Debug") {
         $Trans = " [Trans]";
     } else {
@@ -213,10 +213,23 @@
                                         }
                                         echo '> ' . $strings["clients_enablerequalify"] . '<span class="req_msg"></span></label>';
 
+                                        $MissingFields = $Manager->requiredfields(false, "profile2order");
                                         $MissingData = $Manager->requiredfields($profile, "profile2order");
+                                        $Missing= array();
                                         if(!$profile->iscomplete || $MissingData){
                                             $Debug = ' (' . $MissingData . '|' . $profile->iscomplete . ')';
-                                            echo "<BR><B>" . $strings["flash_cantorder"] . '</B>';
+                                            if(!$profile->iscomplete){
+                                                $Missing[] = "Letter of Experience";
+                                                $Missing[] = "Consent form";
+                                            }
+                                            foreach($MissingFields as $Field => $String){
+                                                if(!$profile->$Field){
+                                                    $Missing[] = $strings[$String];
+                                                }
+                                            }
+
+                                            echo "<BR><B>" . $strings["flash_cantorder"] . '</BR><HR>' . $strings["file_missingdata"] . ': </B>';
+                                            echo implode(", ", $Missing);
                                         } else if ($sidebar->orders_create == 1) {
                                             $title = getFieldname("Name", $language);
                                             foreach ($products as $product) {

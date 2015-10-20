@@ -1071,9 +1071,11 @@ class ManagerComponent extends Component {
         if(!is_array($Fields)){
             switch($Fields) {
                 case "profile2order":
-                    $Fields = array("fname", "email", "lname", "profile_type", "gender", "email", "driver_province", "title", "placeofbirth", "sin", "phone", "street", "city", "province", "postalcode", "country", "dob", "driver_license_no", "expiry_date");
+                    $Fields = array ("fname" => "forms_firstname", "email" => "forms_email", "lname" => "forms_lastname", "profile_type" => "profiles_profiletype", "gender" => "forms_gender",  "driver_province" => "forms_provinceissued", "title" => "forms_title", "placeofbirth" => "forms_placeofbirth", "sin" => "forms_sin", "phone" => "forms_phone", "street" => "forms_address", "city" => "forms_city", "province" => "forms_provincestate", "postalcode" => "forms_postalcode", "country" => "forms_country", "dob" => "forms_dateofbirth", "driver_license_no" => "forms_driverslicense", "expiry_date" => "forms_expirydate");
                     break;
             }
+            if(!is_object($Data)){return $Fields;}
+            $Fields= array_keys($Fields);
         }
         if(is_array($Fields)){
             foreach($Fields as $Key){

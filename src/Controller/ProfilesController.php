@@ -772,7 +772,7 @@
                 $this->set('id', $id);
                 $this->loadclients($profile->id);
 
-                if($this->Manager->requiredfields($profile, "profile2order") || !$profile->iscomplete){
+                if($profile->Ptype->placesorders && ($this->Manager->requiredfields($profile, "profile2order") || !$profile->iscomplete)) {
                     $this->Flash->error($this->Trans->getString("flash_cantorder"));
                 }
 
