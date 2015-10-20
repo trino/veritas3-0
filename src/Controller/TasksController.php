@@ -149,7 +149,7 @@ class TasksController extends AppController {
     }
 
     function getnextdate($date, $frequency) {
-        $today = date('Y-m-d');
+        $today = date('Y-m-d');//                              24 hours * 60 minutes * 60 seconds * 30 days
         $nxt_date = date('Y-m-d', strtotime($date)+($frequency*24*60*60*30));
         if (strtotime($nxt_date) < strtotime($today)) {
             $d = $this->getnextdate($nxt_date, $frequency);

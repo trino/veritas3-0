@@ -8,6 +8,16 @@
     $language = $this->request->session()->read('Profile.language');
     $strings = CacheTranslations($language, array($this->request->params['controller'] . "_%", "month_long%"),$settings);
 
+    $Frequencies = array();
+    foreach(array(1,3,6,12) as $Frequency){
+        $Frequencies[$Frequency] = getpreviousdate($Frequency);
+    }
+
+    function getpreviousdate($frequency){
+        $today = date('Y-m-d');//                              24 hours * 60 minutes * 60 seconds * 30 days
+        return date('Y-m-d', strtotime($today)-($frequency*24*60*60*30));
+    }
+
     function pluralize($Quantity, $Word, $Append = "s"){
         if($Quantity == 1){ return $Word;}
         return $Word . $Append;
@@ -47,8 +57,15 @@
         }
         foreach($_POST as $Key => $TheClients){
             foreach($TheClients as $ID => $Value){
-                //echo "SET " . $Key . " to " . $Value . " WHERE id = " . $ID . '<BR>';
-                $Manager->update_database("clients", "id", $ID, array($Key => $Value));
+                if (is_array($Value)){
+                    foreach($Value as $Key2 => $Value2){
+                        //echo "SET " . $Key . '.' . $ID . " to " . $Value2 . " WHERE id = " . $Key2 . '<BR>';
+                        $Manager->update_database($Key, "id", $Key2, array($ID => $Value2));
+                    }
+                } else {//assume clients
+                    //echo "SET " . $Key . " to " . $Value . " WHERE id = " . $ID . '<BR>';
+                    $Manager->update_database("clients", "id", $ID, array($Key => $Value));
+                }
             }
         }
         //debug($_POST);
@@ -109,34 +126,57 @@
                                 </thead>
                                 <tbody>
                                     <?php
-                                        $Frequencies = array(1,3,6,12);
                                         foreach($Clients as $Client){
                                             $Users = $Manager->enum_all("profiles", array('id IN('.$Client->profile_id.')', "requalify" => 1));
                                             $Profiles[$Client->id] = $Users;
                                             echo '<TR>' . $CRLF;
                                             echo '<TD>' . $Client->id . '</TD>' . $CRLF;
                                             echo '<TD><A HREF="' . $this->request->webroot . 'profiles/index?&filter_by_client=' . $Client->id . '" TARGET="_blank">' . $Client->company_name . '</A></TD>' . $CRLF;
-                                            echo '<TD><LABEL><INPUT TYPE="checkbox" name="requalify[' . $Client->id . ']" value="1"';
+                                            echo '<TD><LABEL><INPUT TYPE="checkbox" name="requalify[' . $Client->id . ']" value="1" ONCHANGE="change();"';
                                             if($Client->requalify){echo ' CHECKED';}
                                             echo '></LABEL></TD>';
                                             echo '<TD><SELECT ID="freq' . $Client->id . '" NAME="requalify_frequency[' . $Client->id . ']">';
-                                            foreach($Frequencies as $Frequency){
+                                            foreach($Frequencies as $Frequency => $Date){
                                                 echo '<OPTION VALUE="' . $Frequency . '"';
                                                 if ($Frequency==$Client->requalify_frequency){ echo ' SELECTED';}
                                                 echo '>' . $Frequency .  pluralize($Frequency, ' Month') . '</OPTION>';
                                             }
                                             echo '</SELECT></TD><TD><LABEL><INPUT TYPE="CHECKBOX" value="1" id="check_when' . $Client->id . '" ONCLICK="when(' . $Client->id . ');" NAME="requalify_re[' . $Client->id . ']"';
+                                                echo ' TITLE="Click to toggle between the anniversary of their hired date or specify a date yourself"';
                                                 if($Client->requalify_re){ echo " CHECKED";}
                                                 echo '>&nbsp;<SPAN ID="span_when' . $Client->id . '"';
                                                 if(!$Client->requalify_re){ echo ' STYLE="display: none;"';}
                                                 if(!$Client->requalify_date){$Client->requalify_date = date("Y-m-d");}
-                                                echo '>Anniversary</SPAN></LABEL><INPUT TYPE="TEXT" NAME="requalify_date[' . $Client->id . ']" ID="text_when' . $Client->id . '" class="datepicker date-picker" value="' .  $Client->requalify_date . '"';
+                                                echo '>Anniversary</SPAN></LABEL><INPUT TYPE="TEXT" NAME="requalify_date[' . $Client->id . ']" ID="text_when' . $Client->id . '" class="datepicker date-picker" value="' .  $Client->requalify_date . '" ONCHANGE="change();"';
                                                 if($Client->requalify_re){ echo ' STYLE="display: none;"';}
                                             echo '></TD><TD>';
                                             printproducts($Client->id, $Client->requalify_product, $products, array(1, 14, 72), $language);
                                             echo '</TD><TD align="RIGHT">';
-                                            echo iterator_count($Users) . '/' . count(explode(",", $Client->profile_id));
+                                            $Count = iterator_count($Users);
+                                            if($Count) {
+                                                echo '<A HREF="?clientid=' . $Client->id . '">' . $Count . '/' . count(explode(",", $Client->profile_id)) . '</A>';
+                                            } else {
+                                                echo "0/" . count(explode(",", $Client->profile_id));
+                                            }
                                             echo '</TD></TR>';
+
+                                            if (isset($_GET["clientid"]) && $_GET["clientid"] == $Client->id){
+                                                echo '<TR><TD COLSPAN="7" style="padding-right: 10px;"><table class="table table-condensed table-striped table-bordered table-hover dataTable no-footer" ';
+                                                echo 'style="margin-bottom: 5px; margin-left: 3px;"><thead><TR>';
+                                                echo '<TH>ID</TH><TH>Name</TH><TH>Hired Date</TH><TH>Auto-Change</TH></TR><TBODY>';
+                                                foreach($Users as $Profile){
+                                                    echo '<TR><TD>' . $Profile->id . '</TD>';
+                                                    echo '<TD><A HREF="' . $this->request->webroot . 'profiles/view/' . $Profile->id . '">' . formatname($Profile) . '</A></TD>';
+                                                    echo '<TD><INPUT ONCHANGE="change();" TYPE="TEXT" ID="hireddate' . $Profile->id . '" NAME="profiles[hired_date][' . $Profile->id . ']" VALUE="';
+                                                    echo $Profile->hired_date . '" class="datepicker date-picker"></TD><TD>';
+                                                    foreach($Frequencies as $Frequency => $Date){
+                                                        echo '<INPUT TYPE="BUTTON" CLASS="btn-xs btn btn-info btnspc" VALUE="-' . $Frequency . pluralize($Frequency, " Month") . '" ';
+                                                        echo 'ONCLICK="changehired(' . $Profile->id . ', ' . $Frequency . ", '" . $Date . "'" . ');">';
+                                                    }
+                                                    echo '</TD></TR>';
+                                                }
+                                                echo '</TBODY></TABLE></TD></TR>';
+                                            }
                                         }
                                     ?>
                                 </tbody>
@@ -158,10 +198,32 @@
     </div>
 </FORM>
 <SCRIPT>
+    var Changed = false;
+
+    window.onbeforeunload = function (e) {
+        if (Changed) {
+            var message = "You have not saved your changes yet", e = e || window.event;
+            if (e) {e.returnValue = message;}// For IE and Firefox
+            return message;// For Safari
+        }
+    };
+
+
+    function change(){
+        Changed = true;
+    }
+
+    function changehired(ProfileID, Months, Date){
+        var element = document.getElementById("hireddate" + ProfileID);
+        element.value = Date;
+        Changed = true;
+    }
+
     function when(ClientID){
         var checked = getinputvalue("check_when" + ClientID);
         visible("span_when" + ClientID, checked);
         visible("text_when" + ClientID, !checked);
+        Changed = true;
     }
 
     function visible(ID, Status){
@@ -210,89 +272,89 @@
 
                 <div class="form-body">
                     <div class="table-scrollable" align="center">
+                        <?php
+                            echo '<TABLE border="1"><TR>';
+                            for($Temp = 0; $Temp < $Months; $Temp++){
+                                echo '<TD valign="top">';
+                                makemonthtable($strings, $Year, $Month, $new_req, $Clients, $Profiles, $products, $language);
+                                echo '</TD>';
 
-<?php
-echo '<TABLE border="1"><TR>';
-for($Temp = 0; $Temp < $Months; $Temp++){
-    echo '<TD valign="top">';
-    makemonthtable($strings, $Year, $Month, $new_req, $Clients, $Profiles, $products, $language);
-    echo '</TD>';
+                                if(($Temp % 6) == 5) echo "</TR><tr>";
 
-    if(($Temp % 6) == 5) echo "</TR><tr>";
-
-    $Month++;
-    if($Month==13){
-        $Month=1;
-        $Year++;
-    }
-}
-echo '</TR></TABLE>';
-
-function makemonthtable($strings, $Year, $Month, $Events, $Clients, $Profiles, $products, $language){
-    if($Month<10){$Month="0" . $Month;}
-    ?>
-        <table width="200" border="0" cellpadding="2" cellspacing="2">
-            <THEAD>
-            <tr align="center">
-                <td colspan="7"><?php echo $strings['month_long' . $Month].' '.$Year; ?></td>
-            </tr>
-            <tr>
-                <TD align="right"><STRONG>S</STRONG></TD>
-                <TD align="right"><STRONG>M</STRONG></TD>
-                <TD align="right"><STRONG>T</STRONG></TD>
-                <TD align="right"><STRONG>W</STRONG></TD>
-                <TD align="right"><STRONG>T</STRONG></TD>
-                <TD align="right"><STRONG>F</STRONG></TD>
-                <TD align="right"><STRONG>S</STRONG></TD>
-            </tr>
-            </THEAD>
-            <TBODY>
-            <TR>
-            <?php
-                $timestamp = mktime(0,0,0,$Month,1,$Year);
-                $maxday = date("t",$timestamp);
-                $thismonth = getdate ($timestamp);
-                $startday = $thismonth['wday'];
-                $today = date('Y-m-d');
-                for ($i=0; $i<($maxday+$startday); $i++) {
-                    $Style = "";
-                    $Day = $i - $startday + 1;
-                    if(($i % 7) == 0 ) echo "<tr>";
-                    $Title=array();
-                    if($i < $startday) {
-                        echo "<td></td>";
-                    } else {
-                        $Date = $Year . '-' . $Month . '-';
-                        if($Day<10){
-                            $Date .= "0" . $Day;
-                        } else {
-                            $Date .= $Day;
-                        }
-
-                        echo "<td align='right' border='1' valign='middle' height='20px' style='";
-                        if($today == $Date) {
-                            echo 'border:1px solid #000;';
-                            $Title[] = "Today";
-                        }
-                        foreach($Events as $CRON){
-                            if(in_array($Date, $CRON["dates"])){
-                                $CRON["client"] = getIterator($Clients, "id", $CRON["client_id"]);
-                                $CRON["client"] = $CRON["client"]->company_name;
-                                $Profile = getIterator($Profiles[$CRON["client_id"]], "id", $CRON["profile_id"]);
-                                $CRON["profile"] = formatname($Profile);
-                                $Style = "background-color: silver;";
-                                $Title[] = $CRON["profile"] . " " . $CRON["client"] . " (" . productname($products, $CRON["forms"], $language) . ')';
+                                $Month++;
+                                if($Month==13){
+                                    $Month=1;
+                                    $Year++;
+                                }
                             }
-                        }
-                        echo $Style . "' " . 'TITLE="' . implode("\r\n", $Title) . '">'. $Day . "</td>";
-                    }
-                    if(($i % 7) == 6 ) echo "</tr>";
-                }
-            echo '</TR></TBODY></TABLE>';
-}
-?>
+                            echo '</TR></TABLE>';
+
+                            function makemonthtable($strings, $Year, $Month, $Events, $Clients, $Profiles, $products, $language){
+                                if($Month<10){$Month="0" . $Month;}
+                                ?>
+                                    <table width="200" border="0" cellpadding="2" cellspacing="2">
+                                        <THEAD>
+                                        <tr align="center">
+                                            <td colspan="7"><?php echo $strings['month_long' . $Month].' '.$Year; ?></td>
+                                        </tr>
+                                        <tr>
+                                            <TD align="right"><STRONG>S</STRONG></TD>
+                                            <TD align="right"><STRONG>M</STRONG></TD>
+                                            <TD align="right"><STRONG>T</STRONG></TD>
+                                            <TD align="right"><STRONG>W</STRONG></TD>
+                                            <TD align="right"><STRONG>T</STRONG></TD>
+                                            <TD align="right"><STRONG>F</STRONG></TD>
+                                            <TD align="right"><STRONG>S</STRONG></TD>
+                                        </tr>
+                                        </THEAD>
+                                        <TBODY>
+                                            <TR>
+                                            <?php
+                                            $timestamp = mktime(0,0,0,$Month,1,$Year);
+                                            $maxday = date("t",$timestamp);
+                                            $thismonth = getdate ($timestamp);
+                                            $startday = $thismonth['wday'];
+                                            $today = date('Y-m-d');
+                                            for ($i=0; $i<($maxday+$startday); $i++) {
+                                                $Style = "";
+                                                $Day = $i - $startday + 1;
+                                                if(($i % 7) == 0 ) echo "<tr>";
+                                                $Title=array();
+                                                if($i < $startday) {
+                                                    echo "<td></td>";
+                                                } else {
+                                                    $Date = $Year . '-' . $Month . '-';
+                                                    if($Day<10){
+                                                        $Date .= "0" . $Day;
+                                                    } else {
+                                                        $Date .= $Day;
+                                                    }
+
+                                                    echo "<td align='right' border='1' valign='middle' height='20px' style='";
+                                                    if($today == $Date) {
+                                                        echo 'border:1px solid #000;';
+                                                        $Title[] = "Today";
+                                                    }
+                                                    foreach($Events as $CRON){
+                                                        if(in_array($Date, $CRON["dates"])){
+                                                            $CRON["client"] = getIterator($Clients, "id", $CRON["client_id"]);
+                                                            $CRON["client"] = $CRON["client"]->company_name;
+                                                            $Profile = getIterator($Profiles[$CRON["client_id"]], "id", $CRON["profile_id"]);
+                                                            $CRON["profile"] = formatname($Profile);
+                                                            $Style = "background-color: silver;";
+                                                            $Title[] = $CRON["profile"] . " " . $CRON["client"] . " (" . productname($products, $CRON["forms"], $language) . ')';
+                                                        }
+                                                    }
+                                                    echo $Style . "' " . 'TITLE="' . implode("\r\n", $Title) . '">'. $Day . "</td>";
+                                                }
+                                                if(($i % 7) == 6 ) echo "</tr>";
+                                            }
+                                        echo '</TR></TBODY></TABLE>';
+                            }
+                        ?>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+</div>
