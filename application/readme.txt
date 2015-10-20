@@ -1,76 +1,4 @@
-You will need this PHP code to generate a POST request:
-
-//gets the extension of a file (not including the period)
-function extension($Filename){
-    $type = strtolower(pathinfo($Filename, PATHINFO_EXTENSION));
-    if($type == "jpeg"){$type="jpg";}
-    return $type;
-}
-
-//base64 encodes a file
-function base64encodefile($Filename, $Extension = ""){
-    if (file_exists($Filename)) {
-        if(!$Extension){$Extension= extension($Filename);}
-        return "data:image/" . $Extension . ";base64," . base64_encode(file_get_contents($Filename));
-    }
-}
-
-//returns if the string is a valid JSON string or not
-function isJson($string) {
-    if($string && !is_array($string)){
-        json_decode($string);
-        return (json_last_error() == JSON_ERROR_NONE);
-    }
-}
-
-//flattens a multi-dimensional POST made for this system
-function array_flatten($array) {
-    if(isset($array["form"])) {
-        foreach ($array["form"] as $ID => $Data) {
-            foreach ($Data as $Key => $Value) {
-                $array["data[" . $ID . "][" . $Key . ']'] = $Value;
-            }
-        }
-    }
-    unset($array["form"]);
-    return $array;
-}
-
-//makes a raw POST request
-function cURL($URL, $data = "", $username = "", $password = ""){
-    $session = curl_init($URL);
-    curl_setopt($session, CURLOPT_HEADER, true);
-    //curl_setopt($session, CURLOPT_SSL_VERIFYPEER, false);//not in post production
-    curl_setopt($session, CURLOPT_RETURNTRANSFER, true);
-    curl_setopt($session, CURLOPT_POST, true);
-    if($data) {
-        curl_setopt ($session, CURLOPT_POSTFIELDS, $data);
-    }
-    //$datatype = "application/x-www-form-urlencoded;charset=UTF-8";
-    $datatype= "multipart/form-data";
-    if(isJson($data)){$datatype  = "application/json";}//comment out this line, and isJson won't be required
-
-    $header = array('Content-type: ' . $datatype, "User-Agent: SMI");
-    if ($username && $password){
-        $header[] =	"Authorization: Basic " . base64_encode($username . ":" . $password);
-    } else if ($username) {
-        $header[] =	"Authorization: Bearer " .  $username;
-        $header[] =	"Accept-Encoding: gzip";
-    } else if ($password) {
-        $header[] =	"Authorization: AccessKey " .  $password;
-    }
-    curl_setopt($session, CURLOPT_HTTPHEADER, $header);
-
-    $response = curl_exec($session);
-    if(curl_errno($session)){
-        $response = "[Error: " . curl_error($session) . ']';
-    }
-    curl_close($session);
-    $FIND="Content-Type: text/html";
-    $START = strpos($response, $FIND);
-    if($START){$response = substr($response,$START + strlen($FIND) + 4);}
-    return $response;
-}
+http://isbmee.ca/mee/rapid/placerapidorder
 
 the $URL parameter needs to point to /rapid/placerapidorder
 
@@ -189,3 +117,81 @@ Forms:
 There is also an API tester you can use, located at:
 [website URL]/rapid/testpost/postorder
 this will create a test profile and place an order for it
+
+
+
+
+
+You will need this PHP code to generate a POST request:
+
+//gets the extension of a file (not including the period)
+function extension($Filename){
+    $type = strtolower(pathinfo($Filename, PATHINFO_EXTENSION));
+    if($type == "jpeg"){$type="jpg";}
+    return $type;
+}
+
+//base64 encodes a file
+function base64encodefile($Filename, $Extension = ""){
+    if (file_exists($Filename)) {
+        if(!$Extension){$Extension= extension($Filename);}
+        return "data:image/" . $Extension . ";base64," . base64_encode(file_get_contents($Filename));
+    }
+}
+
+//returns if the string is a valid JSON string or not
+function isJson($string) {
+    if($string && !is_array($string)){
+        json_decode($string);
+        return (json_last_error() == JSON_ERROR_NONE);
+    }
+}
+
+//flattens a multi-dimensional POST made for this system
+function array_flatten($array) {
+    if(isset($array["form"])) {
+        foreach ($array["form"] as $ID => $Data) {
+            foreach ($Data as $Key => $Value) {
+                $array["data[" . $ID . "][" . $Key . ']'] = $Value;
+            }
+        }
+    }
+    unset($array["form"]);
+    return $array;
+}
+
+//makes a raw POST request
+function cURL($URL, $data = "", $username = "", $password = ""){
+    $session = curl_init($URL);
+    curl_setopt($session, CURLOPT_HEADER, true);
+    //curl_setopt($session, CURLOPT_SSL_VERIFYPEER, false);//not in post production
+    curl_setopt($session, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($session, CURLOPT_POST, true);
+    if($data) {
+        curl_setopt ($session, CURLOPT_POSTFIELDS, $data);
+    }
+    //$datatype = "application/x-www-form-urlencoded;charset=UTF-8";
+    $datatype= "multipart/form-data";
+    if(isJson($data)){$datatype  = "application/json";}//comment out this line, and isJson won't be required
+
+    $header = array('Content-type: ' . $datatype, "User-Agent: SMI");
+    if ($username && $password){
+        $header[] =	"Authorization: Basic " . base64_encode($username . ":" . $password);
+    } else if ($username) {
+        $header[] =	"Authorization: Bearer " .  $username;
+        $header[] =	"Accept-Encoding: gzip";
+    } else if ($password) {
+        $header[] =	"Authorization: AccessKey " .  $password;
+    }
+    curl_setopt($session, CURLOPT_HTTPHEADER, $header);
+
+    $response = curl_exec($session);
+    if(curl_errno($session)){
+        $response = "[Error: " . curl_error($session) . ']';
+    }
+    curl_close($session);
+    $FIND="Content-Type: text/html";
+    $START = strpos($response, $FIND);
+    if($START){$response = substr($response,$START + strlen($FIND) + 4);}
+    return $response;
+}
