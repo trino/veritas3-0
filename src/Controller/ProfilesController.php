@@ -772,9 +772,9 @@
                 $this->set('id', $id);
                 $this->loadclients($profile->id);
 
-                if($profile->Ptype->placesorders && ($this->Manager->requiredfields($profile, "profile2order") || !$profile->iscomplete)) {
-                    $this->Flash->error($this->Trans->getString("flash_cantorder"));
-                }
+                //if($profile->Ptype->placesorders && ($this->Manager->requiredfields($profile, "profile2order") || !$profile->iscomplete)) {
+                    //$this->Flash->error($this->Trans->getString("flash_cantorder"));
+                //}
 
                 $order = TableRegistry::get('documents')->find()->where(['order_id' => 0, 'uploaded_for' => $id])->order('id DESC');
                 $this->set('documents', $order);
