@@ -366,12 +366,12 @@ echo '</TD><TD><textarea disabled style="width:100%; height:100%; background-col
                                 foreach($EventList as $Date => $Event){
                                     echo $Date . "\r\n";
                                     foreach($Event as $Client => $Data){
-                                        echo "Client: " . $Client . "\r\n";
+                                        echo "Client:\t\t" . $Client . "\r\n";
                                         foreach($Data as $EventData){
-                                            echo "Profile: " . $EventData["Profile"];
+                                            echo "Profile:\t\t" . $EventData["Profile"];
                                         }
                                     }
-                                    echo "\r\nProducts: " . $EventData["Products"] .  "\r\n\r\n";
+                                    echo "\r\nProducts:\t" . $EventData["Products"] .  "\r\n\r\n";
                                 }
                             ?></textarea>
                         </TD></TR></TABLE>
