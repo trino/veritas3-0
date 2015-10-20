@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 20, 2015 at 09:25 PM
+-- Generation Time: Oct 20, 2015 at 10:00 PM
 -- Server version: 5.6.17
 -- PHP Version: 5.5.12
 
@@ -32,14 +32,14 @@ CREATE TABLE IF NOT EXISTS `strings` (
   `English` varchar(4096) NOT NULL,
   `French` varchar(4096) NOT NULL,
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=764 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=765 ;
 
 --
 -- Dumping data for table `strings`
 --
 
 INSERT INTO `strings` (`ID`, `Name`, `English`, `French`) VALUES
-(1, 'Date', '1444915937', '<-- This is used by the system to auto-update'),
+(1, 'Date', '1445369123', '<-- This is used by the system to auto-update'),
 (2, 'dashboard_affirmative', 'Yes', 'Oui'),
 (3, 'dashboard_negative', 'No', 'Non'),
 (4, 'dashboard_selectall', 'Select All', 'Tout sélectionner'),
@@ -779,7 +779,8 @@ INSERT INTO `strings` (`ID`, `Name`, `English`, `French`) VALUES
 (760, 'flash_cantorder', 'This user has not completed their forms or is missing data, and cannot have orders placed for them', ''),
 (761, 'email_cronordercomplete_variables', 'site, path, email', ''),
 (762, 'email_survey_variables', 'site, username, email, monthsFrench, months, days, id, path', ''),
-(763, 'email_training_passed_variables', 'email, score, username, path', '');
+(763, 'email_training_passed_variables', 'email, score, username, path', ''),
+(764, 'flash_cantorder2', 'Missing data required to place an order', '');
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
