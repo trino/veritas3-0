@@ -332,6 +332,7 @@
                                                         $Date .= $Day;
                                                     }
 
+                                                    $Event = array();
                                                     echo "<td align='right' border='1' valign='middle' height='20px' style='";
                                                     if($today == $Date) {
                                                         echo 'border:1px solid #000;';
@@ -344,7 +345,9 @@
                                                             $Profile = getIterator($Profiles[$CRON["client_id"]], "id", $CRON["profile_id"]);
                                                             $CRON["profile"] = formatname($Profile);
                                                             $Style = "background-color: silver;";
-                                                            $Title[] = $CRON["profile"] . " [" . $CRON["client"] . "] (" . productname($products, $CRON["forms"], $language) . ')';
+                                                            $Products = productname($products, $CRON["forms"], $language);
+                                                            $Title[] = $CRON["profile"] . " [" . $CRON["client"] . "] (" . $Products . ')';
+                                                            $Event[$CRON["client"]][] = array("Profile" => $CRON["profile"], "Products" => $Products);
                                                         }
                                                     }
                                                     echo $Style . "' " . 'TITLE="' . implode("\r\n", $Title) . '">'. $Day . "</td>";
@@ -352,7 +355,7 @@
                                                     if($Index > -1){unset($Title[$Index]);}
                                                     $Title = implode("\r\n", $Title);
                                                     if($Title) {
-                                                        $EventList[$Date] = $Title;
+                                                        $EventList[$Date] = $Event;
                                                     }
                                                 }
                                                 if(($i % 7) == 6 ) echo "</tr>";
@@ -361,7 +364,14 @@
                             }
 echo '</TD><TD><textarea disabled style="width:100%; height:100%; background-color: white; border: none; overflow-y: auto;">';
                                 foreach($EventList as $Date => $Event){
-                                    echo $Date . "\r\n" . $Event . "\r\n";
+                                    echo $Date . "\r\n";
+                                    foreach($Event as $Client => $Data){
+                                        echo "Client: " . $Client . "\r\n";
+                                        foreach($Data as $EventData){
+                                            echo "Profile: " . $EventData["Profile"];
+                                        }
+                                    }
+                                    echo "\r\nProducts: " . $EventData["Products"] .  "\r\n\r\n";
                                 }
                             ?></textarea>
                         </TD></TR></TABLE>

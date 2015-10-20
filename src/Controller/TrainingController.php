@@ -416,7 +416,7 @@ class TrainingController extends AppController {
             $table->query()->update()->set(['training' => 1])->where(['user_id' => $UserID])->execute();
 
             $profile = $this->getprofile($UserID, false);
-            $path = LOGIN .'training/quiz?quizid=' . $QuizID;
+            $path = LOGIN .'training?quizid=' . $QuizID;
             $this->Mailer->handleevent("training_enrolled", array("email" => "$profile->email", "path" => $path));
             return true;
         }
