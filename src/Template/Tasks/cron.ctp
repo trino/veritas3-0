@@ -117,7 +117,7 @@
                                     <tr class="sorting">
                                         <th><?= $this->Paginator->sort('id', "ID"); ?></th>
                                         <th><?= $this->Paginator->sort('company_name', "Name"); ?></th>
-                                        <th title="Is requalify enabled"><?= $this->Paginator->sort('requalify', "On"); ?></th>
+                                        <th title="Is requalify enabled" style="width: 37px;"><?= $this->Paginator->sort('requalify', "On"); ?></th>
                                         <th><?= $this->Paginator->sort('requalify_frequency', "Frequency"); ?></th>
                                         <th>From when</th>
                                         <th>Products</th>
@@ -135,7 +135,7 @@
                                             echo '<TD><LABEL><INPUT TYPE="checkbox" name="requalify[' . $Client->id . ']" value="1" ONCHANGE="change();"';
                                             if($Client->requalify){echo ' CHECKED';}
                                             echo '></LABEL></TD>';
-                                            echo '<TD><SELECT ID="freq' . $Client->id . '" NAME="requalify_frequency[' . $Client->id . ']">';
+                                            echo '<TD><SELECT ID="freq' . $Client->id . '" NAME="requalify_frequency[' . $Client->id . ']" STYLE="width: 100%;">';
                                             foreach($Frequencies as $Frequency => $Date){
                                                 echo '<OPTION VALUE="' . $Frequency . '"';
                                                 if ($Frequency==$Client->requalify_frequency){ echo ' SELECTED';}
@@ -147,9 +147,10 @@
                                                 echo '>&nbsp;<SPAN ID="span_when' . $Client->id . '"';
                                                 if(!$Client->requalify_re){ echo ' STYLE="display: none;"';}
                                                 if(!$Client->requalify_date){$Client->requalify_date = date("Y-m-d");}
-                                                echo '>Anniversary</SPAN></LABEL><INPUT TYPE="TEXT" NAME="requalify_date[' . $Client->id . ']" ID="text_when' . $Client->id . '" class="datepicker date-picker" value="' .  $Client->requalify_date . '" ONCHANGE="change();"';
-                                                if($Client->requalify_re){ echo ' STYLE="display: none;"';}
-                                            echo '></TD><TD>';
+                                                echo '>Anniversary</SPAN></LABEL><INPUT TYPE="TEXT" NAME="requalify_date[' . $Client->id . ']" ID="text_when' . $Client->id;
+                                                echo '" class="datepicker date-picker" value="' .  $Client->requalify_date . '" ONCHANGE="change();" STYLE="width: 90%;';
+                                                if($Client->requalify_re){ echo ' display: none;';}
+                                            echo '"></TD><TD>';
                                             printproducts($Client->id, $Client->requalify_product, $products, array(1, 14, 72), $language);
                                             echo '</TD><TD align="RIGHT">';
                                             $Count = iterator_count($Users);
