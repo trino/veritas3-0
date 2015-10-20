@@ -194,7 +194,7 @@
 
 
                     }
-                    if($p->profile_type=='5'|| $p->profile_type=='7'|| $p->profile_type=='8'){
+                    //if($p->profile_type=='5'|| $p->profile_type=='7'|| $p->profile_type=='8'){
                         if ($c->requalify_re == '1') {
                             $date = $p->hired_date;
                             if(strtotime($date) <= strtotime($today)) {
@@ -225,7 +225,7 @@
                         array_push($reqs,$n_req);
                         unset($n_req);
                         unset($date);
-                    }
+
                 }
             }
             
