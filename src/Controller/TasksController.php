@@ -65,48 +65,47 @@ class TasksController extends AppController {
                             $date = $this->getnextdate($date, $frequency);
                         }
                     }
-
-
                 }
-                if($p->profile_type=='5'|| $p->profile_type=='7'|| $p->profile_type=='8'){
-                    if ($c->requalify_re == '1') {
-                        $date = $p->hired_date;
-                        if(strtotime($date) <= strtotime($today)) {
-                            if(strtotime($date) == strtotime($today)) {
-                                if($this->checkcron($c->id, $date, $p->id)) {
-                                    $date = $this->getnextdate($date, $frequency);
-                                }
-                            } else {
-                                $date =  $this->getnextdate($date,$frequency);
-                                if(strtotime($date) == strtotime($today)) {
-                                    if ($this->checkcron($c->id, $date, $p->id)) {
-                                        $date = $this->getnextdate($date, $frequency);
-                                    }
-                                }
-                            }
-                        } else {
-                            if (strtotime($date) == strtotime($today)) {
+
+               // if($p->profile_type=='5'|| $p->profile_type=='7'|| $p->profile_type=='8'){
+                if ($c->requalify_re == '1') {
+                    $date = $p->hired_date;
+                    if(strtotime($date) <= strtotime($today)) {
+                        if(strtotime($date) == strtotime($today)) {
+                            if($this->checkcron($c->id, $date, $p->id)) {
                                 $date = $this->getnextdate($date, $frequency);
                             }
+                        } else {
+                            $date =  $this->getnextdate($date,$frequency);
+                            if(strtotime($date) == strtotime($today)) {
+                                if ($this->checkcron($c->id, $date, $p->id)) {
+                                    $date = $this->getnextdate($date, $frequency);
+                                }
+                            }
+                        }
+                    } else {
+                        if (strtotime($date) == strtotime($today)) {
+                            $date = $this->getnextdate($date, $frequency);
                         }
                     }
-
-                    $n_req['cron_date']= $date;
-                    $n_req['client_id'] = $c->id;
-                    $n_req['profile_id'] = $p->id;
-                    $n_req['forms'] = $c->requalify_product;
-                    $n_req['expiry_date'] = $p->expiry_date;
-
-                    $n_req["dates"][] = $date;
-                    while ($date < $EndTime){
-                        $date=$this->getnextdate($date, $frequency);
-                        $n_req["dates"][] = $date;
-                    }
-
-                    array_push($reqs,$n_req);
-                    unset($n_req);
-                    unset($date);
                 }
+
+                $n_req['cron_date']=    $date;
+                $n_req['client_id'] =   $c->id;
+                $n_req['profile_id'] =  $p->id;
+                $n_req['forms'] =       $c->requalify_product;
+                $n_req['expiry_date'] = $p->expiry_date;
+
+                $n_req["dates"][] = $date;
+                while ($date < $EndTime){
+                    $date=$this->getnextdate($date, $frequency);
+                    $n_req["dates"][] = $date;
+                }
+
+                array_push($reqs,$n_req);
+                unset($n_req);
+                unset($date);
+
             }
         }
         $this->sksort($reqs,'cron_date',true);

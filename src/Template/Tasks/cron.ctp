@@ -7,6 +7,7 @@
     include_once('subpages/api.php');
     $language = $this->request->session()->read('Profile.language');
     $strings = CacheTranslations($language, array($this->request->params['controller'] . "_%", "month_long%"),$settings);
+    $Showname=isset($_GET["clientid"]);
 
     $Frequencies = array();
     foreach(array(1,3,6,12) as $Frequency){
@@ -87,6 +88,9 @@
     </ul>
     <a href="javascript:window.print();" class="floatright btn btn-info"><?= $strings["dashboard_print"]; ?></a>
     <a class="floatright btn btn-warning btnspc" href="<?= $this->request->webroot; ?>profiles/cron/true">Run the CRON </a>
+    <?php if($Showname){
+        echo '<a class="floatright btn btn-danger btnspc" href="' . $this->request->webroot . 'tasks/cron">Go Back</a>';
+    } ?>
 </div>
 
 <FORM METHOD="post">
@@ -257,7 +261,11 @@
             <div class="portlet-title">
                 <div class="caption">
                     <i class="fa fa-calendar"></i>
-                    The next <?= $Months; ?> months
+                    The next <?= $Months; ?> months <?php
+                        if($Showname){
+                            echo " for " . getIterator($Clients, "id", $_GET["clientid"])->company_name;
+                        }
+                    ?>
                 </div>
             </div>
             <div class="portlet-body form">
@@ -339,18 +347,22 @@
                                                         echo 'border:1px solid #000;';
                                                         $Title[] = "Today";
                                                     }
+
                                                     foreach($Events as $CRON){
                                                         if(in_array($Date, $CRON["dates"])){
-                                                            $CRON["client"] = getIterator($Clients, "id", $CRON["client_id"]);
-                                                            $CRON["client"] = $CRON["client"]->company_name;
-                                                            $Profile = getIterator($Profiles[$CRON["client_id"]], "id", $CRON["profile_id"]);
-                                                            $CRON["profile"] = formatname($Profile);
-                                                            $Style = "background-color: silver;";
-                                                            $Products = productname($products, $CRON["forms"], $language);
-                                                            $Title[] = $CRON["profile"] . " [" . $CRON["client"] . "] (" . $Products . ')';
-                                                            $Event[$CRON["client"]][] = array("Profile" => $CRON["profile"], "Products" => $Products);
+                                                            if(!isset($_GET["clientid"]) || (isset($_GET["clientid"]) && $_GET["clientid"] == $CRON["client_id"])) {
+                                                                $CRON["client"] = getIterator($Clients, "id", $CRON["client_id"]);
+                                                                $CRON["client"] = $CRON["client"]->company_name;
+                                                                $Profile = getIterator($Profiles[$CRON["client_id"]], "id", $CRON["profile_id"]);
+                                                                $CRON["profile"] = formatname($Profile);
+                                                                $Style = "background-color: silver;";
+                                                                $Products = productname($products, $CRON["forms"], $language);
+                                                                $Title[] = $CRON["profile"] . " [" . $CRON["client"] . "] (" . $Products . ')';
+                                                                $Event[$CRON["client"]][] = array("Profile" => $CRON["profile"], "Products" => $Products);
+                                                            }
                                                         }
                                                     }
+
                                                     echo $Style . "' " . 'TITLE="' . implode("\r\n", $Title) . '">'. $Day . "</td>";
                                                     $Index = array_search ("Today", $Title);
                                                     if($Index > -1){unset($Title[$Index]);}
@@ -367,7 +379,7 @@ echo '</TD><TD><textarea disabled style="width:100%; height:100%; background-col
                                 foreach($EventList as $Date => $Event){
                                     echo $Date . "\r\n";
                                     foreach($Event as $Client => $Data){
-                                        echo "Client:\t\t" . $Client . "\r\n";
+                                        if(!$Showname) {echo "Client:\t\t" . $Client . "\r\n";}
                                         foreach($Data as $EventData){
                                             echo "Profile:\t\t" . $EventData["Profile"];
                                         }
