@@ -17,9 +17,9 @@
         if(strpos($number, ",") !== false){$number = explode(",", $number);}
         if(is_array($number)){
             foreach($number as $Key => $Num){
-                $products[$Key] = productname($products, $Num, $language);
+                $number[$Key] = productname($products, $Num, $language);
             }
-            return implode(", ", $products);
+            return implode(", ", $number);
         } else {
             $product = getIterator($products, "number", $number);
             $title = getFieldname("title", $language);
