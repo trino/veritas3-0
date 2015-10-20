@@ -228,7 +228,8 @@
                                                 }
                                             }
 
-                                            echo "<BR><B>" . $strings["flash_cantorder"] . '</BR><HR>' . $strings["file_missingdata"] . ': </B>';
+                                            //echo "<BR><B>" . $strings["flash_cantorder"] . '</BR><HR>' .
+                                            echo "<BR><B>" . $strings["file_missingdata"] . ': </B>';
                                             echo implode(", ", $Missing);
                                         } else if ($sidebar->orders_create == 1) {
                                             $title = getFieldname("Name", $language);
