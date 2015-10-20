@@ -186,7 +186,7 @@
                     <div class="form-actions" style="height:75px;">
                         <div class="row">
                             <div class="col-md-12" align="right">
-                                <button type="submit" class="btn btn-primary" >
+                                <button type="submit" class="btn btn-primary" onclick="Changed = false;">
                                     Save Changes <i class="m-icon-swapright m-icon-white"></i>
                                 </button>
                             </div>
@@ -272,11 +272,13 @@
 
                 <div class="form-body">
                     <div class="table-scrollable" align="center">
+                        <TABLE width="100%"><TR><TD style="width: 1200px;">
+                        <TABLE border="1"><TR>
                         <?php
-                            echo '<TABLE border="1"><TR>';
+                            $EventList = array();
                             for($Temp = 0; $Temp < $Months; $Temp++){
                                 echo '<TD valign="top">';
-                                makemonthtable($strings, $Year, $Month, $new_req, $Clients, $Profiles, $products, $language);
+                                makemonthtable($strings, $Year, $Month, $new_req, $Clients, $Profiles, $products, $language, $EventList);
                                 echo '</TD>';
 
                                 if(($Temp % 6) == 5) echo "</TR><tr>";
@@ -289,7 +291,7 @@
                             }
                             echo '</TR></TABLE>';
 
-                            function makemonthtable($strings, $Year, $Month, $Events, $Clients, $Profiles, $products, $language){
+                            function makemonthtable($strings, $Year, $Month, $Events, $Clients, $Profiles, $products, $language, &$EventList){
                                 if($Month<10){$Month="0" . $Month;}
                                 ?>
                                     <table width="200" border="0" cellpadding="2" cellspacing="2">
@@ -342,16 +344,27 @@
                                                             $Profile = getIterator($Profiles[$CRON["client_id"]], "id", $CRON["profile_id"]);
                                                             $CRON["profile"] = formatname($Profile);
                                                             $Style = "background-color: silver;";
-                                                            $Title[] = $CRON["profile"] . " " . $CRON["client"] . " (" . productname($products, $CRON["forms"], $language) . ')';
+                                                            $Title[] = $CRON["profile"] . " [" . $CRON["client"] . "] (" . productname($products, $CRON["forms"], $language) . ')';
                                                         }
                                                     }
                                                     echo $Style . "' " . 'TITLE="' . implode("\r\n", $Title) . '">'. $Day . "</td>";
+                                                    $Index = array_search ("Today", $Title);
+                                                    if($Index > -1){unset($Title[$Index]);}
+                                                    $Title = implode("\r\n", $Title);
+                                                    if($Title) {
+                                                        $EventList[$Date] = $Title;
+                                                    }
                                                 }
                                                 if(($i % 7) == 6 ) echo "</tr>";
                                             }
-                                        echo '</TR></TBODY></TABLE>';
+                                echo '</TR></TBODY></TABLE>';
                             }
-                        ?>
+echo '</TD><TD><textarea disabled style="width:100%; height:100%; background-color: white; border: none; overflow-y: auto;">';
+                                foreach($EventList as $Date => $Event){
+                                    echo $Date . "\r\n" . $Event . "\r\n";
+                                }
+                            ?></textarea>
+                        </TD></TR></TABLE>
                     </div>
                 </div>
             </div>
