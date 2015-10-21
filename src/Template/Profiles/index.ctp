@@ -149,16 +149,17 @@
                                 if ($super) {
                                     $getClient = $this->requestAction('profiles/getClient');
                                     ?>
-                                    <select class="form-control showprodivision input-inline" style=""
-                                            name="filter_by_client">
-                                        <option value=""><?php echo ucfirst($strings["settings_client"]); ?></option>
+                                    <select class="form-control showprodivision input-inline" style="" name="filter_by_client">
+                                        <option value=""><?= ucfirst($strings["settings_client"]); ?></option>
                                         <?php
+                                            echo '<option value="-1"';
+                                            if (isset($return_client) && $return_client == -1) { echo ' selected'; }
+                                            echo '>[' . ucfirst($strings["profiles_nothired"]) . ']</option>';
                                             if ($getClient) {
                                                 foreach ($getClient as $g) {
-                                                    ?>
-                                                    <option
-                                                        value="<?php echo $g->id; ?>" <?php if (isset($return_client) && $return_client == $g->id) { ?> selected="selected"<?php } ?> ><?php echo $g->company_name; ?></option>
-                                                <?php
+                                                    echo '<option value="' . $g->id . '" ';
+                                                    if (isset($return_client) && $return_client == $g->id) { echo ' selected'; }
+                                                    echo '>' . $g->company_name . '</option>';
                                                 }
                                             }
                                         ?>

@@ -659,17 +659,19 @@
             }
 
             if (isset($_GET['filter_by_client']) && $_GET['filter_by_client']) {
-
-                $sub = TableRegistry::get('Clients');
-                $que = $sub->find();
-                $que->select()->where(['id' => $_GET['filter_by_client']]);
-                $q = $que->first();
-                $profile_ids = $q->profile_id;
-                if (!$profile_ids) {
-                    $profile_ids = '99999999999';
+                if($_GET['filter_by_client'] == -1){
+                    if ($cond) {$cond .= ' AND';}
+                    $cond .= ' is_hired = 0';
+                } else {
+                    $sub = TableRegistry::get('Clients');
+                    $que = $sub->find();
+                    $que->select()->where(['id' => $_GET['filter_by_client']]);
+                    $q = $que->first();
+                    $profile_ids = $q->profile_id;
+                    if (!$profile_ids) {$profile_ids = '99999999999';}
+                    if ($cond) {$cond .= ' AND';}
+                    $cond .= ' (id IN (' . $profile_ids . '))';
                 }
-                if ($cond){ $cond.= ' AND'; }
-                $cond .= ' (id IN (' . $profile_ids . '))';
             }
             if ($this->request->session()->read('Profile.profile_type') == '2') {
                 if ($cond) {

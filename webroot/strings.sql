@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 20, 2015 at 10:05 PM
+-- Generation Time: Oct 21, 2015 at 07:39 PM
 -- Server version: 5.6.17
 -- PHP Version: 5.5.12
 
@@ -32,14 +32,14 @@ CREATE TABLE IF NOT EXISTS `strings` (
   `English` varchar(4096) NOT NULL,
   `French` varchar(4096) NOT NULL,
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=765 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=766 ;
 
 --
 -- Dumping data for table `strings`
 --
 
 INSERT INTO `strings` (`ID`, `Name`, `English`, `French`) VALUES
-(1, 'Date', '1445369123', '<-- This is used by the system to auto-update'),
+(1, 'Date', '1445371559', '<-- This is used by the system to auto-update'),
 (2, 'dashboard_affirmative', 'Yes', 'Oui'),
 (3, 'dashboard_negative', 'No', 'Non'),
 (4, 'dashboard_selectall', 'Select All', 'Tout sélectionner'),
@@ -722,7 +722,7 @@ INSERT INTO `strings` (`ID`, `Name`, `English`, `French`) VALUES
 (699, 'uniform_success', 'Document saved successfully.', 'Document enregistré avec succès.'),
 (700, 'profiles_gfs', '<b>To place a MEE order on an applicant, please follow these steps:</b><BR>\nStep 1 - click on edit beside candidate name below<BR>\nStep 2 - select profile type, save<BR>\nStep 3 - place order', '<B>Pour placer un ordre de MEE sur un candidat, s''il vous plaît suivez ces étapes:</B><P>\nÉtape 1 - cliquez sur modifier à côté nom de candidat ci-dessous <BR>\nÉtape 2 - sélectionner le type de profil, sauvegarder <BR>\nÉtape 3 - passer la commander'),
 (701, 'email_test_variables', 'email', ''),
-(702, 'email_taskreminder_variables', 'title, email, description, dueby, domain, site', ''),
+(702, 'email_taskreminder_variables', 'title, email, description, dueby, domain, site, path', ''),
 (703, 'forms_sin', 'SIN', 'SIN'),
 (704, 'forms_passplease', 'Please enter a password', 'S''il vous plaît entrer un mot de passe'),
 (705, 'forms_forceemail', 'Force email to', 'Force de courriel à'),
@@ -780,7 +780,8 @@ INSERT INTO `strings` (`ID`, `Name`, `English`, `French`) VALUES
 (761, 'email_cronordercomplete_variables', 'site, path, email', ''),
 (762, 'email_survey_variables', 'site, username, email, monthsFrench, months, days, id, path', ''),
 (763, 'email_training_passed_variables', 'email, score, username, path', ''),
-(764, 'flash_cantorder2', 'Missing data required to place an order', '');
+(764, 'flash_cantorder2', 'Missing data required to place an order', ''),
+(765, 'profiles_nothired', 'Not Hired', 'pas embauché');
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
