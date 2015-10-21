@@ -231,7 +231,7 @@
                                             }
                                             echo '> ' . $strings["clients_enablerequalify"] . '<span class="req_msg"></span></label>';
 
-                                            
+
                                             $title = getFieldname("Name", $language);
                                             foreach ($products as $product) {
                                                 $alias = $product->Sidebar_Alias;

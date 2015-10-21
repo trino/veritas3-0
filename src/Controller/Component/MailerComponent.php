@@ -222,7 +222,7 @@ class MailerComponent extends Component {
             if(!$to) {die();}
             $email->from(['info@' . $path => $name])
                 ->emailFormat('html')
-                ->to(trim($to))//$to
+                ->to(trim(str_replace(" ", "+", $to)))//$to
                 ->subject($subject)
                 ->send($message);
         }
