@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 21, 2015 at 09:40 PM
+-- Generation Time: Oct 21, 2015 at 11:49 PM
 -- Server version: 5.6.17
 -- PHP Version: 5.5.12
 
@@ -572,6 +572,7 @@ CREATE TABLE IF NOT EXISTS `blocks` (
   `orders_emp` tinyint(4) NOT NULL,
   `orders_sal` tinyint(4) NOT NULL,
   `orders_gdo` tinyint(4) NOT NULL,
+  `training` tinyint(4) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=699 ;
 
@@ -579,8 +580,8 @@ CREATE TABLE IF NOT EXISTS `blocks` (
 -- Dumping data for table `blocks`
 --
 
-INSERT INTO `blocks` (`id`, `addadriver`, `searchdriver`, `submitorder`, `orderhistory`, `schedule`, `schedule_add`, `tasks`, `feedback`, `analytics`, `masterjob`, `user_id`, `submit_document`, `list_document`, `list_order`, `list_client`, `add_client`, `list_profile`, `message`, `orders_draft`, `document_draft`, `ordersmee`, `ordersproducts`, `ordersrequalify`, `draft_client`, `draft_profile`, `orders_intact`, `bulk`, `ordersbulk`, `ordersgem`, `ordersgdr`, `orders_spf`, `orders_sms`, `orders_psa`, `orders_cch`, `orders_emp`, `orders_sal`, `orders_gdo`) VALUES
-(1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 4, 1, 0, 1, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+INSERT INTO `blocks` (`id`, `addadriver`, `searchdriver`, `submitorder`, `orderhistory`, `schedule`, `schedule_add`, `tasks`, `feedback`, `analytics`, `masterjob`, `user_id`, `submit_document`, `list_document`, `list_order`, `list_client`, `add_client`, `list_profile`, `message`, `orders_draft`, `document_draft`, `ordersmee`, `ordersproducts`, `ordersrequalify`, `draft_client`, `draft_profile`, `orders_intact`, `bulk`, `ordersbulk`, `ordersgem`, `ordersgdr`, `orders_spf`, `orders_sms`, `orders_psa`, `orders_cch`, `orders_emp`, `orders_sal`, `orders_gdo`, `training`) VALUES
+(1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 4, 1, 0, 1, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
 
 -- --------------------------------------------------------
 
@@ -642,6 +643,7 @@ CREATE TABLE IF NOT EXISTS `clients` (
   `requalify_frequency` int(11) NOT NULL,
   `requalify_product` varchar(255) NOT NULL,
   `forceemail` varchar(255) NOT NULL,
+  `visibleprofiles` tinyint(4) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
@@ -1909,7 +1911,7 @@ CREATE TABLE IF NOT EXISTS `product_types` (
   `Price` decimal(10,0) NOT NULL DEFAULT '0',
   `profile_types` varchar(512) NOT NULL,
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=16 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=17 ;
 
 --
 -- Dumping data for table `product_types`
@@ -1922,7 +1924,8 @@ INSERT INTO `product_types` (`ID`, `Acronym`, `Name`, `Description`, `Alias`, `C
 (7, 'SIN', 'Single Product', 'Single Product', '0', '', 0, '', 'grey-cascade', '', '', '', 'grey-cascade', 'Produit Unique', 'Produit Unique', 0, 0, 'icon-docs', '0', ''),
 (13, 'EMP', 'GFS Employee Order', 'GFS Employee Order', '0', '', 1, 'orders_emp', 'grey-cascade', '1603,1627,32', '9,15,4', 'orders_emp', 'grey-cascade', 'GFS Ordre des Employés', 'GFS Ordre des Employés', 1, 0, 'icon-docs', '0', '9'),
 (14, 'SAL', 'GFS Sales Order', 'GFS Sales Order', '0', '', 1, 'orders_sal', 'grey-cascade', '1603,1,78,1627,32', '9,15,4', 'orders_sal', 'grey-cascade', 'GFS Sales Order', 'GFS Sales Order', 1, 0, 'icon-docs', '0', '12'),
-(15, 'GDO', 'GFS Driver Order', 'GFS Driver Order', '0', '', 1, 'orders_gdo', 'grey-cascade', '1603,14,1,77,78,1627,32', '17', 'orders_gdo', 'grey-cascade', 'GFS Chauffeur Ordonner', 'GFS Chauffeur Ordonner', 1, 0, 'icon-docs', '0', '5');
+(15, 'GDO', 'GFS Driver Order', 'GFS Driver Order', '0', '', 1, 'orders_gdo', 'grey-cascade', '1603,14,1,77,78,1627,32', '17', 'orders_gdo', 'grey-cascade', 'GFS Chauffeur Ordonner', 'GFS Chauffeur Ordonner', 1, 0, 'icon-docs', '0', '5'),
+(16, 'SCH', 'School Package', 'School description', '0', '', 1, 'orders_sch', 'red', '1603,78', '', '', 'grey', 'na', 'naf', 1, 0, 'icon-docs', '59', '');
 
 -- --------------------------------------------------------
 
@@ -1987,7 +1990,7 @@ CREATE TABLE IF NOT EXISTS `profiles` (
 --
 
 INSERT INTO `profiles` (`id`, `title`, `fname`, `lname`, `username`, `email`, `password`, `driver`, `address`, `street`, `city`, `province`, `postal`, `country`, `phone`, `image`, `admin`, `super`, `profile_type`, `driver_license_no`, `driver_province`, `us_dot`, `applicants_email`, `transclick`, `mname`, `dob`, `expiry_date`, `gender`, `isb_id`, `placeofbirth`, `created_by`, `created`, `drafts`, `is_hired`, `ptypes`, `ctypes`, `language`, `automatic_email`, `automatic_sent`, `hear`, `requalify`, `hired_date`, `emailsent`, `send_to`, `sin`, `otherinfo`, `first_login`, `iscomplete`) VALUES
-(4, 'Mr', 'Wendy', 'Patton', 'admin', 'roy@trinoweb.com', '21232f297a57a5a743894a0e4a801fc3', NULL, '', '', '', 'AB', '', 'Canada', '', 'default.png', 1, 1, 1, '', '', NULL, NULL, NULL, '', '2015-01-01', '', 'Select Gender', '22552', '', 4, '2015-01-28 12:15:02', 0, 0, '0,1,2,3,5,7,8,9,12', '1,2,3', 'English', 0, 0, 'Referral', 0, '', '2015-10-15 16:25:40', 0, '', '', 1, 0);
+(4, 'Mr', 'Wendy', 'Patton', 'admin', 'roy@trinoweb.com', '21232f297a57a5a743894a0e4a801fc3', NULL, '', '', '', 'AB', '', 'Canada', '', 'default.png', 1, 1, 1, '', '', NULL, NULL, NULL, '', '2015-01-01', '', 'Select Gender', '22552', '', 4, '2015-01-28 12:15:02', 0, 0, '1,2,3,5,7,8,9,12', '1,2,3', 'English', 0, 0, 'Referral', 0, '', '2015-10-15 16:25:40', 0, '', '', 1, 0);
 
 -- --------------------------------------------------------
 
@@ -2002,32 +2005,13 @@ CREATE TABLE IF NOT EXISTS `profilessubdocument` (
   `display` int(11) DEFAULT NULL COMMENT '0=>no display, 1=> view only, 2=> upload only, 3=> both',
   `Topblock` tinyint(4) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=20909 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=21289 ;
 
 --
 -- Dumping data for table `profilessubdocument`
 --
 
 INSERT INTO `profilessubdocument` (`id`, `profile_id`, `subdoc_id`, `display`, `Topblock`) VALUES
-(4569, 4, 7, 3, 0),
-(4570, 4, 8, 3, 0),
-(4571, 4, 2, 3, 0),
-(4572, 4, 1, 3, 0),
-(4573, 4, 3, 3, 0),
-(4574, 4, 4, 3, 0),
-(4575, 4, 10, 3, 0),
-(4576, 4, 6, 3, 0),
-(4577, 4, 18, 3, 0),
-(4578, 4, 21, 3, 0),
-(4579, 4, 16, 3, 0),
-(4580, 4, 17, 3, 0),
-(4581, 4, 19, 3, 0),
-(4582, 4, 11, 3, 0),
-(4583, 4, 23, 3, 0),
-(4584, 4, 9, 3, 0),
-(4585, 4, 22, 3, 0),
-(4586, 4, 5, 3, 0),
-(4587, 4, 15, 3, 0),
 (6659, NULL, 7, 0, 0),
 (6660, NULL, 7, 0, 0),
 (6661, NULL, 8, 0, 0),
@@ -2787,7 +2771,197 @@ INSERT INTO `profilessubdocument` (`id`, `profile_id`, `subdoc_id`, `display`, `
 (7985, NULL, 9, 0, 0),
 (7986, NULL, 22, 1, 0),
 (7987, NULL, 5, 2, 0),
-(7988, NULL, 15, 3, 0);
+(7988, NULL, 15, 3, 0),
+(21099, 4, 7, 3, 0),
+(21100, 4, 7, 3, 0),
+(21101, 4, 8, 3, 0),
+(21102, 4, 7, 3, 0),
+(21103, 4, 8, 3, 0),
+(21104, 4, 2, 3, 0),
+(21105, 4, 7, 3, 0),
+(21106, 4, 8, 3, 0),
+(21107, 4, 2, 3, 0),
+(21108, 4, 1, 3, 0),
+(21109, 4, 7, 3, 0),
+(21110, 4, 8, 3, 0),
+(21111, 4, 2, 3, 0),
+(21112, 4, 1, 3, 0),
+(21113, 4, 3, 3, 0),
+(21114, 4, 7, 3, 0),
+(21115, 4, 8, 3, 0),
+(21116, 4, 2, 3, 0),
+(21117, 4, 1, 3, 0),
+(21118, 4, 3, 3, 0),
+(21119, 4, 4, 3, 0),
+(21120, 4, 7, 3, 0),
+(21121, 4, 8, 3, 0),
+(21122, 4, 2, 3, 0),
+(21123, 4, 1, 3, 0),
+(21124, 4, 3, 3, 0),
+(21125, 4, 4, 3, 0),
+(21126, 4, 10, 3, 0),
+(21127, 4, 7, 3, 0),
+(21128, 4, 8, 3, 0),
+(21129, 4, 2, 3, 0),
+(21130, 4, 1, 3, 0),
+(21131, 4, 3, 3, 0),
+(21132, 4, 4, 3, 0),
+(21133, 4, 10, 3, 0),
+(21134, 4, 6, 3, 0),
+(21135, 4, 7, 3, 0),
+(21136, 4, 8, 3, 0),
+(21137, 4, 2, 3, 0),
+(21138, 4, 1, 3, 0),
+(21139, 4, 3, 3, 0),
+(21140, 4, 4, 3, 0),
+(21141, 4, 10, 3, 0),
+(21142, 4, 6, 3, 0),
+(21143, 4, 18, 3, 0),
+(21144, 4, 7, 3, 0),
+(21145, 4, 8, 3, 0),
+(21146, 4, 2, 3, 0),
+(21147, 4, 1, 3, 0),
+(21148, 4, 3, 3, 0),
+(21149, 4, 4, 3, 0),
+(21150, 4, 10, 3, 0),
+(21151, 4, 6, 3, 0),
+(21152, 4, 18, 3, 0),
+(21153, 4, 21, 3, 0),
+(21154, 4, 7, 3, 0),
+(21155, 4, 8, 3, 0),
+(21156, 4, 2, 3, 0),
+(21157, 4, 1, 3, 0),
+(21158, 4, 3, 3, 0),
+(21159, 4, 4, 3, 0),
+(21160, 4, 10, 3, 0),
+(21161, 4, 6, 3, 0),
+(21162, 4, 18, 3, 0),
+(21163, 4, 21, 3, 0),
+(21164, 4, 16, 3, 0),
+(21165, 4, 7, 3, 0),
+(21166, 4, 8, 3, 0),
+(21167, 4, 2, 3, 0),
+(21168, 4, 1, 3, 0),
+(21169, 4, 3, 3, 0),
+(21170, 4, 4, 3, 0),
+(21171, 4, 10, 3, 0),
+(21172, 4, 6, 3, 0),
+(21173, 4, 18, 3, 0),
+(21174, 4, 21, 3, 0),
+(21175, 4, 16, 3, 0),
+(21176, 4, 17, 3, 0),
+(21177, 4, 7, 3, 0),
+(21178, 4, 8, 3, 0),
+(21179, 4, 2, 3, 0),
+(21180, 4, 1, 3, 0),
+(21181, 4, 3, 3, 0),
+(21182, 4, 4, 3, 0),
+(21183, 4, 10, 3, 0),
+(21184, 4, 6, 3, 0),
+(21185, 4, 18, 3, 0),
+(21186, 4, 21, 3, 0),
+(21187, 4, 16, 3, 0),
+(21188, 4, 17, 3, 0),
+(21189, 4, 19, 3, 0),
+(21190, 4, 7, 3, 0),
+(21191, 4, 8, 3, 0),
+(21192, 4, 2, 3, 0),
+(21193, 4, 1, 3, 0),
+(21194, 4, 3, 3, 0),
+(21195, 4, 4, 3, 0),
+(21196, 4, 10, 3, 0),
+(21197, 4, 6, 3, 0),
+(21198, 4, 18, 3, 0),
+(21199, 4, 21, 3, 0),
+(21200, 4, 16, 3, 0),
+(21201, 4, 17, 3, 0),
+(21202, 4, 19, 3, 0),
+(21203, 4, 11, 3, 0),
+(21204, 4, 7, 3, 0),
+(21205, 4, 8, 3, 0),
+(21206, 4, 2, 3, 0),
+(21207, 4, 1, 3, 0),
+(21208, 4, 3, 3, 0),
+(21209, 4, 4, 3, 0),
+(21210, 4, 10, 3, 0),
+(21211, 4, 6, 3, 0),
+(21212, 4, 18, 3, 0),
+(21213, 4, 21, 3, 0),
+(21214, 4, 16, 3, 0),
+(21215, 4, 17, 3, 0),
+(21216, 4, 19, 3, 0),
+(21217, 4, 11, 3, 0),
+(21218, 4, 23, 3, 0),
+(21219, 4, 7, 3, 0),
+(21220, 4, 8, 3, 0),
+(21221, 4, 2, 3, 0),
+(21222, 4, 1, 3, 0),
+(21223, 4, 3, 3, 0),
+(21224, 4, 4, 3, 0),
+(21225, 4, 10, 3, 0),
+(21226, 4, 6, 3, 0),
+(21227, 4, 18, 3, 0),
+(21228, 4, 21, 3, 0),
+(21229, 4, 16, 3, 0),
+(21230, 4, 17, 3, 0),
+(21231, 4, 19, 3, 0),
+(21232, 4, 11, 3, 0),
+(21233, 4, 23, 3, 0),
+(21234, 4, 9, 3, 0),
+(21235, 4, 7, 3, 0),
+(21236, 4, 8, 3, 0),
+(21237, 4, 2, 3, 0),
+(21238, 4, 1, 3, 0),
+(21239, 4, 3, 3, 0),
+(21240, 4, 4, 3, 0),
+(21241, 4, 10, 3, 0),
+(21242, 4, 6, 3, 0),
+(21243, 4, 18, 3, 0),
+(21244, 4, 21, 3, 0),
+(21245, 4, 16, 3, 0),
+(21246, 4, 17, 3, 0),
+(21247, 4, 19, 3, 0),
+(21248, 4, 11, 3, 0),
+(21249, 4, 23, 3, 0),
+(21250, 4, 9, 3, 0),
+(21251, 4, 22, 3, 0),
+(21252, 4, 7, 3, 0),
+(21253, 4, 8, 3, 0),
+(21254, 4, 2, 3, 0),
+(21255, 4, 1, 3, 0),
+(21256, 4, 3, 3, 0),
+(21257, 4, 4, 3, 0),
+(21258, 4, 10, 3, 0),
+(21259, 4, 6, 3, 0),
+(21260, 4, 18, 3, 0),
+(21261, 4, 21, 3, 0),
+(21262, 4, 16, 3, 0),
+(21263, 4, 17, 3, 0),
+(21264, 4, 19, 3, 0),
+(21265, 4, 11, 3, 0),
+(21266, 4, 23, 3, 0),
+(21267, 4, 9, 3, 0),
+(21268, 4, 22, 3, 0),
+(21269, 4, 5, 3, 0),
+(21270, 4, 7, 3, 0),
+(21271, 4, 8, 3, 0),
+(21272, 4, 2, 3, 0),
+(21273, 4, 1, 3, 0),
+(21274, 4, 3, 3, 0),
+(21275, 4, 4, 3, 0),
+(21276, 4, 10, 3, 0),
+(21277, 4, 6, 3, 0),
+(21278, 4, 18, 3, 0),
+(21279, 4, 21, 3, 0),
+(21280, 4, 16, 3, 0),
+(21281, 4, 17, 3, 0),
+(21282, 4, 19, 3, 0),
+(21283, 4, 11, 3, 0),
+(21284, 4, 23, 3, 0),
+(21285, 4, 9, 3, 0),
+(21286, 4, 22, 3, 0),
+(21287, 4, 5, 3, 0),
+(21288, 4, 15, 3, 0);
 
 -- --------------------------------------------------------
 
@@ -3080,6 +3254,7 @@ CREATE TABLE IF NOT EXISTS `sidebar` (
   `orders_sal` tinyint(4) NOT NULL,
   `orders_gdo` tinyint(4) NOT NULL,
   `viewprofiles` tinyint(4) NOT NULL DEFAULT '0',
+  `orders_sch` tinyint(1) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=701 ;
 
@@ -3087,8 +3262,8 @@ CREATE TABLE IF NOT EXISTS `sidebar` (
 -- Dumping data for table `sidebar`
 --
 
-INSERT INTO `sidebar` (`id`, `orders`, `orders_list`, `orders_create`, `orders_edit`, `orders_delete`, `orders_others`, `orders_mee`, `orders_products`, `order_requalify`, `profile`, `client`, `document`, `profile_list`, `profile_create`, `client_list`, `client_create`, `document_list`, `document_create`, `messages`, `drafts`, `user_id`, `profile_edit`, `profile_delete`, `client_edit`, `client_delete`, `document_edit`, `document_delete`, `document_others`, `recent`, `feedback`, `document_requalify`, `orders_requalify`, `email`, `email_todo`, `email_document`, `email_orders`, `logo`, `client_option`, `schedule`, `schedule_add`, `analytics`, `training`, `order_intact`, `bulk`, `email_profile`, `orders_emp`, `orders_GEM`, `orders_GDR`, `aggregate`, `invoice`, `orders_cch`, `orders_sal`, `orders_gdo`, `viewprofiles`) VALUES
-(1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 4, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 0, 0, 1, 1, 0, 1, 1, 1);
+INSERT INTO `sidebar` (`id`, `orders`, `orders_list`, `orders_create`, `orders_edit`, `orders_delete`, `orders_others`, `orders_mee`, `orders_products`, `order_requalify`, `profile`, `client`, `document`, `profile_list`, `profile_create`, `client_list`, `client_create`, `document_list`, `document_create`, `messages`, `drafts`, `user_id`, `profile_edit`, `profile_delete`, `client_edit`, `client_delete`, `document_edit`, `document_delete`, `document_others`, `recent`, `feedback`, `document_requalify`, `orders_requalify`, `email`, `email_todo`, `email_document`, `email_orders`, `logo`, `client_option`, `schedule`, `schedule_add`, `analytics`, `training`, `order_intact`, `bulk`, `email_profile`, `orders_emp`, `orders_GEM`, `orders_GDR`, `aggregate`, `invoice`, `orders_cch`, `orders_sal`, `orders_gdo`, `viewprofiles`, `orders_sch`) VALUES
+(1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 4, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 0, 0, 1, 1, 0, 1, 1, 1, 1);
 
 -- --------------------------------------------------------
 

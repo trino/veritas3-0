@@ -144,8 +144,10 @@
             $table = TableRegistry::get('profiles');
             $today = date('Y-m-d');
             $nyear = date('Y-m-d', strtotime($today . '+1 year'));
-            $automatic = $table->find()->where(['id IN('.$ids.")",'is_hired'=>'1','hired_date <>'=>'','hired_date <='=>$nyear,'automatic_sent'=>'0']);
-            $this->set("dates", $automatic);
+            if($ids) {
+                $automatic = $table->find()->where(['id IN(' . $ids . ")", 'is_hired' => '1', 'hired_date <>' => '', 'hired_date <=' => $nyear, 'automatic_sent' => '0']);
+                $this->set("dates", $automatic);
+            }
             $cron = TableRegistry::get('client_crons')->find()->where(['orders_sent'=>'1','manual'=>'0'])->all();
             $this->set('requalify',$cron);
             $maxdate = $cron->max('cron_date');
@@ -235,9 +237,9 @@
         }
         
         function sksort(&$array, $subkey="id", $sort_ascending=false) {
-
-            if (count($array))
+            if (count($array)) {
                 $temp_array[key($array)] = array_shift($array);
+            }
         
             foreach($array as $key => $val){
                 $offset = 0;
