@@ -44,7 +44,7 @@ function initdatepicker($dateformat = 'yy-mm-dd'){
     <?php
 }
 
-function backbutton($text = "Back", $DoVeritas){
+function backbutton($text = "Back", $DoVeritas = false){
     if ( $_SERVER["SERVER_NAME"] == "localhost") {
         echo '<DIV align="center" class="no-print"><A HREF="';
         if($DoVeritas){

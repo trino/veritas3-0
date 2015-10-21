@@ -14,18 +14,21 @@
 ?>
 
 <div class="page-sidebar-wrapper">
-
     <div class="page-sidebar navbar-collapse collapse">
         <?php
-            if ($this->request->session()->read('debug'))
+            if ($this->request->session()->read('debug')) {
                 echo "<span style ='color:red;'>sidebar.php #INC162</span>";
+            }
+            if(DATABASE == "ttsao") {
+                echo '<DIV ALIGN="CENTER"><IMG SRC="' . $this->request->webroot . 'img/ttsao.png" STYLE="max-height: 100px;"></DIV>';
+            }
         ?>
         <ul id="mainbar" class="<?php echo $settings->sidebar; ?>" data-keep-expanded="false" data-auto-scroll="true"
             data-slide-speed="200">
 
             <li class="sidebar-search-wrapper margin-top-20">
 
-                <form class="sidebar-search " action="<?php echo $this->request->webroot . 'documents'; ?>"
+                <form class="sidebar-search " action="<?= $this->request->webroot . 'documents'; ?>"
                       method="get">
                     <a href="javascript:;" class="remove">
                         <i class="icon-close"></i>

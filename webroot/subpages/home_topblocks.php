@@ -24,6 +24,14 @@
         echo $newcolor;
         srand();
     }
+
+    function makeblock($debug, $URL, $Name, $Icon = "icon-docs", $Color= "bg-grey-cascade"){//tile
+        //   if(!$debug){$Color= "bg-grey-cascade";}
+        if(!$Icon){$Icon = "icon-docs";}
+        echo '<a href="' .  $URL . '" class="tile ' . $Color;
+        echo '" style="display: block;"><div class="tile-body"><i class="' . $Icon . '"></i></div><div class="tile-object">';
+        echo '<div class="name">' . $Name . '</div><div class="number"></div></div></a>';
+    }
 ?>
 
 <div class="tiles">
@@ -135,27 +143,21 @@
         </a>
     <?php }
 
+    if ($DoAll || $block->training){
+        makeblock($debug, "training", $strings["index_training"], "fa fa-graduation-cap", "bg-grey-cascade");
+    }
+
     if ($DoAll || $sidebar->orders_create ==1) { ?>
         <STYLE>
             .icon-footprint:before { content: url('assets/global/img/footprint.png'); }
             .icon-surveillance:before { content: url('assets/global/img/surveillance.png'); }
             .icon-physical:before { content: url('assets/global/img/physical.png'); }
         </STYLE>
-
-
     <?php
         $formlist="";
         foreach($forms as $form){
             if (Strlen($formlist)>0){ $formlist.=",";}
             $formlist.=$form->number;
-        }
-
-        function makeblock($debug, $URL, $Name, $Icon = "icon-docs", $Color= "bg-grey-cascade"){//tile
-         //   if(!$debug){$Color= "bg-grey-cascade";}
-            if(!$Icon){$Icon = "icon-docs";}
-            echo '<a href="' .  $URL . '" class="tile ' . $Color;
-            echo '" style="display: block;"><div class="tile-body"><i class="' . $Icon . '"></i></div><div class="tile-object">';
-            echo '<div class="name">' . $Name . '</div><div class="number"></div></div></a>';
         }
 
         $AssignedClient = GetAssignedClients($userid, $clients, true);

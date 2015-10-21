@@ -11,8 +11,9 @@
 ?>
 
 
-<div class="col-md-3" style=" float: right;margin-bottom: 10px;padding-right: 0;">
-<a href="<?php echo $this->request->webroot;?>profiles/add" class="btn btn-primary" style="float: right;"><?= $strings["infoorder_addprofile"]; ?></a>
+<div class="col-md-12" style=" float: right;margin-bottom: 10px;padding-right: 0;">
+    <LABEL CLASS="btnspc"><INPUT TYPE="checkbox" ID="visibleprofiles" ONCLICK="visibleprofiles();"> Visible to non-employees</LABEL>
+    <a href="<?php echo $this->request->webroot;?>profiles/add" class="btn btn-primary btnspc" style="float: right;"><?= $strings["infoorder_addprofile"]; ?></a>
 </div>
 <div class="clearfix"></div>
 <div class="scrolldiv" style="margin-bottom: 15px;">
@@ -153,11 +154,23 @@
 
 </table-->
 <script>
+    function visibleprofiles(){
+        var checked = document.getElementById("visibleprofiles").checked;
+        $.ajax({
+            url: '<?= $this->request->webroot;?>clients/quickcontact',
+            data: 'Type=visibleprofiles&clientid=<?= $id; ?>&status=' + checked,
+            type: 'get',
+            success: function (res) {
+                if(res) {alert(res);}
+            }
+        });
+    }
+
     function searchProfile() {
         var key = $('#searchProfile').val();
         $('#profileTable').html('<tbody><tr><td><img src="<?php echo $this->request->webroot;?>assets/admin/layout/img/ajax-loading.gif"/></td></tr></tbody>');
         $.ajax({
-            url: '<?php echo $this->request->webroot;?>profiles/getAjaxProfile/<?php if(isset($id) && $id)echo $id;else echo '0'?>',
+            url: '<?= $this->request->webroot;?>profiles/getAjaxProfile/<?php if(isset($id) && $id)echo $id;else echo '0'?>',
             data: 'key=' + key,
             type: 'get',
             success: function (res) {

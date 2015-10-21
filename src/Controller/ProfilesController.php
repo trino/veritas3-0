@@ -668,9 +668,10 @@
                     $que->select()->where(['id' => $_GET['filter_by_client']]);
                     $q = $que->first();
                     $profile_ids = $q->profile_id;
-                    if (!$profile_ids) {$profile_ids = '99999999999';}
-                    if ($cond) {$cond .= ' AND';}
-                    $cond .= ' (id IN (' . $profile_ids . '))';
+                    if ($profile_ids) {
+                        if ($cond) {$cond .= ' AND';}
+                        $cond .= ' (id IN (' . $profile_ids . '))';
+                    }
                 }
             }
             if ($this->request->session()->read('Profile.profile_type') == '2') {
@@ -683,9 +684,15 @@
             }
             /*=================================================================================================== */
             if($setting->viewprofiles == 0){
-                $query = $this->Profiles->find()->where(['id' => $u]);
+                $Clients = TableRegistry::get('Clients')->find()->select()->where(['visibleprofiles' => 1]);
+                $OR = array();
+                foreach($Clients as $Client){
+                    if($Client->profile_id) {
+                        $OR[] = "id IN (" . $Client->profile_id . ")";
+                    }
+                }
+                $query = $this->Profiles->find()->where([$cond, 'OR' => $OR]);
             } elseif ($cond) {
-                //echo $cond;die();
                 $query = $querys->find();
                 $query = $query->where([$cond, 'OR' => $condition, 'AND' => 'super = 0']);
             } else {
@@ -743,12 +750,23 @@
                 $setting = $this->Settings->get_permission($userid);
 
                 if ($setting->profile_list == 0 || ($userid != $id && $setting->viewprofiles ==0)) {
+                    $ClientID = $this->Manager->find_client($id, false);
+                    $visibleprofiles = false;
+                    if($ClientID) {
+                        if (!is_array($ClientID)) {$ClientID = array($ClientID);}
+                        foreach($ClientID as $Client) {
+                            $Client = $this->Manager->get_client($Client);
+                            if($Client->visibleprofiles){$visibleprofiles=true;}
+                        }
+                    }
                     $place = "View: ";
                     if($setting->profile_list == 0) { $place .= "profile_list";}
                     if($userid != $id && $setting->viewprofiles ==0) { $place .= "viewprofiles";}
 
-                    //$this->Flash->error($this->Trans->getString("flash_permissions", array("place" => $place)) . ' (006)');
-                    return $this->redirect("/");
+                    if(!$visibleprofiles) {
+                        //$this->Flash->error($this->Trans->getString("flash_permissions", array("place" => $place)) . ' (006)');
+                        return $this->redirect("/");
+                    }
                 }
 
                 $docs = TableRegistry::get('profile_docs');
@@ -3025,6 +3043,10 @@
             return $this->response;
         }
 
+        public function appendtext($Start, $Finish, $Delimeter = ","){
+            if($Start) { return $Start . $Delimeter . $Finish; }
+            return $Finish;
+        }
 
         public function appendattachments($query){
             foreach ($query as $client) {

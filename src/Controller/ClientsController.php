@@ -510,7 +510,7 @@
             $_POST = array_merge($_POST, $_GET);
         }
 
-        function HandleAJAX(){
+        function HandleAJAX(){//url = $this->request->webroot. 'clients/quickcontact',
             $Value = false;
             $this->copyGETtoPOST();
             if (isset($_POST['Value'])) {$Value = strtolower($_POST['Value']) == "true"; }
@@ -549,6 +549,11 @@
                     $this->Mailer->handleevent("gfs", array("email" => $profile->email, "path1" => $URL . 4, "path2" => $URL . 9, "site" => $setting->mee, "username" => $this->request->session()->read('Profile.username')));
                     $this->updatetable("profiles", "id", $profile->id, "send_to", $this->request->session()->read('Profile.id'));
                     echo $this->Trans->getString("flash_emailwassent", array("email" => $profile->email) );
+                    break;
+                case "visibleprofiles":
+                    $Status=0;
+                    if(strtolower($_POST["status"]) == "true"){$Status=1;}
+                    $this->Manager->update_database("clients", "id", $_POST["clientid"], array("visibleprofiles" => $Status));
                     break;
                 default:
                     echo $_POST["Type"] . " is not a handled AJAX type (ClientsController - HandleAJAX)";

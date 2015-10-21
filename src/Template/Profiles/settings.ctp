@@ -272,7 +272,7 @@ function makedropdownoption($Key, $Value, $TheValue){
                           }
                           ?>
 
-                            <?php //include('subpages/profile/editdocs.php'); ?>
+                            <?php include('subpages/profile/editdocs.php'); ?>
 
                          <?php } ?>
 
