@@ -96,10 +96,10 @@
 <FORM METHOD="post">
     <div class="row">
         <div class="col-md-12">
-            <div class="portlet box yellow">
+            <div class="portlet box grey-salsa">
                 <div class="portlet-title">
                     <div class="caption">
-                        <i class="fa fa-clipboard"></i>
+                        <i class="fa fa-globe"></i>
                         Clients
                     </div>
                 </div>
@@ -164,24 +164,6 @@
                                                 echo "0/" . count(explode(",", $Client->profile_id));
                                             }
                                             echo '</TD></TR>';
-
-                                            if (isset($_GET["clientid"]) && $_GET["clientid"] == $Client->id){
-                                                echo '<TR><TD COLSPAN="7" style="padding-right: 10px;"><table class="table table-condensed table-striped table-bordered table-hover dataTable no-footer" ';
-                                                echo 'style="margin-bottom: 5px; margin-left: 3px;"><thead><TR>';
-                                                echo '<TH>ID</TH><TH>Name</TH><TH>Hired Date</TH><TH>Auto-Change</TH></TR><TBODY>';
-                                                foreach($Users as $Profile){
-                                                    echo '<TR><TD>' . $Profile->id . '</TD>';
-                                                    echo '<TD><A HREF="' . $this->request->webroot . 'profiles/view/' . $Profile->id . '">' . formatname($Profile) . '</A></TD>';
-                                                    echo '<TD><INPUT ONCHANGE="change();" TYPE="TEXT" ID="hireddate' . $Profile->id . '" NAME="profiles[hired_date][' . $Profile->id . ']" VALUE="';
-                                                    echo $Profile->hired_date . '" class="datepicker date-picker"></TD><TD>';
-                                                    foreach($Frequencies as $Frequency => $Date){
-                                                        echo '<INPUT TYPE="BUTTON" CLASS="btn-xs btn btn-info btnspc" VALUE="-' . $Frequency . pluralize($Frequency, " Month") . '" ';
-                                                        echo 'ONCLICK="changehired(' . $Profile->id . ', ' . $Frequency . ", '" . $Date . "'" . ');">';
-                                                    }
-                                                    echo '</TD></TR>';
-                                                }
-                                                echo '</TBODY></TABLE></TD></TR>';
-                                            }
                                         }
                                     ?>
                                 </tbody>
@@ -201,6 +183,48 @@
             </div>
         </div>
     </div>
+
+    <?php if ($Showname){
+        echo '<div class="row">
+        <div class="col-md-12">
+            <div class="portlet box green-haze">
+                <div class="portlet-title">
+                    <div class="caption">
+                        <i class="fa fa-user"></i>
+        Profiles for ' . getIterator($Clients, "id", $_GET["clientid"])->company_name . ' with requalification enabled
+                    </div>
+                </div>
+                <div class="portlet-body form">
+                    <div class="form-actions top chat-form" style="margin-bottom:0;" align="right">
+                        <div class="btn-set pull-left">
+
+                        </div>
+                        <div class="btn-set pull-right">
+                        </div>
+                    </div>
+
+                    <div class="clearfix"></div>
+
+                    <div class="form-body">
+                        <div class="table-scrollable">';
+
+        $Users = $Profiles[$_GET["clientid"]];
+        echo '<TD COLSPAN="7" style="padding-right: 10px;"><table class="table table-condensed table-striped table-bordered table-hover dataTable no-footer" ';
+        echo 'style="margin-bottom: 5px; margin-left: 3px;"><thead><TR>';
+        echo '<TH>ID</TH><TH>Name</TH><TH>Hired Date</TH><TH>Auto-Change</TH></TR><TBODY>';
+        foreach($Users as $Profile){
+            echo '<TR><TD>' . $Profile->id . '</TD>';
+            echo '<TD><A HREF="' . $this->request->webroot . 'profiles/view/' . $Profile->id . '">' . formatname($Profile) . '</A></TD>';
+            echo '<TD><INPUT ONCHANGE="change();" TYPE="TEXT" ID="hireddate' . $Profile->id . '" NAME="profiles[hired_date][' . $Profile->id . ']" VALUE="';
+            echo $Profile->hired_date . '" class="datepicker date-picker"></TD><TD>';
+            foreach($Frequencies as $Frequency => $Date){
+                echo '<INPUT TYPE="BUTTON" CLASS="btn-xs btn btn-info btnspc" VALUE="-' . $Frequency . pluralize($Frequency, " Month") . '" ';
+                echo 'ONCLICK="changehired(' . $Profile->id . ', ' . $Frequency . ", '" . $Date . "'" . ');">';
+            }
+            echo '</TD></TR>';
+        }
+        echo '</TBODY></TABLE></div></div></div></div>';
+    } ?>
 </FORM>
 <SCRIPT>
     var Changed = false;
@@ -257,7 +281,7 @@
 
 <div class="row">
     <div class="col-md-12">
-        <div class="portlet box yellow">
+        <div class="portlet box green-meadow">
             <div class="portlet-title">
                 <div class="caption">
                     <i class="fa fa-calendar"></i>
