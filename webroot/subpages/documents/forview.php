@@ -37,8 +37,7 @@
     copy2globals($strings2, array("score_dupe", "score_submitted", "score_submitted", "score_notattached", "score_pass", "score_discrepancies", "score_coachingrequired", "score_verified", "score_potentialtosucceed", "score_idealcandidate", "score_incomplete", "score_satisfactory", "score_requiresattention", "score_duplicateorder"));
 
     //include('subpages/documents/forprofileview.php');
-    function PrintLine($lineclass, $name, $cnt, $doc_id, $c_id, $o_id, $webroot, $bypass = false, $sub = 0)
-    {
+    function PrintLine($lineclass, $name, $cnt, $doc_id, $c_id, $o_id, $webroot, $bypass = false, $sub = 0) {
         if ($cnt > 0 || $bypass) {
             echo '<tr class="' . $lineclass . '" role="row"><td style="padding:8px 0;"><span class="icon-notebook"></span></td>';
             if ($doc_id) {
@@ -412,13 +411,19 @@
             }
 
             $Education = array("School" => "Scott Park", "Program Name" => "Secondary Education", "Graduation Date" => "Last month sometime. Was a monday", "Grade" => "11/10", "Download certificate" => "Click Here");
-            if(isset($Education) && count($Education)) {
-                echo '<TR><TD colspan="3"><H4 style="margin-left: -7px;"><i class="icon-doc font-blue-hoki"></i><span class="caption-subject bold font-blue-hoki uppercase"> EDUCATION</span></H4>';
-                echo '<div class="clearfix"></div></TD></TR>';
-                foreach ($Education as $Name => $Value) {
-                    echo '<tr role="row"><td style="padding:8px 0;"><span class="icon-notebook"></span></td><td>' . $Name . ':</td><td class="actions">' . $Value . '</td></tr>';
+            if(isset($Education)) {maketable("EDUCATION", $Education, ":");}
+            $Education = array();
+            $Certificates = $Manager->enum_all("training_enrollments", array("UserID" => $id));
+            foreach($Certificates as $Certificate){
+                $Percent=$Certificate->correct/$Certificate->total*100;
+                if($Certificate->hascert && $Percent >= $Certificate->pass){
+                    $Quiz = $Manager->get_entry("training_list", $Certificate->QuizID, "ID");
+                    $Education[$Quiz->Name] = '<A class="label label-info btnspc" HREF="' .  $this->request->webroot . 'training/certificate?quizid=' . $Certificate->QuizID . '&userid=' . $id . '">View Certificate</A>' .
+                    '<A class="label label-info btnspc" HREF="' .  $this->request->webroot . 'training/quiz?quizid=' . $Certificate->QuizID . '&userid=' . $id . '">View Answers (' . round($Percent,2) . '%)</A>';
                 }
             }
+            maketable("CERTIFICATES", $Education);
+
             $files = getattachments($order->id);
             if (!$includeabove) {
                 printdocumentinfo($order->id, true);
@@ -433,5 +438,20 @@
         echo '<table class="table table-condensed table-striped table-bordered table-hover dataTable no-footer"><thead></thead><tbody><tr class="even" role="row"><td colspan="3" align="center">';
         echo $strings2["orders_noresults"] . '</td></tr></tbody></table>';
     }
+
+    function maketable($Name, $Entries, $Delimeter = ""){
+        if(count($Entries) && is_array($Entries)) {
+            echo '<TR><TD colspan="3"><H4 style="margin-left: -7px;"><i class="icon-doc font-blue-hoki"></i><span class="caption-subject bold font-blue-hoki uppercase"> ' . $Name . '</span></H4>';
+            echo '<div class="clearfix"></div></TD></TR>';
+            foreach ($Entries as $Name => $Value) {
+                if(is_numeric($Name)){
+                    $Name = $Value;
+                    $Value = "";
+                }
+                echo '<tr role="row"><td style="padding:8px 0;"><span class="icon-notebook"></span></td><td>' . $Name . $Delimeter . '</td><td class="actions">' . $Value . '</td></tr>';
+            }
+        }
+    }
+
 ?>
 <!-- END PROFILE CONTENT -->

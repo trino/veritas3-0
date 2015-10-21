@@ -2650,7 +2650,9 @@
 
         function cleardb() {
             if ($this->request->session()->read('Profile.super') == 1) {
+                $Tables = $this->Manager->enum_tables();
 
+                echo "Database: " . DATABASE;
                 //$query = $conn->query("show tables");
 
                 //WHITELIST//
@@ -2659,13 +2661,18 @@
                 $this->DeleteAttachment(-1, "profiles", "/img/profile/");
                 $this->DeleteAttachment(-1, "doc_attachments", "/attachments/");
                 $this->DeleteUser(-1);//deletes all users
-                $this->DeleteTables(array("clients", "clientssubdocument", "client_divison", "client_sub_order", "client_products"));//deletes clients
+                $this->DeleteTables(array("clients", "clientssubdocument", "client_divison", "client_sub_order", "client_products"), $Tables);//deletes clients
                 //deletes documents
-                $this->DeleteTables(array("audits", "consent_form", "consent_form_criminal", "documents", "driver_application", "road_test", "survey"));
-                $this->DeleteTables(array("abstract_forms", "bc_forms", "quebec_forms", "education_verification", "employment_verification", "feedbacks", "orders"));
-                $this->DeleteTables(array("driver_application_accident", "driver_application_licenses", "clientssubdocument", "mee_attachments"));
-                $this->DeleteTables(array("pre_screening", "generic_forms", "pre_employment_road_test", "past_employment_survey", "application_for_employment_gfs"));
-                $this->DeleteTables(array("basic_mee_platform"));
+                $this->DeleteTables(array("audits", "consent_form", "consent_form_criminal", "documents", "driver_application", "road_test", "survey"), $Tables);
+                $this->DeleteTables(array("abstract_forms", "bc_forms", "quebec_forms", "education_verification", "employment_verification", "feedbacks", "orders"), $Tables);
+                $this->DeleteTables(array("driver_application_accident", "driver_application_licenses", "clientssubdocument", "mee_attachments", "training_enrollments", "training_answers"), $Tables);
+                $this->DeleteTables(array("pre_screening", "generic_forms", "pre_employment_road_test", "past_employment_survey", "application_for_employment_gfs"), $Tables);
+                $this->DeleteTables(array("basic_mee_platform", "events", "client_crons", "consent_form_attachments", "driver_application_attachments", "education_verification_attachments"), $Tables);
+                $this->DeleteTables(array("employment_verification_attachments", "mee_attachments_more", "pre_screening_attachments", "road_test_attachments"), $Tables);
+
+                if($Tables) {
+                    echo "<BR>Untouched tables: " . implode(", ", $Tables);
+                }
 
                 //do not delete settings, contents, logos, subdocuments, order_products, color_class, client_types, profile_types, training_quiz, training_list,
 
@@ -2680,19 +2687,23 @@
                 //die();
                 $this->layout = "blank";
             }
+            die();
         }
 
-        function DeleteTables($Table) {
+        function DeleteTables($Table, &$Tables = array()) {
             if (is_array($Table)) {
-                foreach ($Table as $table) {
+                foreach ($Table as $Key => $table) {
                     $this->DeleteTables($table);
+                    unset($Tables[$Key]);
                 }
             } else {
                 switch ($Table) {
                     case "clients":
                         $table = TableRegistry::get("clients")->find('all');
                         foreach ($table as $client) {
-                            unlink(getcwd() . "/img/jobs/" . $client->image); //delete image
+                            if($client->image) {
+                                @unlink(getcwd() . "/img/jobs/" . $client->image); //delete image
+                            }
                         }
                         break;
                     case "settings":
@@ -2733,7 +2744,9 @@
                     if ($user->super == 1) {
                         return false;
                     }//cannot delete supers
-                    unlink(getcwd() . "/img/profile/" . $user - image);
+                    if($user->image != "default.png") {
+                        @unlink(getcwd() . "/img/profile/" . $user->image);
+                    }
                 }//delete image
                 $attachments = TableRegistry::get("profile_docs")->find('all', array('conditions' => array(['profile_id' => $ID])));
                 foreach ($attachments as $attachment) {

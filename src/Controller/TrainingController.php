@@ -353,6 +353,7 @@ class TrainingController extends AppController {
             $score = round($correct / $answers * 100, 2);
             $event = "training_failed";
             $pass = $this->getQuizHeader($QuizID)->pass;
+            $this->evaluateuser($QuizID, $UserID);
             if ($score>=$pass) {$event = "training_passed";}
             $path = LOGIN . "training/certificate?quizid=" . $QuizID . "&userid=" . $UserID;
             $users = $this->enumsupers();
@@ -475,6 +476,19 @@ class TrainingController extends AppController {
                 $results["total"] += 1;
             }
             $results["hascert"] = $Quiz->hascert;
+
+            //save results
+            $table = TableRegistry::get('training_enrollments');
+            $theresults = $table->find('all', array('conditions' => ['QuizID' => $QuizID, "UserID" => $UserID]))->first();
+            if($theresults) {
+                $table->query()->update()->set($results)->where(['QuizID' => $QuizID, "UserID" => $UserID])->execute();
+            } else {
+                $results["QuizID"] = $QuizID;
+                $results["UserID"] = $UserID;
+                $table->query()->insert(array_keys($results))->values($results)->execute();
+            }
+            //end save
+
             return $results;
         }
     }
@@ -495,6 +509,7 @@ class TrainingController extends AppController {
         foreach ($useranswers as $answers) {
             if ($answers->created) { return $answers->created; }
         }
+        return "";
     }
 
     function usersanswer($useranswers, $questionid){
