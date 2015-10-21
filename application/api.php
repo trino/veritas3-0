@@ -44,13 +44,18 @@ function initdatepicker($dateformat = 'yy-mm-dd'){
     <?php
 }
 
-function backbutton($text = "Back"){
+function backbutton($text = "Back", $DoVeritas){
     if ( $_SERVER["SERVER_NAME"] == "localhost") {
-        echo '<DIV align="center" class="no-print"><A HREF="index.php';
-        if (isset($_GET["user_id"])) {
-            echo "?user_id=" . $_GET["user_id"];
-        } else if (isset($_GET["p_id"])) {
-            echo "?user_id=" . $_GET["p_id"];
+        echo '<DIV align="center" class="no-print"><A HREF="';
+        if($DoVeritas){
+            echo "../";
+        } else {
+            echo 'index.php';
+            if (isset($_GET["user_id"])) {
+                echo "?user_id=" . $_GET["user_id"];
+            } else if (isset($_GET["p_id"])) {
+                echo "?user_id=" . $_GET["p_id"];
+            }
         }
         echo '">' . $text . '</A></DIV>';
     }

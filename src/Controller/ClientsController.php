@@ -1428,9 +1428,7 @@
             $Subject =          'Requalifed';
             
             foreach($clients as $c) {
-                $msg .= "<br/><br/><strong>Clients</strong><br/>";
-                $msg .= $c->company_name;
-                $msg .="<br/>";
+                $msg .= "<TR><TD>" . $c->id . '</TD><TD>' . $c->company_name . '</TD><TD>';
                 if($c->requalify_re == '0') {
                      $date = $c->requalify_date;
                 }
@@ -1544,7 +1542,7 @@
             }
             $this->set('arrs',$marr);
             $this->set('msg',$msg);
-            echo $msg;
+            echo $msg . '</TD></TR>';
         }
 
     function getnextdate($date, $frequency) {

@@ -2304,206 +2304,208 @@
 /////////////////////////////////////////////////////////////////////////////////////process order
         function cron($debugging = false) {//////////////////////////////////send out emails
             $path = $this->Document->getUrl();
-            if (isset($_GET["testemail"])) {
-                $email = $this->request->session()->read('Profile.email');
-                $this->sendtaskreminder($email, "test", $path, "(TEST EMAIL)");
-            }
 
             $setting = TableRegistry::get('settings')->find()->first();
             $q = TableRegistry::get('events');
             $que = $q->find();
             //$query = $que->select()->where(['(date LIKE "%' . $date . '%" OR date LIKE "%' . $date2 . '%")', 'sent' => 0])->limit(200);
             $datetime = date('Y-m-d H:i:s');
-            echo "Checking for events before " . $datetime;
             $conditions = array('(date <= "' . $datetime . '")');
             if(!$debugging){$conditions['sent'] = 0;}
             $query = $que->select()->where($conditions)->limit(200);
-            echo "<BR>" . iterator_count($query) . " emails to send<br><br>";
             //VAR_Dump($query);die();
+
+            $Emails = 1;
+            echo '<TABLE BORDER="1" cellspacing="0"><THEAD><TR><TH>ID</TH><TH>TITLE</TH><TH>NOTES</TH></TR></THEAD>';
+            if($debugging){echo '<TR><TH COLSPAN="3">Debugging mode is on</TH></TR>';}
+            echo '<TR><TH COLSPAN="3">Task events before now (' . $datetime . ')</TH></TR>';
+            if (isset($_GET["testemail"])) {
+                $email = $this->request->session()->read('Profile.email');
+                echo '<TR><TD>' . $Emails++ . '</TD><TD>' . $this->sendtaskreminder($email, "test", $path, "TEST EMAIL") . '</TD></TR>';
+            }
             foreach ($query as $todo) {
                 if ($todo->email_self == '1') {
                     $query2 = $this->loadprofile($todo->user_id);
                     $email = $query2->email;
                     if ($email) {
-                        $this->sendtaskreminder($email, $todo, $path, "(Account holder)");
+                        echo '<TR><TD>' . $Emails++ . '</TD><TD>' . $this->sendtaskreminder($email, $todo, $path, "Account holder") . '</TD></TR>';
                     }
                 }
                 if (strlen($todo->others_email) > 0) {
                     $emails = explode(",", $todo->others_email);
                     foreach ($emails as $em) {
-                        $this->sendtaskreminder($em, $todo, $path, "(Added by account holder)");
+                        echo '<TR><TD>' . $Emails++ . '</TD><TD>' . $this->sendtaskreminder($em, $todo, $path, "Added by account holder") . '</TD></TR>';
                     }
                 }
                 $q->query()->update()->set(['sent' => 1, 'email_self' => 0])->where(['id' => $todo->id])->execute();
             }
-            echo "<BR><BR>";
 
             $orders = TableRegistry::get('orders');
             $order = $orders
                 ->find()
-                ->where(['orders.draft' => 0])->order('orders.id DESC')->limit(150);
+                ->where(['orders.draft' => 0, "orders.complete" => 0, "orders.complete_writing" => 1])->order('orders.id DESC')->limit(150);
 
+            echo '<TR><TH COLSPAN="3">The first 150 non-draft orders</TH></TR>';
             foreach ($order as $o) {
+                echo '<TR><TD>' . $o->id . '</TD><TD>' . $o->title . '</TD><TD>' ;
+                // echo $o->id .',';
+                $complete = 1;
 
-                if ($o->complete == 0  && $o->complete_writing == 1) {
-                    // echo $o->id .',';
-                    $complete = 1;
+                if ($o->ins_1 && $o->ins_1_binary == null) {
+                    $complete = 0;
+                    echo "ins 1 not complete<br>";
+                } else if ($o->ins_1 && $o->ins_1_binary != "done") {
+                    $this->create_files_from_binary($o->id, "1", $o->ins_1_binary);
+                    $this->save_bright_planet_grade($o->id, 'ins_1_binary', 'done');
+                    echo "ins 1 complete<br>";
+                }
 
-                    if ($o->ins_1 && $o->ins_1_binary == null) {
-                        $complete = 0;
-                        echo "ins 1 not complete<br>";
-                    } else if ($o->ins_1 && $o->ins_1_binary != "done") {
-                        $this->create_files_from_binary($o->id, "1", $o->ins_1_binary);
-                        $this->save_bright_planet_grade($o->id, 'ins_1_binary', 'done');
-                        echo "ins 1 complete<br>";
+                if ($o->ins_14 && $o->ins_14_binary == null) {
+                    $complete = 0;
+                    echo "ins 14 not complete<br>";
+                } else if ($o->ins_14 && $o->ins_14_binary != "done") {
+                    $this->create_files_from_binary($o->id, "14", $o->ins_14_binary);
+                    $this->save_bright_planet_grade($o->id, 'ins_14_binary', 'done');
+                    echo "ins 14 complete<br>";
+                }
+
+
+                if ($o->ins_72 && $o->ins_72_binary == null) {
+                    $complete = 0;
+                    echo "ins 72 not complete<br>";
+                } else if ($o->ins_72 && $o->ins_72_binary != "done") {
+                    $this->create_files_from_binary($o->id, "72", $o->ins_72_binary);
+                    $this->save_bright_planet_grade($o->id, 'ins_72_binary', 'done');
+                    echo "ins 72 complete<br>";
+                }
+
+                if ($o->ins_77 && $o->ins_77_binary == null) {
+                    $complete = 0;
+                    echo "ins 77 not complete<br>";
+                } else if ($o->ins_77 && $o->ins_77_binary != "done") {
+                    $this->create_files_from_binary($o->id, "77", $o->ins_77_binary);
+                    $this->save_bright_planet_grade($o->id, 'ins_77_binary', 'done');
+                    echo "ins 77 complete<br>";
+                }
+
+
+
+                if ($o->ins_31 && $o->ins_31_binary == null) {
+                    $complete = 0;
+                    echo "ins 31 not complete<br>";
+                } else if ($o->ins_31 && $o->ins_31_binary != "done") {
+                    $this->create_files_from_binary($o->id, "31", $o->ins_31_binary);
+                    $this->save_bright_planet_grade($o->id, 'ins_31_binary', 'done');
+                    echo "ins 31 complete<br>";
+                }
+
+
+                if ($o->ins_32 && $o->ins_32_binary == null) {
+                    $complete = 0;
+                    echo "ins 32 not complete<br>";
+                } else if ($o->ins_32 && $o->ins_32_binary != "done") {
+                    $this->create_files_from_binary($o->id, "32", $o->ins_32_binary);
+                    $this->save_bright_planet_grade($o->id, 'ins_32_binary', 'done');
+                    echo "ins 32 complete<br>";
+                }
+
+                if ($o->ins_78 && $o->ins_78_binary == null) {
+                    $complete = 0;
+                    echo "ins 78 not complete<br>";
+                } else if ($o->ins_78 && $o->ins_78_binary != "done") {
+                    $this->create_files_from_binary($o->id, "78", $o->ins_78_binary);
+                    $this->save_bright_planet_grade($o->id, 'ins_78_binary', 'done');
+                    echo "ins 78 complete<br>";
+                }
+
+                if ($o->ebs_1603 && $o->ebs_1603_binary == null) {
+                    $complete = 0;
+                    echo "ebs 1603 not complete<br>";
+                } else if ($o->ebs_1603 && $o->ebs_1603_binary != "done") {
+                    $this->create_files_from_binary($o->id, "1603", $o->ebs_1603_binary);
+                    $this->save_bright_planet_grade($o->id, 'ebs_1603_binary', 'done');
+                    echo "ebs 1603 complete<br>";
+                }
+
+
+                if ($o->ebs_1627 && $o->ebs_1627_binary == null) {
+                    $complete = 0;
+                    echo "ebs 1627 not complete<br>";
+                } else if ($o->ebs_1627 && $o->ebs_1627_binary != "done") {
+                    $this->create_files_from_binary($o->id, "1627", $o->ebs_1627_binary);
+                    $this->save_bright_planet_grade($o->id, 'ebs_1627_binary', 'done');
+                    echo "ebs 1627 complete<br>";
+                }
+
+
+                if ($o->ebs_1650 && $o->ebs_1650_binary == null) {
+                    $complete = 0;
+                    echo "ebs 1650 not complete<br>";
+                } else if ($o->ebs_1650 && $o->ebs_1650_binary != "done") {
+                    $this->create_files_from_binary($o->id, "1650", $o->ebs_1650_binary);
+                    $this->save_bright_planet_grade($o->id, 'ebs_1650_binary', 'done');
+                    echo "ebs 1650 complete<br>";
+                }
+
+                if ($o->bright_planet_html_binary) {
+                    $this->create_files_from_binary($o->id, "bright_planet_html_binary", $o->bright_planet_html_binary);
+
+                    /*
+                    $sendit = strip_tags(trim($this->get_mee_results_binary($o->bright_planet_html_binary, "Driver's Record Abstract")));
+                    if ($sendit) {
+                        $this->save_bright_planet_grade($o->id, 'ins_1', $sendit);
                     }
 
-                    if ($o->ins_14 && $o->ins_14_binary == null) {
-                        $complete = 0;
-                        echo "ins 14 not complete<br>";
-                    } else if ($o->ins_14 && $o->ins_14_binary != "done") {
-                        $this->create_files_from_binary($o->id, "14", $o->ins_14_binary);
-                        $this->save_bright_planet_grade($o->id, 'ins_14_binary', 'done');
-                        echo "ins 14 complete<br>";
+                    $sendit = strip_tags(trim($this->get_mee_results_binary($o->bright_planet_html_binary, "Pre-employment Screening Program Report")));
+                    if ($sendit) {
+                     $this->save_bright_planet_grade($o->id, 'ins_77', $sendit);
                     }
 
-
-                    if ($o->ins_72 && $o->ins_72_binary == null) {
-                        $complete = 0;
-                        echo "ins 72 not complete<br>";
-                    } else if ($o->ins_72 && $o->ins_72_binary != "done") {
-                        $this->create_files_from_binary($o->id, "72", $o->ins_72_binary);
-                        $this->save_bright_planet_grade($o->id, 'ins_72_binary', 'done');
-                        echo "ins 72 complete<br>";
+                    $sendit = strip_tags(trim($this->get_mee_results_binary($o->bright_planet_html_binary, "CVOR")));
+                    if ($sendit) {
+                       $this->save_bright_planet_grade($o->id, 'ins_14', $sendit);
+                    }
+                    $sendit = strip_tags(trim($this->get_mee_results_binary($o->bright_planet_html_binary, "Premium National Criminal Record Check")));
+                    if ($sendit) {
+                      $this->save_bright_planet_grade($o->id, 'ebs_1603', $sendit);
                     }
 
-                    if ($o->ins_77 && $o->ins_77_binary == null) {
-                        $complete = 0;
-                        echo "ins 77 not complete<br>";
-                    } else if ($o->ins_77 && $o->ins_77_binary != "done") {
-                        $this->create_files_from_binary($o->id, "77", $o->ins_77_binary);
-                        $this->save_bright_planet_grade($o->id, 'ins_77_binary', 'done');
-                        echo "ins 77 complete<br>";
+                    $sendit = strip_tags(trim($this->get_mee_results_binary($o->bright_planet_html_binary, "Certifications")));
+                    if ($sendit) {
+                     $this->save_bright_planet_grade($o->id, 'ebs_1650', $sendit);
                     }
 
-
-
-                    if ($o->ins_31 && $o->ins_31_binary == null) {
-                        $complete = 0;
-                        echo "ins 31 not complete<br>";
-                    } else if ($o->ins_31 && $o->ins_31_binary != "done") {
-                        $this->create_files_from_binary($o->id, "31", $o->ins_31_binary);
-                        $this->save_bright_planet_grade($o->id, 'ins_31_binary', 'done');
-                        echo "ins 31 complete<br>";
+                    $sendit = strip_tags(trim($this->get_mee_results_binary($o->bright_planet_html_binary, "TransClick")));
+                    if ($sendit) {
+                     $this->save_bright_planet_grade($o->id, 'ins_78', $sendit);
                     }
 
-
-                    if ($o->ins_32 && $o->ins_32_binary == null) {
-                        $complete = 0;
-                        echo "ins 32 not complete<br>";
-                    } else if ($o->ins_32 && $o->ins_32_binary != "done") {
-                        $this->create_files_from_binary($o->id, "32", $o->ins_32_binary);
-                        $this->save_bright_planet_grade($o->id, 'ins_32_binary', 'done');
-                        echo "ins 32 complete<br>";
+                    $sendit = strip_tags(trim($this->get_mee_results_binary($o->bright_planet_html_binary, "Letter Of Experience")));
+                    if ($sendit) {
+                     $this->save_bright_planet_grade($o->id, 'ebs_1627', $sendit);
                     }
 
-                    if ($o->ins_78 && $o->ins_78_binary == null) {
-                        $complete = 0;
-                        echo "ins 78 not complete<br>";
-                    } else if ($o->ins_78 && $o->ins_78_binary != "done") {
-                        $this->create_files_from_binary($o->id, "78", $o->ins_78_binary);
-                        $this->save_bright_planet_grade($o->id, 'ins_78_binary', 'done');
-                        echo "ins 78 complete<br>";
-                    }
+                   $this->save_bright_planet_grade($o->id, 'bright_planet_html_binary', null);
+                    */
+                }
 
-                    if ($o->ebs_1603 && $o->ebs_1603_binary == null) {
-                        $complete = 0;
-                        echo "ebs 1603 not complete<br>";
-                    } else if ($o->ebs_1603 && $o->ebs_1603_binary != "done") {
-                        $this->create_files_from_binary($o->id, "1603", $o->ebs_1603_binary);
-                        $this->save_bright_planet_grade($o->id, 'ebs_1603_binary', 'done');
-                        echo "ebs 1603 complete<br>";
-                    }
+                if ($complete == 1 && $o->complete == 0) {
+                    $or = TableRegistry::get('orders');
+                    $quer = $or->query();
+                    $quer->update()
+                        ->set(['complete' => 1])
+                        ->where(['id' => $o->id])
+                        ->execute();
 
+                    $table = TableRegistry::get('profiles');
+                    $profile1 = $table->find()->where(['id' => $o->user_id])->first();
 
-                    if ($o->ebs_1627 && $o->ebs_1627_binary == null) {
-                        $complete = 0;
-                        echo "ebs 1627 not complete<br>";
-                    } else if ($o->ebs_1627 && $o->ebs_1627_binary != "done") {
-                        $this->create_files_from_binary($o->id, "1627", $o->ebs_1627_binary);
-                        $this->save_bright_planet_grade($o->id, 'ebs_1627_binary', 'done');
-                        echo "ebs 1627 complete<br>";
-                    }
-
-
-                    if ($o->ebs_1650 && $o->ebs_1650_binary == null) {
-                        $complete = 0;
-                        echo "ebs 1650 not complete<br>";
-                    } else if ($o->ebs_1650 && $o->ebs_1650_binary != "done") {
-                        $this->create_files_from_binary($o->id, "1650", $o->ebs_1650_binary);
-                        $this->save_bright_planet_grade($o->id, 'ebs_1650_binary', 'done');
-                        echo "ebs 1650 complete<br>";
-                    }
-
-                    if ($o->bright_planet_html_binary) {
-                        $this->create_files_from_binary($o->id, "bright_planet_html_binary", $o->bright_planet_html_binary);
-
-                        /*
-                        $sendit = strip_tags(trim($this->get_mee_results_binary($o->bright_planet_html_binary, "Driver's Record Abstract")));
-                        if ($sendit) {
-                            $this->save_bright_planet_grade($o->id, 'ins_1', $sendit);
-                        }
-
-                        $sendit = strip_tags(trim($this->get_mee_results_binary($o->bright_planet_html_binary, "Pre-employment Screening Program Report")));
-                        if ($sendit) {
-                         $this->save_bright_planet_grade($o->id, 'ins_77', $sendit);
-                        }
-
-                        $sendit = strip_tags(trim($this->get_mee_results_binary($o->bright_planet_html_binary, "CVOR")));
-                        if ($sendit) {
-                           $this->save_bright_planet_grade($o->id, 'ins_14', $sendit);
-                        }
-                        $sendit = strip_tags(trim($this->get_mee_results_binary($o->bright_planet_html_binary, "Premium National Criminal Record Check")));
-                        if ($sendit) {
-                          $this->save_bright_planet_grade($o->id, 'ebs_1603', $sendit);
-                        }
-
-                        $sendit = strip_tags(trim($this->get_mee_results_binary($o->bright_planet_html_binary, "Certifications")));
-                        if ($sendit) {
-                         $this->save_bright_planet_grade($o->id, 'ebs_1650', $sendit);
-                        }
-
-                        $sendit = strip_tags(trim($this->get_mee_results_binary($o->bright_planet_html_binary, "TransClick")));
-                        if ($sendit) {
-                         $this->save_bright_planet_grade($o->id, 'ins_78', $sendit);
-                        }
-
-                        $sendit = strip_tags(trim($this->get_mee_results_binary($o->bright_planet_html_binary, "Letter Of Experience")));
-                        if ($sendit) {
-                         $this->save_bright_planet_grade($o->id, 'ebs_1627', $sendit);
-                        }
-
-                       $this->save_bright_planet_grade($o->id, 'bright_planet_html_binary', null);
-                        */
-                    }
-
-                    if ($complete == 1 && $o->complete == 0) {
-                        $or = TableRegistry::get('orders');
-                        $quer = $or->query();
-                        $quer->update()
-                            ->set(['complete' => 1])
-                            ->where(['id' => $o->id])
-                            ->execute();
-
-                        $table = TableRegistry::get('profiles');
-                        $profile1 = $table->find()->where(['id' => $o->user_id])->first();
-
-                        if ($profile1->email) {
-                            // $path = $this->Mailer->make_order_path($o);
-                            $this->Mailer->handleevent("cronordercomplete", array("site" => $setting->mee, "path" => $path, "email" => array('super',$profile1->email)));
-                        }
+                    if ($profile1->email) {
+                        // $path = $this->Mailer->make_order_path($o);
+                        $this->Mailer->handleevent("cronordercomplete", array("site" => $setting->mee, "path" => $path, "email" => array('super',$profile1->email)));
                     }
                 }
+                echo '</TD></TR>';
             }
 
 
@@ -2548,11 +2550,14 @@
             if (isset($_GET["testemail"]) || $debugging) {
                 $email = "/" . $this->request->session()->read('Profile.email');
             }
+            echo '<TR><TH COLSPAN="3">Clients</TH></TR>';
             echo $this->requestAction("clients/cron" . $email);
 
+            echo '</TABLE>';
+
             if (file_exists("royslog.txt")){
-                echo "<h2>Emails: </h2>";
-                echo str_replace("\r\n", "<BR>", file_get_contents ("royslog.txt"));
+                echo '<BR><span style="border: 2px solid #000000;padding:3px;" onclick="document.getElementById(' . "'royslog'" . ").style.display = ''" . '"><STRONG>Click to see the contents of the log file</STRONG></span>';
+                echo '<BR><SPAN ID="royslog" style="display: none;">' . str_replace("\r\n", "<BR>", file_get_contents ("royslog.txt")) . '</SPAN>';
             }
             die();
         }
@@ -2588,10 +2593,9 @@
         function sendtaskreminder($email, $todo, $path, $name) {
             $setting = TableRegistry::get('settings')->find()->first();
             if(is_object($todo)) {
-                $this->Mailer->handleevent("taskreminder", array("title" => $todo->title, "email" => $email, "description" => $todo->description, "dueby" => $todo->date, "domain" => getHost("isbmee.com"), "site" => $setting->mee
+                $this->Mailer->handleevent("taskreminder", array("title" => $todo->title, "email" => $email, "description" => $todo->description, "dueby" => $todo->date, "domain" => getHost("isbmee.com"), "site" => $setting->mee, "path" => $path
                 ));
-                echo "<br>Sending task reminder to: " . $email;
-                return true;
+                return $email . '</TD><TD>' . $name;
             } else {
                 $this->Mailer->handleevent("test", array("email" => $email));
             }

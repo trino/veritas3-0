@@ -91,6 +91,7 @@ $dosubmit = true;
 $language = get("language", "English");
 $settings = array();
 $is_disabled=false;
+$DoVeritas=false;
 
 if(isset($_GET["client_id"])){
     $clientID = $_GET["client_id"];
@@ -416,6 +417,7 @@ if (count($_POST) > 0) {
                 include("forms/" . $Form . ".php");
             } else if ($_SERVER['SERVER_NAME']  == "localhost") {
                 $doback = false;
+                $DoVeritas=true;
                 echo $strings["uniform_pleaseselect"] . ":<UL>";
                 $forms = array(4, 9, 24);
                 $fieldname = "title";
@@ -582,13 +584,13 @@ function toarray($Result){
     return array("Result" => False);
 }
 ?>
-<?php if($doback){
-    if ($dosubmit){ ?>
+<?php if($doback || $DoVeritas){
+    if ($dosubmit && !$DoVeritas){ ?>
         <div class="clearfix"></div>
         <INPUT TYPE="button" class="btn btn-danger btn-lg" onclick="return checkformext();" VALUE="<?php echo (isset($_GET['customlink']))?'Submit':'Next Step'.$stages;?>" STYLE="float: right;" oldtitle="<?=$strings["forms_submit"];?>">
         <div class="clearfix"></div>
     <?php }
-        backbutton($strings["addorder_back"]);
+        backbutton($strings["addorder_back"], $DoVeritas);
     } ?>
 </div></form>
 </BODY>
