@@ -431,6 +431,9 @@ class TrainingController extends AppController {
     public function enumenrolledusers($QuizID){
         $table = TableRegistry::get("training_enrollments");
         $results = $table->find('all', array('conditions' => array('QuizID'=>$QuizID)))->contain("profiles");
+        foreach($results as $Profile){
+            $this->evaluateuser($QuizID,$Profile->UserID);
+        }
         return $results;
     }
     public function isuserenrolled($QuizID, $UserID){
