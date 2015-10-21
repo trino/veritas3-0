@@ -21,8 +21,7 @@
     include_once 'subpages/filelist.php';
     $includeabove = true;
 
-    function dotest($Number, $pp, $order, $duplicate_log, $ins2 = "ins")
-    {
+    function dotest($Number, $pp, $order, $duplicate_log, $ins2 = "ins") {
         $ins = $ins2 . "_" . $Number;
         if ($pp == $Number) {
             if ($order->$ins == "Duplicate Order") {
@@ -66,13 +65,11 @@
         return $lineclass;
     }
 
-    function get_color($result_string)
-    {
+    function get_color($result_string) {
         $return_color = '<span  class="label label-sm label-warning" style="padding:4px;">' . $result_string . '</span>';
-
         switch (strtoupper(trim($result_string))) {
             case 'NOT ATTACHED':
-                echo $return_color = '<span  class="label label-sm label-danger" style="padding:4px;">' . $result_string . '</span>';;
+                echo $return_color = '<span  class="label label-sm label-danger" style="padding:4px;">' . $result_string . '</span>';
                 break;
             case 'PASS':
                 echo $return_color = '<span  class="label label-sm label-success" style="padding:4px;">' . $result_string . '</span>';
@@ -107,8 +104,7 @@
         }
     }
 
-    function get_color2($result_string)
-    {
+    function get_color2($result_string) {
         //get_colorOLD($result_string);return;
         $result_string = "score_" . str_replace(" ", "", strtolower($result_string));
         if (isset($GLOBALS[$result_string])) {
@@ -140,8 +136,7 @@
         }
     }
 
-    function get_string_between($string, $start, $end)
-    {
+    function get_string_between($string, $start, $end) {
         $string = " " . $string;
         $ini = strpos($string, $start);
         if ($ini == 0) return "";
@@ -150,8 +145,7 @@
         return substr($string, $ini, $len);
     }
 
-    function get_mee_results_binary($bright_planet_html_binary, $document_type)
-    {
+    function get_mee_results_binary($bright_planet_html_binary, $document_type) {
         //	echo $document_type;die();
         if (get_string_between(base64_decode($bright_planet_html_binary), $document_type, '</tr>')) {
             return get_color(strip_tags(get_string_between(base64_decode($bright_planet_html_binary), $document_type, '</tr>')));
@@ -160,26 +154,21 @@
         }
     }
 
-    function return_link($pdi, $order_id)
-    {
+    function return_link($pdi, $order_id) {
         if (file_exists("orders/order_" . $order_id . '/' . $pdi . '.pdf')) {
             $link = "orders/order_" . $order_id . '/' . $pdi . '.pdf';
             return $link;
-
         } else if (file_exists("orders/order_" . $order_id . '/' . $pdi . '.html')) {
             $link = "orders/order_" . $order_id . '/' . $pdi . '.html';
             return $link;
-
         } else if (file_exists("orders/order_" . $order_id . '/' . $pdi . '.txt')) {
             $link = "orders/order_" . $order_id . '/' . $pdi . '.txt';
             return $link;
-
         }
         return false;
     }
 
-    function portlet($color = "", $caption = "", $secondcaption = "")
-    {
+    function portlet($color = "", $caption = "", $secondcaption = "") {
         if ($color) {
             echo '<!-- BEGIN PROFILE CONTENT --><div class="row"><div class="clearfix"></div><div class="col-md-12">';
             echo '<!-- BEGIN PORTLET --><div class="portlet"><div class="portlet box ' . $color . '"><div class="portlet-title"><div class="caption">';
@@ -241,13 +230,11 @@
             //$forms_arr[7] = 8;
         } else {
             $forms_arr = explode(',', $forms);
-
         }
         $p = $forms_arr;
         // var_dump($p);
         if ($order->draft == 0) {
             $k++;
-
             $settings = $this->requestAction('settings/get_settings');
             $uploaded_by = $doc_comp->getUser($order->user_id);
             ?>
@@ -255,12 +242,10 @@
                 <!-- BEGIN PROFILE CONTENT -->
                 <div class="">
                     <div class="row">
-
                         <div class="clearfix"></div>
                         <div class="col-md-12">
                             <!-- BEGIN PORTLET -->
                             <div class="portlet">
-
                                 <div class="portlet box yellow">
                                     <div class="portlet-title">
                                         <div class="caption">
@@ -347,207 +332,106 @@
 
                 <?php
             $Fieldname = getFieldname("title", $language);
+            $arr_return_no['1'] = 'ins_1';
+            $arr_return_no['14'] = 'ins_14';
+            $arr_return_no['32'] = 'ins_32';
+            $arr_return_no['72'] = 'ins_72';
+            $arr_return_no['77'] = 'ins_77';
+            $arr_return_no['78'] = 'ins_78';
+            $arr_return_no['1603'] = 'ebs_1603';
+            $arr_return_no['1627'] = 'ebs_1627';
+            $arr_return_no['1650'] = 'ebs_1650';
+            $array_number = array_keys($arr_return_no);
+
             foreach ($p as $pp) {
                 $title_pr = $this->requestAction('/orders/getProductTitle/' . $pp);
-                ?>
-                <tr class="" role="">
-                    <td style="padding:8px 0;">
-                        <span class="icon-notebook"></span>
-                    </td>
-										
-		
+                echo '<tr class="" role=""><td style="padding:8px 0;"><span class="icon-notebook"></span></td><td>';
+                $no = '';
+                if($this->request->session()->read('Profile.super')){
+                    if(in_array($title_pr->number,$array_number)){
+                        $no = ' ' . $order->$arr_return_no[$title_pr->number] .'-' .$title_pr->number.'';
+                    }
+                }
+                echo $title_pr->$Fieldname . $Trans. '<span style="color:#999;">' . $no . '</span>';
 
-                    <td>
-                        <?php
-						//debug($order->bright_planet_html_binary);
-                        //$orderno = $this->requestAction('/orders/getOrderNumber/')\
-$array_number=array(1,14,32,72,77,78,1603,1627,1650);
-                        $arr_return_no['1'] = 'ins_1';
-                        $arr_return_no['14'] = 'ins_14';
-                        $arr_return_no['32'] = 'ins_32';
-                        $arr_return_no['72'] = 'ins_72';
-                        $arr_return_no['77'] = 'ins_77';
-                        $arr_return_no['78'] = 'ins_78';
-                        $arr_return_no['1603'] = 'ebs_1603';
-                        $arr_return_no['1627'] = 'ebs_1627';
-                        $arr_return_no['1650'] = 'ebs_1650';
+                $duplicate_log = "";
+                $duplicate_log = dotest(1,      $pp, $order, $duplicate_log);
+                $duplicate_log = dotest(77,     $pp, $order, $duplicate_log);
+                $duplicate_log = dotest(14,     $pp, $order, $duplicate_log);
+                $duplicate_log = dotest(1603,   $pp, $order, $duplicate_log);//, "ebs");
+                $duplicate_log = dotest(1650,   $pp, $order, $duplicate_log);//, "ebs");
+                $duplicate_log = dotest(78,     $pp, $order, $duplicate_log);
+                $duplicate_log = dotest(1627,   $pp, $order, $duplicate_log);//, "ebs");
+                $duplicate_log = dotest(72,     $pp, $order, $duplicate_log);
 
-                        if($this->request->session()->read('Profile.super')){
-							
-							//debug($title_pr->number);
-							if(in_array($title_pr->number,$array_number)){
-                       $no = ' ' . $order->$arr_return_no[$title_pr->number] .'-' .$title_pr->number.'';
-							}    else{
-                        $no = '';
-						}
-						}
-                        else{
-                        $no = '';
-						}
-                        echo $title_pr->$Fieldname . $Trans. '<span style="color:#999;">' . $no . '</span>';
-                        
+                echo '</td><td class="actions">';
 
-                        $duplicate_log = "";
-                        $duplicate_log = dotest(1,  $pp, $order, $duplicate_log);
-                        $duplicate_log = dotest(77,  $pp, $order, $duplicate_log);
-                        $duplicate_log = dotest(14,  $pp, $order, $duplicate_log);
-                        $duplicate_log = dotest(1603,  $pp, $order, $duplicate_log);//, "ebs");
-                        $duplicate_log = dotest(1650,  $pp, $order, $duplicate_log);//, "ebs");
-                        $duplicate_log = dotest(78,  $pp, $order, $duplicate_log);
-                        $duplicate_log = dotest(1627,  $pp, $order, $duplicate_log);//, "ebs");
-                        $duplicate_log = dotest(72,  $pp, $order, $duplicate_log);
-                        ?>
+                if ($duplicate_log == "Duplicate Order") {
+                    echo '<span class="label label-danger">' . $strings2["score_dupe"] . '  </span> ' . $arr_return_no[$title_pr->number];
+                } elseif (return_link($pp, $order->id) == false) {
+                    if( $no ==" 4408-32"){
+                        echo '<span class="label label-warning">No results found</span>';
+                    } else {
+                        echo '<span class="label label-info">' . $strings2["documents_pending"] . '</span>';
+                    }
+                } else {
+                    echo '<a target="_blank" href="' . $this->request->webroot . return_link($pp, $order->id) . '" class="btn btn-primary dl">' . $strings2["file_download"] . '</a>';
+                }
 
+                if($order->complete == 1){
+                    echo "" . get_mee_results_binary($order->bright_planet_html_binary,$title_pr->$Fieldname);
+                }
 
-                    </td>
-		
-
-					
-<td class="actions">
-<?php
-if ($duplicate_log == "Duplicate Order") 
-{
-?>
-<span class="label label-danger"><?= $strings2["score_dupe"]; ?>  </span> <?php echo $arr_return_no[$title_pr->number]?>
-<?
-} 
-elseif (return_link($pp, $order->id) == false) 
-{
-	if( $no ==" 4408-32"){
-		?>
-<span class="label label-warning">No results found </span>
-<? 
-	}else{
-?>
-<span class="label label-info"><?= $strings2["documents_pending"]; ?> </span>
-<? 
-} }
-else{
-
-?>
-<a target="_blank" href="<? echo $this->request->webroot . return_link($pp, $order->id); ?>" class="btn btn-primary dl"><?= $strings2["file_download"]; ?></a>
-
-<?
-}
-
-if($order->complete == 1){
-echo "" . get_mee_results_binary($order->bright_planet_html_binary,$title_pr->$Fieldname);
-}
-?>
-<? 
-
-
-?>
-</td>
-
-
-                  
-                </tr>
-                <?php
+                echo '</td></tr>';
                 $duplicate_log = "";
             }
-            ?>
 
-                                                    <TR>
-                                                        <TD colspan="3">
+            echo '<TR><TD colspan="3"><H4 style="margin-left: -7px;"><i class="icon-doc font-blue-hoki"></i><span class="caption-subject bold font-blue-hoki uppercase"> ';
+            echo $strings2["score_docs"] . '</span></H4><div class="clearfix"></div></TD></TR>';
 
-                                                            <H4 style="margin-left: -7px;"><i
-                                                                    class="icon-doc font-blue-hoki"></i>
-								<span class="caption-subject bold font-blue-hoki uppercase">
-								<?= $strings2["score_docs"]; ?> </span></H4>
-
-                                                            <div class="clearfix"></div>
-                                                        </TD>
-                                                    </TR>
-
-
-
-                                                    <?php
             $line = "even";
             $doc = $this->requestAction('/orders/getSubDocs');
             $docfind = 0;
-            //var_dump($doc); die();
             if ($doc) {
                 foreach ($doc as $d) {
                     $title = ucfirst($d->$Fieldname) . $Trans;
                     $sub_doc_id = $d->id;//Document ID
                     $o_id = $order->id;//Order ID
                     $c_id = $order->client_id;
-
                     $d_id = $this->requestAction("/orders/getdocid/" . $sub_doc_id . "/" . $o_id);
                     if ($d_id) {
-                        //echo "<BR>Checking: sub_doc_id " . $sub_doc_id . " for order " . $o_id . " got " . $d_id;
                         $docfind++;
                         $docu_id = $d_id->id;
                         $cnt = $this->requestAction("/orders/getprocessed/" . $d->table_name . "/" . $order->id);
                         $line = PrintLine($line, $title, $cnt, $docu_id, $c_id, $o_id, $this->request->webroot, true,$sub_doc_id);
-						
                     }
-					
                 }
-                //die();
-
             }
             if (!$docfind) {
-                ?>
-                <tr>
-                    <td colspan="3"><?= $strings2["score_none"]; ?></td>
-                </tr>
-            <?php
+                echo '<tr><td colspan="3">' . $strings2["score_none"] . '</td></tr>';
             }
 
+            $Education = array("School" => "Scott Park", "Program Name" => "Secondary Education", "Graduation Date" => "Last month sometime. Was a monday", "Grade" => "11/10", "Download certificate" => "Click Here");
+            if(isset($Education) && count($Education)) {
+                echo '<TR><TD colspan="3"><H4 style="margin-left: -7px;"><i class="icon-doc font-blue-hoki"></i><span class="caption-subject bold font-blue-hoki uppercase"> EDUCATION</span></H4>';
+                echo '<div class="clearfix"></div></TD></TR>';
+                foreach ($Education as $Name => $Value) {
+                    echo '<tr role="row"><td style="padding:8px 0;"><span class="icon-notebook"></span></td><td>' . $Name . ':</td><td class="actions">' . $Value . '</td></tr>';
+                }
+            }
             $files = getattachments($order->id);
             if (!$includeabove) {
                 printdocumentinfo($order->id, true);
             }
             listfiles($files, "attachments/", "", false, 3);
 
-
-            ?>
-                                                    <TR>
-                                                        <TD colspan="3"></TD>
-                                                    </TR>
-                                                    </tbody>
-                                                </table>
-
-
-                                            </div>
-
-                                            <div class="clearfix"></div>
-
-                                        </div>
-
-                                    </div>
-
-
-                                    <!-- END PORTLET -->
-
-
-                                </div>
-                            </div>
-                            <!-- END PORTLET -->
-                        </div>
-                    </div>
-                </div>
-
-            <?php }
+            echo '<TR><TD colspan="3"></TD></TR></tbody></table></div><div class="clearfix"></div></div></div><!-- END PORTLET --></div></div><!-- END PORTLET --></div></div></div>';
+        }
     }
 
     if ($k == 0) {
-        ?>
-        <table class="table table-condensed table-striped table-bordered table-hover dataTable no-footer">
-            <thead>
-            </thead>
-            <tbody>
-            <tr class="even" role="row">
-                <td colspan="3" align="center">
-                    <?= $strings2["orders_noresults"]; ?>
-                </td>
-            </tr>
-            </tbody>
-        </table>
-
-        <?
+        echo '<table class="table table-condensed table-striped table-bordered table-hover dataTable no-footer"><thead></thead><tbody><tr class="even" role="row"><td colspan="3" align="center">';
+        echo $strings2["orders_noresults"] . '</td></tr></tbody></table>';
     }
 ?>
 <!-- END PROFILE CONTENT -->
