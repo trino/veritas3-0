@@ -1,6 +1,7 @@
 <?php
     $CRLF = "\r\n";
     $Clients = $Manager->enum_all("clients");//, array("requalify" => 1));
+    $ProfileTypes = $Manager->enum_all("profile_types");
     $products = $Manager->enum_all("order_products");
     $settings = $this->requestAction('settings/get_settings');
     $sidebar =$this->requestAction("settings/all_settings/".$this->Session->read('Profile.id')."/sidebar");
@@ -12,6 +13,21 @@
     $Frequencies = array();
     foreach(array(1,3,6,12) as $Frequency){
         $Frequencies[$Frequency] = getpreviousdate($Frequency);
+    }
+
+    function profiletypes($ProfileTypes, $Name, $Type){
+        echo '<SELECT NAME="' . $Name . '">';
+        foreach($ProfileTypes as $ProfileType){
+            echo '<OPTION VALUE="' . $ProfileType->id . '"';
+            if ($Type==$ProfileType->id){ echo ' SELECTED';}
+            echo '>' . checkmark($ProfileType->placesorders) . " " . $ProfileType->title . '</OPTION>';
+        }
+        echo '</SELECT>';
+    }
+
+    function checkmark($Status){
+        if($Status){ return '&#9745;'; }
+        return '&#9744;';
     }
 
     function getpreviousdate($frequency){
@@ -206,15 +222,27 @@
                     <div class="clearfix"></div>
 
                     <div class="form-body">
-                        <div class="table-scrollable">';
+                        <div class="table-scrollable">
+                            <TD COLSPAN="7" style="padding-right: 10px;"><table class="table table-condensed table-striped table-bordered table-hover dataTable no-footer" style="margin-bottom: 5px; margin-left: 3px;"><thead><TR><TH>ID</TH><TH>Name</TH><TH>Profile Type</TH><TH title="Expiry date is not blank, and is after yesterday">Expiry Date >= ' . $Today . '</TH><TH title="Is hired">IH</TH><TH>Hired Date</TH><TH>Auto-Change</TH></TR><TBODY>';
 
         $Users = $Profiles[$_GET["clientid"]];
-        echo '<TD COLSPAN="7" style="padding-right: 10px;"><table class="table table-condensed table-striped table-bordered table-hover dataTable no-footer" ';
-        echo 'style="margin-bottom: 5px; margin-left: 3px;"><thead><TR>';
-        echo '<TH>ID</TH><TH>Name</TH><TH>Hired Date</TH><TH>Auto-Change</TH></TR><TBODY>';
         foreach($Users as $Profile){
-            echo '<TR><TD>' . $Profile->id . '</TD>';
-            echo '<TD><A HREF="' . $this->request->webroot . 'profiles/view/' . $Profile->id . '">' . formatname($Profile) . '</A></TD>';
+            //$ProfileType = getIterator($ProfileTypes, "id", $Profile->profile_type);
+            echo '<TR><TD>' . $Profile->id . '</TD>' . $CRLF;
+            echo '<TD><A HREF="' . $this->request->webroot . 'profiles/view/' . $Profile->id . '">' . formatname($Profile) . '</A></TD>' . $CRLF;
+            echo '<TD>';
+            profiletypes($ProfileTypes, "profiles[profile_type][" . $Profile->id . "]", $Profile->profile_type);
+            echo '</TD>' . $CRLF;
+            echo '<TD>' . checkmark($Profile->expiry_date && $Profile->expiry_date >= $Today);
+
+            echo ' <INPUT ONCHANGE="change();" TYPE="TEXT" NAME="profiles[expiry_date][' . $Profile->id . ']" VALUE="';
+            echo $Profile->expiry_date . '" class="datepicker date-picker">';
+
+            echo '</TD>' . $CRLF;
+            echo '<TD><INPUT ONCHANGE="change();" TYPE="CHECKBOX" NAME="profiles[is_hired][' . $Profile->id . ']" VALUE="1"';
+            if($Profile->is_hired){ echo " CHECKED";}
+            echo '></TD>' . $CRLF;
+
             echo '<TD><INPUT ONCHANGE="change();" TYPE="TEXT" ID="hireddate' . $Profile->id . '" NAME="profiles[hired_date][' . $Profile->id . ']" VALUE="';
             echo $Profile->hired_date . '" class="datepicker date-picker"></TD><TD>';
             foreach($Frequencies as $Frequency => $Date){

@@ -55,7 +55,7 @@ class TasksController extends AppController {
                 $escape_ids .= $ei->profile_id.",";
             }
 
-            $profile = TableRegistry::get('profiles')->find('all')->where(['id IN(' . $c->profile_id . ')', 'profile_type IN(' . $p_types . ')', 'is_hired' => '1', 'requalify' => '1','expiry_date <> ""','expiry_date >='=>$today])->order('created_by');
+            $profile = TableRegistry::get('profiles')->find('all')->where(['id IN(' . $c->profile_id . ')', 'profile_type IN(' . $p_types . ')', 'is_hired' => '1', 'requalify' => '1','expiry_date <> ""','expiry_date >='=>$today]);
             foreach ($profile as $p) {
                 if ($c->requalify_re == '0') {
                     $date = $c->requalify_date;
@@ -65,10 +65,7 @@ class TasksController extends AppController {
                             $date = $this->getnextdate($date, $frequency);
                         }
                     }
-                }
-
-               // if($p->profile_type=='5'|| $p->profile_type=='7'|| $p->profile_type=='8'){
-                if ($c->requalify_re == '1') {
+                } else {
                     $date = $p->hired_date;
                     if(strtotime($date) <= strtotime($today)) {
                         if(strtotime($date) == strtotime($today)) {
@@ -121,7 +118,7 @@ class TasksController extends AppController {
             $found = false;
             foreach($temp_array as $tmp_key => $tmp_val) {
                 if(!$found and strtolower($val[$subkey]) > strtolower($tmp_val[$subkey])) {
-                    $temp_array = array_merge(    (array)array_slice($temp_array,0,$offset),
+                    $temp_array = array_merge((array)array_slice($temp_array,0,$offset),
                         array($key => $val),
                         array_slice($temp_array,$offset)
                     );

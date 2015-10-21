@@ -29,21 +29,21 @@
                 $today = date('Y-m-d');
                 $k=0;
                 foreach($requalify as $k=>$d) {
-                    ?>
-                    <tr>
-                        <td><?php echo ++$k;?></td>
-                        <td><?php echo $d->cron_date;?></td>
-                        <td><a href="<?= $this->request->webroot;?>clients/edit/<?= $d->client_id; ?>?view"><?php echo $this->requestAction('/settings/getclient/'.$d->client_id);?></A></td>
-                        <td>
-                            <?php
-                                $Profile = $this->requestAction('/settings/getprofile/'.$d->profile_id);
-                                if($Profile){ echo $Profile;} else { echo "[DELETED USER]"; }
-                            ?>
-                        </td>
-                        <td>Requalifed</td>
-                        <td><?php echo ($d->manual=='1')?'Yes':'No';?></td>
-                    </tr>        
-                <?php
+                    $Profile = $this->requestAction('/settings/getprofile/'.$d->profile_id);
+                    if($Profile) {
+                        ?>
+                        <tr>
+                            <td><?php echo ++$k; ?></td>
+                            <td><?php echo $d->cron_date; ?></td>
+                            <td>
+                                <a href="<?= $this->request->webroot; ?>clients/edit/<?= $d->client_id; ?>?view"><?php echo $this->requestAction('/settings/getclient/' . $d->client_id); ?></A>
+                            </td>
+                            <td><?= $Profile; ?></td>
+                            <td>Requalifed</td>
+                            <td><?php echo ($d->manual == '1') ? 'Yes' : 'No'; ?></td>
+                        </tr>
+                        <?php
+                    }
                 }
                 foreach($new_req as $d) {
                     $fname = explode(',',$d['forms']);
