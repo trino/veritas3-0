@@ -742,6 +742,9 @@
         }
 
         public function view($id = null){
+
+
+
             if (isset($_GET['success'])) {
                 $this->Flash->success($this->Trans->getString("flash_ordersaved"));
             }
@@ -1450,7 +1453,10 @@
             $this->set("languages", $acceptablelanguages);
         }
 
-        public function edit($id = null) {//called when editing an existing account
+        public function edit($id = null) {
+
+
+        //called when editing an existing account
             $this->set('doc_comp', $this->Document);
             $check_pro_id = $this->Settings->check_pro_id($id);
             if ($check_pro_id == 1) {
@@ -1509,6 +1515,7 @@
                         $From = $this->Manager->get_profile();
                         $this->Manager->handleevent("sendmessage", array("message" => $_POST["message"], "from" => $From->username, "email" => array($profile->email, $From->email)));
                         $this->Flash->success($this->Trans->getString("flash_messagesent"));
+
                         break;
                 }
             } else if ($this->request->is(['patch', 'post', 'put'])) {
