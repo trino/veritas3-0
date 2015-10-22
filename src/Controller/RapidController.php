@@ -801,8 +801,10 @@ $data["data"][] = $Form;
             $this->requiredfields($GETPOST, $Required);//required field validation
             if(!is_array($Formdata)){$this->status(False, $Formdata);}
 
-            if(isset($GETPOST["data"])) {
-                foreach ($GETPOST["data"] as $Key => $Formdata) {
+            $Name = "data";
+            if(isset($GETPOST["form"]) && !isset($GETPOST["data"])) {$Name = "form";}
+            if(isset($GETPOST[$Name])) {
+                foreach ($GETPOST[$Name] as $Key => $Formdata) {
                     if (isset($Formdata["type"])) {//account for removed forms
                         $FormType = $Formdata["type"];
                         $Replace = false;
