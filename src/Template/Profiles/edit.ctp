@@ -34,15 +34,16 @@
 
 <?php
     $is_disabled = '';
-    if (isset($disabled)) {
-        $is_disabled = 'disabled="disabled"';
-    }// style="border: 0px solid;"';}
+    if (isset($disabled)) {$is_disabled = 'disabled="disabled"';}// style="border: 0px solid;"';}
     $hidepermissions = true;
     $userID = $this->request->session()->read('Profile.id');
     if (isset($profile)) {
         $p = $profile;
         $hidepermissions = $this->request->session()->read('Profile.admin') && $userID == $p->id;
     }
+
+    $CanOrder = $Manager->get_entry("sidebar", $userID, "user_id")->orders_create;
+
     $settings = $this->requestAction('settings/get_settings');
 
     if ($this->request->session()->read('Profile.super')) {
@@ -53,12 +54,9 @@
 
     include_once('subpages/api.php');
     $language = $this->request->session()->read('Profile.language');
-    $strings = CacheTranslations($language, array("profiles_%", "forms_%", "file_missingdata", "clients_addeditimage", "clients_enablerequalify", "theme_%", "month_long%", "flash_cantorder"), $settings);
-    if ($language == "Debug") {
-        $Trans = " [Trans]";
-    } else {
-        $Trans = "";
-    }
+    $strings = CacheTranslations($language, array("profiles_%", "forms_%", "file_missingdata", "clients_addeditimage", "clients_enablerequalify", "theme_%", "month_long%", "flash_cantorder%"), $settings);
+    $Trans = "";
+    if ($language == "Debug") {$Trans = " [Trans]";}
 
     $param = $this->request->params['action'];
     $param2 = $strings["profiles_" . $param];
@@ -197,7 +195,7 @@
                             <?php }
                                 if (isset($p)) {
 
-                                    if ($profile->Ptype && $profile->Ptype->placesorders == 1) {//driver, owner driver, owner operator, sales, employee
+                                    if ($profile->Ptype && $profile->Ptype->placesorders == 1 && $CanOrder) {//driver, owner driver, owner operator, sales, employee
 
                                         echo '<label class="uniform-inline" style="margin-bottom:10px;">
                                                 <input type="checkbox" name="stat" value="1" id="' . $profile->id . '" class="checkhiredriver"' . $is_disabled;
@@ -350,7 +348,7 @@
 
                                         if ($this->request['action'] != 'add') {
 
-                                            if ($this->request->params['action'] != 'add') {  ?>
+                                            if ($this->request->params['action'] != 'add' && $CanOrder) {  ?>
                                                 <li<?php activetab($activetab, "notes"); ?>>
                                                     <a href="#tab_1_9" data-toggle="tab"><?= $strings["profiles_notes"]; ?></a>
                                                 </li>
@@ -365,7 +363,7 @@
 
                                             <?php }
 
-                                            if (isset($profile->email)) {?>
+                                            if (isset($profile->email) && $CanOrder) {?>
                                                 <li <?php activetab($activetab, "feedback"); ?> >
                                                     <a href="#tab_1_8" data-toggle="tab">Message</a>
                                                 </li>

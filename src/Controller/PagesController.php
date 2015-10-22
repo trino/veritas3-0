@@ -54,19 +54,28 @@ class PagesController extends AppController {
         $this->getsubdocument_topblocks($userid);
 
         $block = $this->requestAction("settings/all_settings/" . $userid . "/blocks");
-        if(!$this->countenabled($block) && $setting->profile_list){
-            $this->redirect("/profiles");
-        } else {
-            $sidebar = $this->requestAction("settings/all_settings/" . $userid . "/sidebar");
-            $this->set("userid",    $userid);
-            $this->set('block',     $block);
-            $this->set('sidebar',   $sidebar);
+        $sidebar = $this->requestAction("settings/all_settings/" . $userid . "/sidebar");
+        $this->set("userid",    $userid);
+        $this->set('block',     $block);
+        $this->set('sidebar',   $sidebar);
+
+        $Count = $this->countenabled($block, array("id", "user_id"));
+        if(!$Count){
+            if($setting->profile_list) {
+                $this->redirect("/profiles");
+            } else if ($setting->training) {
+                $this->redirect("/training");
+            }
         }
 	}
 
-    function countenabled($Data){
+    function countenabled($Data, $Filter = array()){
         if(is_object($Data)){
             $Data = $this->Manager->getProtectedValue($Data, "_properties");
+        }
+        if(!is_array($Filter)){$Filter = array($Filter);}
+        foreach($Filter as $Key){
+            unset($Data[$Key]);
         }
         $Count = 0;
         foreach($Data as $Value){
