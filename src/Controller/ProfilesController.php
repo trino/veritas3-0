@@ -934,7 +934,16 @@
 
             $username = trim($post['username']);
             if(!$username) {
-                $username = str_replace(" ", "_", TableRegistry::get('profile_types')->find()->where(['id' => $profile->profile_type])->first()->title . "_" . $profile->id);
+                if(is_numeric($profile)){
+                    $profile = $this->Manager->get_profile($profile);
+                }
+                $ProfileType = TableRegistry::get('profile_types')->find()->where(['id' => $profile->profile_type])->first();
+                if($ProfileType){
+                    $ProfileType  = $ProfileType->title;
+                } else {
+                    $ProfileType = "New_User";
+                }
+                $username = str_replace(" ", "_", $ProfileType . "_" . $profile->id);
                 $queries = TableRegistry::get('Profiles');
                 $queries->query()->update()->set(['username' => $username])
                     ->where(['id' => $profile->id])
