@@ -426,16 +426,16 @@ if (count($_POST) > 0) {
                 }
 
                 $Files = scandir("forms");
-                removefromarray($Files, array(".", "..", "consent.php", "driver.php", "loe.php"));
+                removefromarray($Files, array(".", "..", "consent.php", "loe.php"));
                 foreach ($forms as $formID) {
                     $form = first("SELECT * FROM subdocuments WHERE id = " . $formID);
                     if ($form[$fieldname]) {
-                        echo '<LI><A HREF="' . getq("form=" . $formID) . '">' . $form[$fieldname] . '</A></LI>';
+                        echo '<LI><A HREF="' . getq("form=" . $formID) . '">' . ucfirst($form[$fieldname]) . '</A></LI>';
                     }
                 }
                 foreach($Files as $Filename){
                     $Filename = left($Filename, strlen($Filename) - 4);//chop off .php
-                    echo '<LI><A HREF="' . getq("form=" . $Filename) . '">' . $Filename . '</A></LI>';
+                    echo '<LI><A HREF="' . getq("form=" . $Filename) . '">' . ucfirst($Filename) . '</A></LI>';
                 }
                 //echo '<LI><A HREF="' . getq("form=driver") . '">New Driver</A></LI>';
                 //echo '<LI><A HREF="' . getq("form=orderstatus") . '">Order Status</A></LI>';

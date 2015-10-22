@@ -397,6 +397,7 @@
                     if(element.hasClass("datepicker")){
                         Type = "date";
                     }
+
                     switch(Type){
                         case "file":
                             value="";
@@ -427,7 +428,7 @@
                                 case "state_province":
                                     value = "Ontario";
                                     break;
-                                case "country":
+                                case "country":case "placeofbirth":
                                     value = "Canada";
                                     break;
                                 case "supervisor_name":case "supervisior_name":
