@@ -290,10 +290,11 @@
 
                         <div class="portlet-body">
                             <?php
-                                if ($this->request['action'] == 'view' && ($profile->Ptype && $profile->Ptype->placesorders == 1))
-                                $activetab = "scorecard";
-                                else
-                                $activetab = "profile";
+                                if ($this->request['action'] == 'view' && ($profile->Ptype && $profile->Ptype->placesorders == 1)) {
+                                    $activetab = "scorecard";
+                                }else {
+                                    $activetab = "profile";
+                                }
                                 //if ($this->request->session()->read('Profile.profile_type') > 1) {//is not an admin, block.php suggests using =2
                                 if (isset($_GET['getprofilescore'])) {
                                     $activetab = "scorecard";
@@ -344,6 +345,7 @@
                                     <li <?php if ($this->request['action'] == 'view' && ($profile->Ptype && $profile->Ptype->placesorders == 1)){}else{activetab($activetab, "profile");} ?> >
                                         <a href="#tab_1_1" data-toggle="tab"><?= $strings["profiles_profile"]; ?></a>
                                     </li>
+
                                     <?php
 
                                         if ($this->request['action'] != 'add') {
@@ -356,23 +358,17 @@
 
                                             <?php }
                                             $checker = $this->requestAction('/settings/check_edit_permission/' . $this->request->session()->read('Profile.id') . '/' . $profile->id . "/" . $profile->created_by);
-                                            if ($this->request->session()->read('Profile.super') == '1') {//} || ($sidebar->profile_create == '1' && $sidebar->profile_edit == '1')) {
-                                                ?>
+                                            if ($this->request->session()->read('Profile.super') == '1') {//} || ($sidebar->profile_create == '1' && $sidebar->profile_edit == '1')) {?>
                                                 <li <?php activetab($activetab, "permissions"); ?>>
                                                     <a href="#tab_1_7" data-toggle="tab"><?= $strings["profiles_permissions"]; ?></a>
                                                 </li>
 
-                                            <?php } ?>
+                                            <?php }
 
-                                            <?php
-                                            $gfs = $this->requestAction('/settings/check_client/' . $id . "/2");
-                                            if ($gfs) {
-                                                ?>
+                                            if (isset($profile->email)) {?>
                                                 <li <?php activetab($activetab, "feedback"); ?> >
                                                     <a href="#tab_1_8" data-toggle="tab"><?= $strings["profiles_feedback"]; ?></a>
                                                 </li>
-
-
                                                 <?php
                                             }
                                         }
@@ -384,9 +380,7 @@
                                     <!-- PERSONAL INFO TAB -->
 
 
-                                    <div class="tab-pane  <?php activetab($activetab, "profile", false); ?> "
-                                         id="tab_1_1" style="padding: 10px;">
-
+                                    <div class="tab-pane  <?php activetab($activetab, "profile", false); ?> " id="tab_1_1" style="padding: 10px;">
                                         <input type="hidden" name="user_id" value="<?php echo ""; ?>"/>
                                         <?php include('subpages/profile/info.php'); ?>
                                     </div>
@@ -411,10 +405,8 @@
                                             </div>
                                         <?php }
 
-                                        if ($this->request->session()->read('Profile.super')) {
-                                            ?>
-                                            <div class="tab-pane <?php activetab($activetab, "permissions", false); ?>"
-                                                 id="tab_1_7">
+                                        if ($this->request->session()->read('Profile.super')) { ?>
+                                            <div class="tab-pane <?php activetab($activetab, "permissions", false); ?>" id="tab_1_7">
                                                 <?php if (!isset($BypassLogin)) $BypassLogin = false;
                                                     if (!$BypassLogin) {
                                                         include('subpages/profile/block.php');
@@ -422,10 +414,8 @@
                                                 ?>
                                             </div>
                                         <?php } ?>
-                                    <div class="tab-pane <?php activetab($activetab, "feedback", false); ?>"
-                                         id="tab_1_8">
-                                        <? include('subpages/profile/feedback.php');
-                                        ?>
+                                    <div class="tab-pane <?php activetab($activetab, "feedback", false); ?>" id="tab_1_8">
+                                        <? include('subpages/profile/email.php'); ?>
                                     </div>
 
                                 </div>

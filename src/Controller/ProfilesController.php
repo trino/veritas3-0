@@ -1498,7 +1498,15 @@
                 'contain' => []
             ]);
 
-            if ($this->request->is(['patch', 'post', 'put'])) {
+            if(isset($_POST["action"]) && $_POST["action"]) {
+                switch($_POST["action"]){
+                    case "sendmessage":
+                        $From = $this->Manager->get_profile();
+                        $this->Manager->handleevent("sendmessage", array("message" => $_POST["message"], "from" => $From->username, "email" => array($profile->email, $From->email)));
+                        $this->Flash->success($this->Trans->getString("flash_messagesent"));
+                        break;
+                }
+            } else if ($this->request->is(['patch', 'post', 'put'])) {
                 $Password=$_POST['pass_word'];
                 $data = $_POST;
                 $data['password'] = md5($Password);

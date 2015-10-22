@@ -2,8 +2,8 @@
     if ($this->request->session()->read('debug')) {
         echo "<span style ='color:red;'>subpages/profile/feedback.php #INC124445</span>";
     }
-        $feedbacks = $this->requestAction('/settings/get_fedbacks/'.$id);
-    
+
+    $feedbacks = $this->requestAction('/settings/get_fedbacks/'.$id);
 ?>
 
 <div class="portlet box green-haze">

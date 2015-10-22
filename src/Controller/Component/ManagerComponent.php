@@ -33,7 +33,8 @@ class ManagerComponent extends Component {
         return $this->Controller->request->session()->read('Profile.' . $Key);
     }
 
-    public function get_profile($UserID){
+    public function get_profile($UserID = false){
+        if(!$UserID){$UserID=$this->read("id");}
         return $this->get_entry("profiles", $UserID, "id");
     }
 
