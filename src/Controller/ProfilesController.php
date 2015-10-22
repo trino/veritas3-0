@@ -139,15 +139,19 @@
             $this->set('logos', $this->paginate($this->Logos->find()->where(['secondary' => '0'])));
             $this->set('logos1', $this->paginate($this->Logos->find()->where(['secondary' => '1'])));
             $this->set('logos2', $this->paginate($this->Logos->find()->where(['secondary' => '2'])));
+
             $client = TableRegistry::get('clients')->find()->where(['id'=>26])->first();
-            $ids = $client->profile_id;
-            $table = TableRegistry::get('profiles');
             $today = date('Y-m-d');
             $nyear = date('Y-m-d', strtotime($today . '+1 year'));
-            if($ids) {
-                $automatic = $table->find()->where(['id IN(' . $ids . ")", 'is_hired' => '1', 'hired_date <>' => '', 'hired_date <=' => $nyear, 'automatic_sent' => '0']);
-                $this->set("dates", $automatic);
+            if($client) {
+                $ids = $client->profile_id;
+                $table = TableRegistry::get('profiles');
+                if ($ids) {
+                    $automatic = $table->find()->where(['id IN(' . $ids . ")", 'is_hired' => '1', 'hired_date <>' => '', 'hired_date <=' => $nyear, 'automatic_sent' => '0']);
+                    $this->set("dates", $automatic);
+                }
             }
+
             $cron = TableRegistry::get('client_crons')->find()->where(['orders_sent'=>'1','manual'=>'0'])->all();
             $this->set('requalify',$cron);
             $maxdate = $cron->max('cron_date');
@@ -719,7 +723,8 @@
 
             if (!$this->request->session()->read('Profile.super')) {
                 $table = TableRegistry::get("clients");
-                $results = $table->find('all', array('conditions' => array('id'=>26)))->first()->profile_id;
+                $results = $table->find('all', array('conditions' => array('id'=>26)))->first();
+                if($results){$results=$results->profile_id;}
                 $this->set('assignedtoGFS', $results);
             }
 
