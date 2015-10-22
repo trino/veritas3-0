@@ -329,7 +329,7 @@
             <?php }
 
             if(DATABASE == "ttsao") {
-                echo '<DIV ALIGN="CENTER"><IMG SRC="' . $this->request->webroot . 'img/ttsao.png" STYLE="max-height: 100px;"></DIV>';
+                //echo '<DIV ALIGN="CENTER">In patnership with<BR><IMG SRC="' . $this->request->webroot . 'img/ttsao.png" STYLE="max-height: 100px;"></DIV>';
             }
             ?>
         </ul>

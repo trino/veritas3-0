@@ -418,6 +418,7 @@
                 $Percent=$Certificate->correct/$Certificate->total*100;
                 if($Certificate->hascert && $Percent >= $Certificate->pass){
                     $Quiz = $Manager->get_entry("training_list", $Certificate->QuizID, "ID");
+                    $Quiz->Name = str_replace('"', "", $Quiz->Name);
                     $Education[$Quiz->Name] = '<A class="label label-info btnspc" HREF="' .  $this->request->webroot . 'training/certificate?quizid=' . $Certificate->QuizID . '&userid=' . $id . '">View Certificate</A>' .
                     '<A class="label label-info btnspc" HREF="' .  $this->request->webroot . 'training/quiz?quizid=' . $Certificate->QuizID . '&userid=' . $id . '">View Answers (' . round($Percent,2) . '%)</A>';
                 }
