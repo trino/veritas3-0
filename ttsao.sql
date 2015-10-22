@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 21, 2015 at 11:49 PM
+-- Generation Time: Oct 22, 2015 at 04:13 PM
 -- Server version: 5.6.17
 -- PHP Version: 5.5.12
 
@@ -658,6 +658,34 @@ CREATE TABLE IF NOT EXISTS `clientssubdocument` (
   `client_id` int(11) NOT NULL,
   `subdoc_id` int(11) NOT NULL,
   `display` int(11) NOT NULL COMMENT '0=>no display , 1=>view only, 2=>upload only, 3=>both',
+  `display_order` int(11) NOT NULL DEFAULT '0',
+  `display_application` int(11) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `client_application_process`
+--
+
+CREATE TABLE IF NOT EXISTS `client_application_process` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `client_id` int(11) NOT NULL DEFAULT '0',
+  `sub_doc_id` int(11) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `client_application_sub_order`
+--
+
+CREATE TABLE IF NOT EXISTS `client_application_sub_order` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `client_id` int(11) NOT NULL DEFAULT '0',
+  `sub_id` int(11) NOT NULL DEFAULT '0',
   `display_order` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
@@ -3277,7 +3305,7 @@ CREATE TABLE IF NOT EXISTS `strings` (
   `English` varchar(4096) NOT NULL,
   `French` varchar(4096) NOT NULL,
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=766 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=767 ;
 
 --
 -- Dumping data for table `strings`
@@ -4026,7 +4054,8 @@ INSERT INTO `strings` (`ID`, `Name`, `English`, `French`) VALUES
 (762, 'email_survey_variables', 'site, username, email, monthsFrench, months, days, id, path', ''),
 (763, 'email_training_passed_variables', 'email, score, username, path', ''),
 (764, 'flash_cantorder2', 'Missing data required to place an order', ''),
-(765, 'profiles_nothired', 'Not Hired', 'pas embauché');
+(765, 'profiles_nothired', 'Not Hired', 'pas embauché'),
+(766, 'application_process', 'Application Process', 'Processus de demande');
 
 -- --------------------------------------------------------
 
