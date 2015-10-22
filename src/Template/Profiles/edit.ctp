@@ -367,7 +367,7 @@
 
                                             if (isset($profile->email)) {?>
                                                 <li <?php activetab($activetab, "feedback"); ?> >
-                                                    <a href="#tab_1_8" data-toggle="tab"><?= $strings["profiles_feedback"]; ?></a>
+                                                    <a href="#tab_1_8" data-toggle="tab">Message</a>
                                                 </li>
                                                 <?php
                                             }
