@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 22, 2015 at 04:13 PM
+-- Generation Time: Oct 22, 2015 at 07:49 PM
 -- Server version: 5.6.17
 -- PHP Version: 5.5.12
 
@@ -574,14 +574,19 @@ CREATE TABLE IF NOT EXISTS `blocks` (
   `orders_gdo` tinyint(4) NOT NULL,
   `training` tinyint(4) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=699 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=704 ;
 
 --
 -- Dumping data for table `blocks`
 --
 
 INSERT INTO `blocks` (`id`, `addadriver`, `searchdriver`, `submitorder`, `orderhistory`, `schedule`, `schedule_add`, `tasks`, `feedback`, `analytics`, `masterjob`, `user_id`, `submit_document`, `list_document`, `list_order`, `list_client`, `add_client`, `list_profile`, `message`, `orders_draft`, `document_draft`, `ordersmee`, `ordersproducts`, `ordersrequalify`, `draft_client`, `draft_profile`, `orders_intact`, `bulk`, `ordersbulk`, `ordersgem`, `ordersgdr`, `orders_spf`, `orders_sms`, `orders_psa`, `orders_cch`, `orders_emp`, `orders_sal`, `orders_gdo`, `training`) VALUES
-(1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 4, 1, 0, 1, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+(1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 1, 4, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1),
+(699, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1063, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, NULL, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0),
+(700, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1064, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, NULL, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0),
+(701, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1065, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, NULL, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0),
+(702, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1066, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, NULL, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0),
+(703, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1065, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, NULL, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
 
 -- --------------------------------------------------------
 
@@ -645,7 +650,15 @@ CREATE TABLE IF NOT EXISTS `clients` (
   `forceemail` varchar(255) NOT NULL,
   `visibleprofiles` tinyint(4) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
+
+--
+-- Dumping data for table `clients`
+--
+
+INSERT INTO `clients` (`id`, `title`, `description`, `description_fre`, `company_name`, `customer_type`, `sig_fname`, `sig_lname`, `company_phone`, `sig_email`, `company_address`, `city`, `postal`, `province`, `country`, `admin_fname`, `admin_lname`, `admin_email`, `admin_phone`, `image`, `site`, `addedBy`, `isApproved`, `date_start`, `date_end`, `referred_by`, `agreement_number`, `reverification`, `sacc_number`, `document`, `billing_contact`, `billing_address`, `billing_instructions`, `invoice_terms`, `recruiter_id`, `profile_id`, `contact_id`, `is_special`, `status`, `billing_city`, `billing_province`, `billing_postal_code`, `division`, `uploaded_for`, `created`, `drafts`, `client_date`, `requalify_re`, `requalify`, `requalify_date`, `requalify_frequency`, `requalify_product`, `forceemail`, `visibleprofiles`) VALUES
+(1, '', '', '', 'school 2', 1, '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', NULL, NULL, '', '', '', NULL, '', NULL, '', '', '', '', '', '', '4,1063,1064', '', NULL, NULL, '', NULL, '', '', NULL, '2015-10-22', 0, NULL, 0, 0, '', 0, '', '', 0),
+(2, '', '', '', 'challenger', 2, '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', NULL, NULL, '', '', '', NULL, '', NULL, '', '', '', '', '', '', '4,1063,1064', '', NULL, NULL, '', NULL, '', '', NULL, '2015-10-22', 0, NULL, 0, 0, '', 0, '', '', 0);
 
 -- --------------------------------------------------------
 
@@ -661,7 +674,51 @@ CREATE TABLE IF NOT EXISTS `clientssubdocument` (
   `display_order` int(11) NOT NULL DEFAULT '0',
   `display_application` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=39 ;
+
+--
+-- Dumping data for table `clientssubdocument`
+--
+
+INSERT INTO `clientssubdocument` (`id`, `client_id`, `subdoc_id`, `display`, `display_order`, `display_application`) VALUES
+(1, 1, 1, 0, 0, 0),
+(2, 1, 22, 0, 0, 0),
+(3, 1, 21, 0, 0, 0),
+(4, 1, 19, 0, 0, 0),
+(5, 1, 18, 0, 0, 0),
+(6, 1, 17, 0, 0, 0),
+(7, 1, 16, 0, 0, 0),
+(8, 1, 15, 1, 1, 0),
+(9, 1, 11, 1, 1, 0),
+(10, 1, 10, 1, 1, 0),
+(11, 1, 9, 1, 1, 0),
+(12, 1, 8, 0, 0, 0),
+(13, 1, 7, 0, 0, 0),
+(14, 1, 6, 0, 0, 0),
+(15, 1, 5, 0, 0, 0),
+(16, 1, 4, 1, 1, 0),
+(17, 1, 3, 0, 0, 0),
+(18, 1, 2, 0, 0, 0),
+(19, 1, 23, 0, 0, 0),
+(20, 2, 1, 0, 0, 0),
+(21, 2, 22, 0, 0, 0),
+(22, 2, 21, 0, 0, 0),
+(23, 2, 19, 0, 0, 0),
+(24, 2, 18, 0, 0, 0),
+(25, 2, 17, 0, 0, 0),
+(26, 2, 16, 0, 0, 0),
+(27, 2, 15, 0, 0, 0),
+(28, 2, 11, 0, 0, 0),
+(29, 2, 10, 0, 0, 1),
+(30, 2, 9, 0, 0, 0),
+(31, 2, 8, 0, 0, 0),
+(32, 2, 7, 0, 0, 0),
+(33, 2, 6, 0, 0, 0),
+(34, 2, 5, 0, 0, 0),
+(35, 2, 4, 0, 0, 0),
+(36, 2, 3, 0, 0, 0),
+(37, 2, 2, 0, 0, 0),
+(38, 2, 23, 0, 0, 0);
 
 -- --------------------------------------------------------
 
@@ -688,7 +745,51 @@ CREATE TABLE IF NOT EXISTS `client_application_sub_order` (
   `sub_id` int(11) NOT NULL DEFAULT '0',
   `display_order` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=58 ;
+
+--
+-- Dumping data for table `client_application_sub_order`
+--
+
+INSERT INTO `client_application_sub_order` (`id`, `client_id`, `sub_id`, `display_order`) VALUES
+(1, 1, 1, 0),
+(2, 1, 2, 0),
+(3, 1, 3, 0),
+(4, 1, 4, 0),
+(5, 1, 5, 0),
+(6, 1, 6, 0),
+(7, 1, 7, 0),
+(8, 1, 8, 0),
+(9, 1, 9, 0),
+(10, 1, 10, 0),
+(11, 1, 11, 0),
+(12, 1, 15, 0),
+(13, 1, 16, 0),
+(14, 1, 17, 0),
+(15, 1, 18, 0),
+(16, 1, 19, 0),
+(17, 1, 21, 0),
+(18, 1, 22, 0),
+(19, 1, 23, 0),
+(39, 2, 1, 1),
+(40, 2, 22, 2),
+(41, 2, 21, 3),
+(42, 2, 19, 4),
+(43, 2, 18, 5),
+(44, 2, 17, 6),
+(45, 2, 16, 7),
+(46, 2, 15, 8),
+(47, 2, 11, 9),
+(48, 2, 10, 10),
+(49, 2, 4, 11),
+(50, 2, 9, 12),
+(51, 2, 8, 13),
+(52, 2, 7, 14),
+(53, 2, 6, 15),
+(54, 2, 5, 16),
+(55, 2, 3, 17),
+(56, 2, 2, 18),
+(57, 2, 23, 19);
 
 -- --------------------------------------------------------
 
@@ -731,7 +832,7 @@ CREATE TABLE IF NOT EXISTS `client_docs` (
   `client_id` int(11) NOT NULL,
   `file` varchar(255) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -744,7 +845,21 @@ CREATE TABLE IF NOT EXISTS `client_products` (
   `ClientID` int(11) NOT NULL,
   `ProductNumber` int(11) NOT NULL,
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=9 ;
+
+--
+-- Dumping data for table `client_products`
+--
+
+INSERT INTO `client_products` (`ID`, `ClientID`, `ProductNumber`) VALUES
+(1, 1, 1603),
+(2, 1, 1),
+(3, 1, 14),
+(4, 1, 77),
+(5, 1, 78),
+(6, 1, 1650),
+(7, 1, 1627),
+(8, 1, 72);
 
 -- --------------------------------------------------------
 
@@ -758,7 +873,51 @@ CREATE TABLE IF NOT EXISTS `client_sub_order` (
   `sub_id` int(11) NOT NULL DEFAULT '0',
   `display_order` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=39 ;
+
+--
+-- Dumping data for table `client_sub_order`
+--
+
+INSERT INTO `client_sub_order` (`id`, `client_id`, `sub_id`, `display_order`) VALUES
+(1, 1, 1, 0),
+(2, 1, 2, 0),
+(3, 1, 3, 0),
+(4, 1, 4, 0),
+(5, 1, 5, 0),
+(6, 1, 6, 0),
+(7, 1, 7, 0),
+(8, 1, 8, 0),
+(9, 1, 9, 0),
+(10, 1, 10, 0),
+(11, 1, 11, 0),
+(12, 1, 15, 0),
+(13, 1, 16, 0),
+(14, 1, 17, 0),
+(15, 1, 18, 0),
+(16, 1, 19, 0),
+(17, 1, 21, 0),
+(18, 1, 22, 0),
+(19, 1, 23, 0),
+(20, 2, 1, 0),
+(21, 2, 2, 0),
+(22, 2, 3, 0),
+(23, 2, 4, 0),
+(24, 2, 5, 0),
+(25, 2, 6, 0),
+(26, 2, 7, 0),
+(27, 2, 8, 0),
+(28, 2, 9, 0),
+(29, 2, 10, 0),
+(30, 2, 11, 0),
+(31, 2, 15, 0),
+(32, 2, 16, 0),
+(33, 2, 17, 0),
+(34, 2, 18, 0),
+(35, 2, 19, 0),
+(36, 2, 21, 0),
+(37, 2, 22, 0),
+(38, 2, 23, 0);
 
 -- --------------------------------------------------------
 
@@ -779,9 +938,8 @@ CREATE TABLE IF NOT EXISTS `client_types` (
 --
 
 INSERT INTO `client_types` (`id`, `title`, `enable`, `titleFrench`) VALUES
-(1, 'Insurance', 1, ''),
-(2, 'Fleet', 1, 'flotte'),
-(3, 'Non fleet', 1, 'non flotte');
+(1, 'School', 1, ''),
+(2, 'Non-school', 1, '');
 
 -- --------------------------------------------------------
 
@@ -906,7 +1064,14 @@ CREATE TABLE IF NOT EXISTS `consent_form` (
   `criminal_signature_applicant2` varchar(255) DEFAULT NULL,
   `signature_company_witness2` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
+
+--
+-- Dumping data for table `consent_form`
+--
+
+INSERT INTO `consent_form` (`id`, `document_id`, `order_id`, `user_id`, `client_id`, `first_name`, `mid_name`, `last_name`, `previous_last_name`, `place_birth_country`, `birth_date`, `sex`, `phone`, `current_street_address`, `current_apt_unit`, `current_city`, `current_province`, `current_postal_code`, `previous_street_address`, `previous_apt_unit`, `previous_city`, `previous_province`, `previous_postal_code`, `aliases`, `driver_license_number`, `driver_license_issued`, `applicants_email`, `applicant_signature_agree`, `company_name_requesting`, `printed_name_company_witness`, `company_location`, `signature_company_witness`, `criminal_surname`, `criminal_given_name`, `criminal_sex`, `criminal_date_birth`, `criminal_current_address`, `criminal_current_province`, `criminal_current_postal_code`, `criminal_signature_applicant`, `criminal_date`, `psp_employer`, `authorize_name_hereby`, `authorize_date`, `authorize_signature`, `authorize_name`, `criminal_signature_applicant2`, `signature_company_witness2`) VALUES
+(1, 0, 3, 4, 1, 'John', '', 'Smith', '', '', '2015-12-01', 'Female', '(905) 553-3333', '123 Anywhere St', '', 'Anytown', 'AB', 'L7P 6V6', '', '', '', '', '', '', '0c0c0c0c0c0cc0c0c00c', 'PE', 'info 123@trinoweb.com', NULL, '', '', '', '503802_381661.png', '', '', 'Male', '', '', '', '', '644482_612649.png', '', '', '', '', '', '', '810266_851821.png', '867340_126010.png');
 
 -- --------------------------------------------------------
 
@@ -935,7 +1100,21 @@ CREATE TABLE IF NOT EXISTS `consent_form_criminal` (
   `date_of_sentence` varchar(255) DEFAULT NULL,
   `location` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=9 ;
+
+--
+-- Dumping data for table `consent_form_criminal`
+--
+
+INSERT INTO `consent_form_criminal` (`id`, `consent_form_id`, `offence`, `date_of_sentence`, `location`) VALUES
+(1, 1, '', '', ''),
+(2, 1, '', '', ''),
+(3, 1, '', '', ''),
+(4, 1, '', '', ''),
+(5, 1, '', '', ''),
+(6, 1, '', '', ''),
+(7, 1, '', '', ''),
+(8, 1, '', '', '');
 
 -- --------------------------------------------------------
 
@@ -989,7 +1168,16 @@ CREATE TABLE IF NOT EXISTS `documents` (
   `draft` int(11) DEFAULT '0',
   `file` varchar(255) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
+
+--
+-- Dumping data for table `documents`
+--
+
+INSERT INTO `documents` (`id`, `order_id`, `document_type`, `sub_doc_id`, `title`, `description`, `scale`, `reason`, `suggestion`, `user_id`, `client_id`, `uploaded_for`, `created`, `draft`, `file`) VALUES
+(1, 3, 'Consent Form', 4, '', '', 0, '', '', 4, 1, 1063, '2015-10-22 10:38:28', 0, ''),
+(2, 3, 'Employment Verification', 9, '', '', 0, '', '', 4, 1, 1063, '2015-10-22 10:38:28', 0, ''),
+(3, 3, 'MEE Attachments', 15, '', '', 0, '', '', 4, 1, 1063, '2015-10-22 10:38:28', 0, '');
 
 -- --------------------------------------------------------
 
@@ -1005,7 +1193,15 @@ CREATE TABLE IF NOT EXISTS `doc_attachments` (
   `sub_id` int(11) DEFAULT NULL,
   `attach_doc` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2050 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
+
+--
+-- Dumping data for table `doc_attachments`
+--
+
+INSERT INTO `doc_attachments` (`id`, `order_id`, `document_id`, `attachment`, `sub_id`, `attach_doc`) VALUES
+(1, 3, 0, '', 4, NULL),
+(2, 3, 0, '', 41, NULL);
 
 -- --------------------------------------------------------
 
@@ -1307,7 +1503,14 @@ CREATE TABLE IF NOT EXISTS `employment_verification` (
   `driving_experince_canada_rocky_mountains` tinyint(2) DEFAULT NULL,
   `driving_experince_usa` tinyint(2) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
+
+--
+-- Dumping data for table `employment_verification`
+--
+
+INSERT INTO `employment_verification` (`id`, `document_id`, `order_id`, `user_id`, `client_id`, `company_name`, `address`, `city`, `state_province`, `country`, `supervisor_name`, `supervisor_phone`, `supervisor_email`, `supervisor_secondary_email`, `employment_start_date`, `employment_end_date`, `claims_with_employer`, `claims_recovery_date`, `emploment_history_confirm_verify_use`, `us_dot`, `signature`, `signature_datetime`, `equipment_vans`, `equipment_reefer`, `equipment_decks`, `equipment_super`, `equipment_straight_truck`, `equipment_others`, `driving_experince_local`, `driving_experince_canada`, `driving_experince_canada_rocky_mountains`, `driving_experince_usa`) VALUES
+(1, 0, 3, 4, 1, '2', '2', '2', '2', '2', '2', '(310) 555-5976', 'bhills_5976@mailinator.com', 'bhills_5976@mailinator.com', '2015-10-08', '2015-10-21', NULL, '', '', '', '', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -1502,7 +1705,7 @@ CREATE TABLE IF NOT EXISTS `logos` (
   `active` int(11) NOT NULL,
   `secondary` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=21 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=22 ;
 
 --
 -- Dumping data for table `logos`
@@ -1512,10 +1715,10 @@ INSERT INTO `logos` (`id`, `logo`, `active`, `secondary`) VALUES
 (1, 'challenger_logo_white.png', 0, 1),
 (2, 'challenger_logo.png', 0, 0),
 (3, 'challenger_logo_white.png', 0, 0),
-(4, 'ISBWhite.png', 1, 1),
+(4, 'ISBWhite.png', 0, 1),
 (5, 'MEEGrille1.png', 0, 0),
 (6, 'MEEGrille2.png', 0, 0),
-(7, 'MEEGrille3.png', 0, 0),
+(7, 'MEEGrille3.png', 1, 0),
 (8, 'MEEGrille4.png', 0, 0),
 (9, 'MEEGrille5.png', 0, 0),
 (10, 'MEEGrille6.png', 0, 0),
@@ -1527,8 +1730,9 @@ INSERT INTO `logos` (`id`, `logo`, `active`, `secondary`) VALUES
 (16, 'MEEGrille5.png', 0, 2),
 (17, 'MEEGrille6.png', 0, 2),
 (18, '360075300logo.png', 1, 2),
-(19, '856010331logo.png', 1, 0),
-(20, '666784667logo.png', 0, 0);
+(19, '856010331logo.png', 0, 0),
+(20, '666784667logo.png', 0, 0),
+(21, '717376708logo.png', 1, 1);
 
 -- --------------------------------------------------------
 
@@ -1549,7 +1753,14 @@ CREATE TABLE IF NOT EXISTS `mee_attachments` (
   `client_id` int(11) DEFAULT NULL,
   `user_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=2 ;
+
+--
+-- Dumping data for table `mee_attachments`
+--
+
+INSERT INTO `mee_attachments` (`id`, `id_piece1`, `id_piece2`, `driver_record_abstract`, `cvor`, `resume`, `certification`, `order_id`, `document_id`, `client_id`, `user_id`) VALUES
+(1, '174844_989288.png', '', '', '', '', '', 3, 0, 1, 4);
 
 -- --------------------------------------------------------
 
@@ -1625,7 +1836,16 @@ CREATE TABLE IF NOT EXISTS `orders` (
   `ins_32_binary` longtext COLLATE utf8_unicode_ci,
   `complete_writing` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=4 ;
+
+--
+-- Dumping data for table `orders`
+--
+
+INSERT INTO `orders` (`id`, `title`, `description`, `scale`, `reason`, `suggestion`, `user_id`, `client_id`, `uploaded_for`, `created`, `division`, `draft`, `conf_recruiter_name`, `conf_driver_name`, `conf_date`, `ins_id`, `ebs_id`, `response`, `ins_pdi`, `ebs_pdi`, `recruiter_signature`, `ins_79`, `ins_79_binary`, `ins_1`, `ins_1_binary`, `ins_14`, `ins_14_binary`, `ins_77`, `ins_77_binary`, `ins_78`, `ins_78_binary`, `ebs_1603`, `ebs_1603_binary`, `ebs_1627`, `ebs_1627_binary`, `ebs_1650`, `ebs_1650_binary`, `ins_72`, `ins_72_binary`, `bright_planet`, `final_show`, `is_hired`, `bright_planet_binary`, `abc`, `bright_planet_html_binary`, `order_type`, `forms`, `complete`, `ins_31`, `ins_31_binary`, `ins_32`, `ins_32_binary`, `complete_writing`) VALUES
+(1, 'order_1063_2015-10-21 16:07:44', '', 0, '', '', 4, 1, 1063, '2015-10-21 16:07:44', '0', 0, 'Wendy Patton', 'info 123@trinoweb.com info 123@trinoweb.com', '2015-10-21  16:07:27', '486F048D-0B41-4A3C-8172-F0B9AEF2490A', '6C8A7BD1-5205-43F3-9297-AD388416AD7B', NULL, NULL, NULL, '132629_339419.png', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '59763', NULL, NULL, NULL, NULL, NULL, '', '', NULL, 0, 0, '', NULL, NULL, 'CAR', '1603', 0, NULL, NULL, NULL, NULL, 1),
+(2, 'order_1063_2015-10-22 10:35:56', '', 0, '', '', 4, 1, 1063, '2015-10-22 10:35:56', '0', 1, 'Wendy Patton', 'John Smith', '2015-10-22  10:35:49', NULL, NULL, NULL, NULL, NULL, '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '', '', NULL, 0, 0, '', NULL, NULL, 'MEE', '1603,1,78', 0, NULL, NULL, NULL, NULL, 0),
+(3, 'order_1063_2015-10-22 10:38:28', '', 0, '', '', 4, 1, 1063, '2015-10-22 10:38:28', '0', 0, 'Wendy Patton', 'John Smith', '2015-10-22  10:38:25', 'CF71BCE9-84E8-41FC-B348-D61A38CDCC4B', '637CD1F3-DDF7-48A0-AE2C-E16482491217', NULL, NULL, NULL, '408001_289376.png', '6320', NULL, '6321', NULL, NULL, NULL, NULL, NULL, '6322', NULL, '60106', NULL, NULL, NULL, NULL, NULL, '', '', NULL, 0, 0, '', NULL, NULL, 'MEE', '1603,1,78', 0, NULL, NULL, NULL, NULL, 1);
 
 -- --------------------------------------------------------
 
@@ -1939,21 +2159,16 @@ CREATE TABLE IF NOT EXISTS `product_types` (
   `Price` decimal(10,0) NOT NULL DEFAULT '0',
   `profile_types` varchar(512) NOT NULL,
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=17 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
 
 --
 -- Dumping data for table `product_types`
 --
 
 INSERT INTO `product_types` (`ID`, `Acronym`, `Name`, `Description`, `Alias`, `Color`, `Checked`, `Sidebar_Alias`, `ButtonColor`, `Blocked`, `doc_ids`, `Blocks_Alias`, `Block_Color`, `NameFrench`, `DescriptionFrench`, `Visible`, `Bypass`, `Icon`, `Price`, `profile_types`) VALUES
-(1, 'MEE', 'Driver Order', 'The all in one package', '0', 'red', 1, 'orders_mee', 'grey-cascade', '1603,1,14,77,78,1627', '3,9,15,4', 'ordersmee', 'grey-cascade', 'Commande pour chauffeur', 'Driver Order', 1, 0, 'icon-docs', '0', '5,7,8'),
-(2, 'CAR', 'Order Products A La Carte', 'Place an Order A La Carte', '0', '', 0, 'orders_products', 'grey-cascade', '1603,1,14,77,78,1650,1627,32,72', '', 'ordersproducts', 'grey-cascade', 'Commander des produits', 'Produits Tri', 1, 0, 'icon-docs', '0', '5,7,8,9,12'),
-(3, 'BUL', 'Bulk Order', 'Requalify multiple drivers', '0', 'red', 0, 'bulk', 'grey-cascade', '72,1,3,77,78,14', '', 'ordersbulk', 'grey-cascade', 'Commande en vrac', 'commande en vrac', 1, 0, 'icon-docs', '0', ''),
-(7, 'SIN', 'Single Product', 'Single Product', '0', '', 0, '', 'grey-cascade', '', '', '', 'grey-cascade', 'Produit Unique', 'Produit Unique', 0, 0, 'icon-docs', '0', ''),
-(13, 'EMP', 'GFS Employee Order', 'GFS Employee Order', '0', '', 1, 'orders_emp', 'grey-cascade', '1603,1627,32', '9,15,4', 'orders_emp', 'grey-cascade', 'GFS Ordre des Employés', 'GFS Ordre des Employés', 1, 0, 'icon-docs', '0', '9'),
-(14, 'SAL', 'GFS Sales Order', 'GFS Sales Order', '0', '', 1, 'orders_sal', 'grey-cascade', '1603,1,78,1627,32', '9,15,4', 'orders_sal', 'grey-cascade', 'GFS Sales Order', 'GFS Sales Order', 1, 0, 'icon-docs', '0', '12'),
-(15, 'GDO', 'GFS Driver Order', 'GFS Driver Order', '0', '', 1, 'orders_gdo', 'grey-cascade', '1603,14,1,77,78,1627,32', '17', 'orders_gdo', 'grey-cascade', 'GFS Chauffeur Ordonner', 'GFS Chauffeur Ordonner', 1, 0, 'icon-docs', '0', '5'),
-(16, 'SCH', 'School Package', 'School description', '0', '', 1, 'orders_sch', 'red', '1603,78', '', '', 'grey', 'na', 'naf', 1, 0, 'icon-docs', '59', '');
+(1, 'MEE', 'Order Driver Package ($59.00)', 'The all in one package', '0', 'red', 1, 'orders_mee', 'grey-cascade', '1603,1,78', '3,9,15,4', 'ordersmee', 'grey-cascade', 'Commande pour chauffeur', 'Driver Order', 1, 0, 'icon-docs', '0', '5,7,8'),
+(2, 'CAR', 'Order A La Carte', 'Place an Order A La Carte', '0', '', 0, 'orders_products', 'grey-cascade', '1603,1,14,77,78,1650,1627,32,72', '', 'ordersproducts', 'grey-cascade', 'Commander des produits', 'Produits Tri', 1, 0, 'icon-docs', '0', '5,7,8,9,12'),
+(3, 'BUL', 'Bulk Order', 'Requalify multiple drivers', '0', 'red', 0, 'bulk', 'grey-cascade', '72,1,3,77,78,14', '', 'ordersbulk', 'grey-cascade', 'Commande en vrac', 'commande en vrac', 1, 0, 'icon-docs', '0', '');
 
 -- --------------------------------------------------------
 
@@ -2011,14 +2226,17 @@ CREATE TABLE IF NOT EXISTS `profiles` (
   `first_login` int(11) DEFAULT '0',
   `iscomplete` tinyint(4) NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1063 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1066 ;
 
 --
 -- Dumping data for table `profiles`
 --
 
 INSERT INTO `profiles` (`id`, `title`, `fname`, `lname`, `username`, `email`, `password`, `driver`, `address`, `street`, `city`, `province`, `postal`, `country`, `phone`, `image`, `admin`, `super`, `profile_type`, `driver_license_no`, `driver_province`, `us_dot`, `applicants_email`, `transclick`, `mname`, `dob`, `expiry_date`, `gender`, `isb_id`, `placeofbirth`, `created_by`, `created`, `drafts`, `is_hired`, `ptypes`, `ctypes`, `language`, `automatic_email`, `automatic_sent`, `hear`, `requalify`, `hired_date`, `emailsent`, `send_to`, `sin`, `otherinfo`, `first_login`, `iscomplete`) VALUES
-(4, 'Mr', 'Wendy', 'Patton', 'admin', 'roy@trinoweb.com', '21232f297a57a5a743894a0e4a801fc3', NULL, '', '', '', 'AB', '', 'Canada', '', 'default.png', 1, 1, 1, '', '', NULL, NULL, NULL, '', '2015-01-01', '', 'Select Gender', '22552', '', 4, '2015-01-28 12:15:02', 0, 0, '1,2,3,5,7,8,9,12', '1,2,3', 'English', 0, 0, 'Referral', 0, '', '2015-10-15 16:25:40', 0, '', '', 1, 0);
+(4, 'Mr', 'Wendy', 'Patton', 'admin', 'roy@trinoweb.com', '21232f297a57a5a743894a0e4a801fc3', NULL, '', '', '', 'AB', '', 'Canada', '', 'default.png', 1, 1, 1, '', '', NULL, NULL, NULL, '', '2015-01-01', '', 'Select Gender', '22552', '', 4, '2015-01-28 12:15:02', 0, 0, '1,2,3,5,7,8,9,12', '1,2,3', 'English', 0, 0, 'Referral', 0, '', '2015-10-15 16:25:40', 0, '', '', 1, 0),
+(1063, 'Mr', 'John', 'Smith', 'student_driver_123', 'info+123@trinoweb.com', '4dd00d86c2b7a20fe3c6339218689812', NULL, '', '123 Anywhere St', 'Anytown', 'AB', 'L7P 6V6', 'Canada', '(905) 553-3333', 'default.png', 0, 0, 5, '0c0c0c0c0c0cc0c0c00c', 'PE', NULL, NULL, NULL, '', '2015-12-01', '2015-10-20', 'Female', '', 'Canada', 4, '2015-10-21', 0, 0, '', '', 'English', 0, 0, 'Workopolis', 0, '', '', 0, '518888888', '', 0, 1),
+(1064, 'Mr', 'challenger_recrutier', 'challenger_recrutier', 'challenger_recruiter', 'info+123@trinoweb.com', '6579d9b4e14214e5863719c76757048c', NULL, '', '', '', '', '', 'Canada', '', 'default.png', 0, 0, 2, '', '', NULL, NULL, NULL, '', '2015-12-01', '', 'Select Gender', '', '', 4, '2015-10-22', 0, 0, '', '1,2,3', 'English', 0, 0, 'Referral', 0, '', '2015-10-22 10:50:59', 0, '', '', 1, 1),
+(1065, 'Mr', 'TeacherTest', 'TeacherTest', 'TeacherTest', 'Roy+TeacherTest@trinoweb.com', '21232f297a57a5a743894a0e4a801fc3', NULL, '', '', '', '', '', 'Canada', '', 'default.png', 0, 0, 3, '', '', NULL, NULL, NULL, '', '2015-12-01', '', 'Select Gender', '', '', 4, '2015-10-22', 0, 0, '', '', 'English', 0, 0, 'Referral', 0, '', '', 0, '', '', 0, 1);
 
 -- --------------------------------------------------------
 
@@ -2033,7 +2251,7 @@ CREATE TABLE IF NOT EXISTS `profilessubdocument` (
   `display` int(11) DEFAULT NULL COMMENT '0=>no display, 1=> view only, 2=> upload only, 3=> both',
   `Topblock` tinyint(4) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=21289 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=22217 ;
 
 --
 -- Dumping data for table `profilessubdocument`
@@ -2800,196 +3018,238 @@ INSERT INTO `profilessubdocument` (`id`, `profile_id`, `subdoc_id`, `display`, `
 (7986, NULL, 22, 1, 0),
 (7987, NULL, 5, 2, 0),
 (7988, NULL, 15, 3, 0),
-(21099, 4, 7, 3, 0),
-(21100, 4, 7, 3, 0),
-(21101, 4, 8, 3, 0),
-(21102, 4, 7, 3, 0),
-(21103, 4, 8, 3, 0),
-(21104, 4, 2, 3, 0),
-(21105, 4, 7, 3, 0),
-(21106, 4, 8, 3, 0),
-(21107, 4, 2, 3, 0),
-(21108, 4, 1, 3, 0),
-(21109, 4, 7, 3, 0),
-(21110, 4, 8, 3, 0),
-(21111, 4, 2, 3, 0),
-(21112, 4, 1, 3, 0),
-(21113, 4, 3, 3, 0),
-(21114, 4, 7, 3, 0),
-(21115, 4, 8, 3, 0),
-(21116, 4, 2, 3, 0),
-(21117, 4, 1, 3, 0),
-(21118, 4, 3, 3, 0),
-(21119, 4, 4, 3, 0),
-(21120, 4, 7, 3, 0),
-(21121, 4, 8, 3, 0),
-(21122, 4, 2, 3, 0),
-(21123, 4, 1, 3, 0),
-(21124, 4, 3, 3, 0),
-(21125, 4, 4, 3, 0),
-(21126, 4, 10, 3, 0),
-(21127, 4, 7, 3, 0),
-(21128, 4, 8, 3, 0),
-(21129, 4, 2, 3, 0),
-(21130, 4, 1, 3, 0),
-(21131, 4, 3, 3, 0),
-(21132, 4, 4, 3, 0),
-(21133, 4, 10, 3, 0),
-(21134, 4, 6, 3, 0),
-(21135, 4, 7, 3, 0),
-(21136, 4, 8, 3, 0),
-(21137, 4, 2, 3, 0),
-(21138, 4, 1, 3, 0),
-(21139, 4, 3, 3, 0),
-(21140, 4, 4, 3, 0),
-(21141, 4, 10, 3, 0),
-(21142, 4, 6, 3, 0),
-(21143, 4, 18, 3, 0),
-(21144, 4, 7, 3, 0),
-(21145, 4, 8, 3, 0),
-(21146, 4, 2, 3, 0),
-(21147, 4, 1, 3, 0),
-(21148, 4, 3, 3, 0),
-(21149, 4, 4, 3, 0),
-(21150, 4, 10, 3, 0),
-(21151, 4, 6, 3, 0),
-(21152, 4, 18, 3, 0),
-(21153, 4, 21, 3, 0),
-(21154, 4, 7, 3, 0),
-(21155, 4, 8, 3, 0),
-(21156, 4, 2, 3, 0),
-(21157, 4, 1, 3, 0),
-(21158, 4, 3, 3, 0),
-(21159, 4, 4, 3, 0),
-(21160, 4, 10, 3, 0),
-(21161, 4, 6, 3, 0),
-(21162, 4, 18, 3, 0),
-(21163, 4, 21, 3, 0),
-(21164, 4, 16, 3, 0),
-(21165, 4, 7, 3, 0),
-(21166, 4, 8, 3, 0),
-(21167, 4, 2, 3, 0),
-(21168, 4, 1, 3, 0),
-(21169, 4, 3, 3, 0),
-(21170, 4, 4, 3, 0),
-(21171, 4, 10, 3, 0),
-(21172, 4, 6, 3, 0),
-(21173, 4, 18, 3, 0),
-(21174, 4, 21, 3, 0),
-(21175, 4, 16, 3, 0),
-(21176, 4, 17, 3, 0),
-(21177, 4, 7, 3, 0),
-(21178, 4, 8, 3, 0),
-(21179, 4, 2, 3, 0),
-(21180, 4, 1, 3, 0),
-(21181, 4, 3, 3, 0),
-(21182, 4, 4, 3, 0),
-(21183, 4, 10, 3, 0),
-(21184, 4, 6, 3, 0),
-(21185, 4, 18, 3, 0),
-(21186, 4, 21, 3, 0),
-(21187, 4, 16, 3, 0),
-(21188, 4, 17, 3, 0),
-(21189, 4, 19, 3, 0),
-(21190, 4, 7, 3, 0),
-(21191, 4, 8, 3, 0),
-(21192, 4, 2, 3, 0),
-(21193, 4, 1, 3, 0),
-(21194, 4, 3, 3, 0),
-(21195, 4, 4, 3, 0),
-(21196, 4, 10, 3, 0),
-(21197, 4, 6, 3, 0),
-(21198, 4, 18, 3, 0),
-(21199, 4, 21, 3, 0),
-(21200, 4, 16, 3, 0),
-(21201, 4, 17, 3, 0),
-(21202, 4, 19, 3, 0),
-(21203, 4, 11, 3, 0),
-(21204, 4, 7, 3, 0),
-(21205, 4, 8, 3, 0),
-(21206, 4, 2, 3, 0),
-(21207, 4, 1, 3, 0),
-(21208, 4, 3, 3, 0),
-(21209, 4, 4, 3, 0),
-(21210, 4, 10, 3, 0),
-(21211, 4, 6, 3, 0),
-(21212, 4, 18, 3, 0),
-(21213, 4, 21, 3, 0),
-(21214, 4, 16, 3, 0),
-(21215, 4, 17, 3, 0),
-(21216, 4, 19, 3, 0),
-(21217, 4, 11, 3, 0),
-(21218, 4, 23, 3, 0),
-(21219, 4, 7, 3, 0),
-(21220, 4, 8, 3, 0),
-(21221, 4, 2, 3, 0),
-(21222, 4, 1, 3, 0),
-(21223, 4, 3, 3, 0),
-(21224, 4, 4, 3, 0),
-(21225, 4, 10, 3, 0),
-(21226, 4, 6, 3, 0),
-(21227, 4, 18, 3, 0),
-(21228, 4, 21, 3, 0),
-(21229, 4, 16, 3, 0),
-(21230, 4, 17, 3, 0),
-(21231, 4, 19, 3, 0),
-(21232, 4, 11, 3, 0),
-(21233, 4, 23, 3, 0),
-(21234, 4, 9, 3, 0),
-(21235, 4, 7, 3, 0),
-(21236, 4, 8, 3, 0),
-(21237, 4, 2, 3, 0),
-(21238, 4, 1, 3, 0),
-(21239, 4, 3, 3, 0),
-(21240, 4, 4, 3, 0),
-(21241, 4, 10, 3, 0),
-(21242, 4, 6, 3, 0),
-(21243, 4, 18, 3, 0),
-(21244, 4, 21, 3, 0),
-(21245, 4, 16, 3, 0),
-(21246, 4, 17, 3, 0),
-(21247, 4, 19, 3, 0),
-(21248, 4, 11, 3, 0),
-(21249, 4, 23, 3, 0),
-(21250, 4, 9, 3, 0),
-(21251, 4, 22, 3, 0),
-(21252, 4, 7, 3, 0),
-(21253, 4, 8, 3, 0),
-(21254, 4, 2, 3, 0),
-(21255, 4, 1, 3, 0),
-(21256, 4, 3, 3, 0),
-(21257, 4, 4, 3, 0),
-(21258, 4, 10, 3, 0),
-(21259, 4, 6, 3, 0),
-(21260, 4, 18, 3, 0),
-(21261, 4, 21, 3, 0),
-(21262, 4, 16, 3, 0),
-(21263, 4, 17, 3, 0),
-(21264, 4, 19, 3, 0),
-(21265, 4, 11, 3, 0),
-(21266, 4, 23, 3, 0),
-(21267, 4, 9, 3, 0),
-(21268, 4, 22, 3, 0),
-(21269, 4, 5, 3, 0),
-(21270, 4, 7, 3, 0),
-(21271, 4, 8, 3, 0),
-(21272, 4, 2, 3, 0),
-(21273, 4, 1, 3, 0),
-(21274, 4, 3, 3, 0),
-(21275, 4, 4, 3, 0),
-(21276, 4, 10, 3, 0),
-(21277, 4, 6, 3, 0),
-(21278, 4, 18, 3, 0),
-(21279, 4, 21, 3, 0),
-(21280, 4, 16, 3, 0),
-(21281, 4, 17, 3, 0),
-(21282, 4, 19, 3, 0),
-(21283, 4, 11, 3, 0),
-(21284, 4, 23, 3, 0),
-(21285, 4, 9, 3, 0),
-(21286, 4, 22, 3, 0),
-(21287, 4, 5, 3, 0),
-(21288, 4, 15, 3, 0);
+(21859, 4, 7, 3, 0),
+(21860, 4, 7, 3, 0),
+(21861, 4, 8, 3, 0),
+(21862, 4, 7, 3, 0),
+(21863, 4, 8, 3, 0),
+(21864, 4, 2, 3, 0),
+(21865, 4, 7, 3, 0),
+(21866, 4, 8, 3, 0),
+(21867, 4, 2, 3, 0),
+(21868, 4, 1, 3, 0),
+(21869, 4, 7, 3, 0),
+(21870, 4, 8, 3, 0),
+(21871, 4, 2, 3, 0),
+(21872, 4, 1, 3, 0),
+(21873, 4, 3, 3, 0),
+(21874, 4, 7, 3, 0),
+(21875, 4, 8, 3, 0),
+(21876, 4, 2, 3, 0),
+(21877, 4, 1, 3, 0),
+(21878, 4, 3, 3, 0),
+(21879, 4, 4, 3, 0),
+(21880, 4, 7, 3, 0),
+(21881, 4, 8, 3, 0),
+(21882, 4, 2, 3, 0),
+(21883, 4, 1, 3, 0),
+(21884, 4, 3, 3, 0),
+(21885, 4, 4, 3, 0),
+(21886, 4, 10, 3, 0),
+(21887, 4, 7, 3, 0),
+(21888, 4, 8, 3, 0),
+(21889, 4, 2, 3, 0),
+(21890, 4, 1, 3, 0),
+(21891, 4, 3, 3, 0),
+(21892, 4, 4, 3, 0),
+(21893, 4, 10, 3, 0),
+(21894, 4, 6, 3, 0),
+(21895, 4, 7, 3, 0),
+(21896, 4, 8, 3, 0),
+(21897, 4, 2, 3, 0),
+(21898, 4, 1, 3, 0),
+(21899, 4, 3, 3, 0),
+(21900, 4, 4, 3, 0),
+(21901, 4, 10, 3, 0),
+(21902, 4, 6, 3, 0),
+(21903, 4, 18, 3, 0),
+(21904, 4, 7, 3, 0),
+(21905, 4, 8, 3, 0),
+(21906, 4, 2, 3, 0),
+(21907, 4, 1, 3, 0),
+(21908, 4, 3, 3, 0),
+(21909, 4, 4, 3, 0),
+(21910, 4, 10, 3, 0),
+(21911, 4, 6, 3, 0),
+(21912, 4, 18, 3, 0),
+(21913, 4, 21, 3, 0),
+(21914, 4, 7, 3, 0),
+(21915, 4, 8, 3, 0),
+(21916, 4, 2, 3, 0),
+(21917, 4, 1, 3, 0),
+(21918, 4, 3, 3, 0),
+(21919, 4, 4, 3, 0),
+(21920, 4, 10, 3, 0),
+(21921, 4, 6, 3, 0),
+(21922, 4, 18, 3, 0),
+(21923, 4, 21, 3, 0),
+(21924, 4, 16, 3, 0),
+(21925, 4, 7, 3, 0),
+(21926, 4, 8, 3, 0),
+(21927, 4, 2, 3, 0),
+(21928, 4, 1, 3, 0),
+(21929, 4, 3, 3, 0),
+(21930, 4, 4, 3, 0),
+(21931, 4, 10, 3, 0),
+(21932, 4, 6, 3, 0),
+(21933, 4, 18, 3, 0),
+(21934, 4, 21, 3, 0),
+(21935, 4, 16, 3, 0),
+(21936, 4, 17, 3, 0),
+(21937, 4, 7, 3, 0),
+(21938, 4, 8, 3, 0),
+(21939, 4, 2, 3, 0),
+(21940, 4, 1, 3, 0),
+(21941, 4, 3, 3, 0),
+(21942, 4, 4, 3, 0),
+(21943, 4, 10, 3, 0),
+(21944, 4, 6, 3, 0),
+(21945, 4, 18, 3, 0),
+(21946, 4, 21, 3, 0),
+(21947, 4, 16, 3, 0),
+(21948, 4, 17, 3, 0),
+(21949, 4, 19, 3, 0),
+(21950, 4, 7, 3, 0),
+(21951, 4, 8, 3, 0),
+(21952, 4, 2, 3, 0),
+(21953, 4, 1, 3, 0),
+(21954, 4, 3, 3, 0),
+(21955, 4, 4, 3, 0),
+(21956, 4, 10, 3, 0),
+(21957, 4, 6, 3, 0),
+(21958, 4, 18, 3, 0),
+(21959, 4, 21, 3, 0),
+(21960, 4, 16, 3, 0),
+(21961, 4, 17, 3, 0),
+(21962, 4, 19, 3, 0),
+(21963, 4, 11, 3, 0),
+(21964, 4, 7, 3, 0),
+(21965, 4, 8, 3, 0),
+(21966, 4, 2, 3, 0),
+(21967, 4, 1, 3, 0),
+(21968, 4, 3, 3, 0),
+(21969, 4, 4, 3, 0),
+(21970, 4, 10, 3, 0),
+(21971, 4, 6, 3, 0),
+(21972, 4, 18, 3, 0),
+(21973, 4, 21, 3, 0),
+(21974, 4, 16, 3, 0),
+(21975, 4, 17, 3, 0),
+(21976, 4, 19, 3, 0),
+(21977, 4, 11, 3, 0),
+(21978, 4, 23, 3, 0),
+(21979, 4, 7, 3, 0),
+(21980, 4, 8, 3, 0),
+(21981, 4, 2, 3, 0),
+(21982, 4, 1, 3, 0),
+(21983, 4, 3, 3, 0),
+(21984, 4, 4, 3, 0),
+(21985, 4, 10, 3, 0),
+(21986, 4, 6, 3, 0),
+(21987, 4, 18, 3, 0),
+(21988, 4, 21, 3, 0),
+(21989, 4, 16, 3, 0),
+(21990, 4, 17, 3, 0),
+(21991, 4, 19, 3, 0),
+(21992, 4, 11, 3, 0),
+(21993, 4, 23, 3, 0),
+(21994, 4, 9, 3, 0),
+(21995, 4, 7, 3, 0),
+(21996, 4, 8, 3, 0),
+(21997, 4, 2, 3, 0),
+(21998, 4, 1, 3, 0),
+(21999, 4, 3, 3, 0),
+(22000, 4, 4, 3, 0),
+(22001, 4, 10, 3, 0),
+(22002, 4, 6, 3, 0),
+(22003, 4, 18, 3, 0),
+(22004, 4, 21, 3, 0),
+(22005, 4, 16, 3, 0),
+(22006, 4, 17, 3, 0),
+(22007, 4, 19, 3, 0),
+(22008, 4, 11, 3, 0),
+(22009, 4, 23, 3, 0),
+(22010, 4, 9, 3, 0),
+(22011, 4, 22, 3, 0),
+(22012, 4, 7, 3, 0),
+(22013, 4, 8, 3, 0),
+(22014, 4, 2, 3, 0),
+(22015, 4, 1, 3, 0),
+(22016, 4, 3, 3, 0),
+(22017, 4, 4, 3, 0),
+(22018, 4, 10, 3, 0),
+(22019, 4, 6, 3, 0),
+(22020, 4, 18, 3, 0),
+(22021, 4, 21, 3, 0),
+(22022, 4, 16, 3, 0),
+(22023, 4, 17, 3, 0),
+(22024, 4, 19, 3, 0),
+(22025, 4, 11, 3, 0),
+(22026, 4, 23, 3, 0),
+(22027, 4, 9, 3, 0),
+(22028, 4, 22, 3, 0),
+(22029, 4, 5, 3, 0),
+(22030, 4, 7, 3, 0),
+(22031, 4, 8, 3, 0),
+(22032, 4, 2, 3, 0),
+(22033, 4, 1, 3, 0),
+(22034, 4, 3, 3, 0),
+(22035, 4, 4, 3, 0),
+(22036, 4, 10, 3, 0),
+(22037, 4, 6, 3, 0),
+(22038, 4, 18, 3, 0),
+(22039, 4, 21, 3, 0),
+(22040, 4, 16, 3, 0),
+(22041, 4, 17, 3, 0),
+(22042, 4, 19, 3, 0),
+(22043, 4, 11, 3, 0),
+(22044, 4, 23, 3, 0),
+(22045, 4, 9, 3, 0),
+(22046, 4, 22, 3, 0),
+(22047, 4, 5, 3, 0),
+(22048, 4, 15, 3, 0),
+(22154, 1064, 4, 0, 0),
+(22155, 1064, 4, 0, 0),
+(22156, 1064, 10, 0, 0),
+(22157, 1064, 4, 0, 0),
+(22158, 1064, 10, 0, 0),
+(22159, 1064, 19, 0, 0),
+(22160, 1064, 4, 0, 0),
+(22161, 1064, 10, 0, 0),
+(22162, 1064, 19, 0, 0),
+(22163, 1064, 11, 0, 0),
+(22164, 1064, 4, 0, 0),
+(22165, 1064, 10, 0, 0),
+(22166, 1064, 19, 0, 0),
+(22167, 1064, 11, 0, 0),
+(22168, 1064, 9, 0, 0),
+(22169, 1064, 4, 0, 0),
+(22170, 1064, 10, 0, 0),
+(22171, 1064, 19, 0, 0),
+(22172, 1064, 11, 0, 0),
+(22173, 1064, 9, 0, 0),
+(22174, 1064, 15, 0, 0),
+(22196, 1065, 4, 0, 0),
+(22197, 1065, 4, 0, 0),
+(22198, 1065, 10, 0, 0),
+(22199, 1065, 4, 0, 0),
+(22200, 1065, 10, 0, 0),
+(22201, 1065, 19, 0, 0),
+(22202, 1065, 4, 0, 0),
+(22203, 1065, 10, 0, 0),
+(22204, 1065, 19, 0, 0),
+(22205, 1065, 11, 0, 0),
+(22206, 1065, 4, 0, 0),
+(22207, 1065, 10, 0, 0),
+(22208, 1065, 19, 0, 0),
+(22209, 1065, 11, 0, 0),
+(22210, 1065, 9, 0, 0),
+(22211, 1065, 4, 0, 0),
+(22212, 1065, 10, 0, 0),
+(22213, 1065, 19, 0, 0),
+(22214, 1065, 11, 0, 0),
+(22215, 1065, 9, 0, 0),
+(22216, 1065, 15, 0, 0);
 
 -- --------------------------------------------------------
 
@@ -3002,7 +3262,7 @@ CREATE TABLE IF NOT EXISTS `profile_docs` (
   `profile_id` int(11) NOT NULL,
   `file` varchar(255) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=13 ;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -3029,16 +3289,8 @@ INSERT INTO `profile_types` (`id`, `title`, `enable`, `ISB`, `titleFrench`, `pla
 (0, 'Applicant', 1, 1, 'Demandeur', 0, 0),
 (1, 'Admin', 1, 1, 'Administrateur', 0, 1),
 (2, 'Recruiter', 1, 1, 'Recruteur', 0, 1),
-(3, 'External', 1, 1, 'Externe', 0, 0),
-(4, 'Safety', 0, 1, 'Sécurité', 0, 0),
-(5, 'Student', 1, 1, 'Étudiant', 1, 0),
-(6, 'Contact', 0, 1, 'Contact', 0, 0),
-(7, 'Owner Operator', 1, 1, 'Opérateur propriétaire	', 1, 0),
-(8, 'Owner Driver', 1, 1, 'Conducteur propriétaire', 1, 0),
-(9, 'Employee', 1, 1, 'Employé', 1, 0),
-(10, 'Guest', 0, 1, 'Invité', 0, 0),
-(11, 'Partner', 0, 1, 'Partenaire', 0, 0),
-(12, 'Sales', 1, 1, 'Ventes', 1, 0);
+(3, 'Teacher', 1, 1, 'Externe', 0, 1),
+(5, 'Student', 1, 1, 'Étudiant', 1, 0);
 
 -- --------------------------------------------------------
 
@@ -3091,7 +3343,14 @@ CREATE TABLE IF NOT EXISTS `recruiter_notes` (
   `description` longtext,
   `created` date DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=37 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
+
+--
+-- Dumping data for table `recruiter_notes`
+--
+
+INSERT INTO `recruiter_notes` (`id`, `driver_id`, `recruiter_id`, `description`, `created`) VALUES
+(1, 1063, 4, '123123123', '2015-10-22');
 
 -- --------------------------------------------------------
 
@@ -3282,16 +3541,20 @@ CREATE TABLE IF NOT EXISTS `sidebar` (
   `orders_sal` tinyint(4) NOT NULL,
   `orders_gdo` tinyint(4) NOT NULL,
   `viewprofiles` tinyint(4) NOT NULL DEFAULT '0',
-  `orders_sch` tinyint(1) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=701 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=706 ;
 
 --
 -- Dumping data for table `sidebar`
 --
 
-INSERT INTO `sidebar` (`id`, `orders`, `orders_list`, `orders_create`, `orders_edit`, `orders_delete`, `orders_others`, `orders_mee`, `orders_products`, `order_requalify`, `profile`, `client`, `document`, `profile_list`, `profile_create`, `client_list`, `client_create`, `document_list`, `document_create`, `messages`, `drafts`, `user_id`, `profile_edit`, `profile_delete`, `client_edit`, `client_delete`, `document_edit`, `document_delete`, `document_others`, `recent`, `feedback`, `document_requalify`, `orders_requalify`, `email`, `email_todo`, `email_document`, `email_orders`, `logo`, `client_option`, `schedule`, `schedule_add`, `analytics`, `training`, `order_intact`, `bulk`, `email_profile`, `orders_emp`, `orders_GEM`, `orders_GDR`, `aggregate`, `invoice`, `orders_cch`, `orders_sal`, `orders_gdo`, `viewprofiles`, `orders_sch`) VALUES
-(1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 4, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 0, 0, 1, 1, 0, 1, 1, 1, 1);
+INSERT INTO `sidebar` (`id`, `orders`, `orders_list`, `orders_create`, `orders_edit`, `orders_delete`, `orders_others`, `orders_mee`, `orders_products`, `order_requalify`, `profile`, `client`, `document`, `profile_list`, `profile_create`, `client_list`, `client_create`, `document_list`, `document_create`, `messages`, `drafts`, `user_id`, `profile_edit`, `profile_delete`, `client_edit`, `client_delete`, `document_edit`, `document_delete`, `document_others`, `recent`, `feedback`, `document_requalify`, `orders_requalify`, `email`, `email_todo`, `email_document`, `email_orders`, `logo`, `client_option`, `schedule`, `schedule_add`, `analytics`, `training`, `order_intact`, `bulk`, `email_profile`, `orders_emp`, `orders_GEM`, `orders_GDR`, `aggregate`, `invoice`, `orders_cch`, `orders_sal`, `orders_gdo`, `viewprofiles`) VALUES
+(1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 4, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 1, 0, 1, 1, 0, 0, 0, 1, 0, 0, 0, 0, 1),
+(701, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1063, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, NULL, 0, 0, 0, 0, 0),
+(702, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1064, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1),
+(703, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 0, 1065, 1, 1, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 1, 0, 1, 1, 0, 1, 1, 0, 0, 0, 1, 0, 0, 0, 0, 1),
+(704, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1066, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, NULL, 0, 0, 0, 0, 0),
+(705, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 0, 1065, 1, 1, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 1, 0, 1, 1, 0, 1, 1, 0, 0, 0, 1, 0, 0, 0, 0, 1);
 
 -- --------------------------------------------------------
 
@@ -3305,14 +3568,14 @@ CREATE TABLE IF NOT EXISTS `strings` (
   `English` varchar(4096) NOT NULL,
   `French` varchar(4096) NOT NULL,
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=767 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=771 ;
 
 --
 -- Dumping data for table `strings`
 --
 
 INSERT INTO `strings` (`ID`, `Name`, `English`, `French`) VALUES
-(1, 'Date', '1445449181', '<-- This is used by the system to auto-update'),
+(1, 'Date', '1445457023', '<-- This is used by the system to auto-update'),
 (2, 'dashboard_affirmative', 'Yes', 'Oui'),
 (3, 'dashboard_negative', 'No', 'Non'),
 (4, 'dashboard_selectall', 'Select All', 'Tout sélectionner'),
@@ -3974,7 +4237,7 @@ INSERT INTO `strings` (`ID`, `Name`, `English`, `French`) VALUES
 (673, 'forms_credssent', 'Credentials sent', 'Pouvoirs envoyés'),
 (679, 'email_profilecreated_variables', 'username, email, path, createdby, type, password, id', ''),
 (680, 'email_documentcreated_variables', 'site, email, company_name, username, id, path, profile_type, place', ''),
-(681, 'email_ordercompleted_variables', 'email, username, profile_type, company_name, for, html, path', ''),
+(681, 'email_ordercompleted_variables', 'email, username, profile_type, company_name, site, for, path, html', ''),
 (682, 'email_gfs_variables', 'email, path1, path2, site, username', ''),
 (683, 'email_newapplicant_subject', 'Application for Employment [DISABLED]', 'email_newapplicant_subject'),
 (684, 'email_newapplicant_message', 'A new applicant has applied for employment.<br><br>\nPlease click <a href="%path%" target="_blank">here</a> to view the form.<br><br>\nRegards,<br>\nThe MEE Team', 'email_newapplicant_message'),
@@ -4055,7 +4318,11 @@ INSERT INTO `strings` (`ID`, `Name`, `English`, `French`) VALUES
 (763, 'email_training_passed_variables', 'email, score, username, path', ''),
 (764, 'flash_cantorder2', 'Missing data required to place an order', ''),
 (765, 'profiles_nothired', 'Not Hired', 'pas embauché'),
-(766, 'application_process', 'Application Process', 'Processus de demande');
+(766, 'email_training_enrolled_variables', 'email, path', ''),
+(767, 'application_process', 'Application Process', 'Processus de demande'),
+(768, 'email_sendmessage_subject', 'A message has been sent from %from%', 'email_sendmessage_subject'),
+(769, 'email_sendmessage_message', '%message%<HR>This message has been sent by a user, and not on behalf of %site%', 'email_sendmessage_message'),
+(770, 'flash_messagesent', 'Your email has been sent', 'Votre email a été envoyé');
 
 -- --------------------------------------------------------
 
@@ -4089,32 +4356,19 @@ CREATE TABLE IF NOT EXISTS `subdocuments` (
   `ProductID` int(11) NOT NULL DEFAULT '0',
   `icon` varchar(255) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=24 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=20 ;
 
 --
 -- Dumping data for table `subdocuments`
 --
 
 INSERT INTO `subdocuments` (`id`, `title`, `display`, `form`, `table_name`, `orders`, `color_id`, `titleFrench`, `ProductID`, `icon`) VALUES
-(1, 'Challenger Pre-screening', 1, 'company_pre_screen_question.php', 'pre_screening', 1, 1, 'Challenger présélection', 1603, ''),
-(2, 'Challenger Driver application', 1, 'driver_application.php', 'driver_application', 1, 1, 'Application driver de Challenger', 1603, ''),
-(3, 'Challenger Road Test', 1, 'driver_evaluation_form.php', 'road_test', 1, 1, 'Challenger d''essai routier', 1603, ''),
 (4, 'Consent Form', 1, 'document_tab_3.php', 'consent_form', 1, 1, 'Formulaire de Consentement', 1603, ''),
-(5, 'Survey', 1, 'survey.php', 'survey', 1, 1, 'Enquête', 1603, ''),
-(6, 'Feedback', 1, 'feedbacks.php', 'feedbacks', 1, 1, 'Réaction', 1603, ''),
-(7, 'Attachment', 1, 'attachments.php', 'attachments', 1, 1, 'Attachement', 1603, ''),
-(8, 'Audit', 1, 'audits.php', 'audits', 1, 1, 'Audit', 1603, ''),
 (9, 'Letter of Experience', 1, 'employment_verification_form.php', 'employment_verification', 1, 1, 'Lettre d''expérience', 1603, ''),
 (10, 'Education Verification', 1, 'education_verification_form.php', 'education_verification', 1, 1, 'Vérification de l’éducation', 1603, ''),
 (11, 'ISB Pre-Screening', 1, 'generic_form.php', 'ISB Pre-Screen Questions', 1, 1, 'ISB Présélection', 1603, ''),
 (15, 'Upload ID/Documents', 1, 'mee_attach.php', 'mee_attachments', 1, 1, 'Télécharger ID/Documents', 1603, ''),
-(16, 'GFS Past Employer Survey', 1, 'past_employer_survey.php', 'past_employment_survey', 1, 1, 'Sondage auprès des employeurs GFS passées', 1603, ''),
-(17, 'GFS Pre Employment Road Test', 1, 'pre_employment_road_test.php', 'pre_employment_road_test', 1, 1, 'GFS pré-emploi d''essai routier', 1603, ''),
-(18, 'GFS Application for Employment', 1, 'application_for_employment_gfs.php', 'application_for_employment_gfs', 1, 1, 'GFS Demande d''emploi', 1603, ''),
-(19, 'ISB Driver Application', 1, 'basic_mee_platform.php', 'basic_mee_platform', 1, 1, 'Application driver ISB', 1603, ''),
-(21, 'GFS PI Survey', 1, 'attachments.php', 'attachments', 1, 1, 'Enquête PI GFS', 1603, ''),
-(22, 'Social Media Footprint', 1, 'footprint.php', 'footprint', 1, 1, 'Social Media Footprint', 1603, ''),
-(23, 'Investigations Intake Form – Benefit Claims', 1, 'investigations_intake_form_benefit_claims.php', 'investigations_intake_form_benefit_claims', 1, 1, 'Enquêtes formulaire d''admission - Revendications prestations', 1603, '');
+(19, 'ISB Driver Application', 1, 'basic_mee_platform.php', 'basic_mee_platform', 1, 1, 'Application driver ISB', 1603, '');
 
 -- --------------------------------------------------------
 
@@ -4153,7 +4407,18 @@ CREATE TABLE IF NOT EXISTS `training_answers` (
   `flagged` tinyint(1) NOT NULL DEFAULT '0',
   `created` varchar(255) NOT NULL,
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=6 ;
+
+--
+-- Dumping data for table `training_answers`
+--
+
+INSERT INTO `training_answers` (`ID`, `UserID`, `QuizID`, `QuestionID`, `Answer`, `flagged`, `created`) VALUES
+(1, 1063, 3, 0, 0, 0, '2015-10-21 16:06:54'),
+(2, 1063, 3, 1, 0, 0, '2015-10-21 16:06:54'),
+(3, 1063, 3, 2, 0, 0, '2015-10-21 16:06:54'),
+(4, 1063, 3, 3, 0, 0, '2015-10-21 16:06:54'),
+(5, 1063, 3, 4, 0, 0, '2015-10-21 16:06:54');
 
 -- --------------------------------------------------------
 
@@ -4174,7 +4439,17 @@ CREATE TABLE IF NOT EXISTS `training_enrollments` (
   `datetaken` varchar(32) NOT NULL,
   `hascert` tinyint(4) NOT NULL,
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=7 ;
+
+--
+-- Dumping data for table `training_enrollments`
+--
+
+INSERT INTO `training_enrollments` (`ID`, `QuizID`, `UserID`, `EnrolledBy`, `pass`, `incorrect`, `missing`, `correct`, `total`, `datetaken`, `hascert`) VALUES
+(3, 1, 1063, 4, 80, 0, 30, 0, 30, '', 1),
+(4, 4, 4, 0, 80, 0, 20, 0, 20, '', 0),
+(5, 3, 4, 0, 80, 0, 5, 0, 5, '', 1),
+(6, 3, 1063, 4, 80, 0, 0, 5, 5, '2015-10-21 16:06:54', 1);
 
 -- --------------------------------------------------------
 
@@ -4191,16 +4466,14 @@ CREATE TABLE IF NOT EXISTS `training_list` (
   `pass` int(11) NOT NULL DEFAULT '80',
   `hascert` tinyint(4) NOT NULL DEFAULT '1',
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=5 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
 
 --
 -- Dumping data for table `training_list`
 --
 
 INSERT INTO `training_list` (`ID`, `Name`, `Description`, `Attachments`, `image`, `pass`, `hascert`) VALUES
-(1, 'Active Shooter Response', 'Total chaos typically ensues in an active shooter situation. This course will give your organization the program planning and training suggestions which will help you minimize that.\r\n\r\nWe begin with what is the most critical element of the plan - effective and timely communication to local public emergency services and simultaneously the communication to all of your facility/property occupants. We will then outline the general deployment guidelines for on-site security forces and their cooperation with arriving public emergency service personnel. Establishment of a command post to coordinate the lockdown of the facility and the apprehension of the shooter will be covered. General emergency response priorities will be discussed.\r\n\r\nThe course will provide suggestions regarding the training for response team members and the general training for all facility occupants. Finally, incident documentation and post incident reaction evaluation will be addressed.', 'ActiveShooterHandout.pdf, training/video?title=Active Shooter Response&url=http://asapsecured.com/wp-content/uploads/2014/11/ActiveShoot_x264_001.mp4', 'Shooter.png', 80, 1),
-(3, '"WHMIS"', '"WHMIS is a comprehensive plan for providing information on the safe use of hazardous materials used in Canadian workplaces\\r\\n\\r\\nWHMIS was created in response to the Canadian workers right to know about the safety and health hazards that may be associated with the materials or chemicals that are used in a workplace. Exposure to hazardous materials can cause or contribute to many serious health effects such as effects on the nervous system, kidney or lung damage, sterility, cancer, burns and rashers. Some hazardous materials are safety hazards and can cause fires or explosions.\\r\\n\\r\\nWHMIS was developed by a committee from representatives from the government, industry and labor to ensure that the best interests of everyone were considered.\\r\\n\\r\\nOn October 31, 1998 WHMIS became a federal Canadian Law. The majority of information requirements of WHMIS legislation were incorporated into the Hazardous Products Act and the Hazardous Materials Information Review Act. These apply to all of Canada."', '""', '"training.png"', 80, 1),
-(4, 'Patriot Source', 'test', '', 'ASAPlogo.png', 80, 0);
+(3, 'Brakes R Us Hard Braking Course', 'WHMIS is a comprehensive plan for providing information on the safe use of hazardous materials used in Canadian workplaces\r\n\r\nWHMIS was created in response to the Canadian workers right to know about the safety and health hazards that may be associated with the materials or chemicals that are used in a workplace. Exposure to hazardous materials can cause or contribute to many serious health effects such as effects on the nervous system, kidney or lung damage, sterility, cancer, burns and rashers. Some hazardous materials are safety hazards and can cause fires or explosions.\r\n\r\nWHMIS was developed by a committee from representatives from the government, industry and labor to ensure that the best interests of everyone were considered.\r\n\r\nOn October 31, 1998 WHMIS became a federal Canadian Law. The majority of information requirements of WHMIS legislation were incorporated into the Hazardous Products Act and the Hazardous Materials Information Review Act. These apply to all of Canada.', '', 'training.png', 80, 1);
 
 -- --------------------------------------------------------
 
@@ -4222,7 +4495,7 @@ CREATE TABLE IF NOT EXISTS `training_quiz` (
   `Choice4` varchar(255) NOT NULL,
   `Choice5` varchar(255) NOT NULL,
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=72 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=51 ;
 
 --
 -- Dumping data for table `training_quiz`
@@ -4231,59 +4504,9 @@ CREATE TABLE IF NOT EXISTS `training_quiz` (
 INSERT INTO `training_quiz` (`ID`, `QuizID`, `QuestionID`, `Answer`, `Choice0`, `Choice1`, `Choice2`, `Choice3`, `Picture`, `Question`, `Choice4`, `Choice5`) VALUES
 (10, 3, 0, 0, 'Workplace Health Materials Information System', 'Workplace Hazardous Materials Information System', 'Workplace Hazardous Materials Information Sheet', 'Workplace Hazardous MSDS Information Sheet', '', 'What does WHMIS stand for?', '', ''),
 (11, 3, 1, 0, 'true', 'false', '', '', '', 'WHMIS is a law', '', ''),
-(12, 1, 0, 4, 'Seek a safe distance away from the building', 'Offer your observations regarding the incident to responding police', 'Do not let anyone except emergency responders unknowingly enter the building', 'None of the above', '', 'Once you are outside of the building safely you should do which of the following?', 'A,B and C', ''),
-(13, 1, 1, 4, 'How many shooters you saw', 'Any description you can', 'Where you last saw the shooter(s)', 'No information should be given as it will just slow the police response', '', 'If you are able to offer any information about the shooter (if you saw them) to the police, you should describe:', 'A, B and C', 'None of the above'),
-(19, 1, 2, 0, 'True', 'False', '', '', '', 'Active shooters sometimes take their own life to end the incident.', '', ''),
-(20, 1, 3, 1, 'True', 'False', '', '', '', 'Active shooters always have only one gun so they can maintain total control of it.', '', ''),
-(21, 1, 4, 0, 'True', 'False', '', '', '', 'Escaping an active shooter incident might be possible out of a second floor window if conditions are right.', '', ''),
-(22, 1, 5, 1, 'True', 'False', '', '', '', 'The sound of gunshots will be obvious and other notification systems will not be necessary.', '', ''),
-(23, 1, 6, 0, 'True', 'False', '', '', '', 'One way to learn what gun shots sound like is to visit a shooting range.', '', ''),
-(24, 1, 7, 0, 'True', 'False', '', '', '', 'If you have been forced into the ‘hide out’ option during an incident, that option could change to a ‘get out’ opportunity with the shooter’s progression through the facility.', '', ''),
-(25, 1, 8, 1, 'True', 'False', '', '', '', 'If you are evacuated from a shooting incident you should immediately go home so you are not in the way.', '', ''),
-(26, 1, 9, 0, 'True', 'False', '', '', '', 'If you have incapacitated the shooter and have seized his weapon you should take it out with you to give to the police.', '', ''),
-(27, 1, 10, 1, 'Knowing where weapons are hidden for your defense', 'Having alternate escape paths in case the shooter is blocking your primary', 'Knowing how to pull the fire alarm', 'None of the above', '', 'A predetermined escape path is good for all facility occupants to have in mind but also important is which of the following?', 'All of the above', ''),
-(28, 1, 11, 0, 'True', 'False', '', '', '', 'During an active shooter evacuation you should only stop to help the injured if you can do so with a high probability of getting them to safety and not becoming another victim yourself.', '', ''),
-(29, 1, 12, 0, 'True', 'False', '', '', '', 'When entering a facility for the first time it is always a good idea to spot exit pathways yourself just to keep in mind.', '', ''),
-(30, 1, 13, 0, 'True', 'False', '', '', '', 'The hide out and barricade option should only be used if you cannot get out of the building safely.', '', ''),
-(31, 1, 14, 1, 'True', 'False', '', '', '', 'Active shooters will never have partners as they want to act alone.', '', ''),
-(32, 1, 15, 0, 'True', 'False', '', '', '', 'While it is important to get out of the building quickly if you can during an active shooter incident, it is also important to be cautious that the shooter is not on your exit path.', '', ''),
-(33, 1, 16, 0, 'True', 'False', '', '', '', 'It is a good idea to offer to include the local police/emergency responders in your practice drills annually regarding your active shooter response plan.', '', ''),
-(34, 1, 17, 1, 'True', 'False', '', '', '', 'During an active shooter incident the responding police will set up a protective perimeter around the building and wait for the SWAT team to arrive before entering.', '', ''),
-(35, 1, 18, 0, 'True', 'False', '', '', '', 'The decision for re-entry into an evacuated building after an active shooter incident will be up to the police.', '', ''),
-(36, 1, 19, 1, 'True', 'False', '', '', '', 'It is a waste of time to try to fight back if you are forced to. You have no chance against a gun.', '', ''),
-(37, 1, 20, 0, 'True', 'False', '', '', '', 'When the police are coming into the building they are going to be tense and you need to be cautious around them and listen for their commands.', '', ''),
-(39, 1, 22, 0, 'True', 'False', '', '', '', 'Making the decision to get out of the facility in an active shooter incident must be made quickly for survival.', '', ''),
-(40, 1, 23, 3, 'Consider how the occupants are all going to know that there is an active shooter in the facility', 'The expected response time for the police', 'What the capabilities are of all of the occupants', 'All of the above', '', 'During your planning for an active shooter response, your organization should do which of the following? ', '', ''),
-(41, 1, 24, 2, 'Render it safe by breaking it down', 'You should not do anything to it as it is evidence', 'Take it away from the shooter and hide it so that he cannot recover and get it back', 'None of the above', '', 'If you have been able to incapacitate the shooter you should do what with the weapon?', '', ''),
-(42, 1, 25, 1, 'True', 'False', '', '', '', 'All active shooters have intended targets within the facilities they attack.', '', ''),
-(43, 1, 26, 0, 'True', 'False', '', '', '', 'Police will want to see the open hands of occupants leaving the building as they are responding.', '', ''),
-(44, 1, 27, 1, 'True', 'False', '', '', '', 'Gun shots will always be obvious and are enough for everyone to know what is going on in the building.', '', ''),
-(45, 1, 28, 1, 'True', 'False', '', '', '', 'Pulling the fire alarm is an acceptable notification system for an active shooter incident.', '', ''),
-(46, 1, 29, 1, 'True', 'False', '', '', '', 'Hiding and being silent is only an option for cowards.', '', ''),
 (48, 3, 2, 0, 'Workers', 'Employers', 'Suppliers', 'All of the above', '', 'Under WHMIS Law who has duties in regards to hazardous materials?', '', ''),
 (49, 3, 3, 0, 'Three', 'Five', 'Four', 'Six', '', 'How many categories of controlled substances are identified under WHMIS?', '', ''),
-(50, 3, 4, 0, 'Compressed Gas', 'Corrosive Material', 'Oxidizing Material', 'Flammable and Combustible Material', 'whmisgas.gif', 'What class of controlled substances does this symbol represent?', '', ''),
-(51, 1, 21, 1, 'True', 'False', '', '', '', 'Background noises are unimportant in a shooting incident because the shots will be heard over anything.', '', ''),
-(52, 4, 0, 2, 'At least once a week.', 'If any problems occurred the last the time the vehicle was operated.', 'Before operating the vehicle.', '', '', 'A pre-trip inspection should be completed:', '', ''),
-(53, 4, 1, 0, 'Make sure you are driving slow enough so you can stop within the range of your headlights in  an emergency.', 'Roll down your window so that the fresh air will help keep you awake.', 'If you are sleepy, drink coffee or other caffeine products.', '', '', 'What should you do when you are driving at night?', '', ''),
-(54, 4, 2, 0, 'Warn others by turning on your 4-way emergency flashers', 'Put your warning devices out within 15 minutes', 'Use your left turn signal lights to give warning to other drivers', '', '', 'When you are parked at the side of the road at night, you must:', '', ''),
-(55, 4, 3, 2, 'Too many vertical stacks', 'Oil on the tie rod', 'Play in the steering wheel of more than 10 degrees (2 inches on a 20-inch steering wheel)', '', '', 'While doing the pre-trip inspection on your vehicle''s steering and exhaust system you found the following problems. Which one, if any, should be fixed before you drive the vehicle?', '', ''),
-(56, 4, 4, 2, 'Electrical', 'Gasoline', 'Neither of the above', '', '', 'Water can safely be used on which of these fires?', '', ''),
-(57, 4, 5, 0, 'Perception distance, reaction distance, braking distance', 'Observation distance, reaction distance, slowing distance', 'Perception distance, response distance, reaction distance.', '', '', 'Three things add up to the total stopping distance for your vehicle. They are:', '', ''),
-(58, 4, 6, 0, '10 feet, 100 feet, and 200 feet toward approaching traffic', '25 feet, 100 feet, and 250 feet toward approaching traffic', '50 feet, 100 feet, and 300 feet toward approaching traffic.', '', '', 'If you are stopped on a one-way or divided highway, you should place reflective triangles at:', '', ''),
-(59, 4, 7, 2, 'Use high beams for best visibility', 'Park off to the right side of the road with you parking lights on.', 'Park at a rest area or truck stop until the fog has lifted', '', '', 'When a heavy fog occurs you should:', '', ''),
-(60, 4, 8, 2, '2–5 seconds', '5–10 seconds', '12–15 seconds', '', '', 'A driver should look _______ ahead of the vehicle while driving.', '', ''),
-(61, 4, 9, 0, 'Brake shoes should be free of oil, grease, and brake fluid', 'One missing leaf spring is not dangerous', 'A cracked spring hanger is not dangerous.', '', '', 'Which of the following statements is true when you are performing a pre-trip inspection  on your brakes and suspension system?', '', ''),
-(62, 4, 10, 1, 'Exhaust noise will damage the driver’s ears', 'Toxic fumes and gasses could enter the cab or sleeper berth.', 'The leaking exhaust smoke pollutes the air.', '', '', 'A broken exhaust system is dangerous because:', '', ''),
-(63, 4, 11, 3, 'The employer', 'The carrier', 'The vehicle manufacturer', 'The driver', '', 'Regardless of the maintenance policies, who is responsible for ensuring that the brakes of  a vehicle are in working order before the vehicle is placed into operation?', '', ''),
-(64, 4, 12, 2, 'Stand', 'Mill about in the aisles', 'Smoke', 'Talk', '', 'As the operator of any vehicle, what may passengers not do in the vehicle at any time?', '', ''),
-(65, 4, 13, 2, 'Once very fortnight', 'Every time the vehicle is refueled', 'Upon reaching 70 hours in 7 days or every 14 days, whichever comes first', 'Once a month when the unit goes to the shop for its regular maintenance', '', 'How often does a driver have to take 24 consecutive hours off-duty time, regardless of  cycle?', '', ''),
-(66, 4, 14, 1, 'Ensure that all passengers are off the bus and the engine is turned off', 'Turn off the engine, ensure that the nozzle stays in contact with the filler pipe and connect  the ground wire', 'Ensure that she has the passwords and cards to operate the automatic fuel pump', 'Check the air in the tires and wash the windshield', '', 'What steps must the driver take before refueling a school bus?', '', ''),
-(67, 4, 15, 1, '72 hrs', '24 hrs', '96 hrs', '48 hrs', '', 'How many consecutive hours of off-duty time must be taken to reset the cycle in Cycle 2?', '', ''),
-(68, 4, 16, 0, 'Remain in your vehicle and wait for your supervisor to permit you to drive through the picket  line', 'Remain in your vehicle and wait for the picket line to permit you to drive through the picket   line', 'Get out of the vehicle and speak with the picket line captain about crossing protocols', 'Simply drive through the picket line', '', 'As part of working for Patriot Source 1 you will be required to cross picket lines. What  should you do when you approach a picket line:', '', ''),
-(69, 4, 17, 0, 'Do not move your vehicle. Ensure all doors and windows are closed and notify your  supervisor immediately.', 'Open your window and speak with the picketers to find out what their issue is', 'Drive away from the site as fast as possible', 'Ensure all doors and windows are closed and wait for the picketers go away', '', 'You approach a picket line, and you notice that some of the picketing employees are  being aggressive. What do you do:', '', ''),
-(70, 4, 18, 4, 'Drop the passenger off, afer all they are the client.', 'Call your supervisor and advise of the request and seek permission', 'Advise the passenger that due to safety reasons they cannot be dropped off at the location  requested', 'Ignore the request and continue to drive to the drop off location', '', 'A passenger asks you to drop them off at a location other then the one specified to you by  your supervisor. You', 'Both b and c', ''),
-(71, 4, 19, 3, 'Speed up in an attempt to lose the person following you', 'Stop your and get out of your vehicle and converse with the person following you to find out  why they are doing so', 'Take a detour off your regular route to lose the person who is following you', 'Remain calm, call your supervisor,  and if the situation becomes a dangerous, drive to the  nearby police station', '', '20.  While operating the vehicle you notice that someone is following you and you detect that   it could be a picketer. What do you do?', '', '');
+(50, 3, 4, 0, 'Compressed Gas', 'Corrosive Material', 'Oxidizing Material', 'Flammable and Combustible Material', 'whmisgas.gif', 'What class of controlled substances does this symbol represent?', '', '');
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

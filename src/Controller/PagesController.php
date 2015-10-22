@@ -53,7 +53,7 @@ class PagesController extends AppController {
         $this->set('forms',  TableRegistry::get('order_products')->find('all'));
         $this->getsubdocument_topblocks($userid);
 
-        $block   = $this->requestAction("settings/all_settings/" . $userid . "/blocks");
+        $block = $this->requestAction("settings/all_settings/" . $userid . "/blocks");
         if(!$this->countenabled($block) && $setting->profile_list){
             $this->redirect("/profiles");
         } else {
