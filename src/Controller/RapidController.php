@@ -759,7 +759,9 @@ $data["data"][] = $Form;
             $data["username"] = "admin";
             $data["password"] = md5("admin");
 
-            echo $this->placerapidorder($data);
+            //echo $this->placerapidorder($data);//fast way
+            echo $this->Manager->cURL(LOGIN . 'rapid/placerapidorder', $data, "multipart/form-data");//hard way (the same way they'll be doing it)
+            die();
         }
 
         function status($Status, $Reason, $Text = "Reason"){

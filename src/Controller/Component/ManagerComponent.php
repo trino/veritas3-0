@@ -920,17 +920,15 @@ class ManagerComponent extends Component {
         }
     }
 
-    function cURL($URL, $data = "", $username = "", $password = ""){
+    function cURL($URL, $data = "", $datatype = "application/x-www-form-urlencoded;charset=UTF-8", $username = "", $password = ""){
         $session = curl_init($URL);
         curl_setopt($session, CURLOPT_HEADER, false);
         curl_setopt($session, CURLOPT_SSL_VERIFYPEER, false);//not in post production
         curl_setopt($session, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($session, CURLOPT_POST, true);
         if($data) { curl_setopt ($session, CURLOPT_POSTFIELDS, $data);}
-
-        $datatype = "x-www-form-urlencoded;charset=UTF-8";
-        if($this->isJson($data)){$datatype  = "json";}
-        $header = array('Content-type: application/' . $datatype, "User-Agent: " . $this->AppName());
+        if($this->isJson($data)){$datatype  = "application/json";}
+        $header = array('Content-type: ' . $datatype, "User-Agent: " . $this->AppName());
         if ($username && $password){
             $header[] =	"Authorization: Basic " . base64_encode($username . ":" . $password);
         } else if ($username) {
