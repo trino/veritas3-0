@@ -19,9 +19,6 @@
             if ($this->request->session()->read('debug')) {
                 echo "<span style ='color:red;'>sidebar.php #INC162</span>";
             }
-            if(DATABASE == "ttsao") {
-                echo '<DIV ALIGN="CENTER"><IMG SRC="' . $this->request->webroot . 'img/ttsao.png" STYLE="max-height: 100px;"></DIV>';
-            }
         ?>
         <ul id="mainbar" class="<?php echo $settings->sidebar; ?>" data-keep-expanded="false" data-auto-scroll="true"
             data-slide-speed="200">
@@ -329,7 +326,12 @@
 
                     <img src="<?php echo $this->request->webroot . 'img/logos/' . $logo1; ?>" class="secondary_logo"/>
                 </li>
-            <?php } ?>
+            <?php }
+
+            if(DATABASE == "ttsao") {
+                echo '<DIV ALIGN="CENTER"><IMG SRC="' . $this->request->webroot . 'img/ttsao.png" STYLE="max-height: 100px;"></DIV>';
+            }
+            ?>
         </ul>
         <!-- END SIDEBAR MENU -->
     </div>
