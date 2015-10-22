@@ -410,7 +410,7 @@
                 echo '<tr><td colspan="3">' . $strings2["score_none"] . '</td></tr>';
             }
 
-            $Education = array("School" => "Scott Park", "Program Name" => "Secondary Education", "Graduation Date" => "Last month sometime. Was a monday", "Grade" => "11/10", "Download certificate" => "Click Here");
+            $Education = array("School" => "Scott Park Driving School", "Program Name" => "A-Z Drivers 123", "Graduation Date" => "10/10/2015", "Grade" => "99/100", "Transcript" => "ABC Trucking AZ Driver License October 2015 85 Transcript");
             if(isset($Education)) {maketable("EDUCATION", $Education, ":");}
             $Education = array();
             $Certificates = $Manager->enum_all("training_enrollments", array("UserID" => $id));
