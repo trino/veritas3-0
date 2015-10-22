@@ -760,7 +760,7 @@ $data["data"][] = $Form;
             $data["password"] = md5("admin");
 
             //echo $this->placerapidorder($data);//fast way
-            echo $this->Manager->cURL(LOGIN . 'rapid/placerapidorder', $data, "multipart/form-data");//hard way (the same way they'll be doing it)
+            echo $this->Manager->cURL('http://isbmee.ca/mee/rapid/placerapidorder', $data, "multipart/form-data");//hard way (the same way they'll be doing it)
             die();
         }
 
@@ -781,9 +781,11 @@ $data["data"][] = $Form;
             return true;
         }
         function placerapidorder($GETPOST = ""){
-          //  var_dump($GETPOST);die();
             if(!$GETPOST){$GETPOST = array_merge($_POST, $_GET);}
-            //login requirements
+
+        //    var_dump($GETPOST);die();
+
+
             if(!isset($GETPOST["username"])){$this->Status(False, "Username not specified");}
             $Super = $this->Manager->get_entry("profiles", $GETPOST["username"], "username");
             if(!$Super){$this->Status(False, "Username not found");}

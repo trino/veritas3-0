@@ -55,7 +55,7 @@
     display: block;
     padding: 10px 20px 0 20px;
     width:100%;
-  opacity:0.8;
+  opacity:0.3;
 
 
 }
@@ -63,7 +63,7 @@
 
 .whitecenterdiv {
   padding-top: 30px;
-  color:#c9dae9; width:100%; text-align: center;
+  color:#b4bcc8; width:100%; text-align: center;
 }
 
 .whiteCorner {
