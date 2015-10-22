@@ -4,9 +4,9 @@
         echo "<span style ='color:red;'>home_topblocks.php #INC112</span>";
     }
 
-    $userid=$this->Session->read('Profile.id');
-    $block = $this->requestAction("settings/all_settings/".$userid."/blocks");
-    $sidebar = $this->requestAction("settings/all_settings/".$userid."/sidebar");
+    if(!isset($userid))     {$userid    = $this->Session->read('Profile.id');}
+    if(!isset($block))      {$block     = $this->requestAction("settings/all_settings/".$userid."/blocks");}
+    if(!isset($sidebar))    {$sidebar   = $this->requestAction("settings/all_settings/".$userid."/sidebar");}
     //$order_url = $this->requestAction("settings/getclienturl/".$this->Session->read('Profile.id')."/order");
     $order_url = 'orders/productSelection?driver=0';
     $document_url = $this->requestAction("settings/getclienturl/".$userid."/document");
