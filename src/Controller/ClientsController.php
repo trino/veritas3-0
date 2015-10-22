@@ -27,13 +27,14 @@
 
         function getclient_id($id) {
             $client = TableRegistry::get('clients')->find()->where(['id' => '17'])->first();
-            $pid = $client->profile_id;
-            $pids = explode(",", $pid);
-            if (in_array($id, $pids)) {
-                $q = '1';
-
-            } else
-                $q = 0;
+            $q = 0;
+            if($client) {
+                $pid = $client->profile_id;
+                $pids = explode(",", $pid);
+                if (in_array($id, $pids)) {
+                    $q = '1';
+                }
+            }
             $this->response->body($q);
             return $this->response;
             die();
