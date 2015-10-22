@@ -756,7 +756,7 @@
                 $this->set('doc_comp', $this->Document);
                 $setting = $this->Settings->get_permission($userid);
 
-                if ($setting->profile_list == 0 || ($userid != $id && $setting->viewprofiles ==0)) {
+                    if ($setting->profile_list == 0 || ($userid != $id && $setting->viewprofiles ==0)) {
                     $ClientID = $this->Manager->find_client($id, false);
                     $visibleprofiles = false;
                     if($ClientID) {
@@ -785,6 +785,10 @@
                 $this->set('logos', $this->paginate($this->Logos->find()->where(['secondary' => '0'])));
                 $this->set('logos1', $this->paginate($this->Logos->find()->where(['secondary' => '1'])));
                 $profile = $this->Profiles->get($id, ['contain' => []]);
+
+                if(isset($_POST["action"]) && $_POST["action"]) {
+                    $this->handleaction(array("email" => $profile->email));
+                }
 
                 $this->set('doc_comp', $this->Document);
                 $orders = TableRegistry::get('orders');
@@ -1459,6 +1463,15 @@
             $this->set("languages", $acceptablelanguages);
         }
 
+        function handleaction($Data = array()){
+            switch($_POST["action"]){
+                case "sendmessage":
+                    $From = $this->Manager->get_profile();
+                    $this->Manager->handleevent("sendmessage", array("message" => $_POST["message"], "from" => $From->username, "email" => array($Data["email"], $From->email)));
+                    $this->Flash->success($this->Trans->getString("flash_messagesent"));
+                    break;
+            }
+        }
         public function edit($id = null) {//called when editing an existing account
             $this->set('doc_comp', $this->Document);
             $check_pro_id = $this->Settings->check_pro_id($id);
@@ -1513,13 +1526,7 @@
             ]);
 
             if(isset($_POST["action"]) && $_POST["action"]) {
-                switch($_POST["action"]){
-                    case "sendmessage":
-                        $From = $this->Manager->get_profile();
-                        $this->Manager->handleevent("sendmessage", array("message" => $_POST["message"], "from" => $From->username, "email" => array($profile->email, $From->email)));
-                        $this->Flash->success($this->Trans->getString("flash_messagesent"));
-                        break;
-                }
+               $this->handleaction(array("email" => $profile->email));
             } else if ($this->request->is(['patch', 'post', 'put'])) {
                 $Password=$_POST['pass_word'];
                 $data = $_POST;
