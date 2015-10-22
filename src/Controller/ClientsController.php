@@ -769,6 +769,15 @@
             return $this->response;
             die();
         }
+        
+        function getSubCliApplication($id){
+            $sub = TableRegistry::get('client_application_sub_order');
+            $query = $sub->find();
+            $q = $query->select()->where(['client_id' => $id])->order(['display_order' => 'ASC']);
+            $this->response->body($q);
+            return $this->response;
+            die();
+        }
 
 
         function getSubCli2($id, $type="", $getTitle=false, $SortByTitle=false){
@@ -909,6 +918,111 @@
                                 $query2 = $subp->query();
                                 $query2->insert(['client_id', 'subdoc_id', 'display_order'])
                                     ->values(['client_id' => $id, 'subdoc_id' => $k2, 'display_order' => 0])
+                                    ->execute();
+                            }
+                        }
+
+                    }
+                }
+            }
+            unset($display['clientC']);
+            unset($display['clientO']);
+            unset($display['client']);
+
+            //For System base
+            foreach ($display as $k => $v) {
+                $subd = TableRegistry::get('Subdocuments');
+                $query3 = $subd->query();
+                $query3->update()
+                    ->set(['display' => $v])
+                    ->where(['id' => $k])
+                    ->execute();
+            }
+
+            //var_dump($str);
+            die('here');
+        }
+        
+        function displaySubdocsApplication($id){
+            //var_dump($_POST);die();
+            $user['client_id'] = $id;
+            $display = $_POST; //defining new variable for system base below upcoming foreach
+            //for user base
+            foreach ($_POST as $k => $v) {
+                if ($k == 'clientC') {
+                    foreach ($_POST[$k] as $k2 => $v2) {
+                        $subp = TableRegistry::get('clientssubdocument');
+                        $query = $subp->find();
+                        $query->select()
+                            ->where(['client_id' => $id, 'subdoc_id' => $k2]);
+                        $check = $query->first();
+
+                        if ($v2 == '1') {
+                            if ($check) {
+                                $query2 = $subp->query();
+                                $query2->update()
+                                    ->set(['display' => $v2])
+                                    ->where(['client_id' => $id, 'subdoc_id' => $k2])
+                                    ->execute();
+                            } else {
+                                $query2 = $subp->query();
+                                $query2->insert(['client_id', 'subdoc_id', 'display'])
+                                    ->values(['client_id' => $id, 'subdoc_id' => $k2, 'display' => $v2])
+                                    ->execute();
+                            }
+                        } else {
+                            if ($check) {
+                                $query2 = $subp->query();
+                                $query2->update()
+                                    ->set(['display' => 0])
+                                    ->where(['subdoc_id' => $k2, 'client_id' => $id])
+                                    ->execute();
+                            } else {
+                                $query2 = $subp->query();
+                                $query2->insert(['client_id', 'subdoc_id', 'display'])
+                                    ->values(['client_id' => $id, 'subdoc_id' => $k2, 'display' => 0])
+                                    ->execute();
+                            }
+                        }
+
+                    }
+                }
+                if ($k == 'clientO') {
+                    foreach ($_POST[$k] as $k2 => $v2) {
+                        //echo $id.'_'.$k2.'_'.$v2.'<br/>';
+                        $subp = TableRegistry::get('clientssubdocument');
+                        $query = $subp->find();
+                        $query->select()
+                            ->where(['client_id' => $id, 'subdoc_id' => $k2]);
+                        $check = $query->first();
+
+                        if ($v2 == '1') {
+
+                            if ($check) {
+
+                                $query2 = $subp->query();
+                                $query2->update()
+                                    ->set(['display_application' => $v2])
+                                    ->where(['client_id' => $id, 'subdoc_id' => $k2])
+                                    ->execute();
+                            } else {
+
+                                $query2 = $subp->query();
+                                $query2->insert(['client_id', 'subdoc_id', 'display_application'])
+                                    ->values(['client_id' => $id, 'subdoc_id' => $k2, 'display_application' => $v2])
+                                    ->execute();
+                            }
+                        } else {
+                            if ($check) {
+                                $query2 = $subp->query();
+                                $query2->update()
+                                    ->set(['display_application' => 0])
+                                    ->where(['subdoc_id' => $k2, 'client_id' => $id])
+                                    ->execute();
+                            } else {
+                                $query2 = $subp->query();
+                                $query2->insert(['client_id', 'subdoc_id', 'display_application'])
+                                    ->values(['client_id' => $id, 'subdoc_id' => $k2, 'display_application' => 0])
                                     ->execute();
                             }
                         }
@@ -1187,6 +1301,23 @@
             $arr = explode(',', $ids);
             $arr_s['client_id'] = $cid;
             $sub_c = TableRegistry::get('client_sub_order');
+            $del = $sub_c->query();
+            $del->delete()->where(['client_id' => $cid])->execute();
+            foreach ($arr as $k => $sid) {
+                $arr_s['sub_id'] = $sid;
+                $arr_s['display_order'] = $k + 1;
+
+                $sc = $sub_c->newEntity($arr_s);
+                $sub_c->save($sc);
+            }
+            die();
+        }
+        
+        function updateOrderApplication($cid){
+            $ids = $_POST['tosend'];
+            $arr = explode(',', $ids);
+            $arr_s['client_id'] = $cid;
+            $sub_c = TableRegistry::get('client_application_sub_order');
             $del = $sub_c->query();
             $del->delete()->where(['client_id' => $cid])->execute();
             foreach ($arr as $k => $sid) {
