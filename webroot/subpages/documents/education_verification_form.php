@@ -1,19 +1,23 @@
 <?php
+    if($this->request->params['controller']!='ClientApplication'){
     if ($this->request->session()->read('debug')) {
         echo "<span style ='color:red;'>subpages/documents/education_verification_form.php #INC142</span>";
+    }
     }
     $strings2 = CacheTranslations($language, array("verifs_%", "file_attachfile", "tasks_date"), $settings, False);
 ?>
 <div id="form_tab10">
-    <input class="document_type" type="hidden" name="document_type" value="<?php echo $dx->title;?>"/>
+    <input class="document_type" type="hidden" name="document_type" value="<?php if(isset($dx))echo $dx->title;?>"/>
     <input type="hidden" class="sub_docs_id" name="sub_doc_id" value="10"/>
 
     <div class="tab-content">
         <div class="tab-pane active" id="subtab_2_3">
             <form id="form_education">
                 <?php
+                    if($this->request->params['controller']!='ClientApplication'){
                     include_once 'subpages/filelist.php';
                     if (isset($sub4['att'])) {listfiles($sub4['att'], "attachments/", "", false, 3);}
+                    }
 
                     $counter = 0;
                     if (isset($sub4['edu']) && count($sub4['edu'])) {

@@ -1,11 +1,12 @@
 <?php
+if($this->request->params['controller']!='ClientApplication'){
  if($this->request->session()->read('debug')){ echo "<span style ='color:red;'>subpages/documents/driver_evaluation_form.php #INC141</span>"; }
 include_once 'subpages/filelist.php';
-if( isset($sub['de_at'])){  listfiles($sub['de_at'], "attachments/", "", false,3); }
-$strings2 = CacheTranslations($language, array("drivereval_%", "tasks_date", "file_attachfile"), $settings, False);
+if( isset($sub['de_at'])){  listfiles($sub['de_at'], "attachments/", "", false,3); }}
+$strings2 = CacheTranslations($language, array("drivereval_%", "tasks_date", "file_attachfile",'forms_driverslicense'), $settings, False);
  ?>
 <form id="form_tab3">
-<input class="document_type" type="hidden" name="document_type" value="<?php echo $dx->title;?>" />
+<input class="document_type" type="hidden" name="document_type" value="<?php if(isset($dx))echo $dx->title;?>" />
 
 <input type="hidden" class="sub_docs_id" name="sub_doc_id" value="3" id="af" />
 <div class="clearfix"></div>
@@ -3617,8 +3618,10 @@ $strings2 = CacheTranslations($language, array("drivereval_%", "tasks_date", "fi
                                                   <div class="form-group row">
                                                     <div id="more_driver_doc" data-road="<?php if(count($sub['de_at']))echo count($sub['de_at']);else echo '1';?>">
                                                        <?php
+                                                       
                                                         if(count($sub['de_at']))//THIS SHOULD BE USING FILELIST.PHP!!!!!!!!!!!!
                                                         {
+                                                            //die('there');
                                                             $at=0;
                                                             foreach($sub['de_at'] as $pa)
                                                             {
@@ -3699,6 +3702,7 @@ $strings2 = CacheTranslations($language, array("drivereval_%", "tasks_date", "fi
         
         
         <?php
+        
         if(($this->request->params['action']=='addorder' || $this->request->params['action']=='add') && !count($sub['de_at']))
         {
             ?>
@@ -3723,4 +3727,5 @@ $strings2 = CacheTranslations($language, array("drivereval_%", "tasks_date", "fi
         //$("#test2").jqScribble();
     });
     	
-</script>                                               
+</script>     
+                                         

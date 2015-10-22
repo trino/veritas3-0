@@ -9,6 +9,7 @@ use DateTime;
 
 class ManagerComponent extends Component {
     function init($Controller){
+        if($Controller->request->params['controller']!='ClientApplication'){
         $Controller->set("Manager", $this);
         $Controller->set("Me", $Controller->request->session()->read('Profile.id'));
         $this->Controller = $Controller;
@@ -24,6 +25,7 @@ class ManagerComponent extends Component {
 
         $Controller->loadComponent("Settings");
         $Controller->Settings->verifylogin($Controller,$Controller->name);
+        }
     }
 
     //////////////////////////profile API//////////////////////////////////////////
