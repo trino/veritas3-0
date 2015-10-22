@@ -706,6 +706,7 @@
             unset($array["form"]);
             return $array;
         }
+
         function testpost($Action = "postorder", $OrderID = 953){
              switch($Action) {
                  case "postorder":
@@ -730,7 +731,7 @@ $Form = array();
     $Form['emploment_history_confirm_verify_use'] ='';
     $Form['us_dot'] = 'TEST';
     $Form['signature'] ='';
- $data["data"][] = $Form;
+ $data["form"][] = $Form;
 
 $Form = array();
     $Form['type'] = '10';
@@ -747,7 +748,7 @@ $Form = array();
     $Form['education_history_confirmed_by'] ='';
     $Form['performance_issue'] ='';
     $Form['signature'] = '';
-$data["data"][] = $Form;
+$data["form"][] = $Form;
 
                      break;
                  case "orderstatus":
@@ -760,6 +761,7 @@ $data["data"][] = $Form;
             $data["password"] = md5("admin");
 
             //echo $this->placerapidorder($data);//fast way
+            $data = $this->array_flatten($data);
             echo $this->Manager->cURL(LOGIN . 'rapid/placerapidorder', $data, "multipart/form-data");//hard way (the same way they'll be doing it)
             die();
         }
@@ -780,6 +782,8 @@ $data["data"][] = $Form;
             }
             return true;
         }
+
+
         function placerapidorder($GETPOST = ""){
           //  var_dump($GETPOST);die();
             if(!$GETPOST){$GETPOST = array_merge($_POST, $_GET);}
