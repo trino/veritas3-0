@@ -16,6 +16,7 @@ $settings = $this->requestAction('clientApplication/get_settings');
 ?>
 <h2>Application for <?php echo $client->company_name;?></h2>
 <?php 
+$cid = $client->id;
 $jj=0;
 foreach($subd as $s)
 {

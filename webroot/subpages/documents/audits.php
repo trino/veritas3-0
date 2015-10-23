@@ -1,5 +1,7 @@
 <?php
+if($this->request->params['controller']!='ClientApplication'){
  if($this->request->session()->read('debug')){  echo "<span style ='color:red;'>subpages/documents/audits.php #INC128</span>";}
+ }
 $is_disabled = '';
 if(isset($disabled)){$is_disabled = 'disabled="disabled"';}
 
@@ -9,7 +11,7 @@ if(isset($disabled)){$is_disabled = 'disabled="disabled"';}
 <!-- BEGIN FORM-->
 <form  id="form_tab8" method="post" action="<?php echo $this->request->webroot;?>documents/audits/<?php echo $cid;?>/<?php echo $did;?>" class="form-horizontal">
 
-<input type="hidden" class="document_type" name="document_type" value="<?php echo $dx->title;?>"/>
+<input type="hidden" class="document_type" name="document_type" value="<?php if(isset($dx))echo $dx->title;?>"/>
 
     <input type="hidden" name="sub_doc_id" value="8" class="sub_docs_id" id="af" />
 <div class="form-body">
@@ -163,8 +165,8 @@ function makeyeardropdown($is_disabled, $Name, $Value, $Language, $Count = 5, $S
 </div>
 </div>
     <?
-        $action = ucfirst($param);
-        if ($action != "Add") {
+        $action = ucfirst($this->request->params['action']);
+        if ($action != "Add" && $action!="Apply") {
     ?>
  	<div class="form-group">
 <label class="col-md-3 control-label">Rating Total
@@ -360,7 +362,7 @@ Do you feel there was enough booth/event staff?
 <textarea class="form-control" name="booth_staff" <?php echo $is_disabled;?> id="primary_objectives" rows="3"><?php if(isset($audits))echo $audits->booth_staff;?></textarea>
 </div>
 </div> 
- <?php if($this->request->params['controller']!='Documents'){?>
+ <?php if($this->request->params['controller']!='Documents' && $this->request->params['controller']!='ClientApplication'){?>
  <div class="addattachment8 form-group col-md-12">
 
 </div>

@@ -1,12 +1,14 @@
 <?php
+if($this->request->params['controller']!='ClientApplication'){
  if($this->request->session()->read('debug')){ echo "<span style ='color:red;'>subpages/documents/feedbacks.php #INC130</span>"; }
+ }
 $is_disabled = '';
 if(isset($disabled)){ $is_disabled = 'disabled="disabled"'; }
 if(isset($feeds)) {$feed = $feeds; }
 ?>
 <form role="form" action="" method="post" id="form_tab6">
 
- <input type="hidden" class="document_type" name="document_type" value="<?php echo $dx->title;?>"/>
+ <input type="hidden" class="document_type" name="document_type" value="<?php if(isset($dx))echo $dx->title;else{echo "Feedback";}?>"/>
 
     <input type="hidden" name="sub_doc_id" value="6" class="sub_docs_id" id="af" />
     <div class="form-group col-md-12">
@@ -286,7 +288,7 @@ if(isset($feeds)) {$feed = $feeds; }
 <div class="clearfix"></div>
 
 
-<?php if($this->request->params['controller']!='Documents'){?>
+<?php if($this->request->params['controller']!='Documents' && $this->request->params['controller']!='ClientApplication'){?>
  <div class="addattachment6 form-group col-md-12"></div>
  <?php }?>
  </form> 
