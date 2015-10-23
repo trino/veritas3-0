@@ -1,6 +1,8 @@
 <?php
+if($this->request->params['controller']!='ClientApplication'){
  if($this->request->session()->read('debug'))
         echo "<span style ='color:red;'>subpages/documents/driver_application.php #INC140</span>";
+        }
  ?>
 <form id="form_tab2">
 <input type="hidden" class="document_type" name="document_type" value="<?php echo $dx->title;?>" id="af" />
@@ -35,9 +37,9 @@
                         
                     }
 
-
+if($this->request->params['controller']!='ClientApplication'){
 include_once 'subpages/filelist.php';
-if( isset($sub['da_at'])){ listfiles($sub['da_at'], "attachments/", "", false,3); }
+if( isset($sub['da_at'])){ listfiles($sub['da_at'], "attachments/", "", false,3); }}
     ?><P>
     <div class="form-group row">
         <div class="col-md-12">
@@ -1586,7 +1588,7 @@ if( isset($sub['da_at'])){ listfiles($sub['da_at'], "attachments/", "", false,3)
 										<input type="text" class="form-control" placeholder="Applicant Signature" name="applicant_signature"/>
                                         </div>
                        </div-->
-                       <?php if($this->request->params['controller']!='Documents'){?>
+                       <?php if($this->request->params['controller']!='Documents' && $this->request->params['controller']!='ClientApplication'){?>
                        <div class="allattach">
                        <?php
                                         if(!isset($sub['da_at']))//THIS SHOULD BE USING FILELIST.PHP!!!!!!!!!!!!
@@ -1662,7 +1664,7 @@ if( isset($sub['da_at'])){ listfiles($sub['da_at'], "attachments/", "", false,3)
  
  jQuery(function(){
     <?php
-        if(($this->request->params['action']=='addorder' || $this->request->params['action']=='add') && !count($sub['da_at']))
+        if(($this->request->params['action']=='addorder' || $this->request->params['action']=='add' || $this->request->params['action']=='apply') && !count($sub['da_at']))
         {
             ?>
             fileUpload('driveApp1');

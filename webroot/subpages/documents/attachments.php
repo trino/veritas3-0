@@ -13,8 +13,8 @@ echo '<form role="form" enctype="multipart/form-data" action="' . $this->request
 
 
     <div class="row">
-    <input type="hidden" class="document_type" name="document_type" value="<?php if(isset($dx))echo $dx->title;else echo "Attachment"?>"/>
-    <input type="hidden" name="sub_doc_id" value="<?php if(isset($dx))echo $dx->id;else echo '7';?>" class="sub_docs_id" id="af" />
+    <input type="hidden" class="document_type" name="document_type" value="<?php echo $dx->title;?>"/>
+    <input type="hidden" name="sub_doc_id" value="<?php echo $dx->id;?>" class="sub_docs_id" id="af" />
     <div class="form-group col-md-12" style="margin-top:20px;">
             <label class="control-label col-md-3">Title</label>
             <div class="col-md-6">

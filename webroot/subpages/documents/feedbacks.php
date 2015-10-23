@@ -8,7 +8,7 @@ if(isset($feeds)) {$feed = $feeds; }
 ?>
 <form role="form" action="" method="post" id="form_tab6">
 
- <input type="hidden" class="document_type" name="document_type" value="<?php if(isset($dx))echo $dx->title;else{echo "Feedback";}?>"/>
+ <input type="hidden" class="document_type" name="document_type" value="<?php echo $dx->title;?>"/>
 
     <input type="hidden" name="sub_doc_id" value="6" class="sub_docs_id" id="af" />
     <div class="form-group col-md-12">

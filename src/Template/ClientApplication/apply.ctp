@@ -20,6 +20,7 @@ $cid = $client->id;
 $jj=0;
 foreach($subd as $s)
 {
+    $dx = $this->requestAction('/clientApplication/getSub/'.$s->sub_id);
     //var_dump($s);
     $jj++;
     ?>

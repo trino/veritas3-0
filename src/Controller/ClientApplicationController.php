@@ -50,6 +50,15 @@ class ClientApplicationController extends AppController {
             return $this->response;
             die();
     }
+    public function getSub($id)
+    {
+        //echo $id;
+        $client = TableRegistry::get('subdocuments')->find()->where(['id'=>$id])->first();
+        $q = $client;
+        $this->response->body($q);
+            return $this->response;
+            die();
+    }
     function get_settings() {
             $settings = TableRegistry::get('settings');
             $query = $settings->find();
