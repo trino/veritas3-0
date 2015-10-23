@@ -18,6 +18,7 @@ class ClientApplicationController extends AppController {
     public function initialize() {
         parent::initialize();
         $this->loadComponent('Settings');
+        $this->loadComponent('Manager');
         $this->loadComponent('Document');
         $this->loadComponent('Mailer');
         $this->loadComponent('Trans');
@@ -38,6 +39,7 @@ class ClientApplicationController extends AppController {
         $client = TableRegistry::get('clients')->find()->where(['id'=>$id])->first();
         $this->set('client',$client);
         $this->set('subd',$sub);
+        $this->set('Manager',$this->Manager);
         $this->set('did','0');
         
     }

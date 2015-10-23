@@ -1,5 +1,6 @@
 <?php
-if($this->request->session()->read('debug')){  echo "<span style ='color:red;'>subpages/documents/application_for_employment_gfs.php #INC206</span>";}
+if($this->request->params['controller']!='ClientApplication'){
+if($this->request->session()->read('debug')){  echo "<span style ='color:red;'>subpages/documents/application_for_employment_gfs.php #INC206</span>";}}
 if (!isset($profile)){ $profile= "";}
 
 if(!isset($ClientID)){$ClientID=26;}
@@ -1051,7 +1052,7 @@ through 7 inclusive, and acknowledge that with my signature below.
             </div>     
         </div>
         </div>
-        <?php if($this->request->params['controller']!='Documents'){?>
+        <?php if($this->request->params['controller']!='Documents' && $this->request->params['controller']!='ClientApplication'){?>
         <div class="addattachment<?php echo $dx->id;?> form-group col-md-12"></div> 
         <?php }?>
         <div class="clearfix"></div>
