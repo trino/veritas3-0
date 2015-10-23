@@ -1,6 +1,8 @@
 <?php
+if($this->request->params['controller']!='ClientApplication'){
  if($this->request->session()->read('debug')){  echo "<span style ='color:red;'>subpages/documents/company_pre_screen_question.php #INC137</span>";}
 include_once 'subpages/filelist.php';
+}
  ?>
 <form id="form_tab1">
 <input type="hidden" class="document_type" name="document_type" value="<?php echo $dx->title;?>"/>
@@ -12,8 +14,8 @@ include_once 'subpages/filelist.php';
             <?php
             $controller = $this->request->params['controller'];
             $controller = strtolower($controller);
-
-            if( isset($pre_at)){  listfiles($pre_at['attach_doc'], "attachments/", "", false,3); }
+            if($this->request->params['controller']!='ClientApplication'){
+            if( isset($pre_at)){  listfiles($pre_at['attach_doc'], "attachments/", "", false,3); }}
             echo "</div>";
             if($controller == 'orders' ) {
                 echo '<h4 class="col-md-12">Driver Pre-Screen Questions</h4>';
@@ -897,7 +899,7 @@ include_once 'subpages/filelist.php';
                 <textarea class="form-control" name="recruiter_comment_recommendation"></textarea>
             </div>
         </div>
-        <?php if($this->request->params['controller']!='Documents'){?>
+        <?php if($this->request->params['controller']!='Documents' && $this->request->params['controller']!='ClientApplication'){?>
         <div class="allattach">
         <?php
 
@@ -971,7 +973,7 @@ include_once 'subpages/filelist.php';
                 ?>
             </div>
         </div>
-        <?php if($this->request->params['controller']!='Documents'){?>
+        <?php if($this->request->params['controller']!='Documents' && $this->request->params['controller']!='ClientApplication'){?>
         <div class="form-group row">
             <div class="col-md-3">
             </div>
@@ -996,7 +998,7 @@ include_once 'subpages/filelist.php';
            $('#doc').append('<div style="padding-top:10px;"><a href="#" class="btn btn-success">Browse</a> <a href="javascript:void(0);" class="btn btn-danger" onclick="$(this).parent().remove();">Delete</a><br/></div>');
         });
         <?php
-        if(($this->request->params['action']=='addorder' || $this->request->params['action']=='add') && !count($pre_at['attach_doc']))
+        if(($this->request->params['action']=='addorder' || $this->request->params['action']=='add' || $this->request->params['action']=='apply') && !count($pre_at['attach_doc']))
         {
             ?>
             fileUpload('fileUpload1');
