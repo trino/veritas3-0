@@ -52,7 +52,7 @@
             </li>
 
             <?php
-                if (($sidebar->client == 1 && $this->request->session()->read('Profile.super')) || ($sidebar->client == 1 && $settings->mee == "Events Audit")) { ?>
+                if (($sidebar->client == 1|| $this->request->session()->read('Profile.super'))) { ?>
                     <li class="<?php echo ($this->request['controller'] == 'Clients' && !isset($_GET['draft']) && $this->request['action'] != 'quickcontact') ? 'active open' : ''; ?>">
                         <a href="<?php echo $this->request->webroot; ?>clients">
                             <i class="icon-globe"></i>

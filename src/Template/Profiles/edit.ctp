@@ -42,7 +42,8 @@
         $hidepermissions = $this->request->session()->read('Profile.admin') && $userID == $p->id;
     }
 
-    $CanOrder = $Manager->get_entry("sidebar", $userID, "user_id")->orders_create;
+  //  $CanOrder = $Manager->get_entry("sidebar", $userID, "user_id")->orders_create;
+    $CanOrder = true;
 
     $settings = $this->requestAction('settings/get_settings');
 

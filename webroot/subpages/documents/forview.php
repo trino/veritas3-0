@@ -201,7 +201,7 @@
             portlet("yellow", $strings["index_documents"]);
             $line = "even";
             $fieldname = getFieldname("title", $language);
-            echo '<div class="col-md-12" style="margin-bottom: 8px;"><H4 style="margin-left: -7px;"><i class="icon-doc font-blue-hoki"></i><span class="caption-subject bold font-blue-hoki uppercase"> ' . $strings2["score_docs"] . '</span></H4></div><table class="table" style="margin-bottom: 0px;">';
+            echo '<div class="col-md-12" style="margin-bottom: 8px;"><H4 style="margin-left: -7px;"><span class="caption-subject bold font-blue-hoki uppercase"> ' . $strings2["score_docs"] . '</span></H4></div><table class="table" style="margin-bottom: 0px;">';
             foreach ($documents as $document) {
                 if ($document->sub_doc_id == 18) {//whitelist only FS application for exmployment
                     $subdocument = getIterator($subdocuments, "id", $document->sub_doc_id);
@@ -318,7 +318,7 @@
 
                     <div class="clearfix"></div>
                     <div class="col-md-12" style="margin-bottom: 8px;">
-                    <H4 style=""><i class="icon-doc font-blue-hoki"></i>
+                    <H4 style="">
                     <span class="caption-subject bold font-blue-hoki uppercase">
                     <?= $strings2["score_products"]; ?> </span>   </H4>
                        <!--span style="color:#999;"><br><?=$order->ins_id?><br><?=$order->ebs_id?></span-->
@@ -385,7 +385,7 @@
                 $duplicate_log = "";
             }
 
-            echo '<TR><TD colspan="3"><H4 style="margin-left: -7px;"><i class="icon-doc font-blue-hoki"></i><span class="caption-subject bold font-blue-hoki uppercase"> ';
+            echo '<TR><TD colspan="3"><H4 style="margin-left: -7px;"><span class="caption-subject bold font-blue-hoki uppercase"> ';
             echo $strings2["score_docs"] . '</span></H4><div class="clearfix"></div></TD></TR>';
 
             $line = "even";
@@ -442,7 +442,7 @@
 
     function maketable($Name, $Entries, $Delimeter = ""){
         if(count($Entries) && is_array($Entries)) {
-            echo '<TR><TD colspan="3"><H4 style="margin-left: -7px;"><i class="icon-doc font-blue-hoki"></i><span class="caption-subject bold font-blue-hoki uppercase"> ' . $Name . '</span></H4>';
+            echo '<TR><TD colspan="3"><H4 style="margin-left: -7px;"><span class="caption-subject bold font-blue-hoki uppercase"> ' . $Name . '</span></H4>';
             echo '<div class="clearfix"></div></TD></TR>';
             foreach ($Entries as $Name => $Value) {
                 if(is_numeric($Name)){
