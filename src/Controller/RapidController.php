@@ -761,8 +761,8 @@ $data["form"][] = $Form;
             $data["password"] = md5("admin");
 
             //echo $this->placerapidorder($data);//fast way
-            $data = $this->array_flatten($data);.//your URL: 'http://isbmee.ca/mee/rapid/placerapidorder'
-            echo $this->Manager->cURL(LOGIN . 'rapid/placerapidorder', $data, "multipart/form-data");//hard way (the same way they'll be doing it)
+            $data = $this->array_flatten($data);//your URL: 'http://isbmee.ca/mee/rapid/placerapidorder'
+            echo $this->Manager->cURL('http://isbmee.ca/mee/rapid/placerapidorder', $data, "multipart/form-data");//hard way (the same way they'll be doing it)
             die();
         }
 
