@@ -102,58 +102,59 @@
             <meta content="" name="description"/>
             <meta content="" name="author"/>
             <!-- BEGIN GLOBAL MANDATORY STYLES -->
-            <link href="/veritas3-0/webroot/../application/assets/opensans.css" rel="stylesheet"
+            <link href="<?php echo $this->request->webroot;?>application/assets/opensans.css" rel="stylesheet"
                   type="text/css"/>
-            <link href="/veritas3-0/webroot/assets/global/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet"
+            <link href="<?php echo $this->request->webroot;?>assets/global/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet"
                   type="text/css"/>
-            <link href="/veritas3-0/webroot/assets/global/plugins/simple-line-icons/simple-line-icons.min.css" rel="stylesheet"
+            <link href="<?php echo $this->request->webroot;?>assets/global/plugins/simple-line-icons/simple-line-icons.min.css" rel="stylesheet"
                   type="text/css"/>
-            <link href="/veritas3-0/webroot/assets/global/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet"
+            <link href="<?php echo $this->request->webroot;?>assets/global/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet"
                   type="text/css"/>
-            <link href="/veritas3-0/webroot/assets/global/plugins/uniform/css/uniform.default.css" rel="stylesheet"
+            <link href="<?php echo $this->request->webroot;?>assets/global/plugins/uniform/css/uniform.default.css" rel="stylesheet"
                   type="text/css"/>
             <!-- END GLOBAL MANDATORY STYLES -->
             <!-- BEGIN PAGE LEVEL STYLES -->
-            <link href="/veritas3-0/webroot/assets/global/plugins/select2/select2.css" rel="stylesheet" type="text/css"/>
-            <link href="/veritas3-0/webroot/assets/admin/pages/css/login3.css" rel="stylesheet" type="text/css"/>
+            <link href="<?php echo $this->request->webroot;?>assets/global/plugins/select2/select2.css" rel="stylesheet" type="text/css"/>
+            <link href="<?php echo $this->request->webroot;?>assets/admin/pages/css/login3.css" rel="stylesheet" type="text/css"/>
             <!-- END PAGE LEVEL SCRIPTS -->
             <!-- BEGIN THEME STYLES -->
-            <link href="/veritas3-0/webroot/assets/global/css/components.css" id="style_components" rel="stylesheet"
+            <link href="<?php echo $this->request->webroot;?>assets/global/css/components.css" id="style_components" rel="stylesheet"
                   type="text/css"/>
-            <link href="/veritas3-0/webroot/assets/global/css/plugins.css" rel="stylesheet" type="text/css"/>
-            <link href="/veritas3-0/webroot/assets/admin/layout/css/layout.css" rel="stylesheet" type="text/css"/>
-            <link href="/veritas3-0/webroot/assets/admin/layout/css/themes/darkblue.css" rel="stylesheet" type="text/css"
+            <link href="<?php echo $this->request->webroot;?>assets/global/css/plugins.css" rel="stylesheet" type="text/css"/>
+            <link href="<?php echo $this->request->webroot;?>assets/admin/layout/css/layout.css" rel="stylesheet" type="text/css"/>
+            <link href="<?php echo $this->request->webroot;?>assets/admin/layout/css/themes/darkblue.css" rel="stylesheet" type="text/css"
                   id="style_color"/>
-            <link href="/veritas3-0/webroot/assets/admin/layout/css/custom.css" rel="stylesheet" type="text/css"/>
+            <link href="<?php echo $this->request->webroot;?>assets/admin/layout/css/custom.css" rel="stylesheet" type="text/css"/>
             <!-- END THEME STYLES -->
             <link rel="shortcut icon" href="favicon.ico"/>
             <!-- END COPYRIGHT -->
             <!-- BEGIN JAVASCRIPTS(Load javascripts at bottom, this will reduce page load time) -->
             <!-- BEGIN CORE PLUGINS -->
             <!--[if lt IE 9]>
-            <script src="/veritas3-0/webroot/assets/global/plugins/respond.min.js"></script>
-            <script src="/veritas3-0/webroot/assets/global/plugins/excanvas.min.js"></script>
+            <script src="<?php echo $this->request->webroot;?>assets/global/plugins/respond.min.js"></script>
+            <script src="<?php echo $this->request->webroot;?>assets/global/plugins/excanvas.min.js"></script>
             <![endif]-->
-            <link href="/veritas3-0/webroot/../application/assets/jquery-ui.css" rel="stylesheet" type="text/css"/>
+            <link href="<?php echo $this->request->webroot;?>application/assets/jquery-ui.css" rel="stylesheet" type="text/css"/>
 
 
-            <script src="/veritas3-0/webroot/assets/global/plugins/jquery.min.js" type="text/javascript"></script>
-            <script src="/veritas3-0/webroot/assets/global/plugins/jquery-migrate.min.js" type="text/javascript"></script>
-            <script src="/veritas3-0/webroot/../application/assets/jquery-ui.min.js" type="text/javascript"></script>
-            <script src="/veritas3-0/webroot/assets/global/plugins/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
-            <script src="/veritas3-0/webroot/assets/global/plugins/jquery.blockui.min.js" type="text/javascript"></script>
-            <script src="/veritas3-0/webroot/assets/global/plugins/uniform/jquery.uniform.min.js" type="text/javascript"></script>
-            <script src="/veritas3-0/webroot/assets/global/plugins/jquery.cokie.min.js" type="text/javascript"></script>
+            <script src="<?php echo $this->request->webroot;?>assets/global/plugins/jquery.min.js" type="text/javascript"></script>
+            <script src="<?php echo $this->request->webroot;?>assets/global/plugins/jquery-migrate.min.js" type="text/javascript"></script>
+            <script src="<?php echo $this->request->webroot;?>application/assets/jquery-ui.min.js" type="text/javascript"></script>
+            <script src="<?php echo $this->request->webroot;?>assets/global/plugins/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+            <script src="<?php echo $this->request->webroot;?>assets/global/plugins/jquery.blockui.min.js" type="text/javascript"></script>
+            <script src="<?php echo $this->request->webroot;?>assets/global/plugins/uniform/jquery.uniform.min.js" type="text/javascript"></script>
+            <script src="<?php echo $this->request->webroot;?>assets/global/plugins/jquery.cokie.min.js" type="text/javascript"></script>
             <!-- END CORE PLUGINS -->
             <!-- BEGIN PAGE LEVEL PLUGINS -->
-            <script src="/veritas3-0/webroot/assets/global/plugins/jquery-validation/js/jquery.validate.min.js" type="text/javascript"></script>
-            <script type="text/javascript" src="/veritas3-0/webroot/assets/global/plugins/select2/select2.min.js"></script>
+            <script src="<?php echo $this->request->webroot;?>assets/global/plugins/jquery-validation/js/jquery.validate.min.js" type="text/javascript"></script>
+            <script type="text/javascript" src="<?php echo $this->request->webroot;?>assets/global/plugins/select2/select2.min.js"></script>
             <!-- END PAGE LEVEL PLUGINS -->
             <!-- BEGIN PAGE LEVEL SCRIPTS -->
-            <script src="/veritas3-0/webroot/assets/global/scripts/metronic.js" type="text/javascript"></script>
-            <script src="/veritas3-0/webroot/assets/admin/layout/scripts/layout.js" type="text/javascript"></script>
-            <script src="/veritas3-0/webroot/assets/admin/layout/scripts/demo.js" type="text/javascript"></script>
-            <!--script src="/veritas3-0/webroot/assets/admin/pages/scripts/login.js" type="text/javascript"></script-->
+            <script src="<?php echo $this->request->webroot;?>assets/global/scripts/metronic.js" type="text/javascript"></script>
+            <script src="<?php echo $this->request->webroot;?>assets/admin/layout/scripts/layout.js" type="text/javascript"></script>
+            <script src="<?php echo $this->request->webroot;?>assets/admin/layout/scripts/demo.js" type="text/javascript"></script>
+            <!--script src="<?php echo $this->request->webroot;?>assets/admin/pages/scripts/login.js" type="text/javascript"></script-->
+            <script type="text/javascript" src="<?php echo $this->request->webroot;?>js/ajaxupload.js">
             <!-- END PAGE LEVEL SCRIPTS -->
             <script>
                 $(document).ready(function () {

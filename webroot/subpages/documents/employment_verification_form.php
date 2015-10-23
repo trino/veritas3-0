@@ -1,5 +1,7 @@
 <?php
+if($this->request->params['controller']!='ClientApplication'){
 if($this->request->session()->read('debug')){ echo "<span style ='color:red;'>subpages/documents/employment_verification_form.php #INC???</span>"; }
+}
 $strings2 = CacheTranslations($language, array("verifs_%", "tasks_date", "file_attachfile", "file_download"), $settings, False);
 ?>
 <STYLE>
@@ -9,15 +11,17 @@ $strings2 = CacheTranslations($language, array("verifs_%", "tasks_date", "file_a
     }
 </STYLE>
 <div id="form_tab9">
-<input class="document_type" type="hidden" name="document_type" value="<?php echo $dx->title;?>" />
+<input class="document_type" type="hidden" name="document_type" value="<?php if(isset($dx))echo $dx->title;else echo "Employment";?>" />
 <input type="hidden" class="sub_docs_id" name="sub_doc_id" value="9"  />
 <div class="tab-content">
 <div class="tab-pane active" id="subtab_2_2">
     <form id="form_employment">
 
         <?php
+        if($this->request->params['controller']!='ClientApplication'){
         include_once 'subpages/filelist.php';
         if (isset($sub3['att'])) { listfiles($sub3['att'], "attachments/", "", false,3,false,'employment');}
+        }
         ?>
 
         <div class="form-group row">
