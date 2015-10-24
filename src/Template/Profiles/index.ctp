@@ -2,8 +2,12 @@
     include_once('subpages/api.php');
     $settings = $this->requestAction('settings/get_settings');
     $language = $this->request->session()->read('Profile.language');
-    $strings = CacheTranslations($language, array("profiles_%", "documents_submitted%"),$settings);//,$registry);//$registry = $this->requestAction('/settings/getRegistry');
-    if($language == "Debug"){ $Trans = " [Translated]"; } else {$Trans = "";}
+    $strings = CacheTranslations($language, array("profiles_%", "documents_submitted%"), $settings);//,$registry);//$registry = $this->requestAction('/settings/getRegistry');
+    if ($language == "Debug") {
+        $Trans = " [Translated]";
+    } else {
+        $Trans = "";
+    }
     $super = $this->request->session()->read('Profile.super');
 ?>
 
@@ -48,10 +52,14 @@
     $getProfileType = $this->requestAction('profiles/getProfileType/' . $this->Session->read('Profile.id'));
     $sidebar = $this->requestAction("settings/all_settings/" . $this->request->session()->read('Profile.id') . "/sidebar");
 
-    function hasget($name){
-        if (isset($_GET[$name])) {return strlen($_GET[$name]) > 0;}
+    function hasget($name)
+    {
+        if (isset($_GET[$name])) {
+            return strlen($_GET[$name]) > 0;
+        }
         return false;
     }
+
 ?>
 
 <h3 class="page-title">
@@ -73,16 +81,16 @@
 
     <?php if ($sidebar->profile_create == 1) { ?>
         <a href="<?php echo $this->request->webroot; ?>profiles/add" class="floatright btn btn-primary btnspc">
-           <?= $strings["index_createprofile"]; ?></a>
+            <?= $strings["index_createprofile"]; ?></a>
     <?php } ?>
 
 </div>
 
 
 <?php
-    if(isset($assignedtoGFS)){
+    if (isset($assignedtoGFS)) {
         $assignedtoGFS = explode(",", $assignedtoGFS);
-        if(in_array($this->Session->read('Profile.id'), $assignedtoGFS)) {
+        if (in_array($this->Session->read('Profile.id'), $assignedtoGFS)) {
             echo $strings["profiles_gfs"] . "<P>";
         }
     }
@@ -99,7 +107,7 @@
             <div class="portlet-title">
                 <div class="caption">
                     <i class="fa fa-user"></i>
-                     <?= $strings["index_listprofile"]; ?>
+                    <?= $strings["index_listprofile"]; ?>
                 </div>
             </div>
 
@@ -117,18 +125,22 @@
 
 
                             <select class="form-control input-inline" style="" name="filter_profile_type">
-                                <option value=""><?= $strings["profiles_profiletype"]?></option>
+                                <option value=""><?= $strings["profiles_profiletype"] ?></option>
 
                                 <?php
                                     $isISB = (isset($sidebar) && $sidebar->client_option == 0);
                                     $fieldname = getFieldname("title", $language);
                                     $doApplicant = true;
-                                    foreach($ptypes as $ProfileType){
-                                        if($ProfileType->enable) {//id title enable ISB
+                                    foreach ($ptypes as $ProfileType) {
+                                        if ($ProfileType->enable) {//id title enable ISB
                                             $doit = $ProfileType->ISB == 0;
-                                            if ($isISB) {$doit = $ProfileType->ISB == 1;}
-                                            if($doit) {
-                                                if ($ProfileType->id == 0){$doApplicant = false;}
+                                            if ($isISB) {
+                                                $doit = $ProfileType->ISB == 1;
+                                            }
+                                            if ($doit) {
+                                                if ($ProfileType->id == 0) {
+                                                    $doApplicant = false;
+                                                }
                                                 echo '<option value="' . $ProfileType->id . '"';
                                                 if (isset($return_profile_type) && $return_profile_type == $ProfileType->id) {
                                                     echo ' selected="selected"';
@@ -137,9 +149,11 @@
                                             }
                                         }
                                     }
-                                    if($doApplicant) {
+                                    if ($doApplicant) {
                                         echo '<option value="NULL"';
-                                        if (isset($return_profile_type) && $return_profile_type == "NULL") {echo ' selected="selected"';}
+                                        if (isset($return_profile_type) && $return_profile_type == "NULL") {
+                                            echo ' selected="selected"';
+                                        }
                                         echo '>' . $strings["profiles_null"] . '</option>';
                                     }
                                 ?>
@@ -149,16 +163,21 @@
                                 if ($super) {
                                     $getClient = $this->requestAction('profiles/getClient');
                                     ?>
-                                    <select class="form-control showprodivision input-inline" style="" name="filter_by_client">
+                                    <select class="form-control showprodivision input-inline" style=""
+                                            name="filter_by_client">
                                         <option value=""><?= ucfirst($strings["settings_client"]); ?></option>
                                         <?php
                                             echo '<option value="-1"';
-                                            if (isset($return_client) && $return_client == -1) { echo ' selected'; }
+                                            if (isset($return_client) && $return_client == -1) {
+                                                echo ' selected';
+                                            }
                                             echo '>[' . ucfirst($strings["profiles_nothired"]) . ']</option>';
                                             if ($getClient) {
                                                 foreach ($getClient as $g) {
                                                     echo '<option value="' . $g->id . '" ';
-                                                    if (isset($return_client) && $return_client == $g->id) { echo ' selected'; }
+                                                    if (isset($return_client) && $return_client == $g->id) {
+                                                        echo ' selected';
+                                                    }
                                                     echo '>' . $g->company_name . '</option>';
                                                 }
                                             }
@@ -168,10 +187,11 @@
                                 <?php } ?>
 
                             <input class="form-control input-inline" type="search" name="searchprofile"
-                                   placeholder="<?=  $strings["profiles_searchfor"];  //; ?>"
+                                   placeholder="<?= $strings["profiles_searchfor"];  //;  ?>"
                                    value="<?php if (isset($search_text)) echo $search_text; ?>"
                                    aria-controls="sample_1"/>
-                            <button type="submit" class="btn btn-primary input-inline"><?= $strings["dashboard_search"] ?></button>
+                            <button type="submit"
+                                    class="btn btn-primary input-inline"><?= $strings["dashboard_search"] ?></button>
                         </form>
                     </div>
                 </div>
@@ -184,8 +204,9 @@
                             <thead>
                             <tr class="sorting">
                                 <th><?= $this->Paginator->sort('id', "ID") ?></th>
-                                <th style="width:7px;"><?= $this->Paginator->sort('image', $strings["profiles_image"] ) ?></th>
-                                <th><?= $this->Paginator->sort('username', $strings["profiles_username"]) ?></th>
+                                <th style="width:7px;"><?= $this->Paginator->sort('image', $strings["profiles_image"]) ?></th>
+                                <!--th><?= $this->Paginator->sort('username', $strings["profiles_username"]) ?></th-->
+                                <th><a href="#">MEE Certified</a></th>
                                 <!--th><?= $this->Paginator->sort('email') ?></th-->
                                 <th><?= $this->Paginator->sort('fname', $strings["profiles_name"]) ?></th>
                                 <th><?= $this->Paginator->sort('profile_type', $strings["profiles_profiletype"]) ?></th>
@@ -201,7 +222,7 @@
                                 $row_color_class = "odd";
 
                                 $isISB = (isset($sidebar) && $sidebar->client_option == 0);
-                               // $profiletype = ['', 'Admin', 'Recruiter', 'External', 'Safety', 'Driver', 'Contact', 'Owner Operator', 'Owner Driver', 'Employee', 'Guest', 'Partner'];
+                                // $profiletype = ['', 'Admin', 'Recruiter', 'External', 'Safety', 'Driver', 'Contact', 'Owner Operator', 'Owner Driver', 'Employee', 'Guest', 'Partner'];
                                 if (count($profiles) == 0) {
                                     echo '<TR><TD COLSPAN="8" ALIGN="CENTER">' . $strings["profiles_nonefound"] . '</TD></TR>';
                                 }
@@ -218,29 +239,43 @@
 
                                     <tr class="<?= $row_color_class; ?>" role="row">
                                         <td><?php echo $this->Number->format($profile->id);
-                                         if($profile->hasattachments) { echo '<BR><i title="Has Attachment" class="fa fa-paperclip"></i>';}
-                                         ?></td>
+                                                if ($profile->hasattachments) {
+                                                    echo '<BR><i title="Has Attachment" class="fa fa-paperclip"></i>';
+                                                }
+                                            ?></td>
                                         <td><?php
                                                 if ($sidebar->profile_list == '1' && !isset($_GET["draft"])) {
                                                     ?>
                                                     <a href="<?php echo $this->request->webroot; ?>profiles/view/<?php echo $profile->id; ?>">
-                                                        <img style="width:40px;" src="<?= profileimage($this->request->webroot, $profile); ?>" class="img-responsive" alt=""/>
+                                                        <img style="width:40px;"
+                                                             src="<?= profileimage($this->request->webroot, $profile); ?>"
+                                                             class="img-responsive" alt=""/>
                                                     </a>
-                                                <?php
+                                                    <?php
                                                 }
                                             ?>
 
                                         </td>
                                         <td class="actions  util-btn-margin-bottom-5">
-                                        <?php if($sidebar->bulk=='1' && ($profile->profile_type == 5 || $profile->profile_type == 7 || $profile->profile_type == 8 || $profile->profile_type == 11)) { ?>
-                                            <!--input type="checkbox" class="form-control bulk_user" value="<?php echo $profile->id; ?>" id="checkbox_id_<?php echo $profile->id; ?>" -->
-                                        <?php }
-                                            if ($sidebar->profile_list == '1' && !isset($_GET["draft"])) { ?>
-                                                <a href="<?php echo $this->request->webroot; ?>profiles/view/<?php echo $profile->id; ?>"> <?php echo ucfirst(h($profile->username)); if($profile->drafts == 1) echo ' ( Draft )'; ?> </a>
-                                            <?php } else
-                                                echo ucfirst(h($profile->username));
+                                            <?php if ($sidebar->bulk == '1' && ($profile->profile_type == 5 || $profile->profile_type == 7 || $profile->profile_type == 8 || $profile->profile_type == 11)) { ?>
+                                                <!--input type="checkbox" class="form-control bulk_user" value="<?php echo $profile->id; ?>" id="checkbox_id_<?php echo $profile->id; ?>" -->
+                                            <?php }
+
+                                                /*
+                                                if ($sidebar->profile_list == '1' && !isset($_GET["draft"])) { ?>
+                                                    <a href="<?php echo $this->request->webroot; ?>profiles/view/<?php echo $profile->id; ?>"> <?php echo ucfirst(h($profile->username));
+                                                            if ($profile->drafts == 1) echo ' ( Draft )'; ?> </a>
+                                                <?php }
+                                                else {
+                                                    echo ucfirst(h($profile->username));
+                                                }
+                                                */
                                             ?>
-                                            <br/>
+<?if($profile->id =='1063' ||$profile->id =='1067' ||$profile->id =='1068' ||$profile->id =='1074'  ||$profile->id =='1064' ||$profile->id =='1073' ||$profile->id =='1079'){?>
+                                            <img style="width:110px;"
+                                                 src="<? echo $this->request->webroot . 'img/mee-logo.png'; ?>"
+                                                 class="img-responsive" alt=""/>
+                                            <?}?>
                                         </td>
 
                                         <td><?= h($profile->fname) ?> <?= h($profile->lname) ?></td>
@@ -264,8 +299,8 @@
                                                 }
                                             ?></td>
 
-                                        <td><?php $clinet_name =strtolower($ProClients->getClientName($profile->id));
-                                        echo $ProClients->getAllClientsname($profile->id);?></td>
+                                        <td><?php $clinet_name = strtolower($ProClients->getClientName($profile->id));
+                                                echo $ProClients->getAllClientsname($profile->id); ?></td>
                                         <td class="actions  util-btn-margin-bottom-5">
                                             <?php
 
@@ -273,55 +308,56 @@
                                                     echo $this->Html->link(__($strings["dashboard_view"]), ['action' => 'view', $profile->id], ['class' => btnclass("btn-info", "blue-soft")]);
                                                 }
 
-                                                $checker = $this->requestAction('/settings/check_edit_permission/' . $this->request->session()->read('Profile.id') . '/' . $profile->id."/".$profile->created_by);
+                                                $checker = $this->requestAction('/settings/check_edit_permission/' . $this->request->session()->read('Profile.id') . '/' . $profile->id . "/" . $profile->created_by);
                                                 if ($sidebar->profile_edit == '1' && $checker == 1) {
-                                                        echo $this->Html->link(__($strings["dashboard_edit"]), ['action' => 'edit', $profile->id], ['class' => btnclass("EDIT")]);
+                                                    echo $this->Html->link(__($strings["dashboard_edit"]), ['action' => 'edit', $profile->id], ['class' => btnclass("EDIT")]);
                                                 }
 
-
                                                 if ($sidebar->document_list == 1/* && $doc != 0 && $cn != 0*/) {
-                                                    $SubBy = $URLStart . 'documents/index?type=&submitted_by_id=' . $profile->id . $URLEnd . $strings["documents_submittedby"] . '</A>';
-                                                    $SubFor = $URLStart . 'documents/index?type=&submitted_for_id=' . $profile->id . $URLEnd . $strings["documents_submittedfor"] . '</A>';
-                                                    echo $SubBy . $SubFor;
+                                                    //      $SubBy = $URLStart . 'documents/index?type=&submitted_by_id=' . $profile->id . $URLEnd . $strings["documents_submittedby"] . '</A>';
+                                                    //    $SubFor = $URLStart . 'documents/index?type=&submitted_for_id=' . $profile->id . $URLEnd . $strings["documents_submittedfor"] . '</A>';
+                                                    //   echo $SubBy . $SubFor;
                                                 }
 
                                                 if ($sidebar->orders_list == '1' && $profile->profile_type > 0) {
-                                                    echo '<a href="' . $this->request->webroot  . 'orders/orderslist/?uploaded_for=' . $profile->id . '"';
-                                                    echo ' class="' . btnclass("btn-info", "blue-soft") . '">' . $strings["profiles_vieworders"] . '</a>';
+                                                    //        echo '<a href="' . $this->request->webroot  . 'orders/orderslist/?uploaded_for=' . $profile->id . '"';
+                                                    //      echo ' class="' . btnclass("btn-info", "blue-soft") . '">' . $strings["profiles_vieworders"] . '</a>';
                                                 }
 
-                                            if ($sidebar->profile_delete == '1') {
-                                                $CanDelete=false;
-                                                if ($super == '1') {
-                                                   $CanDelete = true;//supers can delete anyone
-                                                } else if ($this->request->session()->read('Profile.profile_type') == '2' && ($profile->profile_type == '5')) {
-                                                    $CanDelete = true;//recruiters can delete drivers
-                                                } else if($sidebar->profile_create =='1'){
-                                                    $CanDelete = in_array($profile->profile_type, $cancreate);//can delete profile types you can create
-                                                }
-                                                if ($this->request->session()->read('Profile.id') == $profile->id) {
-                                                    $CanDelete = false;//can't delete yourself
-                                                }
+                                                if ($sidebar->profile_delete == '1') {
+                                                    $CanDelete = false;
+                                                    if ($super == '1') {
+                                                        $CanDelete = true;//supers can delete anyone
+                                                    } else if ($this->request->session()->read('Profile.profile_type') == '2' && ($profile->profile_type == '5')) {
+                                                        $CanDelete = true;//recruiters can delete drivers
+                                                    } else if ($sidebar->profile_create == '1') {
+                                                        $CanDelete = in_array($profile->profile_type, $cancreate);//can delete profile types you can create
+                                                    }
+                                                    if ($this->request->session()->read('Profile.id') == $profile->id) {
+                                                        $CanDelete = false;//can't delete yourself
+                                                    }
 
-                                                if($CanDelete){
-                                                    echo '<a href="' . $this->request->webroot . 'profiles/delete/' . $profile->id;
-                                                    if (isset($_GET['draft'])){ echo "?draft";}
-                                                    echo '" onclick="return confirm(' . "'" . ProcessVariables($language, $strings["dashboard_confirmdelete"], array("name" => ucfirst(h($profile->username))));
-                                                    echo "'" . ');" class="' . btnclass("DELETE") . '">' . $strings["dashboard_delete"] . '</a>';
-                                                }
+                                                    if ($CanDelete) {
+                                                        echo '<a href="' . $this->request->webroot . 'profiles/delete/' . $profile->id;
+                                                        if (isset($_GET['draft'])) {
+                                                            echo "?draft";
+                                                        }
+                                                        echo '" onclick="return confirm(' . "'" . ProcessVariables($language, $strings["dashboard_confirmdelete"], array("name" => ucfirst(h($profile->username))));
+                                                        echo "'" . ');" class="' . btnclass("DELETE") . '">' . $strings["dashboard_delete"] . '</a>';
+                                                    }
 
-                                                if($super){
-                                                    echo '<a href="' . $this->request->webroot . 'profiles/possess/' . $profile->id;
-                                                    echo '" onclick="return confirm(' . "'Are you sure you want to possess " . ucfirst(h($profile->username)) . "?'";
-                                                    echo ');" class="' . btnclass("DELETE") . '">Possess</a>';
-                                                }
+                                                    if ($super) {
+                                                        //     echo '<a href="' . $this->request->webroot . 'profiles/possess/' . $profile->id;
+                                                        //    echo '" onclick="return confirm(' . "'Are you sure you want to possess " . ucfirst(h($profile->username)) . "?'";
+                                                        //   echo ');" class="' . btnclass("DELETE") . '">Possess</a>';
+                                                    }
 
-                                                if(strtolower($clinet_name) == 'gordon food service'){
-                                                    echo "<button onclick=\"$('.consent_linkz_".$profile->id."').toggle();\" class='btn default btn-xs blue-soft-stripe'>Consent Link</button>";
-                                                    echo "<div class='consent_linkz_".$profile->id."' style='display:none;'><strong>Please send the following link to the applicant to re-submit the consent form:</strong><br>http://".getenv('HTTP_HOST').$this->request->webroot."application/index.php?form=4&user_id=".$profile->id."&customlink</div><div class='clearfix'></div>";
-                                                }
+                                                    if (strtolower($clinet_name) == 'gordon food service') {
+                                                        //         echo "<button onclick=\"$('.consent_linkz_".$profile->id."').toggle();\" class='btn default btn-xs blue-soft-stripe'>Consent Link</button>";
+                                                        //        echo "<div class='consent_linkz_".$profile->id."' style='display:none;'><strong>Please send the following link to the applicant to re-submit the consent form:</strong><br>http://".getenv('HTTP_HOST').$this->request->webroot."application/index.php?form=4&user_id=".$profile->id."&customlink</div><div class='clearfix'></div>";
+                                                    }
 
-                                            }
+                                                }
                                             ?>
 
                                         </td>
@@ -335,24 +371,25 @@
 
                 <div class="form-actions" style="height:75px;">
                     <div class="row">
-                    <div class="col-md-12">
-                        <div class="col-md-6" align="left">
-                        <?php if($sidebar->bulk=='1' && isset($_GET["all"]) ){?>
-                            <a href="javascript:void(0);" class="bulk_order btn btn-primary">Order Bulk</a>
-                        <?php }?>
-                        </div>
-                        <div class="col-md-6" align="right">
-                            <?php if (!isset($_GET["all"])) { ?>
-                            <div id="sample_2_paginate" class="dataTables_paginate paging_simple_numbers" align="right"
-                                 style="margin-top:-10px;">
-                                <ul class="pagination sorting">
-                                    <?= $this->Paginator->prev('< ' . __($strings["dashboard_previous"])); ?>
-                                    <?= $this->Paginator->numbers(); ?>
-                                    <?= $this->Paginator->next(__($strings["dashboard_next"]) . ' >'); ?>
-                                </ul>
+                        <div class="col-md-12">
+                            <div class="col-md-6" align="left">
+                                <?php if ($sidebar->bulk == '1' && isset($_GET["all"])) { ?>
+                                    <a href="javascript:void(0);" class="bulk_order btn btn-primary">Order Bulk</a>
+                                <?php } ?>
                             </div>
-                            <?php } ?>
-                        </div>
+                            <div class="col-md-6" align="right">
+                                <?php if (!isset($_GET["all"])) { ?>
+                                    <div id="sample_2_paginate" class="dataTables_paginate paging_simple_numbers"
+                                         align="right"
+                                         style="margin-top:-10px;">
+                                        <ul class="pagination sorting">
+                                            <?= $this->Paginator->prev('< ' . __($strings["dashboard_previous"])); ?>
+                                            <?= $this->Paginator->numbers(); ?>
+                                            <?= $this->Paginator->next(__($strings["dashboard_next"]) . ' >'); ?>
+                                        </ul>
+                                    </div>
+                                <?php } ?>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -376,21 +413,20 @@
 <script>
 
     $(function () {
-        $('.bulk_order').click(function(){
+        $('.bulk_order').click(function () {
             var tempstr = '';
-           $('.table-scrollable input[type="checkbox"]').each(function(){
+            $('.table-scrollable input[type="checkbox"]').each(function () {
 
-            if($(this).is(':checked'))
-            {
-                if(tempstr == '')
-                tempstr = $(this).val();
-                else
-                tempstr = tempstr+','+$(this).val();
-            }
+                if ($(this).is(':checked')) {
+                    if (tempstr == '')
+                        tempstr = $(this).val();
+                    else
+                        tempstr = tempstr + ',' + $(this).val();
+                }
 
 
-           });
-           window.location = '<?php echo $this->request->webroot;?>orders/productSelection?driver=0&ordertype=BUL&profiles='+tempstr;
+            });
+            window.location = '<?php echo $this->request->webroot;?>orders/productSelection?driver=0&ordertype=BUL&profiles=' + tempstr;
         });
         <?php if(isset($_GET['division'])&& $_GET['division']!=""){
                  //var_dump($_GET);

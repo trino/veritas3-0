@@ -11,7 +11,7 @@
 	<div class="portlet">
 		<div class="portlet-title">
 			<div class="caption">
-				<i class="fa fa-copy"></i><?php echo $settings->document; ?>s
+				<i class="fa fa-shopping-cart"></i><?php echo $settings->document; ?>s
 			</div>
 
 		</div>
@@ -48,7 +48,7 @@
                             <div class="whiteCorner"></div>
 
                             <div class="visual">
-    							<i class="fa fa-copy"></i>
+    							<i class="fa fa-shopping-cart"></i>
     						</div>
     						<div class="details">
 

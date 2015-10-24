@@ -267,7 +267,7 @@
                                                         echo '<span class="more">';
                                                     }
                                                     if($order->order_type == 'REQ') {echo 'RE-QUALIFICATION';}
-                                                    echo '<i class="fa fa-copy"></i>';
+                                                    echo '<i class="fa fa-shopping-cart"></i>';
                                                     echo h(getField($ordertype, "Name", $language) . $Trans); //it won't let me put it in the desc
                                                     if($order->order_type != 'BUL' && $order->order_type != 'REQ') {
                                                         echo '</a>';

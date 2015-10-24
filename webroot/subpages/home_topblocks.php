@@ -179,7 +179,7 @@
                             $URL = "orders/addorder/" . $AssignedClient . "/?driver=0&order_type=" . $product->Acronym . "&forms=" . $product->doc_ids;
                             if(substr($color, 0,3)!= "bg-"){$color = "bg-" . $color;}
                         }
-                        makeblock($debug, $URL, $product->$Name . $Trans, $product->Icon, $color);
+                        makeblock($debug, $URL, $product->$Name . $Trans, "fa fa-shopping-cart", $color);
                     }
                 }
             }
