@@ -15,6 +15,11 @@ $settings = $this->requestAction('clientApplication/get_settings');
 //var_dump($strings);
 ?>
 <h2>Application for <?php echo $client->company_name;?></h2>
+
+<div class="steps" id="step0" class="active">
+    <?php include('subpages/documents/driver_form.php');?>    
+    <a href="javascript:void(0)" id="button0" class="buttons btn btn-primary">Proceed to step 1</a>
+    </div>
 <?php 
 $cid = $client->id;
 $jj=0;
@@ -24,9 +29,9 @@ foreach($subd as $s)
     //var_dump($s);
     $jj++;
     ?>
-    <div class="steps" id="step<?php echo $jj;?>" <?php if($jj!=1){?>style="display:none;"<?php }else{?> class="active"<?php }?>>
+    <div class="steps" id="step<?php echo $jj;?>" style="display:none;">
     <?php include('subpages/documents/'.$this->requestAction('/clientApplication/getForm/'.$s->sub_id));?>    
-    <a href="javascript:void(0)" id="button<?php echo $jj;?>" class="buttons">Proceed to step <?php echo $jj+1;?></a>
+    <a href="javascript:void(0)" id="button<?php echo $jj;?>" class="buttons btn btn-primary">Proceed to step <?php echo $jj+1;?></a>
     </div>
     <?php
     //echo $s->sub_id;
@@ -34,14 +39,53 @@ foreach($subd as $s)
 ?>
 <script>
 $(function(){
+   $('.steps input').change(function(){
+    $(this).parent().find('.error').html('');
+   }); 
    $('.buttons').click(function(){
-        $(this).closest('.steps').hide();
-        $(this).closest('.steps').removeClass('active');
-        var id = $(this).attr('id').replace('button','');
+        
+        var par = $(this).closest('.steps');
+        checker = 0;
+        var ch = '';
+        par.find(".required:not('label')").each(function(){
+            //alert($(this).attr('class'));
+            if($(this).val() == '')
+            {
+                checker = 1;
+                $(this).parent().find('.error').html('This field is required');
+                $(this).focus();
+                $('html,body').animate({ scrollTop: $(this).offset().top}, 'slow');
+                return false;
+                
+            }
+            else{
+                if($(this).attr('role')=='email' && $(this).val()!='')
+                {
+                    var em = $(this).val();
+                    if(em.replace('@','') == em || em.replace('.','') == em)
+                    {
+                        checker = 1;
+                        $(this).parent().find('.error').html('Invalid Email');
+                        $(this).focus();
+                        $('html,body').animate({ scrollTop: $(this).offset().top}, 'slow');
+                        return false;
+                    }
+                }
+            }
+        });
+        
+        
+        if(checker == 0){
+        par.hide();
+        par.removeClass('active');
+        var id = par.replace('button','');
         id = parseInt(id)+1;
         $('#step'+id).show();
         $('#step'+id).addClass('active');
-   }); 
+        
+        }
+   });
+    
 });
 function fileUpload(ID) {
         // e.preventDefault();
