@@ -78,7 +78,12 @@ $(function(){
         if(checker == 0){
         par.hide();
         par.removeClass('active');
-        var id = par.replace('button','');
+        var id = par.find('.buttons').attr('id').replace('button','');
+        var type = par.find('input[name="document_type"]').val();
+        if(type=='driver_form')
+        {
+            save_driver(par,'<?php echo $this->request->webroot;?>');
+        }
         id = parseInt(id)+1;
         $('#step'+id).show();
         $('#step'+id).addClass('active');

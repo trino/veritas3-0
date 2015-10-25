@@ -1,6 +1,8 @@
 <?php $strings2 = CacheTranslations($language, array("verifs_%", "tasks_date", "file_attachfile", "file_download"), $settings, False); ?>
 <div class="form-group row col-md-12 splitcols" ID="GNDN">
-    <input type="hidden" name="MAX_FILE_SIZE" value="6553600" title="50 megabytes" />
+    
+    <input type="hidden" name="document_type" value="driver_form" />
+    <input type="hidden" name="client_id" value="<?php if(isset($cid))echo $cid;?>" />
     <div class="col-md-4"><label class="control-label required">Your Username: </label>
         <input type="text" class="form-control required" required name="username" />
         <span class="error"></span>

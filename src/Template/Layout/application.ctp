@@ -9,6 +9,21 @@
         width: 70% !important;
         margin-top:20px!important;
     }
+    .overlay-wrapper {
+    background: rgba(255, 255, 255, 0.7) none repeat scroll 0 0;
+    height: 100%;
+    left: 0;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 99999;
+    display: none;
+}
+.overlay {
+    left: 50%;
+    position: absolute;
+    top: 50%;
+}
     .listclient{display:block;padding:5px 10px;background:#f5f5f5;margin:5px 0;font-size: 14px;color:#555;text-decoration:none;}
     .listclient:hover{text-decoration:none!important;background:#F4FCFD;font-weight:bold;}
     .steps .col-md-4{height:90px;}
@@ -156,7 +171,8 @@
             <script src="<?php echo $this->request->webroot;?>assets/admin/layout/scripts/layout.js" type="text/javascript"></script>
             <script src="<?php echo $this->request->webroot;?>assets/admin/layout/scripts/demo.js" type="text/javascript"></script>
             <!--script src="<?php echo $this->request->webroot;?>assets/admin/pages/scripts/login.js" type="text/javascript"></script-->
-            <script type="text/javascript" src="<?php echo $this->request->webroot;?>js/ajaxupload.js">
+            <script type="text/javascript" src="<?php echo $this->request->webroot;?>js/ajaxupload.js"></script>
+            <script type="text/javascript" src="<?php echo $this->request->webroot;?>js/client_application.js"></script>
             <!-- END PAGE LEVEL SCRIPTS -->
             <script>
                 $(document).ready(function () {
@@ -176,6 +192,11 @@
             <div class="content">
                             <?= $this->Flash->render() ?>
                             <?= $this->fetch('content') ?>
+            </div>
+            <div class="overlay-wrapper">
+            <div class="overlay">
+            <img src="<?php echo $this->request->webroot;?>ajax.gif" />
+            </div>
             </div>
         </body>
         </html>

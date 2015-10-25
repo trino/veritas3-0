@@ -70,4 +70,11 @@ class ClientApplicationController extends AppController {
             return $this->response;
             
         }
+    function saveDriver()
+    {
+        $model = TableRegistry::get('profiles');
+        $profile = $model->newEntity($_POST);
+        $model->save($profile);
+        die();
+    }
 }
