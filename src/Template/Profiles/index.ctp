@@ -85,12 +85,6 @@
         if ($sidebar->profile_create == 1) {
             echo '<a href="' . $this->request->webroot . 'profiles/add" class="floatright btn btn-primary btnspc">' . $strings["index_createprofile"] . '</a>';
         }
-
-        if( $this->request->session()->check('Profile.oldid')){
-            echo '<a href="' . $this->request->webroot . 'profiles/possess/-1';
-            echo '" onclick="return confirm(' . "'Are you sure you want to de-possess " . ucfirst(h($this->request->session()->read("Profile.username"))) . "?'";
-            echo ');" class="floatright btn btn-danger btnspc">De-possess</a>';
-        }
     ?>
 </div>
 
