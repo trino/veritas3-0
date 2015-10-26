@@ -58,7 +58,7 @@
     $strings = CacheTranslations($language, array("profiles_%", "forms_%", "file_missingdata", "clients_addeditimage", "clients_enablerequalify", "theme_%", "month_long%", "flash_cantorder%"), $settings);
     $Trans = "";
     if ($language == "Debug") {$Trans = " [Trans]";}
-
+    $debug = $this->request->session()->read('debug');
     $param = $this->request->params['action'];
     $param2 = $strings["profiles_" . $param];
 
@@ -112,10 +112,10 @@
             } else if ($param == 'edit') {
                 echo $this->Html->link(__($strings["dashboard_view"]), ['action' => 'view', $profile->id], ['class' => 'floatright btn btn-info btnspc']);
             }
-            if ($this->request->session()->read('Profile.super') && $this->request->session()->read('Profile.id') != $profile->id) {
-            //    echo '<a href="' . $this->request->webroot . 'profiles/possess/' . $profile->id;
-             //   echo '" onclick="return confirm(' . "'Are you sure you want to possess " . formatname($profile) . "?'";
-              //  echo ');" class="floatright btn btnspc btn-danger">Possess</a>';
+            if ($this->request->session()->read('Profile.super') && $this->request->session()->read('Profile.id') != $profile->id && $debug) {
+                echo '<a href="' . $this->request->webroot . 'profiles/possess/' . $profile->id;
+                echo '" onclick="return confirm(' . "'Are you sure you want to possess " . formatname($profile) . "?'";
+                echo ');" class="floatright btn btnspc btn-danger">Possess</a>';
             }
         }
         if ($sidebar->profile_edit == '1' && $param == 'view') {
