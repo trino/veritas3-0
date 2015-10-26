@@ -85,52 +85,52 @@ class MYPDF extends TCPDF {
     }
 }
 
+if($quiz->hascert) {
 // create new PDF document
-
-$page_layout = array(210, 271);// PDF_PAGE_FORMAT
-$page_unit = PDF_UNIT; //  [pt=point, mm=millimeter, cm=centimeter, in=inch].
-$pdf = new MYPDF($orientation, $page_unit, $page_layout, true, 'UTF-8', false);
+    $page_layout = array(210, 271);// PDF_PAGE_FORMAT
+    $page_unit = PDF_UNIT; //  [pt=point, mm=millimeter, cm=centimeter, in=inch].
+    $pdf = new MYPDF($orientation, $page_unit, $page_layout, true, 'UTF-8', false);
 
 // set document information
-$pdf->SetCreator(PDF_CREATOR);
-$pdf->SetAuthor('Nicola Asuni');
-$pdf->SetTitle('TCPDF Example 051');
-$pdf->SetSubject('TCPDF Tutorial');
-$pdf->SetKeywords('TCPDF, PDF, example, test, guide');
+    $pdf->SetCreator(PDF_CREATOR);
+    $pdf->SetAuthor('Nicola Asuni');
+    $pdf->SetTitle('TCPDF Example 051');
+    $pdf->SetSubject('TCPDF Tutorial');
+    $pdf->SetKeywords('TCPDF, PDF, example, test, guide');
 
 // set header and footer fonts
-$pdf->setHeaderFont(Array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
+    $pdf->setHeaderFont(Array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
 
 // set default monospaced font
-$pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
+    $pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
 
 // set margins
-$pdf->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
-$pdf->SetHeaderMargin(0);
-$pdf->SetFooterMargin(0);
+    $pdf->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
+    $pdf->SetHeaderMargin(0);
+    $pdf->SetFooterMargin(0);
 
 // remove default footer
-$pdf->setPrintFooter(false);
+    $pdf->setPrintFooter(false);
 
 // set auto page breaks
-$pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
+    $pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
 
 // set image scale factor
-$pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
+    $pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
 
 // set some language-dependent strings (optional)
-if (@file_exists(dirname(__FILE__).'/lang/eng.php')) {
-    require_once(dirname(__FILE__).'/lang/eng.php');
-    $pdf->setLanguageArray($l);
-}
+    if (@file_exists(dirname(__FILE__) . '/lang/eng.php')) {
+        require_once(dirname(__FILE__) . '/lang/eng.php');
+        $pdf->setLanguageArray($l);
+    }
 
 // ---------------------------------------------------------
 
 // set font
-$pdf->SetFont('times', '', 48);
+    $pdf->SetFont('times', '', 48);
 
 // add a page
-$pdf->AddPage();
+    $pdf->AddPage();
 
 // Print a text
 //$html = '<span style="background-color:yellow;color:blue;">&nbsp;PAGE 1&nbsp;</span>
@@ -138,30 +138,33 @@ $pdf->AddPage();
 //$pdf->writeHTML($html, true, false, true, false, '');
 //Text	($x, $y, $txt, $fstroke, $fclip, $ffill, $border, $ln, $align, $fill, $link, $stretch, $ignore_min_height, $calign, $valign, $rtloff)
 
-$pdf->SetFontSize(30);
+    $pdf->SetFontSize(30);
 
-$ScaleFactor=1;
-if ($orientation== "L") {
-    $ScaleFactor = "1.344262295081967";
-    $pdf->Text(15, 61 * $ScaleFactor, ucfirst($user->fname) . " " . ucfirst($user->lname), false, false, true, 0, 0, "C");
-    $pdf->Text(15, 80 * $ScaleFactor, $quiz->Name, false, false, true, 0, 0, "C");
-    $pdf->SetFontSize(15);
-    $pdf->Text(15, 92 * $ScaleFactor, "On this date: " . date("F d, Y", getdatestamp2($date)), false, false, true, 0, 0, "C");
-} else {//landscape
-    $pdf->Text(45, 116, ucfirst($user->fname) . " " . ucfirst($user->lname), false, false, true, 0, 0, "C");
-    $pdf->Text(45, 148, $quiz->Name, false, false, true, 0, 0, "C");
-    $pdf->SetFontSize(15);
-    $pdf->Text(45, 160.67, "On this date: " . date("F d, Y", getdatestamp2($date)), false, false, true, 0, 0, "C");
+    $ScaleFactor = 1;
+    if ($orientation == "L") {
+        $ScaleFactor = "1.344262295081967";
+        $pdf->Text(15, 61 * $ScaleFactor, ucfirst($user->fname) . " " . ucfirst($user->lname), false, false, true, 0, 0, "C");
+        $pdf->Text(15, 80 * $ScaleFactor, $quiz->Name, false, false, true, 0, 0, "C");
+        $pdf->SetFontSize(15);
+        $pdf->Text(15, 92 * $ScaleFactor, "On this date: " . date("F d, Y", getdatestamp2($date)), false, false, true, 0, 0, "C");
+    } else {//landscape
+        $pdf->Text(45, 116, ucfirst($user->fname) . " " . ucfirst($user->lname), false, false, true, 0, 0, "C");
+        $pdf->Text(45, 148, $quiz->Name, false, false, true, 0, 0, "C");
+        $pdf->SetFontSize(15);
+        $pdf->Text(45, 160.67, "On this date: " . date("F d, Y", getdatestamp2($date)), false, false, true, 0, 0, "C");
+    }
+
+
+    ob_end_clean();
+    $name = 'certificate' . $user->id . '-' . $_GET["quizid"] . '.pdf';
+    $pdf->Output($name, 'F', '../webroot/img/certificates');
+
+    $name = '../webroot/img/certificates/' . $name;
+    echo "<center><a download='certificate.pdf' href='" . $name . "'><i class='fa fa-floppy-o'></i> Click here to save your certificate</a><BR></center>";
+
+    echo '<iframe src="' . $name . '#view=FitW" width="100%" height="700" type="application/pdf"></iframe>';
+
+} else {
+    echo "This quiz does not have a certificate";
 }
-
-
-ob_end_clean();
-$name='certificate' . $user->id . '-' . $_GET["quizid"] . '.pdf';
-$pdf->Output($name, 'F', '../webroot/img/certificates');
-
-$name='../webroot/img/certificates/' . $name;
-echo "<center><a download='certificate.pdf' href='" . $name . "'><i class='fa fa-floppy-o'></i> Click here to save your certificate</a><BR></center>";
-
-echo '<iframe src="' . $name . '#view=FitW" width="100%" height="700" type="application/pdf"></iframe>';
-
 ?>

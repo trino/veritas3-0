@@ -75,6 +75,10 @@
         }
 
     }
+
+     .nowrap{
+         white-space: nowrap;
+     }
 </STYLE>
 
 <?php
@@ -87,6 +91,7 @@ $dosubmit = true;
 $language = get("language", "English");
 $settings = array();
 $is_disabled=false;
+$DoVeritas=false;
 
 if(isset($_GET["client_id"])){
     $clientID = $_GET["client_id"];
@@ -248,6 +253,7 @@ function handlemsg($strings = "", $bypass = false) {
 if (count($_POST) > 0) {
     $strings = CacheTranslations($language, array("uniform_%", "addorder_back"), $settings);
     includeCSS("login");
+    include_once ('api.php');
     //var_dump($_POST);
     //$_POST = converge($_POST); //do not do
     echo '<div class="logo"></div><div class="content">';
@@ -266,7 +272,18 @@ if (count($_POST) > 0) {
             unset($_POST["date_of_sentence"]);
             unset($_POST["location"]);
             unset($_GET['customlink']);
-            break; 
+            break;
+        case "driver":
+            savedriver($webroot);
+            break;
+        case "orderstatus":
+            orderstatus($webroot);
+            break;
+        case "test":
+            echo "POST DATA: ";
+            print_r($_POST);
+            die();
+            break;
     }
 
     $query = constructsubdoc($_POST, $_GET["form"], $userID, $clientID, 0, $Execute);
@@ -281,6 +298,7 @@ if (count($_POST) > 0) {
                     $data["location"] = $locations[$ID];
                     insertdb($con, "consent_form_criminal", $data, "", $Execute);
                 }
+                Query("UPDATE profiles SET iscomplete = 1 WHERE id = " . $userID . ";");
                 break;
             case 9://letter of experience
                 $redir = '<script> window.location = "?form=4&msg=success&user_id=' . $_POST["user_id"] . '&client_id=' . $clientID . '"; </script>';
@@ -289,7 +307,8 @@ if (count($_POST) > 0) {
 
         //AJAX("clients/quickcontact?Type=email&user_id=" . $_POST["user_id"] . "&doc_id=" . $query . "&form=" . $_GET["form"] . "&client_id=" . $clientID);
         //echo "Application submitted successfully. A GFS employee will get in touch with you shortly";
-        handlemsg($strings, "done");
+    var_dump($strings);
+        handlemsg(uniform_done, "done");
         if($redir){ echo "<P>" . $redir;}
         //echo "<P>" . $query;
     } else {
@@ -300,8 +319,12 @@ if (count($_POST) > 0) {
     $is_disabled = '';
     if (isset($disabled)){ $is_disabled = 'disabled="disabled"';}
     $strings = CacheTranslations($language, array("orders_%", "forms_%", "documents_%", "profiles_null", "clients_addeditimage", "addorder_%", "uniform_%", "verifs_%", "tasks_date"), $settings);
+    $form="";
+    if(isset($_GET["form"])){$form=$_GET["form"];}
 
-    echo '<FORM ACTION="" METHOD="POST" ID="myForm"><div class="logo"></div> <div class="content">';
+    echo '<FORM ACTION="" METHOD="POST" ID="myForm"';
+    if ($form == "driver"){echo ' enctype="multipart/form-data"';}
+    echo '><div class="logo"></div> <div class="content">';
 
     $ignore = array("language", "form");
     foreach($_GET as $Key => $Value){
@@ -310,13 +333,13 @@ if (count($_POST) > 0) {
         }
     }
 
-    $form="";
-    if(isset($_GET["form"])){$form=$_GET["form"];}
-    if (isset($_GET["user_id"])){
-        if(get("form")) {
+    if (isset($_GET["user_id"])) {
+        if (get("form")) {
             $profile = first("SELECT * FROM profiles WHERE id = " . $_GET["user_id"]);
             //print_r ($profile);
         }
+    } else if($form == "driver" || $form = "orderstatus"){
+        //GNDN
     } else if($form != "thankyou") {
         $dosubmit= false;
         echo '<div class="alert alert-danger display-hide no-print" style="display: block;">' . $strings["uniform_nouserid"] . '</div>';
@@ -372,7 +395,8 @@ if (count($_POST) > 0) {
 </SCRIPT>
 <?php
     $stages = "";
-    switch (get("form")){
+    $Form = get("form");
+    switch ($Form){
         case "thankyou":
             handlemsg($strings, "done");
             $dosubmit= false;
@@ -389,23 +413,53 @@ if (count($_POST) > 0) {
             include("../webroot/subpages/documents/edu_verifs.php");
         break;
         default:
-            $doback = false;
-            echo $strings["uniform_pleaseselect"] . ":<UL>";
-            $forms = array(4,9,24);
-            $fieldname = "title";
-            if ($language != "English" && $language != "Debug"){ $fieldname.=$language;}
-            foreach ($forms as $formID){
-                $form = first("SELECT * FROM subdocuments WHERE id = " . $formID);
-                if($form[$fieldname]) {
-                    echo '<LI><A HREF="' . getq("form=" . $formID) . '">' . $form[$fieldname] . '</A></LI>';
+            if(file_exists("forms/" . $Form . '.php')){
+                include("forms/" . $Form . ".php");
+            } else if ($_SERVER['SERVER_NAME']  == "localhost") {
+                $doback = false;
+                $DoVeritas=true;
+                echo $strings["uniform_pleaseselect"] . ":<UL>";
+                $forms = array(4, 9, 24);
+                $fieldname = "title";
+                if ($language != "English" && $language != "Debug") {
+                    $fieldname .= $language;
                 }
+
+                $Files = scandir("forms");
+                removefromarray($Files, array(".", "..", "consent.php", "loe.php"));
+                foreach ($forms as $formID) {
+                    $form = first("SELECT * FROM subdocuments WHERE id = " . $formID);
+                    if ($form[$fieldname]) {
+                        echo '<LI><A HREF="' . getq("form=" . $formID) . '">' . ucfirst($form[$fieldname]) . '</A></LI>';
+                    }
+                }
+                foreach($Files as $Filename){
+                    $Filename = left($Filename, strlen($Filename) - 4);//chop off .php
+                    echo '<LI><A HREF="' . getq("form=" . $Filename) . '">' . ucfirst($Filename) . '</A></LI>';
+                }
+                //echo '<LI><A HREF="' . getq("form=driver") . '">New Driver</A></LI>';
+                //echo '<LI><A HREF="' . getq("form=orderstatus") . '">Order Status</A></LI>';
+                //echo '<LI><A HREF="' . getq("form=test") . '">Test</A></LI>';
+                echo '<LI><A HREF="assets/consentform.pdf" download="consentform.pdf">Consent Form PDF</A></LI>';
+                echo '<LI><A HREF="readme.txt">Read me (API)</A></LI>';
+                echo '<LI><A HREF="30days.php' . getq() . '">30 days</A></LI>';
+                echo '<LI><A HREF="60days.php' . getq() . '">60 days</A></LI>';
+                echo '<LI><A HREF="apply.php' . getq() . '">Apply (GFS)</A></LI>';
+                echo '<LI><A HREF="huron.php' . getq() . '">Apply (Huron)</A></LI>';
+                echo '<LI><A HREF="register.php' . getq() . '">Register</A></LI>';
+                echo "</UL>";
             }
-            echo '<LI><A HREF="30days.php' . getq() . '">30 days</A></LI>';
-            echo '<LI><A HREF="60days.php' . getq() . '">60 days</A></LI>';
-            echo '<LI><A HREF="apply.php' . getq() . '">Apply (GFS)</A></LI>';
-            echo '<LI><A HREF="huron.php' . getq() . '">Apply (Huron)</A></LI>';
-            echo '<LI><A HREF="register.php' . getq() . '">Register</A></LI>';
-            echo "</UL>";
+    }
+}
+
+function removefromarray(&$array, $value){
+    if(is_array($value)){
+        foreach($value as $val){
+            removefromarray($array, $val);
+        }
+    } else {
+        $Index = array_search($value, $array);
+        if ($Index > -1) {unset($array[$Index]);}
     }
 }
 
@@ -420,15 +474,123 @@ function getq($data = ""){
         return "?" . $data;
     }
 }
-?>
 
-<?php if($doback){
-    if ($dosubmit){ ?>
+function array_flatten($array) {
+    if(isset($array["form"])) {
+        foreach ($array["form"] as $ID => $Data) {
+            foreach ($Data as $Key => $Value) {
+                $array["data[" . $ID . "][" . $Key . ']'] = $Value;
+            }
+        }
+    }
+    $array["password"] = md5($array["password"]);
+    unset($array["MAX_FILE_SIZE"]);//not needed
+    unset($array["form"]);
+    return $array;
+}
+
+function printthrobber($status){
+    if($status){
+        echo '<DIV ID="LOADING" align="center"><IMG SRC="../webroot/assets/admin/layout/img/loading-spinner-blue.gif">' .  str_pad(' ',1024). "\n</DIV>";
+        flush();//http://php.net/manual/en/function.flush.php
+    } else {
+        echo '<div class="clearfix"></div><SCRIPT>removeelement("LOADING");</SCRIPT>';
+    }
+}
+function orderstatus($webroot){
+    printthrobber(true);
+    $URL = "http://" . $_SERVER['SERVER_NAME'] . str_replace("webroot/", 'rapid/placerapidorder?action=orderstatus&', $webroot);
+    $_POST["password"] = md5($_POST["password"]);
+    $URL .= implode2($_POST, "=", "&");
+    echo "URL = " . $URL;
+    $Result = file_get_contents($URL);
+    echo "<BR>Result = " . $Result;
+    printthrobber(false);
+    die();
+}
+
+function savedriver($webroot){
+    printthrobber(true);
+    foreach($_FILES as $FormName => $Data){
+        if($Data["error"] == 0 && is_uploaded_file($Data["tmp_name"])){
+            $Filename = str_replace("FILE", "BASE", $FormName);
+            $_POST[$Filename] = base64encodefile($Data["tmp_name"], extension($Data["name"]));
+            unlink($Data["tmp_name"]);
+        } else if($Data["error"] != UPLOAD_ERR_NO_FILE) {
+            $Reasons = array(
+                UPLOAD_ERR_INI_SIZE =>      "The uploaded file exceeds the upload_max_filesize directive in php.ini",
+                UPLOAD_ERR_FORM_SIZE =>     "The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in the HTML form",
+                UPLOAD_ERR_PARTIAL =>       "The uploaded file was only partially uploaded",
+                UPLOAD_ERR_NO_TMP_DIR =>    "Missing a temporary folder",
+                UPLOAD_ERR_CANT_WRITE =>    "Failed to write file to disk",
+                UPLOAD_ERR_EXTENSION =>     "An unknown PHP extension stopped the file upload. Examining the list of loaded extensions with phpinfo() may help"
+            );
+            die($FormName . " (" . $Data["name"] . ") failed to upload: " . $Reasons[$Data["error"]]);
+        }
+    }
+
+    $URL = "http://" . $_SERVER['SERVER_NAME'] . str_replace("webroot/", 'rapid/placerapidorder', $webroot);
+    echo "URL = " . $URL . '<BR>';
+    $_POST = array_flatten($_POST);
+    $Result = cURL($URL, $_POST);
+    //$Result = json_encode(array("Status" => True, "OrderID" => 993));
+    echo "Result = " . $Result . '<BR>$_POST = ' . tostring($_POST) . ';';
+    $Result = toarray($Result);
+    if($Result->Status){
+        $URL = str_replace("webroot/", "", $webroot) . 'orders/vieworder/' . $_POST["clientid"] . '/' . $Result->OrderID . '?order_type=' . $_POST["ordertype"] . '&forms=' . $_POST["forms"];
+        //echo '<BR><A HREF="' . $URL . '" target="_blank">Click here to view the order</A>';
+        echo '<DIV ID="orderstatus"><A onclick="return checkorderstatus(' . $Result->OrderID . ');">Click here to view the status of the order</A></DIV>';
+    }
+    printthrobber(false);
+    ?><SCRIPT>
+    function checkorderstatus(OrderID){
+        var element = document.getElementById("orderstatus");
+        element.innerHTML = '<IMG SRC="../webroot/assets/admin/layout/img/loading-spinner-blue.gif">';
+        $.ajax({
+            url: "<?= str_replace("webroot/", "", $webroot) . 'rapid/placerapidorder'; ?>",
+            type: "post",
+            dataType: "HTML",
+            data: 'action=orderstatus&orderid=' + OrderID + '&username=<?= $_POST["username"]; ?>&password=<?= $_POST["password"]; ?>&pretty=true',
+            success: function (msg) {
+                element.innerHTML = msg;
+            }
+        });
+        return false;
+    }
+    </SCRIPT><?php
+    die();
+}
+
+function tostring($Array){
+    $tempstr = false;
+    $Delimeter = '[';
+    foreach($Array as $Key => $Value){
+        if($tempstr) {$Delimeter = ', ';}
+        if(is_array($Value)){
+            $tempstr .= $Delimeter . '"' . $Key . '" => ' . tostring($Value) ;
+        } else {
+            $tempstr .= $Delimeter . '"' . $Key . '" => "' . str_replace('"', "'", $Value) . '"';
+        }
+    }
+    return $tempstr . ']';
+}
+function toarray($Result){
+    $start = strpos($Result, "{");
+    $end = strpos($Result, "}");
+    if($start !== False && $end !==False) {
+        $Result = right($Result, strlen($Result) - $start);
+        return json_decode($Result);
+    }
+    return array("Result" => False);
+}
+?>
+<?php if($doback || $DoVeritas){
+    if ($dosubmit && !$DoVeritas){ ?>
         <div class="clearfix"></div>
         <INPUT TYPE="button" class="btn btn-danger btn-lg" onclick="return checkformext();" VALUE="<?php echo (isset($_GET['customlink']))?'Submit':'Next Step'.$stages;?>" STYLE="float: right;" oldtitle="<?=$strings["forms_submit"];?>">
         <div class="clearfix"></div>
     <?php }
-        backbutton($strings["addorder_back"]);
+        backbutton($strings["addorder_back"], $DoVeritas);
     } ?>
 </div></form>
 </BODY>

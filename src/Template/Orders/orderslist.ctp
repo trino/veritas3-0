@@ -175,7 +175,7 @@
                                 <th><?= $this->Paginator->sort('uploaded_for', $strings["documents_submittedfor"]); ?></th>
                                 <th><?= $this->Paginator->sort('client_id', $strings["settings_client"]); ?></th>
                                 <th><?=$strings["orders_division"]; ?></th>
-                                <th><?= $this->Paginator->sort('created', $strings["documents_created"] . " (" . $strings["forms_dateformat"] . ")"); ?></th>
+                                <th><?= $this->Paginator->sort('created', $strings["documents_created"] . ""); ?></th>
                                 <th class="actions"><?= __($strings["dashboard_actions"]) ?></th>
                                 <!--th><?= $this->Paginator->sort('bright_planet_html_binary', 'Status'); ?></th-->
                                 <th><?= $this->Paginator->sort('complete', $strings["documents_status"]); ?></th>
@@ -197,6 +197,8 @@
                                 }
 
                                 foreach ($orders as $order){
+                                    $isRapid = substr($order->title,0, 12) == "RAPID ORDER ";
+
                                     if ($row_color_class == "even") {
                                         $row_color_class = "odd";
                                     } else {
@@ -236,30 +238,36 @@
                                                     if($order->order_type != 'BUL' && $order->order_type != 'REQ')  { ?>
                                                         
                                                     <a class="more" id="sub_doc_click1"
-                                                       href="<?php
-                                                       if ($order->draft == "1" or isset($_GET["draft"])){
-                                                           echo $EDITURL;
-                                                       } else if ($sidebar->document_list == '1' && !isset($_GET["draft"])) {
-                                                           echo $this->request->webroot . 'orders/vieworder/' . $order->client_id . '/' . $order->id;
-                                                           if ($order->order_type) {
-                                                               echo '?order_type=' . urlencode($order->order_type);
-                                                               if ($order->forms) echo '&forms=' . $order->forms;
-                                                           }
-                                                       } else {
-                                                           if ($sidebar->document_list == '1') {
-                                                               echo $this->request->webroot . 'orders/addorder/' . $order->client_id . '/' . $order->id;
+                                                        <?php if($isRapid) {
+                                                           echo 'onclick="return false;';
+                                                        } else {
+                                                           echo 'href="';
+                                                           if ($order->draft == "1" or isset($_GET["draft"])) {
+                                                               echo $EDITURL;
+                                                           } else if ($sidebar->document_list == '1' && !isset($_GET["draft"])) {
+                                                               echo $this->request->webroot . 'orders/vieworder/' . $order->client_id . '/' . $order->id;
                                                                if ($order->order_type) {
                                                                    echo '?order_type=' . urlencode($order->order_type);
                                                                    if ($order->forms) echo '&forms=' . $order->forms;
                                                                }
-                                                           } else { ?>javascript:;<?php }
-                                                       } ?>">
-                                                       <?php
+                                                           } else {
+                                                               if ($sidebar->document_list == '1') {
+                                                                   echo $this->request->webroot . 'orders/addorder/' . $order->client_id . '/' . $order->id;
+                                                                   if ($order->order_type) {
+                                                                       echo '?order_type=' . urlencode($order->order_type);
+                                                                       if ($order->forms) echo '&forms=' . $order->forms;
+                                                                   }
+                                                               } else {
+                                                                   echo 'javascript:;';
+                                                               }
+                                                           }
+                                                        }
+                                                        echo '">';
                                                     } else  {
                                                         echo '<span class="more">';
                                                     }
                                                     if($order->order_type == 'REQ') {echo 'RE-QUALIFICATION';}
-                                                    echo '<i class="fa fa-copy"></i>';
+                                                    echo '<i class="fa fa-shopping-cart"></i>';
                                                     echo h(getField($ordertype, "Name", $language) . $Trans); //it won't let me put it in the desc
                                                     if($order->order_type != 'BUL' && $order->order_type != 'REQ') {
                                                         echo '</a>';
@@ -297,7 +305,7 @@
                                         <td class="actions  util-btn-margin-bottom-5">
 
                                             <?php
-                                                if ($sidebar->orders_list == '1' && $order->draft != 1 && $order->order_type!='BUL' && $order->order_type!='REQ') {
+                                                if ($sidebar->orders_list == '1' && $order->draft != 1 && $order->order_type!='BUL' && $order->order_type!='REQ' && !$isRapid) {
                                                     ?>
                                                     <a class="<?= btnclass("VIEW") ?>"
                                                        href="<?php echo $this->request->webroot; ?>orders/vieworder/<?php echo $order->client_id; ?>/<?php echo $order->id;

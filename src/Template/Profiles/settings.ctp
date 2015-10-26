@@ -211,7 +211,10 @@ function makedropdownoption($Key, $Value, $TheValue){
                                     <?php //include('subpages/profile/survey.php'); ?>
                                 </div-->
                                  <div class="tab-pane active" id="tab_1_112">
-                                    <?php include('subpages/profile/requalify.php'); ?>
+                                    <?php
+                                        include('subpages/profile/requalify.php');
+                                        //echo $this->requestAction('tasks/cron');
+                                    ?>
                                 </div>
                             </div>
                            </div>
@@ -269,7 +272,7 @@ function makedropdownoption($Key, $Value, $TheValue){
                           }
                           ?>
 
-                            <?php //include('subpages/profile/editdocs.php'); ?>
+                            <?php include('subpages/profile/editdocs.php'); ?>
 
                          <?php } ?>
 

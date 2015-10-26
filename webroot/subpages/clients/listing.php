@@ -178,13 +178,14 @@
                                                         <?php
 
                                                         }
-                                                        
+                                                        /*
                                                         if($sidebar->aggregate)
                                                         {
                                                             ?>
                                                             <a href="<?php echo $this->request->webroot;?>documents/aggregate/<?php echo $clients->id;?>" class="<?= btnclass("btn-info", "blue-soft") . '">' . $strings["clients_aggregate"] ?></a>
                                                             <?php
                                                         }
+                                                        */
                                                     ?>
                                                 </td>
                                             </tr>

@@ -19,6 +19,16 @@ function connectdb() {
     return $con;
 }
 
+function left($text, $length){
+    return substr($text,0,$length);
+}
+function right($text, $length){
+    return substr($text, -$length);
+}
+function mid($text, $start, $length){
+    return substr($text,$start, $length);
+}
+
 function initdatepicker($dateformat = 'yy-mm-dd'){
     ?>
     <SCRIPT>
@@ -34,13 +44,18 @@ function initdatepicker($dateformat = 'yy-mm-dd'){
     <?php
 }
 
-function backbutton($text = "Back"){
+function backbutton($text = "Back", $DoVeritas = false){
     if ( $_SERVER["SERVER_NAME"] == "localhost") {
-        echo '<DIV align="center" class="no-print"><A HREF="index.php';
-        if (isset($_GET["user_id"])) {
-            echo "?user_id=" . $_GET["user_id"];
-        } else if (isset($_GET["p_id"])) {
-            echo "?user_id=" . $_GET["p_id"];
+        echo '<DIV align="center" class="no-print"><A HREF="';
+        if($DoVeritas){
+            echo "../";
+        } else {
+            echo 'index.php';
+            if (isset($_GET["user_id"])) {
+                echo "?user_id=" . $_GET["user_id"];
+            } else if (isset($_GET["p_id"])) {
+                echo "?user_id=" . $_GET["p_id"];
+            }
         }
         echo '">' . $text . '</A></DIV>';
     }
@@ -100,6 +115,25 @@ function get($Key, $default = ""){
     if (isset($_POST[$Key])) { return $_POST[$Key];}
     if (isset($_GET[$Key])) { return $_GET[$Key];}
     return $default;
+}
+
+function Query($query){
+    global $con;
+    return $con->query($query);
+    //use while ($row = mysqli_fetch_array($result)) { to get results
+}
+
+function extension($Filename){
+    $type = strtolower(pathinfo($Filename, PATHINFO_EXTENSION));
+    if($type == "jpeg"){$type="jpg";}
+    return $type;
+}
+
+function base64encodefile($Filename, $Extension = ""){
+    if (file_exists($Filename)) {
+        if(!$Extension){$Extension= extension($Filename);}
+        return "data:image/" . $Extension . ";base64," . base64_encode(file_get_contents($Filename));
+    }
 }
 
 function CacheTranslations($Language='English', $Text, $Variables = "", $Common = True){
@@ -226,6 +260,10 @@ function includeCSS($Class = ""){
                     // Login.init();
                     Demo.init();
                 });
+
+                function removeelement(id) {
+                    return (elem=document.getElementById(id)).parentNode.removeChild(elem);
+                }
             </script>
             <!-- END JAVASCRIPTS -->
         </head>
@@ -295,7 +333,7 @@ function addTrans($array, $Trans = ""){
     return $array;
 }
 
-function printoption($option, $selected, $value = ""){
+function printoption($option, $selected = "", $value = ""){
     $tempstr = "";
     if ($option == $selected) {$tempstr = " selected";}
     if (strlen($value) > 0) {$value = " value='" . $value . "'";}
@@ -337,5 +375,92 @@ function loadstringsJS($strings){
         }
     }
     <?php
+}
+
+function isJson($string) {
+    if($string && !is_array($string)){
+        json_decode($string);
+        return (json_last_error() == JSON_ERROR_NONE);
+    }
+}
+function cURL($URL, $data = "", $username = "", $password = ""){
+    $session = curl_init($URL);
+    curl_setopt($session, CURLOPT_HEADER, true);
+    //curl_setopt($session, CURLOPT_SSL_VERIFYPEER, false);//not in post production
+    curl_setopt($session, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($session, CURLOPT_POST, true);
+    if($data) {
+       // if(is_array($data)){
+       //     $data = http_build_query($data);
+       // }
+        curl_setopt ($session, CURLOPT_POSTFIELDS, $data);
+    }
+    //$datatype = "application/x-www-form-urlencoded;charset=UTF-8";
+    $datatype= "multipart/form-data";
+    if(isJson($data)){$datatype  = "application/json";}
+
+    $header = array('Content-type: ' . $datatype, "User-Agent: SMI");
+    if ($username && $password){
+        $header[] =	"Authorization: Basic " . base64_encode($username . ":" . $password);
+    } else if ($username) {
+        $header[] =	"Authorization: Bearer " .  $username;
+        $header[] =	"Accept-Encoding: gzip";
+    } else if ($password) {
+        $header[] =	"Authorization: AccessKey " .  $password;
+    }
+    curl_setopt($session, CURLOPT_HTTPHEADER, $header);
+
+    $response = curl_exec($session);
+    if(curl_errno($session)){
+        $response = "[Error: " . curl_error($session) . ']';
+    }
+    curl_close($session);
+    $FIND="Content-Type: text/html";
+    $START = strpos($response, $FIND);
+    if($START){$response = substr($response,$START + strlen($FIND) + 4);}
+    if(!$response){return "ERROR: Blank data could mean a missing this reference";}
+    return $response;
+}
+
+
+
+function debug_string_backtrace() {
+    $BACK = debug_backtrace(0);
+    $BACK[2]["line"] = $BACK[1]["line"];
+    return $BACK[2];
+}
+
+function implode2($Array, $SmallGlue, $BigGlue){
+    foreach($Array as $Key => $Value){
+        $Array[$Key] = $Key . $SmallGlue. $Value;
+    }
+    return implode($Array,$BigGlue);
+}
+function debug($Iterator, $DoStacktrace = true){
+    if($DoStacktrace) {
+        $Backtrace = debug_string_backtrace();
+        echo '<B>' . $Backtrace["file"] . ' (line ' . $Backtrace["line"] . ') From function: ' . $Backtrace["function"] . '();</B> ';
+    }
+
+    if(is_array($Iterator)){
+        echo '(array)<BR>';
+        var_dump($Iterator);
+    } else if (is_object($Iterator)) {
+        if(is_iterable($Iterator)) {
+            echo '(object array)<BR>';
+            foreach ($Iterator as $It) {
+                debug($It, false);
+            }
+        } else {
+            echo '(object)<BR>';
+            var_dump($Iterator);
+        }
+    } else {
+        echo '(value)<BR>';
+        echo $Iterator;
+    }
+}
+function is_iterable($var) {
+    return (is_array($var) || $var instanceof Traversable);
 }
 ?>

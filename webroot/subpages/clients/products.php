@@ -40,7 +40,7 @@ foreach($products as $product){
 function checkbox($name, $status, $onclick, $disabled = false){
     if ($status) {$status = " CHECKED"; }
     if ($disabled) { $disabled = " DISABLED";}
-    echo '<INPUT TYPE="CHECKBOX" ONCLICK="' . $onclick . '" ID="' . $name . '" NAME="' . $name . '" CLASS="' . $name . '"' . $status . $disabled . ' STYLE="WIDTH: 100%; HEIGHT: 100%;">';
+    echo '<INPUT TYPE="CHECKBOX" ONCLICK="' . $onclick . '" ID="' . $name . '" NAME="' . $name . '" CLASS="' . $name . '"' . $status . $disabled . ' STYLE="WIDTH: 100%;">';
     if($status) return true;
 }
 

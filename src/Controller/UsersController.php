@@ -16,7 +16,7 @@ class UsersController extends AppController {
         parent::initialize();
         $this->loadComponent('Trans');
 		 $this->loadComponent('Settings');
-		 $this->Settings->verifylogin($this, "users");
+		 //$this->Settings->verifylogin($this, "users");
     }
     
 	public function index() {

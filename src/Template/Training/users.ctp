@@ -92,7 +92,6 @@ Users
                         if($isASAP){
                             echo $user->sitename . '</TD><TD>' . $user->asapdivision . '</TD><TD>';
                         }
-                        debug($user);
                         return true;
                     }
 
@@ -153,12 +152,20 @@ Users
             </thead>
             <tbody>
             <?php
-                foreach($quizes as $quiz){
-                    //debug($quiz); Name image
-                    $quiz=clean($quiz);
-                    echo "<TR><TD align='center'>" . $quiz->ID . '</TD><TD align="center"><img style="max-height:50px;" src="../img/';
-                    if(strlen(trim($quiz->image))==0){ echo "training.png"; } else {echo $quiz->image;}
-                    echo '"></TD><TD><A HREF="?quizid=' . $quiz->ID . '">' . $quiz->Name . "</A></TD><TD align='center'>" . $quiz->applicants . "</TD></TR>";
+                if(isset($quizes)) {
+                    foreach ($quizes as $quiz) {
+                        //debug($quiz); Name image
+                        $quiz = clean($quiz);
+                        echo "<TR><TD align='center'>" . $quiz->ID . '</TD><TD align="center"><img style="max-height:50px;" src="../img/';
+                        if (strlen(trim($quiz->image)) == 0) {
+                            echo "training.png";
+                        } else {
+                            echo $quiz->image;
+                        }
+                        echo '"></TD><TD><A HREF="?quizid=' . $quiz->ID . '">' . $quiz->Name . "</A></TD><TD align='center'>" . $quiz->applicants . "</TD></TR>";
+                    }
+                } else {
+                    echo '<TR><TD colspan="100" align="center">You can not view course results</TD></TR>';
                 }
             } ?>
         </tbody>

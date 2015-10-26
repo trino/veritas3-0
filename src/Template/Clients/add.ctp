@@ -8,7 +8,7 @@
     $settings = $this->requestAction('settings/get_settings');
     $language = $this->request->session()->read('Profile.language');
     $issuper = $this->request->session()->read('Profile.super');
-    $strings = CacheTranslations($language, array("clients_%", "forms_%", "infoorder_%", "index_%", "documents_document"), $settings);//,$registry);//$registry = $this->requestAction('/settings/getRegistry');
+    $strings = CacheTranslations($language, array("clients_%", "forms_%", "infoorder_%", "index_%", "documents_document","application_process"), $settings);//,$registry);//$registry = $this->requestAction('/settings/getRegistry');
     if($language == "Debug") { $Trans = " [Trans]";} else { $Trans = ""; }
 
     include_once 'subpages/filelist.php';
@@ -130,10 +130,13 @@
                                     <li>
                                         <a href="#tab_1_2" data-toggle="tab"><?= $strings["documents_document"]; ?></a>
                                     </li>
+                                    
+                                    <li>
+                                        <a href="#tab_1_7" data-toggle="tab"><?= $strings["application_process"]; ?></a>
+                                    </li>
 
                                     <li>
-                                        <a href="#tab_1_3"
-                                           data-toggle="tab"><?php echo (!isset($_GET['view'])) ? $strings["clients_assigntoprofile"] : $strings["clients_assignedto"]; ?></a>
+                                        <a href="#tab_1_3" data-toggle="tab"><?php echo (!isset($_GET['view'])) ? $strings["clients_assigntoprofile"] : $strings["clients_assignedto"]; ?></a>
                                     </li>
 
 
@@ -723,6 +726,12 @@
                                                     }
                                                 ?>
                                             </div>
+                                            
+                                            <div class="tab-pane" id="tab_1_7" style="">
+                                                <?php
+                                                    include('subpages/clients/application_process.php');
+                                                ?>
+                                            </div>
 
 
                                             <!-- END SAMPLE FORM PORTLET-->
@@ -754,6 +763,31 @@
                             $.ajax({
                                 url: '<?php echo $this->request->webroot;?>clients/updateOrder/<?php if(isset($id))echo $id;?>',
                                 data: 'tosend=' + tosend,
+                                type: 'post'
+                            });
+                            tosend = '';
+
+
+                        }
+                    });
+                    
+                    var tosend2 = '';
+                    $('.sortable2 tbody').sortable({
+                        items: "tr:not(.myclass2)",
+                        update: function (event, ui) {
+
+                            $('.sublisting2').each(function () {
+                                var id = $(this).attr('id');
+                                id = id.replace('subd_', '');
+                                if (tosend2 == '') {
+                                    tosend2 = id;
+                                }
+                                else
+                                    tosend2 = tosend2 + ',' + id;
+                            });
+                            $.ajax({
+                                url: '<?php echo $this->request->webroot;?>clients/updateOrderApplication/<?php if(isset($id))echo $id;?>',
+                                data: 'tosend=' + tosend2,
                                 type: 'post'
                             });
                             tosend = '';
@@ -801,6 +835,20 @@
                         var str = $('#displayform1 input').serialize();
                         $.ajax({
                             url: '<?php echo $this->request->webroot;?>clients/displaySubdocs/<?php echo $id;?>',
+                            data: str,
+                            type: 'post',
+                            success: function (res) {
+                                $('.flash').show();
+                                $('#save_display1').text('<?= $strings["forms_savechanges"]; ?>');
+                            }
+                        })
+                    });
+                    
+                    $('#save_display7').click(function () {
+                        $('#save_display7').text('Saving..');
+                        var str = $('#displayform7 input').serialize();
+                        $.ajax({
+                            url: '<?php echo $this->request->webroot;?>clients/displaySubdocsApplication/<?php echo $id;?>',
                             data: str,
                             type: 'post',
                             success: function (res) {

@@ -1,5 +1,7 @@
 <?php
+if($this->request->params['controller']!='ClientApplication'){
  if($this->request->session()->read('debug')){ echo "<span style ='color:red;'>subpages/documents/generic_form.php #INC165</span>"; }
+ }
  $is_disabled = '';//there is no place for attachments
 if(isset($disabled)) { $is_disabled = 'disabled="disabled"'; }
  ?>
@@ -399,7 +401,7 @@ if(isset($disabled)) { $is_disabled = 'disabled="disabled"'; }
     <input type="text" class="form-control" name="no32" value="<?php if(isset($generic))echo $generic->no32;?>" />
     </div>
  </div>
- <?php if($this->request->params['controller']!='Documents'){?>
+ <?php if($this->request->params['controller']!='Documents' && $this->request->params['controller']!='ClientApplication'){?>
  <div class="addattachment11 form-group col-md-12"></div>
  <?php }?>
  <div class="clearfix"></div>

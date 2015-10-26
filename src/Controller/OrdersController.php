@@ -37,7 +37,7 @@
             $this->loadComponent('Document');
             $this->loadComponent('Mailer');
             $this->loadComponent('Trans');
-            $this->Settings->verifylogin($this, "orders");
+            //$this->Settings->verifylogin($this, "orders");
         }
 
         public function vieworder($cid = null, $did = null, $table = null) {
@@ -191,6 +191,7 @@
             $this->render('addorder');
         }
 
+
         public function addorder($cid = 0, $did = 0, $table = null) {
             $this->set('doc_comp', $this->Document);
             $meedocs = TableRegistry::get('mee_attachments_more');
@@ -220,6 +221,10 @@
                     $profiles = $this->Profiles->find()->where(['id' => $_GET['driver']])->first();
                     $this->set('p', $profiles);
                 }
+            }
+
+            if($this->Manager->requiredfields($profiles, "profile2order") || !$profiles->iscomplete){
+                $this->Flash->error($this->Trans->getString("flash_cantorder"));
             }
 
             if ($did) {

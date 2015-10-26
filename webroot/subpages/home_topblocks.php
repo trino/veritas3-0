@@ -4,9 +4,9 @@
         echo "<span style ='color:red;'>home_topblocks.php #INC112</span>";
     }
 
-    $userid=$this->Session->read('Profile.id');
-    $block = $this->requestAction("settings/all_settings/".$userid."/blocks");
-    $sidebar = $this->requestAction("settings/all_settings/".$userid."/sidebar");
+    if(!isset($userid))     {$userid    = $this->Session->read('Profile.id');}
+    if(!isset($block))      {$block     = $this->requestAction("settings/all_settings/".$userid."/blocks");}
+    if(!isset($sidebar))    {$sidebar   = $this->requestAction("settings/all_settings/".$userid."/sidebar");}
     //$order_url = $this->requestAction("settings/getclienturl/".$this->Session->read('Profile.id')."/order");
     $order_url = 'orders/productSelection?driver=0';
     $document_url = $this->requestAction("settings/getclienturl/".$userid."/document");
@@ -23,6 +23,14 @@
         $lastcolor = $newcolor;
         echo $newcolor;
         srand();
+    }
+
+    function makeblock($debug, $URL, $Name, $Icon = "icon-docs", $Color= "bg-grey-cascade"){//tile
+        //   if(!$debug){$Color= "bg-grey-cascade";}
+        if(!$Icon){$Icon = "icon-docs";}
+        echo '<a href="' .  $URL . '" class="tile ' . $Color;
+        echo '" style="display: block;"><div class="tile-body"><i class="' . $Icon . '"></i></div><div class="tile-object">';
+        echo '<div class="name">' . $Name . '</div><div class="number"></div></div></a>';
     }
 ?>
 
@@ -135,27 +143,21 @@
         </a>
     <?php }
 
+    if ($DoAll || $block->training){
+        makeblock($debug, "training", $strings["index_training"], "fa fa-graduation-cap", "bg-grey-cascade");
+    }
+
     if ($DoAll || $sidebar->orders_create ==1) { ?>
         <STYLE>
             .icon-footprint:before { content: url('assets/global/img/footprint.png'); }
             .icon-surveillance:before { content: url('assets/global/img/surveillance.png'); }
             .icon-physical:before { content: url('assets/global/img/physical.png'); }
         </STYLE>
-
-
     <?php
         $formlist="";
         foreach($forms as $form){
             if (Strlen($formlist)>0){ $formlist.=",";}
             $formlist.=$form->number;
-        }
-
-        function makeblock($debug, $URL, $Name, $Icon = "icon-docs", $Color= "bg-grey-cascade"){//tile
-         //   if(!$debug){$Color= "bg-grey-cascade";}
-            if(!$Icon){$Icon = "icon-docs";}
-            echo '<a href="' .  $URL . '" class="tile ' . $Color;
-            echo '" style="display: block;"><div class="tile-body"><i class="' . $Icon . '"></i></div><div class="tile-object">';
-            echo '<div class="name">' . $Name . '</div><div class="number"></div></div></a>';
         }
 
         $AssignedClient = GetAssignedClients($userid, $clients, true);
@@ -177,7 +179,7 @@
                             $URL = "orders/addorder/" . $AssignedClient . "/?driver=0&order_type=" . $product->Acronym . "&forms=" . $product->doc_ids;
                             if(substr($color, 0,3)!= "bg-"){$color = "bg-" . $color;}
                         }
-                        makeblock($debug, $URL, $product->$Name . $Trans, $product->Icon, $color);
+                        makeblock($debug, $URL, $product->$Name . $Trans, "fa fa-shopping-cart", $color);
                     }
                 }
             }

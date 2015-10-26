@@ -1840,6 +1840,7 @@ class DocumentComponent extends Component{
         if(!is_object($Table)) {$Table = TableRegistry::get($Table);}
         return $Table->find()->where([$Key => $Value])->first();
     }
+
     function insertdb($Table, $Data){
         if(!is_object($Table)) {$Table = TableRegistry::get($Table);}
         $ret = $Table->newEntity($Data);
@@ -1847,7 +1848,8 @@ class DocumentComponent extends Component{
         return $ret;
     }
 
-    function constructdocument($orderid, $document_type, $sub_doc_id, $user_id, $client_id, $draft = 0){
+
+    function constructdocument($orderid, $document_type, $sub_doc_id, $user_id, $client_id, $draft = 0, $UploadedFor = false){
         //id, order_id, document_type, sub_doc_id, title, description, scale, reason, suggestion, user_id, client_id, uploaded_for, created, draft, file
         $offsethours = 0;
         $data = array("created" => $this->offsettime($offsethours, "hours"), "order_id" => $orderid);
@@ -1856,21 +1858,24 @@ class DocumentComponent extends Component{
         $data["sub_doc_id"] = $sub_doc_id;
         $data["user_id"] = $user_id;
         $data["client_id"] = $client_id;
-        $data["uploaded_for"] = $user_id;
+        if(!$UploadedFor){$UploadedFor = $user_id;}
+        $data["uploaded_for"] = $UploadedFor;
         $data["draft"] = $draft;
         return $this->insertdb("documents", $data)->id;
     }
 
-    function constructsubdoc($data, $formID, $userID, $clientID, $orderid=0){
+    function constructsubdoc($data, $formID, $userID, $clientID, $orderid=0, $retData = false, $UploadedFor = false){
         $subdocinfo = $this->findcol("subdocuments", "id", $formID);
         $table = $subdocinfo->table_name;
         $docTitle = $subdocinfo->title;
-        $docid = constructdocument($orderid, $docTitle, $formID, $userID, $clientID, 0);//22= doc id number, 81 = user id for SMI site, 1=client id for SMI
+        $docid = $this->constructdocument($orderid, $docTitle, $formID, $userID, $clientID, 0, $UploadedFor);//22= doc id number, 81 = user id for SMI site, 1=client id for SMI
         $data["document_id"] = $docid;
         $data["order_id"] = $orderid;
         $data["client_id"] = $clientID;
         $data["user_id"] = $userID;
-        $ret = "<BR>" . $this->insertdb($table, $data)->id;
+        $ID = $this->insertdb($table, $data)->id;
+        if($retData){return array("docid" => $docid , "subdocid" => $ID);}
+        $ret = "<BR>" . $ID;
         return $docid . $ret;
     }
 
@@ -1957,4 +1962,28 @@ class DocumentComponent extends Component{
             return $value;
         }
     }
+
+    //returns the order ID
+    function constructorder($title, $user_id, $client_id, $conf_recruiter_name, $conf_driver_name, $forms, $otherdata = "", $order_type = "PSA", $uploaded_for = 0){
+        $controller = $this->_registry->getController();
+
+        $offsethours = date('Y-m-d H:i:s');
+        $data = array("created" => $offsethours, "socialdate1" => date('Y-m-d'), "socialdate2" => date('Y-m-d'), "physicaldate" => date('Y-m-d'));
+        $data["description"] = "Rapid order";
+        $data["title"] = $title;
+        $data["user_id"] = $user_id;
+        $data["client_id"] = $client_id;
+        $data["conf_recruiter_name"] = $conf_recruiter_name;
+        $data["conf_driver_name"] = $conf_driver_name;
+        $data["forms"] = $forms;
+        $data["uploaded_for"] = $uploaded_for;
+        $data["order_type"] = $order_type;
+        if(is_array($otherdata)){
+            $data = array_merge($data, $otherdata);
+        }
+
+        $Order = $controller->Manager->new_entry("orders", "id", $data);
+        return $Order["id"];
+    }
+
 }

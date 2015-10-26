@@ -17,7 +17,7 @@ class JobsController extends AppController {
         parent::initialize();
 		 $this->loadComponent('Trans');
 		 $this->loadComponent('Settings');
-		 $this->Settings->verifylogin($this, "jobs");
+		 //$this->Settings->verifylogin($this, "jobs");
     }
     
 	public function index() {

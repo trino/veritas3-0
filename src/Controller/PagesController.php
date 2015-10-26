@@ -24,24 +24,24 @@ class PagesController extends AppController {
         parent::initialize();
         $this->loadComponent('Settings');
         $this->loadComponent('Trans');
-         $this->Settings->verifylogin($this, "pages");
+        //$this->Settings->verifylogin($this, "pages");
     }
 
 	public function index() {
-	   $this->loadComponent('Document');
-       $this->set('doc_comp',$this->Document);
+	    $this->loadComponent('Document');
+        $this->set('doc_comp',$this->Document);
         $this->getAllClient();
 
         if(isset($_GET['orderflash']))
         $this->Flash->success($this->Trans->getString("flash_orderdraft"));
         $userid=$this->request->session()->read('Profile.id');
 		$setting = $this->Settings->get_permission($userid);
-// debug($setting);die();
+
         if(isset($setting->client_list) && $setting->client_list==0) {
-            $this->set('hideclient',1);
+            $this->set('hideclient', 1);
+        } else {
+            $this->set('hideclient', 0);
         }
-        else
-        $this->set('hideclient',0);
         $conditions="";
         if(!$this->request->session()->read('Profile.super')){
             $conditions["id"] = $this->Manager->find_client($userid);
@@ -52,12 +52,46 @@ class PagesController extends AppController {
 
         $this->set('forms',  TableRegistry::get('order_products')->find('all'));
         $this->getsubdocument_topblocks($userid);
+
+        $block = $this->requestAction("settings/all_settings/" . $userid . "/blocks");
+        $sidebar = $this->requestAction("settings/all_settings/" . $userid . "/sidebar");
+        $this->set("userid",    $userid);
+        $this->set('block',     $block);
+        $this->set('sidebar',   $sidebar);
+
+
+
+  //      debug($sidebar);die();
+  //      $Count = $this->countenabled($block, array("id", "user_id"));
+        if(!$sidebar->orders){
+            if($setting->profile_list) {
+               $this->redirect("/profiles");
+            } else if ($setting->training) {
+                $this->redirect("/training");
+            }
+        }
 	}
+
+    function countenabled($Data, $Filter = array()){
+        if(is_object($Data)){
+            $Data = $this->Manager->getProtectedValue($Data, "_properties");
+        }
+        if(!is_array($Filter)){$Filter = array($Filter);}
+        foreach($Filter as $Key){
+            unset($Data[$Key]);
+        }
+        $Count = 0;
+        foreach($Data as $Value){
+            if($Value){$Count++;}
+        }
+        return $Count;
+    }
 
     function loadproducts($VariableName = 'products'){
         $products = TableRegistry::get('product_types')->find('all');
         $this->set($VariableName,  $products);
     }
+
     function getenabledprovinces($ProductID, $Province = "ALL"){
         $forms = array();
         $items = TableRegistry::get('order_provinces')->find("all")->where(['ProductID' => $ProductID, "Province" => $Province]);
@@ -99,8 +133,8 @@ class PagesController extends AppController {
         $this->response->body(($l));
         return $this->response;
         die();
-
     }
+
     function cms($slug){
     }
 
@@ -133,11 +167,11 @@ class PagesController extends AppController {
           $l =  $content->find()->where(['slug'=>$slug])->first();
           $this->set('content',$l);
     }
+
     function recent_more(){
         $this->layout = 'blank';
     }
-    
-    
+
     function test_email(){
         $this->Mailer->handleevent("test", array("email"=> array('reshma.alee@gmail.com','justdoit_2045@hotmail.com')));
         die('here');

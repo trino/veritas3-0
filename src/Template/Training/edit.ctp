@@ -78,6 +78,8 @@ if (isset($quiz)){
         }?>
     </div>
 
+<?php if($canedit){ ?>
+
 <form action="<?= $this->request->webroot; ?>training/edit?action=save<?= $QuizID ?>" method="post">
 
 <div class="col-md-6">
@@ -130,16 +132,25 @@ if (isset($quiz)){
 
 <div class="col-md-2">
     <div class="form-group">
+        <label class="control-label">Certificate:</label>
+        <LABEL><input type="radio" name="hascert" value="1" <?php if (isset($quiz) && $quiz->hascert) { echo "CHECKED"; } ?>>Yes </LABEL>
+        <LABEL><input type="radio" name="hascert" value="0" <?php if (isset($quiz) && !$quiz->hascert) { echo "CHECKED"; } ?>>No </LABEL>
+    </div>
+</div>
+
+<div class="col-md-2">
+    <div class="form-group">
         <button type="submit" class="btn blue"><i class="fa fa-check"></i> Save Changes</button>
     </div>
 </div>
 
     <?php if (isset($_GET["quizid"])){ ?>
-    <div class="col-md-8" align="right">
+    <div class="col-md-6" align="right">
         <div class="form-group">
             <A href="<?= $this->request->webroot ?>training/users?quizid=<?= $_GET["quizid"] ?>" class="btn btn-info">Results</A>
             <A href="<?= $this->request->webroot ?>training/enroll?quizid=<?= $_GET["quizid"] ?>" class="btn btn-warning">Enroll</A>
-            <a href="<?= $this->request->webroot ?>training/quiz?quizid=<?= $_GET["quizid"] ?>" class="btn btn-info btnspc">Preview</a>
+            <a href="<?= $this->request->webroot ?>training/quiz?quizid=<?= $_GET["quizid"] ?>" class="btn btn-info">Preview</a>
+            <a href="<?= $this->request->webroot ?>training/quiz?quizid=<?= $_GET["quizid"] ?>&debug" class="btn btn-danger">Preview with answers</a>
         </div>
     </div>
     <?php } ?>
@@ -248,7 +259,9 @@ if (isset($quiz)){
     </div>
     </div>
     </div>
-<?php }}
+<?php }}} else {
+    echo "You do not have permission to edit courses";
+}
 if (isset($_GET["export"])){
     function a($text){
         return addslashes($text);

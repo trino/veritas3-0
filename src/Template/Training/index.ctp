@@ -47,8 +47,7 @@
         $QuizID = $_GET["quizid"];
     }
 
-    function clean($data)
-    {
+    function clean($data) {
         if (is_object($data)) {
             $data->Description = clean($data->Description);
             $data->Name = clean($data->Name);
@@ -95,14 +94,12 @@
                             return false;
                             }
 
-                            function quizmiddle($QuizID, $id)
-                            {
+                            function quizmiddle($QuizID, $id) {
                                 echo '</div></div><div class="row"><div class="col-md-2"></div>';
                                 return $id == $QuizID;
                             }
 
-                            function quizend($QuizID, $id, $canedit)
-                            {
+                            function quizend($QuizID, $id, $canedit) {
                                 if ($id != $QuizID) {
                                     printeditbuttons($id, $canedit);
                                 }
@@ -137,8 +134,7 @@
 
 
                         <?
-                            function PrintResults($results, $user)
-                            {
+                            function PrintResults($results, $user) {
                                 if ($results['total'] > 0 && $results['missing'] < $results['total']) {//http://localhost/veritas3/img/profile/172647_974786.jpg
                                     //debug($user); <label class="control-label">Profile Type : </label>
                                     //echo '<div class="row"><div class="col-md-12"><div class="portlet box yellow"><div class="portlet-title">';
@@ -159,23 +155,21 @@
                                         PrintResult("Grade", "<font color='red'>Fail</A>");
                                     }
                                     echo '</font>';
-                                    if ($score >= 80) {
-                                        $link232 = 'training/certificate?quizid=' . $_GET['quizid'] . '&userid=' . $user->id;
-                                        echo '<CENTER><a class=" btn btn-danger" href="' . $link232 . '">Click here to view the certificate</A></CENTER>';
+                                    if ($score >= 80 && $results["hascert"]) {
+                                        $Path = 'training/certificate?quizid=' . $_GET['quizid'] . '&userid=' . $user->id;
+                                        echo '<CENTER><a class=" btn btn-danger" href="' . $Path . '">Click here to view the certificate</A></CENTER>';
                                     }
                                     //echo '</div></div>';
                                     echo "</div>";
                                 }
                             }
 
-                            function PrintResult($name, $number)
-                            {
+                            function PrintResult($name, $number) {
                                 echo '<div class="col-md-2"><label class="control-label">' . $name . ': </label><BR><DIV align="center"><H2>' . $number . '</H2></div></div>';
                             }
 
 
-                            function isenrolled($enrolledquizzes, $canedit, $QuizID)
-                            {
+                            function isenrolled($enrolledquizzes, $canedit, $QuizID) {
                                 if ($canedit) {
                                     return true;
                                 }
@@ -252,8 +246,7 @@
                                 }
                             }
 
-                            function printeditbuttons($QuizID, $canedit)
-                            {
+                            function printeditbuttons($QuizID, $canedit) {
                                 $cols=12;
                                 if (isset($_GET["quizid"])) { $cols = 5; }
                                 echo '<div class="col-md-' . $cols . '" align="right">';
@@ -275,51 +268,6 @@
                             }
 
                         ?>
-
-
-
-
-
-
-
-                        <!--?php if (quizheader($QuizID, 1, "WHMIS", "training.png")) { ?>
-
-                            <p>WHMIS is a comprehensive plan for providing information on the safe use of hazardous materials used in Canadian workplaces.</P>
-                            <p>WHMIS was created in response to the Canadian workers right to know about the safety and health hazards that may be associated with the materials or chemicals that are used in a workplace. Exposure to hazardous materials can cause or contribute to many serious health effects such as effects on the nervous system, kidney or lung damage, sterility, cancer, burns and rashers. Some hazardous materials are safety hazards and can cause fires or explosions.</P>
-                            <p>WHMIS was developed by a committee from representatives from the government, industry and labor to ensure that the best interests of everyone were considered.</P>
-                            <p>On October 31, 1998 WHMIS became a federal Canadian Law. The majority of information requirements of WHMIS legislation were incorporated into the Hazardous Products Act and the Hazardous Materials Information Review Act. These apply to all of Canada.</P>
-
-                            <!php if(quizmiddle($QuizID, 1)){ ?>
-                                <div class="col-md-5" align="right">
-                                    <a href="#" class="btn btn-warning"">Enroll</a>
-                                    <a class="btn btn-info" href="quiz?quizid=1">View</a>
-                                    <a href="#" class="btn btn-primary">Edit</a>
-                                    <a href="#" onclick="return confirm('Are you sure you want to delete this test?');" class="btn btn-danger">Delete</a>
-                                </div>
-                            <!php } quizend($QuizID, 1); } ?-->
-
-
-                        <!--php if (quizheader($QuizID, 2, "Active Shooter Response", "Shooter.png")) { ?>
-
-                            <p>Total chaos typically ensues in an active shooter situation.  This course will give your organization the program planning and training suggestions which will help you minimize that. </P>
-                            <p>We begin with what is the most critical element of the plan - effective and timely communication to local public emergency services and simultaneously the communication to all of your facility/property occupants.  We will then outline the general deployment guidelines for on-site security forces and their cooperation with arriving public emergency service personnel.  Establishment of a command post to coordinate the lockdown of the facility and the apprehension of the shooter will be covered.  General emergency response priorities will be discussed. </P>
-                            <p> The course will provide suggestions regarding the training for response team members and the general training for all facility occupants.  Finally, incident documentation and post incident reaction evaluation will be addressed.</P>
-
-                            <!php if(quizmiddle($QuizID, 2)){ ?>
-                                <div class="col-md-5" align="left">
-                                    <input type="checkbox" id="pdf" disabled></input>
-                                    <a href="webroot/assets/global/ActiveShooterHandout.pdf" download="ActiveShooterHandout.pdf" class="btn btn-warning" onclick="check('pdf');">Handout 2</a>
-                                    <input type="checkbox" id="mp4" disabled></input>
-                                    <a href="training/video?title=Active Shooter Response&url=http://asapsecured.com/wp-content/uploads/2014/11/ActiveShoot_x264_001.mp4" class="btn btn-warning"" target="_blank" onclick="check('mp4');">Video</a>
-                                    <input type="checkbox" id="quiz" disabled></input>
-                                    <a class="btn btn-info" href="training/quiz?quizid=2" onclick="return checkboxesold('pdf', 'mp4');">Quiz</a>
-                                </div>
-                                <div class="col-md-5" align="right">
-                                    <a href="#" class="btn btn-primary" onclick="return confirm('test ' + checkboxesold('pdf', 'mp4'));">Edit</a>
-                                    <a href="#" onclick="return confirm('Are you sure you want to delete this test?');" class="btn btn-danger">Delete</a>
-                                </div>
-                            <!php } quizend($QuizID, 2); } ?-->
-
 
                         <script language="JavaScript">
                             var is_firefox = navigator.userAgent.toLowerCase().indexOf('firefox') > -1;

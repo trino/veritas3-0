@@ -1,6 +1,5 @@
 <?php
     namespace App\Controller;
-
     use App\Controller\AppController;
     use Cake\Event\Event;
     use Cake\Controller\Controller;
@@ -24,7 +23,7 @@
             $this->loadComponent('Mailer');
             $this->loadComponent('Document');
             $this->loadComponent('Trans');
-            $this->Settings->verifylogin($this, "profiles");
+            //$this->Settings->verifylogin($this, "profiles");
         }
 
         function upload_img($id){
@@ -140,13 +139,19 @@
             $this->set('logos', $this->paginate($this->Logos->find()->where(['secondary' => '0'])));
             $this->set('logos1', $this->paginate($this->Logos->find()->where(['secondary' => '1'])));
             $this->set('logos2', $this->paginate($this->Logos->find()->where(['secondary' => '2'])));
+
             $client = TableRegistry::get('clients')->find()->where(['id'=>26])->first();
-            $ids = $client->profile_id;
-            $table = TableRegistry::get('profiles');
             $today = date('Y-m-d');
             $nyear = date('Y-m-d', strtotime($today . '+1 year'));
-            $automatic = $table->find()->where(['id IN('.$ids.")",'is_hired'=>'1','hired_date <>'=>'','hired_date <='=>$nyear,'automatic_sent'=>'0']);
-            $this->set("dates", $automatic);
+            if($client) {
+                $ids = $client->profile_id;
+                $table = TableRegistry::get('profiles');
+                if ($ids) {
+                    $automatic = $table->find()->where(['id IN(' . $ids . ")", 'is_hired' => '1', 'hired_date <>' => '', 'hired_date <=' => $nyear, 'automatic_sent' => '0']);
+                    $this->set("dates", $automatic);
+                }
+            }
+
             $cron = TableRegistry::get('client_crons')->find()->where(['orders_sent'=>'1','manual'=>'0'])->all();
             $this->set('requalify',$cron);
             $maxdate = $cron->max('cron_date');
@@ -195,7 +200,7 @@
 
 
                     }
-                    if($p->profile_type=='5'|| $p->profile_type=='7'|| $p->profile_type=='8'){
+                    //if($p->profile_type=='5'|| $p->profile_type=='7'|| $p->profile_type=='8'){
                         if ($c->requalify_re == '1') {
                             $date = $p->hired_date;
                             if(strtotime($date) <= strtotime($today)) {
@@ -226,7 +231,7 @@
                         array_push($reqs,$n_req);
                         unset($n_req);
                         unset($date);
-                    }
+
                 }
             }
             
@@ -236,9 +241,9 @@
         }
         
         function sksort(&$array, $subkey="id", $sort_ascending=false) {
-
-            if (count($array))
+            if (count($array)) {
                 $temp_array[key($array)] = array_shift($array);
+            }
         
             foreach($array as $key => $val){
                 $offset = 0;
@@ -257,10 +262,14 @@
                 }
                 if(!$found) $temp_array = array_merge($temp_array, array($key => $val));
             }
-        
-            if ($sort_ascending) $array = array_reverse($temp_array);
-        
-            else $array = $temp_array;
+
+            if(is_array($temp_array)) {
+                if ($sort_ascending) {
+                    $array = array_reverse($temp_array);
+                } else {
+                    $array = $temp_array;
+                }
+            }
         }
 
         function checkcron($cid,$date,$pid) {
@@ -656,17 +665,20 @@
             }
 
             if (isset($_GET['filter_by_client']) && $_GET['filter_by_client']) {
-
-                $sub = TableRegistry::get('Clients');
-                $que = $sub->find();
-                $que->select()->where(['id' => $_GET['filter_by_client']]);
-                $q = $que->first();
-                $profile_ids = $q->profile_id;
-                if (!$profile_ids) {
-                    $profile_ids = '99999999999';
+                if($_GET['filter_by_client'] == -1){
+                    if ($cond) {$cond .= ' AND';}
+                    $cond .= ' is_hired = 0';
+                } else {
+                    $sub = TableRegistry::get('Clients');
+                    $que = $sub->find();
+                    $que->select()->where(['id' => $_GET['filter_by_client']]);
+                    $q = $que->first();
+                    $profile_ids = $q->profile_id;
+                    if ($profile_ids) {
+                        if ($cond) {$cond .= ' AND';}
+                        $cond .= ' (id IN (' . $profile_ids . '))';
+                    }
                 }
-                if ($cond){ $cond.= ' AND'; }
-                $cond .= ' (id IN (' . $profile_ids . '))';
             }
             if ($this->request->session()->read('Profile.profile_type') == '2') {
                 if ($cond) {
@@ -678,9 +690,15 @@
             }
             /*=================================================================================================== */
             if($setting->viewprofiles == 0){
-                $query = $this->Profiles->find()->where(['id' => $u]);
+                $Clients = TableRegistry::get('Clients')->find()->select()->where(['visibleprofiles' => 1]);
+                $OR = array();
+                foreach($Clients as $Client){
+                    if($Client->profile_id) {
+                        $OR[] = "id IN (" . $Client->profile_id . ")";
+                    }
+                }
+                $query = $this->Profiles->find()->where([$cond, 'OR' => $OR]);
             } elseif ($cond) {
-                //echo $cond;die();
                 $query = $querys->find();
                 $query = $query->where([$cond, 'OR' => $condition, 'AND' => 'super = 0']);
             } else {
@@ -705,7 +723,8 @@
 
             if (!$this->request->session()->read('Profile.super')) {
                 $table = TableRegistry::get("clients");
-                $results = $table->find('all', array('conditions' => array('id'=>26)))->first()->profile_id;
+                $results = $table->find('all', array('conditions' => array('id'=>26)))->first();
+                if($results){$results=$results->profile_id;}
                 $this->set('assignedtoGFS', $results);
             }
 
@@ -723,6 +742,9 @@
         }
 
         public function view($id = null){
+
+
+
             if (isset($_GET['success'])) {
                 $this->Flash->success($this->Trans->getString("flash_ordersaved"));
             }
@@ -738,12 +760,23 @@
                 $setting = $this->Settings->get_permission($userid);
 
                 if ($setting->profile_list == 0 || ($userid != $id && $setting->viewprofiles ==0)) {
+                    $ClientID = $this->Manager->find_client($id, false);
+                    $visibleprofiles = false;
+                    if($ClientID) {
+                        if (!is_array($ClientID)) {$ClientID = array($ClientID);}
+                        foreach($ClientID as $Client) {
+                            $Client = $this->Manager->get_client($Client);
+                            if($Client->visibleprofiles){$visibleprofiles=true;}
+                        }
+                    }
                     $place = "View: ";
                     if($setting->profile_list == 0) { $place .= "profile_list";}
                     if($userid != $id && $setting->viewprofiles ==0) { $place .= "viewprofiles";}
 
-                    //$this->Flash->error($this->Trans->getString("flash_permissions", array("place" => $place)) . ' (006)');
-                    return $this->redirect("/");
+                    if(!$visibleprofiles) {
+                        //$this->Flash->error($this->Trans->getString("flash_permissions", array("place" => $place)) . ' (006)');
+                        return $this->redirect("/");
+                    }
                 }
 
                 $docs = TableRegistry::get('profile_docs');
@@ -768,6 +801,10 @@
                 $this->set('disabled', 1);
                 $this->set('id', $id);
                 $this->loadclients($profile->id);
+
+                //if($profile->Ptype->placesorders && ($this->Manager->requiredfields($profile, "profile2order") || !$profile->iscomplete)) {
+                    //$this->Flash->error($this->Trans->getString("flash_cantorder"));
+                //}
 
                 $order = TableRegistry::get('documents')->find()->where(['order_id' => 0, 'uploaded_for' => $id])->order('id DESC');
                 $this->set('documents', $order);
@@ -812,7 +849,7 @@
             return $UserID;
         }
 
-        public function add() {
+        public function add() {//called when creating an account
             $this->getsidebar("Sidebar");
 
             $this->set('uid', '0');
@@ -833,20 +870,14 @@
             $profiles = TableRegistry::get('Profiles');
 
             $_POST['created'] = date('Y-m-d');
-            //var_dump($profile);die();
-            if (isset($_POST['pass_word']) && $_POST['pass_word'] == '') {
-                unset($_POST['pass_word']);
-            } else {
-                if (isset($_POST['password'])) {
-                    $_POST['password'] = $_POST['pass_word'];
-                }
-            }
+            if (isset($_POST['password'])) { $_POST['password'] = md5($_POST['password']);}
+
             if ($this->request->is('post')) {
                 if (isset($_POST['profile_type']) && $_POST['profile_type'] == 1) {
                     $_POST['admin'] = 1;
                 }
-
-
+                $_POST['password'] = md5($_POST['pass_word']);
+                unset($_POST['pass_word']);
 
                 $_POST['dob'] = $_POST['doby'] . "-" . $_POST['dobm'] . "-" . $_POST['dobd'];
                 //debug($_POST);die();
@@ -1058,6 +1089,7 @@
             $delimeter = "_";
 
             $this->updatelanguage($_POST);
+
             //$this->Flash->success("Add: " . $add);
             if ($add == '0') {
                 $profile_type = $this->request->session()->read('Profile.profile_type');
@@ -1078,8 +1110,9 @@
                         $_POST['admin'] = 1;
                     }
                     $_POST['dob'] = $_POST['doby'] . "-" . $_POST['dobm'] . "-" . $_POST['dobd'];
-                    if($_POST['expiry_date']!= '')
+                    if($_POST['expiry_date']!= '') {
                         $_POST['expiry_date'] = date('Y-m-d', strtotime($_POST['expiry_date']));
+                    }
                     $profile = $profiles->newEntity($_POST);
                     if ($profiles->save($profile)) {
                         $this->checkusername($profile,$_POST);
@@ -1191,10 +1224,11 @@
                                 $u = $uq->profile_type;
                                 $type_query = TableRegistry::get('profile_types');
                                 $type_q = $type_query->find()->where(['id' => $u])->first();
-                                if ($type_q)
+                                if ($type_q) {
                                     $ut = $type_q->title;
-                                else
+                                }else {
                                     $ut = '';
+                                }
                             } else
                                 $ut = '';
                             if ($_POST['profile_type']) {
@@ -1234,8 +1268,10 @@
                 if ($this->request->is(['patch', 'post', 'put'])) {
                     if (isset($_POST['pass_word']) && $_POST['pass_word'] == '') {
                         $this->request->data['password'] = $profile->password;
+                        $Password = "[ENCRYPTED]";
                     } else {
                         if (isset($_POST['pass_word'])) {
+                            $Password = $_POST['pass_word'];
                             $this->request->data['password'] = md5($_POST['pass_word']);
                         }
                     }
@@ -1252,6 +1288,7 @@
                             unset($this->request->data['username']);
                         }
                     }
+
                     //var_dump($this->request->data); die();//echo $_POST['admin'];die();
                     $profile = $this->Profiles->patchEntity($profile, $this->request->data);
                     if ($this->Profiles->save($profile)) {
@@ -1417,6 +1454,9 @@
         }
 
         public function edit($id = null) {
+
+
+        //called when editing an existing account
             $this->set('doc_comp', $this->Document);
             $check_pro_id = $this->Settings->check_pro_id($id);
             if ($check_pro_id == 1) {
@@ -1469,21 +1509,55 @@
                 'contain' => []
             ]);
 
-            if ($this->request->is(['patch', 'post', 'put'])) {
-                $this->request->data['password'] = $_POST['pass_word'];
+            if(isset($_POST["action"]) && $_POST["action"]) {
+                switch($_POST["action"]){
+                    case "sendmessage":
+                        $From = $this->Manager->get_profile();
+                        $this->Manager->handleevent("sendmessage", array("message" => $_POST["message"], "from" => $From->username, "email" => array($profile->email, $From->email)));
+                        $this->Flash->success($this->Trans->getString("flash_messagesent"));
+
+                        break;
+                }
+            } else if ($this->request->is(['patch', 'post', 'put'])) {
+                $Password=$_POST['pass_word'];
+                $data = $_POST;
+                $data['password'] = md5($Password);
                 if (isset($_POST['pass_word']) && $_POST['pass_word'] == '') {
                     //die('here');
-                    $this->request->data['password'] = $profile->password;
+                    $data['password'] = $profile->password;
+                    $Password = '[ENCRYPTED]';
                 }
-                if (isset($_POST['profile_type']) && $_POST['profile_type'] == 1) {
-                    $this->request->data['admin'] = 1;
-                } else {
-                    $this->request->data['admin'] = 0;
-                }
-                $this->request->data['dob'] = $_POST['doby'] . "-" . $_POST['dobm'] . "-" . $_POST['dobd'];
-                $this->request->data['language'] = $this->updatelanguage($_POST);
 
-                $profile = $this->Profiles->patchEntity($profile, $this->request->data);
+                if (isset($_POST["emailcreds"]) && $_POST["emailcreds"] && strlen(trim($_POST["email"])) > 0) {
+                    $data["emailsent"] = date('Y-m-d H:i:s');
+                }
+
+                if(isset($_POST["emailcreds"]) && $_POST["emailcreds"] && trim($_POST["email"])) {
+                    $data["emailsent"] = date('Y-m-d H:i:s');
+                    $this->Mailer->handleevent("passwordreset", array("username" => $_POST['username'], "email" => $_POST["email"], "password" => $Password));
+                }
+
+                if (isset($_POST['profile_type']) && $_POST['profile_type'] == 1) {
+                    $data['admin'] = 1;
+                } else {
+                    $data['admin'] = 0;
+                }
+                $data['dob'] = $_POST['doby'] . "-" . $_POST['dobm'] . "-" . $_POST['dobd'];
+                $data['language'] = $this->updatelanguage($_POST);
+
+                //$profile = $this->Profiles->patchEntity($profile, $data);//doesn't work
+                $data = $this->Manager->update_database("profiles", "id", $id, $data, true);
+
+                $emails = array("super");
+                if (isset($_POST["emailcreds"]) && $_POST["emailcreds"] && strlen(trim($_POST["email"])) > 0) {
+                    $emails[] = $_POST["email"];
+                }
+
+                if(!$id) {
+                    $path = $this->Document->getUrl();
+                    $this->Mailer->handleevent("profilecreated", array("username" => $_POST['username'], "email" => $emails, "path" => $path, "createdby" => $this->Manager->read("username"), "type" => $profile->profile_type, "password" => $Password, "id" => $id));
+                }
+
                 if ($this->Profiles->save($profile)) {
                     $this->Flash->success($this->Trans->getString("flash_profilesaved"));
                     return $this->redirect(['action' => 'index']);
@@ -1504,7 +1578,6 @@
 
             $this->set('products', TableRegistry::get('product_types')->find()->where(['id <>' => 7]));
             $this->loadclients($profile->id);
-
         }
 
         function loadclients($userid){
@@ -1829,6 +1902,7 @@
                     $this->request->session()->write('Profile.language', $q->language);
                     $this->request->session()->write('Profile.email', $q->email);
                     $this->request->session()->write('Profile.super', $q->super);
+                    $this->request->session()->write('Profile.admin', $q->admin);
                 }
             }
             $this->redirect('/');
@@ -2272,206 +2346,208 @@
 /////////////////////////////////////////////////////////////////////////////////////process order
         function cron($debugging = false) {//////////////////////////////////send out emails
             $path = $this->Document->getUrl();
-            if (isset($_GET["testemail"])) {
-                $email = $this->request->session()->read('Profile.email');
-                $this->sendtaskreminder($email, "test", $path, "(TEST EMAIL)");
-            }
 
             $setting = TableRegistry::get('settings')->find()->first();
             $q = TableRegistry::get('events');
             $que = $q->find();
             //$query = $que->select()->where(['(date LIKE "%' . $date . '%" OR date LIKE "%' . $date2 . '%")', 'sent' => 0])->limit(200);
             $datetime = date('Y-m-d H:i:s');
-            echo "Checking for events before " . $datetime;
             $conditions = array('(date <= "' . $datetime . '")');
             if(!$debugging){$conditions['sent'] = 0;}
             $query = $que->select()->where($conditions)->limit(200);
-            echo "<BR>" . iterator_count($query) . " emails to send<br><br>";
             //VAR_Dump($query);die();
+
+            $Emails = 1;
+            echo '<TABLE BORDER="1" cellspacing="0"><THEAD><TR><TH>ID</TH><TH>TITLE</TH><TH>NOTES</TH></TR></THEAD>';
+            if($debugging){echo '<TR><TH COLSPAN="3">Debugging mode is on</TH></TR>';}
+            echo '<TR><TH COLSPAN="3">Task events before now (' . $datetime . ')</TH></TR>';
+            if (isset($_GET["testemail"])) {
+                $email = $this->request->session()->read('Profile.email');
+                echo '<TR><TD>' . $Emails++ . '</TD><TD>' . $this->sendtaskreminder($email, "test", $path, "TEST EMAIL") . '</TD></TR>';
+            }
             foreach ($query as $todo) {
                 if ($todo->email_self == '1') {
                     $query2 = $this->loadprofile($todo->user_id);
                     $email = $query2->email;
                     if ($email) {
-                        $this->sendtaskreminder($email, $todo, $path, "(Account holder)");
+                        echo '<TR><TD>' . $Emails++ . '</TD><TD>' . $this->sendtaskreminder($email, $todo, $path, "Account holder") . '</TD></TR>';
                     }
                 }
                 if (strlen($todo->others_email) > 0) {
                     $emails = explode(",", $todo->others_email);
                     foreach ($emails as $em) {
-                        $this->sendtaskreminder($em, $todo, $path, "(Added by account holder)");
+                        echo '<TR><TD>' . $Emails++ . '</TD><TD>' . $this->sendtaskreminder($em, $todo, $path, "Added by account holder") . '</TD></TR>';
                     }
                 }
                 $q->query()->update()->set(['sent' => 1, 'email_self' => 0])->where(['id' => $todo->id])->execute();
             }
-            echo "<BR><BR>";
 
             $orders = TableRegistry::get('orders');
             $order = $orders
                 ->find()
-                ->where(['orders.draft' => 0])->order('orders.id DESC')->limit(150);
+                ->where(['orders.draft' => 0, "orders.complete" => 0, "orders.complete_writing" => 1])->order('orders.id DESC')->limit(150);
 
+            echo '<TR><TH COLSPAN="3">The first 150 non-draft orders</TH></TR>';
             foreach ($order as $o) {
+                echo '<TR><TD>' . $o->id . '</TD><TD>' . $o->title . '</TD><TD>' ;
+                // echo $o->id .',';
+                $complete = 1;
 
-                if ($o->complete == 0  && $o->complete_writing == 1) {
-                    // echo $o->id .',';
-                    $complete = 1;
+                if ($o->ins_1 && $o->ins_1_binary == null) {
+                    $complete = 0;
+                    echo "ins 1 not complete<br>";
+                } else if ($o->ins_1 && $o->ins_1_binary != "done") {
+                    $this->create_files_from_binary($o->id, "1", $o->ins_1_binary);
+                    $this->save_bright_planet_grade($o->id, 'ins_1_binary', 'done');
+                    echo "ins 1 complete<br>";
+                }
 
-                    if ($o->ins_1 && $o->ins_1_binary == null) {
-                        $complete = 0;
-                        echo "ins 1 not complete<br>";
-                    } else if ($o->ins_1 && $o->ins_1_binary != "done") {
-                        $this->create_files_from_binary($o->id, "1", $o->ins_1_binary);
-                        $this->save_bright_planet_grade($o->id, 'ins_1_binary', 'done');
-                        echo "ins 1 complete<br>";
+                if ($o->ins_14 && $o->ins_14_binary == null) {
+                    $complete = 0;
+                    echo "ins 14 not complete<br>";
+                } else if ($o->ins_14 && $o->ins_14_binary != "done") {
+                    $this->create_files_from_binary($o->id, "14", $o->ins_14_binary);
+                    $this->save_bright_planet_grade($o->id, 'ins_14_binary', 'done');
+                    echo "ins 14 complete<br>";
+                }
+
+
+                if ($o->ins_72 && $o->ins_72_binary == null) {
+                    $complete = 0;
+                    echo "ins 72 not complete<br>";
+                } else if ($o->ins_72 && $o->ins_72_binary != "done") {
+                    $this->create_files_from_binary($o->id, "72", $o->ins_72_binary);
+                    $this->save_bright_planet_grade($o->id, 'ins_72_binary', 'done');
+                    echo "ins 72 complete<br>";
+                }
+
+                if ($o->ins_77 && $o->ins_77_binary == null) {
+                    $complete = 0;
+                    echo "ins 77 not complete<br>";
+                } else if ($o->ins_77 && $o->ins_77_binary != "done") {
+                    $this->create_files_from_binary($o->id, "77", $o->ins_77_binary);
+                    $this->save_bright_planet_grade($o->id, 'ins_77_binary', 'done');
+                    echo "ins 77 complete<br>";
+                }
+
+
+
+                if ($o->ins_31 && $o->ins_31_binary == null) {
+                    $complete = 0;
+                    echo "ins 31 not complete<br>";
+                } else if ($o->ins_31 && $o->ins_31_binary != "done") {
+                    $this->create_files_from_binary($o->id, "31", $o->ins_31_binary);
+                    $this->save_bright_planet_grade($o->id, 'ins_31_binary', 'done');
+                    echo "ins 31 complete<br>";
+                }
+
+
+                if ($o->ins_32 && $o->ins_32_binary == null) {
+                    $complete = 0;
+                    echo "ins 32 not complete<br>";
+                } else if ($o->ins_32 && $o->ins_32_binary != "done") {
+                    $this->create_files_from_binary($o->id, "32", $o->ins_32_binary);
+                    $this->save_bright_planet_grade($o->id, 'ins_32_binary', 'done');
+                    echo "ins 32 complete<br>";
+                }
+
+                if ($o->ins_78 && $o->ins_78_binary == null) {
+                    $complete = 0;
+                    echo "ins 78 not complete<br>";
+                } else if ($o->ins_78 && $o->ins_78_binary != "done") {
+                    $this->create_files_from_binary($o->id, "78", $o->ins_78_binary);
+                    $this->save_bright_planet_grade($o->id, 'ins_78_binary', 'done');
+                    echo "ins 78 complete<br>";
+                }
+
+                if ($o->ebs_1603 && $o->ebs_1603_binary == null) {
+                    $complete = 0;
+                    echo "ebs 1603 not complete<br>";
+                } else if ($o->ebs_1603 && $o->ebs_1603_binary != "done") {
+                    $this->create_files_from_binary($o->id, "1603", $o->ebs_1603_binary);
+                    $this->save_bright_planet_grade($o->id, 'ebs_1603_binary', 'done');
+                    echo "ebs 1603 complete<br>";
+                }
+
+
+                if ($o->ebs_1627 && $o->ebs_1627_binary == null) {
+                    $complete = 0;
+                    echo "ebs 1627 not complete<br>";
+                } else if ($o->ebs_1627 && $o->ebs_1627_binary != "done") {
+                    $this->create_files_from_binary($o->id, "1627", $o->ebs_1627_binary);
+                    $this->save_bright_planet_grade($o->id, 'ebs_1627_binary', 'done');
+                    echo "ebs 1627 complete<br>";
+                }
+
+
+                if ($o->ebs_1650 && $o->ebs_1650_binary == null) {
+                    $complete = 0;
+                    echo "ebs 1650 not complete<br>";
+                } else if ($o->ebs_1650 && $o->ebs_1650_binary != "done") {
+                    $this->create_files_from_binary($o->id, "1650", $o->ebs_1650_binary);
+                    $this->save_bright_planet_grade($o->id, 'ebs_1650_binary', 'done');
+                    echo "ebs 1650 complete<br>";
+                }
+
+                if ($o->bright_planet_html_binary) {
+                    $this->create_files_from_binary($o->id, "bright_planet_html_binary", $o->bright_planet_html_binary);
+
+                    /*
+                    $sendit = strip_tags(trim($this->get_mee_results_binary($o->bright_planet_html_binary, "Driver's Record Abstract")));
+                    if ($sendit) {
+                        $this->save_bright_planet_grade($o->id, 'ins_1', $sendit);
                     }
 
-                    if ($o->ins_14 && $o->ins_14_binary == null) {
-                        $complete = 0;
-                        echo "ins 14 not complete<br>";
-                    } else if ($o->ins_14 && $o->ins_14_binary != "done") {
-                        $this->create_files_from_binary($o->id, "14", $o->ins_14_binary);
-                        $this->save_bright_planet_grade($o->id, 'ins_14_binary', 'done');
-                        echo "ins 14 complete<br>";
+                    $sendit = strip_tags(trim($this->get_mee_results_binary($o->bright_planet_html_binary, "Pre-employment Screening Program Report")));
+                    if ($sendit) {
+                     $this->save_bright_planet_grade($o->id, 'ins_77', $sendit);
                     }
 
-
-                    if ($o->ins_72 && $o->ins_72_binary == null) {
-                        $complete = 0;
-                        echo "ins 72 not complete<br>";
-                    } else if ($o->ins_72 && $o->ins_72_binary != "done") {
-                        $this->create_files_from_binary($o->id, "72", $o->ins_72_binary);
-                        $this->save_bright_planet_grade($o->id, 'ins_72_binary', 'done');
-                        echo "ins 72 complete<br>";
+                    $sendit = strip_tags(trim($this->get_mee_results_binary($o->bright_planet_html_binary, "CVOR")));
+                    if ($sendit) {
+                       $this->save_bright_planet_grade($o->id, 'ins_14', $sendit);
+                    }
+                    $sendit = strip_tags(trim($this->get_mee_results_binary($o->bright_planet_html_binary, "Premium National Criminal Record Check")));
+                    if ($sendit) {
+                      $this->save_bright_planet_grade($o->id, 'ebs_1603', $sendit);
                     }
 
-                    if ($o->ins_77 && $o->ins_77_binary == null) {
-                        $complete = 0;
-                        echo "ins 77 not complete<br>";
-                    } else if ($o->ins_77 && $o->ins_77_binary != "done") {
-                        $this->create_files_from_binary($o->id, "77", $o->ins_77_binary);
-                        $this->save_bright_planet_grade($o->id, 'ins_77_binary', 'done');
-                        echo "ins 77 complete<br>";
+                    $sendit = strip_tags(trim($this->get_mee_results_binary($o->bright_planet_html_binary, "Certifications")));
+                    if ($sendit) {
+                     $this->save_bright_planet_grade($o->id, 'ebs_1650', $sendit);
                     }
 
-
-
-                    if ($o->ins_31 && $o->ins_31_binary == null) {
-                        $complete = 0;
-                        echo "ins 31 not complete<br>";
-                    } else if ($o->ins_31 && $o->ins_31_binary != "done") {
-                        $this->create_files_from_binary($o->id, "31", $o->ins_31_binary);
-                        $this->save_bright_planet_grade($o->id, 'ins_31_binary', 'done');
-                        echo "ins 31 complete<br>";
+                    $sendit = strip_tags(trim($this->get_mee_results_binary($o->bright_planet_html_binary, "TransClick")));
+                    if ($sendit) {
+                     $this->save_bright_planet_grade($o->id, 'ins_78', $sendit);
                     }
 
-
-                    if ($o->ins_32 && $o->ins_32_binary == null) {
-                        $complete = 0;
-                        echo "ins 32 not complete<br>";
-                    } else if ($o->ins_32 && $o->ins_32_binary != "done") {
-                        $this->create_files_from_binary($o->id, "32", $o->ins_32_binary);
-                        $this->save_bright_planet_grade($o->id, 'ins_32_binary', 'done');
-                        echo "ins 32 complete<br>";
+                    $sendit = strip_tags(trim($this->get_mee_results_binary($o->bright_planet_html_binary, "Letter Of Experience")));
+                    if ($sendit) {
+                     $this->save_bright_planet_grade($o->id, 'ebs_1627', $sendit);
                     }
 
-                    if ($o->ins_78 && $o->ins_78_binary == null) {
-                        $complete = 0;
-                        echo "ins 78 not complete<br>";
-                    } else if ($o->ins_78 && $o->ins_78_binary != "done") {
-                        $this->create_files_from_binary($o->id, "78", $o->ins_78_binary);
-                        $this->save_bright_planet_grade($o->id, 'ins_78_binary', 'done');
-                        echo "ins 78 complete<br>";
-                    }
+                   $this->save_bright_planet_grade($o->id, 'bright_planet_html_binary', null);
+                    */
+                }
 
-                    if ($o->ebs_1603 && $o->ebs_1603_binary == null) {
-                        $complete = 0;
-                        echo "ebs 1603 not complete<br>";
-                    } else if ($o->ebs_1603 && $o->ebs_1603_binary != "done") {
-                        $this->create_files_from_binary($o->id, "1603", $o->ebs_1603_binary);
-                        $this->save_bright_planet_grade($o->id, 'ebs_1603_binary', 'done');
-                        echo "ebs 1603 complete<br>";
-                    }
+                if ($complete == 1 && $o->complete == 0) {
+                    $or = TableRegistry::get('orders');
+                    $quer = $or->query();
+                    $quer->update()
+                        ->set(['complete' => 1])
+                        ->where(['id' => $o->id])
+                        ->execute();
 
+                    $table = TableRegistry::get('profiles');
+                    $profile1 = $table->find()->where(['id' => $o->user_id])->first();
 
-                    if ($o->ebs_1627 && $o->ebs_1627_binary == null) {
-                        $complete = 0;
-                        echo "ebs 1627 not complete<br>";
-                    } else if ($o->ebs_1627 && $o->ebs_1627_binary != "done") {
-                        $this->create_files_from_binary($o->id, "1627", $o->ebs_1627_binary);
-                        $this->save_bright_planet_grade($o->id, 'ebs_1627_binary', 'done');
-                        echo "ebs 1627 complete<br>";
-                    }
-
-
-                    if ($o->ebs_1650 && $o->ebs_1650_binary == null) {
-                        $complete = 0;
-                        echo "ebs 1650 not complete<br>";
-                    } else if ($o->ebs_1650 && $o->ebs_1650_binary != "done") {
-                        $this->create_files_from_binary($o->id, "1650", $o->ebs_1650_binary);
-                        $this->save_bright_planet_grade($o->id, 'ebs_1650_binary', 'done');
-                        echo "ebs 1650 complete<br>";
-                    }
-
-                    if ($o->bright_planet_html_binary) {
-                        $this->create_files_from_binary($o->id, "bright_planet_html_binary", $o->bright_planet_html_binary);
-
-                        /*
-                        $sendit = strip_tags(trim($this->get_mee_results_binary($o->bright_planet_html_binary, "Driver's Record Abstract")));
-                        if ($sendit) {
-                            $this->save_bright_planet_grade($o->id, 'ins_1', $sendit);
-                        }
-
-                        $sendit = strip_tags(trim($this->get_mee_results_binary($o->bright_planet_html_binary, "Pre-employment Screening Program Report")));
-                        if ($sendit) {
-                         $this->save_bright_planet_grade($o->id, 'ins_77', $sendit);
-                        }
-
-                        $sendit = strip_tags(trim($this->get_mee_results_binary($o->bright_planet_html_binary, "CVOR")));
-                        if ($sendit) {
-                           $this->save_bright_planet_grade($o->id, 'ins_14', $sendit);
-                        }
-                        $sendit = strip_tags(trim($this->get_mee_results_binary($o->bright_planet_html_binary, "Premium National Criminal Record Check")));
-                        if ($sendit) {
-                          $this->save_bright_planet_grade($o->id, 'ebs_1603', $sendit);
-                        }
-
-                        $sendit = strip_tags(trim($this->get_mee_results_binary($o->bright_planet_html_binary, "Certifications")));
-                        if ($sendit) {
-                         $this->save_bright_planet_grade($o->id, 'ebs_1650', $sendit);
-                        }
-
-                        $sendit = strip_tags(trim($this->get_mee_results_binary($o->bright_planet_html_binary, "TransClick")));
-                        if ($sendit) {
-                         $this->save_bright_planet_grade($o->id, 'ins_78', $sendit);
-                        }
-
-                        $sendit = strip_tags(trim($this->get_mee_results_binary($o->bright_planet_html_binary, "Letter Of Experience")));
-                        if ($sendit) {
-                         $this->save_bright_planet_grade($o->id, 'ebs_1627', $sendit);
-                        }
-
-                       $this->save_bright_planet_grade($o->id, 'bright_planet_html_binary', null);
-                        */
-                    }
-
-                    if ($complete == 1 && $o->complete == 0) {
-                        $or = TableRegistry::get('orders');
-                        $quer = $or->query();
-                        $quer->update()
-                            ->set(['complete' => 1])
-                            ->where(['id' => $o->id])
-                            ->execute();
-
-                        $table = TableRegistry::get('profiles');
-                        $profile1 = $table->find()->where(['id' => $o->user_id])->first();
-
-                        if ($profile1->email) {
-                            // $path = $this->Mailer->make_order_path($o);
-                            $this->Mailer->handleevent("cronordercomplete", array("site" => $setting->mee, "path" => $path, "email" => array('super',$profile1->email)));
-                        }
+                    if ($profile1->email) {
+                        // $path = $this->Mailer->make_order_path($o);
+                        $this->Mailer->handleevent("cronordercomplete", array("site" => $setting->mee, "path" => $path, "email" => array('super',$profile1->email)));
                     }
                 }
+                echo '</TD></TR>';
             }
 
 
@@ -2511,16 +2587,24 @@
                     }
                 }
             }
+
+            $email="";
+            if (isset($_GET["testemail"]) || $debugging) {
+                $email = "/" . $this->request->session()->read('Profile.email');
+            }
+            echo '<TR><TH COLSPAN="3">Clients</TH></TR>';
+            echo $this->requestAction("clients/cron" . $email);
+
+            echo '</TABLE>';
+
             if (file_exists("royslog.txt")){
-                echo "<h2>Emails: </h2>";
-                echo str_replace("\r\n", "<BR>", file_get_contents ("royslog.txt"));
-                //  unlink("royslog.txt");
+                echo '<BR><span style="border: 2px solid #000000;padding:3px;" onclick="document.getElementById(' . "'royslog'" . ").style.display = ''" . '"><STRONG>Click to see the contents of the log file</STRONG></span>';
+                echo '<BR><SPAN ID="royslog" style="display: none;">' . str_replace("\r\n", "<BR>", file_get_contents ("royslog.txt")) . '</SPAN>';
             }
             die();
         }
 
-        function ajax_cron($type, $profile_id )
-        {
+        function ajax_cron($type, $profile_id ) {
             $path = $this->Document->getUrl();
             $setting = TableRegistry::get('settings')->find()->first();
             $profile = TableRegistry::get('profiles')->find()->where(['id'=>$profile_id])->first();
@@ -2551,10 +2635,9 @@
         function sendtaskreminder($email, $todo, $path, $name) {
             $setting = TableRegistry::get('settings')->find()->first();
             if(is_object($todo)) {
-                $this->Mailer->handleevent("taskreminder", array("title" => $todo->title, "email" => $email, "description" => $todo->description, "dueby" => $todo->date, "domain" => getHost("isbmee.com"), "site" => $setting->mee
+                $this->Mailer->handleevent("taskreminder", array("title" => $todo->title, "email" => $email, "description" => $todo->description, "dueby" => $todo->date, "domain" => getHost("isbmee.com"), "site" => $setting->mee, "path" => $path
                 ));
-                echo "<br>Sending task reminder to: " . $email;
-                return true;
+                return $email . '</TD><TD>' . $name;
             } else {
                 $this->Mailer->handleevent("test", array("email" => $email));
             }
@@ -2607,7 +2690,9 @@
 
         function cleardb() {
             if ($this->request->session()->read('Profile.super') == 1) {
+                $Tables = $this->Manager->enum_tables();
 
+                echo "Database: " . DATABASE;
                 //$query = $conn->query("show tables");
 
                 //WHITELIST//
@@ -2616,13 +2701,18 @@
                 $this->DeleteAttachment(-1, "profiles", "/img/profile/");
                 $this->DeleteAttachment(-1, "doc_attachments", "/attachments/");
                 $this->DeleteUser(-1);//deletes all users
-                $this->DeleteTables(array("clients", "clientssubdocument", "client_divison", "client_sub_order", "client_products"));//deletes clients
+                $this->DeleteTables(array("clients", "clientssubdocument", "client_divison", "client_sub_order", "client_products"), $Tables);//deletes clients
                 //deletes documents
-                $this->DeleteTables(array("audits", "consent_form", "consent_form_criminal", "documents", "driver_application", "road_test", "survey"));
-                $this->DeleteTables(array("abstract_forms", "bc_forms", "quebec_forms", "education_verification", "employment_verification", "feedbacks", "orders"));
-                $this->DeleteTables(array("driver_application_accident", "driver_application_licenses", "clientssubdocument", "mee_attachments"));
-                $this->DeleteTables(array("pre_screening", "generic_forms", "pre_employment_road_test", "past_employment_survey", "application_for_employment_gfs"));
-                $this->DeleteTables(array("basic_mee_platform"));
+                $this->DeleteTables(array("audits", "consent_form", "consent_form_criminal", "documents", "driver_application", "road_test", "survey"), $Tables);
+                $this->DeleteTables(array("abstract_forms", "bc_forms", "quebec_forms", "education_verification", "employment_verification", "feedbacks", "orders"), $Tables);
+                $this->DeleteTables(array("driver_application_accident", "driver_application_licenses", "clientssubdocument", "mee_attachments", "training_enrollments", "training_answers"), $Tables);
+                $this->DeleteTables(array("pre_screening", "generic_forms", "pre_employment_road_test", "past_employment_survey", "application_for_employment_gfs"), $Tables);
+                $this->DeleteTables(array("basic_mee_platform", "events", "client_crons", "consent_form_attachments", "driver_application_attachments", "education_verification_attachments"), $Tables);
+                $this->DeleteTables(array("employment_verification_attachments", "mee_attachments_more", "pre_screening_attachments", "road_test_attachments"), $Tables);
+
+                if($Tables) {
+                    echo "<BR>Untouched tables: " . implode(", ", $Tables);
+                }
 
                 //do not delete settings, contents, logos, subdocuments, order_products, color_class, client_types, profile_types, training_quiz, training_list,
 
@@ -2637,19 +2727,23 @@
                 //die();
                 $this->layout = "blank";
             }
+            die();
         }
 
-        function DeleteTables($Table) {
+        function DeleteTables($Table, &$Tables = array()) {
             if (is_array($Table)) {
-                foreach ($Table as $table) {
+                foreach ($Table as $Key => $table) {
                     $this->DeleteTables($table);
+                    unset($Tables[$Key]);
                 }
             } else {
                 switch ($Table) {
                     case "clients":
                         $table = TableRegistry::get("clients")->find('all');
                         foreach ($table as $client) {
-                            unlink(getcwd() . "/img/jobs/" . $client->image); //delete image
+                            if($client->image) {
+                                @unlink(getcwd() . "/img/jobs/" . $client->image); //delete image
+                            }
                         }
                         break;
                     case "settings":
@@ -2690,7 +2784,9 @@
                     if ($user->super == 1) {
                         return false;
                     }//cannot delete supers
-                    unlink(getcwd() . "/img/profile/" . $user - image);
+                    if($user->image != "default.png") {
+                        @unlink(getcwd() . "/img/profile/" . $user->image);
+                    }
                 }//delete image
                 $attachments = TableRegistry::get("profile_docs")->find('all', array('conditions' => array(['profile_id' => $ID])));
                 foreach ($attachments as $attachment) {
@@ -2969,6 +3065,10 @@
             return $this->response;
         }
 
+        public function appendtext($Start, $Finish, $Delimeter = ","){
+            if($Start) { return $Start . $Delimeter . $Finish; }
+            return $Finish;
+        }
 
         public function appendattachments($query){
             foreach ($query as $client) {

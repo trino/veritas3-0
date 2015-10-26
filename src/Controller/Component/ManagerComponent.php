@@ -5,14 +5,27 @@ use Cake\Controller\Component;
 use Cake\ORM\TableRegistry;
 use Cake\Cache\Cache;
 use Cake\Datasource\ConnectionManager;
+use DateTime;
 
 class ManagerComponent extends Component {
     function init($Controller){
+        if($Controller->request->params['controller']!='ClientApplication'){
         $Controller->set("Manager", $this);
         $Controller->set("Me", $Controller->request->session()->read('Profile.id'));
         $this->Controller = $Controller;
 
         //echo $this->sendorder(813);  die();
+        if(isset($_GET["action"])){
+            switch (strtolower($_GET["action"])){
+                case "testemail":
+                    $this->handleevent("test", array("email" => "roy@trinoweb.com"));
+                    break;
+            }
+        }
+
+        $Controller->loadComponent("Settings");
+        $Controller->Settings->verifylogin($Controller,$Controller->name);
+        }
     }
 
     //////////////////////////profile API//////////////////////////////////////////
@@ -20,8 +33,13 @@ class ManagerComponent extends Component {
         return $this->Controller->request->session()->read('Profile.' . $Key);
     }
 
-    public function get_profile($UserID){
+    public function get_profile($UserID = false){
+        if(!$UserID){$UserID=$this->read("id");}
         return $this->get_entry("profiles", $UserID, "id");
+    }
+
+    function getfirstsuper(){
+        return TableRegistry::get('profiles')->find()->where(['super'=>1])->first();
     }
 
     function profile_to_array($ID, $JSON = false, $Pretty = false){
@@ -79,7 +97,10 @@ class ManagerComponent extends Component {
         if(!$UserID){return 0;}
         $clients = TableRegistry::get("clients")->find()->select('id')->where(['profile_id LIKE "'.$UserID.',%" OR profile_id LIKE "%,'.$UserID.',%" OR profile_id LIKE "%,'.$UserID.'" OR profile_id ="'.$UserID.'"']);
         if (iterator_count($clients) == 1 || $LimitToOne) {
-            return $clients->first()->id;
+            $clients = $clients->first();
+            if($clients) {
+                return $clients->id;
+            }
         } else if (iterator_count($clients) > 1) {
             $Data = array();
             foreach($clients as $client){
@@ -87,6 +108,7 @@ class ManagerComponent extends Component {
             }
             return $Data;
         }
+        return 0;
     }
 
 
@@ -483,7 +505,9 @@ class ManagerComponent extends Component {
                     $Filename = $this->randomtext(10) . "_" . $this->randomtext(10) . "." . $Type;
                 }
             }
-            file_put_contents($Path . "/" . $Filename, $Data);
+
+            $Path = str_replace("//", "/", $Path . "/" . $Filename);
+            file_put_contents($Path, $Data);
             return $Filename;
         }
         return $Data;
@@ -563,6 +587,11 @@ class ManagerComponent extends Component {
         return $this->get_entry("clients", $ClientID, "id");
     }
 
+    function assign_profile_to_client($ProfileID, $ClientID){
+        $Client = $this->get_entry('clients', $ClientID, "id");
+        $Profiles = $this->appendstring($Client->profile_id, $ProfileID);
+        $this->update_database("clients", "id", $ClientID, array("profile_id" => $Profiles));
+    }
 
 
     ///////////////////////////////////////JSON API//////////////////////////////
@@ -654,6 +683,10 @@ class ManagerComponent extends Component {
 
 
     /////////////////////////////////DATABASE API///////////////////////////////////
+    function now(){
+        return date('Y-m-d H:i:s');
+    }
+
     function paginate($Data){
         return $this->Controller->paginate($Data);
     }
@@ -716,9 +749,9 @@ class ManagerComponent extends Component {
     function enum_anything($Table, $Key, $Value){
         return TableRegistry::get($Table)->find('all')->where([$Key=>$Value]);
     }
-    function new_anything($Table, $Name){
-        $Name = $this->new_entry($Table, "ID", array("Name" => $Name));
-        return $Name["ID"];
+    function new_anything($Table, $Name, $PrimaryKey = "ID"){
+        $Name = $this->new_entry($Table, $PrimaryKey, array("Name" => $Name));
+        return $Name[$PrimaryKey];
     }
 
     function get_entry($Table, $Value, $PrimaryKey = "id"){
@@ -727,7 +760,8 @@ class ManagerComponent extends Component {
     }
 
     //only use when you know the primary key value exists
-    function update_database($Table, $PrimaryKey, $Value, $Data){
+    function update_database($Table, $PrimaryKey, $Value, $Data, $CheckColumns = false){
+        if($CheckColumns){$Data = $this->matchcolumns($Table, $Data);}
         TableRegistry::get($Table)->query()->update()->set($Data)->where([$PrimaryKey => $Value])->execute();
         $Data[$PrimaryKey] = $Value;
         return $Data;
@@ -886,17 +920,15 @@ class ManagerComponent extends Component {
         }
     }
 
-    function cURL($URL, $data = "", $username = "", $password = ""){
+    function cURL($URL, $data = "", $datatype = "application/x-www-form-urlencoded;charset=UTF-8", $username = "", $password = ""){
         $session = curl_init($URL);
         curl_setopt($session, CURLOPT_HEADER, false);
         curl_setopt($session, CURLOPT_SSL_VERIFYPEER, false);//not in post production
         curl_setopt($session, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($session, CURLOPT_POST, true);
         if($data) { curl_setopt ($session, CURLOPT_POSTFIELDS, $data);}
-
-        $datatype = "x-www-form-urlencoded;charset=UTF-8";
-        if($this->isJson($data)){$datatype  = "json";}
-        $header = array('Content-type: application/' . $datatype, "User-Agent: " . $this->AppName());
+        if($this->isJson($data)){$datatype  = "application/json";}
+        $header = array('Content-type: ' . $datatype, "User-Agent: " . $this->AppName());
         if ($username && $password){
             $header[] =	"Authorization: Basic " . base64_encode($username . ":" . $password);
         } else if ($username) {
@@ -915,8 +947,31 @@ class ManagerComponent extends Component {
         return $response;
     }
 
+    function is_a_date($Date, $Formats = "m/d/Y"){
+        if(!is_array($Formats)){$Formats = array($Formats);}
+        foreach ($Formats as $Format) {
+            $date = DateTime::createFromFormat($Format, $Date);
+            if($date == False){return false;}
+        }
+        return true;
+    }
 
     function validate_data($Data, $DataType){
+        if(is_array($Data) && is_array($DataType)){
+            foreach($DataType as $Key => $Type){
+                if(isset($Data[$Key]) && $Data[$Key] && !is_array($Data[$Key])){
+                    $Value = $this->validate_data($Data[$Key], $Type);
+                    if($Value){
+                        $Data[$Key] = $Value;//cleaned value
+                    } else {
+                        return $Key . " (" . $Data[$Key] . ") is not a valid " . $Type;
+                    }
+                }
+            }
+            return $Data;
+        } else if (is_array($DataType)){
+            return in_array($Data, $DataType);
+        }
         switch(strtolower($DataType)) {
             case "number":
                 return preg_replace("/[^0-9,.]/", "", $Data);
@@ -941,13 +996,40 @@ class ManagerComponent extends Component {
             case "email":
                 if (filter_var($Data, FILTER_VALIDATE_EMAIL)){return strtolower(trim($Data));}
                 break;
+            case "date":
+                if($this->is_a_date($Data)){return $Data;}
+                break;
+            case "required":
+                return $Data;
+                break;
+
+            case "province":
+                if (in_array(strtoupper($Data), ["AB", "BC", "MB", "NB", "NL", "NT", "NS", "NU", "ON", "PE", "QC", "SK", "YT"])){return strtoupper($Data);}
+                break;
+            case "bool":
+                if ($Data == 0 || $Data == 1){return $Data;}
+                break;
+            case "base64file":
+                if( strpos($Data, "data:image/") !== false && strpos($Data, ";base64,") !== false){return $Data;}
+                break;
+            case "csv":
+                $EXP = explode(",", $Data);
+                foreach($EXP as $Cell){
+                    if(!is_numeric($Cell)){return "";}
+                }
+                return $Data;
+                break;
+            case "md5":
+                if($this->isValidMd5($Data)){return $Data;}
+                break;
 
             case "postalcode":
                 if ($this->validate_postal_code($Data)) {return $this->clean_postalcode($Data);}
                 break;
             case "phone":
-                $Data = $this->validate_data($Data, "number");
-                if (strlen($Data) == 7 || strlen($Data) == 10 || strlen($Data) == 11){return $this->format_phone($Data);}
+                $Data = preg_replace('/[^\d+]/', '', $Data);
+                if (strlen($Data) > 6 && strlen($Data) < 12){return $this->format_phone($Data);}
+                return $Data;
                 break;
             case "sin":
                 $Data = $this->validate_data($Data, "number");
@@ -970,6 +1052,10 @@ class ManagerComponent extends Component {
         return "";
     }
 
+    function isValidMd5($md5 ='') {
+        return preg_match('/^[a-f0-9]{32}$/', $md5);
+    }
+
     function clean_postalcode($PostalCode){
         $PostalCode = strtoupper($this->validate_data($PostalCode, "alphanumeric"));
         if($this->validate_postal_code($PostalCode)){
@@ -979,7 +1065,28 @@ class ManagerComponent extends Component {
     }
 
     function validate_postal_code($PostalCode)  {//function by Roshan Bhattara(http://roshanbh.com.np)
-        return preg_match("/^([a-ceghj-npr-tv-z]){1}[0-9]{1}[a-ceghj-npr-tv-z]{1}[0-9]{1}[a-ceghj-npr-tv-z]{1}[0-9]{1}$/i", $PostalCode);
+        return preg_match("/^([a-ceghj-npr-tv-z]){1}[0-9]{1}[a-ceghj-npr-tv-z]{1}[0-9]{1}[a-ceghj-npr-tv-z]{1}[0-9]{1}$/i", str_replace(" ", "", $PostalCode));
+    }
+
+    function requiredfields($Data, $Fields = ""){
+        if(!is_array($Fields)){
+            switch($Fields) {
+                case "profile2order":
+                    $Fields = array ("fname" => "forms_firstname", "email" => "forms_email", "lname" => "forms_lastname", "profile_type" => "profiles_profiletype", "gender" => "forms_gender",  "driver_province" => "forms_provinceissued", "title" => "forms_title", "placeofbirth" => "forms_placeofbirth", "sin" => "forms_sin", "phone" => "forms_phone", "street" => "forms_address", "city" => "forms_city", "province" => "forms_provincestate", "postal" => "forms_postalcode", "country" => "forms_country", "dob" => "forms_dateofbirth", "driver_license_no" => "forms_driverslicense", "expiry_date" => "forms_expirydate");
+                    //if(DATABASE == "ttsao"){ unset($Fields["sin"]);}
+                    break;
+            }
+            if(!is_object($Data)){return $Fields;}
+            $Fields= array_keys($Fields);
+        }
+        if(is_array($Fields)){
+            foreach($Fields as $Key){
+                if(!isset($Data->$Key) || !$Data->$Key){
+                    return $Key;
+                }
+            }
+        }
+        return false;
     }
 
     function format_phone($phone) {
@@ -991,6 +1098,12 @@ class ManagerComponent extends Component {
             case 7:
                 return preg_replace("/([0-9]{3})([0-9]{4})/", "$1-$2", $phone);
                 break;
+            case 8://europe
+                return preg_replace('/([0-9]{3})([0-9]{2})([0-9]{3})/', '$1 - $2 $3', $phone);
+                break;
+            case 9://europe
+                return preg_replace('/([0-9]{3})([0-9]{2})([0-9]{2})([0-9]{2})/', '$1 - $2 $3 $4', $phone);
+                break;
             case 10:
                 return preg_replace("/([0-9]{3})([0-9]{3})([0-9]{4})/", "($1) $2-$3", $phone);
                 break;
@@ -1001,6 +1114,25 @@ class ManagerComponent extends Component {
                 return $phone;
                 break;
         }
+    }
+
+    function copyitems($From, $Items){
+        $To = array();
+        foreach($Items as $Key => $Value){
+            if(is_numeric($Key)) {
+                $Item = $Value;
+                $Default = "";
+            } else {
+                $Item = $Key;
+                $Default = $Key;
+            }
+            if (isset($From[$Item])) {
+                $To[$Item] = $From[$Item];
+            } else if($Default) {
+                $To[$Item] = $Default;
+            }
+        }
+        return $To;
     }
 
     function change_column_comment($Table, $Column, $Comment){
@@ -1192,6 +1324,33 @@ class ManagerComponent extends Component {
         if (is_file($Filename)) {
             @unlink($Filename);
         }
+    }
+
+    function test($Data= ""){
+        debug($Data);
+        die();
+    }
+
+    function callsub($Controller, $Function, $Paramaters=""){
+        if(is_array($Paramaters)){$Paramaters = implode("/", $Paramaters);}
+        if($_SERVER['SERVER_NAME']  == "localhost"){
+            $Path = "http://" . $_SERVER['SERVER_NAME'] . $this->Controller->request->webroot . $Controller . '/' . $Function . '/' . $Paramaters;
+        } else if($_SERVER['SERVER_NAME']  == "isbmee.ca"){
+            $Path = "http://" . $_SERVER['SERVER_NAME'] . '/mee/' . $Controller . '/' . $Function . '/' . $Paramaters;
+        } else {
+            $Path = "http://" . $_SERVER['SERVER_NAME'] . '/' . $Controller . '/' . $Function . '/' . $Paramaters;
+        }
+        return file_get_contents($Path);
+    }
+
+    function matchcolumns($Table, $Data){
+        $Table = $this->getColumnNames($Table);
+        foreach($Data as $key => $value){
+            if(!in_array($key,$Table)){
+                unset($Data[$key]);
+            }
+        }
+        return $Data;
     }
 }
 ?>

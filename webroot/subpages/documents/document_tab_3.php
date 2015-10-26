@@ -4,7 +4,7 @@
  }
  ?>
 <div id="form_tab4">
-<input class="document_type" type="hidden" name="document_type" value="<?php echo $dx->title;?>" />
+<input class="document_type" type="hidden" name="document_type" value="<?php if(isset($dx))echo $dx->title;else echo "Consent";?>" />
 <input type="hidden" class="sub_docs_id" name="sub_doc_id" value="4"  />
 <!--<div>
                                                 <ul class="nav nav-tabs consents">

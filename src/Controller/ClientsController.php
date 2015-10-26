@@ -22,18 +22,19 @@
             $this->loadComponent('Mailer');
             $this->loadComponent('Trans');
 
-            $this->Settings->verifylogin($this, "clients");
+            //$this->Settings->verifylogin($this, "clients");
         }
 
         function getclient_id($id) {
             $client = TableRegistry::get('clients')->find()->where(['id' => '17'])->first();
-            $pid = $client->profile_id;
-            $pids = explode(",", $pid);
-            if (in_array($id, $pids)) {
-                $q = '1';
-
-            } else
-                $q = 0;
+            $q = 0;
+            if($client) {
+                $pid = $client->profile_id;
+                $pids = explode(",", $pid);
+                if (in_array($id, $pids)) {
+                    $q = '1';
+                }
+            }
             $this->response->body($q);
             return $this->response;
             die();
@@ -510,7 +511,7 @@
             $_POST = array_merge($_POST, $_GET);
         }
 
-        function HandleAJAX(){
+        function HandleAJAX(){//url = $this->request->webroot. 'clients/quickcontact',
             $Value = false;
             $this->copyGETtoPOST();
             if (isset($_POST['Value'])) {$Value = strtolower($_POST['Value']) == "true"; }
@@ -549,6 +550,11 @@
                     $this->Mailer->handleevent("gfs", array("email" => $profile->email, "path1" => $URL . 4, "path2" => $URL . 9, "site" => $setting->mee, "username" => $this->request->session()->read('Profile.username')));
                     $this->updatetable("profiles", "id", $profile->id, "send_to", $this->request->session()->read('Profile.id'));
                     echo $this->Trans->getString("flash_emailwassent", array("email" => $profile->email) );
+                    break;
+                case "visibleprofiles":
+                    $Status=0;
+                    if(strtolower($_POST["status"]) == "true"){$Status=1;}
+                    $this->Manager->update_database("clients", "id", $_POST["clientid"], array("visibleprofiles" => $Status));
                     break;
                 default:
                     echo $_POST["Type"] . " is not a handled AJAX type (ClientsController - HandleAJAX)";
@@ -764,6 +770,15 @@
             return $this->response;
             die();
         }
+        
+        function getSubCliApplication($id){
+            $sub = TableRegistry::get('client_application_sub_order');
+            $query = $sub->find();
+            $q = $query->select()->where(['client_id' => $id])->order(['display_order' => 'ASC']);
+            $this->response->body($q);
+            return $this->response;
+            die();
+        }
 
 
         function getSubCli2($id, $type="", $getTitle=false, $SortByTitle=false){
@@ -904,6 +919,111 @@
                                 $query2 = $subp->query();
                                 $query2->insert(['client_id', 'subdoc_id', 'display_order'])
                                     ->values(['client_id' => $id, 'subdoc_id' => $k2, 'display_order' => 0])
+                                    ->execute();
+                            }
+                        }
+
+                    }
+                }
+            }
+            unset($display['clientC']);
+            unset($display['clientO']);
+            unset($display['client']);
+
+            //For System base
+            foreach ($display as $k => $v) {
+                $subd = TableRegistry::get('Subdocuments');
+                $query3 = $subd->query();
+                $query3->update()
+                    ->set(['display' => $v])
+                    ->where(['id' => $k])
+                    ->execute();
+            }
+
+            //var_dump($str);
+            die('here');
+        }
+        
+        function displaySubdocsApplication($id){
+            //var_dump($_POST);die();
+            $user['client_id'] = $id;
+            $display = $_POST; //defining new variable for system base below upcoming foreach
+            //for user base
+            foreach ($_POST as $k => $v) {
+                if ($k == 'clientC') {
+                    foreach ($_POST[$k] as $k2 => $v2) {
+                        $subp = TableRegistry::get('clientssubdocument');
+                        $query = $subp->find();
+                        $query->select()
+                            ->where(['client_id' => $id, 'subdoc_id' => $k2]);
+                        $check = $query->first();
+
+                        if ($v2 == '1') {
+                            if ($check) {
+                                $query2 = $subp->query();
+                                $query2->update()
+                                    ->set(['display' => $v2])
+                                    ->where(['client_id' => $id, 'subdoc_id' => $k2])
+                                    ->execute();
+                            } else {
+                                $query2 = $subp->query();
+                                $query2->insert(['client_id', 'subdoc_id', 'display'])
+                                    ->values(['client_id' => $id, 'subdoc_id' => $k2, 'display' => $v2])
+                                    ->execute();
+                            }
+                        } else {
+                            if ($check) {
+                                $query2 = $subp->query();
+                                $query2->update()
+                                    ->set(['display' => 0])
+                                    ->where(['subdoc_id' => $k2, 'client_id' => $id])
+                                    ->execute();
+                            } else {
+                                $query2 = $subp->query();
+                                $query2->insert(['client_id', 'subdoc_id', 'display'])
+                                    ->values(['client_id' => $id, 'subdoc_id' => $k2, 'display' => 0])
+                                    ->execute();
+                            }
+                        }
+
+                    }
+                }
+                if ($k == 'clientO') {
+                    foreach ($_POST[$k] as $k2 => $v2) {
+                        //echo $id.'_'.$k2.'_'.$v2.'<br/>';
+                        $subp = TableRegistry::get('clientssubdocument');
+                        $query = $subp->find();
+                        $query->select()
+                            ->where(['client_id' => $id, 'subdoc_id' => $k2]);
+                        $check = $query->first();
+
+                        if ($v2 == '1') {
+
+                            if ($check) {
+
+                                $query2 = $subp->query();
+                                $query2->update()
+                                    ->set(['display_application' => $v2])
+                                    ->where(['client_id' => $id, 'subdoc_id' => $k2])
+                                    ->execute();
+                            } else {
+
+                                $query2 = $subp->query();
+                                $query2->insert(['client_id', 'subdoc_id', 'display_application'])
+                                    ->values(['client_id' => $id, 'subdoc_id' => $k2, 'display_application' => $v2])
+                                    ->execute();
+                            }
+                        } else {
+                            if ($check) {
+                                $query2 = $subp->query();
+                                $query2->update()
+                                    ->set(['display_application' => 0])
+                                    ->where(['subdoc_id' => $k2, 'client_id' => $id])
+                                    ->execute();
+                            } else {
+                                $query2 = $subp->query();
+                                $query2->insert(['client_id', 'subdoc_id', 'display_application'])
+                                    ->values(['client_id' => $id, 'subdoc_id' => $k2, 'display_application' => 0])
                                     ->execute();
                             }
                         }
@@ -1193,6 +1313,23 @@
             }
             die();
         }
+        
+        function updateOrderApplication($cid){
+            $ids = $_POST['tosend'];
+            $arr = explode(',', $ids);
+            $arr_s['client_id'] = $cid;
+            $sub_c = TableRegistry::get('client_application_sub_order');
+            $del = $sub_c->query();
+            $del->delete()->where(['client_id' => $cid])->execute();
+            foreach ($arr as $k => $sid) {
+                $arr_s['sub_id'] = $sid;
+                $arr_s['display_order'] = $k + 1;
+
+                $sc = $sub_c->newEntity($arr_s);
+                $sub_c->save($sc);
+            }
+            die();
+        }
 
         function addsubdocs(){
             $languages = explode(",", $_GET["languages"]);
@@ -1405,29 +1542,30 @@
             $_POST['requalify_product'] = $p;
             $id = $_POST['id'];
             $cleint = TableRegistry::get('clients');
+
+            $RunCron = isset($_POST["runcron"]) && $_POST["runcron"];
+            unset($_POST["runcron"]);
+
             $query = $cleint->query();
                         $query->update()
                             ->set($_POST)
                             ->where(['id' => $id])
                             ->execute();
-            
-           die();
+            if($RunCron){$this->cron($this->Manager->read("email"));}
+            die();
         }
         
 
-        function cron() {
-            $msg ="";
-            $client_crons = TableRegistry::get('client_crons');
-            
-            $clients = TableRegistry::get('clients')->find('all')->where(['requalify'=>'1']);
-            $marr = array();
-            
+        function cron($IsDebug = false) {
+            $msg =              "";
+            $client_crons =     TableRegistry::get('client_crons');
+            $ord =              TableRegistry::get('orders');
+            $clients =          TableRegistry::get('clients')->find('all')->where(['requalify'=>'1']);
+            $marr =             array();
+            $Subject =          'Requalifed';
             
             foreach($clients as $c) {
-                
-                $msg .= "<br/><br/><strong>Clients</strong><br/>";
-                $msg .= $c->company_name;
-                $msg .="<br/>";
+                $msg .= "<TR><TD>" . $c->id . '</TD><TD>' . $c->company_name . '</TD><TD>';
                 if($c->requalify_re == '0') {
                      $date = $c->requalify_date;
                 }
@@ -1437,14 +1575,12 @@
                 $frequency = $c->requalify_frequency;
                 $forms = $c->requalify_product;
                 $msg .= "Selected Forms: ".$forms."<br/>";
-                //$nxt_sec = strtotime($today)+($frequency*24*60*60*30);
-                
+
                 $nxt_date = $this->getnextdate($today,$frequency);
                 $pro = '';
                 $p_type = '';
                 $p_name = "";
                 $emails ='';
-                $Subject = 'Requalifed';
                 $profile_type = TableRegistry::get("profile_types")->find('all')->where(['placesorders'=>1]);
                 foreach($profile_type as $ty) {
                     $p_type .= $ty->id.",";
@@ -1464,38 +1600,34 @@
                     $escape_ids = '0';
                 }
                 $profile = TableRegistry::get('profiles')->find('all')->where(['id IN('.$c->profile_id.')','id NOT IN ('.$escape_ids.')','requalify'=>'1', 'profile_type IN('.$p_types.')','expiry_date<>""','expiry_date >='=>$today]);
-                unset($escape_ids);
-                //debug($profile);
-                //die();
                 foreach($profile as $p) {
-                    //echo $p->id;
                     if($c->requalify_re == '1') {
                          $date = $p->hired_date;
                           if(strtotime($date) < strtotime($today)) {
                                 $date =  $this->getnextdate($date,$frequency);
                           }
                     }
-                   
-                    //echo $date;
-                    //die();
-                    if($today == $date || $date == $nxt_date) {
+                    if($today == $date || $date == $nxt_date || $IsDebug) {
                         $pro .=$p->id.","; 
                         $p_name .= $p->username.",";
                     }
                   }
                   if($pro !=""){
                   $msg .= "Profiles:".$p_name."<br/>";
-                  $recruiters = TableRegistry::get('profiles')->find('all')->where(['id IN('.$c->profile_id.')','requalify'=>'1', 'profile_type IN'=>'2','email<>""']);
-                  foreach($recruiters as $emrec) {
-                        array_push($rec,$emrec->email);
-                        $emails .= $emrec->email.",";
-                        $this->Mailer->sendEmail("", $emrec->email, $Subject, $msg);//what is the subject?, sendEmail should never be used, use handlevent instead
-                            
+                  if($IsDebug){
+                      $this->Mailer->sendEmail("", $IsDebug, $Subject, $msg);//sendEmail should never be used, use handlevent instead
+                  } else {
+                      $recruiters = TableRegistry::get('profiles')->find('all')->where(['id IN(' . $c->profile_id . ')', 'requalify' => '1', 'profile_type IN' => '2', 'email<>""']);
+                      foreach ($recruiters as $emrec) {
+                          array_push($rec, $emrec->email);
+                          $emails .= $emrec->email . ",";
+                          $this->Mailer->sendEmail("", $emrec->email, $Subject, $msg);//sendEmail should never be used, use handlevent instead
+                      }
                   }
                   
                   $emails = substr($emails,0,strlen($emails)-1);
                   $pro = substr($pro,0,strlen($pro)-1);
-                  $p_name = substr($p_name,0,strlen($p_name)-1);
+                  //$p_name = substr($p_name,0,strlen($p_name)-1);
                   //$this->bulksubmit($pro,$forms,$c->id);
                   $msg .= "Emails Sent to:".$emails."<br/>";
                   $dri = $pro;
@@ -1515,11 +1647,8 @@
                     $arr['order_id'] = '';
                     foreach($drivers as $driver) {
                         $arr['uploaded_for'] = $driver;
-                        $ord = TableRegistry::get('orders');
                         $doc = $ord->newEntity($arr);
-                        if($ord->save($doc))
-                        {
-                            
+                        if($ord->save($doc)) {
                             $cc['profile_id'] = $driver;
                             $cc['cron_date'] = date('Y-m-d');
                             $cc['client_id'] = $c->id;
@@ -1543,28 +1672,26 @@
                         
                     }
                     array_push($marr,$arr);
-                    
                     unset($arr);
                 } else {
                     $msg .= "No Profiles found.";
                 }
-                                
             }
-                    $this->set('arrs',$marr);
-                    $this->set('msg',$msg);
+            $this->set('arrs',$marr);
+            $this->set('msg',$msg);
+            echo $msg . '</TD></TR>';
         }
 
-          function getnextdate($date, $frequency) {
+    function getnextdate($date, $frequency) {
             $today = date('Y-m-d');
             $nxt_date = date('Y-m-d', strtotime($date)+($frequency*24*60*60*30));
-            
             if (strtotime($nxt_date) < strtotime($today)) {
                 $d = $this->getnextdate($nxt_date, $frequency);
             } else {
                 $d = $nxt_date;
             }
             return $d;
-        }
+    }
 
     function web($order_type = null, $forms = null, $driverid = null, $orderid = null) {
         $this->set('order_type',$order_type);
@@ -1574,7 +1701,6 @@
     }
     
     function assignedTo($cid,$rid) {
-        
         $cli = TableRegistry::get('clients')->find()->where(['id'=>$cid])->first();
         $pro = $cli->profile_id;
         $arr = explode(',',$pro);
@@ -1582,8 +1708,7 @@
         //var_dump($arr);
         $check = in_array($rid,$arr);
         $this->response->body($check);
-            return $this->response;
-        
+        return $this->response;
     }
         
 }

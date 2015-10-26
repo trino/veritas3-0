@@ -37,34 +37,33 @@ class TrainingController extends AppController {
 
     public function edit(){
         $this->set('canedit', $this->canedit());
-
-        if (isset($_GET["action"])){
-            if($this->canedit()) {
+        if($this->canedit()) {
+            if (isset($_GET["action"])) {
                 switch ($_GET["action"]) {
                     case "delete":
                         $this->deletequestion($_GET["quizid"], $_GET["QuestionID"]);
                         break;
                     case "save":
                         $lastid = $this->savequiz($_POST);
-                        if($lastid){$this->redirect('/training/edit?quizid=' . $lastid); }
+                        if ($lastid) {$this->redirect('/training/edit?quizid=' . $lastid);}
                         break;
                 }
-            } else {
-                $this->Flash->error($this->nopermissions());
             }
-        }
 
-        if (isset($_GET["quizid"]) && $this->canedit()) {
-            //$table = TableRegistry::get('training_list');
-            $quiz = $this->getQuizHeader($_GET["quizid"]);// $table->find()->where(['ID'=>$_GET["quizid"]])->first();
-            $this->set('quiz',$quiz );
-            $this->quiz();
+            if (isset($_GET["quizid"])) {
+                $quiz = $this->getQuizHeader($_GET["quizid"]);// $table->find()->where(['ID'=>$_GET["quizid"]])->first();
+                $this->set('quiz', $quiz);
+                $this->quiz();
+            }
+        } else {
+            $this->Flash->error($this->nopermissions());
+            $this->redirect('/training');
         }
     }
 
     public function users(){
         if ($this->canedit()){
-            if (isset($_GET["quizid"])) {
+            if (isset($_GET["quizid"]) && $this->quizexists($_GET["quizid"])) {
                 $this->set("pass", $this->getQuizHeader($_GET["quizid"])->pass);
                 if (isset($_GET['userid'])){
                     $action="unenroll";
@@ -88,6 +87,7 @@ class TrainingController extends AppController {
             }
         } else{
             $this->Flash->error($this->nopermissions());
+            {$this->redirect('/training'); }
         }
         $this->set('canedit', $this->canedit());
     }
@@ -188,6 +188,12 @@ class TrainingController extends AppController {
         return iterator_count($object);
     }
 
+    public function quizexists($QuizID){
+        $table = TableRegistry::get('training_list');
+        $quiz =  $table->find()->where(['ID'=>$QuizID])->first();
+        if($quiz){return true;}
+    }
+
     public function getQuizHeader($QuizID){
         $table = TableRegistry::get('training_list');
         $quiz =  $table->find()->where(['ID'=>$QuizID])->first();
@@ -219,7 +225,7 @@ class TrainingController extends AppController {
         $table = TableRegistry::get('training_list');
         $post=$_POST;
 
-        $data = array('Name' => $post["Name"], 'Description' =>  $post["Description"], 'Attachments' => $post['Attachments'], 'image' => $post['image'], 'pass' => $post['pass']);
+        $data = array('Name' => $post["Name"], 'Description' =>  $post["Description"], 'Attachments' => $post['Attachments'], 'image' => $post['image'], 'pass' => $post['pass'], "hascert" => $post['hascert']);
 
         if (isset($post["ID"])){
             $ID = str_replace('"', "", $post["ID"]);
@@ -347,11 +353,12 @@ class TrainingController extends AppController {
             $score = round($correct / $answers * 100, 2);
             $event = "training_failed";
             $pass = $this->getQuizHeader($QuizID)->pass;
+            $this->evaluateuser($QuizID, $UserID);
             if ($score>=$pass) {$event = "training_passed";}
             $path = LOGIN . "training/certificate?quizid=" . $QuizID . "&userid=" . $UserID;
             $users = $this->enumsupers();
             $users[] = $UserID;
-            $this->handleevent($event, array("email" => $users, "score" => $score, "username" => $profile->username));
+            $this->Manager->handleevent($event, array("email" => $users, "score" => $score, "username" => $profile->username, "path" => $path));
             $this->loadComponent('Trans');
             $this->Flash->success($this->Trans->getString("training_answerssaved", array("num" => $answers)));
         }
@@ -399,6 +406,7 @@ class TrainingController extends AppController {
 
     public function enrolluser($QuizID, $UserID, $Enabled = True){
         $this->loadComponent('Mailer');
+        $UserID = str_replace(",", "", $UserID);
         if(!$this->isuserenrolled($QuizID, $UserID)){
             $EnrolledBy = $this->getuserid();
             if($Enabled) {
@@ -409,7 +417,7 @@ class TrainingController extends AppController {
             $table->query()->update()->set(['training' => 1])->where(['user_id' => $UserID])->execute();
 
             $profile = $this->getprofile($UserID, false);
-            $path = LOGIN .'training/quiz?quizid=' . $QuizID;
+            $path = LOGIN .'training?quizid=' . $QuizID;
             $this->Mailer->handleevent("training_enrolled", array("email" => "$profile->email", "path" => $path));
             return true;
         }
@@ -423,6 +431,9 @@ class TrainingController extends AppController {
     public function enumenrolledusers($QuizID){
         $table = TableRegistry::get("training_enrollments");
         $results = $table->find('all', array('conditions' => array('QuizID'=>$QuizID)))->contain("profiles");
+        foreach($results as $Profile){
+            $this->evaluateuser($QuizID,$Profile->UserID);
+        }
         return $results;
     }
     public function isuserenrolled($QuizID, $UserID){
@@ -457,15 +468,32 @@ class TrainingController extends AppController {
     function evaluateuser($QuizID, $UserID){
         $useranswers = $this->enumanswers($QuizID, $UserID);
         if (!is_object($useranswers)){ return ""; }
-        $questions = $this->getQuiz($QuizID);
-        $pass = $this->getQuizHeader($QuizID)->pass;
-        $results = array("pass" => $pass, "incorrect" => 0, "missing" => 0, "correct" => 0, "total" => 0, "datetaken" => $this->getdatetaken($useranswers));
-        foreach ($questions as $question) {
-            $result = $this->preprocess($this->usersanswer($useranswers, $question->QuestionID), $question->Answer);
-            $results[$result] += 1;
-            $results["total"] += 1;
+        if($this->quizexists($QuizID)) {
+            $Quiz = $this->getQuizHeader($QuizID);
+            $questions = $this->getQuiz($QuizID);
+            $pass = $Quiz->pass;
+            $results = array("pass" => $pass, "incorrect" => 0, "missing" => 0, "correct" => 0, "total" => 0, "datetaken" => $this->getdatetaken($useranswers));
+            foreach ($questions as $question) {
+                $result = $this->preprocess($this->usersanswer($useranswers, $question->QuestionID), $question->Answer);
+                $results[$result] += 1;
+                $results["total"] += 1;
+            }
+            $results["hascert"] = $Quiz->hascert;
+
+            //save results
+            $table = TableRegistry::get('training_enrollments');
+            $theresults = $table->find('all', array('conditions' => ['QuizID' => $QuizID, "UserID" => $UserID]))->first();
+            if($theresults) {
+                $table->query()->update()->set($results)->where(['QuizID' => $QuizID, "UserID" => $UserID])->execute();
+            } else {
+                $results["QuizID"] = $QuizID;
+                $results["UserID"] = $UserID;
+                $table->query()->insert(array_keys($results))->values($results)->execute();
+            }
+            //end save
+
+            return $results;
         }
-        return $results;
     }
 
     function preprocess($usersanswer, $correctanswer){
@@ -484,6 +512,7 @@ class TrainingController extends AppController {
         foreach ($useranswers as $answers) {
             if ($answers->created) { return $answers->created; }
         }
+        return "";
     }
 
     function usersanswer($useranswers, $questionid){
@@ -504,7 +533,7 @@ class TrainingController extends AppController {
         parent::initialize();
         $this->loadComponent('Settings');
         $this->loadComponent('Mailer');
-        $this->Settings->verifylogin($this, "training");
+        //$this->Settings->verifylogin($this, "training");
     }
     public $paginate = [
         'limit' => 20,

@@ -194,9 +194,10 @@ foreach($emails as $Key => $Data){
             }
         }
         var thekeys = ["<?= cleanit(array_keys($emails)); ?>"];
-        var thekey = prompt("Please enter the new name for the email event (no spaces)", "");
+        var thekey = prompt("Please enter the new name for the email event (no spaces, or the word email)", "");
         if (thekey){
             thekey = replaceAll(thekey, " ", "");
+            thekey = replaceAll(thekey, "email", "");
             var index = thekeys.indexOf(thekey);
             if (index>-1) {
                 alert("'" + thekey + "' is in use already");

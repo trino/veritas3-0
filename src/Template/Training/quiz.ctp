@@ -31,8 +31,7 @@
 <?php
     $question = 0;
     $QuizID = $_GET["quizid"];
-    function clean($data, $datatype = 0)
-    {
+    function clean($data, $datatype = 0) {
         if (is_object($data)) {
             switch ($datatype) {
                 case 0:
@@ -62,8 +61,7 @@
         return $data;
     }
 
-    function question($section)
-    {
+    function question($section) {
         global $question;
         switch ($section) {
             case "0":
@@ -80,14 +78,16 @@
         }
     }
 
-    function answers($QuizID, $QuestionID, $text, $answers, $Index = 0, $usersanswer, $correctanswer)
-    {
+    function answers($QuizID, $QuestionID, $text, $answers, $Index = 0, $usersanswer, $correctanswer, $GiveAnswer) {
         $disabled = "";
         $selected = -1;
         $iscorrect = false;
         if (is_object($usersanswer)) {
             $disabled = " disabled";
             $selected = $usersanswer->Answer;
+        }
+        if($GiveAnswer){
+            $selected = $correctanswer;
         }
         $Qold = $QuestionID;
         $QuestionID = $QuizID . ':' . $Index;
@@ -121,8 +121,7 @@
         return $iscorrect;
     }
 
-    function questionheader($QuizID, $QuestionID, $markedOutOf, $Index = 0, $usersanswer)
-    {
+    function questionheader($QuizID, $QuestionID, $markedOutOf, $Index = 0, $usersanswer, $picture, $webroot) {
         $flagged = "";
         $answered = "Not yet answered";
         if (is_object($usersanswer)) {
@@ -134,10 +133,12 @@
         }
         $QuestionID = $QuizID . ':' . $Index;
         echo '<div class="state">' . $answered . '</div><div class="grade">Marked out of ' . $markedOutOf . '</div>';
+        if($picture){
+            echo '<IMG SRC="' . $webroot . 'assets/global/' . $picture . '" style="max-width: 270px;">';
+        }
     }
 
-    function preprocess($usersanswer, $correctanswer)
-    {
+    function preprocess($usersanswer, $correctanswer) {
         $correct = "missing";
         if (is_object($usersanswer)) {
             $correct = "incorrect";
@@ -150,8 +151,7 @@
         return $correct;
     }
 
-    function FullQuestion($QuizID, $text, $answers, $index = 0, $markedOutOf = "1.00", $usersanswer, $correctanswer)
-    {
+    function FullQuestion($QuizID, $text, $answers, $index = 0, $markedOutOf = "1.00", $usersanswer, $correctanswer, $picture, $webroot, $GiveAnswer) {
         global $question;
         $question += 1;
         $correct = "incorrect";
@@ -161,9 +161,9 @@
             }
         }
         question(0);
-        questionheader($QuizID, $question, $markedOutOf, $index, $usersanswer);
+        questionheader($QuizID, $question, $markedOutOf, $index, $usersanswer, $picture, $webroot);
         question(1);
-        if (answers($QuizID, $question, $text, $answers, $index, $usersanswer, $correctanswer)) {
+        if (answers($QuizID, $question, $text, $answers, $index, $usersanswer, $correctanswer, $GiveAnswer)) {
             $correct = "correct";
         }
         question(2);
@@ -176,8 +176,7 @@
         }
     }
 
-    function PrintResults($results, $user)
-    {
+    function PrintResults($results, $user) {
         if ($results['total'] > 0) {//http://localhost/veritas3/img/profile/172647_974786.jpg
             //debug($user); <label class="control-label">Profile Type : </label>
             echo '<div class="row"><div class="col-md-12"><div class="portlet box yellow"><div class="portlet-title">';
@@ -195,16 +194,12 @@
                 PrintResult("Grade", "<font color='red'>Fail</A>");
             }
             echo '</font></div>';
-            if ($score >= 80) {
-
+            if ($score >= 80 && $results["hascert"]) {
                 //     echo $this->request->webroot;
                 //   echo $this->request->webroot; die();
-
-
           //      $link232 = $this->request->webroot . 'training/certificate?quizid=' . $_GET['quizid'] . '&userid=' . $user->id;
-                $link232 = 'certificate?quizid=' . $_GET['quizid'] . '&userid=' . $user->id;
-
-                echo '<CENTER><a class=" btn btn-danger" href="' . $link232 . '">Click here to view the certificate</A></CENTER>';
+                $Path = 'certificate?quizid=' . $_GET['quizid'] . '&userid=' . $user->id;
+                echo '<CENTER><a class=" btn btn-danger" href="' . $Path . '">Click here to view the certificate</A></CENTER>';
 
             }
             echo '</div></div>';
@@ -226,11 +221,11 @@
     $results = array("incorrect" => 0, "missing" => 0, "correct" => 0, "total" => 0);
     echo '<form action="quiz?quizid=' . $_GET["quizid"] . '" method="post" enctype="multipart/form-data" accept-charset="utf-8" id="responseform">';
 
-
+    $GiveAnswer = $canedit && isset($_GET["debug"]);
     foreach ($questions as $question) {
         $question = clean($question, 1);
         $answer = usersanswer($useranswers, $question->QuestionID);
-        $result = FullQuestion($QuizID, $question->Question, array($question->Choice0, $question->Choice1, $question->Choice2, $question->Choice3, $question->Choice4, $question->Choice5), $question->QuestionID, "1.00", $answer, $question->Answer);
+        $result = FullQuestion($QuizID, $question->Question, array($question->Choice0, $question->Choice1, $question->Choice2, $question->Choice3, $question->Choice4, $question->Choice5), $question->QuestionID, "1.00", $answer, $question->Answer, $question->Picture, $this->request->webroot, $GiveAnswer);
         //$results[$result] += 1;
         //$results["total"] += 1;
     }

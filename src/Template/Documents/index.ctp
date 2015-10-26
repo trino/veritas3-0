@@ -49,7 +49,7 @@
         <div class="portlet box yellow-casablanca ">
             <div class="portlet-title">
                 <div class="caption">
-                    <i class="fa fa-copy"></i>
+                    <i class="fa fa-shopping-cart"></i>
                     <?=$strings["index_listdocuments"];?>
                 </div>
             </div>
@@ -272,7 +272,7 @@
                                 <td><?echo $this->Number->format($docs->id);
                                     if($docs->hasattachments) { echo '<BR><i  title="Has Attachment" class="fa fa-paperclip"></i>';} ?></td>
 
-                                <td style="width: 250px;">
+                                <td style="width: 200px;">
                                     <?php
                                     $VIEWURL = $this->request->webroot . "documents/view/" . $docs->client_id . "/" . $docs->id . '?type=' . $docs->sub_doc_id;
                                     if ($docs->sub_doc_id == 4) {$VIEWURL .= '&doc=' . urlencode($docs->document_type);}

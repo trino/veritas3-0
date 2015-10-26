@@ -10,12 +10,12 @@ class MessagesController extends AppController {
     public function intialize() {
         parent::intialize();
         $this->loadComponent('Settings');
-        $this->Settings->verifylogin($this, "messages");
+        //$this->Settings->verifylogin($this, "messages");
         echo $this->request->session()->read('Profile.id');
     }
 
     public function index() {
-	   $this->Settings->verifylogin($this, "messages");
+	   //$this->Settings->verifylogin($this, "messages");
 	}
 
     public function inbox() {
@@ -27,7 +27,7 @@ class MessagesController extends AppController {
 
     public function view() {
         $this->layout = 'blank';
-        $this->Settings->verifylogin($this, "messages");
+        //$this->Settings->verifylogin($this, "messages");
     }
     
 }

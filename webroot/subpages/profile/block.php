@@ -5,7 +5,7 @@
     $uid = ($this->request['action'] == 'add') ? "0" : $this->request['pass'][0];
     $sidebar = $this->requestAction("settings/all_settings/" . $uid . "/sidebar");
     $block = $this->requestAction("settings/all_settings/" . $uid . "/blocks");
-    $isadmin = $profile->admin == 1 || $profile->super == 1;
+    $isadmin = $Manager->read("admin") == 1 || $Manager->read("super") == 1;
     if (!isset($is_disabled1)) {$is_disabled1 = "";}//something is wrong with this variable
 
     $activetab = "config";
@@ -422,12 +422,6 @@
                                                                           value="1" <?php if (isset($sidebar) && $sidebar->email_document == 1) echo "checked"; ?> />
                                         Receive Email (on create document)
                                     </label>
-                                    <label class="uniform-inline">
-                                        <input <?php echo $is_disabled ?> type="checkbox" name="side[aggregate]"
-                                                                          value="1" <?php if (isset($sidebar) && $sidebar->aggregate == 1) echo "checked"; ?> />
-                                        Aggregate Audit
-                                    </label>
-
                                 </div>
                                 <div class="clearfix"></div>
                             </td>
@@ -634,112 +628,24 @@
                         <td></td>
                         <td><input type="checkbox" class="slelectall1" <?= $is_disabled ?> id="sellall2"/><label for="sellall2"> Select All</label></td>
                     </tr>
-                    <tr>
-                        <td>
-                            Add <?= $settings->profile; ?>
-                        </td>
-                        <td>
-                            <label class="uniform-inline">
-                                <input <?php echo $is_disabled ?> type="radio"
-                                                                  name="block[addadriver]"
-                                                                  value="1" <?php if (isset($block) && $block->addadriver == 1) echo "checked"; ?>/>
-                                Yes </label>
-                            <label class="uniform-inline">
-                                <input <?php echo $is_disabled ?> type="radio"
-                                                                  name="block[addadriver]"
-                                                                  value="0" <?php if (isset($block) && $block->addadriver == 0) echo "checked"; ?>/>
-                                No </label>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            List <?= $settings->profile; ?>s
-                        </td>
-                        <td>
-                            <label class="uniform-inline">
-                                <input <?php echo $is_disabled ?> type="radio"
-                                                                  name="block[list_profile]"
-                                                                  value="1" <?php if (isset($block) && $block->list_profile == 1) echo "checked"; ?>/>
-                                Yes </label>
-                            <label class="uniform-inline">
-                                <input <?php echo $is_disabled ?> type="radio"
-                                                                  name="block[list_profile]"
-                                                                  value="0" <?php if (isset($block) && $block->list_profile == 0) echo "checked"; ?>/>
-                                No </label>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            Add a <?= $settings->client; ?>
-                        </td>
-                        <td>
-                            <label class="uniform-inline">
-                                <input <?php echo $is_disabled ?> type="radio"
-                                                                  name="block[add_client]"
-                                                                  value="1" <?php if (isset($block) && $block->add_client == 1) echo "checked"; ?>/>
-                                Yes </label>
-                            <label class="uniform-inline">
-                                <input <?php echo $is_disabled ?> type="radio"
-                                                                  name="block[add_client]"
-                                                                  value="0" <?php if (isset($block) && $block->add_client == 0) echo "checked"; ?>/>
-                                No </label>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            List <?= $settings->client; ?>s
-                        </td>
-                        <td>
-                            <label class="uniform-inline">
-                                <input <?php echo $is_disabled ?> type="radio"
-                                                                  name="block[list_client]"
-                                                                  value="1" <?php if (isset($block) && $block->list_client == 1) echo "checked"; ?>/>
-                                Yes </label>
-                            <label class="uniform-inline">
-                                <input <?php echo $is_disabled ?> type="radio"
-                                                                  name="block[list_client]"
-                                                                  value="0" <?php if (isset($block) && $block->list_client == 0) echo "checked"; ?>/>
-                                No </label>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            Submit <?= $settings->document; ?>
-                        </td>
-                        <td>
-                            <label class="uniform-inline">
-                                <input <?php echo $is_disabled ?> type="radio"
-                                                                  name="block[submit_document]"
-                                                                  value="1" <?php if (isset($block) && $block->submit_document == 1) echo "checked"; ?>/>
-                                Yes </label>
-                            <label class="uniform-inline">
-                                <input <?php echo $is_disabled ?> type="radio"
-                                                                  name="block[submit_document]"
-                                                                  value="0" <?php if (isset($block) && $block->submit_document == 0) echo "checked"; ?>/>
-                                No </label>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            List <?= $settings->document; ?>
-                        </td>
-                        <td>
-                            <label class="uniform-inline">
-                                <input <?php echo $is_disabled ?> type="radio"
-                                                                  name="block[list_document]"
-                                                                  value="1" <?php if (isset($block) && $block->list_document == 1) echo "checked"; ?>/>
-                                Yes </label>
-                            <label class="uniform-inline">
-                                <input <?php echo $is_disabled ?> type="radio"
-                                                                  name="block[list_document]"
-                                                                  value="0" <?php if (isset($block) && $block->list_document == 0) echo "checked"; ?>/>
-                                No </label>
-                        </td>
-                    </tr>
 
-                    <?php if (true) { ?>
+                    <?php
+                        function addentry($Name, $Value, $Key, $ID, $is_disabled){
+                            echo '<tr><TD>' . $Name . '</TD><TD><label class="uniform-inline"><input ' . $is_disabled . ' type="radio" name="' . $ID . '" value="1" ';
+                            if (isset($Value->$Key) && $Value->$Key == 1) echo "checked";
+                            echo '/> Yes </label><label class="uniform-inline"><input ' . $is_disabled . ' type="radio" name="' . $ID . '" value="0" ';
+                            if (isset($Value->$Key) && $Value->$Key == 0) echo "checked";
+                            echo '/> No </label></td></tr>';
+                        }
 
-                        <?php
+                        addentry("Add " . $settings->profile, $block, "addadriver", "block[addadriver]", $is_disabled);
+                        addentry("List " . $settings->profile, $block, "list_profile", "block[list_profile]", $is_disabled);
+                        addentry("Add a " . $settings->client, $block, "add_client", "block[add_client]", $is_disabled);
+                        addentry("List " . $settings->client . 's', $block, "list_client", "block[list_client]", $is_disabled);
+                        addentry("Submit " . $settings->document, $block, "submit_document", "block[submit_document]", $is_disabled);
+                        addentry("List " . $settings->document, $block, "list_document", "block[list_document]", $is_disabled);
+                        addentry("Training", $block, "training", "block[training]", $is_disabled);
+
                         function makehr(){
                             echo '<TR><TD COLSPAN="2" style="background: #f7f7f7;">&nbsp;</TD></TR>';
                         }
@@ -782,7 +688,7 @@
                                     No </label>
                             </td>
                         </tr>
-                    <?}?>
+
                     <!--<tr>
                                                 <td>
                                                     Order History

@@ -1,19 +1,23 @@
 <?php
+    if($this->request->params['controller']!='ClientApplication'){
     if ($this->request->session()->read('debug')) {
         echo "<span style ='color:red;'>subpages/documents/education_verification_form.php #INC142</span>";
+    }
     }
     $strings2 = CacheTranslations($language, array("verifs_%", "file_attachfile", "tasks_date"), $settings, False);
 ?>
 <div id="form_tab10">
-    <input class="document_type" type="hidden" name="document_type" value="<?php echo $dx->title;?>"/>
+    <input class="document_type" type="hidden" name="document_type" value="<?php if(isset($dx))echo $dx->title;else echo "Education";?>"/>
     <input type="hidden" class="sub_docs_id" name="sub_doc_id" value="10"/>
 
     <div class="tab-content">
         <div class="tab-pane active" id="subtab_2_3">
             <form id="form_education">
                 <?php
+                    if($this->request->params['controller']!='ClientApplication'){
                     include_once 'subpages/filelist.php';
                     if (isset($sub4['att'])) {listfiles($sub4['att'], "attachments/", "", false, 3);}
+                    }
 
                     $counter = 0;
                     if (isset($sub4['edu']) && count($sub4['edu'])) {
@@ -55,7 +59,7 @@
                             </div>
 
                             <div class="form-group row">
-                                <label class="control-label col-md-3">Supervisor's Name</label>
+                                <label class="control-label col-md-3">Professor's Name</label>
 
                                 <div class="col-md-3">
                                     <input type="text" class="form-control" name="supervisior_name[]"
@@ -71,7 +75,7 @@
 
 
                             <div class="form-group row">
-                                <label class="control-label col-md-3">Supervisor's Email</label>
+                                <label class="control-label col-md-3">Professor's Email</label>
 
                                 <div class="col-md-3">
                                     <input type="text" class="form-control email1" name="supervisior_email[]" role="email"
@@ -154,7 +158,7 @@
                                     Only):</label>
 
                                 <div class="col-md-9">
-                                    <input type="text" class="form-control" name="education_history_confirmed_by[]"
+                                        <input type="text" class="form-control" name="education_history_confirmed_by[]"
                                            value="<?php echo $emp->education_history_confirmed_by;?>"/>
                                 </div>
                             </div>
@@ -418,16 +422,14 @@
                         </div>
                         <div class="form-group row">
                             <label class="col-md-3 control-label"><?= $strings2["tasks_date"]; ?>: </label>
-
                             <div class="col-md-3">
                                 <input type="text" class="form-control date-picker" name="date_time[]"/>
                             </div>
-                            <label class="col-md-3 control-label" style="display: none;"><?= $strings["forms_signature"]; ?>:</label>
 
+                            <label class="col-md-3 control-label" style="display: none;"><?= $strings["forms_signature"]; ?>:</label>
                             <div class="col-md-3">
                                 <input type="text" class="form-control" style="display: none;" name="signature[]"/>
                             </div>
-
                         </div>
                         <div id="more_edu"></div>
                     <?php } ?>
@@ -436,7 +438,7 @@
                     <input type="hidden" name="count_more_edu" id="count_more_edu" value="<?php if(isset($counter))echo $counter;?>">
                     <a href="javascript:void(0);" class="btn green add_more_edu"><?= $strings["forms_addmore"]; ?></a>
                 </div>
-                <?php if($this->request->params['controller']!='Documents'){?>
+                <?php if($this->request->params['controller']!='Documents' && $this->request->params['controller']!='ClientApplication'){?>
                 <div class="allattach">
                 <?php
                     if (!isset($sub4['att']))

@@ -5,18 +5,22 @@
 <SCRIPT>
     function emailthecreds(){
         var doit = true;
-        if (!document.getElementById("username_field").value){doit = false;}
-        if (!document.getElementById("email").value){doit = false;}
-        if (!document.getElementById("password").value){doit = false;}
-        if (!document.getElementById("retype_password").value){doit = false;}
+        var element = document.getElementById("emailcreds");
+        var reason;
+        if (!document.getElementById("username_field").value){doit = false; reason = "missing username";}
+        if (!document.getElementById("email").value){doit = false; reason = "missing email";}
+        if (!document.getElementById("password").value){doit = false; reason = "missing password";}
+        if (document.getElementById("password").value != document.getElementById("retype_password").value){doit = false; reason = "passwords do not match";}
 
         $("#emailcreds").prop("disabled", !doit );
         var parent = $("#emailcreds").parent().parent();
         if(!doit){
+            //alert(reason);
             parent.addClass("disabled");
             $("#emailcreds").prop("checked", false);
             $("#emailcreds").parent().removeClass("checked");
         } else {
+            element.removeAttribute("disabled");
             parent.removeClass("disabled");
         }
     }
@@ -32,6 +36,14 @@ $showcreds = true;
 $userID = $this->Session->read('Profile.id');
 if(!$userID && isset($_GET["client"])){$userID = 0;}
 
+$canedit = $this->request->session()->read('Profile.super') || $this->request->session()->read('Profile.admin');
+$ShouldShow = isset($p->profile_type) && ($p->profile_type=='1' || $p->profile_type=='2');
+if($ShouldShow || $canedit){
+    $ShouldShow = 'display:block';
+    $canedit=true;
+} else {
+    $ShouldShow = 'display:none';
+}
 $getProfileType = $this->requestAction('profiles/getProfileType/' . $userID);
 
 function printoption($option, $selected, $value = ""){
@@ -188,7 +200,7 @@ loadreasons($param, $strings, true);
                                             onchange="$('#nProfileType').val($(this).val());">
 
                                             <option selected=""
-                                                    value="$p->profile_type"><?php echo $this->requestAction('/profiles/getTypeTitle/' . $p->profile_type . "/" . $language) . $Trans ?></option>
+                                                    value="<?= $p->profile_type; ?>"><?php echo $this->requestAction('/profiles/getTypeTitle/' . $p->profile_type . "/" . $language) . $Trans ?></option>
 
                                         </select>
                                     <?php
@@ -225,15 +237,16 @@ loadreasons($param, $strings, true);
                             <?php
                             //if(isset($p))
                             $client_id = $this->requestAction('/clients/getclient_id/'.$this->request->session()->read('Profile.id'));
-                            if(isset($p))
-                                $user_client = $this->requestAction('/clients/getclient_id/'.$p->id);
-                            else
+                            if(isset($p)) {
+                                $user_client = $this->requestAction('/clients/getclient_id/' . $p->id);
+                            }else {
                                 $user_client = 0;
-                            // if ($settings->client_option == 0) { 
-                                
-                            if($client_id || $user_client){    
+                            }
+                            // if ($settings->client_option == 0) {
+
+                            if($client_id || $user_client){
                                 ?>
-                            
+
                             <div class="col-md-6" id="driver_div"
                                  style="display:<?php if ((isset($p) && $p->profile_type == 5) || ($this->request->session()->read('Profile.profile_type') == 2 && (isset($p) && $p->id != ($this->request->session()->read('Profile.id'))))) echo 'block'; else echo "none" ?>;">
                                 <div class="form-group">
@@ -320,10 +333,10 @@ loadreasons($param, $strings, true);
                             <?php //}
                             }
                             //echo $p->profile_type;
-                            
-                            
+
+
                                 ?>
-                                   <div class="col-md-6 hideusername admin_rec" style="<?php echo (isset($p->profile_type) && ($p->profile_type=='1' || $p->profile_type=='2'))?'display:block':'display:none';?>">
+                                   <div class="col-md-6 hideusername admin_rec email_rec" style="<?= $ShouldShow; ?>">
                                     <div class="form-group">
                                         <label class="control-label"><?= $strings["profiles_username"]; ?>: </label>
                                         <input <?php echo $is_disabled ?> id="username_field" name="username" type="text" onkeyup="emailthecreds();"
@@ -339,14 +352,14 @@ loadreasons($param, $strings, true);
                                   style="display: none;"><?= $strings["forms_usernamerequired"]; ?></span>
                                     </div>
                                 </div>
-                     
+
 
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label class="control-label"><?= $strings["forms_email"]; ?>: </label>
                                     <input <?php echo $is_disabled ?> name="email" type="email" onkeyup="emailthecreds();" id="email"
-                                                                      role="email"
-                                                                      class="form-control un email req_driver req_rec req_sales" <?php if (isset($p->email)) { ?> value="<?php echo $p->email; ?>" <?php } ?><?php if (isset($p->profile_type) && ($p->profile_type == '9' || $p->profile_type=='12')) { ?> required="required" <?php } ?>/>
+                                                                      role="email" required
+                                                                      class="form-control un email req_rec req_sales" req_driver <?php if (isset($p->email)) { ?> value="<?php echo $p->email; ?>" <?php } ?><?php if (isset($p->profile_type) && ($p->profile_type == '9' || $p->profile_type=='12')) { ?> required="required" <?php } ?>/>
                             <span class="error passerror flashEmail"
                                   style="display: none;"><?= $strings["dashboard_emailexists"]; ?></span>
                                 </div>
@@ -358,17 +371,15 @@ loadreasons($param, $strings, true);
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label class="control-label"><?= $strings["forms_credssent"]; ?>: </label><BR>
-                                        <input type="text" name="emailcreds" class="form-control" id="emailcreds" value="<?= $p->emailsent; ?>" disabled>
+                                        <input type="text" class="form-control" value="<?= $p->emailsent; ?>" disabled>
                                     </DIV>
                                 </DIV>
                             <?php }
 
-
-                            //if ($this->request->session()->read('Profile.profile_type') != '2') {
                             if (strlen($is_disabled) == 0) {
 
                                 ?>
-                                <div class="col-md-4 admin_rec passwords" style="<?php echo (isset($p->profile_type) && ($p->profile_type=='1' || $p->profile_type=='2'))?'display:block':'display:none';?>">
+                                <div class="col-md-4 admin_rec email_rec passwords" style="<?= $ShouldShow; ?>">
                                     <div class="form-group">
                                         <label class="control-label"><?= $strings["forms_password"]; ?>: </label>
 
@@ -389,7 +400,7 @@ loadreasons($param, $strings, true);
                                 <?php if (isset($p->password)) { ?>
                                     <input type="hidden" value="<?php $p->password ?>" name="hid_pass"/>
                                 <?php } ?>
-                                <div class="col-md-4 admin_rec" style="<?php echo (isset($p->profile_type) && ($p->profile_type=='1' || $p->profile_type=='2'))?'display:block':'display:none';?>">
+                                <div class="col-md-4 admin_rec email_rec" style="<?= $ShouldShow; ?>">
                                     <div class="form-group">
                                         <label class="control-label"><?= $strings["forms_retypepassword"]; ?>: </label>
                                         <input <?php echo $is_disabled ?> onkeyup="emailthecreds();"
@@ -400,9 +411,9 @@ loadreasons($param, $strings, true);
                                     </div>
                                 </div>
                                 <?php
-                                if ($param == "add") {
+                                if ($param == "add" || ($canedit && $param == "edit")) {
                                     ?>
-                                    <div class="col-md-4 admin_rec" style="display: none" oldstyle="<?php echo (isset($p->profile_type) && ($p->profile_type=='1' || $p->profile_type=='2'))?'display:block':'display:none';?>" >
+                                    <div class="col-md-4 admin_rec email_rec" style="<?= $ShouldShow; ?>" >
                                         <div class="form-group">
                                             <label class="control-label"><?= $strings["forms_emailcreds"]; ?>: </label><BR>
                                             <input type="checkbox" name="emailcreds" disabled id="emailcreds">
@@ -458,7 +469,7 @@ loadreasons($param, $strings, true);
                                     <label class="control-label"><?= $strings["forms_firstname"]; ?>: </label>
                                     <input <?php echo $is_disabled ?> name="fname" type="text"
                                                                       placeholder=""
-                                                                      class="form-control req_driver" <?php if (isset($p->fname)) { ?>
+                                                                      class="form-control" req_driver required <?php if (isset($p->fname)) { ?>
                                         value="<?php echo $p->fname; ?>" <?php } ?>/>
                                 </div>
                             </div>
@@ -474,13 +485,13 @@ loadreasons($param, $strings, true);
                                         value="<?php echo $p->mname; ?>" <?php } ?>/>
                                 </div>
                             </div>
-                            
+
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label class="control-label"><?= $strings["forms_lastname"]; ?>: </label>
                                     <input <?php echo $is_disabled ?> name="lname" type="text"
                                                                       placeholder=""
-                                                                      class="form-control req_driver" <?php if (isset($p->lname)) { ?>
+                                                                      class="form-control" req_driver required <?php if (isset($p->lname)) { ?>
                                         value="<?php echo $p->lname; ?>" <?php } ?>/>
                                 </div>
                             </div>
@@ -492,7 +503,7 @@ loadreasons($param, $strings, true);
                                     <label class="control-label"><?= $strings["forms_phone"]; ?>: </label>
                                     <input <?php echo $is_disabled ?> name="phone" type="text"
                                                                       placeholder="i.e. 905-500-5555" role='phone'
-                                                                      class="form-control req_driver" <?php if (isset($p->phone)) { ?>
+                                                                      class="form-control" <?php if (isset($p->phone)) { ?>
                                         value="<?php echo $p->phone; ?>" <?php } ?>/>
                                 </div>
                             </div>
@@ -503,7 +514,7 @@ loadreasons($param, $strings, true);
 
                                     <label class="control-label"><?= $strings["forms_gender"]; ?>: </label>
                                     <SELECT <?php echo $is_disabled ?> name="gender"
-                                                                       class="form-control req_driver"><?php
+                                                                       class="form-control" req_driver><?php
                                         $gender = "";
                                         if (isset($p->gender)) {
                                             $gender = $p->gender;
@@ -524,7 +535,7 @@ loadreasons($param, $strings, true);
 
                                     <label class="control-label"><?= $strings["forms_placeofbirth"]; ?>: </label>
                                     <input <?php echo $is_disabled ?> name="placeofbirth" type="text" placeholder=""
-                                                                      class="form-control req_driver placeofbirth" <?php if (isset($p->placeofbirth)) { ?>
+                                                                      class="form-control placeofbirth" <?php if (isset($p->placeofbirth)) { ?>
                                         value="<?php echo $p->placeofbirth; ?>" <?php } ?>/>
                                 </div>
                             </div>
@@ -572,7 +583,7 @@ loadreasons($param, $strings, true);
                                             echo '</select></div><div class="col-md-4">';
 
 
-                                            echo '<select class="form-control req_driver " name="dobd" ' . $is_disabled . '>';
+                                            echo '<select class="form-control req_driver" name="dobd" ' . $is_disabled . '>';
                                             for ($temp = 1; $temp < 32; $temp++) {
                                                 if ($temp < 10) {
                                                     $temp = "0" . $temp;
@@ -597,7 +608,7 @@ loadreasons($param, $strings, true);
                                     <div class="form-group">
                                         <input <?php echo $is_disabled ?> name="street" type="text"
                                                                           placeholder="<?= $strings["forms_address"]; ?>"
-                                                                          class="form-control req_driver" <?php if (isset($p->street)) { ?>
+                                                                          class="form-control" req_driver <?php if (isset($p->street)) { ?>
                                             value="<?php echo $p->street; ?>" <?php } ?>/>
                                     </div>
                                 </div>
@@ -606,7 +617,7 @@ loadreasons($param, $strings, true);
                                     <div class="form-group">
                                         <input <?php echo $is_disabled ?> name="city" type="text"
                                                                           placeholder="<?= $strings["forms_city"]; ?>"
-                                                                          class="form-control req_driver" <?php if (isset($p->city)) { ?>
+                                                                          class="form-control" req_driver <?php if (isset($p->city)) { ?>
                                             value="<?php echo $p->city; ?>" <?php } ?>/>
                                     </div>
                                 </div>
@@ -643,7 +654,7 @@ loadreasons($param, $strings, true);
                                     <div class="form-group">
                                         <input <?php echo $is_disabled ?>  type="text"
                                                                            placeholder="<?= $strings["forms_postalcode"]; ?> (M5V2X2)"
-                                                                           class="form-control req_driver"
+                                                                           class="form-control" req_driver
                                                                            name="postal" role='postalcode'  <?php if (isset($p->postal)) { ?>
                                             value="<?php echo $p->postal; ?>" <?php } ?>/>
                                     </div>
@@ -653,13 +664,13 @@ loadreasons($param, $strings, true);
                                     <div class="form-group">
                                         <input <?php echo $is_disabled ?>  type="text"
                                                                            placeholder="<?= $strings["forms_country"]; ?>" value="Canada"
-                                                                           class="form-control req_driver"
+                                                                           class="form-control" req_driver
                                                                            name="country" <?php if (isset($p->country)) { ?>
                                             value="<?php echo $p->country; ?>" <?php } ?>/>
                                     </div>
                                 </div>
 
-                                
+
                                 <div class="driver_license" style="<?php if(isset($p) &&($p->profile_type == 0 || $p->profile_type=='5'||$p->profile_type=='7'||$p->profile_type=='8'||$p->profile_type=='12'))echo "display:block" ;else echo "display:none";?>">
                                 <div class="col-md-12">
                                     <div class="form-group">
@@ -671,7 +682,7 @@ loadreasons($param, $strings, true);
                                     <div class="form-group">
                                         <label class="control-label"><?= $strings["forms_driverslicense"]; ?> #: </label>
                                         <input <?php echo $is_disabled ?> name="driver_license_no" type="text"
-                                                                          class="form-control req_driver" <?php if (isset($p->driver_license_no)) { ?>
+                                                                          class="form-control" req_driver <?php if (isset($p->driver_license_no)) { ?>
                                             value="<?php echo $p->driver_license_no; ?>" <?php } ?> />
                                     </div>
                                 </div>
@@ -705,7 +716,7 @@ loadreasons($param, $strings, true);
                                     </div>
                                 </div>
                                 </div>
-                                <?php 
+                                <?php
                                 } else { ?>
                                     <input type="hidden" name="doby" value="0000"/>
                                     <input type="hidden" name="dobm" value="00"/>
@@ -720,8 +731,8 @@ loadreasons($param, $strings, true);
                                 }
                                 ?>
                                 <div class="form-group col-md-8 col-sm-8">
-                                   
-               
+
+
                                 <!--label class="control-label col-md-6"> <?= $strings["forms_hearaboutus"]; ?></label-->
                                     <div class="">
                                         <select name="hear" class="form-control">
@@ -733,7 +744,7 @@ loadreasons($param, $strings, true);
                                             <option value="Indeed"  <?php if(isset($p)&& $p->hear=='Indeed')echo 'selected';?>>Indeed.ca</option>
                                             <option value="Newspaper"  <?php if(isset($p)&& $p->hear=='Newspaper')echo 'selected';?>><?= $strings["forms_newspaper"]; ?></option>
                                             <option value="Others"  <?php if(isset($p)&& $p->hear=='Others')echo 'selected';?>><?= $strings["forms_other"]; ?></option>
-                                            
+
                                         </select>
                                     </div>
                                 </div>
@@ -860,15 +871,8 @@ loadreasons($param, $strings, true);
 <script>
     function check_username() {
         //if(!checkalltags("subtab_4_1")){return false;}
-
-        if($('.member_type').val()=='5' || $('.member_type').val()=='7' || $('.member_type').val()=='8')
-         $('#password').val('');
         if ($('#retype_password').val() == $('#password').val()) {
-            
             var client_id = $('.client_profile_id').val();
-            if (client_id == "") {
-
-            }
             if($('.member_type').val()=='1'||$('.member_type').val()=='2') {
                 var un = $('.uname').val();
             } else if($('.member_type').val()!='5' && $('.member_type').val()=='7' && $('.member_type').val()=='8'){
@@ -881,7 +885,7 @@ loadreasons($param, $strings, true);
             if(element != null) {
                 if (!element.checked) {element.value = "";}
             }
-      
+
 
             $.ajax({
                 url: '<?php echo $this->request->webroot;?>profiles/check_user/<?php echo $uid;?>',
@@ -920,16 +924,16 @@ loadreasons($param, $strings, true);
 
                                         return false;
                                     } else {
-                                        
+
                                         $(this).attr('disabled', 'disabled');
                                         $('#hiddensub').click();
-                                        
+
                                     }
                                 }
                             });
                         } else {
                             $('#hiddensub').click();
-                            
+
                         }
                     }
                 }
@@ -1016,10 +1020,11 @@ loadreasons($param, $strings, true);
                 type: 'post',
                 success: function (res) {
                     res = res.replace(' ', '');
+                    alert(res);
                     if (res != 0 && !isNaN(res)) {
                         $('#savepro').text("<?= addslashes($strings["forms_savechanges"]); ?>");
                         $('.flash').show();
-                        $('.flash').fadeOut(3500);
+                        $('.flash').fadeOut(3500);)
                         window.location.href = '<?php echo $this->request->webroot;?>profiles/edit/' + res;
                     }
                 }
@@ -1047,56 +1052,47 @@ loadreasons($param, $strings, true);
 
         $('.member_type').change(function () {
 
-                   
-                        
+
+
                                     if ($(this).val() == '5' || $(this).val() == '7' || $(this).val() == '8'|| $(this).val() == '9'|| $(this).val() == '12') {
-                                                if($(this).val() == '5' || $(this).val() == '7' || $(this).val() == '9' || $(this).val() == '12')
-                                                {
+                                                if($(this).val() == '5' || $(this).val() == '7' || $(this).val() == '9' || $(this).val() == '12') {
                                                     $('.hideusername').hide();
                                                 }
                                                 $('.req_driver').each(function () {
                                                     $(this).prop('required', "required");
                                                     //alert($(this).attr('name'));
                                                 });
-                                        
+
                                                 if($(this).val() == '5' || $(this).val() == '7' || $(this).val() == '8' || $(this).val() == '9' || $(this).val() == '12'){
                                                     $('.driver_license').show();
                                                     if($(this).val() == '5' || $(this).val() == '7' || $(this).val() == '8'){
-                                                    $('.driver_license input').each(function(){
-                                                        $(this).attr('required','required');
-                                                    });
-                                                    $('#driver_div').show();
-                                                    }
-                                                    else
-                                                    {
-                                                        $('#driver_div').hide();
-                                                       $('#driver_div select').removeAttr('required');
                                                         $('.driver_license input').each(function(){
-                                                        $(this).removeAttr('required');
-                                                    }); 
-                                                    if($('.member_type').val()=='12')
-                                                    {
-                                                       $('.driver_license input').each(function(){
-                                                        
-                                                         $(this).attr('required','required');
-                                                         
-                                                         
-                                                        }); 
-                                                        $('.driver_license select').each(function(){
-                                                        if($(this).attr('name')=='driver_province')
-                                                         $(this).attr('required','required');
-                                                         
-                                                         
+                                                            $(this).attr('required','required');
                                                         });
+                                                        $('#driver_div').show();
+                                                    } else {
+                                                        $('#driver_div').hide();
+                                                        $('#driver_div select').removeAttr('required');
+                                                        $('.driver_license input').each(function(){
+                                                            $(this).removeAttr('required');
+                                                        });
+                                                        if($('.member_type').val()=='12') {
+                                                           $('.driver_license input').each(function(){
+                                                                $(this).attr('required','required');
+                                                            });
+                                                            $('.driver_license select').each(function(){
+                                                                if($(this).attr('name')=='driver_province')
+                                                                $(this).attr('required','required');
+                                                            });
+                                                        }
                                                     }
-                                                    }
-                                                    $('.placeofbirth').attr('required','required');
+                                                    //$('.placeofbirth').attr('required','required');
                                                     //$('#driver_div select').removeAttr('required');
                                                 } else{
                                                     $('.driver_license').hide();
                                                     $('#driver_div').hide();
                                                     $('#driver_div select').removeAttr('required');
-                                                    $('.placeofbirth').removeAttr('required');
+                                                    //$('.placeofbirth').removeAttr('required');
                                                     $('.req_sales').attr('required','required');
                                                     $('.member_type').removeAttr('required');
                                                     $('.driver_license input').each(function(){
@@ -1105,14 +1101,13 @@ loadreasons($param, $strings, true);
                                                     $('.driver_license select').removeAttr('required');
                                                 }
                                                 $('#isb_id').hide();
-                                        
+
                                                 $('#password').removeProp('required');
                                                 $('#retype_password').removeProp('required');
                                                 $('.req_rec').removeProp('required');
-                                        
+
                                         if($(this).val() == '5' || $(this).val() == '7' || $(this).val() == '8'){
                                             $('.email').attr('required','required');
-                        
                                         } else {
                                             $('.req_sales').attr('required','required');
                                             $('.email').attr('required','required');
@@ -1121,25 +1116,18 @@ loadreasons($param, $strings, true);
                                                 $(this).removeAttr('required');
                                             })
                                             $('.driver_license select').removeAttr('required');
-                                            if($('.member_type').val()=='12')
-                                                    {
+                                            if($('.member_type').val()=='12') {
                                                        $('.driver_license input').each(function(){
-                                                        
-                                                         $(this).attr('required','required');
-                                                         
-                                                         
-                                                        }); 
-                                                        $('.driver_license select').each(function(){
-                                                        if($(this).attr('name')=='driver_province')
-                                                         $(this).attr('required','required');
-                                                         
-                                                         
-                                                        }); 
-                                                        // $('#driver_div select').attr('required','required'); 
+                                                           $(this).attr('required','required');
+                                                       });
+                                                       $('.driver_license select').each(function(){
+                                                            if($(this).attr('name')=='driver_province') {
+                                                                $(this).attr('required', 'required');
+                                                            }
+                                                       });
                                                     }
-                                        } 
-                                        }
-                                        else {
+                                            }
+                                        } else {
 
                                             $('.nav-tabs li:not(.active)').each(function () {
                                                 $(this).show();
@@ -1166,7 +1154,7 @@ loadreasons($param, $strings, true);
                                                 }
                                             ?>
                                         }
-                        
+
                                         var profile_type = $(this).val();
                                         if (profile_type == '1' || profile_type == '2') {
                                             $('#isb_id').show();
@@ -1175,26 +1163,24 @@ loadreasons($param, $strings, true);
                                             $('.req_rec').prop('required', "required");
                                             $('.admin_rec').show();
                                             $('.driver_license').hide();
-                                        }
-                                        else
-                                        {
+                                        } else {
                                              $('.admin_rec').hide();
                                         }
-                                        if($('.passwords').attr('style') == 'display: none;'|| $('.passwords').attr('style') == 'display:none;')
-                                        {
+                                        if($('.passwords').attr('style') == 'display: none;'|| $('.passwords').attr('style') == 'display:none;') {
                                             $('#retype_password').removeAttr('required');
                                             $('#password').removeAttr('required');
-                                        } 
-                                        if($('.hideusername').attr('style') == 'display:none;' || $('.hideusername').attr('style') == 'display: none;')
-                                        {
+                                        }
+                                        if($('.hideusername').attr('style') == 'display:none;' || $('.hideusername').attr('style') == 'display: none;') {
                                             $('.hideusername input').each(function(){
                                                 $(this).removeAttr('required');
                                             });
-                                        } 
-                                        
+                                        }
+
                         $('#retype_password').removeAttr('required');
+                        <?php if($canedit){ echo "$('.email_rec').show();"; } ?>
+
                                     });
-                        
+
                                     var mem_type = $('.member_type').val();
                                     if (!isNaN(parseFloat(mem_type)) && isFinite(mem_type)) {
                                         if (mem_type == '5' || mem_type == '7' || mem_type == '8' || mem_type == '9' || mem_type == '12') {
@@ -1206,8 +1192,8 @@ loadreasons($param, $strings, true);
                                                 //  $(this).hide();
                                             });
                                             if(mem_type == '5' || mem_type == '7' || mem_type == '8' || mem_type=='9' || mem_type=='12'){
-                                               
-                                                
+
+
                                                 if($(this).val() == '5' || $(this).val() == '7' || $(this).val() == '8'){
                                                     $('#driver_div').show();
                                                     //$('#driver_div select').attr('required','required');
@@ -1226,10 +1212,10 @@ loadreasons($param, $strings, true);
                                                     {
                                                        $('.driver_license input').each(function(){
                                                         if($(this).attr('name')=='driver_license_no')
-                                                         $(this).attr('required','required');
-                                                        }); 
-                                                         
-                                                    } 
+                                                         //$(this).attr('required','required');
+                                                        });
+
+                                                    }
                                                     }
                                             } else {
                                                 $('#driver_div select').removeAttr('required');
@@ -1261,19 +1247,19 @@ loadreasons($param, $strings, true);
                                                     {
                                                        $('.driver_license input').each(function(){
                                                         if($(this).attr('name')=='driver_license_no')
-                                                         $(this).attr('required','required');
-                                                        });  
+                                                         //$(this).attr('required','required');
+                                                        });
                                                         $('.driver_license select').each(function(){
                                                         if($(this).attr('name')=='driver_province')
                                                          $(this).attr('required','required');
-                                                         
-                                                         
+
+
                                                         });
-                                                    } 
+                                                    }
                                             }
-                        
-                                        } 
-                                        
+
+                                        }
+
                                         else {
                                             $('.nav-tabs li:not(.active)').each(function () {
                                                 $(this).show();
@@ -1297,8 +1283,8 @@ loadreasons($param, $strings, true);
                                                 <?php
                                             }
                                              ?>
-                                        
-                        
+
+
                                         if (mem_type == '1' || mem_type == '2') {
                                             $('#isb_id').show();
                                             $('.req_driver').removeProp('required');
@@ -1320,7 +1306,7 @@ loadreasons($param, $strings, true);
                                     }
                                     $('#retype_password').removeAttr('required');
         });
-        
+
 
 
 

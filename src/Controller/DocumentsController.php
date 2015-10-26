@@ -38,7 +38,7 @@ class DocumentsController extends AppController{
         $this->loadComponent('Mailer');
         $this->loadComponent('Trans');
 
-        $this->Settings->verifylogin($this, "documents");
+        //$this->Settings->verifylogin($this, "documents");
     }
 
     public function index() {

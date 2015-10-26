@@ -53,10 +53,6 @@
         return right($filename, strlen($filename) - strlen($dir) - 1);
     }
 
-    function right($text, $length){
-        return substr($text, -$length);
-    }
-
     function includeCanvas($name, $savebutton = true){
         if (!isset($GLOBALS["canvasCSS"])) {
             //echo '<script src="assets/jquery-2.0.3.min.js"></script>';

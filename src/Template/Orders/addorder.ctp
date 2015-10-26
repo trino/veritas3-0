@@ -107,6 +107,7 @@ printCSS($this);
     if ($DriverID>0 && is_object($p)){
         $DriverProvince = $p->driver_province;
     }
+
     $enableddocs= TableRegistry::get('Profilessubdocument')->find('all')->where(['profile_id'=>$UserID]);
     foreach($thedocuments as $Key => $Value){//$thedocuments
         $userinfo = FindIterator($enableddocs, "subdoc_id", $Value["ID"]);
@@ -171,11 +172,12 @@ printCSS($this);
 
         <!--a href="" class="floatright btn btn-success">Re-Qualify</a>
         <a href="" class="floatright btn btn-info">Add to Task List</a-->
-    <?php } ?>
+    <?php }
 
-</div>
+    echo '</div>';
 
-
+    if($p->iscomplete){
+?>
 
 <div class="row">
     <div class="col-md-12">
@@ -183,24 +185,16 @@ printCSS($this);
             <div class="portlet-title">
                 <?php
                 $param = $this->request->params['action'];
-                if(strtolower($param) == 'vieworder')
-                {
-                    ?>
-                    <input type="hidden" id="viewingorder" value="1" />
-                <?php
-                }
-                else
-                {
-                    ?>
-                    <input type="hidden" id="viewingorder" value="0" />
-                <?php
+                if(strtolower($param) == 'vieworder') {
+                    echo '<input type="hidden" id="viewingorder" value="1" />';
+                } else {
+                    echo '<input type="hidden" id="viewingorder" value="0" />';
                 }
                 $tab = 'nodisplay';
                 ?>
                 <div class="caption">
                     <i class="fa fa-clipboard"></i><?= $strings ["addorder_orderforms"]; ?>
                 </div>
-
             </div>
             <div class="portlet-body form">
                 <!--<form action="#" class="form-horizontal" id="submit_form" method="POST"> -->
@@ -526,6 +520,8 @@ printCSS($this);
         </div>
     </div>
 </div>
+<?php } ?>
+
 <script>
     client_id = '<?=$cid?>';
     doc_id = '<?=$did?>';
@@ -543,17 +539,12 @@ printCSS($this);
             showforms('document_tab_3.php');
         });
     }
-    <?php
-    if($did)
-    {
-        ?>
-    showforms('company_pre_screen_question.php');
-    showforms('driver_application.php');
-    showforms('driver_evaluation_form.php');
-    showforms('document_tab_3.php');
-    <?php
-}
-?>
+    <?php if($did) { ?>
+        showforms('company_pre_screen_question.php');
+        showforms('driver_application.php');
+        showforms('driver_evaluation_form.php');
+        showforms('document_tab_3.php');
+    <?php } ?>
     //showforms(doc_type);
     function showforms(form_type) {
         //alert(form_type);
@@ -1422,23 +1413,19 @@ printCSS($this);
 
             if ($(this).attr('id') == 'draft') {
                 draft = 1;
-            }
-            else{
+            } else{
                 if($(this).attr('id') == 'submit_dra'){
                     draft = 1;
                     saving_draft = 1;
                     $('#loading5').show();
-                }
-                else
+                } else {
                     draft = 0;
+                }
             }
-            if(draft==1)
-            {
+            if(draft==1) {
                 $('.blockmsg').html('<h4 class="block"><?= addslashes($strings["addorder_orderdraft"]); ?>!</h4>'+
                 '<p><?= addslashes($strings["addorder_youcanedit"]); ?></p>')
-            }
-            else
-            {
+            } else {
                 $('.blockmsg').html('<h4 class="block"><?= addslashes($strings["addorder_ordersubmit"]); ?>!</h4>'+
                 '<p><?= addslashes($strings["addorder_notified"]); ?></p>')
             }
@@ -1448,8 +1435,7 @@ printCSS($this);
             //alert(type);
             if (type == 'add_driver') {
                 saveDriver('<?php echo $cid;?>');
-            }
-            else {
+            } else {
                 var confirmation = $(".tabber.active").prev('.tabber').find("#confirmation").val();
                 var data = {
                     uploaded_for: $('#uploaded_for').val(),
@@ -1650,7 +1636,7 @@ printCSS($this);
                     url: '<?php echo $this->request->webroot;?>orders/webservice/<?php echo $_GET['order_type'];?>/<?php echo $_GET['forms']; ?>/' +  $('#uploaded_for').val() +'/' +  $('#did').val(),
                     success:function(msg){
                             //alert("Order saved: " + msg);
-                         window.location = URL;
+                     window.location = URL;
                     },
                     error:function(){
                         window.location = URL;
@@ -1704,10 +1690,10 @@ printCSS($this);
                                 recruiter_signature: $('#recruiter_signature').val()
                             },
                             success:function(){
-                            window.location = base_url+'orders/orderslist?flash';
+                         window.location = base_url+'orders/orderslist?flash';
                             },
                             error:function(){
-                               window.location = base_url+'orders/orderslist?flash';
+                           window.location = base_url+'orders/orderslist?flash';
                             }
                         });
                     }
@@ -1724,33 +1710,26 @@ printCSS($this);
             //save_signature('5');
             //save_signature('6');
 
+        } else {
+            if ($(".tabber.active").prev('.tabber').attr('id') == 'tab19') {
+                save_signature('8');
+            }
         }
-        else
-        if($(".tabber.active").prev('.tabber').attr('id') == 'tab19')
-        {
-            save_signature('8');
-        }
-       
     }
 
     function save_signature(numb) {
         //alert('trd');
-        if(numb == '5' || numb == '6' || numb == '3' || numb == '4')
-        {
-            if(numb == '5')
-            {
+        if(numb == '5' || numb == '6' || numb == '3' || numb == '4') {
+            if(numb == '5') {
                $('#criminal_signature_applicant2').parent().find('.touched').val(1); 
             }
-            if(numb == '4')
-            {
+            if(numb == '4') {
                 $('#signature_company_witness').parent().find('.touched').val(1);
             }
-            if(numb == '3')
-            {
+            if(numb == '3') {
                 $('#criminal_signature_applicant').parent().find('.touched').val(1);
             }
-            if(numb == '6')
-            {
+            if(numb == '6') {
                 $('#signature_company_witness2').parent().find('.touched').val(1);
             }
         }
@@ -1883,10 +1862,8 @@ printCSS($this);
                 
                 $.ajax({
                     url: '<?php echo $this->request->webroot;?>orders/checkSignature/' + $('#did').val(),
-                    success:function(resp)
-                    {
-                        if(resp=='1')
-                        {
+                    success:function(resp) {
+                        if(resp=='1') {
                             $.ajax({
                                 url: '<?php echo $this->request->webroot;?>orders/createPdf/' + $('#did').val(),
                                 success:function()
@@ -1894,9 +1871,7 @@ printCSS($this);
                                     $('#loading5').hide();
                                 }
                             });
-                        }
-                        else
-                        {
+                        } else {
                             alert('<?= addslashes($strings["addorder_problem"]); ?>');
                             $('#loading5').hide();
 
@@ -1920,7 +1895,6 @@ printCSS($this);
             data: param,
             type: 'POST',
             success: function (rea) {
-
                 $.ajax({
                     url: '<?php echo $this->request->webroot;?>orders/createPdfEmployment/' + $('#did').val(),
                     success: function () {
@@ -2043,18 +2017,19 @@ printCSS($this);
                 });
                 $(this).parent().parent().remove();
 
-            }
-            else
+            } else {
                 return false;
+            }
         });
     });
     function initiate_ajax_upload1(button_id, doc) {
 
         var button = $('#' + button_id), interval;
-        if (doc == 'doc')
+        if (doc == 'doc') {
             var act = "<?php echo $this->request->webroot;?>documents/fileUpload/<?php if(isset($id))echo $id;?>";
-        else
+        } else {
             var act = "<?php echo $this->request->webroot;?>documents/fileUpload/<?php if(isset($id))echo $id;?>";
+        }
         new AjaxUpload(button, {
             action: act,
             name: 'myfile',
@@ -2084,8 +2059,7 @@ printCSS($this);
                     $('#delete_' + button_id).attr('title', response);
                     if(button_id =='addMore1')
                         $('#delete_'+button_id).show();
-                }
-                else {
+                } else {
                     $("#clientpic").attr("src", '<?php echo $this->request->webroot;?>img/jobs/' + response);
                     $('#client_img').val(response);
                 }
@@ -2127,14 +2101,10 @@ printCSS($this);
                 if (response != 'error') {
                     $('#' + ID).parent().find('.uploaded').text(response);
                     $('.' + ID).val(response);
-                }
-                else {
+                } else {
                     alert('<?= addslashes($strings["addorder_invalidfile"]); ?>');
                 }
             }
-
         });
     }
-
-
 </script>

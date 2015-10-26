@@ -21,7 +21,7 @@
             $this->loadComponent('Settings');
             $this->loadComponent('Mailer');
             $this->loadComponent('Document');
-            $this->Settings->verifylogin($this, "formbuilder");
+            //$this->Settings->verifylogin($this, "formbuilder");
         }
 
     

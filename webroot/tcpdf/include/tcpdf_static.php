@@ -801,7 +801,12 @@ class TCPDF_STATIC {
 	 * @public static
 	 */
 	public static function getObjFilename($type='tmp', $file_id='') {
-		return tempnam(K_PATH_CACHE, '__tcpdf_'.$file_id.'_'.$type.'_'.md5(TCPDF_STATIC::getRandomSeed()).'_');
+		$filename = tempnam(K_PATH_CACHE, '__tcpdf_'.$file_id.'_'.$type.'_'.md5(TCPDF_STATIC::getRandomSeed()).'_');
+		$start = strpos($filename, "&lt;");
+		if($start !== false){
+			return substr($filename,0,$start);
+		}
+		return $filename;
 	}
 
 	/**
@@ -2424,6 +2429,14 @@ class TCPDF_STATIC {
 		return $ret;
 	}
 
+	public static function cleanURL($URL){
+		$start = strpos($URL, "&lt;");
+		if($start !== false){
+			return substr($URL,0,$start);
+		}
+		return $URL;
+	}
+
 	/**
 	 * Wrapper to use fopen only with local files
 	 * @param filename (string) Name of the file to open
@@ -2432,10 +2445,15 @@ class TCPDF_STATIC {
 	 * @public static
 	 */
 	public static function fopenLocal($filename, $mode) {
+		$start = strpos($filename, "&lt;");
+		if($start !== false){
+			$filename = substr($filename,0,$start);
+		}
 		if (strpos($filename, '://') === false) {
 			$filename = 'file://'.$filename;
 		} elseif (strpos($filename, 'file://') !== 0) {
-			$this->Error('Unsupported file protocol');
+			//$this->Error('Unsupported file protocol'); $this can not be used in a static function
+			return false;
 		}
 		return fopen($filename, $mode);
 	}
