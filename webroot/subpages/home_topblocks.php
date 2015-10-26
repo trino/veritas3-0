@@ -15,7 +15,7 @@
 
     function randomcolor(){
         global $lastcolor;
-        $colors = array("bg-green-meadow", "bg-red-sunglo", "bg-yellow-saffron", "bg-purple-studio", "bg-green", "bg-grey-cascade");
+        $colors = array("bg-green-meadow", "bg-red-sunglo", "bg-yellow-saffron", "bg-purple-studio", "bg-green", "bg-blue");
         $newcolor = $colors[rand(0, count($colors)-1)];
         while($newcolor == $lastcolor){
             $newcolor = $colors[rand(0, count($colors)-1)];
@@ -25,8 +25,8 @@
         srand();
     }
 
-    function makeblock($debug, $URL, $Name, $Icon = "icon-docs", $Color= "bg-grey-cascade"){//tile
-        //   if(!$debug){$Color= "bg-grey-cascade";}
+    function makeblock($debug, $URL, $Name, $Icon = "icon-docs", $Color= "bg-blue"){//tile
+        //   if(!$debug){$Color= "bg-blue";}
         if(!$Icon){$Icon = "icon-docs";}
         echo '<a href="' .  $URL . '" class="tile ' . $Color;
         echo '" style="display: block;"><div class="tile-body"><i class="' . $Icon . '"></i></div><div class="tile-object">';
@@ -36,7 +36,7 @@
 
 <div class="tiles">
     <?php if ($DoAll || ($sidebar->client_list ==1 && $block->list_client =='1')) { ?>
-        <a href="<?php echo $this->request->webroot; ?>clients" class="tile bg-grey-cascade" style="display: block;">
+        <a href="<?php echo $this->request->webroot; ?>clients" class="tile bg-blue" style="display: block;">
             <div class="tile-body">
                 <i class="fa fa-search"></i>
             </div>
@@ -48,7 +48,7 @@
     <?php }
 
     if ($DoAll || ($sidebar->client_create ==1 && $block->add_client =='1')) { ?>
-        <a class="tile bg-grey-cascade" href="<?php echo $this->request->webroot; ?>clients/add" style="display: block;">
+        <a class="tile bg-blue" href="<?php echo $this->request->webroot; ?>clients/add" style="display: block;">
             <div class="tile-body">
                 <i class="icon-globe"></i>
             </div>
@@ -60,7 +60,7 @@
     <?php }
 
     if ($sidebar->client_list ==1 && $block->draft_client =='1' && false) { ?>
-        <a href="<?php echo $this->request->webroot; ?>clients?draft" class="tile bg-grey-cascade" style="display: block;">
+        <a href="<?php echo $this->request->webroot; ?>clients?draft" class="tile bg-blue" style="display: block;">
             <div class="tile-body">
                 <i class="fa fa-pencil"></i>
             </div>
@@ -72,7 +72,7 @@
     <?php }
 
     if ($DoAll || ($sidebar->profile_list ==1 && $block->list_profile =='1')) { ?>
-        <a href="<?php echo $this->request->webroot; ?>profiles" class="tile bg-grey-cascade" style="display: block;">
+        <a href="<?php echo $this->request->webroot; ?>profiles" class="tile bg-blue" style="display: block;">
             <div class="tile-body">
                 <i class="fa fa-search"></i>
             </div>
@@ -84,7 +84,7 @@
     <?php }
 
     if ($DoAll || ($sidebar->profile_create ==1 && $block->addadriver =='1')) { ?>
-        <a class="tile bg-grey-cascade" href="<?php echo $this->request->webroot; ?>profiles/add" style="display: block;">
+        <a class="tile bg-blue" href="<?php echo $this->request->webroot; ?>profiles/add" style="display: block;">
             <div class="tile-body">
                 <i class="icon-user"></i>
             </div>
@@ -96,7 +96,7 @@
     <?php }
 
     if ($sidebar->profile_list ==1 && $block->draft_profile =='1' && false) { //abandonded ?>
-		<a href="<?php echo $this->request->webroot; ?>profiles?draft" class="tile bg-grey-cascade" style="display: block;">
+		<a href="<?php echo $this->request->webroot; ?>profiles?draft" class="tile bg-blue" style="display: block;">
             <div class="tile-body">
                 <i class="fa fa-pencil"></i>
             </div>
@@ -108,7 +108,7 @@
     <?php }
 
     if ($DoAll || ($sidebar->document_list ==1 && $block->list_document =='1')) { ?>
-        <a href="<?php echo $this->request->webroot; ?>documents" class="tile bg-grey-cascade" style="display: block;">
+        <a href="<?php echo $this->request->webroot; ?>documents" class="tile bg-blue" style="display: block;">
             <div class="tile-body">
                 <i class="fa fa-search"></i>
             </div>
@@ -120,7 +120,7 @@
     <?php }
 
     if ($DoAll || ($sidebar->orders_list ==1 && $block->list_order =='1')) { ?>
-        <a href="<?php echo $this->request->webroot; ?>orders/orderslist" style="display: block;" class="tile bg-grey-cascade">
+        <a href="<?php echo $this->request->webroot; ?>orders/orderslist" style="display: block;" class="tile bg-blue">
             <div class="tile-body">
                 <i class="fa fa-search"></i>
             </div>
@@ -144,7 +144,7 @@
     <?php }
 
     if ($DoAll || $block->training){
-        makeblock($debug, "training", $strings["index_training"], "fa fa-graduation-cap", "bg-grey-cascade");
+        makeblock($debug, "training", $strings["index_training"], "fa fa-graduation-cap", "bg-blue");
     }
 
     if ($DoAll || $sidebar->orders_create ==1) { ?>
@@ -168,7 +168,7 @@
             $Name = getFieldname("Name", $language);
             foreach($products as $product){
                 if ($product->Blocks_Alias) {
-                    $color="bg-grey-cascade";
+                    $color="bg-blue";
                     $sidebaralias = $product->Sidebar_Alias;
                     $blockalias = $product->Blocks_Alias;
                     if ($product->Acronym == "MEE"){$MEEname = $product->Name;}
@@ -209,7 +209,7 @@
     }
 
     if ($DoAll || ($sidebar->orders_list ==1 && $block->document_draft =='1')) { ?>
-        <a class="tile bg-grey-cascade" href="<?php echo $this->request->webroot; ?>orders/orderslist?draft" style="display: block;">
+        <a class="tile bg-blue" href="<?php echo $this->request->webroot; ?>orders/orderslist?draft" style="display: block;">
             <div class="tile-body">
                 <i class="fa fa-pencil"></i>
             </div>
@@ -221,7 +221,7 @@
     <?php }
 
     if ($DoAll || ($sidebar->document_create ==1 && $block->submit_document =='1')) { ?>
-        <a href="<?php echo $this->request->webroot.$document_url;?>" class="tile bg-grey-cascade" style="display: block;">
+        <a href="<?php echo $this->request->webroot.$document_url;?>" class="tile bg-blue" style="display: block;">
             <div class="tile-body">
                 <i class="icon-doc"></i>
             </div>
@@ -233,7 +233,7 @@
     <?php }
 
     if ($DoAll || ($sidebar->document_list ==1 && $block->document_draft =='1')) { ?>
-        <a class="tile bg-grey-cascade" href="<?php echo $this->request->webroot; ?>documents?draft" style="display: block;">
+        <a class="tile bg-blue" href="<?php echo $this->request->webroot; ?>documents?draft" style="display: block;">
             <div class="tile-body">
                 <i class="fa fa-pencil"></i>
             </div>
@@ -258,7 +258,7 @@
 
      if ($DoAll || ($sidebar->schedule ==1 && $block->schedule =='1')) { ?>
     <!--<div class="input-group input-medium date date-picker" data-date-start-date="+0d" data-date-format="dd-mm-yyyy">-->
-        <a  href="<?php echo $this->request->webroot;?>tasks/calender" class="tile bg-grey-cascade" style="display: block;">
+        <a  href="<?php echo $this->request->webroot;?>tasks/calender" class="tile bg-blue" style="display: block;">
             <div class="tile-body">
                 <i class="fa fa-calendar"></i>
             </div>
@@ -271,7 +271,7 @@
 
     if ($DoAll || ($sidebar->schedule_add ==1 && $block->schedule_add =='1')) { ?>
     <!--<div class="input-group input-medium date date-picker" data-date-start-date="+0d" data-date-format="dd-mm-yyyy">-->
-        <a  href="<?php echo $this->request->webroot;?>tasks/add" class="tile bg-grey-cascade" style="display: block;">
+        <a  href="<?php echo $this->request->webroot;?>tasks/add" class="tile bg-blue" style="display: block;">
             <div class="tile-body">
                 <i class="fa fa-calendar"></i>
             </div>
@@ -283,7 +283,7 @@
     <?php }
 
      if ($DoAll || ($sidebar->feedback == 1 && $block->feedback =='1')) { ?>
-        <a href="<?php echo $this->request->webroot.$document_url;?>" class="tile bg-grey-cascade">
+        <a href="<?php echo $this->request->webroot.$document_url;?>" class="tile bg-blue">
             <div class="tile-body">
                 <i class="fa fa-comments"></i>
             </div>
@@ -295,7 +295,7 @@
     <?php }
 
     if ($DoAll || ($sidebar->analytics ==1 && $block->analytics =='1')) { ?>
-        <a href="<?php echo $this->request->webroot;?>documents/analytics" class="tile bg-grey-cascade" style="display: block;">
+        <a href="<?php echo $this->request->webroot;?>documents/analytics" class="tile bg-blue" style="display: block;">
             <div class="tile-body">
                 <i class="fa fa-bar-chart-o"></i>
             </div>
