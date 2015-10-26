@@ -7,7 +7,7 @@
     $strings2 = CacheTranslations($language, array("verifs_%", "file_attachfile", "tasks_date"), $settings, False);
 ?>
 <div id="form_tab10">
-    <input class="document_type" type="hidden" name="document_type" value="<?php if(isset($dx))echo $dx->title;?>"/>
+    <input class="document_type" type="hidden" name="document_type" value="<?php if(isset($dx))echo $dx->title;else echo "Education";?>"/>
     <input type="hidden" class="sub_docs_id" name="sub_doc_id" value="10"/>
 
     <div class="tab-content">
@@ -438,7 +438,7 @@
                     <input type="hidden" name="count_more_edu" id="count_more_edu" value="<?php if(isset($counter))echo $counter;?>">
                     <a href="javascript:void(0);" class="btn green add_more_edu"><?= $strings["forms_addmore"]; ?></a>
                 </div>
-                <?php if($this->request->params['controller']!='Documents'){?>
+                <?php if($this->request->params['controller']!='Documents' && $this->request->params['controller']!='ClientApplication'){?>
                 <div class="allattach">
                 <?php
                     if (!isset($sub4['att']))

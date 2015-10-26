@@ -10,7 +10,7 @@
 	<div class="portlet">
 		<div class="portlet-title">
 			<div class="caption">
-				<i class="fa fa-copy"></i>Documents
+				<i class="fa fa-shopping-cart"></i>Documents
 			</div>
 
 		</div>
@@ -40,7 +40,7 @@
                             <div class="whiteCorner"></div>
     
                             <div class="visual">
-    							<i class="fa fa-copy"></i>
+    							<i class="fa fa-shopping-cart"></i>
     						</div>
     						<div class="details">
     							<div class="number">

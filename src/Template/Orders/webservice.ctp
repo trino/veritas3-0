@@ -1,4 +1,5 @@
 <?php
+    if(false){
     include_once('subpages/api.php');
     $proxyhost = 'https://infosearchsite.ca/MEEWS/ISBService.svc?wsdl';
     $client = new nusoap_client($proxyhost, true, $proxyhost, $proxyport = null, $proxyusername = null, $proxypassword = null);
@@ -614,8 +615,9 @@
     $servicearr["html"] = $JSON;
     $servicearr["email"] = $Manager->getfirstsuper()->email;
     $mailer->handleevent("ordercompleted",$servicearr);
-  //  $mailer->handleevent("ordercompleted",$servicearr,'hsidhu@isbc.ca ');
-  //  $mailer->handleevent("ordercompleted",$servicearr,'pclement@isbc.ca');
+    //  $mailer->handleevent("ordercompleted",$servicearr,'hsidhu@isbc.ca ');
+    //  $mailer->handleevent("ordercompleted",$servicearr,'pclement@isbc.ca');
 
     die();
+    }
 ?>

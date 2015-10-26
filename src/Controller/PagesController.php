@@ -59,10 +59,13 @@ class PagesController extends AppController {
         $this->set('block',     $block);
         $this->set('sidebar',   $sidebar);
 
-        $Count = $this->countenabled($block, array("id", "user_id"));
-        if(!$Count){
+
+
+  //      debug($sidebar);die();
+  //      $Count = $this->countenabled($block, array("id", "user_id"));
+        if(!$sidebar->orders){
             if($setting->profile_list) {
-                $this->redirect("/profiles");
+               $this->redirect("/profiles");
             } else if ($setting->training) {
                 $this->redirect("/training");
             }

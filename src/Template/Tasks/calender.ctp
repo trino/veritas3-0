@@ -37,7 +37,7 @@ echo "<SCRIPT LANGUAGE='JavaScript'>var Language = '" . $language . "';</SCRIPT>
 					<div class="portlet box green-meadow calendar">
 						<div class="portlet-title">
 							<div class="caption">
-								<i class="fa fa-gift"></i><?= $strings["index_tasks"];?>
+								<i class="fa fa-calendar"></i><?= $strings["index_tasks"];?>
 							</div>
 						</div>
 						<div class="portlet-body">

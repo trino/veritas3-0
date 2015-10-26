@@ -1,8 +1,9 @@
 <?php
+    if($this->request->params['controller']!='ClientApplication'){
     if ($this->request->session()->read('debug'))
         echo "<span style ='color:red;'>subpages/documents/consent_form.php #INC139</span>";
     //include_once 'subpages/filelist.php';
-    if (isset($sub2)) { listfiles($sub2['con_at'], "attachments/", "", false, 3,false,'consent');     }
+    if (isset($sub2)) { listfiles($sub2['con_at'], "attachments/", "", false, 3,false,'consent');     }}
     //includejavascript($strings);
     $strings2 = CacheTranslations($language, array("consent_%", "file_attachfile", "tasks_date", "profiles_name"), $settings, False);
 ?>
@@ -386,7 +387,7 @@
             </div>
             <div class="clearfix"></div>
 
-            <?php if($this->request->params['controller']!='Documents'){?>
+            <?php if($this->request->params['controller']!='Documents' && $this->request->params['controller']!='ClientApplication'){?>
             <div class="allattach">
                 <?php
                     if (!isset($sub2['con_at'])) {

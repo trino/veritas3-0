@@ -1,5 +1,7 @@
 <?php
+if($this->request->params['controller']!='ClientApplication'){
  if($this->request->session()->read('debug')){ echo "<span style ='color:red;'>subpages/documents/feedbacks.php #INC130</span>"; }
+ }
 $is_disabled = '';
 if(isset($disabled)){ $is_disabled = 'disabled="disabled"'; }
 if(isset($feeds)) {$feed = $feeds; }
@@ -286,7 +288,7 @@ if(isset($feeds)) {$feed = $feeds; }
 <div class="clearfix"></div>
 
 
-<?php if($this->request->params['controller']!='Documents'){?>
+<?php if($this->request->params['controller']!='Documents' && $this->request->params['controller']!='ClientApplication'){?>
  <div class="addattachment6 form-group col-md-12"></div>
  <?php }?>
  </form> 

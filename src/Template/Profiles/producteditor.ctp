@@ -89,7 +89,7 @@
                 if ($selected){$selectedproduct = $producttype; $class="selected";}
                 echo '<TR class="' . $class . '" onclick="productclick(' . "'" . $producttype->Acronym . "'" . ')">';
                     td($producttype->ID);
-                    if ($producttype->Icon == "icon-docs"){
+                    if ($producttype->Icon == "icon-basket"){
                         td('<i class="' . $producttype->Icon . '"></i>');
                     } else {
                         $img = str_replace("fa icon-", "", $producttype->Icon);
@@ -210,7 +210,7 @@
         makeselect();
     }
 
-    function makeradio($webroot, $Name, $UserValue, $Value, $Icon = "icon-docs", $iconsize = "", $isDefault = false){
+    function makeradio($webroot, $Name, $UserValue, $Value, $Icon = "icon-basket", $iconsize = "", $isDefault = false){
         echo '<LABEL CLASS="uniform-inline">';
         input("radio", $Name, $Value, False, $UserValue==$Value || ($UserValue =="" && $isDefault) );
         if($iconsize) {
@@ -301,7 +301,7 @@
     tr("Icon", 12, "What icon will show");//needs to be a full row, don't ask me why
     echo '<BR>';
     $icon = getvalue($selectedproduct, "Icon");
-    makeradio($this->request->webroot, "Icon", $icon, "icon-docs", "icon-docs", "", true);
+    makeradio($this->request->webroot, "Icon", $icon, "icon-basket", "icon-basket", "", true);
     makeradio($this->request->webroot, "Icon", $icon, "fa icon-footprint", "footprint", $iconsize);
     makeradio($this->request->webroot, "Icon", $icon, "fa icon-surveillance", "surveillance", $iconsize);
     makeradio($this->request->webroot, "Icon", $icon, "fa icon-physical", "physical", $iconsize);

@@ -42,7 +42,8 @@
         $hidepermissions = $this->request->session()->read('Profile.admin') && $userID == $p->id;
     }
 
-    $CanOrder = $Manager->get_entry("sidebar", $userID, "user_id")->orders_create;
+  //  $CanOrder = $Manager->get_entry("sidebar", $userID, "user_id")->orders_create;
+    $CanOrder = true;
 
     $settings = $this->requestAction('settings/get_settings');
 
@@ -112,9 +113,9 @@
                 echo $this->Html->link(__($strings["dashboard_view"]), ['action' => 'view', $profile->id], ['class' => 'floatright btn btn-info btnspc']);
             }
             if ($this->request->session()->read('Profile.super') && $this->request->session()->read('Profile.id') != $profile->id) {
-                echo '<a href="' . $this->request->webroot . 'profiles/possess/' . $profile->id;
-                echo '" onclick="return confirm(' . "'Are you sure you want to possess " . formatname($profile) . "?'";
-                echo ');" class="floatright btn btnspc btn-danger">Possess</a>';
+            //    echo '<a href="' . $this->request->webroot . 'profiles/possess/' . $profile->id;
+             //   echo '" onclick="return confirm(' . "'Are you sure you want to possess " . formatname($profile) . "?'";
+              //  echo ');" class="floatright btn btnspc btn-danger">Possess</a>';
             }
         }
         if ($sidebar->profile_edit == '1' && $param == 'view') {
@@ -242,7 +243,7 @@
                                                     if ($sidebar->$alias == 1 && $product->Visible == 1 && $showit) {
                                                         echo '<br><a href="' . $this->request->webroot . 'orders/productSelection?driver=' . $profile->id;
                                                         echo '&ordertype=' . $product->Acronym . '"';
-                                                        echo ' class="blue-stripe btn floatleft ' . $product->ButtonColor . '" style="margin-top:2px;width:75%;">' . $product->$title . $Trans;
+                                                        echo ' class="blue-stripe btn floatleft ' . $product->ButtonColor . '" style="margin-top:2px;width:100%;">' . $product->$title . $Trans;
                                                         echo ' <i class="m-icon-swapright m-icon-white"></i></a>';
                                                     }
                                                 }
@@ -604,7 +605,7 @@
                 }
             })
         });
-    
+
         $('.checkrequalify').click(function () {
             var oid = $(this).attr('id');
             var msgs = '';

@@ -49,7 +49,7 @@
         <div class="portlet box yellow-casablanca ">
             <div class="portlet-title">
                 <div class="caption">
-                    <i class="fa fa-copy"></i>
+                    <i class="fa fa-shopping-cart"></i>
                     <?=$strings["index_listdocuments"];?>
                 </div>
             </div>
