@@ -1,6 +1,9 @@
 <?php
 if($this->request->params['controller']!='ClientApplication'){
-if($this->request->session()->read('debug')){ echo "<span style ='color:red;'>subpages/documents/employment_verification_form.php #INC???</span>"; }
+    if($this->request->session()->read('debug'))
+    {
+        echo "<span style ='color:red;'>subpages/documents/employment_verification_form.php #INC???</span>"; 
+    }
 }
 $strings2 = CacheTranslations($language, array("verifs_%", "tasks_date", "file_attachfile", "file_download"), $settings, False);
 ?>

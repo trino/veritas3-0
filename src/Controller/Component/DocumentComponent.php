@@ -363,7 +363,7 @@ class DocumentComponent extends Component{
                                         $email_query = $pro_query->find()->where(['super' => 1])->first();
                                         $em = $email_query->email;
 
-                                        $user_id = $controller->request->session()->read('Profile.id');//shouldn't this be $p?
+                                        $user_id = $p;//shouldn't this be $p?
                                         $uq = $pro_query->find('all')->where(['id' => $user_id])->first();
                                         if (isset($uq->profile_type))
                                           {
@@ -372,6 +372,8 @@ class DocumentComponent extends Component{
                                             $type_q = $type_query->find()->where(['id'=>$u])->first(); 
                                             $ut = $type_q->title;
                                           }
+                                          else
+                                            $ut = '';
 
                                         //
                                           $path = 'https://isbmeereports.com/documents/view/'.$cid;
