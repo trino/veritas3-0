@@ -255,11 +255,12 @@ function makedropdownoption($Key, $Value, $TheValue){
                      if($_SERVER['SERVER_NAME'] =='localhost') {
                      ?>
                     <div class="tab-pane" id="tab_1_9">
-                        <a href="javascript:void(0)" class="btn btn-danger" id="cleardata">Clear Data</a>
-                        <div class="margin-top-10 alert alert-success display-hide cleardata_flash" style="display: none;">
-                           Data Successfully Cleared.
-                                                    <button class="close" data-close="alert"></button>
+                        <a href="javascript:void(0)" class="btn btn-danger" id="cleardata" onclick="cleardata();">Clear Data</a>
+                        <a href="javascript:void(0)" class="btn btn-danger" id="scrambledata" onclick="scrambledata();">Scramble Data</a>
 
+                        <div class="margin-top-10 alert alert-success display-hide cleardata_flash" style="display: none;">
+                            Data Successfully Cleared.
+                            <button class="close" data-close="alert"></button>
                         </div>
                     </div>
                     <?php
@@ -334,11 +335,23 @@ function makedropdownoption($Key, $Value, $TheValue){
         });
     }
 
+     function scrambledata(){
+         $(this).attr("disabled", "disabled");
+         var dn = confirm("Confirm scramble Database Data.");
+         if (dn == true) {
+             $.ajax({
+                 url: "<?php echo $this->request->webroot;?>profiles/scrambledata",
+                 type: "post",
+                 success: function (msg) {
+                     $('#scrambledata').removeAttr("disabled");
+                     $(".cleardata_flash").show();
+                     $(".cleardata_flash").html(msg);
+                 }
+             });
+         }
+     }
 
-
-    $(function () {
-
-        $('#cleardata').click(function () {
+    function cleardata(){
             $(this).attr("disabled", "disabled");
             var dn = confirm("Confirm Clear Database Data.");
             if (dn == true) {
@@ -347,14 +360,12 @@ function makedropdownoption($Key, $Value, $TheValue){
                     type: "post",
                     success: function (msg) {
                         $('#cleardata').removeAttr("disabled");
-                        if (msg == 'Cleared')
-                            $(".cleardata_flash").show();
+                        $(".cleardata_flash").show();
+                        $(".cleardata_flash").html(msg);
                     }
                 });
             }
-
-        });
-    });
+     }
 
         $(function () {
 

@@ -2694,6 +2694,59 @@
             return $randomString;
         }
 
+        function removeplus($Email, $RetPlus = false){
+            $Plus = strpos($Email, "+");
+            $At = strpos($Email, "@");
+            if($Plus !== false){
+                $Middle = substr($Email, $Plus, $At-$Plus);
+                if($RetPlus){return str_replace("+", "", $Middle);}
+                return str_replace($Middle, "", $Email);
+            }
+            if($RetPlus){return substr($Email, 0, $At);}
+            return $Email;
+        }
+
+        function injectplus($Email, $Plus){
+            $Email = explode("@", $this->removeplus($Email));
+            return $Email[0] . '+' . $Plus . '@' . $Email[1];
+        }
+
+        function stringmask($Data, $Mask, $MaskDigit = "X"){
+            $NewData = "";
+            $Biggest = strlen($Mask);
+            if(strlen($Data) > $Biggest){$Biggest = strlen($Data);}
+            for($temp = 0; $temp < $Biggest; $temp++){
+                if($temp < strlen($Mask)) {$MaskLetter = substr($Mask, $temp, 1);} else {$MaskLetter = $MaskDigit;}
+                if($temp < strlen($Data)) {$DataLetter = substr($Data, $temp, 1);} else {$DataLetter = "";}
+                if($MaskLetter == $MaskDigit){
+                    if(strlen($DataLetter)){$NewData .= $DataLetter;}
+                } else {
+                    $NewData .= $MaskLetter;
+                }
+            }
+            return $NewData;
+        }
+
+        function scrambledata(){
+            if ($this->request->session()->read('Profile.super') == 1) {
+                $SuperEmail = $this->removeplus($this->Manager->get_entry("profiles", 1, "super")->email);
+
+                $Profiles = $this->Manager->enum_all("profiles", array("super" => 0));
+                foreach($Profiles as $Profile){
+                    if($Profile->email) {$newemail = $this->injectplus($SuperEmail, "User" . $Profile->id);} else {$newemail="";}
+                    if($Profile->phone) {$newphone = $this->Manager->format_phone($this->stringmask($this->Manager->validate_data($Profile->phone, "number"), "XXX555XXXX"));} else {$newphone="";}
+                    $this->Manager->update_database("profiles", "id", $Profile->id, array("email" => $newemail, "phone" => $newphone, "street" => "123 fake st", "driver_license_no" => "123-456-789", "sin" => "123-456-789"));
+                }
+
+                $this->Manager->update_database("clients", "1", "1", array("company_phone" => "", "sig_email" => "", "company_address" => "", "billing_address" => ""));
+                $this->Manager->update_database("events", "1", "1", array("others_email" => ""));
+
+                echo "Data has been scrambled to " . $SuperEmail;
+            }
+            $this->layout = "blank";
+            die();
+        }
+
         function cleardb() {
             if ($this->request->session()->read('Profile.super') == 1) {
                 $Tables = $this->Manager->enum_tables();
