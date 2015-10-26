@@ -80,9 +80,18 @@ $(function(){
         par.removeClass('active');
         var id = par.find('.buttons').attr('id').replace('button','');
         var type = par.find('input[name="document_type"]').val();
+        var cl = par.find('.sub_docs_id').val();
         if(type=='driver_form')
         {
             save_driver(par,'<?php echo $this->request->webroot;?>');
+        }
+        else{
+        if(cl=='10')
+        {
+            //Education verification
+            save_edu(par,'<?php echo $this->request->webroot;?>');
+            
+        }
         }
         id = parseInt(id)+1;
         $('#step'+id).show();
