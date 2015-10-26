@@ -41,6 +41,7 @@ class ClientApplicationController extends AppController {
         $this->set('subd',$sub);
         $this->set('Manager',$this->Manager);
         $this->set('did','0');
+        $this->set('doc',TableRegistry::get('subdocuments')->find()->all());
         
     }
     public function getForm($id)
@@ -75,6 +76,48 @@ class ClientApplicationController extends AppController {
         $model = TableRegistry::get('profiles');
         $profile = $model->newEntity($_POST);
         $model->save($profile);
+        echo $profile->id;
         die();
     }
+    public function savedoc($cid = 0, $did = 0) {
+        $this->set('doc_comp',$this->Document);
+        $this->loadComponent('Mailer');
+        //$this->Mailer->handleevent("documentcreatedb", array("site" => "","email" => "roy", "company_name" => "", "username" => $this->request->session()->read('Profile.username'), "id" => $did, "path" => "", "profile_type" => ""));
+
+        $ret = $this->Document->savedoc($this->Mailer, $cid,$did);
+        //$this->Mailer->handleevent("documentcreated", $ret);
+        die();
+    }
+
+    public function savePrescreening() {
+        $this->Document->savePrescreening();
+        die;
+    }
+
+    public function savedDriverApp($document_id = 0, $cid = 0){
+        $this->Document->savedDriverApp($document_id,$cid);
+        die;
+    }
+
+
+    public function savedDriverEvaluation($document_id = 0, $cid = 0){
+        $this->Document->savedDriverEvaluation($document_id,$cid);
+        die();
+    }
+
+    public function savedMeeOrder($document_id = 0, $cid = 0){
+        $this->Document->savedMeeOrder($document_id,$cid);
+        die();
+    }
+
+    function saveEmployment($document_id = 0, $cid = 0){
+        $this->Document->saveEmployment($document_id,$cid);
+        die();
+    }
+
+    function saveEducation($document_id = 0, $cid = 0){
+        $this->Document->saveEducation($document_id,$cid);
+        die();
+    }
+
 }

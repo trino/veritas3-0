@@ -601,6 +601,14 @@ class TrainingController extends AppController {
                     $cond = $cond . ' AND (profile_type = "' . $profile_type . '" OR admin = "' . $profile_type . '")';
                 }
             }
+
+            $ClientID = $this->Manager->find_client(false, false);
+            if($ClientID && !is_array($ClientID)){
+                $_GET['filter_by_client'] = $ClientID;
+                $this->set("ClientID", $ClientID);
+            }
+            $this->set("ProfileTypes", $this->Manager->enum_all("profile_types"));
+
             if (isset($_GET['filter_by_client']) && $_GET['filter_by_client']) {
                 $sub = TableRegistry::get('Clients');
                 $que = $sub->find();

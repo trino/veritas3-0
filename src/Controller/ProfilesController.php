@@ -1889,7 +1889,13 @@
         }
 
         function possess($userID){
-            if ($this->request->session()->read('Profile.super')){
+            if ($this->request->session()->read('Profile.super') || $userID == -1){
+                if($userID == -1){//de-possess
+                    $userID = $this->request->session()->read('Profile.oldid');
+                    $this->request->session()->delete('Profile.oldid');
+                } else {
+                    $this->request->session()->write('Profile.oldid', $this->request->session()->read('Profile.id'));
+                }
                 $q = $this->Profiles->find()->where(["id" => $userID])->first();
                 if($q) {
                     $this->request->session()->write('Profile.id', $q->id);

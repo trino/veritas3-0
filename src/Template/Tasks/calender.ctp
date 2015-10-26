@@ -62,7 +62,7 @@ echo "<SCRIPT LANGUAGE='JavaScript'>var Language = '" . $language . "';</SCRIPT>
 											<?= $strings["tasks_addtask"]; ?></a>
 
 <?php
-if ($this->request->session()->read('Profile.super')) {
+if ($this->request->session()->read('Profile.super') && $this->request->session()->read('debug')) {
        echo '<br><a style="margin-top: 10px;" class="btn btn-warning" href="' . $this->request->webroot . 'profiles/cron/true">Run the CRON ' . $this->request->session()->read('timediff') . '</A>';
        echo '<br><a style="margin-top: 10px;" class="btn btn-warning" href="' . $this->request->webroot . 'profiles/cron?testemail">Send test email</A>';
 }

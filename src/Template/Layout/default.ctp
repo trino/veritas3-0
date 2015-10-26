@@ -311,19 +311,21 @@
                                     <a href="<?php echo $this->request->webroot;?>profiles/edit/<?php echo $this->request->session()->read('Profile.id'); ?>">
                                         <i class="icon-user"></i> <?= $strings["dashboard_mysettings"] ?> </a>
                                 </li>
-                                <?php if ($debug || true) { ?>
-                                    <li>
-                                        <a href="<?php echo $this->request->webroot; ?>profiles/langswitch/<?php echo $this->request->session()->read('Profile.id'); ?>">
-                                            <i class="icon-user"></i> <?= $strings["langswitch"]; ?> </a>
-                                    </li>
-                                <?php } ?>
-                                <li class="divider">
-                                </li>
+                                <?php if ($debug || true) {
+                                    echo '<li><a href="' . $this->request->webroot . 'profiles/langswitch/' . $this->request->session()->read('Profile.id') . '"><i class="icon-user"></i> ';
+                                    echo $strings["langswitch"] . '</a></li>';
+                                }
 
-                                <li>
-                                    <a href="<?php echo $this->request->webroot;?>profiles/logout">
-                                        <i class="icon-key"></i> <?= $strings["dashboard_logout"]; ?></a>
-                                </li>
+                                echo '<li class="divider"></li>';
+
+                                if( $this->request->session()->check('Profile.oldid')){
+                                    echo '<LI><a href="' . $this->request->webroot . 'profiles/possess/-1';
+                                    echo '" onclick="return confirm(' . "'Are you sure you want to de-possess " . ucfirst(h($this->request->session()->read("Profile.username"))) . "?'";
+                                    echo ');" ><i class="icon-key"></i> De-possess</a></LI>';
+                                } else {
+                                    echo '<li><a href="' . $this->request->webroot . 'profiles/logout"><i class="icon-key"></i> <?= $strings["dashboard_logout"]; ?></a></li>';
+                                }
+                                ?>
                             </ul>
                         </li>
                     <?php

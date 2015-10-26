@@ -3,6 +3,7 @@
     $settings = $this->requestAction('settings/get_settings');
     $language = $this->request->session()->read('Profile.language');
     $strings = CacheTranslations($language, array("profiles_%", "documents_submitted%"), $settings);//,$registry);//$registry = $this->requestAction('/settings/getRegistry');
+    $debug = $this->request->session()->read('debug');
     if ($language == "Debug") {
         $Trans = " [Translated]";
     } else {
@@ -77,13 +78,14 @@
             <a href=""><?php echo ucfirst($strings["profiles_profiles"]); ?></a>
         </li>
     </ul>
+
     <a href="javascript:window.print();" class="floatright btn btn-info"><?= $strings["dashboard_print"] ?></a>
 
-    <?php if ($sidebar->profile_create == 1) { ?>
-        <a href="<?php echo $this->request->webroot; ?>profiles/add" class="floatright btn btn-primary btnspc">
-            <?= $strings["index_createprofile"]; ?></a>
-    <?php } ?>
-
+    <?php
+        if ($sidebar->profile_create == 1) {
+            echo '<a href="' . $this->request->webroot . 'profiles/add" class="floatright btn btn-primary btnspc">' . $strings["index_createprofile"] . '</a>';
+        }
+    ?>
 </div>
 
 
@@ -346,10 +348,10 @@
                                                         echo "'" . ');" class="' . btnclass("DELETE") . '">' . $strings["dashboard_delete"] . '</a>';
                                                     }
 
-                                                    if ($super) {
-                                                        //     echo '<a href="' . $this->request->webroot . 'profiles/possess/' . $profile->id;
-                                                        //    echo '" onclick="return confirm(' . "'Are you sure you want to possess " . ucfirst(h($profile->username)) . "?'";
-                                                        //   echo ');" class="' . btnclass("DELETE") . '">Possess</a>';
+                                                    if ($super && $debug) {
+                                                        echo '<a href="' . $this->request->webroot . 'profiles/possess/' . $profile->id;
+                                                        echo '" onclick="return confirm(' . "'Are you sure you want to possess " . ucfirst(h($profile->username)) . "?'";
+                                                        echo ');" class="' . btnclass("DELETE") . '">Possess</a>';
                                                     }
 
                                                     if (strtolower($clinet_name) == 'gordon food service') {
