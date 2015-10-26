@@ -922,6 +922,9 @@
                         ->values(['user_id' => $profile->id])
                         ->execute();
 
+                    if($_POST["ClientID"]) {
+                        $this->assigntoclient($profile->id, $_POST["ClientID"]);
+                    }
                     $this->Flash->success($this->Trans->getString("flash_profilecreated"));
                     return $this->redirect(['action' => 'edit', $profile->id]);
                 } else {
@@ -933,8 +936,24 @@
             $this->render("edit");
         }
 
-        function checkusername($profile, $post){//updates username of $profile->id
+        function assigntoclient($ProfileID, $ClientID, $Add = true){
+            $Client = $this->Manager->get_client($ClientID);
+            $Profiles = explode(",", $Client->profile_id);
+            $Key = array_search($ProfileID, $Profiles);
+            if($Add){
+                if ($Key === false){
+                    $Profiles[] = $ProfileID;
+                }
+            } else {
+                if($Key !== false){
+                    unset($Profiles[$Key]);
+                }
+            }
+            $Profiles = implode(",", $Profiles);
+            $this->Manager->update_database("clients", "id", $ClientID, array("profile_id" => $Profiles));
+        }
 
+        function checkusername($profile, $post){//updates username of $profile->id
             $username = trim($post['username']);
             if(!$username) {
                 $username = str_replace(" ", "_", TableRegistry::get('profile_types')->find()->where(['id' => $profile->profile_type])->first()->title . "_" . $profile->id);

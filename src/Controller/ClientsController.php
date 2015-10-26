@@ -1187,8 +1187,7 @@
             $pros = explode(",", $profile_id);
             $flash = "";
             $p_ids = "";
-            if ($_POST['add'] == '1')//should use $settings->client not "client"
-            {
+            if ($_POST['add'] == '1') {
                 array_push($pros, $_POST['user_id']);
                 $pro_id = array_unique($pros);
                 $flash = $this->Trans->getString("flash_assignedtoclient");
@@ -1199,10 +1198,11 @@
             }
 
             foreach ($pro_id as $k => $p) {
-                if (count($pro_id) == $k + 1)
+                if (count($pro_id) == $k + 1) {
                     $p_ids .= $p;
-                else
+                }else {
                     $p_ids .= $p . ",";
+                }
             }
             $p_ids = str_replace(',', ' ', $p_ids);
             $p_ids = trim($p_ids);

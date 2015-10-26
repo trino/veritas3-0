@@ -691,16 +691,13 @@ loadreasons($param, $strings, true);
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label class="control-label"><?= $strings["forms_provinceissued"]; ?>: </label>
-
                                         <?php
-                                        if (isset($p->driver_province)) {
-                                            printprovinces($language, "driver_province", $p->driver_province, $is_disabled, true);
-                                        } else {
-                                            printprovinces($language, "driver_province", "", $is_disabled, true);
-                                        }
+                                            if (isset($p->driver_province)) {
+                                                printprovinces($language, "driver_province", $p->driver_province, $is_disabled, true);
+                                            } else {
+                                                printprovinces($language, "driver_province", "", $is_disabled, true);
+                                            }
                                         ?>
-
-
                                     </div>
                                 </div>
 
@@ -764,6 +761,21 @@ loadreasons($param, $strings, true);
                                             value="<?php echo $p->sin; ?>" <?php } ?> />
                                     </div>
                                 </div>
+
+                                <?php
+                                if ($this->request->params['action'] == 'add') {
+                                    echo '<div class="col-md-6"><div class="form-group">';
+                                    echo '<label class="control-label">' . $strings["settings_client"] . ': </label>';
+                                    echo '<SELECT name="ClientID" class="form-control"><OPTION VALUE="">Select ' .  $strings["settings_client"] . '</OPTION>';
+                                    $Clients = $Manager->enum_all("clients");
+                                    foreach($Clients as $Client){
+                                        echo '<OPTION VALUE="' . $Client->id . '">' . $Client->company_name . '</OPTION>';
+                                    }
+                                    echo '</SELECT></DIV></DIV>';
+                                }
+                                ?>
+
+
                                 <!--div class="col-md-12">
                                     <div class="form-group">
                                         <h3 class="block">Automatic Survey Email: </h3></div>
@@ -853,20 +865,6 @@ loadreasons($param, $strings, true);
 
         </div>
     </div>
-    <?php
-    if ($this->request->params['action'] == 'edit') {
-
-    } else {
-        ?>
-        <!--div class="tab-pane" id="subtab_4_3">
-            <p>Please save info first.</p>
-        </div-->
-
-    <?php
-    }
-    ?>
-
-
 </div>
 <script>
     function check_username() {
