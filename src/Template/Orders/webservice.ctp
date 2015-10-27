@@ -57,7 +57,6 @@
                 break;
             case 14:
                 $cvor_ins_14 = true;
-
                 break;
             case 77:
                 $preemploymentscreening_ins_77 = true;
