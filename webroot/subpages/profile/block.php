@@ -155,12 +155,12 @@
                                             }
                                         ?>
                                     </tr>
-                                    <tr style="display: none;">
+                                    <!--<tr style="display: none;">
                                         <td></td>
                                         <td></td>
                                         <td><a href="javascript:;" class="btn btn-primary" id="saveptype">Submit</a>
                                         </td>
-                                    </tr>
+                                    </tr>-->
 
                                 </table>
 
@@ -250,12 +250,12 @@
                                             }
                                         ?>
                                     </tr>
-                                    <tr style="display: none;">
+                                    <!--<tr style="display: none;">
                                         <td></td>
                                         <td></td>
                                         <td><a href="javascript:;" class="btn btn-primary" id="savectype">Submit</a>
                                         </td>
-                                    </tr>
+                                    </tr>-->
 
                                 </table>
 
@@ -469,7 +469,7 @@
                                         if (!isset($disabled)) {
                                             ?>
 
-                                            <div class="form-actions"
+                                            <!--<div class="form-actions"
                                                  style="height:75px;margin-left:-10px;margin-right:-10px;margin-bottom:-10px;display: none;">
                                                 <div class="row">
                                                     <div class="col-md-12" align="right">
@@ -478,7 +478,7 @@
                                                             Save Changes </a>
                                                     </div>
                                                 </div>
-                                            </div>
+                                            </div>-->
                                         <?php
                                         }
 
@@ -597,7 +597,7 @@
                                 <button class="close" data-close="alert"></button>
                                 Data saved successfully
                             </div>
-                            <div class="form-actions"
+                            <!--<div class="form-actions"
                                  style="height:75px;margin-left:-10px;margin-right:-10px;margin-bottom:-10px;">
                                 <div class="row">
                                     <div class="col-md-12" align="right">
@@ -606,7 +606,7 @@
 
                                     </div>
                                 </div>
-                            </div>
+                            </div>-->
                         <?php
                         }
                     ?>
@@ -930,7 +930,7 @@
                             Data saved successfully
                         </div>
 
-                        <div class="form-actions"
+                        <!--<div class="form-actions"
                              style="height:75px;margin-left:-10px;margin-right:-10px;margin-bottom:-10px;">
                             <div class="row">
                                 <div class="col-md-12" align="right">
@@ -940,7 +940,7 @@
 
                                 </div>
                             </div>
-                        </div>
+                        </div>-->
                     <?php
                     }
                 ?>
@@ -1111,9 +1111,9 @@
     function reload(URL){
         setTimeout(function(){
             if(URL) {
-                location.href = getURL() + "?activetab=" + URL;
+                //location.href = getURL() + "?activetab=" + URL;
             } else {
-                window.location.reload();
+                //window.location.reload();
             }
         },1000);
     }
@@ -1175,7 +1175,7 @@
         });
         $('.slelectall').click(function () {
             if ($(this).is(':checked')) {
-                $('#blockform input[type="radio"]').each(function () {
+                $('#subtab_2_1 input[type="radio"]').each(function () {
                     $(this).parent().removeClass('checked');
                     if($(this).hasClass('documents')) {
                         var intg = 3;
@@ -1214,7 +1214,7 @@
             }
         })
 
-        $('#saveptype').live('click', function () {
+        $('#savepro').live('click', function () {
             $(this).text("Saving");
             $('.overlay-wrapper').show();
             var cids = $('.ptypeform input[type="checkbox"]').serialize();
@@ -1227,13 +1227,13 @@
                 success: function (msg) {
                     $('.ptype').show();
                     $('.ptype').fadeOut(7000);
-                    $('#saveptype').text('Submit');
+                    $('#savepro').text(' Save Changes ');
                     $('.overlay-wrapper').hide();
                 }
             })
         });
 
-        $('#savectype').live('click', function () {
+        $('#savepro').live('click', function () {
             $('.overlay-wrapper').show();
             $(this).text("Saving");
             var cids = $('.ctypeform input[type="checkbox"]').serialize();
@@ -1246,12 +1246,12 @@
                 success: function (msg) {
                     $('.ctype').show();
                     $('.ctype').fadeOut(7000);
-                    $('#savectype').text('Submit');
+                    $('#savepro').text(' Save Changes ');
                     $('.overlay-wrapper').hide();
                 }
             })
         });
-        $('#save_blocks').click(function () {
+        $('#savepro').click(function () {
             $('.overlay-wrapper').show();
             var str = $('#blockform input').serialize();
 
@@ -1260,18 +1260,18 @@
                 data: str,
                 type: 'post',
                 success: function (res) {
-                    if ($('.profile_enb').is(":checked")) {
+                    /*if ($('.profile_enb').is(":checked")) {
                         $('#saveptype').click();
                     }
                     if ($('.client_enb').is(":checked")) {
                         $('#savectype').click();
                     }
-                    $('#save_display').click();
+                    $('#save_display').click();*/
                     //alert(res); return false;
                     $('.res').text(res);
                     $('.flash').show();
                     $('.flash').fadeOut(7000);
-                    $('#save_blocks').text(' Save Changes ');
+                    $('#savepro').text(' Save Changes ');
                     reload("permissions");//window.location.reload();
                     $('.overlay-wrapper').hide();
                 }
@@ -1279,9 +1279,9 @@
         });
 
 
-        $('#save_home').click(function () {
+        $('#savepro').click(function () {
             $('.overlay-wrapper').show();
-            $('#save_home').text('Saving..');
+            $('#savepro').text('Saving..');
             var str = $('#homeform input').serialize();
             $.ajax({
                 url: '<?php echo $this->request->webroot; ?>profiles/homeblocks',
@@ -1292,14 +1292,14 @@
                     $('.res').text(res);
                     $('.flash').show();
                     $('.flash').fadeOut(7000);
-                    $('#save_home').text(' Save Changes ');
+                    $('#savepro').text(' Save Changes ');
                     $('.overlay-wrapper').hide();
                 }
             })
         });
-        $('#save_display').click(function () {
+        $('#savepro').click(function () {
             $('.overlay-wrapper').show();
-            $('#save_display').text('Saving..');
+            $('#savepro').text('Saving..');
             var str = $('.doc_more input').serialize();
             $.ajax({
                 url: '<?php echo $this->request->webroot;?>profiles/displaySubdocs/<?php echo $id;?>',
@@ -1308,7 +1308,7 @@
                 success: function (res) {
                     $('.flash').show();
                     $('.flash').fadeOut(7000);
-                    $('#save_display').text(' Save Changes ');
+                    $('#savepro').text(' Save Changes ');
                     $('.overlay-wrapper').hide();
                 }
             })
