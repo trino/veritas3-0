@@ -39,6 +39,7 @@ foreach($subd as $s)
 ?>
 <script>
 $(function(){
+    $('.links a:nth-child(5), .links p').css({'display':'none'});
    $('.steps input').change(function(){
     $(this).parent().find('.error').html('');
    }); 
@@ -104,8 +105,8 @@ $(function(){
                 //data:'uploaded_for='+$('#uploaded_for').val(),
                 data: data,
                 type: 'post',
-                //beforeSend:saveSignature,
-                url: '<?php echo $this->request->webroot;?>clientApplication/savedoc/<?php echo $cid;?>/' + doc_id + '/?document=' + type + '&draft=' + draft+'<?php if(isset($_GET['order_id'])){?>&order_id=<?php echo $_GET['order_id'];}?>',
+                beforeSend: function(){$('.overlay-wrapper').show()},
+                url: '<?php echo $this->request->webroot;?>clientApplication/savedoc/<?php echo $cid;?>/0/?document=' + type + '&draft=' + draft+'<?php if(isset($_GET['order_id'])){?>&order_id=<?php echo $_GET['order_id'];}?>',
                 success: function (res) {
 
                     $('#did').val(res);
@@ -168,7 +169,7 @@ $(function(){
                             type: 'POST',
                             success: function (res) {
                                 if (res == 'OK'){
-                                    
+                                    $('.overlay-wrapper').hide();
                                 }
                             }
                         });
@@ -185,7 +186,7 @@ $(function(){
                             type: 'POST',
                             success: function (res) {
                                 if (res == 'OK'){
-                                   
+                                   $('.overlay-wrapper').hide();
                                 }
                             }
                         });
@@ -235,7 +236,7 @@ $(function(){
                             data: param,
                             type: 'POST',
                             success: function (res) {
-
+                                    $('.overlay-wrapper').hide();
                                  }
 
 
@@ -292,8 +293,8 @@ function savePrescreen(url, order_id, cid,draft) {
             data: param,
             type: 'POST',
             success: function (res) {
-               
-
+               $('.overlay-wrapper').hide();
+                    
             }
         });
     }
@@ -309,7 +310,7 @@ function savePrescreen(url, order_id, cid,draft) {
             data: param,
             type: 'POST',
             success: function (res) {
-               
+               $('.overlay-wrapper').hide();
             }
         });
     }
@@ -323,7 +324,7 @@ function savePrescreen(url, order_id, cid,draft) {
             data: param,
             type: 'POST',
             success: function (res) {
-               
+               $('.overlay-wrapper').hide();
             }
         });
     }
@@ -340,7 +341,7 @@ function savePrescreen(url, order_id, cid,draft) {
             type: 'POST',
             success: function (res) {
                 
-
+                $('.overlay-wrapper').hide();
             }
         });
     }
@@ -357,7 +358,7 @@ function savePrescreen(url, order_id, cid,draft) {
             data: param,
             type: 'POST',
             success: function (rea) {
-
+                $('.overlay-wrapper').hide();
                 
             }
         });
@@ -376,7 +377,7 @@ function savePrescreen(url, order_id, cid,draft) {
             data: param,
             type: 'POST',
             success: function (res) {
-                
+                $('.overlay-wrapper').hide();
             }
         });
     }
@@ -419,6 +420,38 @@ function fileUpload(ID) {
                     alert('Invalid file type.');
                 }
             }
+
+        });
+    }
+    function save_signature(numb) {
+        $("#test"+numb).data("jqScribble").save(function(imageData)
+        {
+            //alert($('#signature_company_witness2').parent().find('.touched').val());
+            if((numb=='1' && $('#recruiter_signature').parent().find('.touched').val()==1) || (numb=='3' && $('#criminal_signature_applicant').parent().find('.touched').val()==1) || (numb=='4' && $('#signature_company_witness').parent().find('.touched').val()==1) || (numb=='5' && $('#criminal_signature_applicant2').parent().find('.touched').val()==1) || (numb=='6' && $('#signature_company_witness2').parent().find('.touched').val()==1) || (numb=='8' && $('#gfs_signature').parent().find('.touched').val()==1)){
+                $.post('<?php echo $this->request->webroot; ?>canvas/image_save.php', {imagedata: imageData}, function(response) {
+                    if(numb=='1') {
+                        $('#recruiter_signature').val(response);
+                    }
+                    if(numb=='3') {
+                        $('#criminal_signature_applicant').val(response);
+                    }
+                    if(numb=='4') {
+                        $('#signature_company_witness').val(response);
+                    }
+                    if(numb=='5') {
+                        $('#criminal_signature_applicant2').val(response);
+                    }
+                    if(numb=='6') {
+                        $('#signature_company_witness2').val(response);
+                    }
+                    if(numb=='8') {
+                        $('#gfs_signature').val(response);
+                    }
+                    $('.saved'+numb).html('Saved');
+                });
+            }
+
+
 
         });
     }

@@ -119,5 +119,9 @@ class ClientApplicationController extends AppController {
         $this->Document->saveEducation($document_id,$cid);
         die();
     }
+       public function mee_attach($order_id,$cid){
+        $this->Document->mee_attach($cid,$order_id);
+        die();
+    }
 
 }

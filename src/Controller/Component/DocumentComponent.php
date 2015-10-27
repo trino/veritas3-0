@@ -218,16 +218,20 @@ class DocumentComponent extends Component{
 
                 $arr['client_id'] = $cid;
                 $arr['document_type'] = urldecode($_GET['document']);
-                if ((!$did || $did == '0'))
-                    $arr['created'] = date('Y-m-d H:i:s');
+                    
                 //$arr['conf_recruiter_name'] = $_POST['conf_recruiter_name'];
                 //$arr['conf_driver_name'] = $_POST['conf_driver_name'];
                 //$arr['conf_date'] = $_POST['conf_date'];
+                
                 if ((!$did || $did == '0') && ($arr['sub_doc_id'] < 7 || $arr['sub_doc_id'] == 15 || $arr['sub_doc_id'] == 9 || $arr['sub_doc_id'] == 10))
                 {
-                    $arr['user_id'] = $controller->request->session()->read('Profile.id');
+                    $arr['created'] = date('Y-m-d H:i:s');
+                    if($controller->request->session()->read('Profile.id'))
+                        $arr['user_id'] = $controller->request->session()->read('Profile.id');
+                   
+                   
                     $doc = $docs->newEntity($arr);
-
+                    
                     if ($docs->save($doc)) {
                        
                         $path = $this->getUrl();
@@ -245,31 +249,30 @@ class DocumentComponent extends Component{
                                 {
                                     foreach($profile as $p)
                                     {
-                                        
-                                $pro_query = TableRegistry::get('Profiles');
-                                $email_query = $pro_query->find()->where(['super' => 1])->first();
-                                $em = $email_query->email;
-                                $user_id = $controller->request->session()->read('Profile.id');
-                                $uq = $pro_query->find('all')->where(['id' => $user_id])->first();
-                                if (isset($uq->profile_type))
-                                  {
-                                    $u = $uq->profile_type;
-                                    $type_query = TableRegistry::get('profile_types');
-                                    $type_q = $type_query->find()->where(['id'=>$u])->first(); 
-                                    $ut = $type_q->title;
-                                  }
-                                  //$path = 'https://isbmeereports.com/documents/view/'.$cid;
-                                if($emailenabled) {
-                                    $ret = array("site" => $setting->mee, "email" => $p, "company_name" => $client_name, "username" => $uq->username, "id" => $did, "path" => $path, "profile_type" => $ut, "place" => 3);
-                                    $Mailer->handleevent("documentcreated", $ret);
-                                }/*
-                                $from = array('info@'.$path => $setting->mee);
-                                $to = $p;
-                                 $sub = 'Document Submitted';
-                                $msg = 'A new document has been created in '.$path.'<br /><br />
-                                Username : '.$uq->username.'<br/>Profile Type : '.$ut.'<br/> Date : '.date('Y-m-d H:i:s').'<br/>Client Name: ' . $client_name.'<br/> Document type : '.$arr['document_type'].'<br /><br />Regards,<br />The '.$setting->mee.' Team';
-  */
-                                 //$controller->Mailer->sendEmail($from, $to, $sub, $msg);
+                                        $pro_query = TableRegistry::get('Profiles');
+                                        $email_query = $pro_query->find()->where(['super' => 1])->first();
+                                        $em = $email_query->email;
+                                        $user_id = $controller->request->session()->read('Profile.id');
+                                        $uq = $pro_query->find('all')->where(['id' => $user_id])->first();
+                                        if (isset($uq->profile_type))
+                                          {
+                                            $u = $uq->profile_type;
+                                            $type_query = TableRegistry::get('profile_types');
+                                            $type_q = $type_query->find()->where(['id'=>$u])->first(); 
+                                            $ut = $type_q->title;
+                                          }
+                                          //$path = 'https://isbmeereports.com/documents/view/'.$cid;
+                                        if($emailenabled) {
+                                            $ret = array("site" => $setting->mee, "email" => $p, "company_name" => $client_name, "username" => $uq->username, "id" => $did, "path" => $path, "profile_type" => $ut, "place" => 3);
+                                            $Mailer->handleevent("documentcreated", $ret);
+                                        }/*
+                                        $from = array('info@'.$path => $setting->mee);
+                                        $to = $p;
+                                         $sub = 'Document Submitted';
+                                        $msg = 'A new document has been created in '.$path.'<br /><br />
+                                        Username : '.$uq->username.'<br/>Profile Type : '.$ut.'<br/> Date : '.date('Y-m-d H:i:s').'<br/>Client Name: ' . $client_name.'<br/> Document type : '.$arr['document_type'].'<br /><br />Regards,<br />The '.$setting->mee.' Team';
+          */
+                                         //$controller->Mailer->sendEmail($from, $to, $sub, $msg);
                                     }
                                 }
                             }
@@ -286,7 +289,7 @@ class DocumentComponent extends Component{
                             $em = $email_query->email;
                             $user_id = $controller->request->session()->read('Profile.id');
                             $uq = $pro_query->find('all')->where(['id' => $user_id])->first();
-                            if ($uq->profile_type)
+                            if ($uq && $uq->profile_type)
                               {
                                 $u = $uq->profile_type;
                                 $type_query = TableRegistry::get('profile_types');
@@ -1050,7 +1053,10 @@ class DocumentComponent extends Component{
             
             
             $arr['client_id'] = $cid;
-            $arr['user_id'] = $controller->request->session()->read('Profile.id');
+            if($controller->request->session()->read('Profile.id'))
+                $arr['user_id'] = $controller->request->session()->read('Profile.id');
+            else
+                $arr['user_id'] = 0;
             
             
             if (!isset($_GET['document']) || isset($_GET['order_id'])) {
@@ -1131,6 +1137,7 @@ class DocumentComponent extends Component{
                     $arr2['order_id'] = 0;
                 }
                 $arr2['client_id'] = $cid;
+                if($controller->request->session()->read('Profile.id'))
                 $arr2['user_id'] = $controller->request->session()->read('Profile.id');
 
                 if (isset($_POST['college_school_name'][$i])) {
