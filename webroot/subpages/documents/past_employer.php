@@ -4,7 +4,10 @@
     if(isset($_GET["notrequired"])){$required="";}
 
     include_once($include);
-    $language = $_GET["language"];
+    if(isset($_GET["language"]))
+        $language = $_GET["language"];
+    else
+        $language = 'English';
     if(isset( $_GET["debug"])){ echo "<span style ='color:red;'>subpages/documents/past_employer.php #INC146</span>"; }//$this is not accessible!
     //$strings = CacheTranslations($language, array("forms_%"));
     //var_dump($strings);
@@ -166,7 +169,7 @@
     <?php } ?>
   </div>
 
-<Script> translate();
+<script> translate();
 <?php if (isset($_GET["references"])) { ?>
 $(function () {
     $(".datepicker").datepicker({
@@ -177,4 +180,4 @@ $(function () {
     });
 });
 <?php } ?>
-</Script>
+</script>
