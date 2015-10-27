@@ -358,9 +358,45 @@ class TrainingController extends AppController {
             $path = LOGIN . "training/certificate?quizid=" . $QuizID . "&userid=" . $UserID;
             $users = $this->enumsupers();
             $users[] = $UserID;
-            $this->Manager->handleevent($event, array("email" => $users, "score" => $score, "username" => $profile->username, "path" => $path));
+            $this->handleevent($event, array("email" => $users, "score" => $score, "username" => $profile->username, "path" => $path));
             $this->loadComponent('Trans');
             $this->Flash->success($this->Trans->getString("training_answerssaved", array("num" => $answers)));
+        }
+    }
+
+    function handleevent($Event, $variables){
+        $this->loadComponent('Mailer');
+        if(method_exists($this->Mailer, "handleevent")) {
+            $this->Mailer->handleevent($Event, $variables);
+        } else {//fallback method
+            switch($Event){
+                case "training_failed":
+                    $subject="Course completion (Failure)";
+                    $message="%username% not not pass the course";
+                    break;
+                case "training_passed":
+                    $subject="Course completion (Success!)";
+                    $message='%username% passed!<BR><A HREF="%path%">Click here to view the certificate</A><BR>Score: %score% %';
+                    break;
+                case "training_enrolled":
+                    $subject="You have been enrolled in a quiz";
+                    $message='<A HREF="%path%">Click here to take the quiz</A>';
+                    break;
+                default:
+                    $subject = $Event . " is unhandled";
+                    $message = "this event is not setup";
+            }
+            foreach($variables as $Key => $Value){
+                $subject = str_replace("%" . $Key . "%", $Value, $subject);
+                $message = str_replace("%" . $Key . "%", $Value, $message);
+            }
+            if(is_array($variables["email"])){
+                foreach($variables["email"] as $to){
+                    $this->Mailer->sendEmail('', $to, $subject, $message);
+                }
+            } else {
+                $this->Mailer->sendEmail('', $variables["email"], $subject, $message);
+            }
         }
     }
 
@@ -405,7 +441,6 @@ class TrainingController extends AppController {
     }
 
     public function enrolluser($QuizID, $UserID, $Enabled = True){
-        $this->loadComponent('Mailer');
         $UserID = str_replace(",", "", $UserID);
         if(!$this->isuserenrolled($QuizID, $UserID)){
             $EnrolledBy = $this->getuserid();
@@ -418,7 +453,7 @@ class TrainingController extends AppController {
 
             $profile = $this->getprofile($UserID, false);
             $path = LOGIN .'training?quizid=' . $QuizID;
-            $this->Mailer->handleevent("training_enrolled", array("email" => "$profile->email", "path" => $path));
+            $this->handleevent("training_enrolled", array("email" => "$profile->email", "path" => $path));
             return true;
         }
     }
