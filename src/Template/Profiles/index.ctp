@@ -63,11 +63,17 @@
 
 ?>
 
+<?
+
+    if( $this->request->session()->read('Profile.id') =='1064'){ ?>
+<img src="<?php echo $this->request->webroot; ?>img/logos/challenger.png" style="float:right;">
+<?}?>
+
 <h3 class="page-title">
     <?php echo ucfirst($strings["profiles_profiles"]); ?>
 </h3>
 
-<div class="page-bar">
+<div class="page-bar" style="margin-top:40px;">
     <ul class="page-breadcrumb">
         <li>
             <i class="fa fa-home"></i>
@@ -273,7 +279,7 @@
                                                 }
                                                 */
                                             ?>
-<?if($profile->id =='1063' ||$profile->id =='1067' ||$profile->id =='1068' ||$profile->id =='1074'  ||$profile->id =='1064' ||$profile->id =='1073' ||$profile->id =='1079'){?>
+<?if($profile->id =='1085' ||$profile->id =='1078' ||$profile->id =='1075'  ||$profile->id =='1069' ||$profile->id =='1065' ||$profile->id =='1064'){?>
                                             <img style="width:110px;"
                                                  src="<? echo $this->request->webroot . 'img/mee-logo.png'; ?>"
                                                  class="img-responsive" alt=""/>
