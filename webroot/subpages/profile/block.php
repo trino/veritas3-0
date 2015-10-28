@@ -14,7 +14,7 @@
         }
         if ($doit) {
             ?>
-            <li <?php if ((!isset($Clientcount) || (isset($Clientcount) && $Clientcount != 0))) activetab($activetab, "config"); ?>>
+            <li class="active">
                 <a href="#subtab_2_1" data-toggle="tab">Configuration</a>
             </li>
             <!--<li class="">
@@ -27,9 +27,9 @@
         }
     }
     ?>
-    <li <?php if ($this->request->session()->read('Profile.profile_type') == '2' || (isset($Clientcount) && $Clientcount == 0)) echo 'class = "active"'; ?>>
+    <!--<li <?php if ($this->request->session()->read('Profile.profile_type') == '2' || (isset($Clientcount) && $Clientcount == 0)) echo 'class = "active"'; ?>>
         <a href="#subtab_2_4" data-toggle="tab">Assign to <?php echo ucfirst($settings->client) ?></a>
-    </li>
+    </li>-->
 
 
 </ul>
@@ -38,7 +38,7 @@
     <div class="tab-content">
         <?php if ($doit){ ?>
         <div
-            class="tab-pane <?php if ((!isset($Clientcount) || (isset($Clientcount) && $Clientcount != 0))) activetab($activetab, "config", false); ?>"
+            class="tab-pane active"
             id="subtab_2_1" style="padding: 10px;">
             <div class="">
                 <!--h1>Modules</h1-->
