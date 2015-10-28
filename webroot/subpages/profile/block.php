@@ -4,7 +4,7 @@
     }
 
     if($sidebar->user_id <> $uid) {
-        echo "Bug is present";
+        echo "Bug is present!";
         debug($sidebar);
         $sidebar = $Manager->loadpermissions($uid, "sidebar");
     }
@@ -55,7 +55,12 @@
                     <table class="table table-bordered table-hover">
                         <tr>
                             <td style="width:200px;"></td>
-                            <td><input type="checkbox" class="slelectall" <?= $is_disabled?> id="sellall1"/><label for="sellall1"> Select All</label></td>
+                            <td>
+                                <label><input type="checkbox" class="slelectall" <?= $is_disabled?> id="sellall1"/> Select All</label>
+
+                                <label><input type="checkbox" name="changeexisting" <?= $is_disabled?> /> Change all existing profiles of this type</label>
+                                <label><input type="checkbox" name="changefuture" <?= $is_disabled?> /> Change all future profiles of this type</label>
+                            </td>
                         </tr>
                         <tr>
                             <td class="vtop">

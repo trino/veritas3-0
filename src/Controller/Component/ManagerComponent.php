@@ -847,6 +847,7 @@ class ManagerComponent extends Component {
     function debugprint($text){
         $path = "royslog.txt";
         $dashes = "----------------------------------------------------------------------------------------------\r\n";
+        if(is_array($text)){$text = print_r($text,true);}
         file_put_contents($path, $dashes . str_replace("%dashes%", $dashes, str_replace("<BR>", "\r\n" , $text)) . "\r\n", FILE_APPEND);
     }
 
@@ -1353,16 +1354,23 @@ class ManagerComponent extends Component {
         return $Data;
     }
 
-    function loadpermissions($UserID, $Table){//$Table should be sidebar or blocks
+    function loadpermissions($UserID, $Table, $AsArray = false){//$Table should be sidebar or blocks
         //echo "PERM: " . $UserID . " " . print_r($this->debug_string_backtrace(), true);
         $Data = $this->get_entry($Table, $UserID, "user_id");
         //$Data->backtrace = $this->debug_string_backtrace();
+
+        if($AsArray){$Data = $this->getProtectedValue($Data, "_properties");}
         return $Data;
     }
-    function makepermissions($UserID, $Table){
+    function makepermissions($UserID, $Table, $ProfileType = false){
         //$this->debugprint("Make profile: " . $UserID . " " . $Table);
-
-        $Values = array('user_id' => $UserID);
+        if(!$ProfileType){$ProfileType = $this->get_profile($UserID)->profile_type;}
+        $Master = $this->enum_all("profiles", array("master" => 1, "profile_type" => $ProfileType))->first();
+        if($Master){
+            $Values = $this->loadpermissions($Master->id, $Table, true);
+            unset($Values["id"]);
+        }
+        $Values['user_id'] = $UserID;
 
         TableRegistry::get($Table)->query()->insert(array_keys($Values))->values($Values)->execute();
     }

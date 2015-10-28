@@ -842,10 +842,6 @@
         public function getsidebar($Set = "", $UserID =""){
             if(!$UserID) {$UserID = $this->request->session()->read('Profile.id');}
             $UserID = $this->Manager->loadpermissions($UserID, "sidebar");
-
-            echo "Setting sidebar ";
-            debug($UserID);
-
             if($Set){$this->set($Set, $UserID);}
             return $UserID;
         }
@@ -1692,11 +1688,21 @@
             $sidebar = TableRegistry::get('sidebar');
             $s1 = $sidebar->find()->where(['user_id' => $user_id])->count();
             if ($user_id != 0 && $s1 != 0) {
+                $Conditions = array('user_id' => $user_id);
+                if(isset($_POST["changeexisting"]) && $_POST["changeexisting"]){
+                    $Conditions = array('user_id IN (' . $this->enumprofiletype( $this->Manager->get_profile($user_id)->profile_type ) . ')');
+                    unset($side["user_id"]);
+                    $this->Manager->debugprint( print_r($Conditions,true) . " side " . print_r($side, true) );
+                }
+
                 $query1 = $sidebar->query();
                 $query1->update()
                     ->set($side)
-                    ->where(['user_id' => $user_id])
+                    ->where($Conditions)
                     ->execute();
+
+                if(isset($_POST["changefuture"]) && $_POST["changefuture"]){$IsMaster = 1;} else {$IsMaster=0;}
+                $this->Manager->update_database("profiles", "id", $user_id, array("master" => $IsMaster));
             } else {
                 $article = $sidebar->newEntity($_POST['side']);
                 $sidebar->save($article);
@@ -1705,6 +1711,15 @@
             $this->displaySubdocs($user_id);
 
             die();
+        }
+
+        function enumprofiletype($ProfileType){
+            $RET = array();
+            $Profiles = $this->Manager->enum_all("profiles", array("profile_type" => $ProfileType));
+            foreach($Profiles as $Profile){
+                $RET[] = $Profile->id;
+            }
+            return implode(",", $RET);
         }
 
         function homeblocks() {
