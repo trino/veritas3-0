@@ -1354,9 +1354,25 @@ class ManagerComponent extends Component {
     }
 
     function loadpermissions($UserID, $Table){//$Table should be sidebar or blocks
+        //echo "PERM: " . $UserID . " " . print_r($this->debug_string_backtrace(), true);
         $Data = $this->get_entry($Table, $UserID, "user_id");
-
+        //$Data->backtrace = $this->debug_string_backtrace();
         return $Data;
     }
+    function makepermissions($UserID, $Table){
+        //$this->debugprint("Make profile: " . $UserID . " " . $Table);
+
+        $Values = array('user_id' => $UserID);
+
+        TableRegistry::get($Table)->query()->insert(array_keys($Values))->values($Values)->execute();
+    }
+
+    function debug_string_backtrace($Args = false) {
+        $BACK = debug_backtrace(0);
+        $BACK[2]["line"] = $BACK[1]["line"];
+        if(!$Args){unset( $BACK[2]["args"]);}
+        return $BACK[2];
+    }
+
 }
 ?>

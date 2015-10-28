@@ -148,7 +148,6 @@ class SettingsController extends AppController {
         if($type != "" || $type !="0") {
             if($type =='sidebar') {
                 return $this->get_side($uid);
-                die("DIDIT!");
             }elseif($type =='blocks') {
                 return $this->get_blocks($uid);
             }

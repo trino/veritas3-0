@@ -746,7 +746,7 @@
                 $this->Flash->success($this->Trans->getString("flash_ordersaved"));
             }
             if($id>0) {
-                $this->getsidebar("Sidebar");//$sidebar->viewprofiles
+                $sidebar = $this->getsidebar("Sidebar", $id);//$sidebar->viewprofiles
                 $userid=$this->request->session()->read('Profile.id');
                 $this->set('products', TableRegistry::get('product_types')->find('all'));
                 $this->getsubdocument_topblocks($id, false);
@@ -842,6 +842,10 @@
         public function getsidebar($Set = "", $UserID =""){
             if(!$UserID) {$UserID = $this->request->session()->read('Profile.id');}
             $UserID = $this->Manager->loadpermissions($UserID, "sidebar");
+
+            echo "Setting sidebar ";
+            debug($UserID);
+
             if($Set){$this->set($Set, $UserID);}
             return $UserID;
         }
@@ -908,19 +912,11 @@
                         }
                     }
                     //die();
-                    $blocks = TableRegistry::get('Blocks');
-                    $query2 = $blocks->query();
-                    $query2->insert(['user_id'])
-                        ->values(['user_id' => $profile->id])
-                        ->execute();
 
-                    $side = TableRegistry::get('Sidebar');
-                    $query2 = $side->query();
-                    $create_que = $query2->insert(['user_id'])
-                        ->values(['user_id' => $profile->id])
-                        ->execute();
+                    $this->Manager->makepermissions($profile->id, "blocks", $profile->profile_type);
+                    $this->Manager->makepermissions($profile->id, "sidebar", $profile->profile_type);
 
-                    if($_POST["ClientID"]) {
+                    if(isset($_POST["ClientID"]) && $_POST["ClientID"]) {
                         $this->assigntoclient($profile->id, $_POST["ClientID"]);
                     }
                     $this->Flash->success($this->Trans->getString("flash_profilecreated"));
@@ -1042,16 +1038,10 @@
                                             ->execute();
 
                                     }
-                                    $blocks = TableRegistry::get('Blocks');
-                                    $query3 = $blocks->query();
-                                    $query3->insert(['user_id'])
-                                        ->values(['user_id' => $uid])
-                                        ->execute();
-                                    $side = TableRegistry::get('Sidebar');
-                                    $query4 = $side->query();
-                                    $create_que = $query4->insert(['user_id'])
-                                        ->values(['user_id' => $uid])
-                                        ->execute();
+
+                                    $this->Manager->makepermissions($pros->id, "blocks", $pros->profile_type);
+                                    $this->Manager->makepermissions($pros->id, "sidebar", $pros->profile_type);
+
                                     unset($query2);
                                 }
                             }
@@ -1219,16 +1209,9 @@
                             }
                         }
 
-                        $blocks = TableRegistry::get('Blocks');
-                        $query2 = $blocks->query();
-                        $query2->insert(['user_id'])
-                            ->values(['user_id' => $profile->id])
-                            ->execute();
-                        $side = TableRegistry::get('Sidebar');
-                        $query2 = $side->query();
-                        $query2->insert(['user_id'])
-                            ->values(['user_id' => $profile->id])
-                            ->execute();
+                        $this->Manager->makepermissions($profile->id, "blocks", $profile->profile_type);
+                        $this->Manager->makepermissions($profile->id, "sidebar", $profile->profile_type);
+
                         if (isset($_POST['drafts']) && ($_POST['drafts'] == '1')) {
                             $this->Flash->success($this->Trans->getString("flash_profilesaveddraft"));
                         } else {
@@ -3474,18 +3457,9 @@
                                 ->execute();
                         }
                     }
-                    //die();
-                    $blocks = TableRegistry::get('Blocks');
-                    $query2 = $blocks->query();
-                    $query2->insert(['user_id'])
-                        ->values(['user_id' => $profile->id])
-                        ->execute();
-                    $side = TableRegistry::get('Sidebar');
-                    $query2 = $side->query();
-                    $create_que = $query2->insert(['user_id'])
-                        ->values(['user_id' => $profile->id])
-                        ->execute();
 
+                    $this->Manager->makepermissions($profile->id, "blocks", $profile->profile_type);
+                    $this->Manager->makepermissions($profile->id, "sidebar", $profile->profile_type);
                 }
 
 

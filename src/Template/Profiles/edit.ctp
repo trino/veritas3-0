@@ -1,5 +1,4 @@
 <?php
-    
     $uid = ($this->request['action'] == 'add') ? "0" : $this->request['pass'][0];
     $sidebar = $this->requestAction("settings/all_settings/" . $uid . "/sidebar");
     $block = $this->requestAction("settings/all_settings/" . $uid . "/blocks");
@@ -116,11 +115,13 @@
 
     $settings = $this->requestAction('settings/get_settings');
 
+/*  what is this supposed to do?
     if ($this->request->session()->read('Profile.super')) {
         $sidebar = $this->requestAction("settings/all_settings/0/sidebar");
     } else {
         $sidebar = $this->requestAction("settings/all_settings/" . $userID . "/sidebar");
     }
+*/
 
     include_once('subpages/api.php');
     $language = $this->request->session()->read('Profile.language');

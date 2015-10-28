@@ -76,17 +76,9 @@
                                 ->execute();
                         }
                     }
-                    //die();
-                    $blocks = TableRegistry::get('Blocks');
-                    $query2 = $blocks->query();
-                    $query2->insert(['user_id'])
-                        ->values(['user_id' => $profile->id])
-                        ->execute();
-                    $side = TableRegistry::get('Sidebar');
-                    $query2 = $side->query();
-                    $create_que = $query2->insert(['user_id'])
-                        ->values(['user_id' => $profile->id])
-                        ->execute();
+
+                    $this->Manager->makepermissions($profile->id, "blocks", $profile->profile_type);
+                    $this->Manager->makepermissions($profile->id, "sidebar", $profile->profile_type);
 
                     $this->emaileveryone($profilesToEmail, $profile->id, $_POST);
                     return $this->redirect('/application/register.php?client=' . $_POST['client_ids'] . '&username=' . $_POST['username'] . '&userid=' . $profile->id);
