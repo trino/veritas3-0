@@ -53,8 +53,8 @@ class PagesController extends AppController {
         $this->set('forms',  TableRegistry::get('order_products')->find('all'));
         $this->getsubdocument_topblocks($userid);
 
-        $block = $this->requestAction("settings/all_settings/" . $userid . "/blocks");
-        $sidebar = $this->requestAction("settings/all_settings/" . $userid . "/sidebar");
+        $block =  $this->Manager->loadpermissions($userid, "blocks");//$this->requestAction("settings/all_settings/" . $userid . "/blocks");
+        $sidebar = $this->Manager->loadpermissions($userid, "sidebar");//$this->requestAction("settings/all_settings/" . $userid . "/sidebar");
         $this->set("userid",    $userid);
         $this->set('block',     $block);
         $this->set('sidebar',   $sidebar);

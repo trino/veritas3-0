@@ -5,8 +5,9 @@
     use Cake\ORM\TableRegistry;
     use Cake\Event\Event;
 
-    class SettingsComponent extends Component
-    {
+    class SettingsComponent extends Component {
+        public $components = array('Manager');
+
         public function verifylogin($_this, $controller){
             // $this->loadComponent('Settings');
             // $this->Settings->verifylogin($this, "feedbacks");
@@ -86,10 +87,7 @@
         }
 
         function get_permission($uid)   {
-            $setting = TableRegistry::get('sidebar');
-            $query = $setting->find()->where(['user_id'=>$uid]);
-            $l = $query->first();
-            return $l;
+            return $this->Manager->loadpermissions($uid, "sidebar");
         }
 
         function get_settings() {
@@ -266,8 +264,7 @@
                 $target = $profile->first();//the target user the operation (delete) will be performed upon
                 $usertype = $user->profile_type;
 
-                $setting = TableRegistry::get('sidebar');
-                $setting = $setting->find()->where(['user_id' => $user_id])->first();
+                $setting = $this->get_permission($user_id);// $setting->find()->where(['user_id' => $user_id])->first();
                 /*=================================================================================*/
                 /*
                 if($setting->profile_delete == '1'){
@@ -313,9 +310,7 @@
                 $usertype = $user->profile_type;
                 $targettype = $target->profile_type;
 
-                $setting = TableRegistry::get('sidebar');
-                $setting = $setting->find()->where(['user_id'=>$user_id]);
-                $setting = $setting->first();
+                $setting = $this->get_permission($user_id);//$setting->first();
                 //echo $q1->profile_type;
                 //echo $q2->profile_type;die();
                 /*=================================================================================*/

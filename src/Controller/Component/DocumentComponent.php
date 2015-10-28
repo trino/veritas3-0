@@ -8,6 +8,8 @@ use Cake\View\Helper\SessionHelper;
     
 
 class DocumentComponent extends Component{
+    public $components = array('Manager');
+
 	function fixsubmittedfor(){
         $Table = TableRegistry::get("documents");
         //debug($Table->query("UPDATE `documents` SET uploaded_for = user_id WHERE uploaded_for = 0"));
@@ -1793,14 +1795,11 @@ class DocumentComponent extends Component{
         }
         
         function getProfilePermission($profile,$type){
-            $setting = TableRegistry::get('sidebar');
             $arr_profile = explode(',',$profile);
             $email_arr = array();
             foreach($arr_profile as $ap) {
-                
-                 $query = $setting->find()->where(['user_id'=>$ap]);
-                 $permit = $query->first();
-                if($permit){
+                 $permit = $this->Manager->loadpermissions($ap, "sidebar"); //$query->first();
+                 if($permit){
                     if($type =='document') {
                         $v = $permit->email_document;
                     } elseif($type =='orders') {
@@ -1812,20 +1811,18 @@ class DocumentComponent extends Component{
                         $email_arr[] = $email;
                     }
                 }
-                
             }
             return $email_arr;
         }
         
        
-        function getEmail($id){
+        function getEmail($id, $Column = "email"){
             $query = TableRegistry::get('Profiles');
             $pro = $query->find()->where(['id'=>$id])->first();
 			if($pro){
-            return $pro->email;
-			}else{
-				return "";
+                return $pro->$Column;
 			}
+            return "";
         }
         
         function getUrl(){

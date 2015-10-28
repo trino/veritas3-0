@@ -45,8 +45,8 @@ class ManagerComponent extends Component {
     function profile_to_array($ID, $JSON = false, $Pretty = false){
         $Profile = $this->get_entry("profiles", $ID, "id");
         //if(!strpos($Profile->otherinfo, ":")) {$Profile->otherinfo = $this->AppName() . ":" . $ID;}
-        $Sidebar = $this->get_entry("sidebar", $ID, "user_id");
-        $Blocks = $this->get_entry("blocks", $ID, "user_id");
+        $Sidebar = $this->loadpermissions($ID, "sidebar");
+        $Blocks = $this->loadpermissions($ID, "blocks");
         $Type = $this->get_entry("profile_types", $Profile->profile_type, "id");
         $Data = array("Datatype" => "Profile", "Profile" => $this->properties_to_array($Profile), "Sidebar" => $this->properties_to_array($Sidebar), "Blocks" => $this->properties_to_array($Blocks), "Type" => $this->properties_to_array($Type));
         if ($JSON) {
@@ -1350,6 +1350,12 @@ class ManagerComponent extends Component {
                 unset($Data[$key]);
             }
         }
+        return $Data;
+    }
+
+    function loadpermissions($UserID, $Table){//$Table should be sidebar or blocks
+        $Data = $this->get_entry($Table, $UserID, "user_id");
+
         return $Data;
     }
 }

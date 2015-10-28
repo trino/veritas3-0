@@ -742,9 +742,6 @@
         }
 
         public function view($id = null){
-
-
-
             if (isset($_GET['success'])) {
                 $this->Flash->success($this->Trans->getString("flash_ordersaved"));
             }
@@ -844,7 +841,7 @@
 
         public function getsidebar($Set = "", $UserID =""){
             if(!$UserID) {$UserID = $this->request->session()->read('Profile.id');}
-            $UserID = TableRegistry::get('Sidebar')->find()->where(['user_id' => $UserID])->first();
+            $UserID = $this->Manager->loadpermissions($UserID, "sidebar");
             if($Set){$this->set($Set, $UserID);}
             return $UserID;
         }
@@ -916,6 +913,7 @@
                     $query2->insert(['user_id'])
                         ->values(['user_id' => $profile->id])
                         ->execute();
+
                     $side = TableRegistry::get('Sidebar');
                     $query2 = $side->query();
                     $create_que = $query2->insert(['user_id'])

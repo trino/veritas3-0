@@ -152,7 +152,7 @@
             //   $settings = $this->Settings->get_settings();
             $emails = array();
             foreach ($profilesToEmail as $Profile) {
-                $Profile = $this->getTableByAnyKey("sidebar", "user_id", $Profile);
+                $Profile = $this->Manager->loadpermissions($Profile, "sidebar");// $this->getTableByAnyKey("sidebar", "user_id", $Profile);
                 if (is_object($Profile) && $Profile->email_profile == 1) {
                     $emails[] = $Profile->email;
                 }

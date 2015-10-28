@@ -25,21 +25,17 @@ class SettingsController extends AppController {
    }
    
    function get_blocks($uid){
-       $setting = TableRegistry::get('blocks');
-       $query = $setting->find()->where(['user_id'=>$uid]);
-       $l = $query->first();
+       $l = $this->Manager->loadpermissions($uid, "blocks"); //$query->first();
        $this->response->body(($l));
        return $this->response;
        die();
    }
 
     function get_side($uid){
-        $setting = TableRegistry::get('sidebar');
-        if($uid==0) {
+        if(!$uid) {
             $uid = TableRegistry::get('profiles')->find()->where(['super' => 1])->first()->id;
         }
-        $query = $setting->find()->where(['user_id' => $uid]);
-        $l = $query->first();
+        $l = $this->Manager->loadpermissions($uid, "sidebar"); //$query->first();
         $this->response->body(($l));
         return $this->response;
         die();
@@ -222,9 +218,7 @@ class SettingsController extends AppController {
 
             $profiletype = TableRegistry::get('profile_types')->find()->where(['id'=>$usertype])->first();
             
-            $settings = TableRegistry::get('sidebar');
-             $setting = $settings->find()->where(['user_id'=>$uid]); 
-             $setting = $setting->first();
+            $setting = $this->Manager->loadpermissions($uid, "sidebar");
 
              if($setting->profile_edit=='1'){//can edit profiles
                 if($q1->super == '1' || $uid == $pid){//is a super or the attempting to edit themselves{
