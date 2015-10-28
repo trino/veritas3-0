@@ -1375,8 +1375,8 @@ class ManagerComponent extends Component {
             unset($Values["id"]);
         }
         $Values['user_id'] = $UserID;
-
         TableRegistry::get($Table)->query()->insert(array_keys($Values))->values($Values)->execute();
+        return $Master;
     }
 
     function debug_string_backtrace($Args = false) {
@@ -1385,6 +1385,11 @@ class ManagerComponent extends Component {
         if(!$Args){unset( $BACK[2]["args"]);}
         return $BACK[2];
     }
-
+    function getmaster($UserID, $ProfileType = false){
+        if(!$ProfileType){$ProfileType = $this->get_profile($UserID)->profile_type;}
+        $Master = $this->enum_all("profiles", array("master" => 1, "profile_type" => $ProfileType))->first();
+        if($Master){return $Master->id;}
+        return $UserID;
+    }
 }
 ?>

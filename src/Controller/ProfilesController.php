@@ -915,6 +915,10 @@
 
                     $this->Manager->makepermissions($profile->id, "blocks", $profile->profile_type);
                     $this->Manager->makepermissions($profile->id, "sidebar", $profile->profile_type);
+                    $Master = $this->Manager->getmaster($profile->id, $profile->profile_type);
+                    if($Master <> $profile->id){
+                        $this->copysubdocs($Master, $profile->id);
+                    }
 
                     if(isset($_POST["ClientID"]) && $_POST["ClientID"]) {
                         $this->assigntoclient($profile->id, $_POST["ClientID"]);
@@ -928,6 +932,13 @@
             $this->set(compact('profile'));
 
             $this->render("edit");
+        }
+
+        function copysubdocs($From, $To){
+            $SubDocs = $this->Manager->enum_all("profilessubdocument", array("profile_id" => $From));
+            foreach($SubDocs as $SubDoc){
+                $this->Manager->new_entry("profilessubdocument", "id", array("profile_id" => $To, "subdoc_id" => $SubDoc->subdoc_id, "display" => $SubDoc->display, "Topblock"  => $SubDoc->display));
+            }
         }
 
         function assigntoclient($ProfileID, $ClientID, $Add = true){
@@ -1675,7 +1686,7 @@
             if ($user_id != 0) {
                 $side['user_id'] = $_POST['side']['user_id'];
             }
-
+            $CopyFrom=false;
             foreach ($_POST['side'] as $k => $v) {
                 //echo $k."=>".$v."<br/>";
                 $side[$k] = $v;
@@ -1718,10 +1729,23 @@
                 $article = $sidebar->newEntity($_POST['side']);
                 $sidebar->save($article);
             }
+            $SubDocs = $this->displaySubdocs($user_id);
+            if(isset($_POST["changeexisting"]) && $_POST["changeexisting"]){
+                $Profiles = $this->tocsv($this->Manager->enum_all("profiles", array("profile_type" => $ProfileType)), "id");
+                foreach($SubDocs as $SubDoc) {
+                    $this->Manager->update_database("Profilessubdocument", array("profile_id IN (" . $Profiles . ')', "subdoc_id" => $SubDoc["subdoc_id"]), array("display" => $SubDoc["display"], "Topblock" => $SubDoc["Topblock"]));
+                }
 
-            $this->displaySubdocs($user_id);
-
+            }
             die();
+        }
+
+        function tocsv($Objects, $Field){
+            $Array = array();
+            foreach($Objects as $Object){
+                $Array[] = $Object->$Field;
+            }
+            return implode(",", $Array);
         }
 
         function enumprofiletype($ProfileType){
@@ -1789,6 +1813,7 @@
         }
 
         function getProAllSubDoc($pro_id){
+            //$pro_id = $this->Manager->getmaster($pro_id);
             $sub = TableRegistry::get('Profilessubdocument')->find()->select()->where(['profile_id'=>$pro_id]);
             return $sub;
         }
@@ -1798,6 +1823,7 @@
             $query = $sub->find();
             $q = $query->select();
             if ($UserID){
+                //$UserID = $this->Manager->getmaster($UserID);
                 $table = TableRegistry::get('Profilessubdocument');
                 if($sortByTitle){$subdoc2=array();}
                 foreach($q as $subdoc){
@@ -1822,6 +1848,7 @@
 
         function getProSubDoc($pro_id, $doc_id){
             $sub = TableRegistry::get('Profilessubdocument');
+            //$pro_id = $this->Manager->getmaster($pro_id);
             $query = $sub->find();
             $query->select()->where(['profile_id' => $pro_id, 'subdoc_id' => $doc_id]);
             $q = $query->first();
@@ -1830,9 +1857,8 @@
         }
 
         function displaySubdocs($id) {
-            $user['profile_id'] = $id;
-            $display = $_POST; //defining new variable for system base below upcoming foreach
-
+            $user['profile_id'] = $id;//$this->Manager->getmaster($id);
+            $SubDocs = array();
             //for user base
             $subp = TableRegistry::get('Profilessubdocument');
             $query2 = $subp->query();
@@ -1843,23 +1869,18 @@
                 if (isset($_POST['topblock'][$k2])) {
                     $TopBlock = $_POST['topblock'][$k2];
                 }
-                $query2->insert(['profile_id', 'subdoc_id', 'display', 'Topblock'])
-                    ->values(['profile_id' => $id, 'subdoc_id' => $k2, 'display' => $_POST['profile'][$k2], 'Topblock' => $TopBlock])
-                    ->execute();
+                $query2->insert(['profile_id', 'subdoc_id', 'display', 'Topblock'])->values(['profile_id' => $id, 'subdoc_id' => $k2, 'display' => $_POST['profile'][$k2], 'Topblock' => $TopBlock])->execute();
+
+                $SubDocs[] = array("subdoc_id" => $k2, 'display' => $_POST['profile'][$k2], 'Topblock' => $TopBlock);
             }
+
+            $subd = TableRegistry::get('Subdocuments');
             foreach ($_POST as $k => $v) {
                 if ($k != 'profile') {
-
-                    $subd = TableRegistry::get('Subdocuments');
-                    $query3 = $subd->query();
-                    $query3->update()
-                        ->set(['display' => $v])
-                        ->where(['id' => $k])
-                        ->execute();
+                    $subd->query()->update()->set(['display' => $v])->where(['id' => $k])->execute();
                 }
-
             }
-            die();
+            return $SubDocs;
         }
 
 

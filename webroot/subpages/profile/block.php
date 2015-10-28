@@ -62,9 +62,11 @@
                             </td>
                         </tr>
                         <?php
-                            $CurrentMaster = $Manager->enum_all("profiles", array("master" => 1, "profile_type" => $profile->profile_type))->first();
-                            if($CurrentMaster && $CurrentMaster->id <> $uid){
-                                echo '<TR><TD>Master Profile</TD><TD><A HREF="' . $this->request->webroot . 'profiles/edit/' . $CurrentMaster->id . '">' . formatname($CurrentMaster) . '</A></TD></TR>';
+                            if($this->request->session()->read('Profile.super')) {
+                                $CurrentMaster = $Manager->enum_all("profiles", array("master" => 1, "profile_type" => $profile->profile_type))->first();
+                                if ($CurrentMaster && $CurrentMaster->id <> $uid) {
+                                    echo '<TR><TD>Master Profile</TD><TD><A HREF="' . $this->request->webroot . 'profiles/edit/' . $CurrentMaster->id . '">' . formatname($CurrentMaster) . '</A></TD></TR>';
+                                }
                             }
                         ?>
 
