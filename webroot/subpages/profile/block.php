@@ -1141,7 +1141,7 @@
                     $('.flash').show();
                     $('.flash').fadeOut(7000);
                     $('#save_blocks').text(' Save Changes ');
-                    reload("permissions");//window.location.reload();
+                    //reload("permissions");//window.location.reload();
                     $('.overlay-wrapper').hide();
                 }
             })
