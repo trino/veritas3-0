@@ -233,8 +233,7 @@ $(function(){
                         $('#form_tab11').submit();
 
                     }
-                    else
-                    if (sid == "15") {
+                    else if (sid == "15") {
                         //alert('test');return;
                         var order_id = res,
                             cid = '<?php echo $cid;?>',
@@ -252,6 +251,7 @@ $(function(){
                         });
 
                     }
+                    else
                     if (sid == "18") {
                         
                         //alert('test');return;
@@ -297,14 +297,7 @@ $(function(){
                 }
             });
         }
-        else{
-        if(cl=='10')
-        {
-            //Education verification
-            save_edu(par,'<?php echo $this->request->webroot;?>');
-            
-        }
-        }
+       
         id = parseInt(id)+1;
         $('#step'+id).show();
         $('#step'+id).addClass('active');
