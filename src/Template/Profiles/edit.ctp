@@ -1,3 +1,72 @@
+<?php
+    
+    $uid = ($this->request['action'] == 'add') ? "0" : $this->request['pass'][0];
+    $sidebar = $this->requestAction("settings/all_settings/" . $uid . "/sidebar");
+    $block = $this->requestAction("settings/all_settings/" . $uid . "/blocks");
+    $isadmin = $Manager->read("admin") == 1 || $Manager->read("super") == 1;
+    if (!isset($is_disabled1)) {$is_disabled1 = "";}//something is wrong with this variable
+
+    $activetab = "config";
+    if ($activetab == "permissions") {
+        if ((isset($Clientcount) && $Clientcount == 0) || $this->request->session()->read('Profile.profile_type') == '2') {$activetab = "assign";}
+    } else {
+        if ($this->request->session()->read('Profile.profile_type') == '2') {$activetab = "assign";}
+    }
+
+?>
+<script>
+    <?php
+    if($this->request->params['action']=='edit')
+    {
+        ?>
+        $(function(){
+           $('#searchClient').keypress(function(){
+            
+            var key = $('#searchClient').val();
+            $('#clientTable').html('<tbody><tr><td><img src="<?php echo $this->request->webroot;?>assets/admin/layout/img/ajax-loading.gif"/></td></tr></tbody>');
+            $.ajax({
+                url: '<?php echo $this->request->webroot;?>clients/getAjaxClient/<?php echo $id;?>',
+                data: 'key=' + key,
+                type: 'get',
+                success: function (res) {
+                    $('#clientTable').html(res);
+                }
+            });
+            
+           }); 
+        });
+    
+    <?php
+    }
+    else
+    {
+    ?>
+    
+    $(function(){
+           $('#searchClient').keypress(function(){
+            
+            var key = $('#searchClient').val();
+        $('#clientTable').html('<tbody><tr><td><img src="<?php echo $this->request->webroot;?>assets/admin/layout/img/ajax-loading.gif"/></td></tr></tbody>');
+        $.ajax({
+            url: '<?php echo $this->request->webroot;?>clients/getAjaxClient',
+            data: 'key=' + key,
+            type: 'get',
+            success: function (res) {
+                $('#clientTable').html(res);
+            }
+        });
+        });
+    
+    <?php
+    }
+    ?>
+    $(function () {
+        $('.scrolldiv').slimScroll({
+            height: '250px'
+        });
+
+    });
+</script>
 <link href="<?php echo $this->request->webroot; ?>assets/admin/pages/css/profile.css" rel="stylesheet"
       type="text/css"/> <!--REQUIRED-->
 <style>
@@ -651,51 +720,7 @@
     })
     ;
 </script>
-<script>
-    <?php
-    if($this->request->params['action']=='edit')
-    {
-        ?>
 
-    function searchClient() {
-        var key = $('#searchClient').val();
-        $('#clientTable').html('<tbody><tr><td><img src="<?php echo $this->request->webroot;?>assets/admin/layout/img/ajax-loading.gif"/></td></tr></tbody>');
-        $.ajax({
-            url: '<?php echo $this->request->webroot;?>clients/getAjaxClient/<?php echo $id;?>',
-            data: 'key=' + key,
-            type: 'get',
-            success: function (res) {
-                $('#clientTable').html(res);
-            }
-        });
-    }
-    <?php
-    }
-    else
-    {
-    ?>
-    function searchClient() {
-        var key = $('#searchClient').val();
-        $('#clientTable').html('<tbody><tr><td><img src="<?php echo $this->request->webroot;?>assets/admin/layout/img/ajax-loading.gif"/></td></tr></tbody>');
-        $.ajax({
-            url: '<?php echo $this->request->webroot;?>clients/getAjaxClient',
-            data: 'key=' + key,
-            type: 'get',
-            success: function (res) {
-                $('#clientTable').html(res);
-            }
-        });
-    }
-    <?php
-    }
-    ?>
-    $(function () {
-        $('.scrolldiv').slimScroll({
-            height: '250px'
-        });
-
-    });
-</script>
 <SCRIPT>
     function removeelement(id) {
         return (elem = document.getElementById(id)).parentNode.removeChild(elem);

@@ -761,6 +761,171 @@ loadreasons($param, $strings, true);
                                             value="<?php echo $p->sin; ?>" <?php } ?> />
                                     </div>
                                 </div>
+                                
+                                
+                                
+                                
+                                
+                                
+                                <div class="clearfix"></div>
+                                
+                                
+                                
+                                
+                                
+                                
+                                
+                                
+                                
+                                
+                                
+                                
+                                
+                                
+                                <?php
+                                if($this->request->params['action'] == 'edit')
+                                {
+                                    ?>
+                                    
+                                
+                                <div class=""
+                                     id="subtab_2_4" style="padding: 10px;">
+                        
+                                    <?php if ($this->request->params['action'] == 'edit' && ($this->request->session()->read("Profile.super") || ($this->request->session()->read("Profile.admin") == 1 || $this->request->session()->read("Profile.profile_type") == 2))) {
+                                        //&& $this->request->session()->read("Profile.id")==$id
+                                        ?>
+                        
+                                        <!--
+                                        <div class="portlet box">
+                                            <div class="portlet-title" style="background: #CCC;">
+                                                <div class="caption">Assign to client</div>
+                                            </div>
+                                            <div class="portlet-body">
+                                            -->
+                                        <div class="input-group">
+                                            <span class="input-group-addon">
+                                            <i class="fa fa-search"></i>
+                                            </span>
+                                            <input type="text" id="searchClient" onkeyup="" class="form-control"
+                                               <?php if ($this->request->session()->read('Profile.profile_type') == 2 && $this->request->session()->read('Profile.id') == $id){ ?>disabled=""<?php } ?> />
+                                        </div>
+                                        
+                                        <div class="scrolldiv">
+                                            <table class="table" id="clientTable" style="border: 1px solid #e5e5e5;border-top:none;">
+                                                <?php
+                        
+                                                    $clients = $this->requestAction('/clients/getAllClient/');
+                                                    $count = 0;
+                                                    if ($clients) {
+                                                        $clientcount=0;
+                                                        if(!$isadmin) {
+                                                            foreach ($clients as $o) {
+                                                                $pro_ids = explode(",", $o->profile_id);
+                                                                if (in_array($id, $pro_ids)) {$clientcount++;}
+                                                            }
+                                                        }
+                        
+                                                        $b=0;
+                                                        foreach ($clients as $o) {
+                                                            $b++;
+                                                            $pro_ids = explode(",", $o->profile_id);
+                                                            $isassigned = in_array($id, $pro_ids);
+                                                            ?>
+                        
+                                                            <tr>
+                                                                <td width="1" <?php if($b==1){?>style="border-top:none;"<?php }?>>
+                                                                    <input
+                                                                        <?php if ($this->request->session()->read('Profile.profile_type') == 2 && $this->request->session()->read('Profile.id') == $id){ ?>disabled=""<?php } ?>
+                                                                        id="c_<?= $count ?>"
+                                                                        type="checkbox" value="<?php echo $o->id; ?>"
+                                                                        class="addclientz" <?php if ($isassigned) {
+                                                                        echo "checked";
+                                                                    } ?>  <?php echo $is_disabled;
+                                                                     if(!$isassigned && $clientcount >0){
+                                                                         echo " disabled";
+                                                                     }
+                                                                    ?> />
+                                                                </td><td width="50" align="center" <?php if($b==1){?>style="border-top:none;"<?php }?>> <img height="32" src="<?=
+                                                                    clientimage( $this->request->webroot, $settings, $o);
+                                                                    ?>"></td><td <?php if($b==1){?>style="border-top:none;"<?php }?>>
+                        
+                                                                    <label
+                                                                        for="c_<?= $count ?>"><?php echo $o->company_name; ?></label><span
+                                                                        class="msg_<?php echo $o->id; ?>"></span></td>
+                                                            </tr>
+                        
+                                                            <?php
+                                                            $count += 1;
+                                                        }
+                                                    }
+                                                ?>
+                        
+                                            </table>
+                                        </div>
+                                        <div class="clearfix"></div>
+                        
+                                        <!-- </div>
+                                     </div>-->
+                                    <?php } else {
+                                        ?><!--
+                                                                    <div class="portlet box">
+                                                                        <div class="portlet-title">
+                                                                            <div class="caption">Assign to client</div>
+                                                                        </div>
+                                                                        <div class="portlet-body">-->
+                                        <input type="text" id="searchClient" onkeyup="searchClient()"
+                                               class="form-control"  <?php echo $is_disabled ?> />
+                                        <div class="scrolldiv">
+                                            <table class="table scrolldiv" id="clientTable" style="border: 1px solid #e5e5e5;border-top:none;">
+                                                <?php
+                        
+                                                    $clients = $this->requestAction('/clients/getAllClient/');
+                                                    $count = 0;
+                                                    $b=0;
+                                                    if ($clients)
+                                                        foreach ($clients as $client) {
+                                                            $b++;
+                                                            $pro_ids = explode(",", $client->profile_id);
+                        
+                                                            ?>
+                        
+                                                            <tr>
+                                                                <td width="1" <?php if($b==1){?>style="border-top:none;"<?php }?>><input  <?php echo $is_disabled ?>
+                                                                        id="c_<?= $count ?>"
+                                                                        type="checkbox" <?php if (in_array($id, $pro_ids)) {
+                                                                        echo "checked";
+                                                                    } ?>   value="<?php echo $client->id; ?>"
+                                                                        class="addclientz"/>
+                                                                </TD><TD width="50" <?php if($b==1){?>style="border-top:none;"<?php }?>><IMG SRC="<?=
+                                                                        clientimage( $this->request->webroot, $settings, $client);
+                                                                    ?>" style="max-width: 50px;"></TD><TD <?php if($b==1){?>style="border-top:none;"<?php }?>>
+                                                                    <label
+                                                                        for="c_<?= $count ?>"><?php echo $client->company_name; ?></label><span
+                                                                        class="msg_<?php echo $client->id; ?>"></span></td>
+                                                            </tr>
+                        
+                                                            <?php
+                                                            $count += 1;
+                                                        }
+                                                ?>
+                        
+                                            </table>
+                                        </div>
+                                        <div class="clearfix"></div>
+                        
+                                        <!--  </div>
+                                      </div>-->
+                                    <?php
+                                    } ?>
+                                    <div class="margin-top-10 alert alert-success display-hide clientadd_flash"
+                                         style="display: none;">
+                                        <button class="close" data-close="alert"></button>
+                        
+                                    </div>
+                        
+                                </div>
+                                
+                                
 
                                 <?php
                                 if ($this->request->params['action'] == 'add') {
@@ -773,9 +938,10 @@ loadreasons($param, $strings, true);
                                     }
                                     echo '</SELECT></DIV></DIV>';
                                 }
+                                }
                                 ?>
 
-
+                
                                 <!--div class="col-md-12">
                                     <div class="form-group">
                                         <h3 class="block">Automatic Survey Email: </h3></div>
