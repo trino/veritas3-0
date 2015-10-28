@@ -688,6 +688,7 @@
                 }
 
             }
+
             /*=================================================================================================== */
             if($setting->viewprofiles == 0){
                 $Clients = TableRegistry::get('Clients')->find()->select()->where(['visibleprofiles' => 1]);
@@ -699,12 +700,15 @@
                 }
                 $query = $this->Profiles->find()->where([$cond, 'OR' => $OR]);
             } elseif ($cond) {
-                $query = $querys->find();
-                $query = $query->where([$cond, 'OR' => $condition, 'AND' => 'super = 0']);
+                $query = $querys->find()->where([$cond, 'OR' => $condition, 'AND' => 'super = 0']);
             } else {
                 $query = $this->Profiles->find()->where(['OR' => $condition, 'AND' => 'super = 0']);
             }
 
+            if(!$this->request->session()->read('Profile.super')) {
+                $Me = $this->Manager->get_profile($u)->ptypes;
+                $query = $querys->find()->where(['profile_type IN (' . $Me . ')']);
+            }
             if (isset($search)) {
                 $this->set('search_text', $search);
             }
