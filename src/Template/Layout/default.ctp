@@ -322,9 +322,8 @@
                                     echo '<LI><a href="' . $this->request->webroot . 'profiles/possess/-1';
                                     echo '" onclick="return confirm(' . "'Are you sure you want to de-possess " . ucfirst(h($this->request->session()->read("Profile.username"))) . "?'";
                                     echo ');" ><i class="icon-key"></i> De-possess</a></LI>';
-                                } else {
-                                    echo '<li><a href="' . $this->request->webroot . 'profiles/logout"><i class="icon-key"></i> <?= $strings["dashboard_logout"]; ?></a></li>';
                                 }
+                                echo '<li><a href="' . $this->request->webroot . 'profiles/logout"><i class="icon-key"></i> ' . $strings["dashboard_logout"] . '</a></li>';
                                 ?>
                             </ul>
                         </li>
