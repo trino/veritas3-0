@@ -171,13 +171,6 @@
 
 <script> translate();
 <?php if (isset($_GET["references"])) { ?>
-$(function () {
-    $(".datepicker").datepicker({
-        changeMonth: true,
-        changeYear: true,
-        yearRange: '1980:2020',
-        dateFormat: 'mm/dd/yy'
-    });
-});
+
 <?php } ?>
 </script>

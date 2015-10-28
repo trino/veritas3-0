@@ -39,6 +39,14 @@ foreach($subd as $s)
 ?>
 <script>
 $(function(){
+   
+    $(".datepicker").datepicker({
+        changeMonth: true,
+        changeYear: true,
+        yearRange: '1970:2030',
+        dateFormat: 'mm/dd/yy'
+    });
+
     $('.links a:nth-child(5), .links p').css({'display':'none'});
    $('.steps input').change(function(){
     $(this).parent().find('.error').html('');
@@ -236,6 +244,26 @@ $(function(){
                             url: url,
                             data: param,
                             type: 'POST',
+                            success: function (res) {
+                                    $('.overlay-wrapper').hide();
+                                 }
+
+
+                        });
+
+                    }
+                    if (sid == "18") {
+                        
+                        //alert('test');return;
+                        var order_id = res,
+                            cid = '<?php echo $cid;?>',
+                            url = '<?php echo $this->request->webroot;?>clientApplication/application_employment/'+ cid +'/'+ order_id + '/?document=' + type + '&draft=' + draft+'<?php if(isset($_GET['order_id'])){?>&order_id=<?php echo $_GET['order_id'];}?>';
+                        var param = $('#form_tab18').serialize();
+                        $.ajax({
+                            url: url,
+                            data: param,
+                            type: 'POST',
+                            beforeSend: save_signature('8'),
                             success: function (res) {
                                     $('.overlay-wrapper').hide();
                                  }

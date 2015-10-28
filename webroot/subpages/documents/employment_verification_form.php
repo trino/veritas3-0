@@ -553,6 +553,9 @@ $strings2 = CacheTranslations($language, array("verifs_%", "tasks_date", "file_a
         ?>
 
       $("#add_more").click(function(){
+        <?php if($this->request->params['controller']=='ClientApplication'){?>
+            language = 'English';
+        <?php }?>
             $.ajax({
                    url:"<?php echo $this->request->webroot;?>subpages/documents/past_employer.php?language=" + language,
                    success:function(res){
