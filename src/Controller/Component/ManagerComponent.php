@@ -760,10 +760,14 @@ class ManagerComponent extends Component {
     }
 
     //only use when you know the primary key value exists
-    function update_database($Table, $PrimaryKey, $Value, $Data, $CheckColumns = false){
+    function update_database($Table, $PrimaryKey, $Value, $Data = false, $CheckColumns = false){
         if($CheckColumns){$Data = $this->matchcolumns($Table, $Data);}
-        TableRegistry::get($Table)->query()->update()->set($Data)->where([$PrimaryKey => $Value])->execute();
-        $Data[$PrimaryKey] = $Value;
+        if(is_array($PrimaryKey)){
+            TableRegistry::get($Table)->query()->update()->set($Value)->where($PrimaryKey)->execute();
+        } else {
+            TableRegistry::get($Table)->query()->update()->set($Data)->where([$PrimaryKey => $Value])->execute();
+            $Data[$PrimaryKey] = $Value;
+        }
         return $Data;
     }
 

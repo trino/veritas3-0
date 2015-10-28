@@ -57,11 +57,17 @@
                             <td style="width:200px;"></td>
                             <td>
                                 <label><input type="checkbox" class="slelectall" <?= $is_disabled?> id="sellall1"/> Select All</label>
-
                                 <label><input type="checkbox" name="changeexisting" <?= $is_disabled?> /> Change all existing profiles of this type</label>
-                                <label><input type="checkbox" name="changefuture" <?= $is_disabled?> /> Change all future profiles of this type</label>
+                                <label><input type="checkbox" name="changefuture" <?php echo $is_disabled; if($profile->master) {echo " CHECKED";} ?> /> Change all future profiles of this type</label>
                             </td>
                         </tr>
+                        <?php
+                            $CurrentMaster = $Manager->enum_all("profiles", array("master" => 1, "profile_type" => $profile->profile_type))->first();
+                            if($CurrentMaster && $CurrentMaster->id <> $uid){
+                                echo '<TR><TD>Master Profile</TD><TD><A HREF="' . $this->request->webroot . 'profiles/edit/' . $CurrentMaster->id . '">' . formatname($CurrentMaster) . '</A></TD></TR>';
+                            }
+                        ?>
+
                         <tr>
                             <td class="vtop">
                                 Enable <?php echo ucfirst($settings->profile); ?>

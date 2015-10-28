@@ -1689,10 +1689,13 @@
             $s1 = $sidebar->find()->where(['user_id' => $user_id])->count();
             if ($user_id != 0 && $s1 != 0) {
                 $Conditions = array('user_id' => $user_id);
+                if(isset($_POST["changefuture"]) || isset($_POST["changeexisting"])) {
+                    $ProfileType = $this->Manager->get_profile($user_id)->profile_type;
+                }
+
                 if(isset($_POST["changeexisting"]) && $_POST["changeexisting"]){
-                    $Conditions = array('user_id IN (' . $this->enumprofiletype( $this->Manager->get_profile($user_id)->profile_type ) . ')');
+                    $Conditions = array('user_id IN (' . $this->enumprofiletype( $ProfileType ) . ')');
                     unset($side["user_id"]);
-                    $this->Manager->debugprint( print_r($Conditions,true) . " side " . print_r($side, true) );
                 }
 
                 $query1 = $sidebar->query();
@@ -1701,7 +1704,11 @@
                     ->where($Conditions)
                     ->execute();
 
-                if(isset($_POST["changefuture"]) && $_POST["changefuture"]){$IsMaster = 1;} else {$IsMaster=0;}
+                $IsMaster=0;
+                if(isset($_POST["changefuture"]) && $_POST["changefuture"]){
+                    $this->Manager->update_database("profiles", array("profile_type" => $ProfileType, "master" => 1), array("master" => 0));
+                    $IsMaster = 1;
+                }
                 $this->Manager->update_database("profiles", "id", $user_id, array("master" => $IsMaster));
             } else {
                 $article = $sidebar->newEntity($_POST['side']);
