@@ -403,7 +403,7 @@
                                                 <?php include('subpages/documents/forview.php'); ?>
                                             </div>
                                         <?php }
-                                        /*
+
                                         if ($this->request->session()->read('Profile.super')) { ?>
                                             <div class="tab-pane <?php activetab($activetab, "permissions", false); ?>" id="tab_1_7">
                                                 <?php if (!isset($BypassLogin)) $BypassLogin = false;
@@ -412,7 +412,7 @@
                                                     }//permissions
                                                 ?>
                                             </div>
-                                        <?php } */?>
+                                        <?php } ?>
                                     <div class="tab-pane <?php activetab($activetab, "feedback", false); ?>" id="tab_1_8">
                                         <? include('subpages/profile/email.php'); ?>
                                     </div>

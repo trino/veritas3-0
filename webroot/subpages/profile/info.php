@@ -372,8 +372,8 @@ loadreasons($param, $strings, true);
                                     <div class="form-group">
                                         <label class="control-label"><?= $strings["forms_credssent"]; ?>: </label><BR>
                                         <input type="text" class="form-control" value="<?= $p->emailsent; ?>" disabled>
-                                    </div>
-                                </div>
+                                    </DIV>
+                                </DIV>
                             <?php }
 
                             if (strlen($is_disabled) == 0) {
@@ -418,8 +418,8 @@ loadreasons($param, $strings, true);
                                             <label class="control-label"><?= $strings["forms_emailcreds"]; ?>: </label><BR>
                                             <input type="checkbox" name="emailcreds" disabled id="emailcreds">
                                             <label style="margin-top: 5px;" for="emailcreds"><?= $strings["forms_email2new"]; ?></label>
-                                        </div>
-                                    </div>
+                                        </DIV>
+                                    </DIV>
                                 <?php } elseif( $userID == $id) { ?>
                                     <div class="col-md-4">
                                         <div class="form-group">
@@ -435,15 +435,15 @@ loadreasons($param, $strings, true);
                                                 }
                                                 ?>
                                             </select>
-                                        </div>
-                                    </div>
+                                        </DIV>
+                                    </DIV>
                                 <?php } elseif($p->emailsent && $showcreds) { ?>
                                     <div class="col-md-4">
                                         <div class="form-group">
                                             <label class="control-label"><?= $strings["forms_credssent"]; ?>: </label><BR>
                                             <input type="text" name="emailcreds" class="form-control" id="emailcreds" value="<?= $p->emailsent; ?>" disabled>
-                                        </div>
-                                    </div>
+                                        </DIV>
+                                    </DIV>
                                 <?php } ?>
 
                                 <div class="clearfix"></div>
@@ -761,28 +761,6 @@ loadreasons($param, $strings, true);
                                             value="<?php echo $p->sin; ?>" <?php } ?> />
                                     </div>
                                 </div>
-                                <div class="clearfix"></div>
-                                
-                                
-                                
-                                
-                                
-                                <?php
-                                if ($this->request->session()->read('Profile.super')) { ?>
-                                            <div class="">
-                                                <?php if (!isset($BypassLogin)) $BypassLogin = false;
-                                                    if (!$BypassLogin) {
-                                                        include('subpages/profile/block.php');
-                                                    }//permissions
-                                                ?>
-                                            </div>
-                                        <?php } ?>
-                                
-                                
-                                
-                                
-                                
-                                
 
                                 <?php
                                 if ($this->request->params['action'] == 'add') {
@@ -793,7 +771,7 @@ loadreasons($param, $strings, true);
                                     foreach($Clients as $Client){
                                         echo '<OPTION VALUE="' . $Client->id . '">' . $Client->company_name . '</OPTION>';
                                     }
-                                    echo '</SELECT></div></div>';
+                                    echo '</SELECT></DIV></DIV>';
                                 }
                                 ?>
 
