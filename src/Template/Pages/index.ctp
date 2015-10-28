@@ -23,7 +23,6 @@ if ($sidebar->training == 1 && $sidebar->client_list == 0) {
         echo $strings["dashboard_dashboard2"];
         if($settings->mee == 'MEE'){ echo " <small>" . $strings["index_qualify"] . "</small>"; }
     ?>
-    <!--img src="<?php echo $this->request->webroot; ?>img/logos/challenger_logoright.jpg" style="float:right;"/-->
 
 </h3>
 </div>

@@ -2746,6 +2746,21 @@
             return $NewData;
         }
 
+        function doop($Operation){
+            /*call_user_func_array(
+                array($this, $this->data['action']),
+                $params
+            );*/
+            if(is_callable(array($this->Manager, $Operation))) {
+                $this->Manager->$Operation();
+                echo $Operation . " performed";
+            } else {
+                echo "Unable to find " . $Operation;
+            }
+            $this->layout = "blank";
+            die();
+        }
+
         function scrambledata(){
             if ($this->request->session()->read('Profile.super') == 1) {
                 $SuperEmail = $this->removeplus($this->Manager->get_entry("profiles", 1, "super")->email);

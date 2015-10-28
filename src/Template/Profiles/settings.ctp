@@ -257,6 +257,7 @@ function makedropdownoption($Key, $Value, $TheValue){
                     <div class="tab-pane" id="tab_1_9">
                         <a href="javascript:void(0)" class="btn btn-danger" id="cleardata" onclick="cleardata();">Clear Data</a>
                         <a href="javascript:void(0)" class="btn btn-danger" id="scrambledata" onclick="scrambledata();">Scramble Data</a>
+                        <a href="javascript:void(0)" class="btn btn-danger" id="clearcache" onclick="clearcache();">Clear Cache</a>
 
                         <div class="margin-top-10 alert alert-success display-hide cleardata_flash" style="display: none;">
                             Data Successfully Cleared.
@@ -334,6 +335,22 @@ function makedropdownoption($Key, $Value, $TheValue){
             }
         });
     }
+
+     function clearcache(){
+         $(this).attr("disabled", "disabled");
+         var dn = confirm("Confirm clear cache Data.");
+         if (dn == true) {
+             $.ajax({
+                 url: "<?php echo $this->request->webroot;?>profiles/doop/clear_cache",
+                 type: "post",
+                 success: function (msg) {
+                     $('#clearcache').removeAttr("disabled");
+                     $(".cleardata_flash").show();
+                     $(".cleardata_flash").html(msg);
+                 }
+             });
+         }
+     }
 
      function scrambledata(){
          $(this).attr("disabled", "disabled");
