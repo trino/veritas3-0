@@ -884,31 +884,20 @@
                 //debug($_POST);die();
                 $profile = $profiles->newEntity($_POST);
                 if ($profiles->save($profile)) {
+                    //var_dump($_POST);
                     $this->checkusername($profile->id, $_POST);
-                    if ($_POST['client_ids'] != "") {
-                        $client_id = explode(",", $_POST['client_ids']);
-                        foreach ($client_id as $cid) {
-                            $query = TableRegistry::get('clients');
-                            $q = $query->find()->where(['id' => $cid])->first();
-                            $profile_id = $q->profile_id;
-                            $pros = explode(",", $profile_id);
-
-                            $p_ids = "";
-
-                            array_push($pros, $profile->id);
-                            $pro_id = array_unique($pros);
-
-                            foreach ($pro_id as $k => $p) {
-                                if (count($pro_id) == $k + 1) {
-                                    $p_ids .= $p;
-                                }else {
-                                    $p_ids .= $p . ",";
-                                }
-                            }
-
-                            $query->query()->update()->set(['profile_id' => $p_ids])
-                                ->where(['id' => $cid])
-                                ->execute();
+                    if(isset($_POST['client_idss']))
+                    {
+                        
+                        $cquery = TableRegistry::get('Clients');
+                        $cq = $cquery->find();
+                        foreach($cq as $ccq)
+                        {
+                            $this->addprofile(0,$ccq->id,$profile->id);
+                        }
+                        foreach($_POST['client_idss'] as $cid)
+                        {
+                            $this->addprofile(1,$cid,$profile->id);
                         }
                     }
                     //die();
@@ -1466,7 +1455,20 @@
 
         public function edit($id = null) {
 
-
+            if(isset($_POST['client_idss']))
+            {
+                
+                $cquery = TableRegistry::get('Clients');
+                $cq = $cquery->find();
+                foreach($cq as $ccq)
+                {
+                    $this->addprofile(0,$ccq->id,$id);
+                }
+                foreach($_POST['client_idss'] as $cid)
+                {
+                    $this->addprofile(1,$cid,$id);
+                }
+            }
         //called when editing an existing account
             $this->set('doc_comp', $this->Document);
             $check_pro_id = $this->Settings->check_pro_id($id);
@@ -1589,6 +1591,50 @@
 
             $this->set('products', TableRegistry::get('product_types')->find()->where(['id <>' => 7]));
             $this->loadclients($profile->id);
+            
+            
+        }
+        function addprofile($add,$client_id,$user_id){
+            $settings = $this->Settings->get_settings();
+
+            $query = TableRegistry::get('clients');
+            $q = $query->find()->where(['id' => $client_id])->first();
+            $profile_id = $q->profile_id;
+            $pros = explode(",", $profile_id);
+            $flash = "";
+            $p_ids = "";
+            if ($add == '1') {
+                array_push($pros, $user_id);
+                $pro_id = array_unique($pros);
+                $flash = $this->Trans->getString("flash_assignedtoclient");
+            } else {
+                $pro_id = array_diff($pros, array($user_id));
+                $flash = $this->Trans->getString("flash_removedfromclient");
+                //array_pop($pros,$_POST['user_id']);
+            }
+
+            foreach ($pro_id as $k => $p) {
+                if (count($pro_id) == $k + 1) {
+                    $p_ids .= $p;
+                }else {
+                    $p_ids .= $p . ",";
+                }
+            }
+            $p_ids = str_replace(',', ' ', $p_ids);
+            $p_ids = trim($p_ids);
+            $p_ids = str_replace(' ', ',', $p_ids);
+            $p_ids = str_replace(',,', ',', $p_ids);
+            $p_ids = str_replace(',,', ',', $p_ids);
+            if ($query->query()->update()->set(['profile_id' => $p_ids])
+                ->where(['id' => $client_id])
+                ->execute()
+            ) {
+                echo $flash;
+            }else {
+                echo $this->Trans->getString("flash_clientfail");
+            }
+            //echo $p_ids;
+            return true;
         }
 
         function loadclients($userid){

@@ -1178,48 +1178,7 @@
             $this->layout = 'blank';
         }
 
-        function addprofile(){
-            $settings = $this->Settings->get_settings();
-
-            $query = TableRegistry::get('clients');
-            $q = $query->find()->where(['id' => $_POST['client_id']])->first();
-            $profile_id = $q->profile_id;
-            $pros = explode(",", $profile_id);
-            $flash = "";
-            $p_ids = "";
-            if ($_POST['add'] == '1') {
-                array_push($pros, $_POST['user_id']);
-                $pro_id = array_unique($pros);
-                $flash = $this->Trans->getString("flash_assignedtoclient");
-            } else {
-                $pro_id = array_diff($pros, array($_POST['user_id']));
-                $flash = $this->Trans->getString("flash_removedfromclient");
-                //array_pop($pros,$_POST['user_id']);
-            }
-
-            foreach ($pro_id as $k => $p) {
-                if (count($pro_id) == $k + 1) {
-                    $p_ids .= $p;
-                }else {
-                    $p_ids .= $p . ",";
-                }
-            }
-            $p_ids = str_replace(',', ' ', $p_ids);
-            $p_ids = trim($p_ids);
-            $p_ids = str_replace(' ', ',', $p_ids);
-            $p_ids = str_replace(',,', ',', $p_ids);
-            $p_ids = str_replace(',,', ',', $p_ids);
-            if ($query->query()->update()->set(['profile_id' => $p_ids])
-                ->where(['id' => $_POST['client_id']])
-                ->execute()
-            ) {
-                echo $flash;
-            }else {
-                echo $this->Trans->getString("flash_clientfail");
-            }
-            //echo $p_ids;
-            die();
-        }
+        
 
         function getdivisions($did = ""){
             $cid = $_POST['client_id'];

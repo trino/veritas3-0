@@ -543,6 +543,7 @@
             }
          ?>
         $('.addclientz').click(function () {
+            /*
             var client_id = $(this).val();
             var addclient = "";
             var msg = '';
@@ -572,18 +573,19 @@
 
             $.ajax({
                 type: "post",
-                data: "client_id=" + client_id + "&add=" + addclient + "&user_id=" +<?php echo $id;?>,
-                url: "<?php echo $this->request->webroot;?>clients/addprofile",
+                data: "client_id=" + client_id + "&add=" + addclient + "&user_id=" +<?php //echo $id;?>,
+                url: "<?php //echo $this->request->webroot;?>clients/addprofile",
                 success: function () {
                     $('.' + nameId).html(msg);
                 }
-            })
+            })*/
         });
         <?php
          }
          else
          {?>
         $('.addclientz').click(function () {
+            /*
             var nameId = 'msg_' + $(this).val();
             var client_id = "";
             var msg = '';
@@ -600,7 +602,7 @@
             client_id = client_id.substr(1, length.client_id);
             $('.client_profile_id').val(client_id);
             $('.' + nameId).html(msg);
-
+*/
         });
         <?php
         }

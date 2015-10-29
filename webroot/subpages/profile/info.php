@@ -782,16 +782,15 @@ loadreasons($param, $strings, true);
                                 
                                 
                                 
-                                <?php
-                                if($this->request->params['action'] == 'edit')
-                                {
-                                    ?>
+                                
                                     
                                 
                                 <div class=""
                                      id="subtab_2_4" style="padding: 10px;">
+                                     
+                                     <label class="control-label">Assign to client: </label>
                         
-                                    <?php if ($this->request->params['action'] == 'edit' && ($this->request->session()->read("Profile.super") || ($this->request->session()->read("Profile.admin") == 1 || $this->request->session()->read("Profile.profile_type") == 2))) {
+                                    <?php if (($this->request->session()->read("Profile.super") || ($this->request->session()->read("Profile.admin") == 1 || $this->request->session()->read("Profile.profile_type") == 2))) {
                                         //&& $this->request->session()->read("Profile.id")==$id
                                         ?>
                         
@@ -838,7 +837,7 @@ loadreasons($param, $strings, true);
                                                                         <?php if ($this->request->session()->read('Profile.profile_type') == 2 && $this->request->session()->read('Profile.id') == $id){ ?>disabled=""<?php } ?>
                                                                         id="c_<?= $count ?>"
                                                                         type="checkbox" value="<?php echo $o->id; ?>"
-                                                                        class="addclientz" <?php if ($isassigned) {
+                                                                        class="addclientz" name="client_idss[]" <?php if ($isassigned) {
                                                                         echo "checked";
                                                                     } ?>  <?php echo $is_disabled;
                                                                      if(!$isassigned && $clientcount >0){
@@ -866,57 +865,7 @@ loadreasons($param, $strings, true);
                         
                                         <!-- </div>
                                      </div>-->
-                                    <?php } else {
-                                        ?><!--
-                                                                    <div class="portlet box">
-                                                                        <div class="portlet-title">
-                                                                            <div class="caption">Assign to client</div>
-                                                                        </div>
-                                                                        <div class="portlet-body">-->
-                                        <input type="text" id="searchClient" onkeyup="searchClient()"
-                                               class="form-control"  <?php echo $is_disabled ?> />
-                                        <div class="scrolldiv">
-                                            <table class="table scrolldiv" id="clientTable" style="border: 1px solid #e5e5e5;border-top:none;">
-                                                <?php
-                        
-                                                    $clients = $this->requestAction('/clients/getAllClient/');
-                                                    $count = 0;
-                                                    $b=0;
-                                                    if ($clients)
-                                                        foreach ($clients as $client) {
-                                                            $b++;
-                                                            $pro_ids = explode(",", $client->profile_id);
-                        
-                                                            ?>
-                        
-                                                            <tr>
-                                                                <td width="1" <?php if($b==1){?>style="border-top:none;"<?php }?>><input  <?php echo $is_disabled ?>
-                                                                        id="c_<?= $count ?>"
-                                                                        type="checkbox" <?php if (in_array($id, $pro_ids)) {
-                                                                        echo "checked";
-                                                                    } ?>   value="<?php echo $client->id; ?>"
-                                                                        class="addclientz"/>
-                                                                </TD><TD width="50" <?php if($b==1){?>style="border-top:none;"<?php }?>><IMG SRC="<?=
-                                                                        clientimage( $this->request->webroot, $settings, $client);
-                                                                    ?>" style="max-width: 50px;"></TD><TD <?php if($b==1){?>style="border-top:none;"<?php }?>>
-                                                                    <label
-                                                                        for="c_<?= $count ?>"><?php echo $client->company_name; ?></label><span
-                                                                        class="msg_<?php echo $client->id; ?>"></span></td>
-                                                            </tr>
-                        
-                                                            <?php
-                                                            $count += 1;
-                                                        }
-                                                ?>
-                        
-                                            </table>
-                                        </div>
-                                        <div class="clearfix"></div>
-                        
-                                        <!--  </div>
-                                      </div>-->
-                                    <?php
-                                    } ?>
+                                    <?php }?>
                                     <div class="margin-top-10 alert alert-success display-hide clientadd_flash"
                                          style="display: none;">
                                         <button class="close" data-close="alert"></button>
@@ -927,19 +876,7 @@ loadreasons($param, $strings, true);
                                 
                                 
 
-                                <?php
-                                if ($this->request->params['action'] == 'add') {
-                                    echo '<div class="col-md-6"><div class="form-group">';
-                                    echo '<label class="control-label">' . $strings["settings_client"] . ': </label>';
-                                    echo '<SELECT name="ClientID" class="form-control"><OPTION VALUE="">Select ' .  $strings["settings_client"] . '</OPTION>';
-                                    $Clients = $Manager->enum_all("clients");
-                                    foreach($Clients as $Client){
-                                        echo '<OPTION VALUE="' . $Client->id . '">' . $Client->company_name . '</OPTION>';
-                                    }
-                                    echo '</SELECT></DIV></DIV>';
-                                }
-                                }
-                                ?>
+                              
 
                 
                                 <!--div class="col-md-12">

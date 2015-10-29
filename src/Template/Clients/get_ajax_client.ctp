@@ -20,7 +20,7 @@ if ($clients){
                     echo $filename;
                 ?>">
             </TD><TD>
-				<input type="checkbox" onclick="if($(this).is(':checked'))addclientz($(this).val(),1,<?php echo $id;?>);else addclientz($(this).val(),0,<?php echo $id;?>)" value="<?php echo $o->id; ?>" class="addclientz" <?php if(in_array($id,$pro_ids)){echo "checked";}?> /> <?php echo $o->company_name; ?></td>
+				<input type="checkbox" name="client_idss[]" onclick="if($(this).is(':checked'))addclientz($(this).val(),1,<?php echo $id;?>);else addclientz($(this).val(),0,<?php echo $id;?>)" value="<?php echo $o->id; ?>" class="addclientz" <?php if(in_array($id,$pro_ids)){echo "checked";}?> /> <?php echo $o->company_name; ?></td>
 		</tr>
 
 	<?php
@@ -33,14 +33,14 @@ function addclientz(client_id,addclient,id)
 
 		
 			
-		$.ajax({
+		/*$.ajax({
 			type: "post",
 			data: "client_id="+client_id+"&add="+addclient+"&user_id="+id,
 			url: "<?php echo $this->request->webroot;?>clients/addprofile",
 			success: function(msg){
 				//alert(msg);
 			}
-		}) 
+		}) */
 }
 
 </script>
