@@ -1,6 +1,6 @@
 <!-- BEGIN PAGE LEVEL STYLES -->
-<link href="../../assets/global/plugins/fancybox/source/jquery.fancybox.css" rel="stylesheet" type="text/css"/>
-<link href="../../assets/admin/pages/css/portfolio.css" rel="stylesheet" type="text/css"/>
+<link href="<?php echo $this->request->webroot;?>assets/global/plugins/fancybox/source/jquery.fancybox.css" rel="stylesheet" type="text/css"/>
+<link href="<?php echo $this->request->webroot;?>assets/admin/pages/css/portfolio.css" rel="stylesheet" type="text/css"/>
 <!-- END PAGE LEVEL STYLES -->
 
 <?php
@@ -137,9 +137,9 @@
                                         <a href="#tab_1_2" data-toggle="tab"><?= $strings["documents_document"]; ?></a>
                                     </li>
 
-                                    <li>
+                                    <!--<li>
                                         <a href="#tab_1_7" data-toggle="tab"><?= $strings["application_process"]; ?></a>
-                                    </li>
+                                    </li>-->
 
                                     <li>
                                         <a href="#tab_1_3"
@@ -659,6 +659,7 @@
                                                             <? if ($settings->mee != "Events Audit") {
                                                                 ?>
                                                                 <th class=""><?= $strings["index_orders"]; ?></th>
+                                                                <th class=""><?= $strings["application_process"]; ?></th>
                                                                 <th class=""><?= $strings["clients_displayorder"]; ?></th>
                                                             <? } ?>
                                                         </tr>
@@ -760,6 +761,18 @@
                                                                                        name="clientO[<?php echo $sub->id; ?>]"/>
                                                                             </td>
                                                                             <td>
+                                                                                <input <?php if ($csubdoc['display_application'] == 1) { ?> checked="checked" <?php } ?>
+                                                                                    type="checkbox" class="inputapp" id="check<?= $u ?>"
+                                                                                    onclick="if($(this).is(':checked')){$(this).closest('td').find('.forapp').val('1');}else {$(this).closest('td').find('.forapp').val('0');}"/>
+                                                                                
+
+                                                                                <input class="forapp" type="hidden"
+                                                                                       value="<?php if ($csubdoc['display_application'] == 1) {
+                                                                                           echo '1';
+                                                                                       } else { ?>0<?php } ?>"
+                                                                                       name="clientO[<?php echo $sub->id; ?>]"/>
+                                                                            </td>
+                                                                            <td>
                                                                                 <?php echo $u; ?>
                                                                             </td>
                                                                         </tr>
@@ -818,11 +831,11 @@
                                                 ?>
                                             </div>
 
-                                            <div class="tab-pane" id="tab_1_7" style="">
+                                            <!--<div class="tab-pane" id="tab_1_7" style="">
                                                 <?php
-                                                    include('subpages/clients/application_process.php');
+                                                    //include('subpages/clients/application_process.php');
                                                 ?>
-                                            </div>
+                                            </div>-->
 
 
                                             <!-- END SAMPLE FORM PORTLET-->
@@ -856,13 +869,18 @@
                                 data: 'tosend=' + tosend,
                                 type: 'post'
                             });
+                            $.ajax({
+                                url: '<?php echo $this->request->webroot;?>clients/updateOrderApplication/<?php if(isset($id))echo $id;?>',
+                                data: 'tosend=' + tosend,
+                                type: 'post'
+                            });
                             tosend = '';
 
 
                         }
                     });
 
-                    var tosend2 = '';
+                   /* var tosend2 = '';
                     $('.sortable2 tbody').sortable({
                         items: "tr:not(.myclass2)",
                         update: function (event, ui) {
@@ -885,7 +903,7 @@
 
 
                         }
-                    });
+                    });*/
                     <?php
                     if(isset($_GET['view']))
                     {
@@ -923,10 +941,21 @@
 
                     $('#save_display1').click(function () {
                         $('#save_display1').text('Saving..');
-                        var str = $('#displayform1 input').serialize();
+                        var str = $('#displayform1 input:not(.inputapp)').serialize();
                         $.ajax({
                             url: '<?php echo $this->request->webroot;?>clients/displaySubdocs/<?php echo $id;?>',
                             data: str,
+                            type: 'post',
+                            success: function (res) {
+                                $('.flash').show();
+                                //$('#save_display1').text('<?= $strings["forms_savechanges"]; ?>');
+                            }
+                        });
+                        
+                        var str2 = $('#displayform1 input.forapp').serialize();
+                        $.ajax({
+                            url: '<?php echo $this->request->webroot;?>clients/displaySubdocsApplication/<?php echo $id;?>',
+                            data: str2,
                             type: 'post',
                             success: function (res) {
                                 $('.flash').show();
@@ -935,7 +964,7 @@
                         })
                     });
 
-                    $('#save_display7').click(function () {
+                    /*$('#save_display7').click(function () {
                         $('#save_display7').text('Saving..');
                         var str = $('#displayform7 input').serialize();
                         $.ajax({
@@ -947,7 +976,7 @@
                                 $('#save_display1').text('<?= $strings["forms_savechanges"]; ?>');
                             }
                         })
-                    });
+                    });*/
                     <?php
                     }
                     ?>
