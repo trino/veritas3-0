@@ -174,7 +174,8 @@ class ClientApplicationController extends AppController {
 
             if(!isset($_GET['order_id'])){
                 if (!$did || $did == '0') {
-                    $arr['user_id'] = $this->request->session()->read('Profile.id');
+                    
+                    $arr['user_id'] = 0;
                     $arr['created'] = date('Y-m-d H:i:s');
                     $docs = TableRegistry::get('Documents');
                     $doc = $docs->newEntity($arr);

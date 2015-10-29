@@ -18,6 +18,7 @@
 <input type="hidden" id="user_id" value=""/>
 <div class="steps" id="step0" class="active">
     <?php include('subpages/documents/driver_form.php');?>    
+    <hr />
     <a href="javascript:void(0)" id="button0" class="buttons btn btn-primary">Proceed to step 1</a>
     </div>
 <?php 
@@ -30,7 +31,9 @@ foreach($subd as $s)
     $jj++;
     ?>
     <div class="steps" id="step<?php echo $jj;?>" style="display:none;">
-        <?php include('subpages/documents/'.$this->requestAction('/clientApplication/getForm/'.$s->sub_id));?>    
+        <?php include('subpages/documents/'.$this->requestAction('/clientApplication/getForm/'.$s->sub_id));?>
+        <hr />
+         
         <a href="javascript:void(0)" id="button<?php echo $jj;?>" class="buttons btn btn-primary">Proceed to step <?php echo $jj+1;?></a>
     </div>
     <?php
@@ -39,7 +42,9 @@ foreach($subd as $s)
 ?>
 <script>
 $(function(){
-   
+   $('.notonclient').each(function(){
+    $(this).removeClass('required');
+   })
     $(".datepicker").datepicker({
         changeMonth: true,
         changeYear: true,
@@ -139,16 +144,13 @@ $(function(){
                             url = '<?php echo $this->request->webroot;?>clientApplication/savedDriverEvaluation/' + order_id + '/' + cid + '/?document=' + type + '&draft=' + draft+'<?php if(isset($_GET['order_id'])){?>&order_id=<?php echo $_GET['order_id'];}?>';
                         savedDriverEvaluation(url, order_id, cid,draft);
                     } else if (sid == "4") {
-                        save_signature('3');
-                        save_signature('4');
-                        save_signature('5');
-                        save_signature('6');
-                        var order_id = res,
+                        $.when(save_signature('3'),save_signature('4'),save_signature('5'),save_signature('6')).done(function(d1){
+                            var order_id = res,
                             cid = '<?php echo $cid;?>',
                             url = '<?php echo $this->request->webroot;?>clientApplication/savedMeeOrder/' + order_id + '/' + cid + '/?document=' + type + '&draft=' + draft+'<?php if(isset($_GET['order_id'])){?>&order_id=<?php echo $_GET['order_id'];}?>';
-                        setTimeout(function(){
-                            savedMeeOrder(url, order_id, cid, type,draft);
-                        },1000);
+                            setTimeout(function(){
+                            savedMeeOrder(url, order_id, cid, type,draft);}, 1000);
+                        });
 
                     }
                     else if (sid == "9") {
@@ -253,22 +255,21 @@ $(function(){
                     }
                     else
                     if (sid == "18") {
-                        
-                        //alert('test');return;
-                        var order_id = res,
-                            cid = '<?php echo $cid;?>',
-                            url = '<?php echo $this->request->webroot;?>clientApplication/application_employment/'+ cid +'/'+ order_id + '/?document=' + type + '&draft=' + draft+'<?php if(isset($_GET['order_id'])){?>&order_id=<?php echo $_GET['order_id'];}?>';
-                        var param = $('#form_tab18').serialize();
-                        $.ajax({
-                            url: url,
-                            data: param,
-                            type: 'POST',
-                            beforeSend: save_signature('8'),
-                            success: function (res) {
-                                    $('.overlay-wrapper').hide();
-                                 }
-
-
+                        $.when(save_signature('8')).done(function(d1){
+                            var order_id = res,
+                                cid = '<?php echo $cid;?>',
+                                url = '<?php echo $this->request->webroot;?>clientApplication/application_employment/'+ cid +'/'+ order_id + '/?document=' + type + '&draft=' + draft+'<?php if(isset($_GET['order_id'])){?>&order_id=<?php echo $_GET['order_id'];}?>';
+                            var param = $('#form_tab18').serialize();
+                             $.ajax({
+                                url: url,
+                                data: param,
+                                type: 'POST',
+                                success: function (res) {
+                                        $('.overlay-wrapper').hide();
+                                     }
+    
+    
+                            });
                         });
 
                     }
@@ -306,6 +307,42 @@ $(function(){
    });
     
 });
+    function save_signature(numb) {
+        var d = $.Deferred();
+        $("#test"+numb).data("jqScribble").save(function(imageData)
+        {
+            //alert($('#signature_company_witness2').parent().find('.touched').val());
+            //if((numb=='1' && $('#recruiter_signature').parent().find('.touched').val()==1) || (numb=='3' && $('#criminal_signature_applicant').parent().find('.touched').val()==1) || (numb=='4' && $('#signature_company_witness').parent().find('.touched').val()==1) || (numb=='5' && $('#criminal_signature_applicant2').parent().find('.touched').val()==1) || (numb=='6' && $('#signature_company_witness2').parent().find('.touched').val()==1) || (numb=='8' && $('#gfs_signature').parent().find('.touched').val()==1)){
+                $.post('<?php echo $this->request->webroot; ?>canvas/image_save.php', {imagedata: imageData}, function(response) {
+                    d.resolve(response);
+                    if(numb=='1') {
+                        $('#recruiter_signature').val(response);
+                    }
+                    if(numb=='3') {
+                        $('#criminal_signature_applicant').val(response);
+                    }
+                    if(numb=='4') {
+                        $('#signature_company_witness').val(response);
+                    }
+                    if(numb=='5') {
+                        $('#criminal_signature_applicant2').val(response);
+                    }
+                    if(numb=='6') {
+                        $('#signature_company_witness2').val(response);
+                    }
+                    if(numb=='8') {
+                        $('#gfs_signature').val(response);
+                        
+                    }
+                    $('.saved'+numb).html('Saved');
+                });
+            //}
+
+
+
+        });
+        return d.promise();
+    }
 function savePrescreen(url, order_id, cid,draft) {
 
         inputs = $('#form_tab1').serialize();
@@ -364,7 +401,7 @@ function savePrescreen(url, order_id, cid,draft) {
         $('#form_consent :disabled[name]').each(function () {
             param = param + '&' + $(this).attr('name') + '=' + $(this).val();
         });
-
+        
         $.ajax({
             url: url,
             data: param,
@@ -453,36 +490,5 @@ function fileUpload(ID) {
 
         });
     }
-    function save_signature(numb) {
-        $("#test"+numb).data("jqScribble").save(function(imageData)
-        {
-            //alert($('#signature_company_witness2').parent().find('.touched').val());
-            if((numb=='1' && $('#recruiter_signature').parent().find('.touched').val()==1) || (numb=='3' && $('#criminal_signature_applicant').parent().find('.touched').val()==1) || (numb=='4' && $('#signature_company_witness').parent().find('.touched').val()==1) || (numb=='5' && $('#criminal_signature_applicant2').parent().find('.touched').val()==1) || (numb=='6' && $('#signature_company_witness2').parent().find('.touched').val()==1) || (numb=='8' && $('#gfs_signature').parent().find('.touched').val()==1)){
-                $.post('<?php echo $this->request->webroot; ?>canvas/image_save.php', {imagedata: imageData}, function(response) {
-                    if(numb=='1') {
-                        $('#recruiter_signature').val(response);
-                    }
-                    if(numb=='3') {
-                        $('#criminal_signature_applicant').val(response);
-                    }
-                    if(numb=='4') {
-                        $('#signature_company_witness').val(response);
-                    }
-                    if(numb=='5') {
-                        $('#criminal_signature_applicant2').val(response);
-                    }
-                    if(numb=='6') {
-                        $('#signature_company_witness2').val(response);
-                    }
-                    if(numb=='8') {
-                        $('#gfs_signature').val(response);
-                    }
-                    $('.saved'+numb).html('Saved');
-                });
-            }
 
-
-
-        });
-    }
 </script>

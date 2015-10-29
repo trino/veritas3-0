@@ -15,12 +15,14 @@
     <div class="gndn">
         <div class="form-group row">
 
-            <div class="col-md-4 margin-bottom-10"><label class="control-label"><?= $strings["forms_lastname"]; ?>: </label>
+            <div class="col-md-4 margin-bottom-10"><label class="control-label required"><?= $strings["forms_lastname"]; ?>: </label>
                 <input type="text" class="form-control required" name="last_name" value="<?php if (isset($consent_detail))echo $consent_detail->last_name;?>"/>
+                <span class="error"></span>
             </div>
 
-            <div class="col-md-4 margin-bottom-10"><label class="control-label"><?= $strings["forms_firstname"]; ?>: </label>
+            <div class="col-md-4 margin-bottom-10"><label class="control-label required"><?= $strings["forms_firstname"]; ?>: </label>
                 <input type="text" class="form-control required" name="first_name" value="<?php if (isset($consent_detail))echo $consent_detail->first_name;?>"/>
+                <span class="error"></span>
             </div>
 
             <div class="col-md-4 margin-bottom-10"><label class="control-label"><?= $strings["forms_middlename"]; ?>: </label>
@@ -38,9 +40,10 @@
             </div>
 
 
-            <div class="col-md-4 margin-bottom-10"><label class="control-label"><?= $strings["forms_dateofbirth"]; ?>: </label>
-                <input type="text" class="form-control date-picker required" placeholder="<?= $strings["forms_dateformat"]; ?>" value="<?php if (isset($consent_detail))echo $consent_detail->birth_date;?>"
+            <div class="col-md-4 margin-bottom-10"><label class="control-label required"><?= $strings["forms_dateofbirth"]; ?>: </label>
+                <input type="text" class="form-control date-picker datepicker  required" placeholder="<?= $strings["forms_dateformat"]; ?>" value="<?php if (isset($consent_detail))echo $consent_detail->birth_date;?>"
                        name="birth_date"/>
+                       <span class="error"></span>
             </div>
 
             <div class="col-md-4 margin-bottom-10"><label class="control-label"><?= $strings["forms_gender"]; ?>: </label>
@@ -71,24 +74,27 @@
         </div>
 
         <div class="form-group row  col-md-12">
-            <label class="control-label"><?= $strings2["consent_currentadd"]; ?>: </label>
+            <label class="control-label required"><?= $strings2["consent_currentadd"]; ?>: </label>
         </div>
         <div class="form-group row">
             <div class="col-md-3">
                 <input type="text" class="form-control required" placeholder="<?= $strings2["consent_streetandn"]; ?>" value="<?php if (isset($consent_detail))echo $consent_detail->current_street_address;?>"
                        name="current_street_address"/>
+                       <span class="error"></span>
             </div>
             <div class="col-md-2">
                 <input type="text" class="form-control" placeholder="<?= $strings2["consent_apartmentu"]; ?>" name="current_apt_unit" value="<?php if (isset($consent_detail))echo $consent_detail->current_apt_unit;?>"/>
             </div>
             <div class="col-md-2">
                 <input type="text" class="form-control required" placeholder="<?= $strings["forms_city"]; ?>" name="current_city" value="<?php if (isset($consent_detail))echo $consent_detail->current_city;?>"/>
+                <span class="error"></span>
             </div>
             <div class="col-md-2">
                 <?php provinces("current_province"); ?>
             </div>
             <div class="col-md-3">
                 <input type="text" role="postalcode" class="form-control required" placeholder="<?= $strings["forms_postalcode"]; ?>" name="current_postal_code" value="<?php if (isset($consent_detail))echo $consent_detail->current_postal_code;?>"/>
+                <span class="error"></span>
             </div>
         </div>
 
@@ -216,12 +222,12 @@
 
 
                 <div class="col-md-4"><label class="control-label"><?= $strings["forms_dateofbirth"]; ?>: </label>
-                    <input type="text" class="form-control date-picker" placeholder="<?= $strings["forms_dateformat"]; ?>" value="<?php if (isset($consent_detail))echo $consent_detail->criminal_date_birth;?>"
+                    <input type="text" class="form-control datepicker  date-picker" placeholder="<?= $strings["forms_dateformat"]; ?>" value="<?php if (isset($consent_detail))echo $consent_detail->criminal_date_birth;?>"
                            name="criminal_date_birth"/>
                 </div>
 
                 <div class="col-md-4"><label class="control-label"><?= $strings2["tasks_date"]; ?>: </label>
-                    <input type="text" class="form-control date-picker" placeholder="<?= $strings["forms_dateformat"]; ?>" name="criminal_date" value="<?php if (isset($consent_detail))echo $consent_detail->criminal_date;?>"
+                    <input type="text" class="form-control datepicker date-picker" placeholder="<?= $strings["forms_dateformat"]; ?>" name="criminal_date" value="<?php if (isset($consent_detail))echo $consent_detail->criminal_date;?>"
                            value="<?php echo date("Y-m-d"); ?>"/>
                 </div>
             </div>
@@ -305,7 +311,7 @@
                                 <td><input type="text" class="form-control" name="offence[]"
                                            value="<?php echo $co[$k]; ?>"/>
                                 </td>
-                                <td><input type="text" class="form-control date-picker" name="date_of_sentence[]"
+                                <td><input type="text" class="form-control date-picker datepicker " name="date_of_sentence[]"
                                            value="<?php echo $cd[$k]; ?>"/></td>
                                 <td><input type="text" class="form-control" name="location[]"
                                            value="<?php echo $cl[$k]; ?>"/></td>
@@ -361,7 +367,7 @@
                 <label class="control-label col-md-2"><?= $strings2["tasks_date"]; ?>: </label>
 
                 <div class="col-md-2">
-                    <input type="text" class="form-control date-picker" name="authorize_date"/>
+                    <input type="text" class="form-control datepicker date-picker" name="authorize_date"/>
                 </div>
                 <input type="hidden" class="form-control" name="authorize_signature" />
 
