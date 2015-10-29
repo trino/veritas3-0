@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 21, 2015 at 07:39 PM
+-- Generation Time: Oct 29, 2015 at 03:27 PM
 -- Server version: 5.6.17
 -- PHP Version: 5.5.12
 
@@ -32,14 +32,14 @@ CREATE TABLE IF NOT EXISTS `strings` (
   `English` varchar(4096) NOT NULL,
   `French` varchar(4096) NOT NULL,
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=766 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=775 ;
 
 --
 -- Dumping data for table `strings`
 --
 
 INSERT INTO `strings` (`ID`, `Name`, `English`, `French`) VALUES
-(1, 'Date', '1445371559', '<-- This is used by the system to auto-update'),
+(1, 'Date', '1445449181', '<-- This is used by the system to auto-update'),
 (2, 'dashboard_affirmative', 'Yes', 'Oui'),
 (3, 'dashboard_negative', 'No', 'Non'),
 (4, 'dashboard_selectall', 'Select All', 'Tout sélectionner'),
@@ -781,7 +781,14 @@ INSERT INTO `strings` (`ID`, `Name`, `English`, `French`) VALUES
 (762, 'email_survey_variables', 'site, username, email, monthsFrench, months, days, id, path', ''),
 (763, 'email_training_passed_variables', 'email, score, username, path', ''),
 (764, 'flash_cantorder2', 'Missing data required to place an order', ''),
-(765, 'profiles_nothired', 'Not Hired', 'pas embauché');
+(765, 'profiles_nothired', 'Not Assigned', 'Non Assigné'),
+(766, 'application_process', 'Application Process', 'Processus de demande'),
+(769, 'email_sendmessage_subject', 'A message has been sent from %from%', ''),
+(770, 'email_sendmessage_message', '%message%<HR>This message has been sent by a user, not on behalf of %site%', ''),
+(771, 'flash_messagesent', 'Your email has been sent', 'Votre email a été envoyé'),
+(772, 'email_sendmessage_variables', 'message, from, email', ''),
+(773, 'email_training_enrolled_variables', 'email, path', ''),
+(774, 'profiles_certified', '%MEE% Certified', '%MEE% certifié');
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
