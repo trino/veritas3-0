@@ -436,13 +436,13 @@ class DocumentsController extends AppController{
 
 
     function getdoc($Table, $did, $Set= ""){
+        if(!$Set){$Set=$Table;}
         $Table = TableRegistry::get($Table);
         if(!isset($_GET['order_id'])) {
             $Table = $Table->find()->where(['document_id' => $did])->first();
         }else {
             $Table = $Table->find()->where(['order_id' => $_GET['order_id']])->first();
         }
-        if(!$Set){$Set=$Table;}
         if($Set != "NA") {$this->set($Set, $Table);}
         return $Table;
     }
