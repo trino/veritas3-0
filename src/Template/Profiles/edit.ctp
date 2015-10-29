@@ -19,7 +19,7 @@
     {
         ?>
         $(function(){
-           $('#searchClient').keypress(function(){
+           $('#searchClient').keyup(function(){
             
             var key = $('#searchClient').val();
             $('#clientTable').html('<tbody><tr><td><img src="<?php echo $this->request->webroot;?>assets/admin/layout/img/ajax-loading.gif"/></td></tr></tbody>');
@@ -42,7 +42,7 @@
     ?>
     
     $(function(){
-           $('#searchClient').keypress(function(){
+           $('#searchClient').keyup(function(){
             
             var key = $('#searchClient').val();
         $('#clientTable').html('<tbody><tr><td><img src="<?php echo $this->request->webroot;?>assets/admin/layout/img/ajax-loading.gif"/></td></tr></tbody>');
