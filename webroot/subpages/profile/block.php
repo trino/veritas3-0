@@ -3,7 +3,7 @@
         echo "<span style ='color:red;display:block;padding:10px;'>subpages/profile/block.php #INC116</span>";
     }
 
-    if($sidebar->user_id <> $uid) {
+    if($sidebar && $sidebar->user_id <> $uid) {
         echo "Bug is present!";
         debug($sidebar);
         $sidebar = $Manager->loadpermissions($uid, "sidebar");

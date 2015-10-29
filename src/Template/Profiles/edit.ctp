@@ -163,7 +163,7 @@
         if (isset($disabled)) {
             echo '<a href="javascript:window.print();" class="floatright btn btn-info">' . $strings["dashboard_print"] . '</a>';
         }
-        if (isset($profile) && $sidebar->profile_delete == '1') {
+        if (isset($profile) && $sidebar && $sidebar->profile_delete == '1') {
             if ($this->request->session()->read('Profile.super') == '1' || ($this->request->session()->read('Profile.profile_type') == '2' && ($profile->profile_type == '5'))) {
                 if ($this->request->session()->read('Profile.id') != $profile->id) {
                     ?>
@@ -177,7 +177,7 @@
         }
         if (isset($profile)) {
             $checker = $this->requestAction('settings/check_edit_permission/' . $this->request->session()->read('Profile.id') . '/' . $profile->id);
-            if ($sidebar->profile_edit == '1' && $param == 'view') {
+            if ($sidebar && $sidebar->profile_edit == '1' && $param == 'view') {
                 echo $this->Html->link(__($strings["dashboard_edit"]), ['action' => 'edit', $profile->id], ['class' => 'floatright btn btn-primary btnspc']);
             } else if ($param == 'edit') {
                 echo $this->Html->link(__($strings["dashboard_view"]), ['action' => 'view', $profile->id], ['class' => 'floatright btn btn-info btnspc']);
@@ -188,7 +188,7 @@
                 echo ');" class="floatright btn btnspc btn-danger">Possess</a>';
             }
         }
-        if ($sidebar->profile_edit == '1' && $param == 'view') {
+        if ($sidebar && $sidebar->profile_edit == '1' && $param == 'view') {
             $checker = $this->requestAction('settings/check_edit_permission/' . $this->request->session()->read('Profile.id') . '/' . $profile->id);
             if ($checker == 1) {
                 ?>
