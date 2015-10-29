@@ -356,8 +356,8 @@
 
                                                     if ($super && $debug) {
                                                         echo '<a href="' . $this->request->webroot . 'profiles/possess/' . $profile->id;
-                                                        echo '" onclick="return confirm(' . "'Are you sure you want to possess " . ucfirst(h($profile->username)) . "?'";
-                                                        echo ');" class="' . btnclass("DELETE") . '">Possess</a>';
+                                                        echo '" onclick="return confirm(' . "'Are you sure you want to possess " . addslashes(formatname($profile)) . "?'";
+                                                        echo ');" class="' . btnclass("DELETE") . '">' . $strings["dashboard_possess"] . '</a>';
                                                     }
 
                                                     if (strtolower($clinet_name) == 'gordon food service') {
