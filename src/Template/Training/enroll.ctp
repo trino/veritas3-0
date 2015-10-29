@@ -124,9 +124,9 @@ if (isset($_GET["new"])){
                             <tr class="sorting">
                                 <th><?= $this->Paginator->sort('id') ?></th>
                                 <th style="width:7px;"><?= $this->Paginator->sort('image', 'Image') ?></th>
-                                <th><?= $this->Paginator->sort('username', 'Username') ?></th>
+                                <th><?= $this->Paginator->sort('username', 'Name') ?></th>
                                 <!--th><?= $this->Paginator->sort('email') ?></th-->
-                                <th><?= $this->Paginator->sort('fname', 'Name') ?></th>
+                                <!--th><?= $this->Paginator->sort('fname', 'Name') ?></th-->
                                 <th><?= $this->Paginator->sort('profile_type', ucfirst($settings->profile) . ' Type') ?></th>
 
                                 <!--th><?= $this->Paginator->sort('lname', 'Last Name') ?></th-->
@@ -175,17 +175,15 @@ if (isset($_GET["new"])){
                                     <td class="actions  util-btn-margin-bottom-5">
                                         <?php if ($sidebar->profile_list == '1' && !isset($_GET["draft"])) {
                                             ?>
-                                            <a href="<?php echo $this->request->webroot; ?>profiles/view/<?php echo $profile->id; ?>"> <?php echo ucfirst(h($profile->username)); ?> </a>
+                                            <a href="<?php echo $this->request->webroot; ?>profiles/view/<?php echo $profile->id; ?>"> <?php echo ucfirst(formatname($profile)); ?> </a>
                                         <?php
                                         } else
-                                            echo ucfirst(h($profile->username));
+                                            echo ucfirst(formatname($profile));
                                         ?>
                                         <br/>
 
 
                                     </td>
-
-                                    <td><?= h($profile->fname) ?> <?= h($profile->lname) ?></td>
 
                                     <td><?php
                                         if (strlen($profile->profile_type) > 0) {

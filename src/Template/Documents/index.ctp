@@ -336,10 +336,10 @@
 
 
                     <td><?php
-                            $docname = "";
+                            $docname = h($docs->document_type);
                             if (isset($uploaded_by->username)) {
                                 $user = '<a href="' . $this->request->webroot . 'profiles/view/' . $docs->user_id . '" target="_blank">' . formatname($uploaded_by);
-                                $docname = h($docs->document_type) . " " . $strings["documents_submittedby"] . " " . formatname($uploaded_by) . " " . $strings["documents_at"] . " " . h($docs->created);//needs translation
+                                $docname .= " " . $strings["documents_submittedby"] . " " . formatname($uploaded_by);
                             } else {
                                 $user = $strings["documents_none"];//needs translation
                             }
@@ -351,16 +351,12 @@
 
                     <td>
                         <?php
-
                             if (isset($uploaded_for->username)) {
                                 $user = '<a href="' . $this->request->webroot . 'profiles/view/' . $docs->uploaded_for . '" target="_blank">' . formatname($uploaded_for);
-                                if (strlen($docname) == 0) {
-                                    $docname = h($docs->document_type) . " " . $strings["documents_submittedfor"] . " " . formatname($uploaded_for) . " " . $strings["documents_at"] . " " . h($docs->created);//needs translation
-                                }
+                                $docname .= " " . $strings["documents_submittedfor"] . " " . formatname($uploaded_for);
                             } else {
                                 $user = $strings["documents_none"];//needs translation
                             }
-
                             echo $user;
                         ?>
                     </td>
@@ -369,6 +365,7 @@
                     <td><?= getdatecolor(h($docs->created)) ?></td>
                     <td>
                         <?php
+                            $docname .=  " " . $strings["documents_at"] . " " . h($docs->created);
                             if (is_object($getClientById)) {
                                 echo "<a href ='" . $this->request->webroot . "clients/edit/" . $docs->client_id . "?view'>" . ucfirst(h($getClientById->company_name)) . "</a>";
                             } else {

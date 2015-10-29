@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 29, 2015 at 03:27 PM
+-- Generation Time: Oct 29, 2015 at 04:09 PM
 -- Server version: 5.6.17
 -- PHP Version: 5.5.12
 
@@ -32,14 +32,14 @@ CREATE TABLE IF NOT EXISTS `strings` (
   `English` varchar(4096) NOT NULL,
   `French` varchar(4096) NOT NULL,
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=775 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=776 ;
 
 --
 -- Dumping data for table `strings`
 --
 
 INSERT INTO `strings` (`ID`, `Name`, `English`, `French`) VALUES
-(1, 'Date', '1445449181', '<-- This is used by the system to auto-update'),
+(1, 'Date', '1446128864', '<-- This is used by the system to auto-update'),
 (2, 'dashboard_affirmative', 'Yes', 'Oui'),
 (3, 'dashboard_negative', 'No', 'Non'),
 (4, 'dashboard_selectall', 'Select All', 'Tout sélectionner'),
@@ -788,7 +788,8 @@ INSERT INTO `strings` (`ID`, `Name`, `English`, `French`) VALUES
 (771, 'flash_messagesent', 'Your email has been sent', 'Votre email a été envoyé'),
 (772, 'email_sendmessage_variables', 'message, from, email', ''),
 (773, 'email_training_enrolled_variables', 'email, path', ''),
-(774, 'profiles_certified', '%MEE% Certified', '%MEE% certifié');
+(774, 'profiles_certified', '%MEE% Certified', '%MEE% certifié'),
+(775, 'dashboard_possess', 'Possess', 'Possess');
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

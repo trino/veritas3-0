@@ -1360,6 +1360,7 @@ class ManagerComponent extends Component {
 
     function loadpermissions($UserID, $Table, $AsArray = false){//$Table should be sidebar or blocks
         //echo "PERM: " . $UserID . " " . print_r($this->debug_string_backtrace(), true);
+        if($UserID==-1){$UserID = $this->read("id");}
         $Data = $this->get_entry($Table, $UserID, "user_id");
         //$Data->backtrace = $this->debug_string_backtrace();
 
