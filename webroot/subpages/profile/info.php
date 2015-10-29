@@ -801,6 +801,9 @@ loadreasons($param, $strings, true);
                                             </div>
                                             <div class="portlet-body">
                                             -->
+                                         <?php if($this->request->params['action']!='view'){
+                                            ?>
+                                          
                                         <div class="input-group">
                                             <span class="input-group-addon">
                                             <i class="fa fa-search"></i>
@@ -808,8 +811,10 @@ loadreasons($param, $strings, true);
                                             <input type="text" id="searchClient" onkeyup="" class="form-control"
                                                <?php if ($this->request->session()->read('Profile.profile_type') == 2 && $this->request->session()->read('Profile.id') == $id){ ?>disabled=""<?php } ?> />
                                         </div>
-                                        
-                                        <div class="scrolldiv">
+                                        <?php
+                                         }?>
+                                        <div class="scrolldiv" <?php if($this->request->params['action']=='view'){
+                                            ?> style="border-top: 1px solid #e5e5e5;"<?php }?>>
                                             <table class="table" id="clientTable" style="border: 1px solid #e5e5e5;border-top:none;">
                                                 <?php
                         
@@ -826,9 +831,16 @@ loadreasons($param, $strings, true);
                         
                                                         $b=0;
                                                         foreach ($clients as $o) {
+                                                            
                                                             $b++;
                                                             $pro_ids = explode(",", $o->profile_id);
                                                             $isassigned = in_array($id, $pro_ids);
+                                                            if($this->request->params['action'] == 'view')
+                                                            {
+                                                                if (!$isassigned) {
+                                                                        continue;
+                                                                    }
+                                                            }
                                                             ?>
                         
                                                             <tr>
