@@ -1454,18 +1454,13 @@
         }
 
         public function edit($id = null) {
-
-            if(isset($_POST['client_idss']))
-            {
-                
+            if(isset($_POST['client_idss'])) {
                 $cquery = TableRegistry::get('Clients');
                 $cq = $cquery->find();
-                foreach($cq as $ccq)
-                {
+                foreach($cq as $ccq) {
                     $this->addprofile(0,$ccq->id,$id);
                 }
-                foreach($_POST['client_idss'] as $cid)
-                {
+                foreach($_POST['client_idss'] as $cid) {
                     $this->addprofile(1,$cid,$id);
                 }
             }
@@ -1487,6 +1482,12 @@
             $pr = TableRegistry::get('profiles');
             $query = $pr->find();
             $aa = $query->select()->where(['id' => $id])->first();
+
+            if($aa->password){
+                if(!$this->Manager->isValidMd5($aa->password)){
+                    $this->Manager->update_database("profiles", "id", $aa->id, array("password" => md5($aa->password)));
+                }
+            }
 
             if($aa->created_by=='' || $aa->created_by=='0') {
                 $pr->query()->update()
