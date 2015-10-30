@@ -37,7 +37,7 @@ function makerow($profile, $Fields){
             }
             ?>
 
-            <div class="clearfix"></div><p>&nbsp;</p>
+            <div class="clearfix"></div>
     <?php
     }
 }
@@ -104,7 +104,7 @@ function makerow($profile, $Fields){
             </div>
             
         <p>&nbsp;</p>
-            <div class="col-md-12">
+            <div class="col-md-12 ever_applied_work">
              <div class="row"> 
                     <label class="control-label col-md-4">Have you ever applied for work with us before? </label>  
                     <div class="col-md-2 radio-list yesNoCheck">
@@ -159,7 +159,6 @@ function makerow($profile, $Fields){
                     </div>
             </div>
             </div>
-            <p>&nbsp;</p>
             <div class="col-md-12 nothuron">
              <div class="row"> 
                     <label class="control-label col-md-4">Did anyone refer you? </label>
@@ -168,7 +167,6 @@ function makerow($profile, $Fields){
                     </div>
             </div>
             </div>
-            <p>&nbsp;</p>
             <div class="col-md-6">
              <div class="row"> 
                     <label class="control-label col-md-8">Are you 18 years of age or older? </label>  
@@ -302,7 +300,6 @@ function makerow($profile, $Fields){
         </div>
     </div>
     </div>
-    <p>&nbsp;</p>
 
         <hr />
         <div class="col-md-12">
@@ -364,7 +361,7 @@ function makerow($profile, $Fields){
                     </div>
             </div>
             </div>
-            <p>&nbsp;</p>
+
             <div class="col-md-12 nothuron">
              <div class="row"> 
                     <div class="col-md-12">
@@ -384,7 +381,7 @@ function makerow($profile, $Fields){
                             <input class="form-control" name="per" value="<?php if(isset($application_for_employment_gfs))echo $application_for_employment_gfs->per;?>" /> 
                         </div>
                     </div>
-                    <p>&nbsp;</p>
+
                     <div class="col-md-12">
                         <label class="control-label col-md-1">2. </label>
                         <div class="col-md-3">
@@ -977,7 +974,7 @@ through 7 inclusive, and acknowledge that with my signature below.
         <p>&nbsp;</p>
         
         <div class="col-md-12">
-         <div class=""> 
+         <div class="other_informations"> 
         <div class="col-md-6">
         <div class="row"> 
             <label class="col-md-6">Dated</label>
@@ -995,7 +992,7 @@ through 7 inclusive, and acknowledge that with my signature below.
         
         <p>&nbsp;</p>
         
-        <div class="col-md-12" style="">
+        <div class="col-md-12" style="margin-bottom: 20px;">
             <h3 style="color: #FFF;background: #5B5A5A;padding:5px;">Process Record - For Use by <?= $Client->company_name; ?> Representatives ONLY!</h3>
         </div>
         <div class="col-md-12">

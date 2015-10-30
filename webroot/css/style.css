@@ -470,3 +470,11 @@ orange Pricing table
 	-webkit-transition: all 0.5s ease;
 }
 
+#form_tab18 div.radio input {
+  opacity: 1 !important;
+}
+
+.other_informations canvas {
+  width: 100% !important;
+}
+
