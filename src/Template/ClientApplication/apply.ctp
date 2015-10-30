@@ -17,10 +17,11 @@
 <h2>Application for <?php echo $client->company_name;?></h2>
 <input type="hidden" id="user_id" value=""/>
 <div class="steps" id="step0" class="active">
+    <input type="hidden" name="c_id" value="<?php echo $client->id;?>" />
     <?php include('subpages/documents/driver_form.php');?>    
     <hr />
     <a href="javascript:void(0)" id="button0" class="buttons btn btn-primary">Proceed to step 1</a>
-    </div>
+</div>
 <?php 
 $cid = $client->id;
 $jj=0;
@@ -40,6 +41,12 @@ foreach($subd as $s)
     //echo $s->sub_id;
 }
 ?>
+<div class="steps" id="step<?php echo ++$jj;?>" style="display: none;">
+<hr />
+    <p style="color: #45b6af;font-size: 24px;font-weight: 400; text-align:center;">
+    Thank you. Your process is complete.
+    </p>
+</div>
 <script>
 $(function(){
    $('.notonclient').each(function(){
@@ -93,239 +100,244 @@ $(function(){
         });
         
        
-        if(checker == 0){
-        par.hide();
-        par.removeClass('active');
-        var id = par.find('.buttons').attr('id').replace('button','');
-        var type = par.find('input[name="document_type"]').val();
-        var cl = par.find('.sub_docs_id').val();
-        if(type=='driver_form')
-        {
-             save_driver(par,'<?php echo $this->request->webroot;?>');
-            
-        }
-        else
-        {
-             var uploaded_for1 = $('#user_id').val();
-             var data = {
-                uploaded_for: uploaded_for1,
-                type: type,
-                sub_doc_id: sid,
-                //division: $('#division').val(),
-                //attach_doc: attach_docs
-            };
-            
-            $.ajax({
-                //data:'uploaded_for='+$('#uploaded_for').val(),
-                data: data,
-                type: 'post',
-                beforeSend: function(){$('.overlay-wrapper').show()},
-                url: '<?php echo $this->request->webroot;?>clientApplication/savedoc/<?php echo $cid;?>/0/?document=' + type + '&draft=' + draft+'<?php if(isset($_GET['order_id'])){?>&order_id=<?php echo $_GET['order_id'];}?>',
-                success: function (res) {
-
-                    $('#did').val(res);
-                    //alert(type);return false;
-                    //alert(type);return false;
-                    if (sid == "1") {
-                        var forms = $(".tab-pane.active").prev('.tab-pane').find(':input'),
-                            url = '<?php echo $this->request->webroot;?>clientApplication/savePrescreening/?document=' + type + '&draft=' + draft+'<?php if(isset($_GET['order_id'])){?>&order_id=<?php echo $_GET['order_id'];}?>',
-                            order_id = res,
-                            cid = '<?php echo $cid;?>';
-                        savePrescreen(url, order_id, cid, draft);
-
-                    } else if (sid == "2") {
-                        var order_id = res,
-                            cid = '<?php echo $cid;?>',
-                            url = '<?php echo $this->request->webroot;?>clientApplication/savedDriverApp/' + order_id + '/' + cid + '/?document=' + type + '&draft=' + draft+'<?php if(isset($_GET['order_id'])){?>&order_id=<?php echo $_GET['order_id'];}?>';
-                        savedDriverApp(url, order_id, cid,draft);
-                    } else if (sid == "3") {
-                        var order_id = res,
-                            cid = '<?php echo $cid;?>',
-                            url = '<?php echo $this->request->webroot;?>clientApplication/savedDriverEvaluation/' + order_id + '/' + cid + '/?document=' + type + '&draft=' + draft+'<?php if(isset($_GET['order_id'])){?>&order_id=<?php echo $_GET['order_id'];}?>';
-                        savedDriverEvaluation(url, order_id, cid,draft);
-                    } else if (sid == "4") {
-                        save_signature('3');
-                        save_signature('4');
-                        save_signature('5');
-                        save_signature('6');
-                            var order_id = res,
-                            cid = '<?php echo $cid;?>',
-                            url = '<?php echo $this->request->webroot;?>clientApplication/savedMeeOrder/' + order_id + '/' + cid + '/?document=' + type + '&draft=' + draft+'<?php if(isset($_GET['order_id'])){?>&order_id=<?php echo $_GET['order_id'];}?>';
-                            setTimeout(function(){
-                            savedMeeOrder(url, order_id, cid, type,draft);}, 1000);
-                       
-
-                    }
-                    else if (sid == "9") {
-
-                        //alert(type);
-                        var order_id = res,
-                            cid = '<?php echo $cid;?>',
-                            url = '<?php echo $this->request->webroot;?>clientApplication/saveEmployment/' + order_id + '/' + cid + '/?document=' + type + '&draft=' + draft+'<?php if(isset($_GET['order_id'])){?>&order_id=<?php echo $_GET['order_id'];}?>';
-                        saveEmployment(url, order_id, cid, type,draft);
-                    }
-                    else if (sid == "10") {
-
-                        //alert(type);
-                        var order_id = res,
-                            cid = '<?php echo $cid;?>',
-                            url = '<?php echo $this->request->webroot;?>clientApplication/saveEducation/' + order_id + '/' + cid + '/?document=' + type + '&draft=' + draft+'<?php if(isset($_GET['order_id'])){?>&order_id=<?php echo $_GET['order_id'];}?>';
-                        saveEducation(url, order_id, cid, type,draft);
-                    }
-                    else if (sid == "6") {
-                        var order_id = res,
-                            cid = '<?php echo $cid;?>',
-                            url = '<?php echo $this->request->webroot;?>feedbacks/add/' + order_id + '/' + cid + '/?document=' + type + '&draft=' + draft;
-                        var param = $('#form_tab6').serialize();
-                        $.ajax({
-                            url: url,
-                            data: param,
-                            type: 'POST',
-                            success: function (res) {
-                                if (res == 'OK'){
-                                    $('.overlay-wrapper').hide();
-                                }
-                            }
-                        });
-
-                    }
-                    else if (sid == "5") {
-                        var order_id = res,
-                            cid = '<?php echo $cid;?>',
-                            url = '<?php echo $this->request->webroot;?>feedbacks/addsurvey/' + order_id + '/' + cid + '/?document=' + type + '&draft=' + draft;
-                        var param = $('#form_tab5').serialize();
-                        $.ajax({
-                            url: url,
-                            data: param,
-                            type: 'POST',
-                            success: function (res) {
-                                if (res == 'OK'){
-                                   $('.overlay-wrapper').hide();
-                                }
-                            }
-                        });
-
-                    }
-                    else if (sid == "7") {
-                        var act = $('#form_tab7').attr('action');
-
-                        $('#form_tab7').attr('action', function (i, val) {
-                            return val + '?draft=' + draft;
-                        });
-                        $('#form_tab7').submit();
-
-
-                    }
-                    else if (sid == "8") {
-                        var act = $('#form_tab8').attr('action');
-
-                        $('#form_tab8').attr('action', function (i, val) {
-                            return val + '?draft=' + draft;
-                        });
-
-                        $('#form_tab8').submit();
-
-
-                    }
-                    else if(sid == '11')
-                    {
-                        var act = $('#form_tab11').attr('action');
-
-                        $('#form_tab11').attr('action', function (i, val) {
-                            return val + '?draft=' + draft;
-                        });
-
-                        $('#form_tab11').submit();
-
-                    }
-                    else if (sid == "15") {
-                        //alert('test');return;
-                        var order_id = res,
-                            cid = '<?php echo $cid;?>',
-                            url = '<?php echo $this->request->webroot;?>clientApplication/mee_attach/' + order_id + '/' + cid + '/?document=' + type + '&draft=' + draft+'<?php if(isset($_GET['order_id'])){?>&order_id=<?php echo $_GET['order_id'];}?>';
-                        var param = $('#form_tab15').serialize();
-                        $.ajax({
-                            url: url,
-                            data: param,
-                            type: 'POST',
-                            success: function (res) {
-                                    $('.overlay-wrapper').hide();
-                                 }
-
-
-                        });
-
-                    }
-                    else
-                    if (sid == "18") {
-                        if($('#test8').parent().find('.touched').val()=='1'){
-                        $.when(save_signature('8')).done(function(d1){
-                            $('#gfs_signature').val(d1);
+            if(checker == 0){
+            par.hide();
+            par.removeClass('active');
+            var id = par.find('.buttons').attr('id').replace('button','');
+            var type = par.find('input[name="document_type"]').val();
+            var cl = par.find('.sub_docs_id').val();
+            if(type=='driver_form')
+            {
+                 save_driver(par,'<?php echo $this->request->webroot;?>');
+                  id = parseInt(id)+1;
+            $('#step'+id).show();
+            $('#step'+id).addClass('active');
+                
+            }
+            else
+            {
+                 var uploaded_for1 = $('#user_id').val();
+                 var data = {
+                    uploaded_for: uploaded_for1,
+                    type: type,
+                    sub_doc_id: sid,
+                    user_id: uploaded_for1
+                    //division: $('#division').val(),
+                    //attach_doc: attach_docs
+                };
+                
+                $.ajax({
+                    //data:'uploaded_for='+$('#uploaded_for').val(),
+                    data: data,
+                    type: 'post',
+                    beforeSend: function(){$('.overlay-wrapper').show()},
+                    url: '<?php echo $this->request->webroot;?>clientApplication/savedoc/<?php echo $cid;?>/0/?document=' + type + '&draft=' + draft+'<?php if(isset($_GET['order_id'])){?>&order_id=<?php echo $_GET['order_id'];}?>',
+                    success: function (res) {
+    
+                        $('#did').val(res);
+                        //alert(type);return false;
+                        //alert(type);return false;
+                        if (sid == "1") {
+                            var forms = $(".tab-pane.active").prev('.tab-pane').find(':input'),
+                                url = '<?php echo $this->request->webroot;?>clientApplication/savePrescreening/?document=' + type + '&draft=' + draft+'<?php if(isset($_GET['order_id'])){?>&order_id=<?php echo $_GET['order_id'];}?>',
+                                order_id = res,
+                                cid = '<?php echo $cid;?>';
+                            savePrescreen(url, order_id, cid, draft);
+    
+                        } else if (sid == "2") {
                             var order_id = res,
                                 cid = '<?php echo $cid;?>',
-                                url = '<?php echo $this->request->webroot;?>clientApplication/application_employment/'+ cid +'/'+ order_id + '/?document=' + type + '&draft=' + draft+'<?php if(isset($_GET['order_id'])){?>&order_id=<?php echo $_GET['order_id'];}?>';
-                            var param = $('#form_tab18').serialize();
-                             $.ajax({
+                                url = '<?php echo $this->request->webroot;?>clientApplication/savedDriverApp/' + order_id + '/' + cid + '/?document=' + type + '&draft=' + draft+'<?php if(isset($_GET['order_id'])){?>&order_id=<?php echo $_GET['order_id'];}?>';
+                            savedDriverApp(url, order_id, cid,draft);
+                        } else if (sid == "3") {
+                            var order_id = res,
+                                cid = '<?php echo $cid;?>',
+                                url = '<?php echo $this->request->webroot;?>clientApplication/savedDriverEvaluation/' + order_id + '/' + cid + '/?document=' + type + '&draft=' + draft+'<?php if(isset($_GET['order_id'])){?>&order_id=<?php echo $_GET['order_id'];}?>';
+                            savedDriverEvaluation(url, order_id, cid,draft);
+                        } else if (sid == "4") {
+                            save_signature('3');
+                            save_signature('4');
+                            save_signature('5');
+                            save_signature('6');
+                                var order_id = res,
+                                cid = '<?php echo $cid;?>',
+                                url = '<?php echo $this->request->webroot;?>clientApplication/savedMeeOrder/' + order_id + '/' + cid + '/?document=' + type + '&draft=' + draft+'<?php if(isset($_GET['order_id'])){?>&order_id=<?php echo $_GET['order_id'];}?>';
+                                setTimeout(function(){
+                                savedMeeOrder(url, order_id, cid, type,draft);}, 1000);
+                           
+    
+                        }
+                        else if (sid == "9") {
+    
+                            //alert(type);
+                            var order_id = res,
+                                cid = '<?php echo $cid;?>',
+                                url = '<?php echo $this->request->webroot;?>clientApplication/saveEmployment/' + order_id + '/' + cid + '/?document=' + type + '&draft=' + draft+'<?php if(isset($_GET['order_id'])){?>&order_id=<?php echo $_GET['order_id'];}?>';
+                            saveEmployment(url, order_id, cid, type,draft);
+                        }
+                        else if (sid == "10") {
+    
+                            //alert(type);
+                            var order_id = res,
+                                cid = '<?php echo $cid;?>',
+                                url = '<?php echo $this->request->webroot;?>clientApplication/saveEducation/' + order_id + '/' + cid + '/?document=' + type + '&draft=' + draft+'<?php if(isset($_GET['order_id'])){?>&order_id=<?php echo $_GET['order_id'];}?>';
+                            saveEducation(url, order_id, cid, type,draft);
+                        }
+                        else if (sid == "6") {
+                            var order_id = res,
+                                cid = '<?php echo $cid;?>',
+                                url = '<?php echo $this->request->webroot;?>feedbacks/add/' + order_id + '/' + cid + '/?document=' + type + '&draft=' + draft;
+                            var param = $('#form_tab6').serialize();
+                            $.ajax({
                                 url: url,
                                 data: param,
                                 type: 'POST',
                                 success: function (res) {
+                                    if (res == 'OK'){
                                         $('.overlay-wrapper').hide();
-                                     }
-    
-    
+                                    }
+                                }
                             });
-                        });
-                       }
-                       else
-                       {
+    
+                        }
+                        else if (sid == "5") {
                             var order_id = res,
                                 cid = '<?php echo $cid;?>',
-                                url = '<?php echo $this->request->webroot;?>clientApplication/application_employment/'+ cid +'/'+ order_id + '/?document=' + type + '&draft=' + draft+'<?php if(isset($_GET['order_id'])){?>&order_id=<?php echo $_GET['order_id'];}?>';
-                            var param = $('#form_tab18').serialize();
-                             $.ajax({
+                                url = '<?php echo $this->request->webroot;?>feedbacks/addsurvey/' + order_id + '/' + cid + '/?document=' + type + '&draft=' + draft;
+                            var param = $('#form_tab5').serialize();
+                            $.ajax({
                                 url: url,
                                 data: param,
                                 type: 'POST',
                                 success: function (res) {
-                                        $('.overlay-wrapper').hide();
-                                     }
-    
-    
+                                    if (res == 'OK'){
+                                       $('.overlay-wrapper').hide();
+                                    }
+                                }
                             });
-                       } 
-
-                    }
-                    else{
-                        <?php foreach($doc as $dx)
-                                {
-                                    if($dx->id >11)
-                                    {
-                                    ?>
-                        if(type == "<?php echo addslashes($dx->title);?>")
-                        {
-                            var act = $('#form_tab<?php echo $dx->id;?>').attr('action');
-
-                            $('#form_tab<?php echo $dx->id;?>').attr('action', function (i, val) {
+    
+                        }
+                        else if (sid == "7") {
+                            var act = $('#form_tab7').attr('action');
+    
+                            $('#form_tab7').attr('action', function (i, val) {
                                 return val + '?draft=' + draft;
                             });
-
-                            $('#form_tab<?php echo $dx->id;?>').submit();
+                            $('#form_tab7').submit();
+    
+    
                         }
-
-                        <?php       }
-                                }
-                        ?>
-
-                    }
-                }
-            });
-        }
-       
-        id = parseInt(id)+1;
-        $('#step'+id).show();
-        $('#step'+id).addClass('active');
+                        else if (sid == "8") {
+                            var act = $('#form_tab8').attr('action');
+    
+                            $('#form_tab8').attr('action', function (i, val) {
+                                return val + '?draft=' + draft;
+                            });
+    
+                            $('#form_tab8').submit();
+    
+    
+                        }
+                        else if(sid == '11')
+                        {
+                            var act = $('#form_tab11').attr('action');
+    
+                            $('#form_tab11').attr('action', function (i, val) {
+                                return val + '?draft=' + draft;
+                            });
+    
+                            $('#form_tab11').submit();
+    
+                        }
+                        else if (sid == "15") {
+                            //alert('test');return;
+                            var order_id = res,
+                                cid = '<?php echo $cid;?>',
+                                url = '<?php echo $this->request->webroot;?>clientApplication/mee_attach/' + order_id + '/' + cid + '/?document=' + type + '&draft=' + draft+'<?php if(isset($_GET['order_id'])){?>&order_id=<?php echo $_GET['order_id'];}?>';
+                            var param = $('#form_tab15').serialize();
+                            $.ajax({
+                                url: url,
+                                data: param,
+                                type: 'POST',
+                                success: function (res) {
+                                        $('.overlay-wrapper').hide();
+                                     }
+    
+    
+                            });
+    
+                        }
+                        else
+                        if (sid == "18") {
+                            if($('#test8').parent().find('.touched').val()=='1'){
+                            $.when(save_signature('8')).done(function(d1){
+                                $('#gfs_signature').val(d1);
+                                var order_id = res,
+                                    cid = '<?php echo $cid;?>',
+                                    url = '<?php echo $this->request->webroot;?>clientApplication/application_employment/'+ cid +'/'+ order_id + '/?document=' + type + '&draft=' + draft+'<?php if(isset($_GET['order_id'])){?>&order_id=<?php echo $_GET['order_id'];}?>&user_id='+uploaded_for1;
+                                var param = $('#form_tab18').serialize();
+                                 $.ajax({
+                                    url: url,
+                                    data: param,
+                                    type: 'POST',
+                                    success: function (res) {
+                                            $('.overlay-wrapper').hide();
+                                         }
         
+        
+                                });
+                            });
+                           }
+                           else
+                           {
+                                var order_id = res,
+                                    cid = '<?php echo $cid;?>',
+                                    url = '<?php echo $this->request->webroot;?>clientApplication/application_employment/'+ cid +'/'+ order_id + '/?document=' + type + '&draft=' + draft+'<?php if(isset($_GET['order_id'])){?>&order_id=<?php echo $_GET['order_id'];}?>&user_id='+uploaded_for1;
+                                var param = $('#form_tab18').serialize();
+                                 $.ajax({
+                                    url: url,
+                                    data: param,
+                                    type: 'POST',
+                                    success: function (res) {
+                                            $('.overlay-wrapper').hide();
+                                         }
+        
+        
+                                });
+                           } 
+    
+                        }
+                        else{
+                            <?php foreach($doc as $dx)
+                                    {
+                                        if($dx->id >11)
+                                        {
+                                        ?>
+                            if(type == "<?php echo addslashes($dx->title);?>")
+                            {
+                                var act = $('#form_tab<?php echo $dx->id;?>').attr('action');
+    
+                                $('#form_tab<?php echo $dx->id;?>').attr('action', function (i, val) {
+                                    return val + '?draft=' + draft;
+                                });
+    
+                                $('#form_tab<?php echo $dx->id;?>').submit();
+                            }
+    
+                            <?php       }
+                                    }
+                            ?>
+    
+                        }
+                         id = parseInt(id)+1;
+            $('#step'+id).show();
+            $('#step'+id).addClass('active');
+                    }
+                });
+            }
+           
+           
+            
         }
    });
     

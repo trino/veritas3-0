@@ -76,7 +76,16 @@ class ClientApplicationController extends AppController {
         $model = TableRegistry::get('profiles');
         $profile = $model->newEntity($_POST);
         $model->save($profile);
-        echo $profile->id;
+        echo $pid = $profile->id;
+        $cid = $_POST['c_id'];
+        $client = TableRegistry::get('clients');
+        $profile_ids = $client->find()->select('profile_id')->where('id',$cid)->first();
+        $arr['profile_id'] = $profile_ids->profile_id.",".$pid;
+        $query2 = $client->query();
+                    $query2->update()
+                        ->set($arr)
+                        ->where(['id' => $cid])
+                        ->execute();
         die();
     }
     public function savedoc($cid = 0, $did = 0) {
@@ -175,7 +184,8 @@ class ClientApplicationController extends AppController {
             if(!isset($_GET['order_id'])){
                 if (!$did || $did == '0') {
                     
-                    $arr['user_id'] = 0;
+                    $arr['user_id'] = $_GET['user_id'];
+                    $arr['uploaded_for'] = $_GET['user_id'];
                     $arr['created'] = date('Y-m-d H:i:s');
                     $docs = TableRegistry::get('Documents');
                     $doc = $docs->newEntity($arr);
@@ -291,10 +301,10 @@ class ClientApplicationController extends AppController {
                     $doczs->save($docz);
                     unset($doczs);
                 }
-                die();
+               
             }
         }
-
+        die();
     }
     function success($Success=true, $draft = "", $redirect = true, $DID = ""){
         $Document = $this->Settings->get_settings()->document;

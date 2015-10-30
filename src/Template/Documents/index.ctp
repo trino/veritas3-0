@@ -346,6 +346,7 @@
 
                     <td>
                         <?php
+                        
                             if (isset($uploaded_for->username)) {
                                 $user = '<a href="' . $this->request->webroot . 'profiles/view/' . $docs->uploaded_for . '" target="_blank">' . formatname($uploaded_for);
                                 if($uploaded_for->id <> $uploaded_by->id) {$docname .= ", " . $strings["documents_submittedfor"] . " " . formatname($uploaded_for);}

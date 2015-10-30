@@ -1336,11 +1336,13 @@ class DocumentComponent extends Component{
         }
         
         function getUser($user_id){
-            $query = TableRegistry::get('Profiles');
-            $query = $query->find()->where(['id' => $user_id]);
-            $q = $query->first();
-            //$this->response->body($q);
-            return $q;
+            
+                $query = TableRegistry::get('Profiles');
+                $query = $query->find()->where(['id' => $user_id]);
+                $q = $query->first();
+                //$this->response->body($q);
+                return $q;
+           
             die();
         }
 
