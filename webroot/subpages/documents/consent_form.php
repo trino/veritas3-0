@@ -489,11 +489,11 @@
         $("#test4").jqScribble();
         $("#test5").jqScribble();
         $("#test6").jqScribble();
-        /*
+        
         $('#test3,#test6,#test4,#test5').click(function(){
             $(this).parent().find('.touched').val('1');
         });
-        */
+        
         <?php }?>
 
         <?php
