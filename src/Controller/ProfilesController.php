@@ -886,9 +886,9 @@
                 if ($profiles->save($profile)) {
                     //var_dump($_POST);
                     $this->checkusername($profile->id, $_POST);
-                    if(isset($_POST['client_idss']))
+                    if(isset($_POST['cids']) && $_POST['cids'])
                     {
-                        
+                        $_POST['client_idss'] = explode(',',$_POST['cids']);
                         $cquery = TableRegistry::get('Clients');
                         $cq = $cquery->find();
                         foreach($cq as $ccq)
@@ -1122,6 +1122,20 @@
                     }
                     $profile = $profiles->newEntity($_POST);
                     if ($profiles->save($profile)) {
+                        if(isset($_POST['cids']) && $_POST['cids'])
+                        {
+                            $_POST['client_idss'] = explode(',',$_POST['cids']);
+                            $cquery = TableRegistry::get('Clients');
+                            $cq = $cquery->find();
+                            foreach($cq as $ccq)
+                            {
+                                $this->addprofile(0,$ccq->id,$profile->id);
+                            }
+                            foreach($_POST['client_idss'] as $cid)
+                            {
+                                $this->addprofile(1,$cid,$profile->id);
+                            }
+                        }
                         $this->checkusername($profile,$_POST);
                         $this->loadModel('ProfileDocs');
                         $this->ProfileDocs->deleteAll(['profile_id' => $profile->id]);
@@ -1292,6 +1306,20 @@
                     //var_dump($this->request->data); die();//echo $_POST['admin'];die();
                     $profile = $this->Profiles->patchEntity($profile, $this->request->data);
                     if ($this->Profiles->save($profile)) {
+                        if(isset($_POST['cids']) && $_POST['cids'])
+                        {
+                            $_POST['client_idss'] = explode(',',$_POST['cids']);
+                            $cquery = TableRegistry::get('Clients');
+                            $cq = $cquery->find();
+                            foreach($cq as $ccq)
+                            {
+                                $this->addprofile(0,$ccq->id,$profile->id);
+                            }
+                            foreach($_POST['client_idss'] as $cid)
+                            {
+                                $this->addprofile(1,$cid,$profile->id);
+                            }
+                        }
                         $this->loadModel('ProfileDocs');
                         $this->ProfileDocs->deleteAll(['profile_id' => $profile->id]);
                         if (isset($_POST['profile_doc'])) {
@@ -1454,7 +1482,11 @@
         }
 
         public function edit($id = null) {
-            if(isset($_POST['client_idss'])) {
+            //var_dump($_POST);die();
+                if(isset($_POST['cids']) && $_POST['cids'])
+                {
+                    die('here');
+                $_POST['client_idss'] = explode(',',$_POST['cids']);
                 $cquery = TableRegistry::get('Clients');
                 $cq = $cquery->find();
                 foreach($cq as $ccq) {
@@ -1630,9 +1662,9 @@
                 ->where(['id' => $client_id])
                 ->execute()
             ) {
-                echo $flash;
+                //echo $flash;
             }else {
-                echo $this->Trans->getString("flash_clientfail");
+                //echo $this->Trans->getString("flash_clientfail");
             }
             //echo $p_ids;
             return true;

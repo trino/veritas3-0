@@ -830,11 +830,21 @@ loadreasons($param, $strings, true);
                                                         }
                         
                                                         $b=0;
+                                                        $cidss = '';
                                                         foreach ($clients as $o) {
                                                             
                                                             $b++;
                                                             $pro_ids = explode(",", $o->profile_id);
                                                             $isassigned = in_array($id, $pro_ids);
+                                                            if($isassigned)
+                                                            {
+                                                                if($cidss == '')
+                                                                {
+                                                                    $cidss = $o->id;
+                                                                }
+                                                                else
+                                                                $cidss = $cidss.','.$o->id;
+                                                            }
                                                             if($this->request->params['action'] == 'view')
                                                             {
                                                                 if (!$isassigned) {
@@ -883,7 +893,7 @@ loadreasons($param, $strings, true);
                                         <button class="close" data-close="alert"></button>
                         
                                     </div>
-                        
+                                    <input type="hidden" class="cids" name="cids" value="<?php if(isset($cidss))echo $cidss;?>" />
                                 </div>
                                 
                                 
@@ -1075,6 +1085,38 @@ loadreasons($param, $strings, true);
 <SCRIPT>
 
     $(function(){
+        
+        $('.addclientz').live('change',function(){
+            
+           if($(this).is(':checked'))
+           var chci = 1;
+           else
+           var chci = 0; 
+           var cids = $('.cids').val();
+           if(cids == '')
+           {
+                if(chci == 1)
+                cids = $(this).val();
+           }
+           else{
+               if(chci==1) 
+               cids = cids+','+$(this).val();
+               else{
+               cids_arr = cids.split(',');
+               cids = '';
+                   for(i=0;i<cids_arr.length;i++)
+                   {
+                    if(cids_arr[i]!=$(this).val()){
+                    if(cids=='')
+                    cids = cids_arr[i];
+                    else
+                    cids = cids+','+cids_arr[i];
+                    }
+                   }
+               } 
+           }
+           $('.cids').val(cids);
+        });
         $('#password').val('');
         //initiate_ajax_upload1('addMore1', 'doc');
 
@@ -1126,6 +1168,7 @@ loadreasons($param, $strings, true);
             $(':disabled[name]').each(function () {
                 strs = strs + '&' + $(this).attr('name') + '=' + $(this).val();
             });
+            strs = strs+'&cids='+$('.cids').val();
             var adds = "<?php echo ($this->request['action']=='add')?'0':$this->request['pass'][0];?>";
             $.ajax({
                 url: '<?php echo $this->request->webroot;?>profiles/saveprofile/' + adds,
@@ -1133,11 +1176,11 @@ loadreasons($param, $strings, true);
                 type: 'post',
                 success: function (res) {
                     res = res.replace(' ', '');
-                    alert(res);
+                    //alert(res);
                     if (res != 0 && !isNaN(res)) {
                         $('#savepro').text("<?= addslashes($strings["forms_savechanges"]); ?>");
                         $('.flash').show();
-                        $('.flash').fadeOut(3500);)
+                        $('.flash').fadeOut(3500);
                         window.location.href = '<?php echo $this->request->webroot;?>profiles/edit/' + res;
                     }
                 }
@@ -1324,8 +1367,9 @@ loadreasons($param, $strings, true);
                                                     if($('.member_type').val()=='12')
                                                     {
                                                        $('.driver_license input').each(function(){
-                                                        if($(this).attr('name')=='driver_license_no')
+                                                        if($(this).attr('name')=='driver_license_no'){
                                                          //$(this).attr('required','required');
+                                                         }
                                                         });
 
                                                     }
@@ -1359,8 +1403,9 @@ loadreasons($param, $strings, true);
                                                     if($('.member_type').val()=='12')
                                                     {
                                                        $('.driver_license input').each(function(){
-                                                        if($(this).attr('name')=='driver_license_no')
+                                                        if($(this).attr('name')=='driver_license_no'){
                                                          //$(this).attr('required','required');
+                                                         }
                                                         });
                                                         $('.driver_license select').each(function(){
                                                         if($(this).attr('name')=='driver_province')
