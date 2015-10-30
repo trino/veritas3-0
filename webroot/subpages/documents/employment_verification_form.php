@@ -53,7 +53,6 @@ $strings2 = CacheTranslations($language, array("verifs_%", "tasks_date", "file_a
                             <label class="control-label col-md-3 required"><?= $strings["forms_companyname"]; ?>: </label>
                             <div class="col-md-9">
                             <input type="text" class="form-control required" name="company_name[]" required value="<?php echo $emp->company_name;?>"  />
-                            <span class="error"></span>
                             </div>
                         </div>
 
@@ -61,13 +60,11 @@ $strings2 = CacheTranslations($language, array("verifs_%", "tasks_date", "file_a
                             <label class="control-label col-md-3 required"><?= $strings["forms_address"]; ?>: </label>
                             <div class="col-md-3">
                                 <input type="text" class="form-control required" required name="address[]" value="<?php echo $emp->address;?>" />
-                                <span class="error"></span>
                             </div>
 
                             <label class="control-label col-md-3 required"><?= $strings["forms_city"]; ?>: </label>
                             <div class="col-md-3">
                                 <input type="text" class="form-control required" required name="city[]" value="<?php echo $emp->city;?>" />
-                                <span class="error"></span>
                             </div>
                         </div>
 
@@ -360,7 +357,6 @@ $strings2 = CacheTranslations($language, array("verifs_%", "tasks_date", "file_a
                         <label class="control-label col-md-3 required"><?= $strings["forms_companyname"]; ?>:</label>
                         <div class=" col-md-9">
                             <input type="text" class="form-control required" required name="company_name[]" />
-                            <span class="error"></span>
                         </div>
                     </div>
 
@@ -368,12 +364,10 @@ $strings2 = CacheTranslations($language, array("verifs_%", "tasks_date", "file_a
                                     <label class="control-label col-md-3 required"><?= $strings["forms_address"]; ?>:</label>
                                     <div class="col-md-3">
                                         <input type="text" class="form-control required" required name="address[]" />
-                                        <span class="error"></span>
                                     </div>
                                     <label class="control-label col-md-3 required"><?= $strings["forms_city"]; ?>:</label>
                                     <div class="col-md-3">
                                         <input type="text" class="form-control required" required name="city[]" />
-                                        <span class="error"></span>
                                     </div>
                                 </div>
 
@@ -381,24 +375,20 @@ $strings2 = CacheTranslations($language, array("verifs_%", "tasks_date", "file_a
                                 <label class="control-label col-md-3 required"><?= $strings["forms_provincestate"]; ?>:</label>
                                 <div class="col-md-3">
                                     <input type="text" class="form-control required" required name="state_province[]" />
-                                    <span class="error"></span>
                                 </div>
                                 <label class="control-label col-md-3 required"><?= $strings["forms_country"]; ?>:</label>
                                 <div class="col-md-3">
-                                    <input type="text" class="form-control required" required name="country[]" />
-                                    <span class="error"></span>
+                                <input type="text" class="form-control required" required name="country[]" />
                                 </div>
                                 </div>
                                 <div class="form-group row">
                                 <label class="control-label col-md-3 required"><?= $strings2["verifs_supername"]; ?>:</label>
                                 <div class="col-md-3">
-                                    <input type="text" class="form-control required" required name="supervisor_name[]"/>
-                                    <span class="error"></span>
+                                <input type="text" class="form-control required" required name="supervisor_name[]"/>
                                 </div>
                                <label class="control-label col-md-3 required"><?= $strings["forms_phone"]; ?>:</label>
                                <div class="col-md-3">
-                                    <input type="text" class="form-control required" required role="phone" name="supervisor_phone[]"/>
-                                    <span class="error"></span>
+                               <input type="text" class="form-control required" required role="phone" name="supervisor_phone[]"/>
                                </div>
                                </div>
 
@@ -416,13 +406,11 @@ $strings2 = CacheTranslations($language, array("verifs_%", "tasks_date", "file_a
                                <div class="form-group row">
                                 <label class="control-label col-md-3 required"><?= $strings2["verifs_employment"]; ?>:</label>
                                 <div class="col-md-3">
-                                    <input type="text" class="form-control date-picker required" required name="employment_start_date[]"/>
-                                    <span class="error"></span>
+                                <input type="text" class="form-control date-picker required" required name="employment_start_date[]"/>
                                 </div>
                                 <label class="control-label col-md-3 required"><?= $strings2["verifs_employment2"]; ?>:</label>
                                 <div class="col-md-3">
-                                    <input type="text" class="form-control date-picker required" required name="employment_end_date[]"/>
-                                    <span class="error"></span>
+                                <input type="text" class="form-control date-picker required" required name="employment_end_date[]"/>
                                 </div>
                                 </div>
                                 <div class="form-group row">

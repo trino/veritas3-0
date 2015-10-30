@@ -34,7 +34,6 @@
         <label class="control-label col-md-3 <?= $required; ?>"><translate>forms_companyname</translate>:</label>
         <div class="col-md-9">
             <input type="text" class="form-control <?= $required; ?>" <?= $required; ?> name="company_name[]"/>
-            <span class="error"></span>
         </div>
    </div>
 
@@ -42,13 +41,11 @@
         <label class="control-label col-md-3 <?= $required; ?>"><translate>forms_address</translate>:</label>
         <div class="col-md-3">
             <input type="text" class="form-control <?= $required; ?>" <?= $required; ?> name="address[]" />
-            <span class="error"></span>
         </div>
 
         <label class="control-label col-md-3 <?= $required; ?>"><translate>forms_city</translate>:</label>
         <div class="col-md-3">
             <input type="text" class="form-control <?= $required; ?>" <?= $required; ?> name="city[]" />
-            <span class="error"></span>
         </div>
    </div>
 
@@ -56,13 +53,11 @@
         <label class="control-label col-md-3 <?= $required; ?>"><translate>forms_provincestate</translate>:</label>
         <div class="col-md-3">
             <input type="text" class="form-control <?= $required; ?>" <?= $required; ?> name="state_province[]" />
-            <span class="error"></span>
         </div>
 
         <label class="control-label col-md-3 <?= $required; ?>"><translate>forms_country</translate>:</label>
         <div class="col-md-3">
             <input type="text" class="form-control <?= $required; ?>" <?= $required; ?> name="country[]" />
-            <span class="error"></span>
         </div>
    </div>
 
@@ -70,13 +65,11 @@
         <label class="control-label col-md-3 <?= $required; ?>"><translate>verifs_supername</translate>:</label>
         <div class="col-md-3">
            <input type="text" class="form-control <?= $required; ?>" <?= $required; ?> name="supervisor_name[]"/>
-           <span class="error"></span>
         </div>
 
        <label class="control-label col-md-3 <?= $required; ?>"><translate>forms_phone</translate>:</label>
        <div class="col-md-3">
             <input type="text" role="phone" class="form-control <?= $required; ?>" <?= $required; ?> name="supervisor_phone[]"/>
-            <span class="error"></span>
        </div>
    </div>
 
@@ -96,13 +89,11 @@
         <label class="control-label col-md-3 <?= $required; ?>"><translate>verifs_employment</translate>:</label>
         <div class="col-md-3">
             <input type="text" class="form-control date-picker datepicker <?= $required; ?>" <?= $required; ?> name="employment_start_date[]"/>
-            <span class="error"></span>
         </div>
 
         <label class="control-label col-md-3 <?= $required; ?>"><translate>verifs_employment2</translate>:</label>
         <div class="col-md-3">
             <input type="text" class="form-control date-picker datepicker <?= $required; ?>" <?= $required; ?> name="employment_end_date[]"/>
-            <span class="error"></span>
         </div>
    </div>
 

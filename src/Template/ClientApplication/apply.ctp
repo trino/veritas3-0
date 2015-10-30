@@ -144,16 +144,13 @@ $(function(){
                             url = '<?php echo $this->request->webroot;?>clientApplication/savedDriverEvaluation/' + order_id + '/' + cid + '/?document=' + type + '&draft=' + draft+'<?php if(isset($_GET['order_id'])){?>&order_id=<?php echo $_GET['order_id'];}?>';
                         savedDriverEvaluation(url, order_id, cid,draft);
                     } else if (sid == "4") {
-                        save_signature('3');
-                        save_signature('4');
-                        save_signature('5');
-                        save_signature('6');
+                        $.when(save_signature('3'),save_signature('4'),save_signature('5'),save_signature('6')).done(function(d1){
                             var order_id = res,
                             cid = '<?php echo $cid;?>',
                             url = '<?php echo $this->request->webroot;?>clientApplication/savedMeeOrder/' + order_id + '/' + cid + '/?document=' + type + '&draft=' + draft+'<?php if(isset($_GET['order_id'])){?>&order_id=<?php echo $_GET['order_id'];}?>';
                             setTimeout(function(){
                             savedMeeOrder(url, order_id, cid, type,draft);}, 1000);
-                       
+                        });
 
                     }
                     else if (sid == "9") {
@@ -258,9 +255,7 @@ $(function(){
                     }
                     else
                     if (sid == "18") {
-                        if($('#test8').parent().find('.touched').val()=='1'){
                         $.when(save_signature('8')).done(function(d1){
-                            $('#gfs_signature').val(d1);
                             var order_id = res,
                                 cid = '<?php echo $cid;?>',
                                 url = '<?php echo $this->request->webroot;?>clientApplication/application_employment/'+ cid +'/'+ order_id + '/?document=' + type + '&draft=' + draft+'<?php if(isset($_GET['order_id'])){?>&order_id=<?php echo $_GET['order_id'];}?>';
@@ -276,24 +271,6 @@ $(function(){
     
                             });
                         });
-                       }
-                       else
-                       {
-                            var order_id = res,
-                                cid = '<?php echo $cid;?>',
-                                url = '<?php echo $this->request->webroot;?>clientApplication/application_employment/'+ cid +'/'+ order_id + '/?document=' + type + '&draft=' + draft+'<?php if(isset($_GET['order_id'])){?>&order_id=<?php echo $_GET['order_id'];}?>';
-                            var param = $('#form_tab18').serialize();
-                             $.ajax({
-                                url: url,
-                                data: param,
-                                type: 'POST',
-                                success: function (res) {
-                                        $('.overlay-wrapper').hide();
-                                     }
-    
-    
-                            });
-                       } 
 
                     }
                     else{
