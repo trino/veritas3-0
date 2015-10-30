@@ -109,18 +109,23 @@ trait ViewVarsTrait
      *   Unused if $name is an associative array, otherwise serves as the values to $name's keys.
      * @return $this
      */
-    public function set($name, $value = null)
-    {
+    public function set($name, $value = null) {
         if (is_array($name)) {
             if (is_array($value)) {
                 $data = array_combine($name, $value);
             } else {
                 $data = $name;
             }
-        } else {
+        } else if (!is_object($name)) {
             $data = [$name => $value];
+        } else {
+            echo "ERROR: CANNOT USE AN OBJECT AS A NAME!";
+            debug($name);
+            debug($this->Manager->debug_string_backtrace());
         }
-        $this->viewVars = $data + $this->viewVars;
+        if(isset($data)) {
+            $this->viewVars = $data + $this->viewVars;
+        }
         return $this;
     }
 

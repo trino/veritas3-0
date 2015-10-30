@@ -36,6 +36,9 @@ class SettingsController extends AppController {
             $uid = TableRegistry::get('profiles')->find()->where(['super' => 1])->first()->id;
         }
         $l = $this->Manager->loadpermissions($uid, "sidebar"); //$query->first();
+        if(!$l) {
+        //    $l = $uid . " has no sidebar permissions!";
+        }
         $this->response->body(($l));
         return $this->response;
         die();

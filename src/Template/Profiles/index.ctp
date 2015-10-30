@@ -214,7 +214,7 @@
                                 <th><?= $this->Paginator->sort('id', "ID") ?></th>
                                 <th style="width:7px;"><?= $this->Paginator->sort('image', $strings["profiles_image"]) ?></th>
                                 <!--th><?= $this->Paginator->sort('username', $strings["profiles_username"]) ?></th-->
-                                <th><a href="#">MEE Certified</a></th>
+                                <th><a href="#"><?= $strings["profiles_certified"]; ?></a></th>
                                 <!--th><?= $this->Paginator->sort('email') ?></th-->
                                 <th><?= $this->Paginator->sort('fname', $strings["profiles_name"]) ?></th>
                                 <th><?= $this->Paginator->sort('profile_type', $strings["profiles_profiletype"]) ?></th>
@@ -264,10 +264,10 @@
                                             ?>
 
                                         </td>
-                                        <td class="actions  util-btn-margin-bottom-5">
-                                            <?php if ($sidebar->bulk == '1' && ($profile->profile_type == 5 || $profile->profile_type == 7 || $profile->profile_type == 8 || $profile->profile_type == 11)) { ?>
-                                                <!--input type="checkbox" class="form-control bulk_user" value="<?php echo $profile->id; ?>" id="checkbox_id_<?php echo $profile->id; ?>" -->
-                                            <?php }
+                                        <td class="actions " align="center" valign="middle">
+                                            <?php if ($sidebar->bulk == '1' && ($profile->profile_type == 5 || $profile->profile_type == 7 || $profile->profile_type == 8 || $profile->profile_type == 11)) {
+                                                echo '<!--input type="checkbox" class="form-control bulk_user" value="' . $profile->id . '" id="checkbox_id_' . $profile->id . '" -->';
+                                            }
 
                                                 /*
                                                 if ($sidebar->profile_list == '1' && !isset($_GET["draft"])) { ?>
@@ -280,13 +280,13 @@
                                                 */
                                             ?>
 <?if($profile->id =='1085' ||$profile->id =='1078' ||$profile->id =='1075'  ||$profile->id =='1069' ||$profile->id =='1065' ||$profile->id =='1064'){?>
-                                            <img style="width:110px;"
+                                            <img style="max-width:110px;"
                                                  src="<? echo $this->request->webroot . 'img/mee-logo.png'; ?>"
                                                  class="img-responsive" alt=""/>
                                             <?}?>
                                         </td>
 
-                                        <td><?= h($profile->fname) ?> <?= h($profile->lname) ?></td>
+                                        <td><?= formatname($profile) ?></td>
 
                                         <td><?php
                                                 if (strlen($profile->profile_type) > 0) {
@@ -350,14 +350,14 @@
                                                         if (isset($_GET['draft'])) {
                                                             echo "?draft";
                                                         }
-                                                        echo '" onclick="return confirm(' . "'" . ProcessVariables($language, $strings["dashboard_confirmdelete"], array("name" => ucfirst(h($profile->username))));
+                                                        echo '" onclick="return confirm(' . "'" . ProcessVariables($language, $strings["dashboard_confirmdelete"], array("name" => addslashes(formatname($profile))  ));
                                                         echo "'" . ');" class="' . btnclass("DELETE") . '">' . $strings["dashboard_delete"] . '</a>';
                                                     }
 
                                                     if ($super && $debug) {
                                                         echo '<a href="' . $this->request->webroot . 'profiles/possess/' . $profile->id;
-                                                        echo '" onclick="return confirm(' . "'Are you sure you want to possess " . ucfirst(h($profile->username)) . "?'";
-                                                        echo ');" class="' . btnclass("DELETE") . '">Possess</a>';
+                                                        echo '" onclick="return confirm(' . "'Are you sure you want to possess " . addslashes(formatname($profile)) . "?'";
+                                                        echo ');" class="' . btnclass("DELETE") . '">' . $strings["dashboard_possess"] . '</a>';
                                                     }
 
                                                     if (strtolower($clinet_name) == 'gordon food service') {

@@ -816,6 +816,8 @@
             $Super = $this->Manager->get_entry("profiles", $GETPOST["username"], "username");
             if (!$Super) {
                 $this->Status(False, "Username not found");
+            } else {
+                $GETPOST["youruserid"] = $Super->id;
             }
             if (!$this->Manager->isValidMd5($GETPOST["password"])) {
                 $GETPOST["password"] = md5($GETPOST["password"]);

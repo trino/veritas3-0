@@ -272,7 +272,7 @@
                                 <td><?echo $this->Number->format($docs->id);
                                     if($docs->hasattachments) { echo '<BR><i  title="Has Attachment" class="fa fa-paperclip"></i>';} ?></td>
 
-                                <td style="width: 200px;">
+                                <td width="220" style="width: 220px; white-space: nowrap;">
                                     <?php
                                     $VIEWURL = $this->request->webroot . "documents/view/" . $docs->client_id . "/" . $docs->id . '?type=' . $docs->sub_doc_id;
                                     if ($docs->sub_doc_id == 4) {$VIEWURL .= '&doc=' . urlencode($docs->document_type);}
@@ -293,13 +293,9 @@
                                                 }
                                     ?>">
 
-                                    <a class="more"  id="sub_doc_click1" href="<?php
-                                        echo $VIEWURL;
-
-                                       ?>">
+                                    <a class="more"  id="sub_doc_click1" href="<?= $VIEWURL; ?>">
                                         <?= h(str_replace('_',' ',$docs->document_type)); //it won't let me put it in the desc ?>
                                         <i class="fa fa-copy"></i>
-
                                     </a>
                     </div>
 
@@ -336,14 +332,13 @@
 
 
                     <td><?php
-                            $docname = "";
+                            $docname = h($docs->document_type) . " #: " . $this->Number->format($docs->id);
                             if (isset($uploaded_by->username)) {
                                 $user = '<a href="' . $this->request->webroot . 'profiles/view/' . $docs->user_id . '" target="_blank">' . formatname($uploaded_by);
-                                $docname = h($docs->document_type) . " " . $strings["documents_submittedby"] . " " . formatname($uploaded_by) . " " . $strings["documents_at"] . " " . h($docs->created);//needs translation
+                                $docname .= ", " . $strings["documents_submittedby"] . " " . formatname($uploaded_by);
                             } else {
                                 $user = $strings["documents_none"];//needs translation
                             }
-
                             echo $user;
                         ?></td>
 
@@ -351,16 +346,12 @@
 
                     <td>
                         <?php
-
                             if (isset($uploaded_for->username)) {
                                 $user = '<a href="' . $this->request->webroot . 'profiles/view/' . $docs->uploaded_for . '" target="_blank">' . formatname($uploaded_for);
-                                if (strlen($docname) == 0) {
-                                    $docname = h($docs->document_type) . " " . $strings["documents_submittedfor"] . " " . formatname($uploaded_for) . " " . $strings["documents_at"] . " " . h($docs->created);//needs translation
-                                }
+                                if($uploaded_for->id <> $uploaded_by->id) {$docname .= ", " . $strings["documents_submittedfor"] . " " . formatname($uploaded_for);}
                             } else {
                                 $user = $strings["documents_none"];//needs translation
                             }
-
                             echo $user;
                         ?>
                     </td>
@@ -369,6 +360,7 @@
                     <td><?= getdatecolor(h($docs->created)) ?></td>
                     <td>
                         <?php
+                            $docname .=  ", " . $strings["documents_at"] . " " . h($docs->created);
                             if (is_object($getClientById)) {
                                 echo "<a href ='" . $this->request->webroot . "clients/edit/" . $docs->client_id . "?view'>" . ucfirst(h($getClientById->company_name)) . "</a>";
                             } else {

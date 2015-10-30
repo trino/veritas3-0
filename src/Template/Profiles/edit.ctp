@@ -2,6 +2,9 @@
     $uid = ($this->request['action'] == 'add') ? "0" : $this->request['pass'][0];
     $sidebar = $this->requestAction("settings/all_settings/" . $uid . "/sidebar");
     $block = $this->requestAction("settings/all_settings/" . $uid . "/blocks");
+
+
+    $YourSidebar = $Manager->loadpermissions(-1, "sidebar");
     $isadmin = $Manager->read("admin") == 1 || $Manager->read("super") == 1;
     if (!isset($is_disabled1)) {$is_disabled1 = "";}//something is wrong with this variable
 
@@ -19,7 +22,7 @@
     {
         ?>
         $(function(){
-           $('#searchClient').keypress(function(){
+           $('#searchClient').keyup(function(){
             
             var key = $('#searchClient').val();
             $('#clientTable').html('<tbody><tr><td><img src="<?php echo $this->request->webroot;?>assets/admin/layout/img/ajax-loading.gif"/></td></tr></tbody>');
@@ -42,7 +45,7 @@
     ?>
     
     $(function(){
-           $('#searchClient').keypress(function(){
+           $('#searchClient').keyup(function(){
             
             var key = $('#searchClient').val();
         $('#clientTable').html('<tbody><tr><td><img src="<?php echo $this->request->webroot;?>assets/admin/layout/img/ajax-loading.gif"/></td></tr></tbody>');
@@ -53,6 +56,7 @@
             success: function (res) {
                 $('#clientTable').html(res);
             }
+        });
         });
         });
     
@@ -163,12 +167,12 @@
         if (isset($disabled)) {
             echo '<a href="javascript:window.print();" class="floatright btn btn-info">' . $strings["dashboard_print"] . '</a>';
         }
-        if (isset($profile) && $sidebar->profile_delete == '1') {
+        if (isset($profile) && $YourSidebar && $YourSidebar->profile_delete == '1') {
             if ($this->request->session()->read('Profile.super') == '1' || ($this->request->session()->read('Profile.profile_type') == '2' && ($profile->profile_type == '5'))) {
                 if ($this->request->session()->read('Profile.id') != $profile->id) {
                     ?>
                         <a href="<?= $this->request->webroot; ?>profiles/delete/<?= $profile->id; ?><?php echo (isset($_GET['draft'])) ? "?draft" : ""; ?>"
-                           onclick="return confirm('<?= ProcessVariables($language, $strings["dashboard_confirmdelete"], array("name" => ucfirst(h($profile->username))), true);?>');"
+                           onclick="return confirm('<?= ProcessVariables($language, $strings["dashboard_confirmdelete"], array("name" => addslashes(formatname($profile))), true);?>');"
                            class="floatright btn btn-danger btnspc"><?= $strings["dashboard_delete"]; ?></a>
                         </span>
                     <?php
@@ -177,7 +181,7 @@
         }
         if (isset($profile)) {
             $checker = $this->requestAction('settings/check_edit_permission/' . $this->request->session()->read('Profile.id') . '/' . $profile->id);
-            if ($sidebar->profile_edit == '1' && $param == 'view') {
+            if ($YourSidebar && $YourSidebar->profile_edit == '1' && $param == 'view') {
                 echo $this->Html->link(__($strings["dashboard_edit"]), ['action' => 'edit', $profile->id], ['class' => 'floatright btn btn-primary btnspc']);
             } else if ($param == 'edit') {
                 echo $this->Html->link(__($strings["dashboard_view"]), ['action' => 'view', $profile->id], ['class' => 'floatright btn btn-info btnspc']);
@@ -185,10 +189,10 @@
             if ($this->request->session()->read('Profile.super') && $this->request->session()->read('Profile.id') != $profile->id && $debug) {
                 echo '<a href="' . $this->request->webroot . 'profiles/possess/' . $profile->id;
                 echo '" onclick="return confirm(' . "'Are you sure you want to possess " . formatname($profile) . "?'";
-                echo ');" class="floatright btn btnspc btn-danger">Possess</a>';
+                echo ');" class="floatright btn btnspc btn-danger">' . $strings["dashboard_possess"] . '</a>';
             }
         }
-        if ($sidebar->profile_edit == '1' && $param == 'view') {
+        if ($YourSidebar && $YourSidebar->profile_edit == '1' && $param == 'view') {
             $checker = $this->requestAction('settings/check_edit_permission/' . $this->request->session()->read('Profile.id') . '/' . $profile->id);
             if ($checker == 1) {
                 ?>
