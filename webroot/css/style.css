@@ -478,3 +478,10 @@ orange Pricing table
   width: 100% !important;
 }
 
+.steps div.radio input, .steps div.checker input {
+  opacity: 1 !important;
+}
+
+body.login .content {
+    width: 100% !important;
+}
