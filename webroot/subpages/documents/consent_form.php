@@ -497,7 +497,7 @@
         <?php }?>
 
         <?php
-        if(($this->request->params['action']=='addorder' || $this->request->params['action']=='add') && !count($sub2['con_at']))
+        if(($this->request->params['action']=='addorder' || $this->request->params['action']=='add') && (!isset($sub2) || (isset($sub2) && !count($sub2['con_at']))))
         {
             ?>
         fileUpload('consent1');
