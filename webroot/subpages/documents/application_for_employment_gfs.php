@@ -61,7 +61,7 @@ function makerow($profile, $Fields){
         </div>
         </div>
         <div class="clearfix"></div>
-        <p>&nbsp;</p>
+       
 
     <?= makerow($profile, array("Title" => "title", "Gender" => "gender", "Email" => "email", "Country of Birth" => "placeofbirth", "Date of Birth" => "dob")); ?>
 
@@ -93,7 +93,6 @@ function makerow($profile, $Fields){
             </div>
         </div>
         
-        <p>&nbsp;</p>
             <div class="col-md-12">
              <div class="row"> 
                     <label class="control-label col-md-4">Current Address: </label>  
@@ -102,8 +101,7 @@ function makerow($profile, $Fields){
                     </div>  
             </div>
             </div>
-            
-        <p>&nbsp;</p>
+     
             <div class="col-md-12 ever_applied_work">
              <div class="row"> 
                     <label class="control-label col-md-4">Have you ever applied for work with us before? </label>  
@@ -150,7 +148,7 @@ function makerow($profile, $Fields){
                     </div> 
             </div>
             </div>
-            <p>&nbsp;</p>
+           
             <div class="col-md-12 nothuron">
              <div class="row"> 
                     <label class="control-label col-md-4">List anyone you know who woks for us: </label>
@@ -246,8 +244,7 @@ function makerow($profile, $Fields){
             </div>
             </div>
         <div class="clearfix"></div>
-        
-        <p>&nbsp;</p>
+       
 
     <div class="col-md-12">
      <div class="row"> 
@@ -281,9 +278,7 @@ function makerow($profile, $Fields){
         </div>
     </div>
     </div>
-    <p>&nbsp;</p>
-
-
+    
     <div class="col-md-12 nothuron">
      <div class="row"> 
         <h3 class="col-md-12">SIN Card</h3>
@@ -398,7 +393,7 @@ function makerow($profile, $Fields){
                     </div>
             </div>
             </div>
-            <p>&nbsp;</p>
+           
             <div class="col-md-12">
              <div class="row"> 
                     <label class="control-label col-md-5">Do you want to work: </label>  
@@ -439,7 +434,7 @@ function makerow($profile, $Fields){
             </div>
             </div>
             <div id="partTimeDiv" style="display: none;">
-            <p>&nbsp;</p>
+           
             <div class="col-md-12">
              <div class="row"> 
                 <label class="control-label col-md-5">If applying only for part-time, which days and hours?</label> 
@@ -449,7 +444,7 @@ function makerow($profile, $Fields){
             </div>
             </div>
             </div>
-            <p>&nbsp;</p>
+           
             <div class="col-md-12">
              <div class="row"> 
                     <label class="control-label col-md-5">Are you able to do the job(s) for which you are applying? </label>  
@@ -490,7 +485,7 @@ function makerow($profile, $Fields){
             </div>
             </div>
             <div id="notAbleDiv" style="display: none;">
-            <p>&nbsp;</p>
+           
             <div class="col-md-12">
              <div class="row"> 
                 <label class="control-label col-md-5">If no, please explain: </label> 
@@ -501,7 +496,7 @@ function makerow($profile, $Fields){
             </div>
              </div> 
              
-             <p>&nbsp;</p>
+            
             <!--div class="col-md-12">
                 <label class="control-label col-md-5">If hired, when can you start?</label> 
                 <div class="col-md-7">              
@@ -572,7 +567,7 @@ function makerow($profile, $Fields){
                 <tbody>
                     <tr>
                         <td><input class="form-control" name="class1"value="<?php if(isset($application_for_employment_gfs))echo $application_for_employment_gfs->class1;?>" /></td>
-                        <td><input class="form-control" name="expires1"value="<?php if(isset($application_for_employment_gfs))echo $application_for_employment_gfs->expires1;?>" /></td>
+
                     </tr>
                     <tr>
                         <td><input class="form-control" name="class2"value="<?php if(isset($application_for_employment_gfs))echo $application_for_employment_gfs->class2;?>" /></td>
